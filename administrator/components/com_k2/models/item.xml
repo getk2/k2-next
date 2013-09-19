@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+	<fields name="params">
+		<fieldset name="itemViewOptions">
+			<field name="title" type="list" default="" label="K2_TITLE" description="">
+				<option value="">K2_INHERIT_FROM_CATEGORY</option>
+				<option value="0">K2_HIDE</option>
+				<option value="1">K2_SHOW</option>
+			</field>
+			<field name="text" type="list" default="" label="K2_TEXT" description="">
+				<option value="">K2_INHERIT_FROM_CATEGORY</option>
+				<option value="0">K2_HIDE</option>
+				<option value="1">K2_SHOW</option>
+			</field>
+			<field name="video" type="list" default="" label="K2_VIDEO" description="">
+				<option value="">K2_INHERIT_FROM_CATEGORY</option>
+				<option value="0">K2_HIDE</option>
+				<option value="1">K2_SHOW</option>
+			</field>
+			<field name="tagline" type="list" default="" label="K2_TAGLINE" description="">
+				<option value="">K2_INHERIT_FROM_CATEGORY</option>
+				<option value="0">K2_HIDE</option>
+				<option value="1">K2_SHOW</option>
+			</field>
+			<field name="category" type="list" default="" label="K2_CATEGORY_IF_APPLICABLE" description="">
+				<option value="">K2_INHERIT_FROM_CATEGORY</option>
+				<option value="0">K2_HIDE</option>
+				<option value="1">K2_SHOW</option>
+			</field>
+			<field name="author" type="list" default="" label="K2_AUTHOR" description="">
+				<option value="">K2_INHERIT_FROM_CATEGORY</option>
+				<option value="0">K2_HIDE</option>
+				<option value="1">K2_SHOW</option>
+			</field>
+			<field name="readmore" type="list" default="" label="K2_READ_MORE_LINK" description="">
+				<option value="">K2_INHERIT_FROM_CATEGORY</option>
+				<option value="0">K2_HIDE</option>
+				<option value="1">K2_SHOW</option>
+			</field>
+			<field name="target" type="list" default="" label="K2_READ_MORE_TARGET" description="">
+				<option value="">K2_INHERIT_FROM_CATEGORY</option>
+				<option value="_self">K2_SAME_WINDOW</option>
+				<option value="_blank">K2_NEW_WINDOW</option>
+			</field>
+			<field name="liveData" type="list" default="" label="K2_FETCH_DATA_FROM_3RD_PARTY_EXTENSION_AT_RUNTIME" description="K2_FETCH_DATA_FROM_3RD_PARTY_EXTENSION_AT_RUNTIME_DESC">
+				<option value="">K2_INHERIT_FROM_CATEGORY</option>
+				<option value="0">K2_NO</option>
+				<option value="1">K2_YES</option>
+			</field>
+		</fieldset>
+	</fields>
+	<fields>
+		<fieldset name="permissions" addfieldpath="/administrator/components/com_k2/fields/">
+			<field name="asset_id" type="hidden" filter="unset" />
+			<field id="rules" name="rules" type="k2rules" label="JFIELD_RULES_LABEL" translate_label="false" filter="rules" validate="rules" class="inputbox" component="com_k2s" section="item"/>
+		</fieldset>
+	</fields>
+</form>

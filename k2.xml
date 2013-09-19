@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="2.5" method="upgrade">
+	<name>COM_K2</name>
+	<author>JoomlaWorks</author>
+	<creationDate>September 11th, 2013</creationDate>
+	<copyright>Copyright (c) 2006 - 2013 JoomlaWorks Ltd. All rights reserved.</copyright>
+	<authorEmail>please-use-the-contact-form@joomlaworks.net</authorEmail>
+	<authorUrl>www.joomlaworks.net</authorUrl>
+	<version>3.0.0</version>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<description>Thank you for installing K2 by JoomlaWorks, the powerful content extension for Joomla!</description>
+	<files></files>
+	<administration>
+		<menu>COM_K2</menu>
+		<submenu>
+			<menu view="items" link="option=com_k2#items">K2_ITEMS</menu>
+			<menu view="categories" link="option=com_k2#categories">K2_CATEGORIES</menu>
+			<menu view="tags" link="option=com_k2#tags">K2_TAGS</menu>
+			<menu view="comments" link="option=com_k2#comments">K2_COMMENTS</menu>
+			<menu view="usergroups" link="option=com_k2#users">K2_USERS</menu>
+			<menu view="usergroups" link="option=com_k2#usergroups">K2_USER_GROUPS</menu>
+			<menu view="extrafields" link="option=com_k2#extrafields">K2_EXTRA_FIELDS</menu>
+			<menu view="extrafieldgroups" link="option=com_k2#extrafieldsgroups">K2_EXTRA_FIELD_GROUPS</menu>
+			<menu view="media" link="option=com_k2#media">K2_MEDIA_MANAGER</menu>
+			<menu view="info" link="option=com_k2#info">K2_INFORMATION</menu>
+		</submenu>
+		<files folder="administrator/components/com_k2">
+			<filename>k2.php</filename>
+		</files>
+	</administration>
+	<config>
+		<fields>
+		</fields>
+	</config>
+</extension>
