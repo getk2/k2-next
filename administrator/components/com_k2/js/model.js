@@ -3,9 +3,20 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 
 	var K2Model = Backbone.Model.extend({
 		parse : function(resp, options) {
-			if (resp.row) {
+
+			if ( resp.menu !== undefined) {
 				K2Dispatcher.trigger('app:menu', resp.menu);
+			}
+
+			if ( resp.form !== undefined) {
 				K2Dispatcher.trigger('app:form', resp.form);
+			}
+
+			if ( resp.redirect !== undefined) {
+				K2Dispatcher.trigger('app:controller:' + resp.redirect, resp);
+			}
+
+			if (resp.row !== undefined) {
 				return resp.row;
 			} else {
 				return resp;
@@ -25,6 +36,8 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 				_method = 'POST';
 			} else if (type === 'update') {
 				_method = 'PUT';
+			} else if (type === 'patch') {
+				_method = 'PATCH';
 			} else if (type === 'delete') {
 				_method = 'DELETE';
 			}
@@ -36,7 +49,6 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 			}
 			return Backbone.sync.apply(this, arguments);
 		}
-		
 	});
 
 	return K2Model;

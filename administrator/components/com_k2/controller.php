@@ -32,6 +32,20 @@ class K2Controller extends JControllerLegacy
 	 * @var object $model
 	 */
 	public $model = null;
+	
+	/**
+	 * Quickreference variable for the method of the current request
+	 *
+	 * @var string _method
+	 */
+	protected $_method = '';
+	
+	/**
+	 * Quickreference variable for the redirect of the current request
+	 *
+	 * @var string _redirect
+	 */
+	protected $_redirect = '';
 
 	/**
 	 * Constructor. Includes the K2 response class for handling the response.
@@ -74,10 +88,13 @@ class K2Controller extends JControllerLegacy
 
 			// Add the model to the controller for quick access
 			$this->model = $this->getModel($this->resourceType);
+			
+			// Set the redirect variable
+			$this->_redirect = $this->input->get('_redirect', '', 'cmd');
+			K2Response::setRedirect($this->_redirect);
 		}
 
 	}
-
 
 	/**
 	 * Sync function. Entry point for the Backbone.js requests.
@@ -102,10 +119,10 @@ class K2Controller extends JControllerLegacy
 		else if ($method == 'POST')
 		{
 			// Get BackboneJS method variable
-			$_method = $this->input->get('_method', '', 'cmd');
+			$this->_method = $this->input->get('_method', '', 'cmd');
 
 			// Execute the task based on the Backbone method
-			switch($_method)
+			switch($this->_method)
 			{
 				default :
 				case 'POST' :
@@ -115,26 +132,47 @@ class K2Controller extends JControllerLegacy
 					$this->update();
 					break;
 				case 'PATCH' :
-					$this->update(true);
+					$this->patch();
 					break;
 				case 'DELETE' :
 					$this->delete();
 					break;
 			}
-		}
 
-		die ;
+			// Handle redirect
+			$this->handleRedirect();
+		}
 
 		// Return
 		return $this;
+	}
+
+	private function handleRedirect()
+	{
+		// Handle response depending on the next page
+		switch($this->_redirect)
+		{
+			case 'add' :
+				$this->read('row', null);
+				break;
+
+			case 'edit' :
+				$this->read('row', $this->model->getState('id'));
+				break;
+
+			case 'list' :
+				$this->read('list');
+				break;
+		}
+
 	}
 
 	/**
 	 * Read function.
 	 * Handles all the read requests ( lists and forms ) and triggers the appropriate view method.
 	 *
-	 * @param string $mode		The mode of the read function. Pass 'row' for retrieving a single row or 'collection' to retrieve a collection of rows.
-	 * @param mixed $id		The id of the row to load when we are retrieving a single row.
+	 * @param string $mode		The mode of the read function. Pass 'row' for retrieving a single row or 'list' to retrieve a collection of rows.
+	 * @param mixed $id			The id of the row to load when we are retrieving a single row.
 	 *
 	 * @return void
 	 */
@@ -187,9 +225,9 @@ class K2Controller extends JControllerLegacy
 	 *
 	 * @return void
 	 */
-	protected function update($patch = false)
+	protected function update()
 	{
-		$this->save($patch);
+		$this->save();
 	}
 
 	/**
@@ -246,7 +284,15 @@ class K2Controller extends JControllerLegacy
 		{
 			$application->enqueueMessage($this->model->getError(), 'error');
 		}
-		$this->read('row', $id);
+
+		// If next page is add page or list page checkin the row
+		if ($this->_redirect != 'edit')
+		{
+			if (!$this->model->checkin($this->model->getState('id')))
+			{
+				$application->enqueueMessage($this->model->getError(), 'error');
+			}
+		}
 
 	}
 
@@ -261,49 +307,31 @@ class K2Controller extends JControllerLegacy
 	protected function patch()
 	{
 		// Check for token
-		JSession::checkToken('get') or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		// Get application
 		$application = JFactory::getApplication();
 
 		// Batch update
-		$models = $this->input->get('models', array(), 'array');
+		$ids = $this->input->get('id', array(), 'array');
+		JArrayHelper::toInteger($ids);
 		$states = $this->input->get('states', array(), 'array');
-		foreach ($models as $model)
+		foreach ($ids as $id)
 		{
-			$data = json_decode($model);
+			$data = array();
+			$data['id'] = $id;
 			// Apply any common states
-			foreach ($states as $state)
+			foreach ($states as $key => $value)
 			{
-				$stateObject = json_decode($state);
-				$name = $stateObject->name;
-				$data->$name = $stateObject->value;
+				$data[$key] = $value;
 			}
 			$this->model->setState('data', $data);
-			$result = $this->model->patch();
+			$result = $this->model->save(true);
 			if (!$result)
 			{
 				$application->enqueueMessage($this->model->getError(), 'error');
-				return false;
 			}
 		}
-
-		// Single row update
-		$model = $this->input->get('model', '', 'string');
-		if ($model)
-		{
-			$data = json_decode($model);
-			$this->model->setState('data', $data);
-			$result = $this->model->patch();
-			if (!$result)
-			{
-				$application->enqueueMessage($this->model->getError(), 'error');
-				return false;
-			}
-		}
-
-		// Fetch again the list to avoid extra HTTP request
-		$this->read('list');
 	}
 
 	/**

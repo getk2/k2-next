@@ -17,21 +17,113 @@ defined('_JEXEC') or die ;
 
 class K2Model extends JModelLegacy
 {
-	
-	
+
+	/**
+	 * Method to checkin a row.
+	 *
+	 * @param   integer  $pk  The numeric id of the primary key.
+	 *
+	 * @return  boolean  False on failure or error, true otherwise.
+	 *
+	 */
+	public function checkin($pk = null)
+	{
+		// Only attempt to check the row in if it exists.
+		if ($pk)
+		{
+			$user = JFactory::getUser();
+
+			// Get an instance of the row to checkin.
+			$table = $this->getTable();
+
+			if (!$table->load($pk))
+			{
+				$this->setError($table->getError());
+				return false;
+			}
+
+			// Check if this is the user having previously checked out the row.
+			if ($table->checked_out > 0 && $table->checked_out != $user->get('id') && !$user->authorise('core.admin', 'com_checkin'))
+			{
+				$this->setError(JText::_('JLIB_APPLICATION_ERROR_CHECKIN_USER_MISMATCH'));
+				return false;
+			}
+
+			// Attempt to check the row in.
+			if (!$table->checkin($pk))
+			{
+				$this->setError($table->getError());
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Method to check-out a row for editing.
+	 *
+	 * @param   integer  $pk  The numeric id of the primary key.
+	 *
+	 * @return  boolean  False on failure or error, true otherwise.
+	 *
+	 */
+	public function checkout($pk = null)
+	{
+		// Only attempt to check the row in if it exists.
+		if ($pk)
+		{
+			// Get an instance of the row to checkout.
+			$table = $this->getTable();
+
+			if (!$table->load($pk))
+			{
+				$this->setError($table->getError());
+				return false;
+			}
+
+			// If there is no checked_out or checked_out_time field, just return true.
+			if (!property_exists($table, 'checked_out') || !property_exists($table, 'checked_out_time'))
+			{
+				return true;
+			}
+
+			$user = JFactory::getUser();
+
+			// Check if this is the user having previously checked out the row.
+			if ($table->checked_out > 0 && $table->checked_out != $user->get('id'))
+			{
+				$this->setError(JText::_('JLIB_APPLICATION_ERROR_CHECKOUT_USER_MISMATCH'));
+				return false;
+			}
+
+			// Attempt to check the row out.
+			if (!$table->checkout($user->get('id'), $pk))
+			{
+				$this->setError($table->getError());
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	/**
 	 * Method to get the record form.
 	 *
 	 * @param   array  $data		An optional array of data for the form to interogate.
 	 * @param   boolean	$loadData	True if the form is to load its own data (default case), false if not.
-	 * 
+	 *
 	 * @return  JForm	A JForm object on success, false on failure
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
 		return false;
 		// Get the form.
-		$form = $this->loadForm('com_weblinks.weblink', 'weblink', array('control' => 'jform', 'load_data' => $loadData));
+		$form = $this->loadForm('com_weblinks.weblink', 'weblink', array(
+			'control' => 'jform',
+			'load_data' => $loadData
+		));
 		if (empty($form))
 		{
 			return false;
@@ -50,7 +142,7 @@ class K2Model extends JModelLegacy
 		}
 
 		// Modify the form based on access controls.
-		if (!$this->canEditState((object) $data))
+		if (!$this->canEditState((object)$data))
 		{
 			// Disable fields for display.
 			$form->setFieldAttribute('ordering', 'disabled', 'true');
@@ -104,11 +196,15 @@ class K2Model extends JModelLegacy
 		}
 		return $row;
 	}
-	
-	public function save()
+
+	public function save($patch = false)
 	{
 		$table = $this->getTable();
 		$data = $this->getState('data');
+		if ($patch)
+		{
+			$table->load($data['id']);
+		}
 		if (!$table->save($data))
 		{
 			$this->setError($table->getError());
@@ -117,7 +213,20 @@ class K2Model extends JModelLegacy
 		$this->setState('id', $table->id);
 		return $table;
 	}
-	
+
+	public function patch()
+	{
+		$table = $this->getTable();
+		$data = $this->getState('data');
+		$table->load($data->id);
+		if (!$table->save($data))
+		{
+			$this->setError($table->getError());
+			return false;
+		}
+		return $table;
+	}
+
 	public function getTable($name = '', $prefix = 'K2Table', $options = array())
 	{
 		return parent::getTable($name, $prefix, $options);

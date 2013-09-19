@@ -19,4 +19,29 @@ class K2TableItems extends K2Table
 		parent::__construct('#__k2_items', 'id', $db);
 	}
 
+	public function check()
+	{
+		if (JString::trim($this->title) == '')
+		{
+			$this->setError(JText::_('K2_ITEM_MUST_HAVE_A_TITLE'));
+			return false;
+		}
+
+		if (JString::trim($this->alias) == '')
+		{
+			$this->alias = $this->title;
+		}
+
+		if (JFactory::getConfig()->get('unicodeslugs') == 1)
+		{
+			$this->alias = JFilterOutput::stringURLUnicodeSlug($this->alias);
+		}
+		else
+		{
+			$this->alias = JFilterOutput::stringURLSafe($this->alias);
+		}
+
+		return true;
+	}
+
 }

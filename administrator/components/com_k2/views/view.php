@@ -104,7 +104,7 @@ class K2View extends JViewLegacy
 	 */
 
 	public function edit($id = null)
-	{	
+	{
 		// Set row
 		$this->setRow($id);
 
@@ -129,8 +129,19 @@ class K2View extends JViewLegacy
 	 */
 	protected function setRow($id)
 	{
-		// Get row
+		// Get model
 		$model = $this->getModel();
+
+		// Checkout the row if needed
+		if ($id)
+		{
+			if(!$model->checkout($id))
+			{
+				JFactory::getApplication()->enqueueMessage($model->getError());
+			}
+		}
+
+		// Get the row
 		$model->setState('id', $id);
 		$row = $model->getRow();
 		if (is_null($row))
@@ -162,8 +173,9 @@ class K2View extends JViewLegacy
 	{
 		// Get rows
 		$model = $this->getModel();
+		$model->setState('id', false);
 		$rows = $model->getRows();
-
+		
 		// Get helper
 		$this->loadHelper($this->getName());
 		$helper = 'K2Helper'.ucfirst($this->getName());

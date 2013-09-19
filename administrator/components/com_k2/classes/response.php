@@ -86,6 +86,13 @@ class K2Response
 	 * @var array $messages
 	 */
 	public static $messages = array();
+	
+	/**
+	 * The redirect variable.
+	 *
+	 * @var string $redirect
+	 */
+	public static $redirect = '';
 
 	/**
 	 * Setter function for the response variable.
@@ -284,6 +291,28 @@ class K2Response
 	{
 		return self::$form;
 	}
+	
+	/**
+	 * Setter function for the redirect variable.
+	 *
+	 * @param string $redirect
+	 *
+	 * @return void
+	 */
+	public static function setRedirect($redirect)
+	{
+		self::$redirect = $redirect;
+	}
+
+	/**
+	 * Getter function for the redirect variable.
+	 *
+	 * @return string $redirect
+	 */
+	public static function getRedirect()
+	{
+		return self::$redirect;
+	}
 
 	/**
 	 * Adds a filter to the filters array that will be rendered on the page.
@@ -468,6 +497,7 @@ class K2Response
 		self::$response->row = self::getRow();
 		self::$response->form = self::getForm();
 		self::$response->messages = JFactory::getApplication()->getMessageQueue();
+		self::$response->redirect = self::getRedirect();
 		return self::$response;
 	}
 
