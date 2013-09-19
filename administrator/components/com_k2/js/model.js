@@ -5,15 +5,15 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 		parse : function(resp, options) {
 
 			if ( resp.menu !== undefined) {
-				K2Dispatcher.trigger('app:menu', resp.menu);
+				K2Dispatcher.trigger('app:set:menu', resp.menu);
 			}
 
 			if ( resp.form !== undefined) {
-				K2Dispatcher.trigger('app:form', resp.form);
+				K2Dispatcher.trigger('app:set:form', resp.form);
 			}
 
 			if ( resp.redirect !== undefined) {
-				K2Dispatcher.trigger('app:controller:' + resp.redirect, resp);
+				K2Dispatcher.trigger('app:controller:redirect:' + resp.redirect, resp);
 			}
 
 			if (resp.row !== undefined) {

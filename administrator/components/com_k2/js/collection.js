@@ -8,13 +8,13 @@ define(['backbone', 'model', 'dispatcher'], function(Backbone, K2Model, K2Dispat
 		},
 
 		parse : function(resp, options) {
-			K2Dispatcher.trigger('app:menu', resp.menu);
-			K2Dispatcher.trigger('app:filters', resp.filters);
-			K2Dispatcher.trigger('app:toolbar', resp.toolbar);
-			K2Dispatcher.trigger('app:batch', resp.batch);
-			K2Dispatcher.trigger('app:pagination', resp.pagination);
-			K2Dispatcher.trigger('app:messages', resp.messages);
-			K2Dispatcher.trigger('app:editor', resp.editor);
+			K2Dispatcher.trigger('app:set:menu', resp.menu);
+			K2Dispatcher.trigger('app:set:filters', resp.filters);
+			K2Dispatcher.trigger('app:set:toolbar', resp.toolbar);
+			K2Dispatcher.trigger('app:set:batch', resp.batch);
+			K2Dispatcher.trigger('app:set:pagination', resp.pagination);
+			K2Dispatcher.trigger('app:set:messages', resp.messages);
+			K2Dispatcher.trigger('app:set:editor', resp.editor);
 			return resp.rows;
 		},
 

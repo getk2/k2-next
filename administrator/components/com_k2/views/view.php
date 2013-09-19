@@ -268,7 +268,7 @@ class K2View extends JViewLegacy
 		// Get the prefix
 		$prefix = $this->getName();
 
-		// Get the state
+		// Get the state. @TODO: Update this so it cares only about GET variables.
 		$state = $application->getUserStateFromRequest($prefix.'.'.$name, $name, $default, $type);
 
 		// Push the state to the array
