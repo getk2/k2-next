@@ -15,8 +15,14 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header'], fun
 
 	// On after initialize
 	K2.on('initialize:after', function() {
+		
+		// Emulate HTTP
 		Backbone.emulateHTTP = true;
+		
+		// Emulate JSON
 		Backbone.emulateJSON = true;
+		
+		// Backbone history
 		Backbone.history.start();
 
 		// Render the header. @TODO Add intializing code for the rest regions.

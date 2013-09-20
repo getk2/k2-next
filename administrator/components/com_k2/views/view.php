@@ -72,8 +72,12 @@ class K2View extends JViewLegacy
 
 	public function display($tpl = NULL)
 	{
-		// Set user states
-		$this->setUserStates();
+		// Set user states only for GET requests
+		$method = JFactory::getApplication()->input->getMethod();
+		if($method == 'GET')
+		{
+			$this->setUserStates();
+		}
 
 		// Set rows
 		$this->setRows();
