@@ -32,14 +32,14 @@ class K2Controller extends JControllerLegacy
 	 * @var object $model
 	 */
 	public $model = null;
-	
+
 	/**
 	 * Quickreference variable for the method of the current request
 	 *
 	 * @var string _method
 	 */
 	protected $_method = '';
-	
+
 	/**
 	 * Quickreference variable for the redirect of the current request
 	 *
@@ -88,7 +88,7 @@ class K2Controller extends JControllerLegacy
 
 			// Add the model to the controller for quick access
 			$this->model = $this->getModel($this->resourceType);
-			
+
 			// Set the redirect variable
 			$this->_redirect = $this->input->get('_redirect', '', 'cmd');
 			K2Response::setRedirect($this->_redirect);
@@ -280,18 +280,20 @@ class K2Controller extends JControllerLegacy
 		$data = JRequest::get('post', 2);
 		$this->model->setState('data', $data);
 		$result = $this->model->save();
-		if (!$result)
+		// If save was successful and the next page is add page or list page checkin the row
+		if ($result)
+		{
+			if ($this->_redirect != 'edit')
+			{
+				if (!$this->model->checkin($this->model->getState('id')))
+				{
+					$application->enqueueMessage($this->model->getError(), 'error');
+				}
+			}
+		}
+		else
 		{
 			$application->enqueueMessage($this->model->getError(), 'error');
-		}
-
-		// If next page is add page or list page checkin the row
-		if ($this->_redirect != 'edit')
-		{
-			if (!$this->model->checkin($this->model->getState('id')))
-			{
-				$application->enqueueMessage($this->model->getError(), 'error');
-			}
 		}
 
 	}
