@@ -1,0 +1,28 @@
+<% if(title) { %> 
+    <h3 id="jwTitle"><%= title %></h3>
+<% } %>
+
+<% if(!_.isEmpty(actions)) { %>
+<ul class="jwActionsMenu">
+    <% _(actions).each(function(button) { %>
+    <li>
+        <a <% if(link._id) { %> id="<%= link._id %>" <% } %> class="<%= link.className %>" href="<%= link.href %>"><%= link.name %></a>
+    </li>
+    <% }); %>
+</ul>
+<% } %>
+
+<% if(!_.isEmpty(filters)) { %>
+<div class="jwFilters">
+    <% _(filters).each(function(filter) { %>
+    <div class="jwFilter">
+        <% if(filter.radio) { %>
+        <label><%= filter.label %></label>
+        <% } else { %>
+        <label for="<%- filter.id %>"><%= filter.label %></label>
+        <% } %>
+        <%= filter.input %>
+    </div>
+    <% }); %>
+</div>
+<% } %>

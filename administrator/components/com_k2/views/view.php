@@ -307,13 +307,44 @@ class K2View extends JViewLegacy
 	}
 
 	/**
-	 * Hook for children views to allow them set the form fields for the edit requests.
-	 * Children views should override this method.
+	 * Loads the XML form and pass the fields to the response.
+	 * Children may need to override this method.
 	 *
 	 * @return void
 	 */
 	protected function setForm()
 	{
+		// Import JForm
+		jimport('joomla.form.form');
+		
+		// Determine form name and path
+		$formName = 'K2'.ucfirst($this->getName()).'Form';
+		$formPath = JPATH_ADMINISTRATOR.'/components/com_k2/models/'.$this->getName().'.xml';
+		
+		// Get the form instance
+		$form = JForm::getInstance($formName, $formPath);
+		
+		// Get the row to bind the values to the form
+		$row = K2Response::getRow();
+		$row->params = json_decode($row->params);
+		$form->bind($row);
+
+		// Build the form object
+		$_form = new stdClass;
+		foreach ($form->getFieldsets() as $fieldset)
+		{
+			$array = array();
+			foreach ($form->getFieldset($fieldset->name) as $field)
+			{
+				$tmp = new stdClass;
+				$tmp->label = $field->label;
+				$tmp->input = $field->input;
+				$array[$field->name] = $tmp;
+			}
+			$name = $fieldset->name;
+			$_form->$name = $array;
+		}
+		K2Response::setForm($_form);
 	}
 
 	/**

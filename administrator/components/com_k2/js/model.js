@@ -2,25 +2,33 @@
 define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backbone, Marionette, K2Dispatcher) {
 
 	var K2Model = Backbone.Model.extend({
+
+		initialize : function() {
+			this.form = new Backbone.Model;
+		},
+
 		parse : function(resp, options) {
-
-			if ( resp.menu !== undefined) {
-				K2Dispatcher.trigger('app:set:menu', resp.menu);
-			}
-
-			if ( resp.form !== undefined) {
-				K2Dispatcher.trigger('app:set:form', resp.form);
-			}
-
-			if ( resp.redirect !== undefined) {
-				K2Dispatcher.trigger('app:controller:redirect:' + resp.redirect, resp);
-			}
-
-			if (resp.row !== undefined) {
-				return resp.row;
-			} else {
+			// If response is null then return. This is the case for POST requests
+			if (resp === null) {
 				return resp;
 			}
+			
+			// If the response object does not contain a row object then probably it's a flat model and we need to return it.
+			if (resp.row === undefined) {
+				return resp;
+			}
+			
+			// Attach the form object to the model in order to be available later.
+			if (resp.form !== undefined) {
+				this.setForm(resp.form);
+			}
+
+			// Trigger the update event to notify the generic application layouts for changes.
+			K2Dispatcher.trigger('app:update', resp);
+
+			// Return the row
+			return resp.row;
+			
 		},
 
 		url : function() {
@@ -43,11 +51,23 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 			}
 			if (_method) {
 				arguments[2].data.push({
+					'name' : K2SessionToken,
+					'value' : 1
+				});
+				arguments[2].data.push({
 					'name' : '_method',
 					'value' : _method
 				});
 			}
 			return Backbone.sync.apply(this, arguments);
+		},
+
+		setForm : function(form) {
+			this.form.set(form);
+		},
+
+		getForm : function() {
+			return this.form;
 		}
 	});
 

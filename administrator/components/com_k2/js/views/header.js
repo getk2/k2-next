@@ -17,8 +17,8 @@ define(['marionette', 'text!layouts/header.html', 'dispatcher'], function(Marion
 		},
 
 		initialize : function() {
-			K2Dispatcher.on('app:set:menu', function(menu) {
-				this.model.set('menu', menu);
+			K2Dispatcher.on('app:update:header', function(response) {
+				this.model.set('menu', response.menu);
 			}, this);
 		},
 

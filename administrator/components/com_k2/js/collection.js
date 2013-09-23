@@ -8,13 +8,20 @@ define(['backbone', 'model', 'dispatcher'], function(Backbone, K2Model, K2Dispat
 		},
 
 		parse : function(resp, options) {
-			K2Dispatcher.trigger('app:set:menu', resp.menu);
-			K2Dispatcher.trigger('app:set:filters', resp.filters);
-			K2Dispatcher.trigger('app:set:toolbar', resp.toolbar);
-			K2Dispatcher.trigger('app:set:batch', resp.batch);
-			K2Dispatcher.trigger('app:set:pagination', resp.pagination);
-			K2Dispatcher.trigger('app:set:messages', resp.messages);
-			K2Dispatcher.trigger('app:set:editor', resp.editor);
+
+			// If response is null then return. This occurs on POST requests.
+			if (resp === null) {
+				return resp;
+			}
+			
+			if (resp.rows === undefined) {
+				return resp;
+			}
+
+			// Trigger the update event to notify the application.
+			K2Dispatcher.trigger('app:update', resp);
+
+			// Return the rows
 			return resp.rows;
 		},
 

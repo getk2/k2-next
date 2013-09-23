@@ -1,5 +1,5 @@
 'use strict';
-define(['marionette', 'router', 'controller', 'dispatcher', 'views/header'], function(Marionette, K2Router, K2Controller, K2Dispatcher, HeaderView) {
+define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'views/subheader'], function(Marionette, K2Router, K2Controller, K2Dispatcher, HeaderView, SubheaderView) {
 
 	// Initialize the application
 	var K2 = new Marionette.Application();
@@ -25,10 +25,24 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header'], fun
 		// Backbone history
 		Backbone.history.start();
 
-		// Render the header. @TODO Add intializing code for the rest regions.
+		// Render the header view
 		K2.header.show(new HeaderView({
-			model : new Backbone.Model()
+			model : new Backbone.Model({
+				'menu':[]
+			})
 		}));
+		
+		// Render the subheader view
+		K2.subheader.show(new SubheaderView({
+			model : new Backbone.Model({
+				'title':'',
+				'filters':[],
+				'actions':[]
+			})
+		}));
+		
+		//@TODO Add intializing code for the rest regions.
+		
 	});
 
 	// Add initializer
@@ -44,16 +58,26 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header'], fun
 
 	});
 
-	// Redirect event
+	// Redirect event listener. Updates the browser URL and triggers the router function depending on the trigger variable.
 	K2Dispatcher.on('app:redirect', function(url, trigger) {
 		K2.router.navigate(url, {
 			trigger : trigger
 		});
 	});
 
-	// Render event
-	K2Dispatcher.on('app:render', function(view) {
-		K2.content.show(view);
+	// Render event listener. Renders a view to a region.
+	K2Dispatcher.on('app:render', function(view, region) {
+		K2[region].show(view);
+	});
+	
+	// Update event listener. Triggered when the server response is parsed.
+	K2Dispatcher.on('app:update', function(response) {
+		
+		K2Dispatcher.trigger('app:update:header', response);
+		K2Dispatcher.trigger('app:update:subheader', response);
+		K2Dispatcher.trigger('app:update:sidebar', response);
+		
+		//@TODO Trigger the rest subevents
 	});
 
 	// Return the application instance

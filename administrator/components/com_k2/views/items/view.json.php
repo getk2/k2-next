@@ -19,6 +19,37 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/views/view.php';
 class K2ViewItems extends K2View
 {
 
+	/**
+	 * Builds the response variables needed for rendering a list.
+	 * Usually there will be no need to override this function.
+	 *
+	 * @param string $tpl	The name of the template file to parse. @see JViewLegacy. Not used here at all.
+	 *
+	 * @return void
+	 */
+
+	public function display($tpl = NULL)
+	{
+		K2Response::setTitle(JText::_('K2_ITEMS'));
+		parent::display($tpl);
+	}
+	
+	/**
+	 * Builds the response variables needed for rendering a form.
+	 * Usually there will be no need to override this function.
+	 *
+	 * @param integer $id	The id of the resource to load.
+	 *
+	 * @return void
+	 */
+
+	public function edit($id = null)
+	{
+		
+		K2Response::setTitle(JText::_('K2_ITEM'));
+		parent::edit($id);
+	}
+
 	protected function setUserStates()
 	{
 		$this->setUserState('limit', 10, 'int');
@@ -58,10 +89,10 @@ class K2ViewItems extends K2View
 		K2Response::addFilter('sorting', JText::_('K2_SORT_BY'), K2HelperHTML::sorting($this->getUserState('sorting'), $sortingOptions));
 
 		// Published filter
-		K2Response::addFilter('published', JText::_('K2_PUBLISHED'), K2HelperHTML::published($this->getUserState('published')));
+		K2Response::addFilter('published', JText::_('K2_PUBLISHED'), K2HelperHTML::published($this->getUserState('published')), true);
 
 		// Featured filter
-		K2Response::addFilter('featured', JText::_('K2_PUBLISHED'), K2HelperHTML::featured($this->getUserState('featured')));
+		K2Response::addFilter('featured', JText::_('K2_FEATURED'), K2HelperHTML::featured($this->getUserState('featured')), true);
 
 	}
 
@@ -84,20 +115,6 @@ class K2ViewItems extends K2View
 		 array_unshift($options, JHTML::_('select.option', 0, JText::_('K2_LEAVE_UNCHANGED')));
 		 K2Response::addBatchAction('language', JText::_('K2_SET_LANGUAGE'), JHTML::_('select.genericlist', $options, 'language'));
 		 */
-	}
-
-	protected function setForm()
-	{
-		// Get fields from XML
-		jimport('joomla.form.form');
-		$form = JForm::getInstance('K2ItemForm', JPATH_ADMINISTRATOR.'/components/com_k2/models/item.xml');
-		$row = K2Response::getRow();
-		$row->params = json_decode($row->params);
-		$form->bind($row);
-
-		// Rules field
-		K2Response::addFormField('rules', $form->getInput('rules').$form->getInput('asset_id'));
-
 	}
 
 }

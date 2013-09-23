@@ -1,21 +1,29 @@
 <h1>Item</h1>
 <form id="k2ItemForm" class="jwEditForm">
-    
-    <label>Title</label>
-    <input type="text" name="title" value="<%- title %>" />
-    
-    <label>Published</label>
-    <input type="text" name="published" value="<%- published %>" />
-    
-     <label>Access</label>
-    <input type="text" name="access" value="<%- access %>" />
-    
-     <label>Param</label>
-    <input type="text" name="jform[params][test]" / >
-    
-    <span>Checked Out: <%= checked_out %></span>
-    
-    <input type="hidden" name="id" value="<%= id %>" / >
-    
-</form>
 
+    <label>Title</label>
+    <input type="text" name="title" value="<%- row.title %>" />
+
+    <label>Published</label>
+    <input type="text" name="published" value="<%- row.published %>" />
+
+    <label>Access</label>
+    <input type="text" name="access" value="<%- row.access %>" />
+
+    <label>Param</label>
+    <input type="text" name="jform[params][test]" / >
+
+    <span>Checked Out: <%= row.checked_out %></span>
+
+    <input type="hidden" name="id" value="<%= row.id %>" / >
+
+    <% _(form.permissions).each(function(field) { %>
+        <%= field.label %>
+        <%= field.input %>
+    <% }); %>
+
+    <% _(form.itemViewOptions).each(function(field) { %>
+        <%= field.label %>
+        <%= field.input %>
+    <% }); %>
+</form>

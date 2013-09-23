@@ -24,14 +24,14 @@ class K2Controller extends JControllerLegacy
 	 *
 	 * @var string $resourceType
 	 */
-	protected $resourceType = null;
+	public $resourceType = null;
 
 	/**
 	 * Quickreference variable for the model of the current request.
 	 *
 	 * @var object $model
 	 */
-	protected $model = null;
+	public $model = null;
 
 	/**
 	 * Quickreference variable for the method of the current request
@@ -39,6 +39,13 @@ class K2Controller extends JControllerLegacy
 	 * @var string _method
 	 */
 	protected $_method = '';
+
+	/**
+	 * Quickreference variable for the redirect of the current request
+	 *
+	 * @var string _redirect
+	 */
+	protected $_redirect = '';
 
 	/**
 	 * Constructor. Includes the K2 response class for handling the response.
@@ -58,6 +65,9 @@ class K2Controller extends JControllerLegacy
 		{
 			// Add the Backbone response class to auto load
 			require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/response.php';
+
+			// Add custom error handling for JSON requests to avoid breaking the JSON response from server
+			set_error_handler('K2Response::errorHandler');
 
 			// Determine the resource type. We need that in order to be able to load the correct model.
 			if (strpos($config['originalTask'], '.') === false)
@@ -79,6 +89,9 @@ class K2Controller extends JControllerLegacy
 			// Add the model to the controller for quick access
 			$this->model = $this->getModel($this->resourceType);
 
+			// Set the redirect variable
+			$this->_redirect = $this->input->get('_redirect', '', 'cmd');
+			K2Response::setRedirect($this->_redirect);
 		}
 
 	}
@@ -125,11 +138,33 @@ class K2Controller extends JControllerLegacy
 					$this->delete();
 					break;
 			}
-			
+
+			// Handle redirect
+			$this->handleRedirect();
 		}
-		
+
 		// Return
 		return $this;
+	}
+
+	private function handleRedirect()
+	{
+		// Handle response depending on the next page
+		switch($this->_redirect)
+		{
+			case 'add' :
+				$this->read('row', null);
+				break;
+
+			case 'edit' :
+				$this->read('row', $this->model->getState('id'));
+				break;
+
+			case 'list' :
+				$this->read('list');
+				break;
+		}
+
 	}
 
 	/**
@@ -205,17 +240,24 @@ class K2Controller extends JControllerLegacy
 	protected function delete()
 	{
 		// Check for token
-		JSession::checkToken() or $this->throwError(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
+		// Get application
+		$application = JFactory::getApplication();
 
 		// Delete
-		$id = $this->input->get('id', null, 'array');
+		$id = $this->input->get('models', null, 'array');
 		$this->model->setState('id', $id);
 		$result = $this->model->delete();
 		if (!$result)
 		{
-			$this->throwError($this->model->getError());
+			$application->enqueueMessage($this->model->getError(), 'error');
+			return false;
 		}
-		
+
+		// Fetch again the list to avoid extra HTTP request
+		$this->model->setState('id', null);
+		$this->read('list');
 	}
 
 	/**
@@ -229,23 +271,29 @@ class K2Controller extends JControllerLegacy
 	protected function save()
 	{
 		// Check for token
-		JSession::checkToken() or $this->throwError(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
+		// Get application
+		$application = JFactory::getApplication();
 
 		// Save
 		$data = JRequest::get('post', 2);
 		$this->model->setState('data', $data);
 		$result = $this->model->save();
-		// If save was successful checkin the row
+		// If save was successful and the next page is add page or list page checkin the row
 		if ($result)
 		{
-			if (!$this->model->checkin($this->model->getState('id')))
+			if ($this->_redirect != 'edit')
 			{
-				$this->throwError($this->model->getError());
+				if (!$this->model->checkin($this->model->getState('id')))
+				{
+					$application->enqueueMessage($this->model->getError(), 'error');
+				}
 			}
 		}
 		else
 		{
-			$this->throwError($this->model->getError());
+			$application->enqueueMessage($this->model->getError(), 'error');
 		}
 
 	}
@@ -262,6 +310,9 @@ class K2Controller extends JControllerLegacy
 	{
 		// Check for token
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
+		// Get application
+		$application = JFactory::getApplication();
 
 		// Batch update
 		$ids = $this->input->get('id', array(), 'array');
@@ -280,15 +331,9 @@ class K2Controller extends JControllerLegacy
 			$result = $this->model->save(true);
 			if (!$result)
 			{
-				$this->throwError($this->model->getError());
+				$application->enqueueMessage($this->model->getError(), 'error');
 			}
 		}
-	}
-	
-	private function throwError($text, $status = 400)
-	{
-		header('HTTP/1.1 '.$status);
-		jexit($text);
 	}
 
 	/**

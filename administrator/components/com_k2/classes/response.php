@@ -23,6 +23,13 @@ class K2Response
 	 * @var object $response
 	 */
 	public static $response = null;
+	
+	/**
+	 * The title.
+	 *
+	 * @var string $title
+	 */
+	public static $title = '';
 
 	/**
 	 * The menu links.
@@ -78,7 +85,7 @@ class K2Response
 	 *
 	 * @var array $form
 	 */
-	public static $form = array();
+	public static $form = null;
 
 	/**
 	 * Array containing the the messages enqueued by the application.
@@ -114,6 +121,28 @@ class K2Response
 	public static function getResponse()
 	{
 		return self::$response;
+	}
+	
+	/**
+	 * Setter function for the title variable.
+	 *
+	 * @param string $title
+	 *
+	 * @return void
+	 */
+	public static function setTitle($title)
+	{
+		self::$title = $title;
+	}
+
+	/**
+	 * Getter function for the title variable.
+	 *
+	 * @return string $title
+	 */
+	public static function getTitle()
+	{
+		return self::$title;
 	}
 
 	/**
@@ -324,12 +353,13 @@ class K2Response
 	 *
 	 * @return void
 	 */
-	public static function addFilter($id, $label, $input, $position = null)
+	public static function addFilter($id, $label, $input, $radio = false, $position = null)
 	{
 		$filter = new stdClass;
 		$filter->id = $id;
 		$filter->label = $label ? $label : '';
 		$filter->input = $input ? $input : '';
+		$filter->radio = $radio;
 		$filter->position = $position;
 		self::$filters[$id] = $filter;
 	}
@@ -456,10 +486,7 @@ class K2Response
 	 */
 	public static function addFormField($id, $html)
 	{
-		$field = new stdClass;
-		$field->id = $id;
-		$field->input = $html;
-		self::$form[$id] = $field;
+		self::$form[$id] = $html;
 	}
 
 	/**
@@ -488,6 +515,7 @@ class K2Response
 		{
 			self::$response = new stdClass;
 		}
+		self::$response->title = self::getTitle();
 		self::$response->menu = self::getMenu();
 		self::$response->rows = self::getRows();
 		self::$response->pagination = self::getPagination();
