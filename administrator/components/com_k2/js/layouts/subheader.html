@@ -1,15 +1,4 @@
-<% if(title) { %> 
-    <h3 id="jwTitle"><%= title %></h3>
-<% } %>
-
-<% if(!_.isEmpty(actions)) { %>
-<ul class="jwActionsMenu">
-    <% _(actions).each(function(button) { %>
-    <li>
-        <a <% if(link._id) { %> id="<%= link._id %>" <% } %> class="<%= link.className %>" href="<%= link.href %>"><%= link.name %></a>
-    </li>
-    <% }); %>
-</ul>
+<% if(title) { %> <h3 id="jwTitle"><%= title %></h3>
 <% } %>
 
 <% if(!_.isEmpty(filters)) { %>
@@ -26,3 +15,18 @@
     <% }); %>
 </div>
 <% } %>
+
+<div class="jwToolbar">
+    <span id="jwToolbarCounter">0</span>
+    <span id="jwToolbarTitle"><%= l('K2_SELECTED') %></span>
+    <% if(!_.isEmpty(toolbar)) { %>
+    <ul id="jwToolbarActions">
+        <% _(toolbar).each(function(button) { %>
+        <button <% if(button.attributes.id) { %> id="<%= button.attributes.id %>" <% } %> <% if(button.attributes.class) { %> class="<%= button.attributes.class %>" <% } %> <% if(button.attributes['data-state']) { %> data-state="<%= button.attributes['data-state'] %>" <% } %>>
+            <%= button.name %>
+        </button>
+        <% }); %>
+    </ul>
+    <a href="#" class="jwToolbarCloseButton"><%= l('K2_CANCEL') %></a>
+    <% } %>
+</div>

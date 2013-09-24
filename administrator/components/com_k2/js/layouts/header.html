@@ -3,7 +3,7 @@
 </div>
 
 <% if(!_.isEmpty(actions)) { %>
-<ul id="jwFormActions">
+<ul id="jwActions">
     <% _(actions).each(function(button) { %>
     <li>
         <button <% if(button.attributes.id) { %> id="<%= button.attributes.id %>" <% } %> <% if(button.attributes.class) { %> class="<%= button.attributes.class %>" <% } %>>

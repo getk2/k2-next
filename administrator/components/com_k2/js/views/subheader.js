@@ -17,7 +17,8 @@ define(['marionette', 'text!layouts/subheader.html', 'dispatcher'], function(Mar
 			K2Dispatcher.on('app:update:subheader', function(response) {
 				this.model.set({
 					'title' : response.title,
-					'filters' : response.filters
+					'filters' : response.filters,
+					'toolbar' : response.toolbar
 				});
 			}, this);
 		},

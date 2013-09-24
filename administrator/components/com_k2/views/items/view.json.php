@@ -33,7 +33,7 @@ class K2ViewItems extends K2View
 		K2Response::setTitle(JText::_('K2_ITEMS'));
 		parent::display($tpl);
 	}
-	
+
 	/**
 	 * Builds the response variables needed for rendering a form.
 	 * Usually there will be no need to override this function.
@@ -45,7 +45,7 @@ class K2ViewItems extends K2View
 
 	public function edit($id = null)
 	{
-		
+
 		K2Response::setTitle(JText::_('K2_ITEM'));
 		parent::edit($id);
 	}
@@ -99,10 +99,24 @@ class K2ViewItems extends K2View
 	protected function setToolbar()
 	{
 		// Add toolbar buttons
-		K2Response::addToolbarButton('featured', K2HelperToolbar::featured());
-		K2Response::addToolbarButton('published', K2HelperToolbar::published());
-		K2Response::addToolbarButton('batch', K2HelperToolbar::batch());
-		K2Response::addToolbarButton('delete', K2HelperToolbar::delete());
+		K2Response::addToolbarAction('featured', 'K2_TOGGLE_FEATURED_STATE', array(
+			'data-state' => 'featured',
+			'class' => 'jwBatchToggler',
+			'id' => 'jwBatchFeaturedToggler'
+		));
+		K2Response::addToolbarAction('published', 'K2_TOGGLE_PUBLISHED_STATE', array(
+			'data-state' => 'published',
+			'class' => 'jwBatchToggler',
+			'id' => 'jwBatchPublishedToggler'
+		));
+		
+		K2Response::addToolbarAction('batch', 'K2_BATCH', array(
+			'id' => 'jwBatchButton'
+		));
+		
+		K2Response::addToolbarAction('delete', 'K2_DELETE', array(
+			'id' => 'jwDeleteButton'
+		));
 
 		/*
 		 // Add batch actions

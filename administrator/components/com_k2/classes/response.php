@@ -436,7 +436,7 @@ class K2Response
 	 *
 	 * @param string $id			The id of the action. This identifier allows the client to get the specific action.
 	 * @param string $name			The name of the action.
-	 * @param array $attributes		The attributes of the menu link.
+	 * @param array $attributes		The attributes of the button.
 	 *
 	 * @return void
 	 */
@@ -466,36 +466,38 @@ class K2Response
 	}
 
 	/**
-	 * Adds a toolbar button to the toolbar array that will be rendered on the page.
+	 * Adds an action button to the toolbar array.
 	 *
-	 * @param string $id	The id of the button. This identifier allows the client to get the specific button from the Backbone toolbar collection.
-	 * @param string $html	The HTML output of the button.
+	 * @param string $id			The id of the action. This identifier allows the client to get the specific action.
+	 * @param string $name			The name of the action.
+	 * @param array $attributes		The attributes of the button.
 	 *
 	 * @return void
 	 */
-	public static function addToolbarButton($id, $html)
+	public static function addToolbarAction($id, $name, $attributes = array())
 	{
 		$button = new stdClass;
 		$button->id = $id;
-		$button->input = $html;
+		$button->name = JText::_($name);
+		$button->attributes = $attributes;
 		self::$toolbar[$id] = $button;
 	}
 
 	/**
-	 * Removes a toolbar button from the toolbar array.
+	 * Removes a button from the actions array.
 	 *
-	 * @param string $id	The id of the button to be removed.
+	 * @param string $id	The id of the button to remove.
 	 *
 	 * @return void
 	 */
-	public static function removeToolbarButton($id)
+	public static function removeToolbarAction($id)
 	{
 		if (isset($self::$toolbar[$id]))
 		{
 			unset($self::$toolbar[$id]);
 		}
-	}
 
+	}
 	/**
 	 * Adds an action to the batch operations array.
 	 *

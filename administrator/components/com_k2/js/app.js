@@ -24,9 +24,17 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'vie
 
 		// Backbone history
 		Backbone.history.start();
+		
+		// Init the language
+		this.language = new Backbone.Collection();
+		
+		// Add the language function to the window object so it can be executed in our layouts.
+		window.l = function(key) {
+			return K2.language.get(key) || key;
+		}
 
 		// Render the header view
-		K2.header.show(new HeaderView({
+		this.header.show(new HeaderView({
 			model : new Backbone.Model({
 				'menu' : [],
 				'actions' : []
@@ -34,11 +42,11 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'vie
 		}));
 
 		// Render the subheader view
-		K2.subheader.show(new SubheaderView({
+		this.subheader.show(new SubheaderView({
 			model : new Backbone.Model({
 				'title' : '',
 				'filters' : [],
-				'actions' : []
+				'toolbar' : []
 			})
 		}));
 
