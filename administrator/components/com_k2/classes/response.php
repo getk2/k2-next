@@ -23,7 +23,7 @@ class K2Response
 	 * @var object $response
 	 */
 	public static $response = null;
-	
+
 	/**
 	 * The title.
 	 *
@@ -32,11 +32,18 @@ class K2Response
 	public static $title = '';
 
 	/**
-	 * The menu links.
+	 * The menu array.
 	 *
 	 * @var array $menu
 	 */
 	public static $menu = array();
+
+	/**
+	 * The actions array.
+	 *
+	 * @var array $actions
+	 */
+	public static $actions = array();
 
 	/**
 	 * Rows for list rendering.
@@ -93,7 +100,7 @@ class K2Response
 	 * @var array $messages
 	 */
 	public static $messages = array();
-	
+
 	/**
 	 * The redirect variable.
 	 *
@@ -122,7 +129,7 @@ class K2Response
 	{
 		return self::$response;
 	}
-	
+
 	/**
 	 * Setter function for the title variable.
 	 *
@@ -146,25 +153,32 @@ class K2Response
 	}
 
 	/**
-	 * Setter function for the menu variable.
-	 *
-	 * @param array $menu
-	 *
-	 * @return void
-	 */
-	public static function setMenu($menu)
-	{
-		self::$menu = $menu;
-	}
-
-	/**
-	 * Getter function for the menu variable.
+	 * Getter function for the menu.
+	 * @param string $name	The menu name to fetch. Leave null to fetch all the menus.
 	 *
 	 * @return array $menu
 	 */
-	public static function getMenu()
+	public static function getMenu($name = null)
 	{
-		return self::$menu;
+		if (is_null($name))
+		{
+			return self::$menu;
+		}
+		else
+		{
+			return self::$menu[$name];
+		}
+
+	}
+	
+	/**
+	 * Getter function for the actions.
+	 *
+	 * @return array $actions
+	 */
+	public static function getActions()
+	{
+		return self::$actions;
 	}
 
 	/**
@@ -320,7 +334,7 @@ class K2Response
 	{
 		return self::$form;
 	}
-	
+
 	/**
 	 * Setter function for the redirect variable.
 	 *
@@ -385,31 +399,70 @@ class K2Response
 	 * @param string $id			The id of the menu link. This identifier allows the client to get the specific link from the Backbone menu collection.
 	 * @param string $name			The name of the menu link.
 	 * @param array $attributes		The attributes of the menu link.
+	 * @param string $menu			The name of the menu that the link will be attached.
 	 *
 	 * @return void
 	 */
-	public static function addMenuLink($id, $name, $attributes = array())
+	public static function addMenuLink($id, $name, $attributes = array(), $menu = 'primary')
 	{
 		$link = new stdClass;
 		$link->id = $id;
 		$link->name = JText::_($name);
 		$link->attributes = $attributes;
-		self::$menu[$id] = $link;
+		self::$menu[$menu][$id] = $link;
 	}
 
 	/**
 	 * Removes a menu link from the menu array that will be rendered on the page.
 	 *
-	 * @param string $id			The id of the menu link to remove.
+	 * @param string $id	The id of the menu link to remove.
 	 *
 	 * @return void
 	 */
 	public static function removeMenuLink($id)
 	{
-		if (isset($self::$menu[$id]))
+		foreach (self::$menu as $menu)
 		{
-			unset($self::$menu[$id]);
+			if (isset($self::$menu[$menu][$id]))
+			{
+				unset($self::$menu[$menu][$id]);
+			}
 		}
+
+	}
+
+	/**
+	 * Adds an action button to the actions array.
+	 *
+	 * @param string $id			The id of the action. This identifier allows the client to get the specific action.
+	 * @param string $name			The name of the action.
+	 * @param array $attributes		The attributes of the menu link.
+	 *
+	 * @return void
+	 */
+	public static function addAction($id, $name, $attributes = array())
+	{
+		$button = new stdClass;
+		$button->id = $id;
+		$button->name = JText::_($name);
+		$button->attributes = $attributes;
+		self::$actions[$id] = $button;
+	}
+
+	/**
+	 * Removes a button from the actions array.
+	 *
+	 * @param string $id	The id of the button to remove.
+	 *
+	 * @return void
+	 */
+	public static function removeAction($id)
+	{
+		if (isset($self::$actions[$id]))
+		{
+			unset($self::$actions[$id]);
+		}
+
 	}
 
 	/**
@@ -517,6 +570,7 @@ class K2Response
 		}
 		self::$response->title = self::getTitle();
 		self::$response->menu = self::getMenu();
+		self::$response->actions = self::getActions();
 		self::$response->rows = self::getRows();
 		self::$response->pagination = self::getPagination();
 		self::$response->filters = self::getFilters();

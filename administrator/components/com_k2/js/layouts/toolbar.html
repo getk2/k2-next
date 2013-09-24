@@ -1,0 +1,12 @@
+<span id="jwToolbarCounter">0</span>
+<span id="jwToolbarTitle"><%= l('K2_SELECTED') %></span>
+<% if(!_.isEmpty(toolbar)) { %>
+<ul id="jwToolbarActions">
+    <% _(toolbar).each(function(button) { %>
+    <li>
+        <%= button.input %>
+    </li>
+    <% }); %>
+</ul>
+<a href="#" class="jwToolbarCloseButton"><%= l('K2_CANCEL') %></a>
+<% } %>

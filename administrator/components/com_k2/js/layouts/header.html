@@ -1,12 +1,25 @@
-<div id="jwLogo" class="jwFloatLeft">
-	<i class="hidden">K2</i>
+<div id="jwLogo">
+    <i class="hidden">K2</i>
 </div>
+
+<% if(!_.isEmpty(actions)) { %>
+<ul id="jwFormActions">
+    <% _(actions).each(function(button) { %>
+    <li>
+        <button <% if(button.attributes.id) { %> id="<%= button.attributes.id %>" <% } %> <% if(button.attributes.class) { %> class="<%= button.attributes.class %>" <% } %>>
+            <%= button.name %>
+        </button>
+    </li>
+    <% }); %>
+</ul>
+<% } %>
+
 <% if(!_.isEmpty(menu)) { %>
-<ul class="jwFloatRight">
-	<% _(menu).each(function(link) { %>
-	<li>
-		<a <% if(link.attributes.id) { %> id="<%= link.attributes.id %>" <% } %> <% if(link.attributes.class) { %> class="<%= link.attributes.class %>" <% } %> href="<%= link.attributes.href %>"><%= link.name %></a>
-	</li>
-	<% }); %>
+<ul id="jwPrimaryMenu">
+    <% _(menu).each(function(link) { %>
+    <li>
+        <a <% if(link.attributes.id) { %> id="<%= link.attributes.id %>" <% } %> <% if(link.attributes.class) { %> class="<%= link.attributes.class %>" <% } %> href="<%= link.attributes.href %>"><%= link.name %></a>
+    </li>
+    <% }); %>
 </ul>
 <% } %>

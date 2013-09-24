@@ -74,7 +74,7 @@ class K2View extends JViewLegacy
 	{
 		// Set user states only for GET requests
 		$method = JFactory::getApplication()->input->getMethod();
-		if($method == 'GET')
+		if ($method == 'GET')
 		{
 			$this->setUserStates();
 		}
@@ -93,6 +93,9 @@ class K2View extends JViewLegacy
 
 		// Set menu
 		$this->setMenu();
+		
+		// Set Actions
+		$this->setActions();
 
 		// Render
 		$this->render();
@@ -117,6 +120,9 @@ class K2View extends JViewLegacy
 
 		// Set menu
 		$this->setMenu('edit');
+		
+		// Set Actions
+		$this->setActions('edit');
 
 		// Render
 		$this->render();
@@ -139,7 +145,7 @@ class K2View extends JViewLegacy
 		// Checkout the row if needed
 		if ($id)
 		{
-			if(!$model->checkout($id))
+			if (!$model->checkout($id))
 			{
 				JFactory::getApplication()->enqueueMessage($model->getError());
 			}
@@ -179,7 +185,7 @@ class K2View extends JViewLegacy
 		$model = $this->getModel();
 		$model->setState('id', false);
 		$rows = $model->getRows();
-		
+
 		// Get helper
 		$this->loadHelper($this->getName());
 		$helper = 'K2Helper'.ucfirst($this->getName());
@@ -316,14 +322,14 @@ class K2View extends JViewLegacy
 	{
 		// Import JForm
 		jimport('joomla.form.form');
-		
+
 		// Determine form name and path
 		$formName = 'K2'.ucfirst($this->getName()).'Form';
 		$formPath = JPATH_ADMINISTRATOR.'/components/com_k2/models/'.$this->getName().'.xml';
-		
+
 		// Get the form instance
 		$form = JForm::getInstance($formName, $formPath);
-		
+
 		// Get the row to bind the values to the form
 		$row = K2Response::getRow();
 		$row->params = json_decode($row->params);
@@ -375,77 +381,95 @@ class K2View extends JViewLegacy
 	 *
 	 * @return void
 	 */
+	protected function setActions($mode = null)
+	{
+		// Get user
+		$user = JFactory::getUser();
+
+		if ($mode == 'edit')
+		{
+			K2Response::addAction('save', 'K2_SAVE', array(
+				'class' => 'jwAction',
+				'id' => 'jwActionSave'
+			));
+			K2Response::addAction('saveAndNew', 'K2_SAVE_AND_NEW', array(
+				'class' => 'jwAction',
+				'id' => 'jwActionSaveAndNew'
+			));
+			K2Response::addAction('saveAndClose', 'K2_SAVE_AND_CLOSE', array(
+				'class' => 'jwAction',
+				'id' => 'jwActionSaveAndClose'
+			));
+			K2Response::addAction('close', 'K2_CLOSE', array(
+				'class' => 'jwAction',
+				'id' => 'jwActionClose'
+			));
+		}
+		else
+		{
+
+			if ($user->authorise('core.create', 'com_k2'))
+			{
+				if ($this->getName() == 'items' || $this->getName() == 'categories')
+				{
+					K2Response::addAction('add', 'K2_ADD', array(
+						'class' => 'jwAddButton',
+						'id' => 'jwActionAdd'
+					));
+				}
+			}
+		}
+	}
+
+	/**
+	 * Hook for children views to allow them set the menu for the list and edit requests.
+	 * Children views usually will not need to override this method.
+	 *
+	 * @param   string  $mode	The mode of the menu. It is null for lists and has the value of 'edit' in edit requests.
+	 *
+	 * @return void
+	 */
 	protected function setMenu($mode = null)
 	{
 		// Get user
 		$user = JFactory::getUser();
 
+		// Set prmary menu only for listings
+		if ($mode != 'edit')
+		{
+			K2Response::addMenuLink('items', 'K2_ITEMS', array(
+				'href' => '#items',
+				'class' => 'jwMenuLink',
+				'id' => 'k2ItemsLink'
+			), 'primary');
+			K2Response::addMenuLink('categories', 'K2_CATEGORIES', array(
+				'href' => '#categories',
+				'class' => 'jwMenuLink',
+				'id' => 'k2CategoriesLink'
+			), 'primary');
+
+		}
+
+		// Set secondary menu
 		K2Response::addMenuLink('information', 'K2_INFORMATION', array(
 			'href' => '#information',
 			'class' => 'jwMenuLink',
 			'id' => 'jwInformationLink'
-		));
+		), 'secondary');
 		if ($user->authorise('core.admin', 'com_k2'))
 		{
 			K2Response::addMenuLink('settings', 'K2_SETTINGS', array(
 				'href' => '#settings',
 				'class' => 'jwMenuLink',
 				'id' => 'jwSettingsLink'
-			));
+			), 'secondary');
 		}
 		K2Response::addMenuLink('help', 'K2_HELP', array(
 			'href' => '#help',
 			'class' => 'jwMenuLink',
 			'id' => 'jwHelpLink'
-		));
+		), 'secondary');
 
-		if ($mode == 'edit')
-		{
-			K2Response::addMenuLink('save', 'K2_SAVE', array(
-				'href' => null,
-				'class' => 'jwMenuAction',
-				'id' => 'jwSaveButton'
-			));
-			K2Response::addMenuLink('saveAndNew', 'K2_SAVE_AND_NEW', array(
-				'href' => null,
-				'class' => 'jwMenuAction',
-				'id' => 'jwSaveAndNewButton'
-			));
-			K2Response::addMenuLink('saveAndClose', 'K2_SAVE_AND_CLOSE', array(
-				'href' => null,
-				'class' => 'jwMenuAction',
-				'id' => 'jwSaveAndCloseButton'
-			));
-			K2Response::addMenuLink('close', 'K2_CLOSE', array(
-				'href' => null,
-				'class' => 'jwMenuAction',
-				'id' => 'jwCloseButton'
-			));
-		}
-		else
-		{
-			K2Response::addMenuLink('items', 'K2_ITEMS', array(
-				'href' => '#items',
-				'class' => 'jwMenuLink',
-				'id' => 'k2ItemsLink'
-			));
-			K2Response::addMenuLink('categories', 'K2_CATEGORIES', array(
-				'href' => '#categories',
-				'class' => 'jwMenuLink',
-				'id' => 'k2CategoriesLink'
-			));
-			if ($user->authorise('core.create', 'com_k2'))
-			{
-				K2Response::addMenuLink('addItem', 'K2_ADD', array(
-					'href' => '#items/add',
-					'class' => 'jwAddButton'
-				));
-				K2Response::addMenuLink('addCategory', 'K2_ADD', array(
-					'href' => '#categories/add',
-					'class' => 'jwAddButton'
-				));
-			}
-		}
 	}
 
 }

@@ -10,6 +10,12 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 
 		// Initialize function
 		initialize : function() {
+			
+			// Listener for add events.
+			// Redirects to add page.
+			K2Dispatcher.on('app:controller:add', function() {
+				K2Dispatcher.trigger('app:redirect', this.view + '/add', true);
+			}, this);
 
 			// Listener for save events.
 			// Triggers the save function on this controller to perform the save operation.

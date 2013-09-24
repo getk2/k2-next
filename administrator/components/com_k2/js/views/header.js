@@ -6,10 +6,11 @@ define(['marionette', 'text!layouts/header.html', 'dispatcher'], function(Marion
 		template : _.template(template),
 
 		events : {
-			'click #jwSaveButton' : 'save',
-			'click #jwSaveAndNewButton' : 'saveAndNew',
-			'click #jwSaveAndCloseButton' : 'saveAndClose',
-			'click #jwCloseButton' : 'close'
+			'click #jwActionAdd' : 'add',
+			'click #jwActionSave' : 'save',
+			'click #jwActionSaveAndNew' : 'saveAndNew',
+			'click #jwActionSaveAndClose' : 'saveAndClose',
+			'click #jwActionClose' : 'close'
 		},
 
 		modelEvents : {
@@ -18,8 +19,16 @@ define(['marionette', 'text!layouts/header.html', 'dispatcher'], function(Marion
 
 		initialize : function() {
 			K2Dispatcher.on('app:update:header', function(response) {
-				this.model.set('menu', response.menu);
+				this.model.set({
+					'menu' : response.menu.primary,
+					'actions' : response.actions
+				});
 			}, this);
+		},
+		
+		add : function(event) {
+			event.preventDefault();
+			K2Dispatcher.trigger('app:controller:add');
 		},
 
 		save : function(event) {
