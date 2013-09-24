@@ -116,15 +116,15 @@ class K2ModelItems extends K2Model
 		{
 			$query->where($db->quoteName('item.language').' = '.$db->quote($this->getState('language')));
 		}
-		if (!is_null($this->getState('published')))
+		if (is_numeric($this->getState('published')))
 		{
 			$query->where($db->quoteName('item.published').' = '.(int)$this->getState('published'));
 		}
-		if (!is_null($this->getState('featured')))
+		if (is_numeric($this->getState('featured')))
 		{
 			$query->where($db->quoteName('item.featured').' = '.(int)$this->getState('featured'));
 		}
-		if (!is_null($this->getState('trashed')))
+		if (is_numeric($this->getState('trashed')))
 		{
 			$query->where($db->quoteName('item.trashed').' = '.(int)$this->getState('trashed'));
 		}

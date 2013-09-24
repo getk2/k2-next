@@ -11,22 +11,31 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 		// Initialize function
 		initialize : function() {
 
-			// Listener for add events.
-			// Redirects to add page.
+			// Listener for add event.
 			K2Dispatcher.on('app:controller:add', function() {
 				K2Dispatcher.trigger('app:redirect', this.view + '/add', true);
 			}, this);
 
 			// Listener for save events.
-			// Triggers the save function on this controller to perform the save operation.
 			K2Dispatcher.on('app:controller:save', function(redirect) {
 				this.save(redirect);
 			}, this);
 
 			// Listener for close event.
-			// Triggers the close function on this controller to perform the chekin operation and redirect to list.
 			K2Dispatcher.on('app:controller:close', function(response) {
 				this.close();
+			}, this);
+
+			// Listener for filter event.
+			K2Dispatcher.on('app:controller:filter', function(state, value) {
+				this.filter(state, value);
+			}, this);
+			
+			
+			K2Dispatcher.on('app:controller:batchToggle', function(ids, state){
+				console.info(ids);
+				console.info(state);
+				this.batchToggle(ids, state);
 			}, this);
 
 		},
@@ -176,6 +185,35 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 					}
 				});
 			}
+		},
+
+		filter : function(state, value) {
+			this.collection.setState(state, value);
+			this.collection.setState('page', 1);
+			var url = this.view + '/page/1';
+			this.collection.fetch({
+				reset : true,
+				success : function() {
+					K2Dispatcher.trigger('app:redirect', url, false);
+				}
+			});
+		},
+
+		batchToggle : function(ids, state) {
+			var data = [], value, collection = this.collection, model;
+			_(ids).each(function(id) {
+				model = collection.get(id);
+				value = (model.get(state) == 1) ? 0 : 1;
+				data.push({
+					'name' : 'id[]',
+					'value' : id
+				});
+				data.push({
+					'name' : state,
+					'value' : value
+				});			
+			});
+			console.info(data);
 		},
 
 		_getCurrentPage : function() {

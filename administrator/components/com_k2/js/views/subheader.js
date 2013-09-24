@@ -6,7 +6,9 @@ define(['marionette', 'text!layouts/subheader.html', 'dispatcher'], function(Mar
 		template : _.template(template),
 
 		events : {
-			'change .jwFilters select' : 'filter'
+			'change .jwFilters select' : 'filter',
+			'change .jwFilters input' : 'filter',
+			'click .jwBatchToggler' : 'batchToggle'
 		},
 
 		modelEvents : {
@@ -25,7 +27,21 @@ define(['marionette', 'text!layouts/subheader.html', 'dispatcher'], function(Mar
 
 		filter : function(event) {
 			event.preventDefault();
-			K2Dispatcher.trigger('app:controller:filter');
+			var el = jQuery(event.currentTarget);
+			var state = el.attr('name');
+			var value = el.val();
+			K2Dispatcher.trigger('app:controller:filter', state, value);
+		},
+
+		batchToggle : function(event) {
+			event.preventDefault();
+			var el = jQuery(event.currentTarget);
+			var state = el.data('state');
+			var ids = [];
+			jQuery('.jwRowToggler:checked').each(function() {
+				ids.push(parseInt(jQuery(this).val()));
+			});
+			K2Dispatcher.trigger('app:controller:batchToggle', ids, state);
 		}
 	});
 

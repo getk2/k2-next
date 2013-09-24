@@ -92,10 +92,10 @@ class K2ViewItems extends K2View
 		$this->setUserState('page', 1, 'int');
 		$this->setUserState('search', '', 'string');
 		$this->setUserState('access', 0, 'int');
-		$this->setUserState('trashed', null, 'int');
-		$this->setUserState('published', null, 'int');
-		$this->setUserState('featured', null, 'int');
-		$this->setUserState('category', 0, 'int');
+		$this->setUserState('trashed', null, 'cmd');
+		$this->setUserState('published', null, 'cmd');
+		$this->setUserState('featured', null, 'cmd');
+		$this->setUserState('category', null, 'cmd');
 		$this->setUserState('user', 0, 'int');
 		$this->setUserState('language', '', 'string');
 		$this->setUserState('sorting', 'item.id DESC', 'string');

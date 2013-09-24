@@ -406,7 +406,7 @@ class K2View extends JViewLegacy
 				if ($this->getName() == 'items' || $this->getName() == 'categories')
 				{
 					K2Response::addAction('add', 'K2_ADD', array(
-						'class' => 'jwAddButton',
+						'class' => 'jwAction',
 						'id' => 'jwActionAdd'
 					));
 				}

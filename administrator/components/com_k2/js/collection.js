@@ -47,17 +47,6 @@ define(['backbone', 'model', 'dispatcher'], function(Backbone, K2Model, K2Dispat
 			return this.states.get(state);
 		},
 
-		filter : function(elements) {
-			var self = this;
-			elements.each(function() {
-				var el = jQuery(this);
-				self.setState(el.attr('name'), el.val());
-			});
-			this.fetch({
-				reset : true
-			});
-		},
-
 		batch : function(models, method, states) {
 			var data = {
 				_method : method,

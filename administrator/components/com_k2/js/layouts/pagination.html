@@ -1,5 +1,5 @@
 <div class="jwPaginationWrapper">
-    <div>
+    <div class="jwLimitBox">
         <label><%= l('K2_DISPLAY') %></label>
         <select name="limit" id="jwLimit">
             <option value="5">5</option>
@@ -10,10 +10,10 @@
         </select>
     </div>
     <div class="jwPaginationPages">
+        <% if(pagesTotal > 1) { %>
         <div class="jwPaginationInformation">
             <%= l('K2_PAGE') %> <span><%= pagesCurrent %></span> <%= l('K2_OF') %> <span> <%= pagesTotal %> </span>
         </div>
-        <% if(pagesTotal > 1) { %>
         <ul class="jwPaginationPages">
             <li>
                 <a data-page="1" href="#<%= link %>/page/1" class="jwPaginationStart"><%= l('K2_START') %></a>

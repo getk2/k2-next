@@ -22,7 +22,7 @@ class K2HelperHTML extends K2Helper
 	public static function published($value = null, $name = 'published')
 	{
 		$options = array();
-		$options[] = JHTML::_('select.option', -1, JText::_('K2_ALL'));
+		$options[] = JHTML::_('select.option', '', JText::_('K2_ALL'));
 		$options[] = JHTML::_('select.option', 1, JText::_('K2_YES'));
 		$options[] = JHTML::_('select.option', 0, JText::_('K2_NO'));
 		return JHtml::_('select.radiolist', $options, $name, '', 'value', 'text', $value);
@@ -31,7 +31,7 @@ class K2HelperHTML extends K2Helper
 	public static function featured($value = null, $name = 'featured')
 	{
 		$options = array();
-		$options[] = JHTML::_('select.option', -1, JText::_('K2_ALL'));
+		$options[] = JHTML::_('select.option', '', JText::_('K2_ALL'));
 		$options[] = JHTML::_('select.option', 1, JText::_('K2_YES'));
 		$options[] = JHTML::_('select.option', 0, JText::_('K2_NO'));
 		return JHtml::_('select.radiolist', $options, $name, '', 'value', 'text', $value);
