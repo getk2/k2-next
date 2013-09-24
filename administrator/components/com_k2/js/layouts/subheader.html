@@ -16,10 +16,10 @@
 </div>
 <% } %>
 
+<% if(!_.isEmpty(toolbar)) { %>
 <div class="jwToolbar">
     <span id="jwToolbarCounter">0</span>
     <span id="jwToolbarTitle"><%= l('K2_SELECTED') %></span>
-    <% if(!_.isEmpty(toolbar)) { %>
     <ul id="jwToolbarActions">
         <% _(toolbar).each(function(button) { %>
         <button <% if(button.attributes.id) { %> id="<%= button.attributes.id %>" <% } %> <% if(button.attributes.class) { %> class="<%= button.attributes.class %>" <% } %> <% if(button.attributes['data-state']) { %> data-state="<%= button.attributes['data-state'] %>" <% } %>>
@@ -28,5 +28,5 @@
         <% }); %>
     </ul>
     <a href="#" class="jwToolbarCloseButton"><%= l('K2_CANCEL') %></a>
-    <% } %>
 </div>
+<% } %>

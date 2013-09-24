@@ -23,15 +23,37 @@ class K2ViewItems extends K2View
 	 * Builds the response variables needed for rendering a list.
 	 * Usually there will be no need to override this function.
 	 *
-	 * @param string $tpl	The name of the template file to parse. @see JViewLegacy. Not used here at all.
-	 *
 	 * @return void
 	 */
 
-	public function display($tpl = NULL)
+	public function show()
 	{
+		// Set title
 		K2Response::setTitle(JText::_('K2_ITEMS'));
-		parent::display($tpl);
+
+		// Set user states
+		$this->setUserStates();
+
+		// Set rows
+		$this->setRows();
+
+		// Set pagination
+		$this->setPagination();
+
+		// Set filters
+		$this->setFilters();
+
+		// Set toolbar
+		$this->setToolbar();
+
+		// Set menu
+		$this->setMenu();
+
+		// Set Actions
+		$this->setActions();
+
+		// Render
+		parent::render();
 	}
 
 	/**
@@ -45,9 +67,23 @@ class K2ViewItems extends K2View
 
 	public function edit($id = null)
 	{
-
+		// Set title
 		K2Response::setTitle(JText::_('K2_ITEM'));
-		parent::edit($id);
+
+		// Set row
+		$this->setRow($id);
+
+		// Set form
+		$this->setForm();
+
+		// Set menu
+		$this->setMenu('edit');
+
+		// Set Actions
+		$this->setActions('edit');
+
+		// Render
+		parent::render();
 	}
 
 	protected function setUserStates()
@@ -98,7 +134,6 @@ class K2ViewItems extends K2View
 
 	protected function setToolbar()
 	{
-		// Add toolbar buttons
 		K2Response::addToolbarAction('featured', 'K2_TOGGLE_FEATURED_STATE', array(
 			'data-state' => 'featured',
 			'class' => 'jwBatchToggler',
@@ -109,26 +144,9 @@ class K2ViewItems extends K2View
 			'class' => 'jwBatchToggler',
 			'id' => 'jwBatchPublishedToggler'
 		));
-		
-		K2Response::addToolbarAction('batch', 'K2_BATCH', array(
-			'id' => 'jwBatchButton'
-		));
-		
-		K2Response::addToolbarAction('delete', 'K2_DELETE', array(
-			'id' => 'jwDeleteButton'
-		));
+		K2Response::addToolbarAction('batch', 'K2_BATCH', array('id' => 'jwBatchButton'));
 
-		/*
-		 // Add batch actions
-		 //K2Response::addBatchAction('catid', JText::_('K2_SET_CATEGORY'), JHTML::_('select.genericlist', K2HelperHTML::getCategoryFilterOptions('K2_LEAVE_UNCHANGED'), 'catid'));
-		 //K2Response::addBatchAction('created_by', JText::_('K2_SET_USER'), JHTML::_('select.genericlist', K2HelperHTML::getUserFilterOptions('K2_LEAVE_UNCHANGED', false), 'created_by'));
-		 $options = JHtml::_('access.assetgroups');
-		 array_unshift($options, JHTML::_('select.option', 0, JText::_('K2_LEAVE_UNCHANGED')));
-		 K2Response::addBatchAction('access', JText::_('K2_SET_ACCESS_LEVEL'), JHTML::_('select.genericlist', $options, 'access'));
-		 $options = JHTML::_('contentlanguage.existing', true, true);
-		 array_unshift($options, JHTML::_('select.option', 0, JText::_('K2_LEAVE_UNCHANGED')));
-		 K2Response::addBatchAction('language', JText::_('K2_SET_LANGUAGE'), JHTML::_('select.genericlist', $options, 'language'));
-		 */
+		K2Response::addToolbarAction('delete', 'K2_DELETE', array('id' => 'jwDeleteButton'));
 	}
 
 }

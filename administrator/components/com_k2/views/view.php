@@ -37,47 +37,19 @@ class K2View extends JViewLegacy
 
 		// Load the helpers
 		$this->loadHelper('html');
-		$this->loadHelper('toolbar');
-	}
-
-	/**
-	 * Renders the response object into JSON.
-	 * Usually there will be no need to override this function.
-	 *
-	 * @return void
-	 */
-
-	public function render()
-	{
-		// Get the response
-		$response = K2Response::render();
-
-		// Trigger an event before outputing the response
-		$dispatcher = JDispatcher::getInstance();
-		JPluginHelper::importPlugin('k2');
-		$dispatcher->trigger('onBeforeRenderResponse', array(&$response));
-
-		// Output the JSON response.
-		echo json_encode($response);
 	}
 
 	/**
 	 * Builds the response variables needed for rendering a list.
 	 * Usually there will be no need to override this function.
 	 *
-	 * @param string $tpl	The name of the template file to parse. @see JViewLegacy. Not used here at all.
-	 *
 	 * @return void
 	 */
 
-	public function display($tpl = NULL)
+	public function show()
 	{
-		// Set user states only for GET requests
-		$method = JFactory::getApplication()->input->getMethod();
-		if ($method == 'GET')
-		{
-			$this->setUserStates();
-		}
+		// Set user states
+		$this->setUserStates();
 
 		// Set rows
 		$this->setRows();
@@ -93,7 +65,7 @@ class K2View extends JViewLegacy
 
 		// Set menu
 		$this->setMenu();
-		
+
 		// Set Actions
 		$this->setActions();
 
@@ -120,12 +92,33 @@ class K2View extends JViewLegacy
 
 		// Set menu
 		$this->setMenu('edit');
-		
+
 		// Set Actions
 		$this->setActions('edit');
 
 		// Render
 		$this->render();
+	}
+	
+	/**
+	 * Renders the response object into JSON.
+	 * Usually there will be no need to override this function.
+	 *
+	 * @return void
+	 */
+
+	protected function render()
+	{
+		// Get the response
+		$response = K2Response::render();
+
+		// Trigger an event before outputing the response
+		$dispatcher = JDispatcher::getInstance();
+		JPluginHelper::importPlugin('k2');
+		$dispatcher->trigger('onBeforeRenderK2Response', array(&$response));
+
+		// Output the JSON response.
+		echo json_encode($response);
 	}
 
 	/**
@@ -278,7 +271,7 @@ class K2View extends JViewLegacy
 		// Get the prefix
 		$prefix = $this->getName();
 
-		// Get the state. @TODO: Update this so it cares only about GET variables.
+		// Get the state.
 		$state = $application->getUserStateFromRequest($prefix.'.'.$name, $name, $default, $type);
 
 		// Push the state to the array

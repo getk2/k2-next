@@ -166,7 +166,7 @@ class K2Controller extends JControllerLegacy
 		}
 		else
 		{
-			$view->display();
+			$view->show();
 		}
 
 	}
