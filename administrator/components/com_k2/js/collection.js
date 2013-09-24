@@ -5,6 +5,7 @@ define(['backbone', 'model', 'dispatcher'], function(Backbone, K2Model, K2Dispat
 
 		initialize : function() {
 			this.states = new Backbone.Model;
+			this.pagination = new Backbone.Model;
 		},
 
 		parse : function(resp, options) {
@@ -13,9 +14,14 @@ define(['backbone', 'model', 'dispatcher'], function(Backbone, K2Model, K2Dispat
 			if (resp === null) {
 				return resp;
 			}
-			
+
 			if (resp.rows === undefined) {
 				return resp;
+			}
+
+			// Attach the pagination object to the collection in order to be available later.
+			if (resp.pagination !== undefined) {
+				this.setPagination(resp.pagination);
 			}
 
 			// Trigger the update event to notify the application.
@@ -23,6 +29,14 @@ define(['backbone', 'model', 'dispatcher'], function(Backbone, K2Model, K2Dispat
 
 			// Return the rows
 			return resp.rows;
+		},
+
+		setPagination : function(pagination) {
+			this.pagination.set(pagination);
+		},
+
+		getPagination : function() {
+			return this.pagination;
 		},
 
 		setState : function(state, value) {

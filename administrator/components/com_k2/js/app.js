@@ -9,8 +9,7 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'vie
 		header : '#jwHeader',
 		subheader : '#jwSubheader',
 		sidebar : '#jwSidebar',
-		content : '#jwContent',
-		pagination : '#jwPagination'
+		content : '#jwContent'
 	});
 
 	// On after initialize
@@ -85,6 +84,7 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'vie
 		K2Dispatcher.trigger('app:update:header', response);
 		K2Dispatcher.trigger('app:update:subheader', response);
 		K2Dispatcher.trigger('app:update:sidebar', response);
+		//K2Dispatcher.trigger('app:update:pagination', response);
 
 		//@TODO Trigger the rest subevents
 	});

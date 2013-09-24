@@ -10,7 +10,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 
 		// Initialize function
 		initialize : function() {
-			
+
 			// Listener for add events.
 			// Redirects to add page.
 			K2Dispatcher.on('app:controller:add', function() {
@@ -34,7 +34,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 		// Executes the list or form view based on the URL
 		execute : function(url) {
 			if (!url) {
-				this.list();
+				this.list(1);
 			} else {
 				var parts = url.split('/');
 				this.view = _.first(parts);
@@ -47,6 +47,8 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 						this.edit();
 					} else if (parts.length === 3 && parts[1] === 'edit') {
 						this.edit(_.last(parts));
+					} else if (parts.length === 3 && parts[1] === 'page') {
+						this.list(_.last(parts));
 					} else {
 						K2Dispatcher.trigger('app:error', 404);
 					}
@@ -55,15 +57,37 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 		},
 
 		// List function
-		list : function() {
+		list : function(page) {
 			var self = this;
-			require(['collections/' + this.view, 'views/' + this.view + '/list'], function(Collection, View, Subheader) {
+			require(['collections/' + this.view, 'views/' + this.view + '/list', 'views/pagination', 'views/list'], function(Collection, View, Pagination, Layout) {
+				var layout = new Layout;
 				self.collection = new Collection;
+				if (page) {
+					self.collection.setState('page', page);
+				}
 				self.collection.fetch({
 					success : function() {
-						K2Dispatcher.trigger('app:render', new View({
+
+						// Render the layout
+						K2Dispatcher.trigger('app:render', layout, 'content');
+
+						// The list view
+						var view = new View({
 							collection : self.collection
-						}), 'content');
+						});
+
+						// The pagination view
+						var model = self.collection.getPagination();
+						model.set('label', self.view);
+						model.set('link', self.view);
+						var pagination = new Pagination({
+							model : model
+						});
+
+						// Assign views to the layout
+						layout.grid.show(view);
+						layout.pagination.show(pagination);
+
 					}
 				});
 
@@ -96,13 +120,13 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 		},
 
 		save : function(redirect) {
-			var view = this.view, model = this.model, isNew = this.model.isNew(), data = jQuery('.jwEditForm').serializeArray();
+			var view = this.view, model = this.model, page = this._getCurrentPage(), data = jQuery('.jwEditForm').serializeArray();
 			model.save(null, {
 				data : data,
 				silent : true,
 				success : function(model) {
 					if (redirect === 'list') {
-						K2Dispatcher.trigger('app:redirect', view, true);
+						K2Dispatcher.trigger('app:redirect', view + '/page/' + page, true);
 					} else if (redirect === 'add') {
 						K2Dispatcher.trigger('app:redirect', view + '/edit/' + model.get('id'), false);
 						K2Dispatcher.trigger('app:redirect', view + '/add', true);
@@ -130,14 +154,14 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 		},
 
 		close : function() {
-			var view = this.view, model = this.model, id = this.model.get('id'), data = [];
+			var view = this.view, model = this.model, data = [], url = view + '/page/' + this._getCurrentPage();
 
 			if (model.isNew()) {
-				K2Dispatcher.trigger('app:redirect', view, true);
+				K2Dispatcher.trigger('app:redirect', url, true);
 			} else {
 				data.push({
 					'name' : 'id[]',
-					'value' : id
+					'value' : model.get('id')
 				});
 				data.push({
 					'name' : 'states[checked_out]',
@@ -148,10 +172,14 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 					silent : true,
 					data : data,
 					success : function() {
-						K2Dispatcher.trigger('app:redirect', view, true);
+						K2Dispatcher.trigger('app:redirect', url, true);
 					}
 				});
 			}
+		},
+
+		_getCurrentPage : function() {
+			return (this.collection === undefined) ? 1 : this.collection.getState('page');
 		}
 	});
 

@@ -1,0 +1,45 @@
+<div class="jwPaginationWrapper">
+    <div>
+        <label><%= l('K2_DISPLAY') %></label>
+        <select name="limit" id="jwLimit">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+        </select>
+    </div>
+    <div class="jwPaginationPages">
+        <div class="jwPaginationInformation">
+            <%= l('K2_PAGE') %> <span><%= pagesCurrent %></span> <%= l('K2_OF') %> <span> <%= pagesTotal %> </span>
+        </div>
+        <% if(pagesTotal > 1) { %>
+        <ul class="jwPaginationPages">
+            <li>
+                <a data-page="1" href="#<%= link %>/page/1" class="jwPaginationStart"><%= l('K2_START') %></a>
+            </li>
+            <% if((pagesCurrent - 1) > 0) { %>
+            <li>
+                <a data-page="previous" href="#<%= link %>/page/<%= pagesCurrent-1 %>" class="jwPaginationPrevious"><%= l('K2_PREVIOUS') %></a>
+            </li>
+            <% } %>
+            <% for(i=pagesStart; i <= pagesStop; i++){ %>
+            <li <% if(pagesCurrent == i) { %> class="active" <% } %>>
+                <a data-page="<%= i %>" href="#<%= link %>/page/<%= i %>"><%= i %></a>
+            </li>
+            <% } %>
+            <% if((pagesCurrent + 1) <= pagesTotal) { %>
+            <li>
+                <a data-page="next" href="#<%= link %>/page/<%= pagesCurrent + 1 %>" class="jwPaginationNext"><%= l('K2_NEXT') %></a>
+            </li>
+            <% } %>
+            <li>
+                <a data-page="<%= pagesTotal %>" href="#<%= link %>/page/<%= pagesTotal %>" class="jwPaginationEnd"><%= l('K2_END') %></a>
+            </li>
+        </ul>
+        <% } %>
+    </div>
+    <div class="jwTotalItems">
+        <strong><%= total %></strong> <%= label %>
+    </div>
+</div>
