@@ -125,9 +125,9 @@ class K2Controller extends JControllerLegacy
 					$this->delete();
 					break;
 			}
-			
+
 		}
-		
+
 		// Return
 		return $this;
 	}
@@ -207,15 +207,21 @@ class K2Controller extends JControllerLegacy
 		// Check for token
 		JSession::checkToken() or $this->throwError(JText::_('JINVALID_TOKEN'));
 
-		// Delete
-		$id = $this->input->get('id', null, 'array');
-		$this->model->setState('id', $id);
-		$result = $this->model->delete();
-		if (!$result)
-		{
-			$this->throwError($this->model->getError());
-		}
+		// Get and prepare input
+		$input = $this->input->get('id', array(), 'array');
+		JArrayHelper::toInteger($input);
 		
+		// Delete
+		foreach ($input as $id)
+		{
+			$this->model->setState('id', $id);
+			$result = $this->model->delete();
+			if (!$result)
+			{
+				$this->throwError($this->model->getError());
+			}
+		}
+
 	}
 
 	/**
@@ -284,7 +290,7 @@ class K2Controller extends JControllerLegacy
 			}
 		}
 	}
-	
+
 	private function throwError($text, $status = 400)
 	{
 		header('HTTP/1.1 '.$status);

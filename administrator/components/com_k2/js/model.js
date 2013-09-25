@@ -12,12 +12,12 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 			if (resp === null) {
 				return resp;
 			}
-			
+
 			// If the response object does not contain a row object then probably it's a flat model and we need to return it.
 			if (resp.row === undefined) {
 				return resp;
 			}
-			
+
 			// Attach the form object to the model in order to be available later.
 			if (resp.form !== undefined) {
 				this.setForm(resp.form);
@@ -28,7 +28,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 
 			// Return the row
 			return resp.row;
-			
+
 		},
 
 		url : function() {
@@ -37,29 +37,38 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 			return base;
 		},
 
-		sync : function() {
-			var type = arguments[0];
-			var _method = false;
-			if (type === 'create') {
-				_method = 'POST';
-			} else if (type === 'update') {
-				_method = 'PUT';
-			} else if (type === 'patch') {
-				_method = 'PATCH';
-			} else if (type === 'delete') {
-				_method = 'DELETE';
-			}
-			if (_method) {
-				arguments[2].data.push({
+		sync : function(method, model, options) {
+			if (method !== 'read') {
+				var _method;
+
+				if (options.data === undefined) {
+					options.data = [];
+				}
+
+				options.data.push({
 					'name' : K2SessionToken,
 					'value' : 1
 				});
-				arguments[2].data.push({
+				switch(method) {
+					case 'create' :
+						_method = 'POST';
+						break;
+					case 'update':
+						_method = 'PUT';
+						break;
+					case 'patch':
+						_method = 'PATCH';
+						break;
+					case 'delete' :
+						_method = 'DELETE';
+						break;
+				}
+				options.data.push({
 					'name' : '_method',
 					'value' : _method
 				});
 			}
-			return Backbone.sync.apply(this, arguments);
+			return Backbone.sync.call(model, method, model, options);
 		},
 
 		setForm : function(form) {
@@ -68,6 +77,22 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 
 		getForm : function() {
 			return this.form;
+		},
+
+		checkout : function(options) {
+			var params = {
+				patch : true,
+				silent : true,
+				data : [{
+					'name' : 'id[]',
+					'value' : this.get('id')
+				}, {
+					'name' : 'states[checked_out]',
+					'value' : 0
+				}],
+			}
+			_.extend(params, options);
+			this.save(null, params);
 		}
 	});
 

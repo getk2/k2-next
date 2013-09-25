@@ -7,8 +7,8 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'vie
 	// Set the regions
 	K2.addRegions({
 		header : '#jwHeader',
-		subheader : '#jwSubheader',
 		sidebar : '#jwSidebar',
+		subheader : '#jwSubheader',
 		content : '#jwContent'
 	});
 

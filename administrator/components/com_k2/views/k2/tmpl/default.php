@@ -11,7 +11,9 @@
 defined('_JEXEC') or die ; ?>
 <div id="jwApplication">
     <div id="jwHeader"></div>
-    <div id="jwSubheader"></div>
     <div id="jwSidebar"></div>
-    <div id="jwContent"></div>
+    <div id="jwMain">
+        <div id="jwSubheader"></div>
+        <div id="jwContent"></div>
+    </div>
 </div>

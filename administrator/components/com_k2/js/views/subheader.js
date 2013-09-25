@@ -8,7 +8,7 @@ define(['marionette', 'text!layouts/subheader.html', 'dispatcher'], function(Mar
 		events : {
 			'change .jwFilters select' : 'filter',
 			'change .jwFilters input' : 'filter',
-			'click .jwBatchToggler' : 'batchToggle'
+			'click #jwDeleteButton' : 'destroy'
 		},
 
 		modelEvents : {
@@ -33,15 +33,10 @@ define(['marionette', 'text!layouts/subheader.html', 'dispatcher'], function(Mar
 			K2Dispatcher.trigger('app:controller:filter', state, value);
 		},
 
-		batchToggle : function(event) {
+		destroy : function(event) {
 			event.preventDefault();
-			var el = jQuery(event.currentTarget);
-			var state = el.data('state');
-			var ids = [];
-			jQuery('.jwRowToggler:checked').each(function() {
-				ids.push(parseInt(jQuery(this).val()));
-			});
-			K2Dispatcher.trigger('app:controller:batchToggle', ids, state);
+			var data = jQuery('input.jwRowToggler:checked').serializeArray();
+			K2Dispatcher.trigger('app:controller:destroy', data);
 		}
 	});
 

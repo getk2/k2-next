@@ -59,7 +59,7 @@ class K2Model extends JModelLegacy
 	 *
 	 * @param   boolean   $patch	Flag to indicate if we are patching or performing a normal save.
 	 *
-	 * @return mixed	The row object or null.
+	 * @return boolean	True on success false on failure.
 	 */
 
 	public function save($patch = false)
@@ -80,6 +80,24 @@ class K2Model extends JModelLegacy
 	}
 
 	/**
+	 * Delete method.
+	 *
+	 * @return boolean	True on success false on failure.
+	 */
+
+	public function delete()
+	{
+		$table = $this->getTable();
+		$id = $this->getState('id');
+		if (!$table->delete($id))
+		{
+			$this->setError($table->getError());
+			return false;
+		}
+		return true;
+	}
+
+	/**
 	 * Method to get a table object, load it if necessary.
 	 *
 	 * @param   string  $name     The table name. Optional.
@@ -92,7 +110,6 @@ class K2Model extends JModelLegacy
 	{
 		return parent::getTable($name, $prefix, $options);
 	}
-	
 
 	/**
 	 * Proxy function which triggers the onBeforeSetQuery plugin event.

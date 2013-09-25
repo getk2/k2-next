@@ -19,6 +19,34 @@ class K2TableItems extends K2Table
 		parent::__construct('#__k2_items', 'id', $db);
 	}
 
+	/**
+	 * Method to compute the default name of the asset.
+	 * The default name is in the form table_name.id
+	 * where id is the value of the primary key of the table.
+	 *
+	 * @return  string
+	 *
+	 * @since   11.1
+	 */
+
+	protected function _getAssetName()
+	{
+		$k = $this->_tbl_key;
+		return 'com_k2.item.'.(int)$this->$k;
+	}
+
+	/**
+	 * Method to return the title to use for the asset table.
+	 *
+	 * @return  string
+	 *
+	 * @since   11.1
+	 */
+	protected function _getAssetTitle()
+	{
+		return $this->title;
+	}
+
 	public function check()
 	{
 		if (JString::trim($this->title) == '')

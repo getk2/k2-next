@@ -30,12 +30,10 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 			K2Dispatcher.on('app:controller:filter', function(state, value) {
 				this.filter(state, value);
 			}, this);
-			
-			
-			K2Dispatcher.on('app:controller:batchToggle', function(ids, state){
-				console.info(ids);
-				console.info(state);
-				this.batchToggle(ids, state);
+
+			// Listener for delete event.
+			K2Dispatcher.on('app:controller:destroy', function(data) {
+				this.destroy(data);
 			}, this);
 
 		},
@@ -65,42 +63,44 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 			}
 		},
 
+		redirect : function(url, trigger) {
+			K2Dispatcher.trigger('app:redirect', url, trigger);
+		},
+
 		// List function
 		list : function(page) {
-			var self = this;
-			require(['collections/' + this.view, 'views/' + this.view + '/list', 'views/pagination', 'views/list'], function(Collection, View, Pagination, Layout) {
+			require(['collections/' + this.view, 'views/' + this.view + '/list', 'views/pagination', 'views/list'], _.bind(function(Collection, View, Pagination, Layout) {
 				var layout = new Layout;
-				self.collection = new Collection;
+				this.collection = new Collection;
 				if (page) {
-					self.collection.setState('page', page);
+					this.collection.setState('page', page);
 				}
-				self.collection.fetch({
-					success : function() {
+				this.collection.fetch({
+					success : _.bind(function() {
 
 						// Render the layout
 						K2Dispatcher.trigger('app:render', layout, 'content');
 
 						// The list view
 						var view = new View({
-							collection : self.collection
+							collection : this.collection
 						});
 
 						// The pagination view
-						var model = self.collection.getPagination();
-						model.set('label', self.view);
-						model.set('link', self.view);
+						this.model.set('label', this.view);
+						this.model.set('link', this.view);
 						var pagination = new Pagination({
-							model : model
+							model : this.model
 						});
 
 						// Assign views to the layout
 						layout.grid.show(view);
 						layout.pagination.show(pagination);
 
-					}
+					}, this)
 				});
 
-			});
+			}), this);
 		},
 
 		edit : function(id) {
@@ -129,68 +129,54 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 		},
 
 		save : function(redirect) {
-			var view = this.view, model = this.model, page = this._getCurrentPage(), data = jQuery('.jwEditForm').serializeArray();
-			model.save(null, {
-				data : data,
+			var input = jQuery('.jwEditForm').serializeArray();
+			this.model.save(null, {
+				data : input,
 				silent : true,
-				success : function(model) {
+				success : _.bind((function(model) {
 					if (redirect === 'list') {
-						K2Dispatcher.trigger('app:redirect', view + '/page/' + page, true);
+						this.redirect(this.view + '/page/' + this.getPageNumber(), true);
 					} else if (redirect === 'add') {
-						K2Dispatcher.trigger('app:redirect', view + '/edit/' + model.get('id'), false);
-						K2Dispatcher.trigger('app:redirect', view + '/add', true);
+						this.redirect(this.view + '/edit/' + this.model.get('id'), false);
+						this.redirect(this.view + '/add', true);
 					} else if (redirect === 'edit') {
-						model.fetch();
-						K2Dispatcher.trigger('app:redirect', view + '/edit/' + model.get('id'), false);
+						this.model.fetch();
+						this.redirect(this.view + '/edit/' + this.model.get('id'), false);
 					}
-				},
+				}), this),
 				error : function(model, xhr, options) {
 					alert(xhr.responseText);
 				}
 			});
 		},
 
-		destroy : function() {
-			var data = [], model = this.model;
-			data.push({
-				'name' : 'id',
-				'value' : this.model.get('id')
-			});
-			model.destroy({
-				data : data,
-				silent : true
-			});
-		},
-
 		close : function() {
-			var view = this.view, model = this.model, data = [], url = view + '/page/' + this._getCurrentPage();
-
-			if (model.isNew()) {
-				K2Dispatcher.trigger('app:redirect', url, true);
+			var url = this.view + '/page/' + this.getPageNumber();
+			if (this.model.isNew()) {
+				this.redirect(url, true)
 			} else {
-				data.push({
-					'name' : 'id[]',
-					'value' : model.get('id')
-				});
-				data.push({
-					'name' : 'states[checked_out]',
-					'value' : 0
-				});
-				model.save(null, {
-					patch : true,
-					silent : true,
-					data : data,
-					success : function() {
-						K2Dispatcher.trigger('app:redirect', url, true);
-					}
+				this.model.checkout({
+					success : _.bind(function() {
+						this.redirect(url, true);
+					}, this)
 				});
 			}
 		},
 
+		destroy : function(data) {
+			var page = this.getPageNumber();
+			this.collection.remove(data, {
+				success : _.bind(function() {
+					this.list();
+				}, this)
+			});
+		},
+
 		filter : function(state, value) {
+			var url;
 			this.collection.setState(state, value);
 			this.collection.setState('page', 1);
-			var url = this.view + '/page/1';
+			url = this.view + '/page/1';
 			this.collection.fetch({
 				reset : true,
 				success : function() {
@@ -199,24 +185,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 			});
 		},
 
-		batchToggle : function(ids, state) {
-			var data = [], value, collection = this.collection, model;
-			_(ids).each(function(id) {
-				model = collection.get(id);
-				value = (model.get(state) == 1) ? 0 : 1;
-				data.push({
-					'name' : 'id[]',
-					'value' : id
-				});
-				data.push({
-					'name' : state,
-					'value' : value
-				});			
-			});
-			console.info(data);
-		},
-
-		_getCurrentPage : function() {
+		getPageNumber : function() {
 			return (this.collection === undefined) ? 1 : this.collection.getState('page');
 		}
 	});

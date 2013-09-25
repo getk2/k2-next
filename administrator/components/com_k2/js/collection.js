@@ -47,29 +47,39 @@ define(['backbone', 'model', 'dispatcher'], function(Backbone, K2Model, K2Dispat
 			return this.states.get(state);
 		},
 
-		batch : function(models, method, states) {
-			var data = {
-				_method : method,
-				models : new Array,
-				states : new Array
-			};
-			_.each(models, function(model) {
-				data['models'].push(JSON.stringify(model));
+		remove : function(data, options) {
+			data.push({
+				'name' : K2SessionToken,
+				'value' : 1
 			});
-			_.each(states, function(state) {
-				data['states'].push(JSON.stringify(state));
+			data.push({
+				'name' : '_method',
+				'value' : 'DELETE'
 			});
-			var self = this;
-			jQuery.ajax({
+			var params = {
+				url : this.url(),
 				type : 'POST',
-				url : self.url() + '&' + K2SessionToken + '=1',
 				data : data,
-				success : function(response) {
-					self.parse(response);
-					self.reset(response.rows);
-				},
-				dataType : 'json'
+			}
+			_.extend(params, options);
+			Backbone.ajax(params);
+		},
+
+		batch : function(data, state) {
+			data.push({
+				'name' : K2SessionToken,
+				'value' : 1
 			});
+			data.push({
+				'name' : '_method',
+				'value' : 'PATCH'
+			});
+			var options = {
+				url : this.url(),
+				type : 'POST',
+				data : data
+			}
+			Backbone.ajax(options);
 		},
 
 		buildQuery : function() {
