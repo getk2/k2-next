@@ -8,6 +8,7 @@ define(['marionette', 'text!layouts/subheader.html', 'dispatcher'], function(Mar
 		events : {
 			'change .jwFilters select' : 'filter',
 			'change .jwFilters input' : 'filter',
+			'click .jwBatchToggler' : 'batch',
 			'click #jwDeleteButton' : 'destroy'
 		},
 
@@ -35,8 +36,16 @@ define(['marionette', 'text!layouts/subheader.html', 'dispatcher'], function(Mar
 
 		destroy : function(event) {
 			event.preventDefault();
-			var data = jQuery('input.jwRowToggler:checked').serializeArray();
-			K2Dispatcher.trigger('app:controller:destroy', data);
+			var rows = jQuery('input.jwRowToggler:checked').serializeArray();
+			K2Dispatcher.trigger('app:controller:destroy', rows);
+		},
+		
+		batch : function(event) {
+			event.preventDefault();
+			var rows = jQuery('input.jwRowToggler:checked').serializeArray();
+			var el = jQuery(event.currentTarget);
+			var state = el.data('state');
+			K2Dispatcher.trigger('app:controller:batch', rows, state);
 		}
 	});
 

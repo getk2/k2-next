@@ -12,6 +12,47 @@ defined('_JEXEC') or die ;
 
 class K2Table extends JTable
 {
+	
+	/**
+	 * Method to store a row in the database from the JTable instance properties.
+	 * If a primary key value is set the row with that primary key value will be
+	 * updated with the instance property values.  If no primary key value is set
+	 * a new row will be inserted into the database with the properties from the
+	 * JTable instance.
+	 *
+	 * @param   boolean  $updateNulls  True to update fields even if they are null.
+	 *
+	 * @return  boolean  True on success.
+	 *
+	 * @link    http://docs.joomla.org/JTable/store
+	 * @since   11.1
+	 */
+	public function store($updateNulls = false)
+	{
+		if(!$this->id && property_exists($this, 'created'))
+		{
+			$this->created = JFactory::getDate()->toSql();
+		}
+		if(property_exists($this, 'created_by'))
+		{
+			$this->created_by = JFactory::getUser()->get('id');
+		}
+		if($this->id && property_exists($this, 'modified'))
+		{
+			$this->modified = JFactory::getDate()->toSql();
+		}
+		if($this->id && property_exists($this, 'modified_by'))
+		{
+			$this->modified_by = JFactory::getUser()->get('id');
+		}
+		if(property_exists($this, 'language') && !$this->language)
+		{
+			$this->language = '*';
+		}
+		return parent::store($updateNulls);
+	}
+	
+	
 	/**
 	 * Method to bind an associative array or object to the JTable instance.This
 	 * method only binds properties that are publicly accessible and optionally

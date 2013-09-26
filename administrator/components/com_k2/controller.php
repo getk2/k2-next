@@ -180,6 +180,11 @@ class K2Controller extends JControllerLegacy
 	protected function create()
 	{
 		$this->save();
+
+		// For new records we need to return the id in order to allow the client to know.
+		$object = new stdClass;
+		$object->id = $this->model->getState('id');
+		echo json_encode($object);
 	}
 
 	/**
@@ -210,7 +215,7 @@ class K2Controller extends JControllerLegacy
 		// Get and prepare input
 		$input = $this->input->get('id', array(), 'array');
 		JArrayHelper::toInteger($input);
-		
+
 		// Delete
 		foreach ($input as $id)
 		{
@@ -273,14 +278,14 @@ class K2Controller extends JControllerLegacy
 		$ids = $this->input->get('id', array(), 'array');
 		JArrayHelper::toInteger($ids);
 		$states = $this->input->get('states', array(), 'array');
-		foreach ($ids as $id)
+
+		foreach ($ids as $key => $id)
 		{
 			$data = array();
 			$data['id'] = $id;
-			// Apply any common states
-			foreach ($states as $key => $value)
+			foreach ($states as $state => $values)
 			{
-				$data[$key] = $value;
+				$data[$state] = is_array($values) ? $values[$key] : $values;
 			}
 			$this->model->setState('data', $data);
 			$result = $this->model->save(true);
@@ -290,12 +295,13 @@ class K2Controller extends JControllerLegacy
 			}
 		}
 	}
-
+	
 	private function throwError($text, $status = 400)
 	{
 		header('HTTP/1.1 '.$status);
 		jexit($text);
 	}
+	
 
 	/**
 	 * This function checks if the user is authorized to perform an action.

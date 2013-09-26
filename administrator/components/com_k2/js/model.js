@@ -79,7 +79,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 			return this.form;
 		},
 
-		checkout : function(options) {
+		checkin : function(options) {
 			var params = {
 				patch : true,
 				silent : true,

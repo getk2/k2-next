@@ -16,7 +16,7 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/helper.php';
  * K2 items helper class.
  */
 
-class K2HelperItems extends K2Helper
+class K2HelperCategories extends K2Helper
 {
 
 	public static function prepare($row)
@@ -25,7 +25,7 @@ class K2HelperItems extends K2Helper
 		$row = parent::prepare($row);
 
 		// Prepare specific properties
-		$row->link = '#items/edit/'.$row->id;
+		$row->link = '#categories/edit/'.$row->id;
 		JFilterOutput::objectHTMLSafe($row, ENT_QUOTES, array(
 			'plugins',
 			'params',

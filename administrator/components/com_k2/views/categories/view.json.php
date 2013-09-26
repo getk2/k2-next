@@ -16,7 +16,7 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/views/view.php';
  * Items JSON view.
  */
 
-class K2ViewItems extends K2View
+class K2ViewCategories extends K2View
 {
 
 	/**
@@ -29,7 +29,7 @@ class K2ViewItems extends K2View
 	public function show()
 	{
 		// Set title
-		K2Response::setTitle(JText::_('K2_ITEMS'));
+		K2Response::setTitle(JText::_('K2_CATEGORIES'));
 
 		// Set user states
 		$this->setUserStates();
@@ -68,7 +68,7 @@ class K2ViewItems extends K2View
 	public function edit($id = null)
 	{
 		// Set title
-		K2Response::setTitle(JText::_('K2_ITEM'));
+		K2Response::setTitle(JText::_('K2_CATEGORY'));
 
 		// Set row
 		$this->setRow($id);
@@ -94,11 +94,8 @@ class K2ViewItems extends K2View
 		$this->setUserState('access', 0, 'int');
 		$this->setUserState('trashed', null, 'cmd');
 		$this->setUserState('published', null, 'cmd');
-		$this->setUserState('featured', null, 'cmd');
-		$this->setUserState('category', null, 'cmd');
-		$this->setUserState('user', 0, 'int');
 		$this->setUserState('language', '', 'string');
-		$this->setUserState('sorting', 'item.id DESC', 'string');
+		$this->setUserState('sorting', 'category.id DESC', 'string');
 	}
 
 	protected function setFilters()
@@ -112,33 +109,22 @@ class K2ViewItems extends K2View
 			'K2_ID' => 'id DESC',
 			'K2_TITLE' => 'title ASC',
 			'K2_ORDERING' => 'ordering ASC',
-			'K2_FEATURED' => 'featured DESC',
 			'K2_PUBLISHED' => 'published DESC',
-			'K2_CATEGORY' => 'categoryName ASC',
 			'K2_AUTHOR' => 'authorName ASC',
 			'K2_MODERATOR' => 'moderatorName ASC',
 			'K2_ACCESS_LEVEL' => 'accessLevel ASC',
 			'K2_CREATED' => 'created DESC',
-			'K2_MODIFIED' => 'modified DESC',
-			'K2_HITS' => 'hits DESC'
+			'K2_MODIFIED' => 'modified DESC'
 		);
 		K2Response::addFilter('sorting', JText::_('K2_SORT_BY'), K2HelperHTML::sorting($this->getUserState('sorting'), $sortingOptions));
 
 		// Published filter
 		K2Response::addFilter('published', JText::_('K2_PUBLISHED'), K2HelperHTML::published($this->getUserState('published')), true);
 
-		// Featured filter
-		K2Response::addFilter('featured', JText::_('K2_FEATURED'), K2HelperHTML::featured($this->getUserState('featured')), true);
-
 	}
 
 	protected function setToolbar()
 	{
-		K2Response::addToolbarAction('featured', 'K2_TOGGLE_FEATURED_STATE', array(
-			'data-state' => 'featured',
-			'class' => 'jwBatchToggler',
-			'id' => 'jwBatchFeaturedToggler'
-		));
 		K2Response::addToolbarAction('published', 'K2_TOGGLE_PUBLISHED_STATE', array(
 			'data-state' => 'published',
 			'class' => 'jwBatchToggler',

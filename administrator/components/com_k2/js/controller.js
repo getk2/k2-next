@@ -2,18 +2,32 @@
 define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backbone, Marionette, K2Dispatcher) {
 	var K2Controller = Marionette.Controller.extend({
 
-		// The available views. Any other request returns a 404 error.
-		views : Array('items', 'categories', 'tags', 'comments', 'users', 'extrafields', 'information', 'settings'),
+		// The available resources for request. Any other request returns a 404 error.
+		resources : Array('items', 'categories', 'tags', 'comments', 'users', 'extrafields', 'information', 'settings'),
 
-		// Holds the current view name.
-		view : 'items',
+		// Holds the current resource type.
+		resource : 'items',
+
+		// Holds the current model instance.
+		model : null,
+
+		// Holds the current collection instance.
+		collection : null,
+
+		// Holds the current view instance.
+		view : null,
 
 		// Initialize function
 		initialize : function() {
 
 			// Listener for add event.
 			K2Dispatcher.on('app:controller:add', function() {
-				K2Dispatcher.trigger('app:redirect', this.view + '/add', true);
+				this.edit();
+			}, this);
+
+			// Listener for edit event.
+			K2Dispatcher.on('app:controller:edit', function(id) {
+				this.edit(id);
 			}, this);
 
 			// Listener for save events.
@@ -22,7 +36,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 			}, this);
 
 			// Listener for close event.
-			K2Dispatcher.on('app:controller:close', function(response) {
+			K2Dispatcher.on('app:controller:close', function() {
 				this.close();
 			}, this);
 
@@ -32,24 +46,29 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 			}, this);
 
 			// Listener for delete event.
-			K2Dispatcher.on('app:controller:destroy', function(data) {
-				this.destroy(data);
+			K2Dispatcher.on('app:controller:destroy', function(rows) {
+				this.destroy(rows);
+			}, this);
+
+			// Listener for batch event.
+			K2Dispatcher.on('app:controller:batch', function(rows, state) {
+				this.batch(rows, state);
 			}, this);
 
 		},
 
-		// Executes the list or form view based on the URL
+		// Executes the request based on the URL.
 		execute : function(url) {
 			if (!url) {
 				this.list(1);
 			} else {
 				var parts = url.split('/');
-				this.view = _.first(parts);
-				if (_.indexOf(this.views, this.view) === -1) {
+				this.resource = _.first(parts);
+				if (_.indexOf(this.resources, this.resource) === -1) {
 					K2Dispatcher.trigger('app:error', 404);
 				} else {
 					if (parts.length === 1) {
-						this.list();
+						this.list(1);
 					} else if (parts.length === 2 && parts[1] === 'add') {
 						this.edit();
 					} else if (parts.length === 3 && parts[1] === 'edit') {
@@ -63,85 +82,132 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 			}
 		},
 
+		// Proxy function for triggering the app:redirect event
 		redirect : function(url, trigger) {
 			K2Dispatcher.trigger('app:redirect', url, trigger);
 		},
 
-		// List function
+		// Displays a listing page depending on the requested resource type
 		list : function(page) {
-			require(['collections/' + this.view, 'views/' + this.view + '/list', 'views/pagination', 'views/list'], _.bind(function(Collection, View, Pagination, Layout) {
-				var layout = new Layout;
-				this.collection = new Collection;
-				if (page) {
-					this.collection.setState('page', page);
+
+			// Load the required files
+			require(['collections/' + this.resource, 'views/' + this.resource + '/list', 'views/pagination', 'views/list'], _.bind(function(Collection, View, Pagination, Layout) {
+
+				// Determine the page from the previous request
+				if (!page && this.collection) {
+					page = this.collection.getState('page');
 				}
+
+				// Ensure that we have a page number
+				if (!page) {
+					page = 1;
+				}
+
+				// Create the collection
+				this.collection = new Collection();
+
+				// Set the page
+				this.collection.setState('page', page);
+
+				// Fetch data from server
 				this.collection.fetch({
+
+					// Success callback
 					success : _.bind(function() {
 
-						// Render the layout
-						K2Dispatcher.trigger('app:render', layout, 'content');
-
-						// The list view
+						// Create view
 						var view = new View({
 							collection : this.collection
 						});
 
-						// The pagination view
-						this.model.set('label', this.view);
-						this.model.set('link', this.view);
+						// Get the pagination model
+						var paginationModel = this.collection.getPagination();
+
+						// Pass some data to the pagination model
+						paginationModel.set('label', this.resource);
+						paginationModel.set('link', this.resource);
+
+						// Create the pagination view
 						var pagination = new Pagination({
-							model : this.model
+							model : paginationModel
 						});
 
-						// Assign views to the layout
+						// Create the layout
+						var layout = new Layout();
+
+						// Render the layout to the page
+						K2Dispatcher.trigger('app:render', layout, 'content');
+
+						// Render views to the layout
 						layout.grid.show(view);
 						layout.pagination.show(pagination);
+
+						// Update the URL without triggering the router function
+						this.redirect(this.resource + '/page/' + this.collection.getState('page'), false);
 
 					}, this)
 				});
 
-			}), this);
+			}, this));
 		},
 
+		// Displays a form page depending on the requested resource type
 		edit : function(id) {
-			var self = this;
-			require(['models/' + this.view, 'views/' + this.view + '/form'], function(Model, View) {
+
+			// Load the required files
+			require(['models/' + this.resource, 'views/' + this.resource + '/form'], _.bind(function(Model, View) {
 
 				// Create the model
-				self.model = new Model;
+				this.model = new Model();
 
 				// If an id is provided use it
 				if (id) {
-					self.model.set('id', id);
+					this.model.set('id', id);
 				}
 
 				// Fetch the data from server
-				self.model.fetch({
-					success : function() {
+				this.model.fetch({
+
+					// Success callback
+					success : _.bind(function() {
+
+						// Create the view
+						var view = new View({
+							model : this.model
+						});
+
 						// Render the view
-						K2Dispatcher.trigger('app:render', new View({
-							model : self.model
-						}), 'content');
-					}
+						K2Dispatcher.trigger('app:render', view, 'content');
+
+						// Determine the new URL
+						var suffix = (id) ? '/edit/' + id : '/add';
+
+						// Update the URL without triggering the router function
+						this.redirect(this.resource + suffix, false);
+
+					}, this)
 				});
 
-			});
+			}, this));
 		},
 
+		// Sabe function. Saves the model and redirects properly.
 		save : function(redirect) {
+
+			// Get the form variables
 			var input = jQuery('.jwEditForm').serializeArray();
+
+			// Save
 			this.model.save(null, {
 				data : input,
 				silent : true,
 				success : _.bind((function(model) {
 					if (redirect === 'list') {
-						this.redirect(this.view + '/page/' + this.getPageNumber(), true);
+						this.list();
 					} else if (redirect === 'add') {
-						this.redirect(this.view + '/edit/' + this.model.get('id'), false);
-						this.redirect(this.view + '/add', true);
+						this.edit();
 					} else if (redirect === 'edit') {
-						this.model.fetch();
-						this.redirect(this.view + '/edit/' + this.model.get('id'), false);
+						this.edit(this.model.get('id'));
 					}
 				}), this),
 				error : function(model, xhr, options) {
@@ -150,43 +216,47 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 			});
 		},
 
+		// Close function. Checks in the row and redirects to list.
 		close : function() {
-			var url = this.view + '/page/' + this.getPageNumber();
 			if (this.model.isNew()) {
-				this.redirect(url, true)
+				this.list()
 			} else {
-				this.model.checkout({
+				this.model.checkin({
 					success : _.bind(function() {
-						this.redirect(url, true);
+						this.list();
 					}, this)
 				});
 			}
 		},
 
-		destroy : function(data) {
-			var page = this.getPageNumber();
-			this.collection.remove(data, {
+		// Destroy function. Deletes an array of rows and renders again the list.
+		destroy : function(rows) {
+			this.collection.remove(rows, {
 				success : _.bind(function() {
 					this.list();
 				}, this)
 			});
 		},
 
+		// Filter function. Updates the collection states depending on the filters and renders the list again.
 		filter : function(state, value) {
-			var url;
 			this.collection.setState(state, value);
 			this.collection.setState('page', 1);
-			url = this.view + '/page/1';
 			this.collection.fetch({
 				reset : true,
-				success : function() {
-					K2Dispatcher.trigger('app:redirect', url, false);
-				}
+				success : _.bind(function() {
+					this.redirect(this.resource + '/page/1', false);
+				}, this)
 			});
 		},
 
-		getPageNumber : function() {
-			return (this.collection === undefined) ? 1 : this.collection.getState('page');
+		// Batch function. Updates the collection states depending on the filters and renders the list again.
+		batch : function(rows, state) {
+			this.collection.batch(rows, state, {
+				success : _.bind(function() {
+					this.list();
+				}, this)
+			});
 		}
 	});
 

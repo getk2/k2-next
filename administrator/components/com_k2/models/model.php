@@ -89,7 +89,12 @@ class K2Model extends JModelLegacy
 	{
 		$table = $this->getTable();
 		$id = $this->getState('id');
-		if (!$table->delete($id))
+		if (!$table->load($id))
+		{
+			$this->setError($table->getError());
+			return false;
+		}
+		if (!$table->delete())
 		{
 			$this->setError($table->getError());
 			return false;
@@ -155,40 +160,45 @@ class K2Model extends JModelLegacy
 	/**
 	 * Method to checkin a row.
 	 *
-	 * @param   integer  $pk  The numeric id of the primary key.
+	 * @param   integer  $id  The id of the row.
 	 *
 	 * @return  boolean  False on failure or error, true otherwise.
 	 *
 	 */
-	public function checkin($pk = null)
+	public function checkin($id)
 	{
-		// Only attempt to check the row in if it exists.
-		if ($pk)
+		// Get table
+		$table = $this->getTable();
+
+		// Check if row supports check in
+		if (!property_exists($table, 'checked_out') || !property_exists($table, 'checked_out_time'))
 		{
-			$user = JFactory::getUser();
+			$this->setError(JText::_('K2_CHECKIN_NOT_SUPPORTED'));
+			return false;
+		}
 
-			// Get an instance of the row to checkin.
-			$table = $this->getTable();
+		// Get user
+		$user = JFactory::getUser();
 
-			if (!$table->load($pk))
-			{
-				$this->setError($table->getError());
-				return false;
-			}
+		// Load row
+		if (!$table->load($id))
+		{
+			$this->setError($table->getError());
+			return false;
+		}
 
-			// Check if this is the user having previously checked out the row.
-			if ($table->checked_out > 0 && $table->checked_out != $user->get('id') && !$user->authorise('core.admin', 'com_checkin'))
-			{
-				$this->setError(JText::_('JLIB_APPLICATION_ERROR_CHECKIN_USER_MISMATCH'));
-				return false;
-			}
+		// Check if this is the user having previously checked out the row
+		if ($table->checked_out > 0 && $table->checked_out != $user->get('id') && !$user->authorise('core.admin', 'com_checkin'))
+		{
+			$this->setError(JText::_('JLIB_APPLICATION_ERROR_CHECKIN_USER_MISMATCH'));
+			return false;
+		}
 
-			// Attempt to check the row in.
-			if (!$table->checkin($pk))
-			{
-				$this->setError($table->getError());
-				return false;
-			}
+		// Attempt to check the row in
+		if (!$table->checkin($id))
+		{
+			$this->setError($table->getError());
+			return false;
 		}
 
 		return true;
@@ -197,46 +207,45 @@ class K2Model extends JModelLegacy
 	/**
 	 * Method to check-out a row for editing.
 	 *
-	 * @param   integer  $pk  The numeric id of the primary key.
+	 * @param   integer  $id  The id of the row.
 	 *
 	 * @return  boolean  False on failure or error, true otherwise.
 	 *
 	 */
-	public function checkout($pk = null)
+	public function checkout($id)
 	{
-		// Only attempt to check the row in if it exists.
-		if ($pk)
+
+		// Get table
+		$table = $this->getTable();
+
+		// Check if row supports check in
+		if (!property_exists($table, 'checked_out') || !property_exists($table, 'checked_out_time'))
 		{
-			// Get an instance of the row to checkout.
-			$table = $this->getTable();
+			$this->setError(JText::_('K2_CHECKOUT_NOT_SUPPORTED'));
+			return false;
+		}
 
-			if (!$table->load($pk))
-			{
-				$this->setError($table->getError());
-				return false;
-			}
+		if (!$table->load($id))
+		{
+			$this->setError($table->getError());
+			return false;
+		}
 
-			// If there is no checked_out or checked_out_time field, just return true.
-			if (!property_exists($table, 'checked_out') || !property_exists($table, 'checked_out_time'))
-			{
-				return true;
-			}
+		// Get user
+		$user = JFactory::getUser();
 
-			$user = JFactory::getUser();
+		// Check if this is the user having previously checked out the row
+		if ($table->checked_out > 0 && $table->checked_out != $user->get('id'))
+		{
+			$this->setError(JText::_('JLIB_APPLICATION_ERROR_CHECKOUT_USER_MISMATCH'));
+			return false;
+		}
 
-			// Check if this is the user having previously checked out the row.
-			if ($table->checked_out > 0 && $table->checked_out != $user->get('id'))
-			{
-				$this->setError(JText::_('JLIB_APPLICATION_ERROR_CHECKOUT_USER_MISMATCH'));
-				return false;
-			}
-
-			// Attempt to check the row out.
-			if (!$table->checkout($user->get('id'), $pk))
-			{
-				$this->setError($table->getError());
-				return false;
-			}
+		// Attempt to check the row out
+		if (!$table->checkout($user->get('id'), $id))
+		{
+			$this->setError($table->getError());
+			return false;
 		}
 
 		return true;

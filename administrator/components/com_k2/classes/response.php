@@ -102,13 +102,6 @@ class K2Response
 	public static $messages = array();
 
 	/**
-	 * The redirect variable.
-	 *
-	 * @var string $redirect
-	 */
-	public static $redirect = '';
-
-	/**
 	 * Setter function for the response variable.
 	 *
 	 * @param object $response
@@ -336,28 +329,6 @@ class K2Response
 	}
 
 	/**
-	 * Setter function for the redirect variable.
-	 *
-	 * @param string $redirect
-	 *
-	 * @return void
-	 */
-	public static function setRedirect($redirect)
-	{
-		self::$redirect = $redirect;
-	}
-
-	/**
-	 * Getter function for the redirect variable.
-	 *
-	 * @return string $redirect
-	 */
-	public static function getRedirect()
-	{
-		return self::$redirect;
-	}
-
-	/**
 	 * Adds a filter to the filters array that will be rendered on the page.
 	 *
 	 * @param string $id		The id of the filter. This identifier allows the client to get the specific filter from the Backbone filters collection.
@@ -581,7 +552,6 @@ class K2Response
 		self::$response->row = self::getRow();
 		self::$response->form = self::getForm();
 		self::$response->messages = JFactory::getApplication()->getMessageQueue();
-		self::$response->redirect = self::getRedirect();
 		return self::$response;
 	}
 
