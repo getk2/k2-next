@@ -46,6 +46,9 @@ define(['marionette', 'text!layouts/subheader.html', 'dispatcher'], function(Mar
 			var el = jQuery(event.currentTarget);
 			var state = el.data('state');
 			K2Dispatcher.trigger('app:controller:batch', rows, state);
+		},
+		onRender : function() {
+			console.log('Rendered Subheader');
 		}
 	});
 

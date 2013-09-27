@@ -43,7 +43,7 @@ class K2ModelCategories extends K2Model
 
 		// Set query conditions
 		$this->setQueryConditions($query);
-
+		
 		// Append sorting
 		if ($this->getState('sorting'))
 		{

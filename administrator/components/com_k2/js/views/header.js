@@ -25,6 +25,10 @@ define(['marionette', 'text!layouts/header.html', 'dispatcher'], function(Marion
 				});
 			}, this);
 		},
+		
+		onRender : function() {
+			console.log('Rendered Header');
+		},
 
 		add : function(event) {
 			event.preventDefault();

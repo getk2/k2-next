@@ -55,6 +55,11 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 				this.batch(rows, state);
 			}, this);
 
+			// Listener for sort event.
+			K2Dispatcher.on('app:controller:sort', function(sorting) {
+				this.sort(sorting);
+			}, this);
+
 		},
 
 		// Executes the request based on the URL.
@@ -241,11 +246,14 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 		// Filter function. Updates the collection states depending on the filters and renders the list again.
 		filter : function(state, value) {
 			this.collection.setState(state, value);
-			this.collection.setState('page', 1);
+			// Go to page 1 for new states except sorting and limit
+			if(state !== 'sorting' && state !== 'limit') {
+				this.collection.setState('page', 1);
+			}
 			this.collection.fetch({
 				reset : true,
 				success : _.bind(function() {
-					this.redirect(this.resource + '/page/1', false);
+					this.redirect(this.resource + '/page/' + this.collection.getState('page'), false);
 				}, this)
 			});
 		},
@@ -258,6 +266,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 				}, this)
 			});
 		}
+
 	});
 
 	return K2Controller;

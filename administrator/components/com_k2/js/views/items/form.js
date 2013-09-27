@@ -12,6 +12,11 @@ define(['marionette', 'text!layouts/items/form.html','dispatcher'], function(Mar
 			};
 			return data;
 		},
+		
+		onRender : function() {
+			console.log('Rendered Form');
+		}
+		
 	});
 	return K2ViewItem;
 });

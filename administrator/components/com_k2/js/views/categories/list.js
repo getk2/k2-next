@@ -13,8 +13,17 @@ define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categor
 	});
 	var K2ViewCategories = Marionette.CompositeView.extend({
 		template : _.template(list),
+		events : {
+			'click .jwSortingButton' : 'sort'
+		},
 		itemViewContainer : 'tbody',
-		itemView : K2ViewCategoriesRow
+		itemView : K2ViewCategoriesRow,
+		sort : function(event) {
+			event.preventDefault();
+			var el = jQuery(event.currentTarget);
+			var sorting = el.data('sorting-column');
+			K2Dispatcher.trigger('app:controller:filter', 'sorting', sorting);
+		}
 	});
 	return K2ViewCategories;
 });

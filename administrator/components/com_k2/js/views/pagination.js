@@ -7,8 +7,22 @@ define(['marionette', 'text!layouts/pagination.html', 'dispatcher'], function(Ma
 
 		modelEvents : {
 			'change' : 'render'
-		}
+		},
 
+		events : {
+			'change .jwLimit' : 'limit'
+		},
+		
+		onRender : function() {
+			this.$el.find('.jwLimit').val(this.model.get('limit'));
+			console.log('Rendered Pagination');
+		}, 
+
+		limit : function(event) {
+			var el = jQuery(event.currentTarget);
+			var limit = el.val();
+			K2Dispatcher.trigger('app:controller:filter', 'limit', limit);
+		}
 	});
 
 	return K2ViewPagination;

@@ -106,15 +106,15 @@ class K2ViewCategories extends K2View
 
 		// Sorting filter
 		$sortingOptions = array(
-			'K2_ID' => 'id DESC',
-			'K2_TITLE' => 'title ASC',
-			'K2_ORDERING' => 'ordering ASC',
-			'K2_PUBLISHED' => 'published DESC',
+			'K2_ID' => 'category.id DESC',
+			'K2_TITLE' => 'category.title ASC',
+			'K2_ORDERING' => 'category.lft ASC',
+			'K2_PUBLISHED' => 'category.published DESC',
 			'K2_AUTHOR' => 'authorName ASC',
 			'K2_MODERATOR' => 'moderatorName ASC',
 			'K2_ACCESS_LEVEL' => 'accessLevel ASC',
-			'K2_CREATED' => 'created DESC',
-			'K2_MODIFIED' => 'modified DESC'
+			'K2_CREATED' => 'category.created DESC',
+			'K2_MODIFIED' => 'category.modified DESC'
 		);
 		K2Response::addFilter('sorting', JText::_('K2_SORT_BY'), K2HelperHTML::sorting($this->getUserState('sorting'), $sortingOptions));
 
