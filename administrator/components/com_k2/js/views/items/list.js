@@ -4,7 +4,7 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 		tagName : 'tr',
 		template : _.template(row),
 		events : {
-			'click a' : 'edit',
+			'click a.jwEditLink' : 'edit',
 		},
 		edit : function(event) {
 			event.preventDefault();
@@ -16,18 +16,9 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 	});
 	var K2ViewItems = Marionette.CompositeView.extend({
 		template : _.template(list),
-		events : {
-			'click .jwSortingButton' : 'sort'
-		},
 		itemViewContainer : 'tbody',
 		itemView : K2ViewItemsRow,
-		sort : function(event) {
-			event.preventDefault();
-			var el = jQuery(event.currentTarget);
-			var sorting = el.data('sorting-column');
-			K2Dispatcher.trigger('app:controller:filter', 'sorting', sorting);
-		},
-				onRender : function() {
+		onRender : function() {
 			console.log('Rendered List');
 		}
 	});

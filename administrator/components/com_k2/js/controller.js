@@ -55,6 +55,11 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 				this.batch(rows, state);
 			}, this);
 
+			// Listener for batch event.
+			K2Dispatcher.on('app:controller:toggleState', function(id, state) {
+				this.toggleState(id, state);
+			}, this);
+
 			// Listener for sort event.
 			K2Dispatcher.on('app:controller:sort', function(sorting) {
 				this.sort(sorting);
@@ -247,7 +252,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 		filter : function(state, value) {
 			this.collection.setState(state, value);
 			// Go to page 1 for new states except sorting and limit
-			if(state !== 'sorting' && state !== 'limit') {
+			if (state !== 'sorting' && state !== 'limit') {
 				this.collection.setState('page', 1);
 			}
 			this.collection.fetch({
@@ -265,8 +270,26 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 					this.list();
 				}, this)
 			});
-		}
+		},
 
+		// Toggle state function.
+		toggleState : function(id, state) {
+			var model = this.collection.get(id);
+			var newValue = (model.get(state) > 0 ) ? 0 : 1;
+			model.save(null, {
+				patch : true,
+				success : _.bind(function() {
+					this.list();
+				}, this),
+				data : [{
+					name : 'id[]',
+					value : id
+				}, {
+					name : 'states[' + state + ']',
+					value : newValue
+				}]
+			});
+		}
 	});
 
 	return K2Controller;
