@@ -4,7 +4,7 @@ define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categor
 		tagName : 'tr',
 		template : _.template(row),
 		events : {
-			'click a' : 'edit'
+			'click a.jwEditLink' : 'edit',
 		},
 		edit : function(event) {
 			event.preventDefault();
@@ -13,17 +13,8 @@ define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categor
 	});
 	var K2ViewCategories = Marionette.CompositeView.extend({
 		template : _.template(list),
-		events : {
-			'click .jwSortingButton' : 'sort'
-		},
 		itemViewContainer : 'tbody',
-		itemView : K2ViewCategoriesRow,
-		sort : function(event) {
-			event.preventDefault();
-			var el = jQuery(event.currentTarget);
-			var sorting = el.data('sorting-column');
-			K2Dispatcher.trigger('app:controller:filter', 'sorting', sorting);
-		}
+		itemView : K2ViewCategoriesRow
 	});
 	return K2ViewCategories;
 });
