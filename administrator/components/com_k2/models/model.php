@@ -57,18 +57,26 @@ class K2Model extends JModelLegacy
 	/**
 	 * Save method.
 	 *
-	 * @param   boolean   $patch	Flag to indicate if we are patching or performing a normal save.
-	 *
 	 * @return boolean	True on success false on failure.
 	 */
 
-	public function save($patch = false)
+	public function save()
 	{
 		$table = $this->getTable();
 		$data = $this->getState('data');
-		if ($patch)
+		if (isset($data['id']) && $data['id'])
 		{
-			$table->load($data['id']);
+			if (!$table->load($data['id']))
+			{
+				$this->setError($table->getError());
+				return false;
+			}
+			if ($table->isCheckedOut(JFactory::getUser()->get('id')))
+			{
+				$this->setError(JText::_('K2_ROW_IS_CURRENTLY_BEING_EDITED_BY_ANOTHER_AUTHOR'));
+				return false;
+			}
+
 		}
 		if (!$table->save($data))
 		{
@@ -173,8 +181,7 @@ class K2Model extends JModelLegacy
 		// Check if row supports check in
 		if (!property_exists($table, 'checked_out') || !property_exists($table, 'checked_out_time'))
 		{
-			$this->setError(JText::_('K2_CHECKIN_NOT_SUPPORTED'));
-			return false;
+			return true;
 		}
 
 		// Get user
@@ -221,8 +228,7 @@ class K2Model extends JModelLegacy
 		// Check if row supports check in
 		if (!property_exists($table, 'checked_out') || !property_exists($table, 'checked_out_time'))
 		{
-			$this->setError(JText::_('K2_CHECKOUT_NOT_SUPPORTED'));
-			return false;
+			return true;
 		}
 
 		if (!$table->load($id))

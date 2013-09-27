@@ -1,0 +1,20 @@
+'use strict';
+define(['backbone', 'model'], function(Backbone, K2Model) {
+
+	var K2ModelTag = K2Model.extend({
+
+		defaults : {
+			id : null,
+			name : null,
+			alias : null,
+			published : null
+		},
+
+		urlRoot : function() {
+			return 'index.php?option=com_k2&task=tags.sync&format=json'
+		},
+	});
+
+	return K2ModelTag;
+
+});

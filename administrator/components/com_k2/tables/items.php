@@ -68,6 +68,20 @@ class K2TableItems extends K2Table
 			$this->alias = JFilterOutput::stringURLSafe($this->alias);
 		}
 
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
+		$query->select($db->quoteName('id'))->from($db->quoteName('#__k2_items'))->where($db->quoteName('alias').' = '.$db->quote($this->alias));
+		if ($this->id)
+		{
+			$query->where($db->quoteName('id').' != '.(int)$this->id);
+		}
+		$db->setQuery($query);
+		if ($db->loadResult())
+		{
+			$this->setError(JText::_('K2_DUPLICATE_ALIAS'));
+			return false;
+		}
+
 		return true;
 	}
 

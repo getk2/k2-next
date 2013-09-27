@@ -81,8 +81,8 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 
 		checkin : function(options) {
 			var params = {
-				patch : true,
 				silent : true,
+				patch : true,
 				data : [{
 					'name' : 'id[]',
 					'value' : this.get('id')

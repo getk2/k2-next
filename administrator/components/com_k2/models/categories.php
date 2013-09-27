@@ -32,18 +32,18 @@ class K2ModelCategories extends K2Model
 		// Join over the asset groups.
 		$query->select($db->quoteName('assetGroup.title', 'viewLevel'));
 		$query->leftJoin($db->quoteName('#__viewlevels', 'assetGroup').' ON '.$db->quoteName('assetGroup.id').' = '.$db->quoteName('category.access'));
-		
+
 		// Join over the user
 		$query->select($db->quoteName('user.name', 'authorName'));
 		$query->leftJoin($db->quoteName('#__users', 'user').' ON '.$db->quoteName('user.id').' = '.$db->quoteName('category.created_by'));
-		
+
 		// Join over the user
 		$query->select($db->quoteName('user.name', 'moderatorName'));
 		$query->leftJoin($db->quoteName('#__users', 'moderator').' ON '.$db->quoteName('moderator.id').' = '.$db->quoteName('category.modified_by'));
 
 		// Set query conditions
 		$this->setQueryConditions($query);
-		
+
 		// Append sorting
 		if ($this->getState('sorting'))
 		{
@@ -60,7 +60,7 @@ class K2ModelCategories extends K2Model
 		$data = $db->loadAssocList();
 
 		// Generate K2 resources instances from the result data.
-		$rows = $this->getResources($data, 'item');
+		$rows = $this->getResources($data, 'category');
 
 		// Return rows
 		return (array)$rows;
@@ -82,11 +82,11 @@ class K2ModelCategories extends K2Model
 
 		// Join over the asset groups.
 		$query->leftJoin($db->quoteName('#__viewlevels', 'assetGroup').' ON '.$db->quoteName('assetGroup.id').' = '.$db->quoteName('category.access'));
-		
+
 		// Join over the user
 		$query->select($db->quoteName('user.name', 'authorName'));
 		$query->leftJoin($db->quoteName('#__users', 'user').' ON '.$db->quoteName('user.id').' = '.$db->quoteName('category.created_by'));
-		
+
 		// Join over the user
 		$query->select($db->quoteName('user.name', 'moderatorName'));
 		$query->leftJoin($db->quoteName('#__users', 'moderator').' ON '.$db->quoteName('moderator.id').' = '.$db->quoteName('category.modified_by'));
@@ -165,23 +165,29 @@ class K2ModelCategories extends K2Model
 	 *
 	 * @return boolean	True on success false on failure.
 	 */
-
-	public function save($patch = false)
+	public function save()
 	{
 		$table = $this->getTable();
 		$data = $this->getState('data');
-		if ($patch)
+		if (isset($data['id']) && $data['id'])
 		{
-			$table->load($data['id']);
+			if (!$table->load($data['id']))
+			{
+				$this->setError($table->getError());
+				return false;
+			}
+			if ($table->isCheckedOut(JFactory::getUser()->get('id')))
+			{
+				$this->setError(JText::_('K2_ROW_IS_CURRENTLY_BEING_EDITED_BY_ANOTHER_AUTHOR'));
+				return false;
+			}
+
 		}
-		$location = isset($data['parent_id']) ? $data['parent_id'] : $table->parent_id;
-		$table->setLocation($location, 'last-child');
+		if( isset($data['parent_id']))
+		{
+			$table->setLocation($data['parent_id'], 'last-child');
+		}
 		if (!$table->save($data))
-		{
-			$this->setError($table->getError());
-			return false;
-		}
-		if (!$table->rebuildPath($table->id))
 		{
 			$this->setError($table->getError());
 			return false;

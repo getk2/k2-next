@@ -99,7 +99,7 @@ class K2View extends JViewLegacy
 		// Render
 		$this->render();
 	}
-	
+
 	/**
 	 * Renders the response object into JSON.
 	 * Usually there will be no need to override this function.
@@ -313,6 +313,13 @@ class K2View extends JViewLegacy
 	 */
 	protected function setForm()
 	{
+		// Check if form file exists
+		jimport('joomla.filesystem.file');
+		if(!JFile::exists(JPATH_ADMINISTRATOR.'/components/com_k2/models/'.$this->getName().'.xml'))
+		{
+			return false;
+		}
+		
 		// Import JForm
 		jimport('joomla.form.form');
 
@@ -403,7 +410,7 @@ class K2View extends JViewLegacy
 
 			if ($user->authorise('core.create', 'com_k2'))
 			{
-				if ($this->getName() == 'items' || $this->getName() == 'categories')
+				if ($this->getName() == 'items' || $this->getName() == 'categories' || $this->getName() == 'tags')
 				{
 					K2Response::addAction('add', 'K2_ADD', array(
 						'class' => 'jwAction',
@@ -439,6 +446,11 @@ class K2View extends JViewLegacy
 				'href' => '#categories',
 				'class' => 'jwMenuLink',
 				'id' => 'k2CategoriesLink'
+			), 'primary');
+			K2Response::addMenuLink('tags', 'K2_TAGS', array(
+				'href' => '#tags',
+				'class' => 'jwMenuLink',
+				'id' => 'k2ItemsLink'
 			), 'primary');
 
 		}

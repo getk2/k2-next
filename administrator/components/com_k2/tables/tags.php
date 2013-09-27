@@ -29,7 +29,7 @@ class K2TableTags extends K2Table
 
 		if (JString::trim($this->alias) == '')
 		{
-			$this->alias = $this->title;
+			$this->alias = $this->name;
 		}
 
 		if (JFactory::getConfig()->get('unicodeslugs') == 1)

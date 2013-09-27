@@ -210,7 +210,7 @@ class K2Controller extends JControllerLegacy
 	protected function delete()
 	{
 		// Check for token
-		JSession::checkToken() or $this->throwError(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or K2Response::throwError(JText::_('JINVALID_TOKEN'));
 
 		// Get and prepare input
 		$input = $this->input->get('id', array(), 'array');
@@ -223,7 +223,7 @@ class K2Controller extends JControllerLegacy
 			$result = $this->model->delete();
 			if (!$result)
 			{
-				$this->throwError($this->model->getError());
+				K2Response::throwError($this->model->getError());
 			}
 		}
 
@@ -240,7 +240,7 @@ class K2Controller extends JControllerLegacy
 	protected function save()
 	{
 		// Check for token
-		JSession::checkToken() or $this->throwError(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or K2Response::throwError(JText::_('JINVALID_TOKEN'));
 
 		// Save
 		$data = JRequest::get('post', 2);
@@ -251,12 +251,12 @@ class K2Controller extends JControllerLegacy
 		{
 			if (!$this->model->checkin($this->model->getState('id')))
 			{
-				$this->throwError($this->model->getError());
+				K2Response::throwError($this->model->getError());
 			}
 		}
 		else
 		{
-			$this->throwError($this->model->getError());
+			K2Response::throwError($this->model->getError());
 		}
 
 	}
@@ -288,20 +288,13 @@ class K2Controller extends JControllerLegacy
 				$data[$state] = is_array($values) ? $values[$key] : $values;
 			}
 			$this->model->setState('data', $data);
-			$result = $this->model->save(true);
+			$result = $this->model->save();
 			if (!$result)
 			{
-				$this->throwError($this->model->getError());
+				K2Response::throwError($this->model->getError());
 			}
 		}
 	}
-	
-	private function throwError($text, $status = 400)
-	{
-		header('HTTP/1.1 '.$status);
-		jexit($text);
-	}
-	
 
 	/**
 	 * This function checks if the user is authorized to perform an action.

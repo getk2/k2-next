@@ -95,7 +95,7 @@ class K2ViewCategories extends K2View
 		$this->setUserState('trashed', null, 'cmd');
 		$this->setUserState('published', null, 'cmd');
 		$this->setUserState('language', '', 'string');
-		$this->setUserState('sorting', 'category.id DESC', 'string');
+		$this->setUserState('sorting', 'category.lft ASC', 'string');
 	}
 
 	protected function setFilters()

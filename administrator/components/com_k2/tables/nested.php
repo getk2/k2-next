@@ -12,7 +12,7 @@ defined('_JEXEC') or die ;
 
 class K2TableNested extends JTableNested
 {
-		
+
 	/**
 	 * Method to store a row in the database from the JTable instance properties.
 	 * If a primary key value is set the row with that primary key value will be
@@ -29,30 +29,31 @@ class K2TableNested extends JTableNested
 	 */
 	public function store($updateNulls = false)
 	{
-		if(!$this->id && property_exists($this, 'created'))
+		$user = JFactory::getUser();
+		$date = JFactory::getDate();
+		if (!$this->id && property_exists($this, 'created'))
 		{
-			$this->created = JFactory::getDate()->toSql();
+			$this->created = $date->toSql();
 		}
-		if(property_exists($this, 'created_by'))
+		if (property_exists($this, 'created_by'))
 		{
-			$this->created_by = JFactory::getUser()->get('id');
+			$this->created_by = $user->get('id');
 		}
-		if($this->id && property_exists($this, 'modified'))
+		if ($this->id && property_exists($this, 'modified'))
 		{
-			$this->modified = JFactory::getDate()->toSql();
+			$this->modified = $date->toSql();
 		}
-		if($this->id && property_exists($this, 'modified_by'))
+		if ($this->id && property_exists($this, 'modified_by'))
 		{
-			$this->modified_by = JFactory::getUser()->get('id');
+			$this->modified_by = $user->get('id');
 		}
-		if(property_exists($this, 'language') && !$this->language)
+		if (property_exists($this, 'language') && !$this->language)
 		{
 			$this->language = '*';
 		}
 		return parent::store($updateNulls);
 	}
-	
-	
+
 	/**
 	 * Method to bind an associative array or object to the JTable instance.This
 	 * method only binds properties that are publicly accessible and optionally
@@ -103,4 +104,5 @@ class K2TableNested extends JTableNested
 		}
 		return parent::bind($src, $ignore);
 	}
+
 }

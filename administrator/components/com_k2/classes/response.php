@@ -163,7 +163,7 @@ class K2Response
 		}
 
 	}
-	
+
 	/**
 	 * Getter function for the actions.
 	 *
@@ -469,6 +469,7 @@ class K2Response
 		}
 
 	}
+
 	/**
 	 * Adds an action to the batch operations array.
 	 *
@@ -602,6 +603,22 @@ class K2Response
 		$application->enqueueMessage($message, 'error');
 
 		return;
+	}
+
+	/**
+	 * This function is used to process all PHP errors and convert them to messages instead of outputing directly to the screen.
+	 * More information at http://php.net/manual/en/function.set-error-handler.php.
+	 * This guarantees that we will always have a valid JSON response.
+	 *
+	 * @param string $text		The text of the error.
+	 * @param integer $status	The HTTP status.
+	 *
+	 * @return void
+	 */
+	public static function throwError($text, $status = 400)
+	{
+		header('HTTP/1.1 '.$status);
+		jexit($text);
 	}
 
 }
