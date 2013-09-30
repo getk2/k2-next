@@ -1,6 +1,75 @@
 'use strict';
 define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'views/subheader'], function(Marionette, K2Router, K2Controller, K2Dispatcher, HeaderView, SubheaderView) {
 
+	// Backbone.sync
+	// -------------
+
+	// Override of the default Backbone.sync implementation.
+	// Enforces Backbone.emulateHTTP = true and Backbone.emulateJSON = true.
+	// Copies any model attributes to the data object.
+
+	Backbone.sync = function(method, model, options) {
+
+		// Initialize the options object if it is not set
+		options || ( options = {});
+		if (options.data === undefined) {
+			options.data = [];
+		}
+
+		// Detect the request type
+		switch (method) {
+			case 'create':
+				var type = 'POST';
+				break;
+			case 'update':
+				var type = 'PUT';
+				break;
+			case 'patch':
+				var type = 'PATCH';
+				break;
+			case 'delete':
+				var type = 'DELETE';
+				break;
+			case 'read':
+				var type = 'GET';
+				break;
+		}
+
+		// Request params
+		var params = {
+			type : (method === 'read') ? 'GET' : 'POST',
+			dataType : 'json',
+			contentType : 'application/x-www-form-urlencoded',
+			url : _.result(model, 'url') || urlError()
+		};
+
+		// For create, update, patch and delete methods pass as aerguments the method and the session token.
+		if (method !== 'read') {
+			options.data.push({
+				name : '_method',
+				value : type
+			});
+			options.data.push({
+				name : K2SessionToken,
+				value : 1
+			});
+		}
+
+		// Convert any model attributes to data
+		_.each(options.attrs, function(value, attribute) {
+			options.data.push({
+				name : 'states[' + attribute + ']',
+				value : value
+			});
+		});
+
+		// Make the request, allowing the user to override any Ajax options
+		var xhr = options.xhr = Backbone.ajax(_.extend(params, options));
+		model.trigger('request', model, xhr, options);
+		return xhr;
+
+	};
+
 	// Initialize the application
 	var K2 = new Marionette.Application();
 
@@ -14,12 +83,6 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'vie
 
 	// On after initialize
 	K2.on('initialize:after', function() {
-
-		// Emulate HTTP
-		Backbone.emulateHTTP = true;
-
-		// Emulate JSON
-		Backbone.emulateJSON = true;
 
 		// Backbone history
 		Backbone.history.start();

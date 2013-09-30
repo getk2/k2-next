@@ -228,7 +228,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 
 		// Close function. Checks in the row and redirects to list.
 		close : function() {
-			if (this.model.isNew()) {
+			if (this.model.isNew() || !this.model.has('checked_out') ) {
 				this.list()
 			} else {
 				this.model.checkin({
@@ -275,19 +275,10 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 		// Toggle state function.
 		toggleState : function(id, state) {
 			var model = this.collection.get(id);
-			var newValue = (model.get(state) > 0 ) ? 0 : 1;
-			model.save(null, {
-				patch : true,
+			model.toggle(state ,{
 				success : _.bind(function() {
 					this.list();
-				}, this),
-				data : [{
-					name : 'id[]',
-					value : id
-				}, {
-					name : 'states[' + state + ']',
-					value : newValue
-				}]
+				}, this)
 			});
 		}
 	});

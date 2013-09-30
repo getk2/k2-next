@@ -37,40 +37,6 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 			return base;
 		},
 
-		sync : function(method, model, options) {
-			if (method !== 'read') {
-				var _method;
-
-				if (options.data === undefined) {
-					options.data = [];
-				}
-
-				options.data.push({
-					'name' : K2SessionToken,
-					'value' : 1
-				});
-				switch(method) {
-					case 'create' :
-						_method = 'POST';
-						break;
-					case 'update':
-						_method = 'PUT';
-						break;
-					case 'patch':
-						_method = 'PATCH';
-						break;
-					case 'delete' :
-						_method = 'DELETE';
-						break;
-				}
-				options.data.push({
-					'name' : '_method',
-					'value' : _method
-				});
-			}
-			return Backbone.sync.call(model, method, model, options);
-		},
-
 		setForm : function(form) {
 			this.form.set(form);
 		},
@@ -82,17 +48,25 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 		checkin : function(options) {
 			var params = {
 				silent : true,
-				patch : true,
-				data : [{
-					'name' : 'id[]',
-					'value' : this.get('id')
-				}, {
-					'name' : 'states[checked_out]',
-					'value' : 0
-				}],
+				wait : true,
+				patch : true
 			}
 			_.extend(params, options);
-			this.save(null, params);
+			this.save({
+				'checked_out' : 0
+			}, params);
+		},
+
+		toggle : function(state, options) {
+			var params = {
+				silent : true,
+				wait : true,
+				patch : true
+			}
+			_.extend(params, options);
+			var attrs = {};
+			attrs[state] = (this.get(state) > 0 ) ? 0 : 1;
+			this.save(attrs, params);
 		}
 	});
 

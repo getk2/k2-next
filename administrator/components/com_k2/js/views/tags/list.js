@@ -14,16 +14,12 @@ define(['marionette', 'text!layouts/tags/list.html', 'text!layouts/tags/row.html
 		save : function(event) {
 			var el = jQuery(event.currentTarget);
 			el.prop('contenteditable', false);
-			var value = el.text();
-			var attribute = el.data('attribute');
-			this.model.save(null, {
-				data : [{
-					name : 'id',
-					value : this.model.get('id')
-				}, {
-					name : attribute,
-					value : value
-				}]
+			this.model.set(el.data('attribute'), el.text(), {
+				silent : true
+			});
+			this.model.save(this.model.changed, {
+				patch : true,
+				wait : true
 			});
 		}
 	});
