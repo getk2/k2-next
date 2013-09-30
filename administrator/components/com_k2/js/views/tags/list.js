@@ -15,7 +15,16 @@ define(['marionette', 'text!layouts/tags/list.html', 'text!layouts/tags/row.html
 			var el = jQuery(event.currentTarget);
 			el.prop('contenteditable', false);
 			var value = el.text();
-			this.model.save({name:value});
+			var attribute = el.data('attribute');
+			this.model.save(null, {
+				data : [{
+					name : 'id',
+					value : this.model.get('id')
+				}, {
+					name : attribute,
+					value : value
+				}]
+			});
 		}
 	});
 	var K2ViewTags = Marionette.CompositeView.extend({
