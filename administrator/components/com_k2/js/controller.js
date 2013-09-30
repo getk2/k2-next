@@ -234,7 +234,10 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 				this.model.checkin({
 					success : _.bind(function() {
 						this.list();
-					}, this)
+					}, this),
+					error : function(model, xhr, options) {
+						alert(xhr.responseText);
+					}
 				});
 			}
 		},
