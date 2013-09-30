@@ -53,13 +53,13 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 			}, this);
 
 			// Listener for batch event.
-			K2Dispatcher.on('app:controller:batch', function(rows, state) {
-				this.batch(rows, state);
+			K2Dispatcher.on('app:controller:batchToggle', function(rows, state) {
+				this.batchToggle(rows, state);
 			}, this);
 
-			// Listener for sort event.
-			K2Dispatcher.on('app:controller:sort', function(sorting) {
-				this.sort(sorting);
+			// Listener for save ordering
+			K2Dispatcher.on('app:controller:saveOrdering', function(keys, values, column) {
+				this.saveOrdering(keys, values, column);
 			}, this);
 
 		},
@@ -249,6 +249,14 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 			});
 		},
 
+		saveOrdering : function(keys, values, column) {
+			this.collection.batch(keys, values, column, {
+				success : _.bind(function() {
+					this.list();
+				}, this)
+			});
+		},
+
 		// Destroy function. Deletes an array of rows and renders again the list.
 		destroy : function(rows) {
 			this.collection.remove(rows, {
@@ -274,8 +282,8 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 		},
 
 		// Batch function. Updates the collection states depending on the filters and renders the list again.
-		batch : function(rows, state) {
-			this.collection.batch(rows, state, {
+		batchToggle : function(rows, state) {
+			this.collection.batchToggle(rows, state, {
 				success : _.bind(function() {
 					this.list();
 				}, this)

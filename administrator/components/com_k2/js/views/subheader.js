@@ -45,7 +45,7 @@ define(['marionette', 'text!layouts/subheader.html', 'dispatcher'], function(Mar
 			var rows = jQuery('input.jwRowToggler:checked').serializeArray();
 			var el = jQuery(event.currentTarget);
 			var state = el.data('state');
-			K2Dispatcher.trigger('app:controller:batch', rows, state);
+			K2Dispatcher.trigger('app:controller:batchToggle', rows, state);
 		},
 		onRender : function() {
 			console.log('Rendered Subheader');

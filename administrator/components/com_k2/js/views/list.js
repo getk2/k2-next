@@ -9,7 +9,8 @@ define(['marionette', 'text!layouts/list.html', 'dispatcher'], function(Marionet
 		},
 		events : {
 			'click .jwSortingButton' : 'sort',
-			'click .jwStateToggler' : 'toggleState'
+			'click .jwStateToggler' : 'toggleState',
+			'click .jwSaveOrderButton' : 'saveOrdering'
 		},
 		sort : function(event) {
 			event.preventDefault();
@@ -22,7 +23,20 @@ define(['marionette', 'text!layouts/list.html', 'dispatcher'], function(Marionet
 			var el = jQuery(event.currentTarget);
 			var id = el.data('id');
 			var state = el.data('state');
-			K2Dispatcher.trigger('app:controller:toggleState',  id, state);
+			K2Dispatcher.trigger('app:controller:toggleState', id, state);
+		},
+		saveOrdering : function(event) {
+			event.preventDefault();
+			var el = jQuery(event.currentTarget);
+			var column = el.data('column');
+			var keys = [];
+			var values = [];
+			jQuery('input[name="' + column + '[]"]').each(function() {
+				var row = self.jQuery(this);
+				keys.push(row.data('id'))
+				values.push(parseInt(row.val()));
+			});
+			K2Dispatcher.trigger('app:controller:saveOrdering', keys, values, column);
 		}
 	});
 

@@ -1,24 +1,25 @@
-<h1>Items</h1>
-
-	<table class="table table-striped">
-		<thead>
-			<tr>
-				<td class="jwCheckboxHolder">
-					<label for="jwRowsToggler" class="jwCheckbox" title="Select All"><input id="jwRowsToggler" type="checkbox" /></label>
-				</td>
-				<td><a class="jwSortingButton" data-sorting="title">Title</a></td>
-				<td class="jwTextCenter  hide-on-small">
-					<i class="jwicon-switch"></i>
-				</td>
-				<td class=" hide-on-small"><a class="jwSortingButton" data-sorting="ordering">Order</a> <button data-column="ordering" class="jwSaveOrderButton"><i class="jwicon-floppy"></i></button></td>
-				<td class="jwTextCenter"><a class="jwSortingButton" data-sorting="featured">Featured</a></td>
-				<td class="jwTextCenter"><a class="jwSortingButton" data-sorting="published">Published</a></td>
-				<td><a class="jwSortingButton" data-sorting="category">Category</a></td>
-				<td class="hide-on-medium"><a class="jwSortingButton" data-sorting="moderator">Last modified by</a></td>
-				<td><a class="jwSortingButton" data-sorting="created">Created </a></td> 
-				<td class="hide-on-medium"><a class="jwSortingButton" data-sorting="modified">Modified</a></td>
-				<td><a class="jwSortingButton" data-sorting="id">ID</a></td>
-			</tr>
-		</thead>
-		<tbody></tbody>
-	</table>	
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <td><label for="jwRowsToggler" class="jwCheckbox" title="<%- l('K2_SELECT_ALL') %>">
+                    <input id="jwRowsToggler" type="checkbox" />
+                </label>
+            </td>
+            <td><a class="jwSortingButton" data-sorting="title"><%= l('K2_TITLE') %></a></td>
+            <td>
+                <a class="jwSortingButton" data-sorting="ordering"><%= l('K2_ORDER') %></a>
+                <button data-column="ordering" class="jwSaveOrderButton">
+                    <%= l('K2_SAVE_ORDER') %>
+                </button>
+            </td>
+            <td><a class="jwSortingButton" data-sorting="featured"><%= l('K2_FEATURED') %></a></td>
+            <td><a class="jwSortingButton" data-sorting="published"><%= l('K2_PUBLISHED') %></a></td>
+            <td><a class="jwSortingButton" data-sorting="category"><%= l('K2_CATEGORY') %></a></td>
+            <td><a class="jwSortingButton" data-sorting="moderator"><%= l('K2_MODERATOR') %></a></td>
+            <td><a class="jwSortingButton" data-sorting="created"><%= l('K2_CREATED') %> </a></td>
+            <td><a class="jwSortingButton" data-sorting="modified"><%= l('K2_MODIFIED') %></a></td>
+            <td><a class="jwSortingButton" data-sorting="id"><%= l('K2_ID') %></a></td>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>

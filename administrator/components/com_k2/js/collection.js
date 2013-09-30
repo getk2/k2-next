@@ -53,7 +53,26 @@ define(['backbone', 'model', 'dispatcher'], function(Backbone, K2Model, K2Dispat
 			return xhr;
 		},
 
-		batch : function(rows, state, options) {
+		batch : function(keys, values, state, options) {
+			options || (options = {});
+			options.data || (options.data = []);
+			_.each(keys, function(key) {
+				options.data.push({
+					'name' : 'id[]',
+					'value' : key
+				});
+			});
+			_.each(values, function(value) {
+				options.data.push({
+					'name' : 'states[' + state + '][]',
+					'value' : value
+				});
+			});
+			var xhr = this.sync('patch', this, options);
+			return xhr;
+		},
+
+		batchToggle : function(rows, state, options) {
 			options.data = rows;
 			_.each(rows, _.bind(function(row) {
 				var id = row.value;
