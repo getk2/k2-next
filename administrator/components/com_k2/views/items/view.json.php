@@ -98,7 +98,7 @@ class K2ViewItems extends K2View
 		$this->setUserState('category', null, 'cmd');
 		$this->setUserState('user', 0, 'int');
 		$this->setUserState('language', '', 'string');
-		$this->setUserState('sorting', 'item.id DESC', 'string');
+		$this->setUserState('sorting', 'id', 'string');
 	}
 
 	protected function setFilters()
@@ -109,18 +109,18 @@ class K2ViewItems extends K2View
 
 		// Sorting filter
 		$sortingOptions = array(
-			'K2_ID' => 'item.id DESC',
-			'K2_TITLE' => 'item.title ASC',
-			'K2_ORDERING' => 'item.ordering ASC',
-			'K2_FEATURED' => 'item.featured DESC',
-			'K2_PUBLISHED' => 'item.published DESC',
-			'K2_CATEGORY' => 'categoryName ASC',
-			'K2_AUTHOR' => 'authorName ASC',
-			'K2_MODERATOR' => 'moderatorName ASC',
-			'K2_ACCESS_LEVEL' => 'item.access ASC',
-			'K2_CREATED' => 'item.created DESC',
-			'K2_MODIFIED' => 'item.modified DESC',
-			'K2_HITS' => 'item.hits DESC'
+			'K2_ID' => 'id',
+			'K2_TITLE' => 'title',
+			'K2_ORDERING' => 'ordering',
+			'K2_FEATURED' => 'featured',
+			'K2_PUBLISHED' => 'published',
+			'K2_CATEGORY' => 'category',
+			'K2_AUTHOR' => 'author',
+			'K2_MODERATOR' => 'moderator',
+			'K2_ACCESS_LEVEL' => 'access',
+			'K2_CREATED' => 'created',
+			'K2_MODIFIED' => 'modified',
+			'K2_HITS' => 'hits'
 		);
 		K2Response::addFilter('sorting', JText::_('K2_SORT_BY'), K2HelperHTML::sorting($this->getUserState('sorting'), $sortingOptions));
 

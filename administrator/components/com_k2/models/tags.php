@@ -28,11 +28,8 @@ class K2ModelTags extends K2Model
 		// Set query conditions
 		$this->setQueryConditions($query);
 
-		// Append sorting
-		if ($this->getState('sorting'))
-		{
-			$query->order($this->getState('sorting'));
-		}
+		// Set query sorting
+		$this->setQuerySorting($query);
 
 		// Hook for plugins
 		$this->onBeforeSetQuery($query, 'com_k2.tags.list');
@@ -112,6 +109,32 @@ class K2ModelTags extends K2Model
 				OR '.$db->quoteName('id').' = '.(int)$search.')  
 				OR LOWER('.$db->quoteName('alias').'.) LIKE '.$db->Quote('%'.$search.'%', false).')');
 			}
+		}
+	}
+
+	private function setQuerySorting(&$query)
+	{
+		$sorting = $this->getState('sorting');
+		$order = null;
+		if ($sorting)
+		{
+			switch($sorting)
+			{
+				case 'id' :
+					$order = 'id DESC';
+					break;
+				case 'name' :
+					$order = 'name ASC';
+					break;
+				case 'published' :
+					$order = 'published DESC';
+					break;
+			}
+		}
+		// Append sorting
+		if ($order)
+		{
+			$query->order($order);
 		}
 	}
 

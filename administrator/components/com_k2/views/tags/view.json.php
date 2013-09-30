@@ -92,7 +92,7 @@ class K2ViewTags extends K2View
 		$this->setUserState('page', 1, 'int');
 		$this->setUserState('search', '', 'string');
 		$this->setUserState('published', null, 'cmd');
-		$this->setUserState('sorting', 'id DESC', 'string');
+		$this->setUserState('sorting', 'id', 'string');
 	}
 
 	protected function setFilters()
@@ -100,9 +100,9 @@ class K2ViewTags extends K2View
 
 		// Sorting filter
 		$sortingOptions = array(
-			'K2_ID' => 'id DESC',
-			'K2_NAME' => 'name ASC',
-			'K2_PUBLISHED' => 'published DESC',
+			'K2_ID' => 'id',
+			'K2_NAME' => 'name',
+			'K2_PUBLISHED' => 'published',
 		);
 		K2Response::addFilter('sorting', JText::_('K2_SORT_BY'), K2HelperHTML::sorting($this->getUserState('sorting'), $sortingOptions));
 

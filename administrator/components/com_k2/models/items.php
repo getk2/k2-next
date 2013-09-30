@@ -40,7 +40,7 @@ class K2ModelItems extends K2Model
 		// Join over the user
 		$query->select($db->quoteName('user.name', 'authorName'));
 		$query->leftJoin($db->quoteName('#__users', 'user').' ON '.$db->quoteName('user.id').' = '.$db->quoteName('item.created_by'));
-		
+
 		// Join over the user
 		$query->select($db->quoteName('user.name', 'moderatorName'));
 		$query->leftJoin($db->quoteName('#__users', 'moderator').' ON '.$db->quoteName('moderator.id').' = '.$db->quoteName('item.modified_by'));
@@ -48,11 +48,8 @@ class K2ModelItems extends K2Model
 		// Set query conditions
 		$this->setQueryConditions($query);
 
-		// Append sorting
-		if ($this->getState('sorting'))
-		{
-			$query->order($this->getState('sorting'));
-		}
+		// Set query sorting
+		$this->setQuerySorting($query);
 
 		// Hook for plugins
 		$this->onBeforeSetQuery($query, 'com_k2.items.list');
@@ -65,7 +62,7 @@ class K2ModelItems extends K2Model
 
 		// Generate K2 resources instances from the result data.
 		$rows = $this->getResources($data, 'item');
-		
+
 		// Return rows
 		return (array)$rows;
 	}
@@ -177,6 +174,56 @@ class K2ModelItems extends K2Model
 				OR LOWER('.$db->quoteName('item.introtext').'.) LIKE '.$db->Quote('%'.$search.'%', false).'
 				OR LOWER('.$db->quoteName('item.fulltext').'.) LIKE '.$db->Quote('%'.$search.'%', false).')');
 			}
+		}
+	}
+
+	private function setQuerySorting(&$query)
+	{
+		$sorting = $this->getState('sorting');
+		$order = null;
+		if ($sorting)
+		{
+			switch($sorting)
+			{
+				case 'id' :
+					$order = 'item.id DESC';
+					break;
+				case 'title' :
+					$order = 'item.title ASC';
+					break;
+				case 'ordering' :
+					$order = 'item.ordering ASC';
+					break;
+				case 'featured' :
+					$order = 'item.featured DESC';
+					break;
+				case 'published' :
+					$order = 'item.published DESC';
+					break;
+				case 'category' :
+					$order = 'categoryName ASC';
+					break;
+				case 'author' :
+					$order = 'authorName ASC';
+					break;
+				case 'moderator' :
+					$order = 'moderatorName ASC';
+					break;
+				case 'access' :
+					$order = 'viewLevel ASC';
+					break;
+				case 'created' :
+					$order = 'item.created DESC';
+					break;
+				case 'modified' :
+					$order = 'item.modified DESC';
+					break;
+			}
+		}
+		// Append sorting
+		if ($order)
+		{
+			$query->order($order);
 		}
 	}
 

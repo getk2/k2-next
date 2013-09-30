@@ -44,11 +44,8 @@ class K2ModelCategories extends K2Model
 		// Set query conditions
 		$this->setQueryConditions($query);
 
-		// Append sorting
-		if ($this->getState('sorting'))
-		{
-			$query->order($this->getState('sorting'));
-		}
+		// Set query sorting
+		$this->setQuerySorting($query);
 
 		// Hook for plugins
 		$this->onBeforeSetQuery($query, 'com_k2.categories.list');
@@ -158,6 +155,50 @@ class K2ModelCategories extends K2Model
 		}
 	}
 
+	private function setQuerySorting(&$query)
+	{
+		$sorting = $this->getState('sorting');
+		$order = null;
+		if ($sorting)
+		{
+			switch($sorting)
+			{
+				case 'id' :
+					$order = 'category.id DESC';
+					break;
+				case 'title' :
+					$order = 'category.title ASC';
+					break;
+				case 'ordering' :
+					$order = 'category.lft ASC';
+					break;
+				case 'published' :
+					$order = 'category.published DESC';
+					break;
+				case 'author' :
+					$order = 'authorName ASC';
+					break;
+				case 'moderator' :
+					$order = 'moderatorName ASC';
+					break;
+				case 'access' :
+					$order = 'viewLevel ASC';
+					break;
+				case 'created' :
+					$order = 'category.created DESC';
+					break;
+				case 'modified' :
+					$order = 'category.modified DESC';
+					break;
+			}
+		}
+		// Append sorting
+		if ($order)
+		{
+			$query->order($order);
+		}
+	}
+
 	/**
 	 * Save method.
 	 *
@@ -183,7 +224,7 @@ class K2ModelCategories extends K2Model
 			}
 
 		}
-		if( isset($data['parent_id']))
+		if (isset($data['parent_id']))
 		{
 			$table->setLocation($data['parent_id'], 'last-child');
 		}
