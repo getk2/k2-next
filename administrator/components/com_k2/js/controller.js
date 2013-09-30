@@ -3,7 +3,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 	var K2Controller = Marionette.Controller.extend({
 
 		// The available resources for request. Any other request returns a 404 error.
-		resources : Array('items', 'categories', 'tags', 'comments', 'users', 'extrafields', 'information', 'settings'),
+		resources : ['items', 'categories', 'tags', 'comments', 'users', 'extrafields', 'information', 'settings'],
 
 		// Holds the current resource type.
 		resource : 'items',
@@ -13,9 +13,6 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 
 		// Holds the current collection instance.
 		collection : null,
-
-		// Holds the current view instance.
-		view : null,
 
 		// Initialize function
 		initialize : function() {
