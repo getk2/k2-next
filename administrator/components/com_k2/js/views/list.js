@@ -14,7 +14,7 @@ define(['marionette', 'text!layouts/list.html', 'dispatcher'], function(Marionet
 		sort : function(event) {
 			event.preventDefault();
 			var el = jQuery(event.currentTarget);
-			var sorting = el.data('sorting-column');
+			var sorting = el.data('sorting');
 			K2Dispatcher.trigger('app:controller:filter', 'sorting', sorting);
 		},
 		toggleState : function(event) {
