@@ -40,6 +40,11 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 				this.close();
 			}, this);
 
+			// Listener for batch event.
+			K2Dispatcher.on('app:controller:toggleState', function(id, state) {
+				this.toggleState(id, state);
+			}, this);
+
 			// Listener for filter event.
 			K2Dispatcher.on('app:controller:filter', function(state, value) {
 				this.filter(state, value);
@@ -53,11 +58,6 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 			// Listener for batch event.
 			K2Dispatcher.on('app:controller:batch', function(rows, state) {
 				this.batch(rows, state);
-			}, this);
-
-			// Listener for batch event.
-			K2Dispatcher.on('app:controller:toggleState', function(id, state) {
-				this.toggleState(id, state);
 			}, this);
 
 			// Listener for sort event.
@@ -228,7 +228,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 
 		// Close function. Checks in the row and redirects to list.
 		close : function() {
-			if (this.model.isNew() || !this.model.has('checked_out') ) {
+			if (this.model.isNew() || !this.model.has('checked_out')) {
 				this.list()
 			} else {
 				this.model.checkin({
@@ -237,6 +237,16 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 					}, this)
 				});
 			}
+		},
+
+		// Toggle state function.
+		toggleState : function(id, state) {
+			var model = this.collection.get(id);
+			model.toggle(state, {
+				success : _.bind(function() {
+					this.list();
+				}, this)
+			});
 		},
 
 		// Destroy function. Deletes an array of rows and renders again the list.
@@ -266,16 +276,6 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 		// Batch function. Updates the collection states depending on the filters and renders the list again.
 		batch : function(rows, state) {
 			this.collection.batch(rows, state, {
-				success : _.bind(function() {
-					this.list();
-				}, this)
-			});
-		},
-
-		// Toggle state function.
-		toggleState : function(id, state) {
-			var model = this.collection.get(id);
-			model.toggle(state ,{
 				success : _.bind(function() {
 					this.list();
 				}, this)
