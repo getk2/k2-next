@@ -21,12 +21,12 @@ class K2HelperToolbar extends K2Helper
 
 	public static function published($text = 'K2_TOGGLE_PUBLISHED_STATE', $state = 'published')
 	{
-		return '<a id="jwBatchPublishedToggler" class="jwBatchToggler" data-state="'.$state.'">'.JText::_($text).'</a>';
+		return '<a id="jwBatchPublishedToggler" class="jwBatchStateToggler" data-state="'.$state.'">'.JText::_($text).'</a>';
 	}
 
 	public static function featured($text = 'K2_TOGGLE_FEATURED_STATE', $state = 'featured')
 	{
-		return '<a id="jwBatchFeaturedToggler" class="jwBatchToggler" data-state="'.$state.'">'.JText::_($text).'</a>';
+		return '<a id="jwBatchFeaturedToggler" class="jwBatchStateToggler" data-state="'.$state.'">'.JText::_($text).'</a>';
 	}
 
 	public static function batch($text = 'K2_BATCH')

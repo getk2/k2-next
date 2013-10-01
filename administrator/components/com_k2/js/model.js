@@ -57,7 +57,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 			}, params);
 		},
 
-		toggle : function(state, options) {
+		toggleState : function(state, options) {
 			var params = {
 				silent : true,
 				wait : true,

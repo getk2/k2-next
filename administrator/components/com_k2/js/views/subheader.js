@@ -8,8 +8,8 @@ define(['marionette', 'text!layouts/subheader.html', 'dispatcher'], function(Mar
 		events : {
 			'change .jwFilters select' : 'filter',
 			'change .jwFilters input' : 'filter',
-			'click .jwBatchToggler' : 'batch',
-			'click #jwDeleteButton' : 'destroy'
+			'click .jwBatchStateToggler' : 'batchToggleState',
+			'click #jwDeleteButton' : 'batchDelete'
 		},
 
 		modelEvents : {
@@ -34,21 +34,18 @@ define(['marionette', 'text!layouts/subheader.html', 'dispatcher'], function(Mar
 			K2Dispatcher.trigger('app:controller:filter', state, value);
 		},
 
-		destroy : function(event) {
+		batchDelete : function(event) {
 			event.preventDefault();
 			var rows = jQuery('input.jwRowToggler:checked').serializeArray();
-			K2Dispatcher.trigger('app:controller:destroy', rows);
+			K2Dispatcher.trigger('app:controller:batchDelete', rows);
 		},
 		
-		batch : function(event) {
+		batchToggleState : function(event) {
 			event.preventDefault();
 			var rows = jQuery('input.jwRowToggler:checked').serializeArray();
 			var el = jQuery(event.currentTarget);
 			var state = el.data('state');
-			K2Dispatcher.trigger('app:controller:batchToggle', rows, state);
-		},
-		onRender : function() {
-			console.log('Rendered Subheader');
+			K2Dispatcher.trigger('app:controller:batchToggleState', rows, state);
 		}
 	});
 

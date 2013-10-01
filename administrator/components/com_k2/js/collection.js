@@ -72,7 +72,7 @@ define(['backbone', 'model', 'dispatcher'], function(Backbone, K2Model, K2Dispat
 			return xhr;
 		},
 
-		batchToggle : function(rows, state, options) {
+		batchToggleState : function(rows, state, options) {
 			options.data = rows;
 			_.each(rows, _.bind(function(row) {
 				var id = row.value;

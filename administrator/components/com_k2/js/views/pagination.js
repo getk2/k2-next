@@ -15,7 +15,6 @@ define(['marionette', 'text!layouts/pagination.html', 'dispatcher'], function(Ma
 		
 		onRender : function() {
 			this.$el.find('.jwLimit').val(this.model.get('limit'));
-			console.log('Rendered Pagination');
 		}, 
 
 		limit : function(event) {

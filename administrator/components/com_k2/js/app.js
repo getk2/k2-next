@@ -1,5 +1,5 @@
 'use strict';
-define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'views/subheader'], function(Marionette, K2Router, K2Controller, K2Dispatcher, HeaderView, SubheaderView) {
+define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'views/subheader', 'views/sidebar'], function(Marionette, K2Router, K2Controller, K2Dispatcher, HeaderView, SubheaderView, SidebarView) {
 
 	// Backbone.sync
 	// -------------
@@ -135,7 +135,14 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'vie
 			})
 		}));
 
-		//@TODO Add intializing code for the rest regions.
+		// Render the sidebar view
+		this.sidebar.show(new SidebarView({
+			model : new Backbone.Model({
+				'title' : '',
+				'filters' : [],
+				'toolbar' : []
+			})
+		}));
 
 	});
 

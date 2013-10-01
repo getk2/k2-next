@@ -127,7 +127,7 @@ class K2ViewCategories extends K2View
 	{
 		K2Response::addToolbarAction('published', 'K2_TOGGLE_PUBLISHED_STATE', array(
 			'data-state' => 'published',
-			'class' => 'jwBatchToggler',
+			'class' => 'jwBatchStateToggler',
 			'id' => 'jwBatchPublishedToggler'
 		));
 		K2Response::addToolbarAction('batch', 'K2_BATCH', array('id' => 'jwBatchButton'));
