@@ -37,10 +37,13 @@ class K2HelperHTML extends K2Helper
 		return JHtml::_('select.radiolist', $options, $name, '', 'value', 'text', $value);
 	}
 
-	public static function language($value = null, $name = 'language')
+	public static function language($value = null, $name = 'language', $none = true)
 	{
 		$options = JHtml::_('contentlanguage.existing', true, true);
-		array_unshift($options, JHtml::_('select.option', '', JText::_('K2_ANY')));
+		if($none)
+		{
+			array_unshift($options, JHtml::_('select.option', '', JText::_('K2_ANY')));
+		}
 		return JHtml::_('select.genericlist', $options, $name, '', 'value', 'text', $value);
 	}
 
@@ -53,6 +56,32 @@ class K2HelperHTML extends K2Helper
 		}
 
 		return JHtml::_('select.genericlist', $list, $name, '', 'value', 'text', $value);
+	}
+
+	public static function categories($value = null, $name = 'catid', $none = false)
+	{
+		$model = K2Model::getInstance('Categories', 'K2Model');
+		$model->setState('sorting', 'ordering');
+		$rows = $model->getRows();
+		$options = array();
+		if ($none)
+		{
+			$options[] = JHtml::_('select.option', 1, JText::_('K2_NONE'));
+		}
+		foreach ($rows as $row)
+		{
+			$title = str_repeat('-', intval($row->level) - 1).$row->title;
+			if ($row->trashed)
+			{
+				$title .= JText::_('K2_TRASHED_CATEGORY_NOTICE');
+			}
+			else if (!$row->published)
+			{
+				$title .= JText::_('K2_UNPUBLISHED_CATEGORY_NOTICE');
+			}
+			$options[] = JHtml::_('select.option', $row->id, $title);
+		}
+		return JHtml::_('select.genericlist', $options, $name, '', 'value', 'text', $value);
 	}
 
 }

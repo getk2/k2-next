@@ -1,24 +1,68 @@
 <form id="k2ItemForm" class="jwEditForm">
 
-    <label><%= l('K2_TITLE') %></label>
-    <input type="text" name="title" value="<%- row.title %>" />
+    <label for="title"><%= l('K2_TITLE') %></label>
+    <input type="text" name="title" id="title" value="<%- row.title %>" />
+    
+    <label for="alias"><%= l('K2_ALIAS') %></label>
+    <input type="text" name="alias" id="alias" value="<%- row.alias %>" />
+    
+    <label for="catid"><%= l('K2_CATEGORY') %></label>
+    <%= form.category %>
 
     <label><%= l('K2_PUBLISHED') %></label>
-    <input type="text" name="published" value="<%- row.published %>" />
+    <label>
+        <%= l('K2_YES') %>
+        <input type="radio" name="published" value="1" <%= (row.published > 0) ? 'checked="checked"': '' %> />
+    </label>
+    <label>
+        <%= l('K2_NO') %>
+        <input type="radio" name="published" value="0" <%= (row.published < 1) ? 'checked="checked"': '' %> />
+    </label>
+    
+    <label><%= l('K2_FEATURED') %></label>
+    <label>
+        <%= l('K2_YES') %>
+        <input type="radio" name="featured" value="1" <%= (row.featured > 0) ? 'checked="checked"': '' %> />
+    </label>
+    <label>
+        <%= l('K2_NO') %>
+        <input type="radio" name="featured" value="0" <%= (row.featured < 1) ? 'checked="checked"': '' %> />
+    </label>
 
-    <label><%= l('K2_ACCESS') %></label>
-    <input type="text" name="access" value="<%- row.access %>" />
-
-    <span><%= l('K2_CHECKED_OUT') %>: <%= row.checked_out %></span>
+    <label for="access"><%= l('K2_ACCESS') %></label>
+    <%= form.access %>
+    
+    <label for="language"><%= l('K2_LANGUAGE') %></label>
+    <%= form.language %>
+    
+    <label for="created_by_alias"><%= l('K2_AUTHOR_ALIAS') %></label>
+    <input id="created_by_alias" type="text" name="created_by_alias" value="<%- row.created_by_alias %>" />
+    
+    <label for="text"><%= l('K2_TEXT') %></label>
+    <%= form.text %>
 
     <input type="hidden" name="id" value="<%= row.id %>" / >
-
-    <% _(form.permissions).each(function(field) { %>
+    
+    <h2><%= l('K2_METADATA') %></h2>
+    <% _(form.metadata).each(function(field) { %>
     <%= field.label %>
     <%= field.input %>
     <% }); %>
 
-    <% _(form.itemViewOptions).each(function(field) { %>
+    <h2><%= l('K2_LISTING_OPTIONS') %></h2>
+    <% _(form.listingOptions).each(function(field) { %>
+    <%= field.label %>
+    <%= field.input %>
+    <% }); %>
+    
+    <h2><%= l('K2_ITEM_OPTIONS') %></h2>
+    <% _(form.itemOptions).each(function(field) { %>
+    <%= field.label %>
+    <%= field.input %>
+    <% }); %>
+    
+    <h2><%= l('K2_PERMISSIONS') %></h2>
+    <% _(form.permissions).each(function(field) { %>
     <%= field.label %>
     <%= field.input %>
     <% }); %>

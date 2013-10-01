@@ -8,8 +8,8 @@
     <span class="jwOrderingHandle"></span>
     <input type="text" maxlength="6" size="6" name="ordering[]" value="<%= ordering %>" data-id="<%= id %>" />
 </td>
-<td><a class="jwStateToggler jwFeatureToggler<%= featured == 1 ? ' jwTogglerActive' : '' %>" data-state="featured" data-id="<%= id %>"><%= featured %></a></td>
-<td><a class="jwStateToggler jwPublishToggler<%= published == 1 ? ' jwTogglerActive' : '' %>" data-state="published" data-id="<%= id %>"><%= published %></a></td>
+<td><a class="jwActionToggleState jwFeaturedState<%= featured == 1 ? ' jwStateActive' : '' %>" data-state="featured" data-id="<%= id %>"><%= featured %></a></td>
+<td><a class="jwActionToggleState jwPublishedState<%= published == 1 ? ' jwStateActive' : '' %>" data-state="published" data-id="<%= id %>"><%= published %></a></td>
 <td><%= categoryName %></td>
 <td><%= moderatorName %></td>
 <td><%= created %></td>

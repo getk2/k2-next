@@ -268,11 +268,8 @@ class K2View extends JViewLegacy
 		// Get application
 		$application = JFactory::getApplication();
 
-		// Get the prefix
-		$prefix = $this->getName();
-
-		// Get the state.
-		$state = $application->getUserStateFromRequest($prefix.'.'.$name, $name, $default, $type);
+		// Get the state
+		$state = $application->getUserStateFromRequest('com_k2.'.$this->getName().'.'.$name, $name, $default, $type);
 
 		// Push the state to the array
 		$this->userStates[$name] = $state;
@@ -313,43 +310,85 @@ class K2View extends JViewLegacy
 	 */
 	protected function setForm()
 	{
-		// Check if form file exists
-		jimport('joomla.filesystem.file');
-		if(!JFile::exists(JPATH_ADMINISTRATOR.'/components/com_k2/models/'.$this->getName().'.xml'))
+		// Get the row
+		$row = K2Response::getRow();
+
+		// Initialize form object
+		$_form = new stdClass;
+
+		// Access field
+		if (property_exists($row, 'access'))
 		{
-			return false;
+			$_form->access = JHtml::_('access.level', 'access', $row->access, '', false);
+		}
+
+		// Category field
+		if (property_exists($row, 'catid'))
+		{
+			$_form->category = K2HelperHTML::categories($row->catid);
 		}
 		
-		// Import JForm
-		jimport('joomla.form.form');
-
-		// Determine form name and path
-		$formName = 'K2'.ucfirst($this->getName()).'Form';
-		$formPath = JPATH_ADMINISTRATOR.'/components/com_k2/models/'.$this->getName().'.xml';
-
-		// Get the form instance
-		$form = JForm::getInstance($formName, $formPath);
-
-		// Get the row to bind the values to the form
-		$row = K2Response::getRow();
-		$row->params = json_decode($row->params);
-		$form->bind($row);
-
-		// Build the form object
-		$_form = new stdClass;
-		foreach ($form->getFieldsets() as $fieldset)
+		// Language field
+		if (property_exists($row, 'language'))
 		{
-			$array = array();
-			foreach ($form->getFieldset($fieldset->name) as $field)
-			{
-				$tmp = new stdClass;
-				$tmp->label = $field->label;
-				$tmp->input = $field->input;
-				$array[$field->name] = $tmp;
-			}
-			$name = $fieldset->name;
-			$_form->$name = $array;
+			$_form->language = K2HelperHTML::language($row->language, 'language', false);
 		}
+
+		// Text field
+		if (property_exists($row, 'introtext') && property_exists($row, 'fulltext'))
+		{
+			require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/editor.php';
+			$config = JFactory::getConfig();
+			$editor = K2Editor::getInstance($config->get('editor'));
+			$value = trim($row->fulltext) != '' ? $row->introtext.'<hr id="system-readmore" />'.$row->fulltext : $row->introtext;
+			$_form->text = $editor->display('text', $value, '100%', '300', '40', '5');
+		}
+
+		// Check if form file exists
+		jimport('joomla.filesystem.file');
+		if (JFile::exists(JPATH_ADMINISTRATOR.'/components/com_k2/models/'.$this->getName().'.xml'))
+		{
+			// Import JForm
+			jimport('joomla.form.form');
+
+			// Determine form name and path
+			$formName = 'K2'.ucfirst($this->getName()).'Form';
+			$formPath = JPATH_ADMINISTRATOR.'/components/com_k2/models/'.$this->getName().'.xml';
+
+			// Get the form instance
+			$form = JForm::getInstance($formName, $formPath);
+
+			// Bind values
+			if (property_exists($row, 'metadata'))
+			{
+				$row->metadata = json_decode($row->metadata);
+			}
+			if (property_exists($row, 'params'))
+			{
+				$row->params = json_decode($row->params);
+			}
+			if (property_exists($row, 'plugins'))
+			{
+				$row->plugins = json_decode($row->plugins);
+			}
+			$form->bind($row);
+
+			// Attach the JForm fields to the form
+			foreach ($form->getFieldsets() as $fieldset)
+			{
+				$array = array();
+				foreach ($form->getFieldset($fieldset->name) as $field)
+				{
+					$tmp = new stdClass;
+					$tmp->label = $field->label;
+					$tmp->input = $field->input;
+					$array[$field->name] = $tmp;
+				}
+				$name = $fieldset->name;
+				$_form->$name = $array;
+			}
+		}
+
 		K2Response::setForm($_form);
 	}
 
@@ -475,6 +514,18 @@ class K2View extends JViewLegacy
 			'id' => 'jwHelpLink'
 		), 'secondary');
 
+	}
+
+	/**
+	 * Hook for children views to allow them set the title.
+	 *
+	 * @param   string  $title	The title.
+	 *
+	 * @return void
+	 */
+	protected function setTitle($title)
+	{
+		K2Response::setTitle(JText::_($title));
 	}
 
 }

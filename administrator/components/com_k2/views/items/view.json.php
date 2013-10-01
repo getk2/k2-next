@@ -29,7 +29,7 @@ class K2ViewItems extends K2View
 	public function show()
 	{
 		// Set title
-		K2Response::setTitle(JText::_('K2_ITEMS'));
+		$this->setTitle('K2_ITEMS');
 
 		// Set user states
 		$this->setUserStates();
@@ -68,14 +68,14 @@ class K2ViewItems extends K2View
 	public function edit($id = null)
 	{
 		// Set title
-		K2Response::setTitle(JText::_('K2_ITEM'));
+		$this->setTitle('K2_ITEM');
 
 		// Set row
 		$this->setRow($id);
 
 		// Set form
 		$this->setForm();
-
+		
 		// Set menu
 		$this->setMenu('edit');
 
@@ -136,17 +136,17 @@ class K2ViewItems extends K2View
 	{
 		K2Response::addToolbarAction('featured', 'K2_TOGGLE_FEATURED_STATE', array(
 			'data-state' => 'featured',
-			'class' => 'jwBatchStateToggler',
-			'id' => 'jwBatchFeaturedToggler'
+			'class' => 'jwActionToggleState',
+			'id' => 'jwActionToggleFeaturedState'
 		));
 		K2Response::addToolbarAction('published', 'K2_TOGGLE_PUBLISHED_STATE', array(
 			'data-state' => 'published',
-			'class' => 'jwBatchStateToggler',
-			'id' => 'jwBatchPublishedToggler'
+			'class' => 'jwActionToggleState',
+			'id' => 'jwActionTogglePublishedState'
 		));
-		K2Response::addToolbarAction('batch', 'K2_BATCH', array('id' => 'jwBatchButton'));
+		K2Response::addToolbarAction('batch', 'K2_BATCH', array('id' => 'jwActionBatch'));
 
-		K2Response::addToolbarAction('delete', 'K2_DELETE', array('id' => 'jwDeleteButton'));
+		K2Response::addToolbarAction('remove', 'K2_DELETE', array('id' => 'jwActionRemove'));
 	}
 
 }

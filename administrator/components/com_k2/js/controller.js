@@ -58,8 +58,8 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 			}, this);
 
 			// Listener for save ordering
-			K2Dispatcher.on('app:controller:saveOrdering', function(keys, values, column) {
-				this.saveOrdering(keys, values, column);
+			K2Dispatcher.on('app:controller:saveOrder', function(keys, values, column) {
+				this.saveOrder(keys, values, column);
 			}, this);
 
 		},
@@ -200,6 +200,9 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 
 		// Sabe function. Saves the model and redirects properly.
 		save : function(redirect) {
+			
+			// Trigger the onBeforeSave event
+			K2Dispatcher.trigger('app:controller:beforeSave');
 
 			// Get the form variables
 			var input = jQuery('.jwEditForm').serializeArray();
@@ -249,7 +252,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 			});
 		},
 
-		saveOrdering : function(keys, values, column) {
+		saveOrder : function(keys, values, column) {
 			this.collection.batch(keys, values, column, {
 				success : _.bind(function() {
 					this.list();

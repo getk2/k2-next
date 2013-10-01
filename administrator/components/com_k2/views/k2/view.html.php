@@ -25,10 +25,10 @@ class K2ViewK2 extends JViewLegacy
 		{
 			JHtml::_('jquery.framework');
 		}
-		
-		// Add the session token variable
-		$token = JSession::getFormToken();
-		$document->addScriptDeclaration('var K2SessionToken = "'.$token.'";');
+
+		// Add the session token and the editor
+		$document->addScriptDeclaration('var K2SessionToken = "'.JSession::getFormToken().'";');
+		$document->addScriptDeclaration('var K2Editor = '.$this->getEditor().';');
 
 		// Load the application
 		$document->addCustomTag('<script data-main="'.JURI::base(true).'/components/com_k2/js/boot" src="'.JURI::base(true).'/components/com_k2/js/require.js"></script>');
@@ -52,22 +52,23 @@ class K2ViewK2 extends JViewLegacy
 
 	}
 
-	protected function getEditorFunctions()
+	protected function getEditor()
 	{
-		require_once JPATH_ADMINISTRATOR.'/components/com_k2/lib/editor.php';
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/editor.php';
 		$config = JFactory::getConfig();
 		$K2Editor = K2Editor::getInstance($config->get('editor'));
 		$init = 'function () {'.$K2Editor->init().'}';
 		$setContent = 'function (name, content) {'.$K2Editor->setContent('REPLACE_NAME', 'REPLACE_CONTENT').'}';
 		$getContent = 'function (name) {'.$K2Editor->getContent('REPLACE_NAME').'}';
 		$save = 'function (name) {'.$K2Editor->save('REPLACE_NAME').'}';
-		$js = 'init : '.$init.', setContent : '.$setContent.', getContent : '.$getContent.', save : '.$save;
+		$js = '{init : '.$init.', setContent : '.$setContent.', getContent : '.$getContent.', save : '.$save.'}';
 		$js = JString::str_ireplace("'REPLACE_NAME'", 'name', $js);
 		$js = JString::str_ireplace('"REPLACE_NAME"', 'name', $js);
 		$js = JString::str_ireplace('REPLACE_NAME', 'name', $js);
 		$js = JString::str_ireplace("'REPLACE_CONTENT'", 'content', $js);
 		$js = JString::str_ireplace('"REPLACE_CONTENT"', 'content', $js);
 		$js = JString::str_ireplace('REPLACE_CONTENT', 'content', $js);
+		$K2Editor->display('text', '', '100%', '300', '40', '5');
 		return $js;
 	}
 

@@ -17,6 +17,9 @@ defined('_JEXEC') or die ;
 
 class K2Response
 {
+	
+	public static $requirejs = null;
+	
 	/**
 	 * The object which holds the actual data of the response.
 	 *
@@ -553,6 +556,7 @@ class K2Response
 		self::$response->row = self::getRow();
 		self::$response->form = self::getForm();
 		self::$response->messages = JFactory::getApplication()->getMessageQueue();
+		self::$response->requirejs = self::$requirejs;
 		return self::$response;
 	}
 

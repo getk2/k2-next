@@ -68,6 +68,12 @@ class K2TableItems extends K2Table
 			$this->alias = JFilterOutput::stringURLSafe($this->alias);
 		}
 
+		if (JString::trim($this->alias) == '')
+		{
+			$this->setError(JText::_('K2_INVALID_ALIAS'));
+			return false;
+		}
+
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
 		$query->select($db->quoteName('id'))->from($db->quoteName('#__k2_items'))->where($db->quoteName('alias').' = '.$db->quote($this->alias));
@@ -82,7 +88,84 @@ class K2TableItems extends K2Table
 			return false;
 		}
 
+		if ($this->catid < 2)
+		{
+			$this->setError(JText::_('K2_ITEM_MUST_ASSIGNED_TO_A_CATEGORY'));
+			return false;
+		}
+
 		return true;
+	}
+	/**
+	 * Method to bind an associative array or object to the JTable instance.This
+	 * method only binds properties that are publicly accessible and optionally
+	 * takes an array of properties to ignore when binding.
+	 *
+	 * @param   mixed  $src     An associative array or object to bind to the JTable instance.
+	 * @param   mixed  $ignore  An optional array or space separated list of properties to ignore while binding.
+	 *
+	 * @return  boolean  True on success.
+	 *
+	 * @link    http://docs.joomla.org/JTable/bind
+	 * @since   11.1
+	 * @throws  InvalidArgumentException
+	 */
+	public function bind($src, $ignore = array())
+	{
+		if (is_object($src))
+		{
+			$src = get_object_vars($src);
+		}
+		if (isset($src['text']))
+		{
+			$pattern = '#<hr\s+id=("|\')system-readmore("|\')\s*\/*>#i';
+			$tagPos = preg_match($pattern, $src['text']);
+
+			if ($tagPos == 0)
+			{
+				$this->introtext = $src['text'];
+				$this->fulltext = '';
+			}
+			else
+			{
+				list($this->introtext, $this->fulltext) = preg_split($pattern, $src['text'], 2);
+			}
+		}
+		if (isset($src['metadata']) && is_array($src['metadata']))
+		{
+			$registry = new JRegistry;
+			$registry->loadArray($src['metadata']);
+			$src['metadata'] = $registry->toString();
+		}
+		if (isset($src['params']) && is_array($src['params']))
+		{
+			$registry = new JRegistry;
+			$registry->loadArray($src['params']);
+			$src['params'] = $registry->toString();
+		}
+		if (isset($src['plugins']) && is_array($src['plugins']))
+		{
+			$registry = new JRegistry;
+			$registry->loadArray($src['plugins']);
+			$src['plugins'] = $registry->toString();
+		}
+		if (isset($src['rules']) && is_array($src['rules']))
+		{
+			$rules = array();
+			foreach ((array) $src['rules'] as $action => $ids)
+			{
+				$rules[$action] = array();
+				foreach ($ids as $id => $p)
+				{
+					if ($p !== '')
+					{
+						$rules[$action][$id] = ($p == '1' || $p == 'true') ? true : false;
+					}
+				}
+			}
+			$this->setRules(new JAccessRules($rules));
+		}
+		return parent::bind($src, $ignore);
 	}
 
 }
