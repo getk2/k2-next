@@ -21,18 +21,18 @@ class K2Helper
 
 		if (property_exists($row, 'created'))
 		{
-			$row->created = JHTML::_('date', $row->created, JText::_('K2_DATE_FORMAT'));
+			$row->createdDate = JHTML::_('date', $row->created, JText::_('K2_DATE_FORMAT'));
 		}
 
 		if (property_exists($row, 'modified'))
 		{
 			if ((int)$row->modified)
 			{
-				$row->modified = JHTML::_('date', $row->modified, JText::_('K2_DATE_FORMAT'));
+				$row->modifiedDate = JHTML::_('date', $row->modified, JText::_('K2_DATE_FORMAT'));
 			}
 			else
 			{
-				$row->modified = JText::_('K2_NEVER');
+				$row->modifiedDate = JText::_('K2_NEVER');
 			}
 		}
 
