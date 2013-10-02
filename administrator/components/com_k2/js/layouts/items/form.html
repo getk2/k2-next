@@ -58,6 +58,11 @@
 
     <input type="hidden" name="id" value="<%= row.id %>" / >
     
+    <% _(form.jform).each(function(field) { %>
+    <%= field.label %>
+    <%= field.input %>
+    <% }); %>
+    
     <h2><%= l('K2_METADATA') %></h2>
     <% _(form.metadata).each(function(field) { %>
     <%= field.label %>

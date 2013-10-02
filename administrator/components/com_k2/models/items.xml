@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form>
+	<fields>
+		<fieldset name="jform"></fieldset>
+	<fields>
 	<fields name="params">
 		<fieldset name="listingOptions" addfieldpath="/administrator/components/com_k2/elements">
 			<field name="catItemTitle" type="list" default="" label="K2_TITLE" description="">

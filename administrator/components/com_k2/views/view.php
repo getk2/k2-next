@@ -327,7 +327,7 @@ class K2View extends JViewLegacy
 		{
 			$_form->category = K2HelperHTML::categories($row->catid);
 		}
-		
+
 		// Language field
 		if (property_exists($row, 'language'))
 		{
@@ -372,6 +372,18 @@ class K2View extends JViewLegacy
 				$row->plugins = json_decode($row->plugins);
 			}
 			$form->bind($row);
+
+			// Import plugins to extend the form
+			JPluginHelper::importPlugin('k2');
+
+			// Get the dispatcher.
+			$dispatcher = JEventDispatcher::getInstance();
+
+			// Trigger the form preparation event
+			$results = $dispatcher->trigger('onContentPrepareForm', array(
+				$form,
+				$row
+			));
 
 			// Attach the JForm fields to the form
 			foreach ($form->getFieldsets() as $fieldset)
