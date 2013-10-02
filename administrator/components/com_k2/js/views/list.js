@@ -10,7 +10,15 @@ define(['marionette', 'text!layouts/list.html', 'dispatcher'], function(Marionet
 		events : {
 			'click .jwActionSort' : 'sort',
 			'click .jwActionToggleState' : 'toggleState',
-			'click .jwActionSaveOrder' : 'saveOrder'
+			'click .jwActionSaveOrder' : 'saveOrder',
+			'change #jwRowsToggler' : 'toggleRowsSelection',
+			'change .jwRowToggler' : 'toggleRowSelection'
+		},
+		initialize : function() {
+			K2Dispatcher.on('onToolbarClose', function() {
+				jQuery('#jwRowsToggler').prop('checked', false);
+				jQuery('.jwRowToggler').prop('checked', false);
+			});
 		},
 		sort : function(event) {
 			event.preventDefault();
@@ -33,10 +41,20 @@ define(['marionette', 'text!layouts/list.html', 'dispatcher'], function(Marionet
 			var values = [];
 			jQuery('input[name="' + column + '[]"]').each(function() {
 				var row = self.jQuery(this);
-				keys.push(row.data('id'))
+				keys.push(row.data('id'));
 				values.push(parseInt(row.val()));
 			});
 			K2Dispatcher.trigger('app:controller:saveOrder', keys, values, column);
+		},
+		toggleRowsSelection : function(event) {
+			var el = jQuery(event.currentTarget);
+			jQuery('.jwRowToggler').prop('checked', el.prop('checked'));
+			K2Dispatcher.trigger('app:view:toolbar', el.prop('checked'));
+		},
+		toggleRowSelection : function(event) {
+			var el = jQuery(event.currentTarget);
+			var show = (jQuery('.jwRowToggler:checked').length > 0) ? true : false;
+			K2Dispatcher.trigger('app:view:toolbar', show);
 		}
 	});
 

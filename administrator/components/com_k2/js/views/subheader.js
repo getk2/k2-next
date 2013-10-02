@@ -9,7 +9,8 @@ define(['marionette', 'text!layouts/subheader.html', 'dispatcher'], function(Mar
 			'change .jwFilters select' : 'filter',
 			'change .jwFilters input' : 'filter',
 			'click .jwActionToggleState' : 'toggleState',
-			'click #jwActionRemove' : 'remove'
+			'click #jwActionRemove' : 'remove',
+			'click .jwActionCloseToolbar' : 'closeToolbar'
 		},
 
 		modelEvents : {
@@ -24,6 +25,18 @@ define(['marionette', 'text!layouts/subheader.html', 'dispatcher'], function(Mar
 					'toolbar' : response.toolbar
 				});
 			}, this);
+
+			K2Dispatcher.on('app:view:toolbar', function(show) {
+				if (show) {
+					this.showToolbar();
+				} else {
+					this.hideToolbar();
+				}
+			}, this);
+		},
+
+		onRender : function() {
+			this.$el.find('.jwToolbar').hide();
 		},
 
 		filter : function(event) {
@@ -46,6 +59,20 @@ define(['marionette', 'text!layouts/subheader.html', 'dispatcher'], function(Mar
 			var el = jQuery(event.currentTarget);
 			var state = el.data('state');
 			K2Dispatcher.trigger('app:controller:batchToggleState', rows, state);
+		},
+
+		showToolbar : function() {
+			this.$el.find('.jwToolbar').show();
+		},
+
+		hideToolbar : function() {
+			this.$el.find('.jwToolbar').hide();
+		},
+		
+		closeToolbar : function(event) {
+			event.preventDefault();
+			K2Dispatcher.trigger('onToolbarClose');
+			this.hideToolbar();
 		}
 	});
 
