@@ -22,6 +22,12 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 		},
 		onDomRefresh : function() {
 			K2Editor.init();
+			if (SqueezeBox !== undefined) {
+				SqueezeBox.initialize({});
+				SqueezeBox.assign($$('a.modal-button'), {
+					parse : 'rel'
+				});
+			}
 		}
 	});
 	return K2ViewItem;
