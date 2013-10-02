@@ -218,6 +218,9 @@ class K2ModelItems extends K2Model
 				case 'modified' :
 					$order = 'item.modified DESC';
 					break;
+				case 'language' :
+					$order = 'languageTitle ASC';
+					break;
 			}
 		}
 		// Append sorting

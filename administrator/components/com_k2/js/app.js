@@ -171,6 +171,11 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'vie
 		K2[region].show(view);
 	});
 
+	// Message event listener
+	K2Dispatcher.on('app:message', function(type, text) {
+		alert('Type:' + type + ' Message: ' + text);
+	});
+
 	// Update event listener. Triggered when the server response is parsed.
 	K2Dispatcher.on('app:update', function(response) {
 

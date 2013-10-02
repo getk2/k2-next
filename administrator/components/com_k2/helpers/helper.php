@@ -21,19 +21,25 @@ class K2Helper
 
 		if (property_exists($row, 'created'))
 		{
-			$row->createdDate = JHTML::_('date', $row->created, JText::_('K2_DATE_FORMAT'));
+			$row->createdDate = JHtml::_('date', $row->created, JText::_('K2_DATE_FORMAT'));
 		}
 
 		if (property_exists($row, 'modified'))
 		{
 			if ((int)$row->modified)
 			{
-				$row->modifiedDate = JHTML::_('date', $row->modified, JText::_('K2_DATE_FORMAT'));
+				$row->modifiedDate = JHtml::_('date', $row->modified, JText::_('K2_DATE_FORMAT'));
 			}
 			else
 			{
 				$row->modifiedDate = JText::_('K2_NEVER');
 			}
+		}
+
+		if (property_exists($row, 'language') && property_exists($row, 'languageTitle') && empty($row->languageTitle))
+		{
+
+			$row->languageTitle = JText::_('K2_ALL');
 		}
 
 		return $row;

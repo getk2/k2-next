@@ -72,7 +72,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 				var parts = url.split('/');
 				this.resource = _.first(parts);
 				if (_.indexOf(this.resources, this.resource) === -1) {
-					K2Dispatcher.trigger('app:error', 404);
+					this.enqueueMessage('error', l('K2_NOT_FOUND'));
 				} else {
 					if (parts.length === 1) {
 						this.list(1);
@@ -83,7 +83,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 					} else if (parts.length === 3 && parts[1] === 'page') {
 						this.list(_.last(parts));
 					} else {
-						K2Dispatcher.trigger('app:error', 404);
+						this.enqueueMessage('error', l('K2_NOT_FOUND'));
 					}
 				}
 			}
@@ -92,6 +92,11 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 		// Proxy function for triggering the app:redirect event
 		redirect : function(url, trigger) {
 			K2Dispatcher.trigger('app:redirect', url, trigger);
+		},
+
+		// Proxy function triggering the app:redirect event
+		enqueueMessage : function(type, text) {
+			K2Dispatcher.trigger('app:message', type, text);
 		},
 
 		// Displays a listing page depending on the requested resource type
@@ -152,6 +157,9 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 						// Update the URL without triggering the router function
 						this.redirect(this.resource + '/page/' + this.collection.getState('page'), false);
 
+					}, this),
+					error : _.bind(function(model, xhr, options) {
+						this.enqueueMessage('error', xhr.responseText);
 					}, this)
 				});
 
@@ -192,6 +200,9 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 						// Update the URL without triggering the router function
 						this.redirect(this.resource + suffix, false);
 
+					}, this),
+					error : _.bind(function(model, xhr, options) {
+						this.enqueueMessage('error', xhr.responseText);
 					}, this)
 				});
 
@@ -200,7 +211,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 
 		// Sabe function. Saves the model and redirects properly.
 		save : function(redirect) {
-			
+
 			// Trigger the onBeforeSave event
 			K2Dispatcher.trigger('app:controller:beforeSave');
 
@@ -211,7 +222,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 			this.model.save(null, {
 				data : input,
 				silent : true,
-				success : _.bind((function(model) {
+				success : _.bind(function(model) {
 					if (redirect === 'list') {
 						this.list();
 					} else if (redirect === 'add') {
@@ -219,10 +230,10 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 					} else if (redirect === 'edit') {
 						this.edit(this.model.get('id'));
 					}
-				}), this),
-				error : function(model, xhr, options) {
-					alert(xhr.responseText);
-				}
+				}, this),
+				error : _.bind(function(model, xhr, options) {
+					this.enqueueMessage('error', xhr.responseText);
+				}, this)
 			});
 		},
 
@@ -235,9 +246,9 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 					success : _.bind(function() {
 						this.list();
 					}, this),
-					error : function(model, xhr, options) {
-						alert(xhr.responseText);
-					}
+					error : _.bind(function(model, xhr, options) {
+						this.enqueueMessage('error', xhr.responseText);
+					}, this)
 				});
 			}
 		},
@@ -248,6 +259,9 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 			model.toggleState(state, {
 				success : _.bind(function() {
 					this.list();
+				}, this),
+				error : _.bind(function(model, xhr, options) {
+					this.enqueueMessage('error', xhr.responseText);
 				}, this)
 			});
 		},
@@ -256,6 +270,9 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 			this.collection.batch(keys, values, column, {
 				success : _.bind(function() {
 					this.list();
+				}, this),
+				error : _.bind(function(model, xhr, options) {
+					this.enqueueMessage('error', xhr.responseText);
 				}, this)
 			});
 		},
@@ -265,6 +282,9 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 			this.collection.remove(rows, {
 				success : _.bind(function() {
 					this.list();
+				}, this),
+				error : _.bind(function(model, xhr, options) {
+					this.enqueueMessage('error', xhr.responseText);
 				}, this)
 			});
 		},
@@ -280,6 +300,9 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 				reset : true,
 				success : _.bind(function() {
 					this.redirect(this.resource + '/page/' + this.collection.getState('page'), false);
+				}, this),
+				error : _.bind(function(model, xhr, options) {
+					this.enqueueMessage('error', xhr.responseText);
 				}, this)
 			});
 		},
@@ -289,6 +312,9 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 			this.collection.batchToggleState(rows, state, {
 				success : _.bind(function() {
 					this.list();
+				}, this),
+				error : _.bind(function(model, xhr, options) {
+					this.enqueueMessage('error', xhr.responseText);
 				}, this)
 			});
 		}
