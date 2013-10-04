@@ -105,9 +105,9 @@ class K2ModelTags extends K2Model
 			if ($search)
 			{
 				$search = $db->escape($search, true);
-				$query->where('( LOWER('.$db->quoteName('name').'.) LIKE '.$db->Quote('%'.$search.'%', false).' 
-				OR '.$db->quoteName('id').' = '.(int)$search.')  
-				OR LOWER('.$db->quoteName('alias').'.) LIKE '.$db->Quote('%'.$search.'%', false).')');
+				$query->where('( LOWER('.$db->quoteName('name').') LIKE '.$db->Quote('%'.$search.'%', false).' 
+				OR '.$db->quoteName('id').' = '.(int)$search.'  
+				OR LOWER('.$db->quoteName('alias').') LIKE '.$db->Quote('%'.$search.'%', false).')');
 			}
 		}
 	}

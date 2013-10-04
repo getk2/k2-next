@@ -2,7 +2,7 @@
 <form>
 	<fields>
 		<fieldset name="jform"></fieldset>
-	<fields>
+	</fields>
 	<fields name="params">
 		<fieldset name="listingOptions" addfieldpath="/administrator/components/com_k2/elements">
 			<field name="catItemTitle" type="list" default="" label="K2_TITLE" description="">

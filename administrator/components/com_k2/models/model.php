@@ -84,7 +84,18 @@ class K2Model extends JModelLegacy
 			return false;
 		}
 		$this->setState('id', $table->id);
+		$this->onAfterSave();
 		return true;
+	}
+
+	/**
+	 * onAfterSave method. Hook for chidlren model to save extra data.
+	 *
+	 * @return void
+	 */
+
+	protected function onAfterSave()
+	{
 	}
 
 	/**

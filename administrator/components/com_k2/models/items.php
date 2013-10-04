@@ -230,4 +230,24 @@ class K2ModelItems extends K2Model
 		}
 	}
 
+	/**
+	 * onAfterSave method.
+	 *
+	 * @return void
+	 */
+
+	protected function onAfterSave()
+	{
+		$data = $this->getState('data');
+		if(isset($data['tags']))
+		{
+			$tags = explode(',', $data['tags']);
+			foreach($tags as $tag)
+			{
+				$tag = trim($tag);
+				$tag = ucwords($tag);
+			}
+		}
+	}
+
 }

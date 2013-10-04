@@ -5,9 +5,6 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher', 'collections
 		modelEvents : {
 			'change' : 'render'
 		},
-		events : {
-			'keypress #tags' : 'searchTags'
-		},
 		initialize : function() {
 			K2Dispatcher.on('app:controller:beforeSave', function() {
 				this.onBeforeSave();
@@ -30,8 +27,60 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher', 'collections
 			K2Editor.save('text');
 		},
 		onDomRefresh : function() {
+			// Initialize the editor
 			K2Editor.init();
-			if (typeof(SqueezeBox) !== 'undefined') {
+
+			// Tags auto complete
+			var url = this.tags.url();
+			var el = this.$el.find(this.$el.find('#tags'));
+			require(['widgets/select2/select2', 'css!widgets/select2/select2.css'], function() {
+				el.select2({
+					tags : [],
+					width : '300px',
+					placeholder : l('K2_ENTER_SOME_TAGS'),
+					createSearchChoice : function(term, data) {
+						if (jQuery(data).filter(function() {
+							return this.text.toLowerCase !== term.toLowerCase();
+						}).length === 0) {
+							return {
+								id : term,
+								text : term
+							};
+						}
+					},
+					ajax : {
+						url : url,
+						dataType : 'json',
+						quietMillis : 100,
+						data : function(term, page) {
+							return {
+								search : term,
+								sorting : 'name',
+								limit : 50,
+								page : page,
+							};
+						},
+						results : function(data, page) {
+							var tags = [];
+							jQuery.each(data.rows, function(index, row) {
+								var tag = {}
+								tags.push({
+									id : row.name,
+									text : row.name
+								});
+							});
+							var more = (page * 50) < data.pagination.total;
+							return {
+								results : tags,
+								more : more
+							};
+						}
+					}
+				});
+			});
+
+			// Restore Joomla! modal events
+			if ( typeof (SqueezeBox) !== 'undefined') {
 				SqueezeBox.initialize({});
 				SqueezeBox.assign($$('a.modal-button'), {
 					parse : 'rel'

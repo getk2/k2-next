@@ -50,8 +50,7 @@
     <label for="modified_by"><%= l('K2_MODERATOR') %></label>
     <input id="modified_by" type="text" name="modified_by" value="<%- row.modified_by %>" /> <span><%= row.moderatorName %></span>
     
-    <label for="tags"><%= l('K2_TAGS') %></label>
-    <input id="tags" type="text" name="tags" value="<%- row.tags %>" />
+    <input type="hidden" id="tags"/ >
     
     <label for="text"><%= l('K2_TEXT') %></label>
     <%= form.text %>
