@@ -17,15 +17,26 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 		itemView : K2ViewItemsRow,
 		onDomRefresh : function() {
 			var el = this.$el.find('table');
-			require(['widgets/sortable/jquery-sortable-min', 'widgets/sortable/jquery-sortable-min'], function() {
-				console.info('aa');
+			var startValue = this.$el.find('input[name="ordering[]"]:first').val();
+			var collection = this.collection;
+			require(['widgets/sortable/jquery-sortable-min', 'css!widgets/sortable/sortable.css'], function() {
 				el.sortable({
 					containerSelector : 'table',
 					itemPath : '> tbody',
-					itemSelector : 'tr',
-					placeholder : '<tr class="placeholder"/>'
+					itemSelector : 'tbody tr',
+					placeholder : '<tr class="jwSortingPlaceholder"/>',
+					onDrop : function(item, container, _super) {
+						var value = startValue;
+						el.find('input[name="ordering[]"]').each(function(index) {
+							var row = jQuery(this);
+							row.val(value);
+							collection.get(row.data('id')).set(name, value);
+							value++;
+						});
+						_super(item);
+					}
 				});
-			})
+			});
 		}
 	});
 	return K2ViewItems;
