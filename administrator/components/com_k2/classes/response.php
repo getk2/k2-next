@@ -335,16 +335,18 @@ class K2Response
 	 * Adds a filter to the filters array that will be rendered on the page.
 	 *
 	 * @param string $id		The id of the filter. This identifier allows the client to get the specific filter from the Backbone filters collection.
+	 * @param string $value		The value of the filter.
 	 * @param string $label		The label of the filter.
 	 * @param string $input		The HTML that the filter outputs.
 	 * @param string $position	The position of the filter. Use this to set a position so the client can render filters together in positions.
 	 *
 	 * @return void
 	 */
-	public static function addFilter($id, $label, $input, $radio = false, $position = null)
+	public static function addFilter($id, $value,  $label, $input, $radio = false, $position = null)
 	{
 		$filter = new stdClass;
 		$filter->id = $id;
+		$filter->value = $value;
 		$filter->label = $label ? $label : '';
 		$filter->input = $input ? $input : '';
 		$filter->radio = $radio;

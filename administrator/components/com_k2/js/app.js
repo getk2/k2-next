@@ -93,7 +93,7 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'vie
 		// Add the language function to the window object so it can be executed in our layouts.
 		window.l = function(key) {
 			return K2.language.get(key) || key;
-		}
+		};
 		// String repeat
 		window.str_repeat = function(input, multiplier) {
 			// http://kevin.vanzonneveld.net
@@ -117,7 +117,7 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'vie
 			}
 			return y;
 
-		}
+		};
 		// Render the header view
 		this.header.show(new HeaderView({
 			model : new Backbone.Model({

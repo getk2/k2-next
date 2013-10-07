@@ -92,10 +92,10 @@ class K2ViewItems extends K2View
 		$this->setUserState('page', 1, 'int');
 		$this->setUserState('search', '', 'string');
 		$this->setUserState('access', 0, 'int');
-		$this->setUserState('trashed', null, 'cmd');
-		$this->setUserState('published', null, 'cmd');
-		$this->setUserState('featured', null, 'cmd');
-		$this->setUserState('category', null, 'cmd');
+		$this->setUserState('trashed', '', 'cmd');
+		$this->setUserState('published', '', 'cmd');
+		$this->setUserState('featured', '', 'cmd');
+		$this->setUserState('category', '', 'cmd');
 		$this->setUserState('user', 0, 'int');
 		$this->setUserState('language', '', 'string');
 		$this->setUserState('sorting', 'id', 'string');
@@ -105,7 +105,7 @@ class K2ViewItems extends K2View
 	{
 
 		// Language filter
-		K2Response::addFilter('language', JText::_('K2_SELECT_LANGUAGE'), K2HelperHTML::language($this->getUserState('language')));
+		K2Response::addFilter('language', $this->getUserState('language'), JText::_('K2_SELECT_LANGUAGE'), K2HelperHTML::language($this->getUserState('language')));
 
 		// Sorting filter
 		$sortingOptions = array(
@@ -122,13 +122,13 @@ class K2ViewItems extends K2View
 			'K2_MODIFIED' => 'modified',
 			'K2_HITS' => 'hits'
 		);
-		K2Response::addFilter('sorting', JText::_('K2_SORT_BY'), K2HelperHTML::sorting($this->getUserState('sorting'), $sortingOptions));
+		K2Response::addFilter('sorting', $this->getUserState('sorting'), JText::_('K2_SORT_BY'), K2HelperHTML::sorting($this->getUserState('sorting'), $sortingOptions));
 
 		// Published filter
-		K2Response::addFilter('published', JText::_('K2_PUBLISHED'), K2HelperHTML::published($this->getUserState('published')), true);
+		K2Response::addFilter('published', $this->getUserState('published'), JText::_('K2_PUBLISHED'), K2HelperHTML::published($this->getUserState('published')), true);
 
 		// Featured filter
-		K2Response::addFilter('featured', JText::_('K2_FEATURED'), K2HelperHTML::featured($this->getUserState('featured')), true);
+		K2Response::addFilter('featured', $this->getUserState('featured'), JText::_('K2_FEATURED'), K2HelperHTML::featured($this->getUserState('featured')), true);
 
 	}
 

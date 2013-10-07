@@ -123,7 +123,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 
 				// Fetch data from server
 				this.collection.fetch({
-
+										
 					// Success callback
 					success : _.bind(function() {
 
