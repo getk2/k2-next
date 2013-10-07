@@ -26,14 +26,20 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 					itemSelector : 'tbody tr',
 					placeholder : '<tr class="jwSortingPlaceholder"/>',
 					onDrop : function(item, container, _super) {
+
 						var value = startValue;
+						var keys = [];
+						var values = [];
+
 						el.find('input[name="ordering[]"]').each(function(index) {
 							var row = jQuery(this);
-							row.val(value);
-							collection.get(row.data('id')).set(name, value);
+							keys.push(row.data('id'));
+							values.push(value);
 							value++;
 						});
 						_super(item);
+
+						K2Dispatcher.trigger('app:controller:saveOrder', keys, values, 'ordering');
 					}
 				});
 			});
