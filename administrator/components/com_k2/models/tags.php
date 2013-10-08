@@ -197,13 +197,9 @@ class K2ModelTags extends K2Model
 		// Get query
 		$query = $db->getQuery(true);
 
-		// Delete query
+		// Delete
 		$query->delete('#__k2_tags_xref')->where($db->quoteName('itemId').' = '.(int)$itemId);
-
-		// Set Query
 		$db->setQuery($query);
-
-		// Execute
 		$db->execute();
 
 		// Return
@@ -220,20 +216,12 @@ class K2ModelTags extends K2Model
 
 		// Delete any duplicates
 		$query->delete('#__k2_tags_xref')->where($db->quoteName('tagId').' = '.(int)$tagId)->where($db->quoteName('itemId').' = '.(int)$itemId);
-
-		// Set Query
 		$db->setQuery($query);
-
-		// Execute
 		$db->execute();
 
 		// Insert query
 		$query->insert('#__k2_tags_xref')->columns('tagId, itemId')->values((int)$tagId.','.(int)$itemId);
-
-		// Set Query
 		$db->setQuery($query);
-
-		// Execute
 		$db->execute();
 
 		// Return
