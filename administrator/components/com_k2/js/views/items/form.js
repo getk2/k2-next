@@ -36,9 +36,10 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher', 'collections
 					tags : tags,
 					width : '300px',
 					placeholder : l('K2_ENTER_SOME_TAGS'),
+					tokenSeparators : [','],
 					initSelection : function(element, callback) {
 						var data = [];
-						$(element.val().split(',')).each(function() {
+						jQuery(element.val().split(',')).each(function() {
 							data.push({
 								id : this,
 								text : this
@@ -48,7 +49,7 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher', 'collections
 					},
 					createSearchChoice : function(term, data) {
 						if (jQuery(data).filter(function() {
-							return this.text.toLowerCase !== term.toLowerCase();
+							return this.text.localeCompare(term) === 0;
 						}).length === 0) {
 							return {
 								id : term,

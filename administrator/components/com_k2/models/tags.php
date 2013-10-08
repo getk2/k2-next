@@ -80,8 +80,8 @@ class K2ModelTags extends K2Model
 	private function setQueryConditions(&$query)
 	{
 		$db = $this->getDBO();
-		
-		if($this->getState('itemId'))
+
+		if ($this->getState('itemId'))
 		{
 			$query->leftJoin($db->quoteName('#__k2_tags_xref', 'xref').' ON '.$db->quoteName('xref.tagId').' = '.$db->quoteName('tag.id'));
 			$query->where($db->quoteName('xref.itemId').' = '.(int)$this->getState('itemId'));
@@ -217,6 +217,15 @@ class K2ModelTags extends K2Model
 
 		// Get query
 		$query = $db->getQuery(true);
+
+		// Delete any duplicates
+		$query->delete('#__k2_tags_xref')->where($db->quoteName('tagId').' = '.(int)$tagId)->where($db->quoteName('itemId').' = '.(int)$itemId);
+
+		// Set Query
+		$db->setQuery($query);
+
+		// Execute
+		$db->execute();
 
 		// Insert query
 		$query->insert('#__k2_tags_xref')->columns('tagId, itemId')->values((int)$tagId.','.(int)$itemId);
