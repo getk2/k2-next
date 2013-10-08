@@ -66,7 +66,7 @@ class K2HelperHTML extends K2Helper
 		$options = array();
 		if ($none)
 		{
-			$options[] = JHtml::_('select.option', 1, JText::_('K2_NONE'));
+			$options[] = JHtml::_('select.option', '', JText::_('K2_ALL'));
 		}
 		foreach ($rows as $row)
 		{
