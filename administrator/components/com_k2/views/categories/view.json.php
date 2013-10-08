@@ -92,8 +92,8 @@ class K2ViewCategories extends K2View
 		$this->setUserState('page', 1, 'int');
 		$this->setUserState('search', '', 'string');
 		$this->setUserState('access', 0, 'int');
-		$this->setUserState('trashed', null, 'cmd');
-		$this->setUserState('published', null, 'cmd');
+		$this->setUserState('trashed', '', 'cmd');
+		$this->setUserState('published', '', 'cmd');
 		$this->setUserState('language', '', 'string');
 		$this->setUserState('sorting', 'ordering', 'string');
 	}
@@ -102,7 +102,7 @@ class K2ViewCategories extends K2View
 	{
 
 		// Language filter
-		K2Response::addFilter('language', JText::_('K2_SELECT_LANGUAGE'), K2HelperHTML::language($this->getUserState('language')));
+		K2Response::addFilter('language', $this->getUserState('language'), JText::_('K2_SELECT_LANGUAGE'), K2HelperHTML::language($this->getUserState('language')));
 
 		// Sorting filter
 		$sortingOptions = array(
@@ -116,10 +116,10 @@ class K2ViewCategories extends K2View
 			'K2_CREATED' => 'created',
 			'K2_MODIFIED' => 'modified'
 		);
-		K2Response::addFilter('sorting', JText::_('K2_SORT_BY'), K2HelperHTML::sorting($this->getUserState('sorting'), $sortingOptions));
+		K2Response::addFilter('sorting', $this->getUserState('sorting'), JText::_('K2_SORT_BY'), K2HelperHTML::sorting($this->getUserState('sorting'), $sortingOptions));
 
 		// Published filter
-		K2Response::addFilter('published', JText::_('K2_PUBLISHED'), K2HelperHTML::published($this->getUserState('published')), true);
+		K2Response::addFilter('published', $this->getUserState('published'), JText::_('K2_PUBLISHED'), K2HelperHTML::published($this->getUserState('published')), true);
 
 	}
 

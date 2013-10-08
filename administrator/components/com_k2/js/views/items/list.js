@@ -26,6 +26,7 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 					itemPath : '> tbody',
 					itemSelector : 'tbody tr',
 					placeholder : '<tr class="jwSortingPlaceholder"/>',
+					handle : '.jwOrderingHandle',
 					onDragStart : function(item, container, _super) {
 						startValue = container.el.find('input[name="' + column + '[]"]:first').val();
 						_super(item, container);

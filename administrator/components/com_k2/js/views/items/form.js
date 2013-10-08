@@ -9,7 +9,6 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher', 'collections
 			K2Dispatcher.on('app:controller:beforeSave', function() {
 				this.onBeforeSave();
 			}, this);
-			this.tags = new K2CollectionTags();
 		},
 		serializeData : function() {
 			var data = {
@@ -17,11 +16,6 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher', 'collections
 				'form' : this.model.getForm().toJSON()
 			};
 			return data;
-		},
-		searchTags : function(event) {
-			var el = jQuery(event.currentTarget);
-			this.tags.setState('search', el.val());
-			this.tags.fetch();
 		},
 		onBeforeSave : function() {
 			K2Editor.save('text');
@@ -31,7 +25,6 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher', 'collections
 			K2Editor.init();
 
 			// Tags auto complete
-			var url = this.tags.url();
 			var el = this.$el.find(this.$el.find('#tags'));
 			require(['widgets/select2/select2', 'css!widgets/select2/select2.css'], function() {
 				el.select2({
@@ -49,7 +42,7 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher', 'collections
 						}
 					},
 					ajax : {
-						url : url,
+						url : 'index.php?option=com_k2&task=tags.search&format=json',
 						dataType : 'json',
 						quietMillis : 100,
 						data : function(term, page) {
@@ -69,7 +62,7 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher', 'collections
 									text : row.name
 								});
 							});
-							var more = (page * 50) < data.pagination.total;
+							var more = (page * 50) < data.total;
 							return {
 								results : tags,
 								more : more

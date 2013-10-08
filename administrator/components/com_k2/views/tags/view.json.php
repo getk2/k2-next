@@ -91,7 +91,7 @@ class K2ViewTags extends K2View
 		$this->setUserState('limit', 10, 'int');
 		$this->setUserState('page', 1, 'int');
 		$this->setUserState('search', '', 'string');
-		$this->setUserState('published', null, 'cmd');
+		$this->setUserState('published', '', 'cmd');
 		$this->setUserState('sorting', 'id', 'string');
 	}
 
@@ -104,10 +104,10 @@ class K2ViewTags extends K2View
 			'K2_NAME' => 'name',
 			'K2_PUBLISHED' => 'published',
 		);
-		K2Response::addFilter('sorting', JText::_('K2_SORT_BY'), K2HelperHTML::sorting($this->getUserState('sorting'), $sortingOptions));
+		K2Response::addFilter('sorting', $this->getUserState('sorting'), JText::_('K2_SORT_BY'), K2HelperHTML::sorting($this->getUserState('sorting'), $sortingOptions));
 
 		// Published filter
-		K2Response::addFilter('published', JText::_('K2_PUBLISHED'), K2HelperHTML::published($this->getUserState('published')), true);
+		K2Response::addFilter('published', $this->getUserState('published'), JText::_('K2_PUBLISHED'), K2HelperHTML::published($this->getUserState('published')), true);
 
 	}
 
