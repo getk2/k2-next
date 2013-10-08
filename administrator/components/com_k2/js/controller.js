@@ -271,8 +271,8 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 				success : _.bind(function() {
 					this.list();
 				}, this),
-				error : _.bind(function(model, xhr, options) {
-					this.enqueueMessage('error', xhr.responseText);
+				error : _.bind(function(response) {
+					this.enqueueMessage('error', response.responseText);
 				}, this)
 			});
 		},
