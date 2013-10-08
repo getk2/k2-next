@@ -29,7 +29,7 @@ class K2Model extends JModelLegacy
 	 * @return  array  An array with directory elements. If prefix is equal to '', all directories are returned.
 	 *
 	 */
-	public static function addIncludePath($path = '', $prefix = '')
+	public static function addIncludePath($path = '', $prefix = 'K2Model')
 	{
 		return parent::addIncludePath($path, $prefix);
 	}

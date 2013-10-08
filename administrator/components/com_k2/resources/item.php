@@ -58,9 +58,13 @@ class K2Item extends K2Resource
 		return self::$instances[$id];
 	}
 
-	protected function getComments()
+	public function getTags()
 	{
-		$this->comments = array();
+		K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
+		$model = K2Model::getInstance('Tags', 'K2Model');
+		$model->setState('itemId', $this->id);
+		$tags = $model->getRows();
+		return $tags;
 	}
 
 }

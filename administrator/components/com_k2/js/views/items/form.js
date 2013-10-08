@@ -26,11 +26,26 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher', 'collections
 
 			// Tags auto complete
 			var el = this.$el.find(this.$el.find('#tags'));
+			var tags = [];
+			_.each(this.model.get('tags'), function(tag) {
+				tags.push(tag.name);
+			});
+			this.$el.find('#tags').val(tags.join(','));
 			require(['widgets/select2/select2', 'css!widgets/select2/select2.css'], function() {
 				el.select2({
-					tags : [],
+					tags : tags,
 					width : '300px',
 					placeholder : l('K2_ENTER_SOME_TAGS'),
+					initSelection : function(element, callback) {
+						var data = [];
+						$(element.val().split(',')).each(function() {
+							data.push({
+								id : this,
+								text : this
+							});
+						});
+						callback(data);
+					},
 					createSearchChoice : function(term, data) {
 						if (jQuery(data).filter(function() {
 							return this.text.toLowerCase !== term.toLowerCase();

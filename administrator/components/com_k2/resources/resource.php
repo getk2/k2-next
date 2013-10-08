@@ -47,10 +47,11 @@ class K2Resource
 		$method = 'get'.ucfirst($name);
 		if (method_exists($this, $method))
 		{
-			call_user_func(array(
+			$data = call_user_func(array(
 				$this,
 				$method
 			));
+			$this->$name = $data;
 			return $this->$name;
 		}
 		else

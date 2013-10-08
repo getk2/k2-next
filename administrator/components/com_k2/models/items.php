@@ -37,13 +37,17 @@ class K2ModelItems extends K2Model
 		$query->select($db->quoteName('assetGroup.title', 'viewLevel'));
 		$query->leftJoin($db->quoteName('#__viewlevels', 'assetGroup').' ON '.$db->quoteName('assetGroup.id').' = '.$db->quoteName('item.access'));
 
-		// Join over the user
+		// Join over the author
 		$query->select($db->quoteName('user.name', 'authorName'));
 		$query->leftJoin($db->quoteName('#__users', 'user').' ON '.$db->quoteName('user.id').' = '.$db->quoteName('item.created_by'));
 
-		// Join over the user
+		// Join over the moderator
 		$query->select($db->quoteName('user.name', 'moderatorName'));
 		$query->leftJoin($db->quoteName('#__users', 'moderator').' ON '.$db->quoteName('moderator.id').' = '.$db->quoteName('item.modified_by'));
+
+		// Join over the hits
+		$query->select($db->quoteName('stats.hits', 'hits'));
+		$query->leftJoin($db->quoteName('#__k2_stats', 'stats').' ON '.$db->quoteName('stats.itemId').' = '.$db->quoteName('item.id'));
 
 		// Set query conditions
 		$this->setQueryConditions($query);
@@ -80,15 +84,6 @@ class K2ModelItems extends K2Model
 
 		// Join over the categories
 		$query->leftJoin($db->quoteName('#__k2_categories', 'category').' ON '.$db->quoteName('category.id').' = '.$db->quoteName('item.catid'));
-
-		// Join over the language
-		$query->leftJoin($db->quoteName('#__languages', 'lang').' ON '.$db->quoteName('lang.lang_code').' = '.$db->quoteName('item.language'));
-
-		// Join over the asset groups.
-		$query->leftJoin($db->quoteName('#__viewlevels', 'assetGroup').' ON '.$db->quoteName('assetGroup.id').' = '.$db->quoteName('item.access'));
-
-		// Join over the user
-		$query->leftJoin($db->quoteName('#__users', 'user').' ON '.$db->quoteName('user.id').' = '.$db->quoteName('item.created_by'));
 
 		// Set query conditions
 		$this->setQueryConditions($query);
@@ -218,6 +213,9 @@ class K2ModelItems extends K2Model
 				case 'modified' :
 					$order = 'item.modified DESC';
 					break;
+				case 'hits' :
+					$order = 'hits DESC';
+					break;
 				case 'language' :
 					$order = 'languageTitle ASC';
 					break;
@@ -239,13 +237,18 @@ class K2ModelItems extends K2Model
 	protected function onAfterSave()
 	{
 		$data = $this->getState('data');
-		if(isset($data['tags']))
+		if (isset($data['tags']) && JString::trim($data['tags']) != '')
 		{
+			$model = K2Model::getInstance('Tags', 'K2Model');
+			$itemId = $this->getState('id');
+			$model->deleteItemTags($itemId);
+
 			$tags = explode(',', $data['tags']);
-			foreach($tags as $tag)
+			$tags = array_unique($tags);
+			foreach ($tags as $tag)
 			{
-				$tag = trim($tag);
-				$tag = ucwords($tag);
+				$tagId = $model->addTag($tag);
+				$model->tagItem($tagId, $itemId);
 			}
 		}
 	}

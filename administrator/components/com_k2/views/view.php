@@ -153,10 +153,11 @@ class K2View extends JViewLegacy
 		}
 
 		// Get helper
-		$helper = $this->loadHelper();
+		$this->loadHelper($this->getName());
+		$helper = 'K2Helper'.ucfirst($this->getName());
 
 		// Prepare row
-		if ($helper)
+		if (class_exists($helper) && method_exists($helper, 'prepare'))
 		{
 			$helper::prepare($row);
 		}

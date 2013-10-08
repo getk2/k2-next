@@ -31,6 +31,11 @@ class K2HelperItems extends K2Helper
 			'params',
 			'rules'
 		));
+
+		$row->hits = (int)$row->hits;
+
+		$row->tags = $row->getTags();
+
 		return $row;
 	}
 
