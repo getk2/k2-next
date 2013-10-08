@@ -6,11 +6,11 @@ define(['marionette', 'text!layouts/header.html', 'dispatcher'], function(Marion
 		template : _.template(template),
 
 		events : {
-			'click #jwActionAdd' : 'add',
-			'click #jwActionSave' : 'save',
-			'click #jwActionSaveAndNew' : 'saveAndNew',
-			'click #jwActionSaveAndClose' : 'saveAndClose',
-			'click #jwActionClose' : 'close'
+			'click #appActionAdd' : 'add',
+			'click #appActionSave' : 'save',
+			'click #appActionSaveAndNew' : 'saveAndNew',
+			'click #appActionSaveAndClose' : 'saveAndClose',
+			'click #appActionClose' : 'close'
 		},
 
 		modelEvents : {

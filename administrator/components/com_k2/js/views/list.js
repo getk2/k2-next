@@ -4,20 +4,20 @@ define(['marionette', 'text!layouts/list.html', 'dispatcher'], function(Marionet
 	var K2ListLayout = Marionette.Layout.extend({
 		template : _.template(template),
 		regions : {
-			grid : '.jwGrid',
-			pagination : '.jwPagination'
+			grid : '.appGrid',
+			pagination : '.appPagination'
 		},
 		events : {
-			'click .jwActionSort' : 'sort',
-			'click .jwActionToggleState' : 'toggleState',
-			'click .jwActionSaveOrder' : 'saveOrder',
-			'change #jwRowsToggler' : 'toggleRowsSelection',
-			'change .jwRowToggler' : 'toggleRowSelection'
+			'click .appActionSort' : 'sort',
+			'click .appActionToggleState' : 'toggleState',
+			'click .appActionSaveOrder' : 'saveOrder',
+			'change #appRowsToggler' : 'toggleRowsSelection',
+			'change .appRowToggler' : 'toggleRowSelection'
 		},
 		initialize : function() {
 			K2Dispatcher.on('onToolbarClose', function() {
-				jQuery('#jwRowsToggler').prop('checked', false);
-				jQuery('.jwRowToggler').prop('checked', false);
+				jQuery('#appRowsToggler').prop('checked', false);
+				jQuery('.appRowToggler').prop('checked', false);
 			});
 		},
 		sort : function(event) {
@@ -48,12 +48,12 @@ define(['marionette', 'text!layouts/list.html', 'dispatcher'], function(Marionet
 		},
 		toggleRowsSelection : function(event) {
 			var el = jQuery(event.currentTarget);
-			jQuery('.jwRowToggler').prop('checked', el.prop('checked'));
+			jQuery('.appRowToggler').prop('checked', el.prop('checked'));
 			K2Dispatcher.trigger('app:view:toolbar', el.prop('checked'));
 		},
 		toggleRowSelection : function(event) {
 			var el = jQuery(event.currentTarget);
-			var show = (jQuery('.jwRowToggler:checked').length > 0) ? true : false;
+			var show = (jQuery('.appRowToggler:checked').length > 0) ? true : false;
 			K2Dispatcher.trigger('app:view:toolbar', show);
 		}
 	});

@@ -216,7 +216,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 			K2Dispatcher.trigger('app:controller:beforeSave');
 
 			// Get the form variables
-			var input = jQuery('.jwEditForm').serializeArray();
+			var input = jQuery('.appEditForm').serializeArray();
 
 			// Save
 			this.model.save(null, {

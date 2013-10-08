@@ -10,7 +10,7 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher'], function(Mario
 		},
 
 		events : {
-			'change #jwSearch' : 'search'
+			'change #appSearch' : 'search'
 		},
 
 		search : function(event) {

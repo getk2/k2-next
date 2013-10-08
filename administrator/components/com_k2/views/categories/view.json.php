@@ -127,12 +127,12 @@ class K2ViewCategories extends K2View
 	{
 		K2Response::addToolbarAction('published', 'K2_TOGGLE_PUBLISHED_STATE', array(
 			'data-state' => 'published',
-			'class' => 'jwBatchStateToggler',
-			'id' => 'jwBatchPublishedToggler'
+			'class' => 'appBatchStateToggler',
+			'id' => 'appBatchPublishedToggler'
 		));
-		K2Response::addToolbarAction('batch', 'K2_BATCH', array('id' => 'jwBatchButton'));
+		K2Response::addToolbarAction('batch', 'K2_BATCH', array('id' => 'appBatchButton'));
 
-		K2Response::addToolbarAction('delete', 'K2_DELETE', array('id' => 'jwDeleteButton'));
+		K2Response::addToolbarAction('delete', 'K2_DELETE', array('id' => 'appDeleteButton'));
 	}
 
 }

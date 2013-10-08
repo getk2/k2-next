@@ -9,11 +9,11 @@
 
 // no direct access
 defined('_JEXEC') or die ; ?>
-<div id="jwApplication">
-    <div id="jwHeader"></div>
-    <div id="jwSidebar"></div>
-    <div id="jwMain">
-        <div id="jwSubheader"></div>
-        <div id="jwContent"></div>
+<div id="appApplication">
+    <div id="appHeader"></div>
+    <div id="appSidebar"></div>
+    <div id="appMain">
+        <div id="appSubheader"></div>
+        <div id="appContent"></div>
     </div>
 </div>

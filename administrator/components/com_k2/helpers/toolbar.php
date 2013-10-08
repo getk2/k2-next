@@ -21,22 +21,22 @@ class K2HelperToolbar extends K2Helper
 
 	public static function published($text = 'K2_TOGGLE_PUBLISHED_STATE', $state = 'published')
 	{
-		return '<a id="jwBatchPublishedToggler" class="jwBatchStateToggler" data-state="'.$state.'">'.JText::_($text).'</a>';
+		return '<a id="appBatchPublishedToggler" class="appBatchStateToggler" data-state="'.$state.'">'.JText::_($text).'</a>';
 	}
 
 	public static function featured($text = 'K2_TOGGLE_FEATURED_STATE', $state = 'featured')
 	{
-		return '<a id="jwBatchFeaturedToggler" class="jwBatchStateToggler" data-state="'.$state.'">'.JText::_($text).'</a>';
+		return '<a id="appBatchFeaturedToggler" class="appBatchStateToggler" data-state="'.$state.'">'.JText::_($text).'</a>';
 	}
 
 	public static function batch($text = 'K2_BATCH')
 	{
-		return '<a id="jwBatchButton">'.JText::_($text).'</a>';
+		return '<a id="appBatchButton">'.JText::_($text).'</a>';
 	}
 
 	public static function delete($text = 'K2_DELETE')
 	{
-		return '<a id="jwDeleteButton">'.JText::_($text).'</a>';
+		return '<a id="appDeleteButton">'.JText::_($text).'</a>';
 	}
 
 }

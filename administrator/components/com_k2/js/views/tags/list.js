@@ -4,8 +4,8 @@ define(['marionette', 'text!layouts/tags/list.html', 'text!layouts/tags/row.html
 		tagName : 'tr',
 		template : _.template(row),
 		events : {
-			'click .jwInlineEdit' : 'edit',
-			'blur .jwInlineEdit' : 'save',
+			'click .appInlineEdit' : 'edit',
+			'blur .appInlineEdit' : 'save',
 		},
 		edit : function(event) {
 			var el = jQuery(event.currentTarget);

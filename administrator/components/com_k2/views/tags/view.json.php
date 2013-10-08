@@ -115,11 +115,11 @@ class K2ViewTags extends K2View
 	{
 		K2Response::addToolbarAction('published', 'K2_TOGGLE_PUBLISHED_STATE', array(
 			'data-state' => 'published',
-			'class' => 'jwBatchStateToggler',
-			'id' => 'jwBatchPublishedToggler'
+			'class' => 'appBatchStateToggler',
+			'id' => 'appBatchPublishedToggler'
 		));
 
-		K2Response::addToolbarAction('delete', 'K2_DELETE', array('id' => 'jwDeleteButton'));
+		K2Response::addToolbarAction('delete', 'K2_DELETE', array('id' => 'appDeleteButton'));
 	}
 
 }

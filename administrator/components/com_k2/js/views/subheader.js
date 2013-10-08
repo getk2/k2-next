@@ -6,11 +6,11 @@ define(['marionette', 'text!layouts/subheader.html', 'dispatcher'], function(Mar
 		template : _.template(template),
 
 		events : {
-			'change .jwFilters select' : 'filter',
-			'change .jwFilters input' : 'filter',
-			'click .jwActionToggleState' : 'toggleState',
-			'click #jwActionRemove' : 'remove',
-			'click .jwActionCloseToolbar' : 'closeToolbar'
+			'change .appFilters select' : 'filter',
+			'change .appFilters input' : 'filter',
+			'click .appActionToggleState' : 'toggleState',
+			'click #appActionRemove' : 'remove',
+			'click .appActionCloseToolbar' : 'closeToolbar'
 		},
 
 		modelEvents : {
@@ -36,7 +36,7 @@ define(['marionette', 'text!layouts/subheader.html', 'dispatcher'], function(Mar
 		},
 
 		onRender : function() {
-			this.$el.find('.jwToolbar').hide();
+			this.$el.find('.appToolbar').hide();
 		},
 
 		filter : function(event) {
@@ -49,24 +49,24 @@ define(['marionette', 'text!layouts/subheader.html', 'dispatcher'], function(Mar
 
 		remove : function(event) {
 			event.preventDefault();
-			var rows = jQuery('input.jwRowToggler:checked').serializeArray();
+			var rows = jQuery('input.appRowToggler:checked').serializeArray();
 			K2Dispatcher.trigger('app:controller:batchDelete', rows);
 		},
 
 		toggleState : function(event) {
 			event.preventDefault();
-			var rows = jQuery('input.jwRowToggler:checked').serializeArray();
+			var rows = jQuery('input.appRowToggler:checked').serializeArray();
 			var el = jQuery(event.currentTarget);
 			var state = el.data('state');
 			K2Dispatcher.trigger('app:controller:batchToggleState', rows, state);
 		},
 
 		showToolbar : function() {
-			this.$el.find('.jwToolbar').show();
+			this.$el.find('.appToolbar').show();
 		},
 
 		hideToolbar : function() {
-			this.$el.find('.jwToolbar').hide();
+			this.$el.find('.appToolbar').hide();
 		},
 		
 		closeToolbar : function(event) {

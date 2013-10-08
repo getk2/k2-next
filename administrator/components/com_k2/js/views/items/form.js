@@ -1,5 +1,5 @@
 'use strict';
-define(['marionette', 'text!layouts/items/form.html', 'dispatcher', 'collections/tags'], function(Marionette, template, K2Dispatcher, K2CollectionTags) {
+define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Marionette, template, K2Dispatcher) {
 	var K2ViewItem = Marionette.ItemView.extend({
 		template : _.template(template),
 		modelEvents : {
@@ -25,12 +25,12 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher', 'collections
 			K2Editor.init();
 
 			// Tags auto complete
-			var el = this.$el.find(this.$el.find('#tags'));
+			var el = this.$el.find(this.$el.find('input[name="tags"]'));
 			var tags = [];
 			_.each(this.model.get('tags'), function(tag) {
 				tags.push(tag.name);
 			});
-			this.$el.find('#tags').val(tags.join(','));
+			el.val(tags.join(','));
 			require(['widgets/select2/select2', 'css!widgets/select2/select2.css'], function() {
 				el.select2({
 					tags : tags,

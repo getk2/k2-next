@@ -10,11 +10,11 @@ define(['marionette', 'text!layouts/pagination.html', 'dispatcher'], function(Ma
 		},
 
 		events : {
-			'change .jwLimit' : 'limit'
+			'change .appLimit' : 'limit'
 		},
 		
 		onRender : function() {
-			this.$el.find('.jwLimit').val(this.model.get('limit'));
+			this.$el.find('.appLimit').val(this.model.get('limit'));
 		}, 
 
 		limit : function(event) {

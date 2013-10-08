@@ -441,20 +441,20 @@ class K2View extends JViewLegacy
 		if ($mode == 'edit')
 		{
 			K2Response::addAction('save', 'K2_SAVE', array(
-				'class' => 'jwAction',
-				'id' => 'jwActionSave'
+				'class' => 'appAction',
+				'id' => 'appActionSave'
 			));
 			K2Response::addAction('saveAndNew', 'K2_SAVE_AND_NEW', array(
-				'class' => 'jwAction',
-				'id' => 'jwActionSaveAndNew'
+				'class' => 'appAction',
+				'id' => 'appActionSaveAndNew'
 			));
 			K2Response::addAction('saveAndClose', 'K2_SAVE_AND_CLOSE', array(
-				'class' => 'jwAction',
-				'id' => 'jwActionSaveAndClose'
+				'class' => 'appAction',
+				'id' => 'appActionSaveAndClose'
 			));
 			K2Response::addAction('close', 'K2_CLOSE', array(
-				'class' => 'jwAction',
-				'id' => 'jwActionClose'
+				'class' => 'appAction',
+				'id' => 'appActionClose'
 			));
 		}
 		else
@@ -465,8 +465,8 @@ class K2View extends JViewLegacy
 				if ($this->getName() == 'items' || $this->getName() == 'categories' || $this->getName() == 'tags')
 				{
 					K2Response::addAction('add', 'K2_ADD', array(
-						'class' => 'jwAction',
-						'id' => 'jwActionAdd'
+						'class' => 'appAction',
+						'id' => 'appActionAdd'
 					));
 				}
 			}
@@ -491,17 +491,17 @@ class K2View extends JViewLegacy
 		{
 			K2Response::addMenuLink('items', 'K2_ITEMS', array(
 				'href' => '#items',
-				'class' => 'jwMenuLink',
+				'class' => 'appMenuLink',
 				'id' => 'k2ItemsLink'
 			), 'primary');
 			K2Response::addMenuLink('categories', 'K2_CATEGORIES', array(
 				'href' => '#categories',
-				'class' => 'jwMenuLink',
+				'class' => 'appMenuLink',
 				'id' => 'k2CategoriesLink'
 			), 'primary');
 			K2Response::addMenuLink('tags', 'K2_TAGS', array(
 				'href' => '#tags',
-				'class' => 'jwMenuLink',
+				'class' => 'appMenuLink',
 				'id' => 'k2ItemsLink'
 			), 'primary');
 
@@ -510,21 +510,21 @@ class K2View extends JViewLegacy
 		// Set secondary menu
 		K2Response::addMenuLink('information', 'K2_INFORMATION', array(
 			'href' => '#information',
-			'class' => 'jwMenuLink',
-			'id' => 'jwInformationLink'
+			'class' => 'appMenuLink',
+			'id' => 'appInformationLink'
 		), 'secondary');
 		if ($user->authorise('core.admin', 'com_k2'))
 		{
 			K2Response::addMenuLink('settings', 'K2_SETTINGS', array(
 				'href' => '#settings',
-				'class' => 'jwMenuLink',
-				'id' => 'jwSettingsLink'
+				'class' => 'appMenuLink',
+				'id' => 'appSettingsLink'
 			), 'secondary');
 		}
 		K2Response::addMenuLink('help', 'K2_HELP', array(
 			'href' => '#help',
-			'class' => 'jwMenuLink',
-			'id' => 'jwHelpLink'
+			'class' => 'appMenuLink',
+			'id' => 'appHelpLink'
 		), 'secondary');
 
 	}

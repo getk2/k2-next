@@ -4,7 +4,7 @@ define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categor
 		tagName : 'tr',
 		template : _.template(row),
 		events : {
-			'click a.jwEditLink' : 'edit',
+			'click a.appEditLink' : 'edit',
 		},
 		edit : function(event) {
 			event.preventDefault();

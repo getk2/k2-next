@@ -1,4 +1,4 @@
-<form id="k2ItemForm" class="jwEditForm">
+<form id="k2ItemForm" class="appEditForm">
 
     <label for="title"><%= l('K2_TITLE') %></label>
     <input type="text" name="title" id="title" value="<%- row.title %>" />
@@ -50,7 +50,7 @@
     <label for="modified_by"><%= l('K2_MODERATOR') %></label>
     <input id="modified_by" type="text" name="modified_by" value="<%- row.modified_by %>" /> <span><%= row.moderatorName %></span>
     
-    <input type="hidden" name="tags" id="tags" />
+    <input type="hidden" name="tags" />
     
     <label for="text"><%= l('K2_TEXT') %></label>
     <%= form.text %>

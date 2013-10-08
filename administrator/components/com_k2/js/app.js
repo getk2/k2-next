@@ -75,10 +75,10 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'vie
 
 	// Set the regions
 	K2.addRegions({
-		header : '#jwHeader',
-		sidebar : '#jwSidebar',
-		subheader : '#jwSubheader',
-		content : '#jwContent'
+		header : '#appHeader',
+		sidebar : '#appSidebar',
+		subheader : '#appSubheader',
+		content : '#appContent'
 	});
 
 	// On after initialize

@@ -1,19 +1,19 @@
-<td class="jwCheckboxHolder"><label for="jwCheckBox<%= id %>" class="jwCheckbox">
-	<input class="jwRowToggler" name="id[]" id="jwCheckBox<%= id %>" value="<%= id %>" type="checkbox" />
+<td class="appCheckboxHolder"><label for="appCheckBox<%= id %>" class="appCheckbox">
+	<input class="appRowToggler" name="id[]" id="appCheckBox<%= id %>" value="<%= id %>" type="checkbox" />
 </label></td>
-<td class="jwSlideTitleInfo">
+<td class="appSlideTitleInfo">
     <%= str_repeat('-', level) %>
     
-    <a href="<%= link %>" class="jwSlideListTitle"><%= title %></a><span>
+    <a href="<%= link %>" class="appSlideListTitle"><%= title %></a><span>
         
     <div><%= path %></div>
-    <a class="jwPreviewImage" href="#" title="Preview"><i class="jwicon-eye"></i></a></span>
+    <a class="appPreviewImage" href="#" title="Preview"><i class="appicon-eye"></i></a></span>
     
     
 </td>
-<td class="jwTextCenter hide-on-small"><span class="jwOrderingHandle"><i class="jwicon-menu"></i></span>
+<td class="appTextCenter hide-on-small"><span class="appOrderingHandle"><i class="appicon-menu"></i></span>
 <br />
 </td>
 
-<td class="jwTextCenter"><a class="jwStateToggler jwPublishToggler<%= published == 1 ? ' jwTogglerActive' : '' %>" data-state="published" data-id="<%= id %>"><i class="jwicon-check"></i>(<%= published %>)</a></td>
+<td class="appTextCenter"><a class="appStateToggler appPublishToggler<%= published == 1 ? ' appTogglerActive' : '' %>" data-state="published" data-id="<%= id %>"><i class="appicon-check"></i>(<%= published %>)</a></td>
 <td><%= id %></td>

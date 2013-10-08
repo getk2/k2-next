@@ -4,7 +4,7 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 		tagName : 'tr',
 		template : _.template(row),
 		events : {
-			'click a.jwEditLink' : 'edit',
+			'click a.appEditLink' : 'edit',
 		},
 		edit : function(event) {
 			event.preventDefault();
@@ -25,8 +25,8 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 					containerSelector : 'table',
 					itemPath : '> tbody',
 					itemSelector : 'tbody tr',
-					placeholder : '<tr class="jwSortingPlaceholder"/>',
-					handle : '.jwOrderingHandle',
+					placeholder : '<tr class="appSortingPlaceholder"/>',
+					handle : '.appOrderingHandle',
 					onDragStart : function(item, container, _super) {
 						startValue = container.el.find('input[name="' + column + '[]"]:first').val();
 						_super(item, container);
@@ -47,10 +47,10 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 				});
 				if (enabled) {
 					this.$el.find('table').sortable('enable');
-					this.$el.find('input[name="' + column + '[]"], .jwActionSaveOrder').prop('disabled', false);
+					this.$el.find('input[name="' + column + '[]"], .appActionSaveOrder').prop('disabled', false);
 				} else {
 					this.$el.find('table').sortable('disable');
-					this.$el.find('input[name="' + column + '[]"], .jwActionSaveOrder').prop('disabled', true);
+					this.$el.find('input[name="' + column + '[]"], .appActionSaveOrder').prop('disabled', true);
 				}
 			}, this));
 		}

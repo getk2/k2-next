@@ -8,7 +8,7 @@ body.dragging, body.dragging * {
 	z-index: 2000;
 }
 
-tr.jwSortingPlaceholder {
+tr.appSortingPlaceholder {
 	background: none repeat scroll 0 0 #FF0000;
 	border: medium none;
 	display: block;
@@ -16,7 +16,7 @@ tr.jwSortingPlaceholder {
 	padding: 0;
 	position: relative;
 }
-tr.jwSortingPlaceholder:before {
+tr.appSortingPlaceholder:before {
 	content: "";
 	position: absolute;
 	width: 0;

@@ -1,15 +1,15 @@
-<td class="jwCheckboxHolder">
-    <label for="jwCheckBox<%= id %>" class="jwCheckbox">
-        <input class="jwRowToggler" name="id[]" id="jwCheckBox<%= id %>" value="<%= id %>" type="checkbox" />
+<td class="appCheckboxHolder">
+    <label for="appCheckBox<%= id %>" class="appCheckbox">
+        <input class="appRowToggler" name="id[]" id="appCheckBox<%= id %>" value="<%= id %>" type="checkbox" />
     </label>
 </td>
-<td><a class="jwEditLink" href="<%= link %>"><%= title %></a></td>
-<td><span class="jwOrderingHandle">DRAG ME<i class="jwicon-menu"></i></span></td>
+<td><a class="appEditLink" href="<%= link %>"><%= title %></a></td>
+<td><span class="appOrderingHandle">DRAG ME<i class="appicon-menu"></i></span></td>
 <td>
     <input type="text" maxlength="6" size="6" name="ordering[]" value="<%= ordering %>" data-id="<%= id %>" />
 </td>
-<td><a class="jwActionToggleState jwFeaturedState<%= featured == 1 ? ' jwStateActive' : '' %>" data-state="featured" data-id="<%= id %>"><%= featured %></a></td>
-<td><a class="jwActionToggleState jwPublishedState<%= published == 1 ? ' jwStateActive' : '' %>" data-state="published" data-id="<%= id %>"><%= published %></a></td>
+<td><a class="appActionToggleState appFeaturedState<%= featured == 1 ? ' appStateActive' : '' %>" data-state="featured" data-id="<%= id %>"><%= featured %></a></td>
+<td><a class="appActionToggleState appPublishedState<%= published == 1 ? ' appStateActive' : '' %>" data-state="published" data-id="<%= id %>"><%= published %></a></td>
 <td><%= categoryName %></td>
 <td><%= viewLevel %></td>
 <td><%= authorName %></td>

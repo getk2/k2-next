@@ -25,7 +25,7 @@
             return "Wpisana fraza jest za długa o " + n + " znak" + pl_suffix(n) + ".";
         },
         formatSelectionTooBig: function (limit) {
-            return "Możesz zaznaczyć najwyżej " + limit + " element" + pl_suffix(limit) + ".";
+            return "Możesz zaznaczyć naappyżej " + limit + " element" + pl_suffix(limit) + ".";
         },
         formatLoadMore: function (pageNumber) {
             return "Ładowanie wyników...";

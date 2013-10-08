@@ -1,10 +1,10 @@
-<% if(title) { %> <h3 id="jwTitle"><%= title %></h3>
+<% if(title) { %> <h3 id="appTitle"><%= title %></h3>
 <% } %>
 
 <% if(!_.isEmpty(filters)) { %>
-<div class="jwFilters">
+<div class="appFilters">
     <% _(filters).each(function(filter) { %>
-    <div class="jwFilter">
+    <div class="appFilter">
         <% if(filter.radio) { %>
         <label><%= filter.label %></label>
         <% } else { %>
@@ -17,16 +17,16 @@
 <% } %>
 
 <% if(!_.isEmpty(toolbar)) { %>
-<div class="jwToolbar">
-    <span id="jwToolbarCounter">0</span>
-    <span id="jwToolbarTitle"><%= l('K2_SELECTED') %></span>
-    <ul id="jwToolbarActions">
+<div class="appToolbar">
+    <span id="appToolbarCounter">0</span>
+    <span id="appToolbarTitle"><%= l('K2_SELECTED') %></span>
+    <ul id="appToolbarActions">
         <% _(toolbar).each(function(button) { %>
         <button <% if(button.attributes.id) { %> id="<%= button.attributes.id %>" <% } %> <% if(button.attributes.class) { %> class="<%= button.attributes.class %>" <% } %> <% if(button.attributes['data-state']) { %> data-state="<%= button.attributes['data-state'] %>" <% } %>>
             <%= button.name %>
         </button>
         <% }); %>
     </ul>
-    <button class="jwActionCloseToolbar"><%= l('K2_CANCEL') %></button>
+    <button class="appActionCloseToolbar"><%= l('K2_CANCEL') %></button>
 </div>
 <% } %>

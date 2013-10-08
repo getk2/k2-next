@@ -487,7 +487,7 @@ class K2Response
 	public static function addBatchAction($id, $label, $input)
 	{
 		$action = new stdClass;
-		$action->id = 'jwBatch'.JString::ucfirst($id);
+		$action->id = 'appBatch'.JString::ucfirst($id);
 		$action->label = $label;
 		$action->input = $input;
 		self::$batch[$id] = $action;

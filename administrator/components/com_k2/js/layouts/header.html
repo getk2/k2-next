@@ -1,9 +1,9 @@
-<div id="jwLogo">
+<div id="appLogo">
     <i class="hidden">K2</i>
 </div>
 
 <% if(!_.isEmpty(actions)) { %>
-<ul id="jwActions">
+<ul id="appActions">
     <% _(actions).each(function(button) { %>
     <li>
         <button <% if(button.attributes.id) { %> id="<%= button.attributes.id %>" <% } %> <% if(button.attributes.class) { %> class="<%= button.attributes.class %>" <% } %>>
@@ -15,7 +15,7 @@
 <% } %>
 
 <% if(!_.isEmpty(menu)) { %>
-<ul id="jwPrimaryMenu">
+<ul id="appPrimaryMenu">
     <% _(menu).each(function(link) { %>
     <li>
         <a <% if(link.attributes.id) { %> id="<%= link.attributes.id %>" <% } %> <% if(link.attributes.class) { %> class="<%= link.attributes.class %>" <% } %> href="<%= link.attributes.href %>"><%= link.name %></a>

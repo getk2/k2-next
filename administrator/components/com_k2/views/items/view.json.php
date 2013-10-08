@@ -139,17 +139,17 @@ class K2ViewItems extends K2View
 	{
 		K2Response::addToolbarAction('featured', 'K2_TOGGLE_FEATURED_STATE', array(
 			'data-state' => 'featured',
-			'class' => 'jwActionToggleState',
-			'id' => 'jwActionToggleFeaturedState'
+			'class' => 'appActionToggleState',
+			'id' => 'appActionToggleFeaturedState'
 		));
 		K2Response::addToolbarAction('published', 'K2_TOGGLE_PUBLISHED_STATE', array(
 			'data-state' => 'published',
-			'class' => 'jwActionToggleState',
-			'id' => 'jwActionTogglePublishedState'
+			'class' => 'appActionToggleState',
+			'id' => 'appActionTogglePublishedState'
 		));
-		K2Response::addToolbarAction('batch', 'K2_BATCH', array('id' => 'jwActionBatch'));
+		K2Response::addToolbarAction('batch', 'K2_BATCH', array('id' => 'appActionBatch'));
 
-		K2Response::addToolbarAction('remove', 'K2_DELETE', array('id' => 'jwActionRemove'));
+		K2Response::addToolbarAction('remove', 'K2_DELETE', array('id' => 'appActionRemove'));
 	}
 
 }
