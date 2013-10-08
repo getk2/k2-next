@@ -164,10 +164,10 @@ class K2ModelItems extends K2Model
 			if ($search)
 			{
 				$search = $db->escape($search, true);
-				$query->where('( LOWER('.$db->quoteName('item.title').'.) LIKE '.$db->Quote('%'.$search.'%', false).' 
-				OR '.$db->quoteName('item.id').' = '.(int)$search.')  
-				OR LOWER('.$db->quoteName('item.introtext').'.) LIKE '.$db->Quote('%'.$search.'%', false).'
-				OR LOWER('.$db->quoteName('item.fulltext').'.) LIKE '.$db->Quote('%'.$search.'%', false).')');
+				$query->where('( LOWER('.$db->quoteName('item.title').') LIKE '.$db->Quote('%'.$search.'%', false).' 
+				OR '.$db->quoteName('item.id').' = '.(int)$search.'
+				OR LOWER('.$db->quoteName('item.introtext').') LIKE '.$db->Quote('%'.$search.'%', false).'
+				OR LOWER('.$db->quoteName('item.fulltext').') LIKE '.$db->Quote('%'.$search.'%', false).')');
 			}
 		}
 	}

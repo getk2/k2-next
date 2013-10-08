@@ -7,8 +7,18 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher'], function(Mario
 
 		modelEvents : {
 			'change' : 'render'
-		}
+		},
 
+		events : {
+			'change #jwSearch' : 'search'
+		},
+
+		search : function(event) {
+			event.preventDefault();
+			var el = jQuery(event.currentTarget);
+			var value = el.val();
+			K2Dispatcher.trigger('app:controller:filter', 'search', value);
+		}
 	});
 
 	return K2ViewSidebar;

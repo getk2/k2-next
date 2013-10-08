@@ -83,5 +83,10 @@ class K2HelperHTML extends K2Helper
 		}
 		return JHtml::_('select.genericlist', $options, $name, '', 'value', 'text', $value);
 	}
+	
+	public static function search($value = null, $name = 'search')
+	{
+		return '<input type="text"  name="' . $name . '" value="'.htmlspecialchars($value, ENT_QUOTES, 'UTF-8').'" />';
+	}
 
 }

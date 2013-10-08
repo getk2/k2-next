@@ -75,7 +75,7 @@ class K2ViewItems extends K2View
 
 		// Set form
 		$this->setForm();
-		
+
 		// Set menu
 		$this->setMenu('edit');
 
@@ -129,7 +129,7 @@ class K2ViewItems extends K2View
 
 		// Featured filter
 		K2Response::addFilter('featured', $this->getUserState('featured'), JText::_('K2_FEATURED'), K2HelperHTML::featured($this->getUserState('featured')), true);
-		
+
 		// Categories filter
 		K2Response::addFilter('category', $this->getUserState('category'), JText::_('K2_CATEGORY'), K2HelperHTML::categories($this->getUserState('category'), 'category', true));
 
