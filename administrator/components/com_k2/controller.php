@@ -84,6 +84,30 @@ class K2Controller extends JControllerLegacy
 	}
 
 	/**
+	 * Search function. Used for autocomplete and search requests
+	 *
+	 * @return JControllerLegacy	A JControllerLegacy object to support chaining.
+	 */
+	public function search()
+	{
+		$model = $this->getModel($this->resourceType);
+		$model->setState('search', $this->input->get('search'));
+		$model->setState('sorting', $this->input->get('sorting'));
+		$limit = $this->input->get('limit', 50);
+		$page = $this->input->get('page', 1);
+		$limitstart = ($page * $limit) - $limit;
+		$model->setState('limit', $limit);
+		$model->setState('limitstart', $limitstart);
+
+		$response = new stdClass;
+		$response->rows = $model->getRows();
+		$response->total = $model->countRows();
+
+		echo json_encode($response);
+		return $this;
+	}
+
+	/**
 	 * Sync function. Entry point for the Backbone.js requests.
 	 * All Backbone JSON requests are routed here.
 	 * This function performs inside routing depending on the request.
