@@ -33,7 +33,7 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session'], fun
 				var el = jQuery(this).find('input:first');
 				var name = el.attr('name');
 				var type = el.attr('type');
-				var value = K2Session.get(prefix + '.' + name, '');
+				var value = K2Session.get(prefix + '.' + name);
 				if (type === 'radio') {
 					jQuery(this).find('input[name="' + name + '"]').val([value]);
 				} else {
@@ -59,8 +59,9 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session'], fun
 
 			// Reset filters session values
 			var prefix = this.options.resource;
-			this.$el.find('.appFilter input:first').each(function() {
-				var name = jQuery(this).attr('name');
+			this.$el.find('.appFilter').each(function() {
+				var el = jQuery(this).find('input:first');
+				var name = el.attr('name');
 				K2Session.set(prefix + '.' + name, '');
 				K2Dispatcher.trigger('app:controller:setCollectionState', name, '');
 			});
