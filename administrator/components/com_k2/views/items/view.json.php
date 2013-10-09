@@ -105,7 +105,7 @@ class K2ViewItems extends K2View
 	{
 
 		// Language filter
-		K2Response::addFilter('language', $this->getUserState('language'), JText::_('K2_SELECT_LANGUAGE'), K2HelperHTML::language($this->getUserState('language')));
+		K2Response::addFilter('language', JText::_('K2_SELECT_LANGUAGE'), K2HelperHTML::language(), false, 'header');
 
 		// Sorting filter
 		$sortingOptions = array(
@@ -122,16 +122,19 @@ class K2ViewItems extends K2View
 			'K2_MODIFIED' => 'modified',
 			'K2_HITS' => 'hits'
 		);
-		K2Response::addFilter('sorting', $this->getUserState('sorting'), JText::_('K2_SORT_BY'), K2HelperHTML::sorting($this->getUserState('sorting'), $sortingOptions));
+		K2Response::addFilter('sorting', JText::_('K2_SORT_BY'), K2HelperHTML::sorting($sortingOptions), false, 'header');
 
 		// Published filter
-		K2Response::addFilter('published', $this->getUserState('published'), JText::_('K2_PUBLISHED'), K2HelperHTML::published($this->getUserState('published')), true);
+		K2Response::addFilter('published', JText::_('K2_PUBLISHED'), K2HelperHTML::published(), true, 'sidebar');
 
 		// Featured filter
-		K2Response::addFilter('featured', $this->getUserState('featured'), JText::_('K2_FEATURED'), K2HelperHTML::featured($this->getUserState('featured')), true);
+		K2Response::addFilter('featured', JText::_('K2_FEATURED'), K2HelperHTML::featured(), true, 'sidebar');
 
 		// Categories filter
-		K2Response::addFilter('category', $this->getUserState('category'), JText::_('K2_CATEGORY'), K2HelperHTML::categories($this->getUserState('category'), 'category', true));
+		K2Response::addFilter('category', JText::_('K2_CATEGORY'), K2HelperHTML::categories('category', true), false, 'header');
+
+		// Search filter
+		K2Response::addFilter('search', JText::_('K2_SEARCH'), K2HelperHTML::search(), false, 'sidebar');
 
 	}
 

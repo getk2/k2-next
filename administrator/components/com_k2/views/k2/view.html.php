@@ -30,6 +30,8 @@ class K2ViewK2 extends JViewLegacy
 		$document->addScriptDeclaration('var K2SessionToken = "'.JSession::getFormToken().'";');
 		$document->addScriptDeclaration('var K2Editor = '.$this->getEditor().';');
 
+		$document->addScriptDeclaration('var K2Language = '.$this->getLanguage().';');
+
 		// Load the application
 		$document->addCustomTag('<script data-main="'.JURI::base(true).'/components/com_k2/js/boot" src="'.JURI::base(true).'/components/com_k2/js/require.js"></script>');
 
@@ -70,6 +72,15 @@ class K2ViewK2 extends JViewLegacy
 		$js = JString::str_ireplace('REPLACE_CONTENT', 'content', $js);
 		$K2Editor->display('text', '', '100%', '300', '40', '5');
 		return $js;
+	}
+
+	protected function getLanguage()
+	{
+		$language = JFactory::getLanguage();
+		$contents = file_get_contents(JPATH_ADMINISTRATOR.'/language/'.$language->getTag().'/'.$language->getTag().'.com_k2.ini');
+		$contents = str_replace('_QQ_', '"\""', $contents);
+		$strings = @parse_ini_string($contents);
+		return json_encode($strings);
 	}
 
 }

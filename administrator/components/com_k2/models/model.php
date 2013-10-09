@@ -37,12 +37,11 @@ class K2Model extends JModelLegacy
 	/**
 	 * Shortcut method for retrieving a single row from the model using the list query.
 	 *
-	 * @return mixed	The row object or null.
+	 * @return object	The row object.
 	 */
 
 	public function getRow()
 	{
-		$row = null;
 		if (method_exists($this, 'getRows') && $this->getState('id'))
 		{
 			$rows = $this->getRows();
@@ -50,6 +49,12 @@ class K2Model extends JModelLegacy
 			{
 				$row = (object)$rows[0];
 			}
+		}
+		else
+		{
+			$data = array($this->getTable());
+			$rows = $this->getResources($data, $this->getName());
+			$row = (object)$rows[0];
 		}
 		return $row;
 	}
@@ -163,17 +168,25 @@ class K2Model extends JModelLegacy
 	 * @return array The array of the generated resources.
 	 */
 
-	protected function getResources($data, $type)
+	protected function getResources($data)
 	{
-		require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/'.$type.'.php';
-		$rows = array();
-		foreach ($data as $entry)
+		jimport('joomla.filesystem.file');
+		if (JFile::exists(JPATH_ADMINISTRATOR.'/components/com_k2/resources/'.$this->getName().'.php'))
 		{
-			$className = 'K2'.ucfirst($type);
-			$row = new $className($entry);
-			$rows[] = $row;
+			require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/'.$this->getName().'.php';
+			$rows = array();
+			foreach ($data as $entry)
+			{
+				$className = 'K2'.ucfirst($this->getName());
+				$row = new $className($entry);
+				$rows[] = $row;
+			}
+			return $rows;
 		}
-		return $rows;
+		else
+		{
+			return $data;
+		}
 	}
 
 	/**

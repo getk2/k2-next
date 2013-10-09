@@ -17,9 +17,7 @@ defined('_JEXEC') or die ;
 
 class K2Response
 {
-	
-	public static $requirejs = null;
-	
+
 	/**
 	 * The object which holds the actual data of the response.
 	 *
@@ -105,28 +103,6 @@ class K2Response
 	public static $messages = array();
 
 	/**
-	 * Setter function for the response variable.
-	 *
-	 * @param object $response
-	 *
-	 * @return void
-	 */
-	public static function setResponse($response)
-	{
-		self::$response = $response;
-	}
-
-	/**
-	 * Getter function for the response variable.
-	 *
-	 * @return object $response
-	 */
-	public static function getResponse()
-	{
-		return self::$response;
-	}
-
-	/**
 	 * Setter function for the title variable.
 	 *
 	 * @param string $title
@@ -149,6 +125,27 @@ class K2Response
 	}
 
 	/**
+	 * Setter function for the menu.
+	 *
+	 * @param object $menu	The menu object.
+	 * @param string $name	The menu name.
+	 *
+	 * @return void
+	 */
+	public static function setMenu($menu, $name = null)
+	{
+		if (is_null($name))
+		{
+			self::$menu = $menu;
+		}
+		else
+		{
+			self::$menu[$name] = $menu;
+		}
+
+	}
+
+	/**
 	 * Getter function for the menu.
 	 * @param string $name	The menu name to fetch. Leave null to fetch all the menus.
 	 *
@@ -165,6 +162,18 @@ class K2Response
 			return self::$menu[$name];
 		}
 
+	}
+
+	/**
+	 * Setter function for the actions.
+	 *
+	 * @param array $actions
+	 *
+	 * @return void
+	 */
+	public static function setActions($actions)
+	{
+		self::$actions = $actions;
 	}
 
 	/**
@@ -225,22 +234,37 @@ class K2Response
 	 * Setter function for the filters variable.
 	 *
 	 * @param array $filters
+	 * @param string $location	The filters target location.
 	 *
 	 * @return void
 	 */
-	public static function setFilters($filters)
+	public static function setFilters($filters, $location = null)
 	{
-		self::$filters = $filters;
+		if (is_null($location))
+		{
+			self::$filters = $filters;
+		}
+		else
+		{
+			self::$filters[$location] = $filters;
+		}
 	}
 
 	/**
 	 * Getter function for the filters variable.
 	 *
-	 * @return array $filters
+	 * @return string $location The filters target location.
 	 */
-	public static function getFilters()
+	public static function getFilters($location = null)
 	{
-		return self::$filters;
+		if (is_null($location))
+		{
+			return self::$filters;
+		}
+		else
+		{
+			return self::$filters[$location];
+		}
 	}
 
 	/**
@@ -335,23 +359,20 @@ class K2Response
 	 * Adds a filter to the filters array that will be rendered on the page.
 	 *
 	 * @param string $id		The id of the filter. This identifier allows the client to get the specific filter from the Backbone filters collection.
-	 * @param string $value		The value of the filter.
 	 * @param string $label		The label of the filter.
 	 * @param string $input		The HTML that the filter outputs.
-	 * @param string $position	The position of the filter. Use this to set a position so the client can render filters together in positions.
+	 * @param string $location	The location of the filter. Use this to set a position so the client can render filters together in specific areas.
 	 *
 	 * @return void
 	 */
-	public static function addFilter($id, $value,  $label, $input, $radio = false, $position = null)
+	public static function addFilter($id, $label, $input, $radio = false, $location = null)
 	{
 		$filter = new stdClass;
 		$filter->id = $id;
-		$filter->value = $value;
 		$filter->label = $label ? $label : '';
 		$filter->input = $input ? $input : '';
 		$filter->radio = $radio;
-		$filter->position = $position;
-		self::$filters[$id] = $filter;
+		self::$filters[$location][$id] = $filter;
 	}
 
 	/**
@@ -363,9 +384,12 @@ class K2Response
 	 */
 	public static function removeFilter($id)
 	{
-		if (isset($self::$filters[$id]))
+		foreach (self::$filters as $location)
 		{
-			unset($self::$filters[$id]);
+			if (isset($self::$filters[$location][$id]))
+			{
+				unset($self::$filters[$location][$id]);
+			}
 		}
 	}
 
@@ -558,7 +582,6 @@ class K2Response
 		self::$response->row = self::getRow();
 		self::$response->form = self::getForm();
 		self::$response->messages = JFactory::getApplication()->getMessageQueue();
-		self::$response->requirejs = self::$requirejs;
 		return self::$response;
 	}
 

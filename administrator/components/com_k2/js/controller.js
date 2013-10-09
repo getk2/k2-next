@@ -1,5 +1,5 @@
 'use strict';
-define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backbone, Marionette, K2Dispatcher) {
+define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], function(_, Backbone, Marionette, K2Dispatcher, K2Session) {
 	var K2Controller = Marionette.Controller.extend({
 
 		// The available resources for request. Any other request returns a 404 error.
@@ -37,7 +37,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 				this.close();
 			}, this);
 
-			// Listener for batch event.
+			// Listener for toggle state event.
 			K2Dispatcher.on('app:controller:toggleState', function(id, state) {
 				this.toggleState(id, state);
 			}, this);
@@ -52,7 +52,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 				this.batchDelete(rows);
 			}, this);
 
-			// Listener for batch event.
+			// Listener for batch toggle state event.
 			K2Dispatcher.on('app:controller:batchToggleState', function(rows, state) {
 				this.batchToggleState(rows, state);
 			}, this);
@@ -60,6 +60,11 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 			// Listener for save ordering
 			K2Dispatcher.on('app:controller:saveOrder', function(keys, values, column) {
 				this.saveOrder(keys, values, column);
+			}, this);
+
+			// Listener for updating the collection states
+			K2Dispatcher.on('app:controller:setCollectionState', function(state, value) {
+				this.collection.setState(state, value);
 			}, this);
 
 		},
@@ -87,6 +92,48 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 					}
 				}
 			}
+			this.onAfterExecute();
+		},
+
+		// OnAfterExecute
+		onAfterExecute : function() {
+
+			// Render the header view
+			require(['views/header'], _.bind(function(HeaderView) {
+				var header = new HeaderView({
+					resource : this.resource,
+					model : new Backbone.Model({
+						'menu' : [],
+						'actions' : []
+					})
+				});
+				K2Dispatcher.trigger('app:render', header, 'header');
+			}, this));
+
+			// Render the subheader view
+			require(['views/subheader'], _.bind(function(SubheaderView) {
+				var subheader = new SubheaderView({
+					resource : this.resource,
+					model : new Backbone.Model({
+						'title' : '',
+						'filters' : [],
+						'toolbar' : []
+					})
+				});
+				K2Dispatcher.trigger('app:render', subheader, 'subheader');
+			}, this));
+
+			// Render the sidebar view
+			require(['views/sidebar'], _.bind(function(SidebarView) {
+				var sidebar = new SidebarView({
+					resource : this.resource,
+					model : new Backbone.Model({
+						'menu' : [],
+						'filters' : []
+					})
+				});
+				K2Dispatcher.trigger('app:render', sidebar, 'sidebar');
+			}, this));
 		},
 
 		// Proxy function for triggering the app:redirect event
@@ -123,7 +170,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 
 				// Fetch data from server
 				this.collection.fetch({
-										
+
 					// Success callback
 					success : _.bind(function() {
 
@@ -296,6 +343,11 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 			if (state !== 'sorting' && state !== 'limit') {
 				this.collection.setState('page', 1);
 			}
+			this.resetCollection();
+		},
+
+		// Reset collection.
+		resetCollection : function() {
 			this.collection.fetch({
 				reset : true,
 				success : _.bind(function() {

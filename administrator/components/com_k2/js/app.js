@@ -87,12 +87,9 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'vie
 		// Backbone history
 		Backbone.history.start();
 
-		// Init the language
-		this.language = new Backbone.Collection();
-
 		// Add the language function to the window object so it can be executed in our layouts.
 		window.l = function(key) {
-			return K2.language.get(key) || key;
+			return K2Language[key] || key;
 		};
 		// String repeat
 		window.str_repeat = function(input, multiplier) {
@@ -118,31 +115,6 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'vie
 			return y;
 
 		};
-		// Render the header view
-		this.header.show(new HeaderView({
-			model : new Backbone.Model({
-				'menu' : [],
-				'actions' : []
-			})
-		}));
-
-		// Render the subheader view
-		this.subheader.show(new SubheaderView({
-			model : new Backbone.Model({
-				'title' : '',
-				'filters' : [],
-				'toolbar' : []
-			})
-		}));
-
-		// Render the sidebar view
-		this.sidebar.show(new SidebarView({
-			model : new Backbone.Model({
-				'title' : '',
-				'filters' : [],
-				'toolbar' : []
-			})
-		}));
 
 	});
 
@@ -182,9 +154,6 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'vie
 		K2Dispatcher.trigger('app:update:header', response);
 		K2Dispatcher.trigger('app:update:subheader', response);
 		K2Dispatcher.trigger('app:update:sidebar', response);
-		//K2Dispatcher.trigger('app:update:pagination', response);
-
-		//@TODO Trigger the rest subevents
 	});
 
 	// Return the application instance

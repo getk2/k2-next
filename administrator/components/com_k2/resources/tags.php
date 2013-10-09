@@ -16,7 +16,7 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/resource.php';
  * K2 item resource class.
  */
 
-class K2Item extends K2Resource
+class K2Tags extends K2Resource
 {
 
 	/**
@@ -50,21 +50,11 @@ class K2Item extends K2Resource
 		if (empty(self::$instances[$id]))
 		{
 			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
-			$model = K2Model::getInstance('Items', 'K2Model');
+			$model = K2Model::getInstance('Tags', 'K2Model');
 			$model->setState('id', $id);
 			$item = $model->getRow();
 			self::$instances[$id] = $item;
 		}
 		return self::$instances[$id];
 	}
-
-	public function getTags()
-	{
-		K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
-		$model = K2Model::getInstance('Tags', 'K2Model');
-		$model->setState('itemId', $this->id);
-		$tags = $model->getRows();
-		return $tags;
-	}
-
 }

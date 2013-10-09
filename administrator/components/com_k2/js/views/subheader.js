@@ -7,21 +7,21 @@ define(['marionette', 'text!layouts/subheader.html', 'dispatcher'], function(Mar
 
 		events : {
 			'change .appFilters select' : 'filter',
-			'change .appFilters input' : 'filter',
 			'click .appActionToggleState' : 'toggleState',
 			'click #appActionRemove' : 'remove',
 			'click .appActionCloseToolbar' : 'closeToolbar'
 		},
 
 		modelEvents : {
-			'change' : 'render'
+			'change:toolbar' : 'render',
+			'change:title' : 'render'
 		},
 
 		initialize : function() {
 			K2Dispatcher.on('app:update:subheader', function(response) {
 				this.model.set({
 					'title' : response.title,
-					'filters' : response.filters,
+					'filters' : response.filters.header,
 					'toolbar' : response.toolbar
 				});
 			}, this);
@@ -33,10 +33,28 @@ define(['marionette', 'text!layouts/subheader.html', 'dispatcher'], function(Mar
 					this.hideToolbar();
 				}
 			}, this);
+
+			K2Dispatcher.on('app:subheader:resetFilters', function() {
+
+				// Apply select states
+				this.$el.find('.appFilters select').each(function() {
+					var el = jQuery(this);
+					var value = el.find('option:first').val();
+					el.select2('val', value);
+					K2Dispatcher.trigger('app:controller:setCollectionState', el.attr('name'), value);
+				});
+
+				// Always go to first page after reset
+				K2Dispatcher.trigger('app:controller:filter', 'page', 1);
+
+			}, this);
 		},
 
 		onRender : function() {
 			this.$el.find('.appToolbar').hide();
+			require(['widgets/select2/select2', 'css!widgets/select2/select2.css'], _.bind(function() {
+				this.$el.find('.appFilters select').select2();
+			}, this));
 		},
 
 		filter : function(event) {
@@ -68,7 +86,7 @@ define(['marionette', 'text!layouts/subheader.html', 'dispatcher'], function(Mar
 		hideToolbar : function() {
 			this.$el.find('.appToolbar').hide();
 		},
-		
+
 		closeToolbar : function(event) {
 			event.preventDefault();
 			K2Dispatcher.trigger('onToolbarClose');

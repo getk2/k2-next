@@ -19,7 +19,7 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/helper.php';
 class K2HelperHTML extends K2Helper
 {
 
-	public static function published($value = null, $name = 'published')
+	public static function published($name = 'published', $value = null)
 	{
 		$options = array();
 		$options[] = JHTML::_('select.option', '', JText::_('K2_ALL'));
@@ -28,7 +28,7 @@ class K2HelperHTML extends K2Helper
 		return JHtml::_('select.radiolist', $options, $name, '', 'value', 'text', $value);
 	}
 
-	public static function featured($value = null, $name = 'featured')
+	public static function featured($name = 'featured', $value = null)
 	{
 		$options = array();
 		$options[] = JHTML::_('select.option', '', JText::_('K2_ALL'));
@@ -37,7 +37,7 @@ class K2HelperHTML extends K2Helper
 		return JHtml::_('select.radiolist', $options, $name, '', 'value', 'text', $value);
 	}
 
-	public static function language($value = null, $name = 'language', $none = true)
+	public static function language($name = 'language', $none = true, $value = null)
 	{
 		$options = JHtml::_('contentlanguage.existing', true, true);
 		if($none)
@@ -47,7 +47,7 @@ class K2HelperHTML extends K2Helper
 		return JHtml::_('select.genericlist', $options, $name, '', 'value', 'text', $value);
 	}
 
-	public static function sorting($value = null, $options = array(), $name = 'sorting')
+	public static function sorting($options = array(), $name = 'sorting', $value = null)
 	{
 		$list = array();
 		foreach ($options as $optionLabel => $optionValue)
@@ -58,7 +58,7 @@ class K2HelperHTML extends K2Helper
 		return JHtml::_('select.genericlist', $list, $name, '', 'value', 'text', $value);
 	}
 
-	public static function categories($value = null, $name = 'catid', $none = false)
+	public static function categories($name = 'catid', $none = false, $value = null)
 	{
 		$model = K2Model::getInstance('Categories', 'K2Model');
 		$model->setState('sorting', 'ordering');
@@ -66,7 +66,7 @@ class K2HelperHTML extends K2Helper
 		$options = array();
 		if ($none)
 		{
-			$options[] = JHtml::_('select.option', '', JText::_('K2_ALL'));
+			$options[] = JHtml::_('select.option', '', JText::_('K2_ANY'));
 		}
 		foreach ($rows as $row)
 		{
@@ -84,9 +84,9 @@ class K2HelperHTML extends K2Helper
 		return JHtml::_('select.genericlist', $options, $name, '', 'value', 'text', $value);
 	}
 	
-	public static function search($value = null, $name = 'search')
+	public static function search($name = 'search')
 	{
-		return '<input type="text"  name="' . $name . '" value="'.htmlspecialchars($value, ENT_QUOTES, 'UTF-8').'" />';
+		return '<input type="text" class="appActionSearch"  name="' . $name . '" />';
 	}
 
 }

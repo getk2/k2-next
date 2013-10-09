@@ -82,7 +82,7 @@ class K2View extends JViewLegacy
 	 * @return void
 	 */
 
-	public function edit($id = null)
+	public function edit($id)
 	{
 		// Set row
 		$this->setRow($id);
@@ -147,10 +147,6 @@ class K2View extends JViewLegacy
 		// Get the row
 		$model->setState('id', $id);
 		$row = $model->getRow();
-		if (is_null($row))
-		{
-			$row = $model->getTable('', 'K2Table');
-		}
 
 		// Get helper
 		$this->loadHelper($this->getName());
@@ -326,13 +322,13 @@ class K2View extends JViewLegacy
 		// Category field
 		if (property_exists($row, 'catid'))
 		{
-			$_form->category = K2HelperHTML::categories($row->catid);
+			$_form->category = K2HelperHTML::categories('catid', $row->catid);
 		}
 
 		// Language field
 		if (property_exists($row, 'language'))
 		{
-			$_form->language = K2HelperHTML::language($row->language, 'language', false);
+			$_form->language = K2HelperHTML::language('language', false, $row->language);
 		}
 
 		// Text field

@@ -16,7 +16,7 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/resource.php';
  * K2 item resource class.
  */
 
-class K2Category extends K2Resource
+class K2Categories extends K2Resource
 {
 
 	/**

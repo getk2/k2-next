@@ -65,7 +65,7 @@ class K2ModelItems extends K2Model
 		$data = $db->loadAssocList();
 
 		// Generate K2 resources instances from the result data.
-		$rows = $this->getResources($data, 'item');
+		$rows = $this->getResources($data);
 
 		// Return rows
 		return (array)$rows;

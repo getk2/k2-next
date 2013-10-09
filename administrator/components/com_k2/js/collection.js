@@ -23,11 +23,6 @@ define(['backbone', 'model', 'dispatcher'], function(Backbone, K2Model, K2Dispat
 			if (resp.pagination !== undefined) {
 				this.setPagination(resp.pagination);
 			}
-			
-			// Update states based on the filter values
-			_.each(resp.filters, _.bind(function(filter) {
-				this.setState(filter.id, filter.value);
-			}, this));
 
 			// Trigger the update event to notify the application.
 			K2Dispatcher.trigger('app:update', resp);
@@ -59,7 +54,7 @@ define(['backbone', 'model', 'dispatcher'], function(Backbone, K2Model, K2Dispat
 		},
 
 		batch : function(keys, values, state, options) {
-			options || (options = {});
+			options || ( options = {});
 			options.data || (options.data = []);
 			_.each(keys, function(key) {
 				options.data.push({
