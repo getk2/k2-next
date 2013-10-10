@@ -274,7 +274,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 		saveOrder : function(keys, values, column) {
 			this.collection.batch(keys, values, column, {
 				success : _.bind(function() {
-					this.list();
+					this.resetCollection();
 				}, this),
 				error : _.bind(function(response) {
 					this.enqueueMessage('error', response.responseText);
@@ -298,7 +298,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 		filter : function(state, value) {
 			this.collection.setState(state, value);
 			// Go to page 1 for new states except sorting and limit
-			if (state !== 'sorting' && state !== 'limit') {
+			if (state !== 'sorting' && state !== 'limit' && state !== 'page') {
 				this.collection.setState('page', 1);
 			}
 			this.resetCollection();
