@@ -328,7 +328,7 @@ class K2View extends JViewLegacy
 		// Category field
 		if (property_exists($row, 'catid'))
 		{
-			$_form->category = K2HelperHTML::categories('catid', $row->catid);
+			$_form->category = K2HelperHTML::categories('catid', false, $row->catid);
 		}
 
 		// Language field
