@@ -18,21 +18,42 @@ class K2Helper
 {
 	public static function prepare($row)
 	{
-
 		if (property_exists($row, 'created'))
 		{
-			$row->createdDate = JHtml::_('date', $row->created, JText::_('K2_DATE_FORMAT'));
+			$row->createdDate = JHtml::_('date', $row->created, 'Y-m-d');
+			$row->createdTime = JHtml::_('date', $row->created, 'H:i');
+			$row->createdOn = JHtml::_('date', $row->created, JText::_('K2_DATE_FORMAT'));
 		}
 
 		if (property_exists($row, 'modified'))
 		{
-			if ((int)$row->modified)
+			if ((int)$row->modified > 0)
 			{
-				$row->modifiedDate = JHtml::_('date', $row->modified, JText::_('K2_DATE_FORMAT'));
+				$row->modifiedOn = JHtml::_('date', $row->modified, JText::_('K2_DATE_FORMAT'));
 			}
 			else
 			{
-				$row->modifiedDate = JText::_('K2_NEVER');
+				$row->modifiedOn = JText::_('K2_NEVER');
+			}
+		}
+
+		if (property_exists($row, 'publish_up'))
+		{
+			$row->publishUpDate = JHtml::_('date', $row->publish_up, 'Y-m-d');
+			$row->publishUpTime = JHtml::_('date', $row->publish_up, 'H:i');
+		}
+
+		if (property_exists($row, 'publish_down'))
+		{
+			if ((int)$row->publish_down > 0)
+			{
+				$row->publishDownDate = JHtml::_('date', $row->publish_down, 'Y-m-d');
+				$row->publishDownTime = JHtml::_('date', $row->publish_down, 'H:i');
+			}
+			else
+			{
+				$row->publishDownDate = '';
+				$row->publishDownTime = '';
 			}
 		}
 

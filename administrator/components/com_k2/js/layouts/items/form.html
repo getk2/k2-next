@@ -2,88 +2,91 @@
 
     <label for="title"><%= l('K2_TITLE') %></label>
     <input type="text" name="title" id="title" value="<%- row.title %>" />
-    
+
     <label for="alias"><%= l('K2_ALIAS') %></label>
     <input type="text" name="alias" id="alias" value="<%- row.alias %>" />
-    
+
     <label for="catid"><%= l('K2_CATEGORY') %></label>
     <%= form.category %>
 
     <label><%= l('K2_PUBLISHED') %></label>
-    <label>
-        <%= l('K2_YES') %>
-        <input type="radio" name="published" value="1" <%= (row.published > 0) ? 'checked="checked"': '' %> />
+    <label> <%= l('K2_YES') %>
+        <input type="radio" name="published" value="1" <%= (row.published > 0) ? 'checked="checked"': '' %>/> 
     </label>
-    <label>
-        <%= l('K2_NO') %>
+    <label> <%= l('K2_NO') %>
         <input type="radio" name="published" value="0" <%= (row.published < 1) ? 'checked="checked"': '' %> />
-    </label>
-    
-    <label><%= l('K2_FEATURED') %></label>
-    <label>
+        </label>
+
+        <label><%= l('K2_FEATURED') %></label>
+        <label>
         <%= l('K2_YES') %>
         <input type="radio" name="featured" value="1" <%= (row.featured > 0) ? 'checked="checked"': '' %> />
     </label>
-    <label>
-        <%= l('K2_NO') %>
+    <label> <%= l('K2_NO') %>
         <input type="radio" name="featured" value="0" <%= (row.featured < 1) ? 'checked="checked"': '' %> />
-    </label>
+        </label>
 
-    <label for="access"><%= l('K2_ACCESS') %></label>
-    <%= form.access %>
-    
-    <label for="language"><%= l('K2_LANGUAGE') %></label>
-    <%= form.language %>
-    
-    <label for="created_by_alias"><%= l('K2_AUTHOR_ALIAS') %></label>
-    <input id="created_by_alias" type="text" name="created_by_alias" value="<%- row.created_by_alias %>" />
-    
-    <label for="created"><%= l('K2_CREATED_DATE') %></label>
-    <input id="created" type="text" name="created" value="<%- row.created %>" /> <span><%= row.createdDate %></span>
-    
-    <label for="modified"><%= l('K2_MODIFIED_DATE') %></label>
-    <input id="modified" type="text" name="modified" value="<%- row.modified %>" /> <span><%= row.modifiedDate %></span>
-    
+        <label for="access"><%= l('K2_ACCESS') %></label>
+        <%= form.access %>
+
+        <label for="language"><%= l('K2_LANGUAGE') %></label>
+        <%= form.language %>
+
+        <label for="created_by_alias"><%= l('K2_AUTHOR_ALIAS') %></label>
+        <input id="created_by_alias" type="text" name="created_by_alias" value="<%- row.created_by_alias %>" />
+
+        <label for="createdDate"><%= l('K2_CREATED_DATE') %></label>
+        <input class="appDatePicker" id="createdDate" type="text" name="createdDate" value="<%- row.createdDate %>" />
+        <label for="createdTime"><%= l('K2_CREATED_TIME') %></label>
+        <input class="appTimePicker" id="createdTime" type="text" name="createdTime" value="<%- row.createdTime %>" />
+
+        <div>
+        <span><%= l('K2_MODIFIED_DATE') %></span>
+        <span><%= row.modifiedOn %></span>
+        </div>
+
+        <label for="publishUpDate"><%= l('K2_START_PUBLISHING_DATE') %></label>
+    <input class="appDatePicker" id="publishUpDate" type="text" name="publishUpDate" value="<%- row.publishUpDate %>" />
+    <label for="publishUpTime"><%= l('K2_START_PUBLISHING_TIME') %></label>
+    <input class="appTimePicker" id="publishUpTime" type="text" name="publishUpTime" value="<%- row.publishUpTime %>" />
+    <label for="publishDownDate"><%= l('K2_FINISH_PUBLISHING_DATE') %></label>
+    <input class="appDatePicker" id="publishDownDate" type="text" name="publishDownDate" value="<%- row.publishDownDate %>" />
+    <label for="publishDownTime"><%= l('K2_FINISH_PUBLISHING_TIME') %></label>
+    <input class="appTimePicker" id="publishDownTime" type="text" name="publishDownTime" value="<%- row.publishDownTime %>" />
     <label for="created_by"><%= l('K2_AUTHOR') %></label>
-    <input id="created_by" type="text" name="created_by" value="<%- row.created_by %>" /> <span><%= row.authorName %></span>
-    
-    <label for="modified_by"><%= l('K2_MODERATOR') %></label>
-    <input id="modified_by" type="text" name="modified_by" value="<%- row.modified_by %>" /> <span><%= row.moderatorName %></span>
-    
+    <input id="created_by" type="text" name="created_by" value="<%- row.created_by %>" />
+    <span><%= row.authorName %></span>
+    <div>
+        <span><%= l('K2_MODERATOR') %></span>
+        <span><%= row.moderatorName %></span>
+    </div>
+    <label for="tags"><%= l('K2_TEXT') %></label>
     <input type="hidden" name="tags" />
-    
-    <label for="text"><%= l('K2_TEXT') %></label>
-    <%= form.text %>
-
+    <label for="text"><%= l('K2_TEXT') %></label> <%= form.text %>
     <input type="hidden" name="id" value="<%= row.id %>" / >
-    
+
     <% _(form.jform).each(function(field) { %>
     <%= field.label %>
     <%= field.input %>
     <% }); %>
-    
-    <h2><%= l('K2_METADATA') %></h2>
-    <% _(form.metadata).each(function(field) { %>
+
+    <h2><%= l('K2_METADATA') %></h2> <% _(form.metadata).each(function(field) { %>
     <%= field.label %>
     <%= field.input %>
     <% }); %>
 
-    <h2><%= l('K2_LISTING_OPTIONS') %></h2>
-    <% _(form.listingOptions).each(function(field) { %>
-    <%= field.label %>
-    <%= field.input %>
-    <% }); %>
-    
-    <h2><%= l('K2_ITEM_OPTIONS') %></h2>
-    <% _(form.itemOptions).each(function(field) { %>
-    <%= field.label %>
-    <%= field.input %>
-    <% }); %>
-    
-    <h2><%= l('K2_PERMISSIONS') %></h2>
-    <% _(form.permissions).each(function(field) { %>
+    <h2><%= l('K2_LISTING_OPTIONS') %></h2> <% _(form.listingOptions).each(function(field) { %>
     <%= field.label %>
     <%= field.input %>
     <% }); %>
 
+    <h2><%= l('K2_ITEM_OPTIONS') %></h2> <% _(form.itemOptions).each(function(field) { %>
+    <%= field.label %>
+    <%= field.input %>
+    <% }); %>
+
+    <h2><%= l('K2_PERMISSIONS') %></h2> <% _(form.permissions).each(function(field) { %>
+    <%= field.label %>
+    <%= field.input %>
+    <% }); %>
 </form>

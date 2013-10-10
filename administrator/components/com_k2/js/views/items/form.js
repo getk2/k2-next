@@ -88,6 +88,15 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 				});
 			});
 
+			// Date fields
+			require(['widgets/pickadate/picker','widgets/pickadate/picker.date','widgets/pickadate/picker.time', 'css!widgets/pickadate/themes/default.css', 'css!widgets/pickadate/themes/default.date.css', 'css!widgets/pickadate/themes/default.time.css'], function() {
+				jQuery('.appDatePicker').pickadate({
+					format : 'yyyy-mm-dd'
+				});
+				jQuery('.appTimePicker').pickatime({
+					format : 'HH:i'
+				});
+			});
 			// Restore Joomla! modal events
 			if ( typeof (SqueezeBox) !== 'undefined') {
 				SqueezeBox.initialize({});

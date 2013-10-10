@@ -229,6 +229,56 @@ class K2ModelItems extends K2Model
 	}
 
 	/**
+	 * onBeforeSave method.
+	 * @param   array  $data     The data to be saved.
+	 *
+	 * @return void
+	 */
+
+	protected function onBeforeSave(&$data)
+	{
+		$user = JFactory::getUser();
+		$configuration = JFactory::getConfig();
+		$userTimeZone = $user->getParam('timezone', $configuration->get('offset'));
+
+		// Handle date data
+		if ($data['id'] && isset($data['createdDate']))
+		{
+			// Convert date to UTC
+			$createdDateTime = $data['createdDate'].' '.$data['createdTime'];
+			$data['created'] = JFactory::getDate($createdDateTime, $userTimeZone)->toSql();
+		}
+
+		if (isset($data['publishUpDate']) && isset($data['publishUpTime']))
+		{
+			// Convert date to UTC
+			$publishUpDateTime = $data['publishUpDate'].' '.$data['publishUpTime'];
+			if ((int)$publishUpDateTime > 0)
+			{
+				$data['publish_up'] = JFactory::getDate($publishUpDateTime, $userTimeZone)->toSql();
+			}
+			else
+			{
+				$data['publish_up'] = $data['created'];
+			}
+		}
+
+		if (isset($data['publishDownDate']) && isset($data['publishDownTime']))
+		{
+			// Convert date to UTC
+			$publishDownDateTime = $data['publishDownDate'].' '.$data['publishDownTime'];
+			if ((int)$publishDownDateTime > 0)
+			{
+				$data['publish_down'] = JFactory::getDate($publishDownDateTime, $userTimeZone)->toSql();
+			}
+			else
+			{
+				$data['publish_down'] = '';
+			}
+		}
+	}
+
+	/**
 	 * onAfterSave method.
 	 *
 	 * @return void
