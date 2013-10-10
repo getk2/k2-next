@@ -16,7 +16,7 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 		itemViewContainer : 'tbody',
 		itemView : K2ViewItemsRow,
 		onCompositeCollectionRendered : function() {
-			this.initSorting('ordering', this.collection.getState('sorting') === 'ordering');
+			this.initSorting('ordering', K2Session.get('items.sorting') === 'ordering' );
 		},
 		initSorting : function(column, enabled) {
 			require(['widgets/sortable/jquery-sortable-min', 'css!widgets/sortable/sortable.css'], _.bind(function() {

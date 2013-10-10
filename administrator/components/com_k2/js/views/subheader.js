@@ -50,6 +50,10 @@ define(['marionette', 'text!layouts/subheader.html', 'dispatcher'], function(Mar
 				K2Dispatcher.trigger('app:controller:filter', 'page', 1);
 
 			}, this);
+			
+			K2Dispatcher.on('app:subheader:sort', function(sorting) {
+				this.$el.find('select[name="sorting"]').select2('val', sorting);
+			}, this);
 		},
 
 		onRender : function() {
