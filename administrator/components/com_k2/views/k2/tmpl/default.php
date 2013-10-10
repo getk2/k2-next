@@ -15,5 +15,6 @@ defined('_JEXEC') or die ; ?>
     <div id="appMain">
         <div id="appSubheader"></div>
         <div id="appContent"></div>
+        <div class="appClr"></div>
     </div>
 </div>

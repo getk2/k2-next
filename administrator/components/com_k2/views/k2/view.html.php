@@ -25,6 +25,8 @@ class K2ViewK2 extends JViewLegacy
 		{
 			JHtml::_('jquery.framework');
 		}
+		
+		$document->addStyleSheet(JURI::root(true).'/administrator/components/com_k2/css/k2.css');
 
 		// Add the session token and the editor
 		$document->addScriptDeclaration('var K2SessionToken = "'.JSession::getFormToken().'";');

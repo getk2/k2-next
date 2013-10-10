@@ -123,6 +123,12 @@ class K2ViewItems extends K2View
 			'K2_HITS' => 'hits'
 		);
 		K2Response::addFilter('sorting', JText::_('K2_SORT_BY'), K2HelperHTML::sorting($sortingOptions), false, 'header');
+		
+		// Categories filter
+		K2Response::addFilter('category', JText::_('K2_CATEGORY'), K2HelperHTML::categories('category', true), false, 'header');
+
+		// Search filter
+		K2Response::addFilter('search', JText::_('K2_SEARCH'), K2HelperHTML::search(), false, 'sidebar');
 
 		// Published filter
 		K2Response::addFilter('published', JText::_('K2_PUBLISHED'), K2HelperHTML::published(), true, 'sidebar');
@@ -130,11 +136,7 @@ class K2ViewItems extends K2View
 		// Featured filter
 		K2Response::addFilter('featured', JText::_('K2_FEATURED'), K2HelperHTML::featured(), true, 'sidebar');
 
-		// Categories filter
-		K2Response::addFilter('category', JText::_('K2_CATEGORY'), K2HelperHTML::categories('category', true), false, 'header');
 
-		// Search filter
-		K2Response::addFilter('search', JText::_('K2_SEARCH'), K2HelperHTML::search(), false, 'sidebar');
 
 	}
 
