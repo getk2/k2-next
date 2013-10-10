@@ -109,6 +109,12 @@ class K2View extends JViewLegacy
 
 	protected function render()
 	{
+		// Pass the states to the response
+		unset($this->userStates['page']);
+		unset($this->userStates['limit']);
+		unset($this->userStates['limitstart']);
+		K2Response::setStates($this->userStates);
+		
 		// Get the response
 		$response = K2Response::render();
 

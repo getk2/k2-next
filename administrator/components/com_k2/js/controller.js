@@ -92,48 +92,6 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 					}
 				}
 			}
-			this.onAfterExecute();
-		},
-
-		// OnAfterExecute
-		onAfterExecute : function() {
-
-			// Render the header view
-			require(['views/header'], _.bind(function(HeaderView) {
-				var header = new HeaderView({
-					resource : this.resource,
-					model : new Backbone.Model({
-						'menu' : [],
-						'actions' : []
-					})
-				});
-				K2Dispatcher.trigger('app:render', header, 'header');
-			}, this));
-
-			// Render the subheader view
-			require(['views/subheader'], _.bind(function(SubheaderView) {
-				var subheader = new SubheaderView({
-					resource : this.resource,
-					model : new Backbone.Model({
-						'title' : '',
-						'filters' : [],
-						'toolbar' : []
-					})
-				});
-				K2Dispatcher.trigger('app:render', subheader, 'subheader');
-			}, this));
-
-			// Render the sidebar view
-			require(['views/sidebar'], _.bind(function(SidebarView) {
-				var sidebar = new SidebarView({
-					resource : this.resource,
-					model : new Backbone.Model({
-						'menu' : [],
-						'filters' : []
-					})
-				});
-				K2Dispatcher.trigger('app:render', sidebar, 'sidebar');
-			}, this));
 		},
 
 		// Proxy function for triggering the app:redirect event
@@ -195,7 +153,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 						var layout = new Layout();
 
 						// Render the layout to the page
-						K2Dispatcher.trigger('app:render', layout, 'content');
+						K2Dispatcher.trigger('app:region:show', layout, 'content');
 
 						// Render views to the layout
 						layout.grid.show(view);
@@ -232,14 +190,14 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 
 					// Success callback
 					success : _.bind(function() {
-
+						
 						// Create the view
 						var view = new View({
 							model : this.model
 						});
 
 						// Render the view
-						K2Dispatcher.trigger('app:render', view, 'content');
+						K2Dispatcher.trigger('app:region:show', view, 'content');
 
 						// Determine the new URL
 						var suffix = (id) ? '/edit/' + id : '/add';

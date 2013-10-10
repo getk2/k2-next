@@ -31,6 +31,13 @@ class K2Response
 	 * @var string $title
 	 */
 	public static $title = '';
+	
+	/**
+	 * The states array.
+	 *
+	 * @var array $states	Holds the session states for the current request
+	 */
+	public static $states = array();
 
 	/**
 	 * The menu array.
@@ -346,6 +353,28 @@ class K2Response
 	}
 
 	/**
+	 * Getter function for the states variable.
+	 *
+	 * @return array $states
+	 */
+	public static function getStates()
+	{
+		return self::$states;
+	}
+	
+	/**
+	 * Setter function for the states variable.
+	 *
+	 * @param array $states
+	 *
+	 * @return void
+	 */
+	public static function setStates($states)
+	{
+		self::$states = $states;
+	}
+
+	/**
 	 * Getter function for the form variable.
 	 *
 	 * @return array $form
@@ -354,6 +383,7 @@ class K2Response
 	{
 		return self::$form;
 	}
+
 
 	/**
 	 * Adds a filter to the filters array that will be rendered on the page.
@@ -572,6 +602,7 @@ class K2Response
 			self::$response = new stdClass;
 		}
 		self::$response->title = self::getTitle();
+		self::$response->states = self::getStates();
 		self::$response->menu = self::getMenu();
 		self::$response->actions = self::getActions();
 		self::$response->rows = self::getRows();

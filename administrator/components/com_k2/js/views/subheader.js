@@ -14,7 +14,8 @@ define(['marionette', 'text!layouts/subheader.html', 'dispatcher'], function(Mar
 
 		modelEvents : {
 			'change:toolbar' : 'render',
-			'change:title' : 'render'
+			'change:title' : 'render',
+			'change:filters' : 'render'
 		},
 
 		initialize : function() {
@@ -22,7 +23,8 @@ define(['marionette', 'text!layouts/subheader.html', 'dispatcher'], function(Mar
 				this.model.set({
 					'title' : response.title,
 					'filters' : response.filters.header,
-					'toolbar' : response.toolbar
+					'toolbar' : response.toolbar,
+					'states' : response.states
 				});
 			}, this);
 
@@ -52,6 +54,10 @@ define(['marionette', 'text!layouts/subheader.html', 'dispatcher'], function(Mar
 
 		onRender : function() {
 			this.$el.find('.appToolbar').hide();
+			_.each(this.model.get('states'), _.bind(function(value, state) {
+				var filter = this.$el.find('[name="' + state + '"]');
+				filter.val(value);
+			}, this));
 			require(['widgets/select2/select2', 'css!widgets/select2/select2.css'], _.bind(function() {
 				this.$el.find('.appFilters select').select2();
 			}, this));

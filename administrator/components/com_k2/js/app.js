@@ -118,6 +118,40 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'vie
 
 	});
 
+	// Render the header view
+	require(['views/header'], _.bind(function(HeaderView) {
+		var header = new HeaderView({
+			model : new Backbone.Model({
+				menu : [],
+				actions : []
+			})
+		});
+		K2Dispatcher.trigger('app:region:show', header, 'header');
+	}, this));
+
+	// Render the subheader view
+	require(['views/subheader'], _.bind(function(SubheaderView) {
+		var subheader = new SubheaderView({
+			model : new Backbone.Model({
+				title : '',
+				filters : [],
+				toolbar : []
+			})
+		});
+		K2Dispatcher.trigger('app:region:show', subheader, 'subheader');
+	}, this));
+
+	// Render the sidebar view
+	require(['views/sidebar'], _.bind(function(SidebarView) {
+		var sidebar = new SidebarView({
+			model : new Backbone.Model({
+				menu : [],
+				filters : []
+			})
+		});
+		K2Dispatcher.trigger('app:region:show', sidebar, 'sidebar');
+	}, this));
+
 	// Add initializer
 	K2.addInitializer(function(options) {
 
@@ -139,8 +173,13 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'vie
 	});
 
 	// Render event listener. Renders a view to a region.
-	K2Dispatcher.on('app:render', function(view, region) {
+	K2Dispatcher.on('app:region:show', function(view, region) {
 		K2[region].show(view);
+	});
+
+	// Reset region event listener. Renders a view to a region.
+	K2Dispatcher.on('app:region:reset', function(region) {
+		K2[region].reset();
 	});
 
 	// Message event listener

@@ -6,7 +6,8 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session'], fun
 		template : _.template(template),
 
 		modelEvents : {
-			'change' : 'render'
+			'change:menu' : 'render',
+			'change:filters' : 'render'
 		},
 
 		events : {
@@ -19,27 +20,20 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session'], fun
 				this.model.set({
 					'menu' : response.menu.secondary,
 					'filters' : response.filters.sidebar,
+					'states' : response.states
 				});
 			}, this);
 		},
 
 		onRender : function() {
-			this.updateFilterValuesFromSessionValues();
-		},
-
-		updateFilterValuesFromSessionValues : function() {
-			var prefix = this.options.resource;
-			this.$el.find('.appFilter').each(function() {
-				var el = jQuery(this).find('input:first');
-				var name = el.attr('name');
-				var type = el.attr('type');
-				var value = K2Session.get(prefix + '.' + name);
-				if (type === 'radio') {
-					jQuery(this).find('input[name="' + name + '"]').val([value]);
+			_.each(this.model.get('states'), _.bind(function(value, state) {
+				var filter = this.$el.find('[name="' + state + '"]');
+				if (filter.attr('type') === 'radio') {
+					filter.val([value]);
 				} else {
-					el.val(value);
+					filter.val(value);
 				}
-			});
+			}, this));
 		},
 
 		filter : function(event) {
@@ -47,29 +41,22 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session'], fun
 			var el = jQuery(event.currentTarget);
 			var name = el.attr('name');
 			var value = el.val();
-			var prefix = this.options.resource;
-			K2Session.set(prefix + '.' + name, value);
 			K2Dispatcher.trigger('app:controller:filter', name, value);
 		},
 
 		resetFilters : function(event) {
-
-			// Prevent default
 			event.preventDefault();
-
-			// Reset filters session values
-			var prefix = this.options.resource;
 			this.$el.find('.appFilter').each(function() {
 				var el = jQuery(this).find('input:first');
 				var name = el.attr('name');
-				K2Session.set(prefix + '.' + name, '');
+				var type = el.attr('type');
+				if (type === 'radio') {
+					el.val(['']);
+				} else {
+					el.val('');
+				}
 				K2Dispatcher.trigger('app:controller:setCollectionState', name, '');
 			});
-			
-			// Update the UI
-			this.updateFilterValuesFromSessionValues();
-
-			// Notify the subheader to reset it's own filters also
 			K2Dispatcher.trigger('app:subheader:resetFilters');
 		}
 	});
