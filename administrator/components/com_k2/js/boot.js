@@ -1,5 +1,6 @@
 'use strict';
 require.config({
+	urlArgs : 'v3.0.0',
 	paths : {
 		backbone : ['backbone', '//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone'],
 		underscore : '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore',
