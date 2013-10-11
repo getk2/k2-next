@@ -24,15 +24,18 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 			// Initialize the editor
 			K2Editor.init();
 
-			// Tags auto complete
-			var el = this.$el.find(this.$el.find('input[name="tags"]'));
-			var tags = [];
-			_.each(this.model.get('tags'), function(tag) {
-				tags.push(tag.name);
-			});
-			el.val(tags.join(','));
-			require(['widgets/select2/select2', 'css!widgets/select2/select2.css'], function() {
-				el.select2({
+			// Ato complete fields
+
+			require(['widgets/select2/select2', 'css!widgets/select2/select2.css'], _.bind(function() {
+
+				// Tags
+				var tagsInput = this.$el.find(this.$el.find('input[name="tags"]'));
+				var tags = [];
+				_.each(this.model.get('tags'), function(tag) {
+					tags.push(tag.name);
+				});
+				tagsInput.val(tags.join(','));
+				tagsInput.select2({
 					tags : tags,
 					width : '300px',
 					placeholder : l('K2_ENTER_SOME_TAGS'),
@@ -86,10 +89,57 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 						}
 					}
 				});
-			});
+
+				// Author
+				var authorField = this.$el.find('#created_by');
+				var authorId = authorField.val();
+				var authorName = this.model.get('authorName');
+				authorField.select2({
+					width : '300px',
+					placeholder : l('K2_SELECT_AUTHOR'),
+					initSelection : function(element, callback) {
+						if (authorId) {
+							var data = {
+								id : authorId,
+								text : authorName
+							};
+							callback(data);
+						}
+					},
+					ajax : {
+						url : 'index.php?option=com_k2&task=users.search&format=json',
+						dataType : 'json',
+						quietMillis : 100,
+						data : function(term, page) {// page is the one-based page number tracked by Select2
+							return {
+								search : term,
+								sorting : 'name',
+								limit : 50,
+								page : page,
+							};
+						},
+						results : function(data, page) {
+							var users = [];
+							jQuery.each(data.rows, function(index, row) {
+								var tag = {}
+								users.push({
+									id : row.id,
+									text : row.name
+								});
+							});
+							var more = (page * 50) < data.total;
+							return {
+								results : users,
+								more : more
+							};
+						}
+					},
+				});
+
+			}, this));
 
 			// Date fields
-			require(['widgets/pickadate/picker','widgets/pickadate/picker.date','widgets/pickadate/picker.time', 'css!widgets/pickadate/themes/default.css', 'css!widgets/pickadate/themes/default.date.css', 'css!widgets/pickadate/themes/default.time.css'], function() {
+			require(['widgets/pickadate/picker', 'widgets/pickadate/picker.date', 'widgets/pickadate/picker.time', 'css!widgets/pickadate/themes/default.css', 'css!widgets/pickadate/themes/default.date.css', 'css!widgets/pickadate/themes/default.time.css'], function() {
 				jQuery('.appDatePicker').pickadate({
 					format : 'yyyy-mm-dd'
 				});

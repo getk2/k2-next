@@ -61,8 +61,8 @@
     <label for="endTime"><%= l('K2_END_TIME') %></label>
     <input class="appTimePicker" id="endTime" type="text" name="endTime" value="<%- row.endTime %>" />
     
-    <label for="created_by"><%= l('K2_AUTHOR') %></label>
-    <input id="created_by" type="text" name="created_by" value="<%- row.created_by %>" />
+    <label><%= l('K2_AUTHOR') %></label>
+    <input id="created_by" type="hidden" name="created_by" value="<%- row.created_by %>" />
     
     <span><%= row.authorName %></span>
     <div>
