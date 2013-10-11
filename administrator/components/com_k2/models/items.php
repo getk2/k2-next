@@ -276,6 +276,35 @@ class K2ModelItems extends K2Model
 				$data['publish_down'] = '';
 			}
 		}
+
+		if (isset($data['startDate']) && isset($data['startTime']))
+		{
+			// Convert date to UTC
+			$startDateTime = $data['startDate'].' '.$data['startTime'];
+			if ((int)$startDateTime > 0)
+			{
+				$data['start_date'] = JFactory::getDate($startDateTime, $userTimeZone)->toSql();
+			}
+			else
+			{
+				$data['start_date'] = '';
+			}
+		}
+
+		if (isset($data['endDate']) && isset($data['endTime']))
+		{
+			// Convert date to UTC
+			$endDateTime = $data['endDate'].' '.$data['endTime'];
+			if ((int)$endDateTime > 0)
+			{
+				$data['end_date'] = JFactory::getDate($endDateTime, $userTimeZone)->toSql();
+			}
+			else
+			{
+				$data['end_date'] = '';
+			}
+		}
+
 	}
 
 	/**
