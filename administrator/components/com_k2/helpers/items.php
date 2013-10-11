@@ -34,6 +34,17 @@ class K2HelperItems extends K2Helper
 
 		$row->hits = (int)$row->hits;
 
+		if ((int)$row->start_date > 0)
+		{
+			$row->startDate = JHtml::_('date', $row->start_date, 'Y-m-d');
+			$row->startTime = JHtml::_('date', $row->start_date, 'H:i');
+		}
+		if ((int)$row->end_date > 0)
+		{
+			$row->endDate = JHtml::_('date', $row->end_date, 'Y-m-d');
+			$row->endTime = JHtml::_('date', $row->end_date, 'H:i');
+		}
+
 		$row->tags = $row->getTags();
 
 		return $row;

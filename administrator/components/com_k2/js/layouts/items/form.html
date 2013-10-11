@@ -51,6 +51,7 @@
     <input class="appDatePicker" id="publishDownDate" type="text" name="publishDownDate" value="<%- row.publishDownDate %>" />
     <label for="publishDownTime"><%= l('K2_FINISH_PUBLISHING_TIME') %></label>
     <input class="appTimePicker" id="publishDownTime" type="text" name="publishDownTime" value="<%- row.publishDownTime %>" />
+    
     <label for="startDate"><%= l('K2_START_DATE') %></label>
     <input class="appDatePicker" id="startDate" type="text" name="startDate" value="<%- row.startDate %>" />
     <label for="startTime"><%= l('K2_START_TIME') %></label>
@@ -59,8 +60,10 @@
     <input class="appDatePicker" id="endDate" type="text" name="endDate" value="<%- row.endDate %>" />
     <label for="endTime"><%= l('K2_END_TIME') %></label>
     <input class="appTimePicker" id="endTime" type="text" name="endTime" value="<%- row.endTime %>" />
+    
     <label for="created_by"><%= l('K2_AUTHOR') %></label>
     <input id="created_by" type="text" name="created_by" value="<%- row.created_by %>" />
+    
     <span><%= row.authorName %></span>
     <div>
         <span><%= l('K2_MODERATOR') %></span>
