@@ -29,7 +29,7 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 			require(['widgets/select2/select2', 'css!widgets/select2/select2.css'], _.bind(function() {
 
 				// Tags
-				var tagsInput = this.$el.find(this.$el.find('input[name="tags"]'));
+				var tagsInput = this.$el.find(this.$el.find('#appItemTags'));
 				var tags = [];
 				_.each(this.model.get('tags'), function(tag) {
 					tags.push(tag.name);
@@ -91,7 +91,7 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 				});
 
 				// Author
-				var authorField = this.$el.find('#created_by');
+				var authorField = this.$el.find('#appItemAuthor');
 				var authorId = authorField.val();
 				var authorName = this.model.get('authorName');
 				authorField.select2({
@@ -140,14 +140,30 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 			}, this));
 
 			// Date fields
-			require(['widgets/pickadate/picker', 'widgets/pickadate/picker.date', 'widgets/pickadate/picker.time', 'css!widgets/pickadate/themes/default.css', 'css!widgets/pickadate/themes/default.date.css', 'css!widgets/pickadate/themes/default.time.css'], function() {
-				jQuery('.appDatePicker').pickadate({
+			require(['widgets/pickadate/picker', 'widgets/pickadate/picker.date', 'widgets/pickadate/picker.time', 'css!widgets/pickadate/themes/default.css', 'css!widgets/pickadate/themes/default.date.css', 'css!widgets/pickadate/themes/default.time.css'], _.bind(function() {
+				this.$el.find('.appDatePicker').pickadate({
 					format : 'yyyy-mm-dd'
 				});
-				jQuery('.appTimePicker').pickatime({
+				this.$el.find('.appTimePicker').pickatime({
 					format : 'HH:i'
 				});
-			});
+			}, this));
+
+			// Image uploader
+			require(['widgets/uploader/jquery.iframe-transport', 'widgets/uploader/jquery.fileupload'], _.bind(function() {
+				var formData = {};
+				formData[K2SessionToken] = 1;
+				this.$el.find('#appItemImage').fileupload({
+					dataType : 'json',
+					url : 'index.php?option=com_k2&task=items.image&format=json',
+					formData: formData,
+					done : function(e, data) {
+						console.info(e);
+						console.info(data);
+					}
+				});
+			}, this));
+
 			// Restore Joomla! modal events
 			if ( typeof (SqueezeBox) !== 'undefined') {
 				SqueezeBox.initialize({});

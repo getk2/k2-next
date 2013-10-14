@@ -62,15 +62,25 @@
     <input class="appTimePicker" id="endTime" type="text" name="endTime" value="<%- row.endTime %>" />
     
     <label><%= l('K2_AUTHOR') %></label>
-    <input id="created_by" type="hidden" name="created_by" value="<%- row.created_by %>" />
+    <input id="appItemAuthor" type="hidden" name="created_by" value="<%- row.created_by %>" />
     
     <span><%= row.authorName %></span>
     <div>
         <span><%= l('K2_MODERATOR') %></span>
         <span><%= row.moderatorName %></span>
     </div>
-    <label for="tags"><%= l('K2_TEXT') %></label>
-    <input type="hidden" name="tags" />
+    <label for="appItemTags"><%= l('K2_TAGS') %></label>
+    <input type="hidden" name="tags" id="appItemTags" />
+    
+    
+    <label><%= l('K2_IMAGE_CAPTION') %></label>
+    <input type="text" name="image[credits]" />
+    <label><%= l('K2_IMAGE_CREDITS') %></label>
+    <input type="text" name="image[caption]" />
+    <label for="appItemImage"><%= l('K2_IMAGE') %></label>
+    <input type="file" id="appItemImage" name="image[file]" />
+    
+    
     <label for="text"><%= l('K2_TEXT') %></label> <%= form.text %>
     <input type="hidden" name="id" value="<%= row.id %>" / >
     <% _(form.jform).each(function(field) { %>
