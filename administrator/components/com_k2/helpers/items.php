@@ -27,6 +27,7 @@ class K2HelperItems extends K2Helper
 		// Prepare specific properties
 		$row->link = '#items/edit/'.$row->id;
 		JFilterOutput::objectHTMLSafe($row, ENT_QUOTES, array(
+			'image',
 			'plugins',
 			'params',
 			'rules'
@@ -44,7 +45,8 @@ class K2HelperItems extends K2Helper
 			$row->endDate = JHtml::_('date', $row->end_date, 'Y-m-d');
 			$row->endTime = JHtml::_('date', $row->end_date, 'H:i');
 		}
-
+		
+		$row->image = json_decode($row->image);
 		$row->tags = $row->getTags();
 
 		return $row;

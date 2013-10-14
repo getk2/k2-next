@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `#__k2_items` (
   `catid` int(10) unsigned NOT NULL,
   `introtext` mediumtext NOT NULL,
   `fulltext` mediumtext NOT NULL,
-  `images` text NOT NULL,
+  `image` text NOT NULL,
   `media` text NOT NULL,
   `galleries` text NOT NULL,
   `ordering` int(11) NOT NULL,

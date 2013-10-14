@@ -74,9 +74,9 @@
     
     
     <label><%= l('K2_IMAGE_CAPTION') %></label>
-    <input type="text" name="image[credits]" />
+    <input type="text" name="image[credits]" value="<%- row.image.credits %>" />
     <label><%= l('K2_IMAGE_CREDITS') %></label>
-    <input type="text" name="image[caption]" />
+    <input type="text" name="image[caption]" value="<%- row.image.caption %>" />
     <label for="appItemImage"><%= l('K2_IMAGE') %></label>
     <input type="file" id="appItemImage" name="image[file]" />
     
