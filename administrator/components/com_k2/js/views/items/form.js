@@ -95,6 +95,7 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 				var authorId = authorField.val();
 				var authorName = this.model.get('authorName');
 				authorField.select2({
+					minimumInputLength : 1,
 					width : '300px',
 					placeholder : l('K2_SELECT_AUTHOR'),
 					initSelection : function(element, callback) {
