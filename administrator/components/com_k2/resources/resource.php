@@ -62,4 +62,66 @@ class K2Resource
 		}
 	}
 
+	/**
+	 * Prepares the row for output
+	 *
+	 * @param string $mode	The mode for preparing data. 'site' for fron-end data, 'admin' for administrator operations.
+	 *
+	 * @return void
+	 */
+	public function prepare($mode = null)
+	{
+
+		if (is_null($mode))
+		{
+			$mode = (JFactory::getApplication()->isSite()) ? 'site' : 'admin';
+		}
+
+		if (property_exists($this, 'created'))
+		{
+			$this->createdDate = JHtml::_('date', $this->created, 'Y-m-d');
+			$this->createdTime = JHtml::_('date', $this->created, 'H:i');
+			$this->createdOn = JHtml::_('date', $this->created, JText::_('K2_DATE_FORMAT'));
+		}
+
+		if (property_exists($this, 'modified'))
+		{
+			if ((int)$this->modified > 0)
+			{
+				$this->modifiedOn = JHtml::_('date', $this->modified, JText::_('K2_DATE_FORMAT'));
+			}
+			else
+			{
+				$this->modifiedOn = JText::_('K2_NEVER');
+			}
+		}
+
+		if (property_exists($this, 'publish_up'))
+		{
+			$this->publishUpDate = JHtml::_('date', $this->publish_up, 'Y-m-d');
+			$this->publishUpTime = JHtml::_('date', $this->publish_up, 'H:i');
+		}
+
+		if (property_exists($this, 'publish_down'))
+		{
+			if ((int)$this->publish_down > 0)
+			{
+				$this->publishDownDate = JHtml::_('date', $this->publish_down, 'Y-m-d');
+				$this->publishDownTime = JHtml::_('date', $this->publish_down, 'H:i');
+			}
+			else
+			{
+				$this->publishDownDate = '';
+				$this->publishDownTime = '';
+			}
+		}
+
+		if (property_exists($this, 'language') && property_exists($this, 'languageTitle') && empty($this->languageTitle))
+		{
+
+			$this->languageTitle = JText::_('K2_ALL');
+		}
+
+	}
+
 }

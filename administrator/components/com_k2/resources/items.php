@@ -58,6 +58,45 @@ class K2Items extends K2Resource
 		return self::$instances[$id];
 	}
 
+	/**
+	 * Prepares the row for output
+	 *
+	 * @param string $mode	The mode for preparing data. 'site' for fron-end data, 'admin' for administrator operations.
+	 *
+	 * @return void
+	 */
+	public function prepare($mode = null)
+	{
+		// Prepare generic properties like dates and authors
+		parent::prepare($mode);
+
+		// Prepare specific properties
+		$this->link = '#items/edit/'.$this->id;
+		JFilterOutput::objectHTMLSafe($this, ENT_QUOTES, array(
+			'image',
+			'plugins',
+			'params',
+			'rules'
+		));
+
+		$this->hits = (int)$this->hits;
+
+		if ((int)$this->start_date > 0)
+		{
+			$this->startDate = JHtml::_('date', $this->start_date, 'Y-m-d');
+			$this->startTime = JHtml::_('date', $this->start_date, 'H:i');
+		}
+		if ((int)$this->end_date > 0)
+		{
+			$this->endDate = JHtml::_('date', $this->end_date, 'Y-m-d');
+			$this->endTime = JHtml::_('date', $this->end_date, 'H:i');
+		}
+
+		$this->tags = $this->getTags();
+
+		$this->images = $this->getImages();
+	}
+
 	public function getTags()
 	{
 		$tags = array();

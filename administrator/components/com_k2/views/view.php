@@ -114,7 +114,7 @@ class K2View extends JViewLegacy
 		unset($this->userStates['limit']);
 		unset($this->userStates['limitstart']);
 		K2Response::setStates($this->userStates);
-		
+
 		// Get the response
 		$response = K2Response::render();
 
@@ -154,14 +154,10 @@ class K2View extends JViewLegacy
 		$model->setState('id', $id);
 		$row = $model->getRow();
 
-		// Get helper
-		$this->loadHelper($this->getName());
-		$helper = 'K2Helper'.ucfirst($this->getName());
-
 		// Prepare row
-		if (class_exists($helper) && method_exists($helper, 'prepare'))
+		if (method_exists($row, 'prepare'))
 		{
-			$helper::prepare($row);
+			$row->prepare('admin');
 		}
 
 		// Set K2 response row
@@ -182,26 +178,12 @@ class K2View extends JViewLegacy
 		$model->setState('id', false);
 		$rows = $model->getRows();
 
-		// Get helper
-		$this->loadHelper($this->getName());
-		$helper = 'K2Helper'.ucfirst($this->getName());
-
 		// Prepare rows
-		if (class_exists($helper) && method_exists($helper, 'prepare'))
+		foreach ($rows as $row)
 		{
-			// Prepare using helper
-			foreach ($rows as $row)
+			if (method_exists($row, 'prepare'))
 			{
-				$helper::prepare($row);
-			}
-		}
-		// For lists we need to also check for controller prepare methods
-		else if (method_exists($this, 'prepareRow'))
-		{
-			// Prepare rows using class method
-			foreach ($rows as $row)
-			{
-				$this->prepareRow($row);
+				$row->prepare('admin');
 			}
 		}
 
