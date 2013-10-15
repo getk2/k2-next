@@ -23,44 +23,55 @@ class K2ControllerItems extends K2Controller
 		// Check for token
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
-		// Auto load
-		require_once JPATH_ADMINISTRATOR.'/components/com_k2/vendor/autoload.php';
+		// Filesystem
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
+		$filesystem = K2FileSystem::getInstance();
+
+		// ImageProcessor
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/imageprocessor.php';
+		$processor = K2ImageProcessor::getInstance();
+
+		$sizes = array(
+			'XL' => 600,
+			'L' => 400,
+			'M' => 240,
+			'S' => 180,
+			'XS' => 100
+		);
 
 		$input = JFactory::getApplication()->input;
-		$image = $input->files->get('image');
-		$source = $image['file']['tmp_name'];
+		$id = $input->get('id', uniqid(), 'int');
+		$imageFile = $input->files->get('image_file');
+		$source = $imageFile['tmp_name'];
 		try
 		{
-			$imagine = new Imagine\Gd\Imagine();
-			$image = $imagine->open($source)->resize(new \Imagine\Image\Box(80, 80));
-		}
-		catch(Exception $e)
-		{
-			jexit($e->getMessage());
-
-		}
-
-		$buffer = $image->__toString();
-
-		try
-		{
-			$adapter = new Gaufrette\Adapter\Local(JPATH_SITE);
-			$filesystem = new Gaufrette\Filesystem($adapter);
-
-			$filesystem->write('media/k2/items/origin/aaa.jpg', $buffer, true);
+			$image = $processor->open($source);
 		}
 		catch(Exception $e)
 		{
 			jexit($e->getMessage());
 		}
 
-		echo  'media/k2/items/origin/aaa.jpg';
+		$baseFileName = md5('Image'.$id);
+		try
+		{
+			$filesystem->write('media/k2/items/src/'.$baseFileName.'.jpg', $image->__toString(), true);
+			foreach ($sizes as $size => $width)
+			{
+				$filename = $baseFileName.'_'.$size.'.jpg';
+				$image->resize($image->getSize()->widen($width));
+				$filesystem->write('media/k2/items/cache/'.$filename, $image->__toString(), true);
+			}
+		}
+		catch(Exception $e)
+		{
+			jexit($e->getMessage());
+		}
 
-		//$image = $imagine->open(JPATH_SITE.'/media/k2/items/origin/'.$file['name']);
-
-		//var_dump($image);
-		//die ;
-
+		$response = new stdClass;
+		$response->value = $id;
+		$response->preview = JURI::root(true).'/media/k2/items/cache/'.$baseFileName.'_S.jpg?t='.time();
+		echo json_encode($response);
 		return $this;
 	}
 

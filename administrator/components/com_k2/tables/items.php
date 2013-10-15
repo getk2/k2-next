@@ -131,12 +131,6 @@ class K2TableItems extends K2Table
 				list($this->introtext, $this->fulltext) = preg_split($pattern, $src['text'], 2);
 			}
 		}
-		if (isset($src['image']) && is_array($src['image']))
-		{
-			$registry = new JRegistry;
-			$registry->loadArray($src['image']);
-			$src['image'] = $registry->toString();
-		}
 		if (isset($src['metadata']) && is_array($src['metadata']))
 		{
 			$registry = new JRegistry;

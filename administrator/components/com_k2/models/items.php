@@ -330,6 +330,40 @@ class K2ModelItems extends K2Model
 				$model->tagItem($tagId, $itemId);
 			}
 		}
+
+		if (isset($data['imageValue']) && $data['imageValue'] && $data['imageValue'] != $this->getState('id'))
+		{
+			$sizes = array(
+				'XL' => 600,
+				'L' => 400,
+				'M' => 240,
+				'S' => 180,
+				'XS' => 100
+			);
+
+			require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
+			$filesystem = K2FileSystem::getInstance();
+			$baseSourceFileName = md5('Image'.$data['imageValue']);
+			$baseTargetFileName = md5('Image'.$this->getState('id'));
+
+			// Original image
+			$path = 'media/k2/items/src';
+			$source = $baseSourceFileName.'.jpg';
+			$target = $baseTargetFileName.'.jpg';
+			$filesystem->write($path.'/'.$target, $filesystem->read($path.'/'.$source), true);
+			$filesystem->delete($path.'/'.$source);
+
+			// Resized images
+			$path = 'media/k2/items/cache';
+			foreach ($sizes as $size => $width)
+			{
+				$source = $baseSourceFileName.'_'.$size.'.jpg';
+				$target = $baseTargetFileName.'_'.$size.'.jpg';
+				$filesystem->write($path.'/'.$target, $filesystem->read($path.'/'.$source), true);
+				$filesystem->delete($path.'/'.$source);
+			}
+
+		}
 	}
 
 }

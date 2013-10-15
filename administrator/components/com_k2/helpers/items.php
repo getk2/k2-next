@@ -46,9 +46,10 @@ class K2HelperItems extends K2Helper
 			$row->endTime = JHtml::_('date', $row->end_date, 'H:i');
 		}
 		
-		$row->image = json_decode($row->image);
 		$row->tags = $row->getTags();
-
+		
+		$row->images = $row->getImages();
+		
 		return $row;
 	}
 

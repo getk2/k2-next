@@ -71,4 +71,27 @@ class K2Items extends K2Resource
 		return $tags;
 	}
 
+	public function getImages()
+	{
+		$images = array();
+		if ($this->id && $this->image_flag)
+		{
+			$sizes = array(
+				'XL' => 600,
+				'L' => 400,
+				'M' => 240,
+				'S' => 180,
+				'XS' => 100
+			);
+			$baseFileName = md5('Image'.$this->id);
+			$modifiedDate = ((int)$this->modified > 0) ? $this->modified : $this->created;
+			$timestamp = JFactory::getDate($modifiedDate)->toUnix();
+			foreach ($sizes as $size => $width)
+			{
+				$images[$size] = JURI::root(true).'/media/k2/items/cache/'.$baseFileName.'_'.$size.'.jpg?t='.$timestamp;
+			}
+		}
+		return $images;
+	}
+
 }

@@ -152,14 +152,17 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 			// Image uploader
 			require(['widgets/uploader/jquery.iframe-transport', 'widgets/uploader/jquery.fileupload'], _.bind(function() {
 				var formData = {};
+				formData['id'] = this.model.get('id');
 				formData[K2SessionToken] = 1;
-				this.$el.find('#appItemImage').fileupload({
+				this.$el.find('#appItemImageFile').fileupload({
 					dataType : 'json',
 					url : 'index.php?option=com_k2&task=items.image&format=json',
-					formData: formData,
+					formData : formData,
 					done : function(e, data) {
-						console.info(e);
-						console.info(data);
+						var response = data.result;
+						jQuery('#appImagePreview').attr('src', response.preview);
+						jQuery('#appItemImageValue').val(response.value);
+						jQuery('#appItemImageFlag').val(1);
 					}
 				});
 			}, this));
