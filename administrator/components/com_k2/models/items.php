@@ -364,6 +364,30 @@ class K2ModelItems extends K2Model
 			}
 
 		}
+
+		if (isset($data['attachments']))
+		{
+
+			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
+			$model = K2Model::getInstance('Attachments', 'K2Model');
+
+			$ids = $data['attachments']['id'];
+			$names = $data['attachments']['name'];
+			$titles = $data['attachments']['title'];
+
+			foreach ($ids as $key => $id)
+			{
+				$data = array();
+				$data['id'] = $id;
+				$data['name'] = $names[$key];
+				$data['title'] = $titles[$key];
+				$data['itemId'] = $this->getState('id');
+				$model->setState('data', $data);
+				$model->save();
+			}
+
+		}
+
 	}
 
 }

@@ -5,6 +5,9 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 		modelEvents : {
 			'change' : 'render'
 		},
+		events : {
+			'click #appActionAddAttachment' : 'addAttachment'
+		},
 		initialize : function() {
 			K2Dispatcher.on('app:controller:beforeSave', function() {
 				this.onBeforeSave();
@@ -174,6 +177,28 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 					parse : 'rel'
 				});
 			}
+		},
+
+		addAttachment : function(event) {
+			event.preventDefault();
+			var attachment = this.$el.find('#appItemAttachmentPlaceholder').clone();
+			attachment.removeAttr('id');
+			attachment.find('input').removeAttr('disabled');
+			require(['widgets/uploader/jquery.iframe-transport', 'widgets/uploader/jquery.fileupload'], _.bind(function() {
+				var formData = {};
+				formData['id'] = this.model.get('id');
+				formData[K2SessionToken] = 1;
+				attachment.find('input[type="file"]').fileupload({
+					dataType : 'json',
+					url : 'index.php?option=com_k2&task=items.attachment&format=json',
+					formData : formData,
+					done : function(e, data) {
+						var response = data.result;
+						attachment.find('.appItemAttachmentId').val(response.id);
+					}
+				});
+			}, this));
+			this.$el.find('#appItemAttachments').append(attachment);
 		}
 	});
 	return K2ViewItem;

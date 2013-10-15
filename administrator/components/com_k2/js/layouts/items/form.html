@@ -74,6 +74,22 @@
         <input type="hidden" id="appItemImageValue" name="image_value" />
         <input type="hidden" id="appItemImageFlag" name="image_flag" value="<%= row.image_flag %>" />
         <img alt="<%- l('K2_PREVIEW') %>" src="<%- row.images.S %>" id="appImagePreview" /> <label for="text"><%= l('K2_TEXT') %></label> <%= form.text %>
+        
+        
+        <button id="appActionAddAttachment"><%= l('K2_ADD_ATTACHMENT') %></button>
+        
+        <div id="appItemAttachments"></div>
+        
+        <div id="appItemAttachmentPlaceholder">
+            <label><%= l('K2_FILE') %></label>
+            <input type="file" class="appItemAttachmentFile" name="attachments[file][]" disabled="disabled" />
+            <label><%= l('K2_NAME') %></label>
+            <input type="text" name="attachments[name][]" disabled="disabled" />
+            <label><%= l('K2_TITLE') %></label>
+            <input type="text" name="attachments[title][]" disabled="disabled" />
+            <input type="hidden" name="attachments[id][]" class="appItemAttachmentId" disabled="disabled" />
+        </div>
+        
         <input type="hidden" name="id" value="<%= row.id %>" / >
         <% _(form.jform).each(function(field) { %>
         <%= field.label %>

@@ -95,6 +95,8 @@ class K2Items extends K2Resource
 		$this->tags = $this->getTags();
 
 		$this->images = $this->getImages();
+		
+		$this->attachments = $this->getAttachments();
 	}
 
 	public function getTags()
@@ -131,6 +133,19 @@ class K2Items extends K2Resource
 			}
 		}
 		return $images;
+	}
+
+	public function getAttachments()
+	{
+		$attachments = array();
+		if ($this->id)
+		{
+			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
+			$model = K2Model::getInstance('Attachments', 'K2Model');
+			$model->setState('itemId', $this->id);
+			$attachments = $model->getRows();
+		}
+		return $attachments;
 	}
 
 }
