@@ -120,6 +120,7 @@ class K2ViewItems extends K2View
 			'K2_ACCESS_LEVEL' => 'access',
 			'K2_CREATED' => 'created',
 			'K2_MODIFIED' => 'modified',
+			'K2_LANGUAGE' => 'language',
 			'K2_HITS' => 'hits'
 		);
 		K2Response::addFilter('sorting', JText::_('K2_SORT_BY'), K2HelperHTML::sorting($sortingOptions), false, 'header');

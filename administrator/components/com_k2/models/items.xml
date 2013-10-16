@@ -4,7 +4,7 @@
 		<fieldset name="jform"></fieldset>
 	</fields>
 	<fields name="params">
-		<fieldset name="listingOptions" addfieldpath="/administrator/components/com_k2/elements">
+		<fieldset name="listingOptions" addfieldpath="/administrator/components/com_k2/fields">
 			<field name="catItemTitle" type="list" default="" label="K2_TITLE" description="">
 				<option value="">K2_INHERIT_FROM_CATEGORY</option>
 				<option value="0">K2_HIDE</option>
@@ -116,7 +116,7 @@
 				<option value="1">K2_YES</option>
 			</field>
 		</fieldset>
-		<fieldset name="itemOptions" addfieldpath="/administrator/components/com_k2/elements">
+		<fieldset name="itemOptions" addfieldpath="/administrator/components/com_k2/fields">
 			<field name="itemDateCreated" type="list" default="" label="K2_ITEM_CREATED_DATE_AND_TIME" description="">
 				<option value="">K2_INHERIT_FROM_CATEGORY</option>
 				<option value="0">K2_HIDE</option>

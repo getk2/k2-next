@@ -304,6 +304,12 @@ class K2View extends JViewLegacy
 		{
 			$_form->category = K2HelperHTML::categories('catid', false, $row->catid);
 		}
+		
+		// Category field
+		if (property_exists($row, 'parent_id'))
+		{
+			$_form->parent = K2HelperHTML::categories('parent_id', false, $row->parent_id, $row->id, true);
+		}
 
 		// Language field
 		if (property_exists($row, 'language'))
@@ -319,6 +325,15 @@ class K2View extends JViewLegacy
 			$editor = K2Editor::getInstance($config->get('editor'));
 			$value = trim($row->fulltext) != '' ? $row->introtext.'<hr id="system-readmore" />'.$row->fulltext : $row->introtext;
 			$_form->text = $editor->display('text', $value, '100%', '300', '40', '5');
+		}
+		
+		// Description field
+		if (property_exists($row, 'description'))
+		{
+			require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/editor.php';
+			$config = JFactory::getConfig();
+			$editor = K2Editor::getInstance($config->get('editor'));
+			$_form->description = $editor->display('text', $row->description, '100%', '300', '40', '5');
 		}
 
 		// Check if form file exists

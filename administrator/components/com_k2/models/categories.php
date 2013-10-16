@@ -34,11 +34,11 @@ class K2ModelCategories extends K2Model
 		$query->leftJoin($db->quoteName('#__viewlevels', 'assetGroup').' ON '.$db->quoteName('assetGroup.id').' = '.$db->quoteName('category.access'));
 
 		// Join over the user
-		$query->select($db->quoteName('user.name', 'authorName'));
-		$query->leftJoin($db->quoteName('#__users', 'user').' ON '.$db->quoteName('user.id').' = '.$db->quoteName('category.created_by'));
+		$query->select($db->quoteName('author.name', 'authorName'));
+		$query->leftJoin($db->quoteName('#__users', 'author').' ON '.$db->quoteName('author.id').' = '.$db->quoteName('category.created_by'));
 
 		// Join over the user
-		$query->select($db->quoteName('user.name', 'moderatorName'));
+		$query->select($db->quoteName('moderator.name', 'moderatorName'));
 		$query->leftJoin($db->quoteName('#__users', 'moderator').' ON '.$db->quoteName('moderator.id').' = '.$db->quoteName('category.modified_by'));
 
 		// Set query conditions
@@ -73,20 +73,6 @@ class K2ModelCategories extends K2Model
 
 		// Select statement
 		$query->select('COUNT(*)')->from($db->quoteName('#__k2_categories', 'category'));
-
-		// Join over the language
-		$query->leftJoin($db->quoteName('#__languages', 'lang').' ON '.$db->quoteName('lang.lang_code').' = '.$db->quoteName('category.language'));
-
-		// Join over the asset groups.
-		$query->leftJoin($db->quoteName('#__viewlevels', 'assetGroup').' ON '.$db->quoteName('assetGroup.id').' = '.$db->quoteName('category.access'));
-
-		// Join over the user
-		$query->select($db->quoteName('user.name', 'authorName'));
-		$query->leftJoin($db->quoteName('#__users', 'user').' ON '.$db->quoteName('user.id').' = '.$db->quoteName('category.created_by'));
-
-		// Join over the user
-		$query->select($db->quoteName('user.name', 'moderatorName'));
-		$query->leftJoin($db->quoteName('#__users', 'moderator').' ON '.$db->quoteName('moderator.id').' = '.$db->quoteName('category.modified_by'));
 
 		// Set query conditions
 		$this->setQueryConditions($query);
@@ -148,9 +134,9 @@ class K2ModelCategories extends K2Model
 			if ($search)
 			{
 				$search = $db->escape($search, true);
-				$query->where('( LOWER('.$db->quoteName('category.name').'.) LIKE '.$db->Quote('%'.$search.'%', false).' 
-				OR '.$db->quoteName('category.id').' = '.(int)$search.')  
-				OR LOWER('.$db->quoteName('category.description').'.) LIKE '.$db->Quote('%'.$search.'%', false).')');
+				$query->where('( LOWER('.$db->quoteName('category.title').') LIKE '.$db->Quote('%'.$search.'%', false).' 
+				OR '.$db->quoteName('category.id').' = '.(int)$search.' 
+				OR LOWER('.$db->quoteName('category.description').') LIKE '.$db->Quote('%'.$search.'%', false).')');
 			}
 		}
 	}
@@ -190,6 +176,9 @@ class K2ModelCategories extends K2Model
 				case 'modified' :
 					$order = 'category.modified DESC';
 					break;
+				case 'language' :
+					$order = 'languageTitle ASC';
+					break;
 			}
 		}
 		// Append sorting
@@ -199,42 +188,33 @@ class K2ModelCategories extends K2Model
 		}
 	}
 
-	/**
-	 * Save method.
-	 *
-	 * @param   boolean   $patch	Flag to indicate if we are patching or performing a normal save.
-	 *
-	 * @return boolean	True on success false on failure.
-	 */
-	public function save()
-	{
-		$table = $this->getTable();
-		$data = $this->getState('data');
-		if (isset($data['id']) && $data['id'])
-		{
-			if (!$table->load($data['id']))
-			{
-				$this->setError($table->getError());
-				return false;
-			}
-			if ($table->isCheckedOut(JFactory::getUser()->get('id')))
-			{
-				$this->setError(JText::_('K2_ROW_IS_CURRENTLY_BEING_EDITED_BY_ANOTHER_AUTHOR'));
-				return false;
-			}
 
+	/**
+	 * onBeforeSave method.
+	 * @param   array  $data     The data to be saved.
+	 *
+	 * @return void
+	 */
+
+	protected function onBeforeSave(&$data, $table)
+	{
+		$user = JFactory::getUser();
+		$configuration = JFactory::getConfig();
+		$userTimeZone = $user->getParam('timezone', $configuration->get('offset'));
+
+		// Handle date data
+		if ($data['id'] && isset($data['createdDate']))
+		{
+			// Convert date to UTC
+			$createdDateTime = $data['createdDate'].' '.$data['createdTime'];
+			$data['created'] = JFactory::getDate($createdDateTime, $userTimeZone)->toSql();
 		}
+
 		if (isset($data['parent_id']))
 		{
 			$table->setLocation($data['parent_id'], 'last-child');
 		}
-		if (!$table->save($data))
-		{
-			$this->setError($table->getError());
-			return false;
-		}
-		$this->setState('id', $table->id);
-		return true;
+
 	}
 
 }

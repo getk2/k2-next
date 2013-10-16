@@ -1,19 +1,16 @@
 <td class="appCheckboxHolder"><label for="appCheckBox<%= id %>" class="appCheckbox">
-	<input class="appRowToggler" name="id[]" id="appCheckBox<%= id %>" value="<%= id %>" type="checkbox" />
+    <input class="appRowToggler" name="id[]" id="appCheckBox<%= id %>" value="<%= id %>" type="checkbox" />
 </label></td>
-<td class="appSlideTitleInfo">
-    <%= str_repeat('-', level) %>
-    
-    <a href="<%= link %>" class="appSlideListTitle"><%= title %></a><span>
-        
-    <div><%= path %></div>
-    <a class="appPreviewImage" href="#" title="Preview"><i class="appicon-eye"></i></a></span>
-    
-    
+<td><a class="appEditLink" href="<%= link %>"><%= str_repeat('-', level) %><%= title %></a></td>
+<td class="appCategoryParent<%= parent_id %>"><span class="appOrderingHandle">DRAG ME</span></td>
+<td>
+<input type="text" maxlength="6" size="6" name="ordering[]" value="<%= ordering %>" data-id="<%= id %>" />
 </td>
-<td class="appTextCenter hide-on-small"><span class="appOrderingHandle"><i class="appicon-menu"></i></span>
-<br />
-</td>
-
-<td class="appTextCenter"><a class="appStateToggler appPublishToggler<%= published == 1 ? ' appTogglerActive' : '' %>" data-state="published" data-id="<%= id %>"><i class="appicon-check"></i>(<%= published %>)</a></td>
+<td><a class="appActionToggleState appPublishedState<%= published == 1 ? ' appStateActive' : '' %>" data-state="published" data-id="<%= id %>"><%= published %></a></td>
+<td><%= viewLevel %></td>
+<td><%= authorName %></td>
+<td><%= createdOn %></td>
+<td><%= moderatorName %></td>
+<td><%= modifiedOn %></td>
+<td><%= languageTitle %></td>
 <td><%= id %></td>

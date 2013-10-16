@@ -35,7 +35,7 @@ class K2TableNested extends JTableNested
 		{
 			$this->created = $date->toSql();
 		}
-		if (property_exists($this, 'created_by'))
+		if (!$this->id && property_exists($this, 'created_by'))
 		{
 			$this->created_by = $user->get('id');
 		}

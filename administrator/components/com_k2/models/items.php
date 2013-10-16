@@ -41,11 +41,11 @@ class K2ModelItems extends K2Model
 		$query->leftJoin($db->quoteName('#__viewlevels', 'assetGroup').' ON '.$db->quoteName('assetGroup.id').' = '.$db->quoteName('item.access'));
 
 		// Join over the author
-		$query->select($db->quoteName('user.name', 'authorName'));
-		$query->leftJoin($db->quoteName('#__users', 'user').' ON '.$db->quoteName('user.id').' = '.$db->quoteName('item.created_by'));
+		$query->select($db->quoteName('author.name', 'authorName'));
+		$query->leftJoin($db->quoteName('#__users', 'author').' ON '.$db->quoteName('author.id').' = '.$db->quoteName('item.created_by'));
 
 		// Join over the moderator
-		$query->select($db->quoteName('user.name', 'moderatorName'));
+		$query->select($db->quoteName('moderator.name', 'moderatorName'));
 		$query->leftJoin($db->quoteName('#__users', 'moderator').' ON '.$db->quoteName('moderator.id').' = '.$db->quoteName('item.modified_by'));
 
 		// Join over the hits
@@ -246,7 +246,7 @@ class K2ModelItems extends K2Model
 	 * @return void
 	 */
 
-	protected function onBeforeSave(&$data)
+	protected function onBeforeSave(&$data, $table)
 	{
 		$user = JFactory::getUser();
 		$configuration = JFactory::getConfig();
@@ -324,7 +324,7 @@ class K2ModelItems extends K2Model
 	 * @return void
 	 */
 
-	protected function onAfterSave()
+	protected function onAfterSave(&$data, $table)
 	{
 		$data = $this->getState('data');
 		if (isset($data['tags']) && JString::trim($data['tags']) != '')

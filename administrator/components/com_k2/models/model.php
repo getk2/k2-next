@@ -83,25 +83,25 @@ class K2Model extends JModelLegacy
 			}
 
 		}
-		$this->onBeforeSave($data);
+		$this->onBeforeSave($data, $table);
 		if (!$table->save($data))
 		{
 			$this->setError($table->getError());
 			return false;
 		}
 		$this->setState('id', $table->id);
-		$this->onAfterSave();
+		$this->onAfterSave($data, $table);
 		return true;
 	}
-	
+
 	/**
 	 * onBeforeSave method. Hook for chidlren model to prepare the data.
 	 * @param   array  $data     The data to be saved.
-	 * 
+	 *
 	 * @return void
 	 */
 
-	protected function onBeforeSave(&$data)
+	protected function onBeforeSave(&$data, $table)
 	{
 	}
 
@@ -111,7 +111,7 @@ class K2Model extends JModelLegacy
 	 * @return void
 	 */
 
-	protected function onAfterSave()
+	protected function onAfterSave(&$data, $table)
 	{
 	}
 

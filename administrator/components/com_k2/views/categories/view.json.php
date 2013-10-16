@@ -29,7 +29,7 @@ class K2ViewCategories extends K2View
 	public function show()
 	{
 		// Set title
-		K2Response::setTitle(JText::_('K2_CATEGORIES'));
+		$this->setTitle('K2_CATEGORIES');
 
 		// Set user states
 		$this->setUserStates();
@@ -68,7 +68,7 @@ class K2ViewCategories extends K2View
 	public function edit($id = null)
 	{
 		// Set title
-		K2Response::setTitle(JText::_('K2_CATEGORY'));
+		$this->setTitle('K2_CATEGORY');
 
 		// Set row
 		$this->setRow($id);
@@ -102,7 +102,7 @@ class K2ViewCategories extends K2View
 	{
 
 		// Language filter
-		K2Response::addFilter('language', $this->getUserState('language'), JText::_('K2_SELECT_LANGUAGE'), K2HelperHTML::language($this->getUserState('language')));
+		K2Response::addFilter('language', JText::_('K2_SELECT_LANGUAGE'), K2HelperHTML::language(), false, 'header');
 
 		// Sorting filter
 		$sortingOptions = array(
@@ -114,12 +114,16 @@ class K2ViewCategories extends K2View
 			'K2_MODERATOR' => 'moderator',
 			'K2_ACCESS_LEVEL' => 'access',
 			'K2_CREATED' => 'created',
-			'K2_MODIFIED' => 'modified'
+			'K2_MODIFIED' => 'modified',
+			'K2_LANGUAGE' => 'language'
 		);
-		K2Response::addFilter('sorting', $this->getUserState('sorting'), JText::_('K2_SORT_BY'), K2HelperHTML::sorting($this->getUserState('sorting'), $sortingOptions));
+		K2Response::addFilter('sorting', JText::_('K2_SORT_BY'), K2HelperHTML::sorting($sortingOptions), false, 'header');
+
+		// Search filter
+		K2Response::addFilter('search', JText::_('K2_SEARCH'), K2HelperHTML::search(), false, 'sidebar');
 
 		// Published filter
-		K2Response::addFilter('published', $this->getUserState('published'), JText::_('K2_PUBLISHED'), K2HelperHTML::published($this->getUserState('published')), true);
+		K2Response::addFilter('published', JText::_('K2_PUBLISHED'), K2HelperHTML::published(), true, 'sidebar');
 
 	}
 
@@ -127,12 +131,12 @@ class K2ViewCategories extends K2View
 	{
 		K2Response::addToolbarAction('published', 'K2_TOGGLE_PUBLISHED_STATE', array(
 			'data-state' => 'published',
-			'class' => 'appBatchStateToggler',
-			'id' => 'appBatchPublishedToggler'
+			'class' => 'appActionToggleState',
+			'id' => 'appActionTogglePublishedState'
 		));
-		K2Response::addToolbarAction('batch', 'K2_BATCH', array('id' => 'appBatchButton'));
+		K2Response::addToolbarAction('batch', 'K2_BATCH', array('id' => 'appActionBatch'));
 
-		K2Response::addToolbarAction('delete', 'K2_DELETE', array('id' => 'appDeleteButton'));
+		K2Response::addToolbarAction('remove', 'K2_DELETE', array('id' => 'appActionRemove'));
 	}
 
 }

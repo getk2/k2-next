@@ -1,18 +1,27 @@
-<h1>Categories</h1>
-
-	<table class="table table-striped">
-		<thead>
-			<tr>
-				<td class="appCheckboxHolder">
-					<label for="appRowsToggler" class="appCheckbox" title="Select All"><input id="appRowsToggler" type="checkbox" /></label>
-				</td>
-				<td><a class="appSortingButton" data-sorting="title">Title</a></td>
-				<td class="appTextCenter  hide-on-small">
-					<i class="appicon-switch"></i>
-				</td>
-				<td class="appTextCenter"><a class="appSortingButton" data-sorting="published">Published</a></td>
-				<td><a class="appSortingButton" data-sorting="id">ID</a></td>
-			</tr>
-		</thead>
-		<tbody></tbody>
-	</table>	
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <td><label for="appRowsToggler" class="appCheckbox" title="<%- l('K2_SELECT_ALL') %>">
+                    <input id="appRowsToggler" type="checkbox" />
+                </label>
+            </td>
+            <td><a class="appActionSort" data-sorting="title"><%= l('K2_TITLE') %></a></td>
+            <td></td>
+            <td>
+                <a class="appActionSort" data-sorting="ordering"><%= l('K2_ORDER') %></a>
+                <button data-column="ordering" class="appActionSaveOrder">
+                    <%= l('K2_SAVE_ORDER') %>
+                </button>
+            </td>
+            <td><a class="appActionSort" data-sorting="published"><%= l('K2_PUBLISHED') %></a></td>
+            <td><a class="appActionSort" data-sorting="access"><%= l('K2_ACCESS') %> </a></td>
+            <td><a class="appActionSort" data-sorting="author"><%= l('K2_AUTHOR') %></a></td>
+            <td><a class="appActionSort" data-sorting="created"><%= l('K2_CREATED') %> </a></td>
+            <td><a class="appActionSort" data-sorting="moderator"><%= l('K2_MODERATOR') %></a></td>
+            <td><a class="appActionSort" data-sorting="modified"><%= l('K2_MODIFIED') %></a></td>
+            <td><a class="appActionSort" data-sorting="language"><%= l('K2_LANGUAGE') %></a></td>
+            <td><a class="appActionSort" data-sorting="id"><%= l('K2_ID') %></a></td>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
