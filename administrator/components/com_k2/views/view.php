@@ -233,13 +233,20 @@ class K2View extends JViewLegacy
 	 *
 	 * @return void
 	 */
-	protected function setUserState($name, $default, $type)
+	protected function setUserState($name, $default, $type, $session = true)
 	{
 		// Get application
 		$application = JFactory::getApplication();
 
 		// Get the state
-		$state = $application->getUserStateFromRequest('com_k2.'.$this->getName().'.'.$name, $name, $default, $type);
+		if ($session)
+		{
+			$state = $application->getUserStateFromRequest('com_k2.'.$this->getName().'.'.$name, $name, $default, $type);
+		}
+		else
+		{
+			$state = $application->input->get($name, $default, $type);
+		}
 
 		// Push the state to the array
 		$this->userStates[$name] = $state;
