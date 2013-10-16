@@ -40,7 +40,11 @@ class K2ControllerAttachments extends K2Controller
 		// Save the attachment
 		$path = 'media/k2/attachments/'.$file['name'];
 		$filesystem->write($path, file_get_contents($file['tmp_name']), true);
-		$data = array('file' => $file['name']);
+		$data = array(
+			'file' => $file['name'],
+			'name' => $file['name'],
+			'title' => $file['name']
+		);
 		$model->setState('data', $data);
 		$model->save();
 
