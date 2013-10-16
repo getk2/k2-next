@@ -1,6 +1,6 @@
 'use strict';
 define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Marionette, template, K2Dispatcher) {
-	var K2ViewItem = Marionette.Layout.extend({
+	var K2ViewItem = Marionette.ItemView.extend({
 		template : _.template(template),
 		modelEvents : {
 			'change' : 'render'
