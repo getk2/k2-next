@@ -41,7 +41,7 @@ class K2ModelAttachments extends K2Model
 		$data = $db->loadAssocList();
 
 		// Generate K2 resources instances from the result data.
-		$rows = $data;
+		$rows = $this->getResources($data);
 
 		// Return rows
 		return (array)$rows;
@@ -122,6 +122,15 @@ class K2ModelAttachments extends K2Model
 		{
 			$query->order($order);
 		}
+	}
+
+	public function download()
+	{
+		$db = $this->getDBO();
+		$query = $db->getQuery(true);
+		$query->update($db->quoteName('#__k2_attachments'))->set($db->quoteName('downloads').' = ('.$db->quoteName('downloads').' + 1)')->where('id = '.(int)$this->getState('id'));
+		$db->setQuery($query);
+		$db->execute();
 	}
 
 }

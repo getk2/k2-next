@@ -95,7 +95,7 @@ class K2Items extends K2Resource
 		$this->tags = $this->getTags();
 
 		$this->images = $this->getImages();
-		
+
 		$this->attachments = $this->getAttachments();
 	}
 
@@ -146,6 +146,55 @@ class K2Items extends K2Resource
 			$attachments = $model->getRows();
 		}
 		return $attachments;
+	}
+
+	public function checkSiteAccess()
+	{
+		// Get date
+		$date = JFactory::getDate();
+		$now = $date->toSql();
+
+		// Published check
+		if (!$this->published || !$this->categoryPublished || $this->trashed || $this->categoryTrashed)
+		{
+			JError::raiseError(404, JText::_('K2_NOT_FOUND'));
+			return false;
+		}
+		if ((int)$this->publish_up > 0 && $this->publish_up > $now)
+		{
+			JError::raiseError(404, JText::_('K2_NOT_FOUND'));
+			return false;
+		}
+		if ((int)$this->publish_down > 0 && $this->publish_down < $now)
+		{
+			JError::raiseError(404, JText::_('K2_NOT_FOUND'));
+			return false;
+		}
+
+		// Get user
+		$user = JFactory::getUser();
+		$viewLevels = $user->getAuthorisedViewLevels();
+
+		// Access check
+		if (!in_array($item->access, $viewLevels) || !in_array($item->categoryAccess, $viewLevels))
+		{
+			if ($user->guest)
+			{
+				require_once JPATH_SITE.'/components/com_users/helpers/route.php';
+				$uri = JFactory::getURI();
+				$url = 'index.php?option=com_users&view=login&return='.base64_encode($uri->toString().'&Itemid='.UsersHelperRoute::getLoginRoute());
+				$application = JFactory::getApplication();
+				$application->redirect(JRoute::_($url, false), JText::_('K2_YOU_NEED_TO_LOGIN_FIRST'));
+			}
+			else
+			{
+				JError::raiseError(403, JText::_('K2_NOT_AUTHORISED'));
+				return false;
+			}
+		}
+
+		return true;
+
 	}
 
 }

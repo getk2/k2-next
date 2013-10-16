@@ -75,35 +75,4 @@ class K2ControllerItems extends K2Controller
 		return $this;
 	}
 
-	public function attachment()
-	{
-		// Check for token
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
-
-		// Filesystem
-		require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
-		$filesystem = K2FileSystem::getInstance();
-
-		$input = JFactory::getApplication()->input;
-		$attachments = $input->files->get('attachments');
-		$file = $attachments['file'][0];
-
-		K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
-		$model = K2Model::getInstance('Attachments', 'K2Model');
-
-		$path = 'media/k2/attachments/'.$file['name'];
-		$filesystem->write($path, file_get_contents($file['tmp_name']), true);
-		$data = array('file' => $file['name']);
-		$model->setState('data', $data);
-		$model->save();
-
-		$response = new stdClass;
-		$response->id = $model->getState('id');
-		$response->file = $file['name'];
-		$response->path = $path;
-		echo json_encode($response);
-
-		return $this;
-	}
-
 }

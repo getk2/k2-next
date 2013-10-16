@@ -190,7 +190,7 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 				formData[K2SessionToken] = 1;
 				attachment.find('input[type="file"]').fileupload({
 					dataType : 'json',
-					url : 'index.php?option=com_k2&task=items.attachment&format=json',
+					url : 'index.php?option=com_k2&task=attachments.upload&format=json',
 					formData : formData,
 					done : function(e, data) {
 						var response = data.result;

@@ -78,7 +78,22 @@
         
         <button id="appActionAddAttachment"><%= l('K2_ADD_ATTACHMENT') %></button>
         
-        <div id="appItemAttachments"></div>
+        <div id="appItemAttachments">
+            <% _.each(row.attachments, function(attachment) { %>
+                <div class="appItemAttachment">
+                    <label><%= l('K2_FILE') %></label>
+                    <a href="<%= attachment.link %>"><%- attachment.file %></a>
+                    <input type="file" class="appItemAttachmentFile" name="attachments[file][]" /> 
+                    <label><%= l('K2_NAME') %></label>
+                    <input type="text" name="attachments[name][]" value="<%- attachment.name %>" />
+                    <label><%= l('K2_TITLE') %></label>
+                    <input type="text" name="attachments[title][]" value="<%- attachment.title %>" />
+                    <label><%= l('K2_DONWLOADS') %></label>
+                    <%= attachment.downloads %>
+                    <input type="hidden" name="attachments[id][]" value="<%- attachment.id %>" class="appItemAttachmentId" />
+                </div>
+            <% }); %>
+        </div>
         
         <div id="appItemAttachmentPlaceholder">
             <label><%= l('K2_FILE') %></label>

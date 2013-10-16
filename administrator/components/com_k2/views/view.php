@@ -154,12 +154,6 @@ class K2View extends JViewLegacy
 		$model->setState('id', $id);
 		$row = $model->getRow();
 
-		// Prepare row
-		if (method_exists($row, 'prepare'))
-		{
-			$row->prepare('admin');
-		}
-
 		// Set K2 response row
 		K2Response::setRow($row);
 	}
@@ -177,15 +171,6 @@ class K2View extends JViewLegacy
 		$model = $this->getModel();
 		$model->setState('id', false);
 		$rows = $model->getRows();
-
-		// Prepare rows
-		foreach ($rows as $row)
-		{
-			if (method_exists($row, 'prepare'))
-			{
-				$row->prepare('admin');
-			}
-		}
 
 		// Set K2 response rows
 		K2Response::setRows($rows);

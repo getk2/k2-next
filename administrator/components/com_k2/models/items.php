@@ -27,6 +27,9 @@ class K2ModelItems extends K2Model
 
 		// Join over the categories
 		$query->select($db->quoteName('category.title', 'categoryName'));
+		$query->select($db->quoteName('category.published', 'categoryPublished'));
+		$query->select($db->quoteName('category.access', 'categoryAccess'));
+		$query->select($db->quoteName('category.trashed', 'categoryTrashed'));
 		$query->leftJoin($db->quoteName('#__k2_categories', 'category').' ON '.$db->quoteName('category.id').' = '.$db->quoteName('item.catid'));
 
 		// Join over the language
@@ -169,6 +172,14 @@ class K2ModelItems extends K2Model
 				OR LOWER('.$db->quoteName('item.introtext').') LIKE '.$db->Quote('%'.$search.'%', false).'
 				OR LOWER('.$db->quoteName('item.fulltext').') LIKE '.$db->Quote('%'.$search.'%', false).')');
 			}
+		}
+		if (is_numeric($this->getState('category.published')))
+		{
+			$query->where($db->quoteName('category.published').' = '.(int)$this->getState('category.published'));
+		}
+		if (is_numeric($this->getState('category.access')))
+		{
+			$query->where($db->quoteName('category.access').' = '.(int)$this->getState('category.access'));
 		}
 	}
 

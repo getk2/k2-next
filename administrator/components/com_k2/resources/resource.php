@@ -32,6 +32,7 @@ class K2Resource
 		{
 			$this->$key = $value;
 		}
+		$this->prepare();
 	}
 
 	/**
