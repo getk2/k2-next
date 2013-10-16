@@ -83,4 +83,26 @@ class K2Attachments extends K2Resource
 		$model->download();
 	}
 
+	public function delete()
+	{
+		// First check if we have any files to delete
+		if ($this->file)
+		{
+			// Filesystem
+			require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
+			$filesystem = K2FileSystem::getInstance();
+
+			$key = 'media/k2/attachments/'.$this->file;
+			if ($filesystem->has($key))
+			{
+				$filesystem->delete($key);
+			}
+		}
+
+		// Delete
+		$model = K2Model::getInstance('Attachments', 'K2Model');
+		$model->setState('id', $this->id);
+		$model->delete();
+	}
+
 }

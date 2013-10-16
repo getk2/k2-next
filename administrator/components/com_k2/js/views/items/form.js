@@ -6,7 +6,8 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 			'change' : 'render'
 		},
 		events : {
-			'click #appActionAddAttachment' : 'addAttachment'
+			'click #appActionAddAttachment' : 'addAttachment',
+			'click .appItemAttachmentRemove' : 'removeAttachment'
 		},
 		initialize : function() {
 			K2Dispatcher.on('app:controller:beforeSave', function() {
@@ -183,7 +184,12 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 			event.preventDefault();
 			var attachment = this.$el.find('#appItemAttachmentPlaceholder').clone();
 			attachment.removeAttr('id');
+			attachment.addClass('appItemAttachment');
 			attachment.find('input').removeAttr('disabled');
+			attachment.on('input').removeAttr('disabled');
+			attachment.find('.appItemAttachmentRemove').click(_.bind(function(event) {
+				this.removeAttachment(event);
+			}, this));
 			require(['widgets/uploader/jquery.iframe-transport', 'widgets/uploader/jquery.fileupload'], _.bind(function() {
 				var formData = {};
 				formData['id'] = this.model.get('id');
@@ -195,10 +201,33 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 					done : function(e, data) {
 						var response = data.result;
 						attachment.find('.appItemAttachmentId').val(response.id);
+						attachment.find('.appItemAttachmentRemove').data('id', response.id);
 					}
 				});
 			}, this));
 			this.$el.find('#appItemAttachments').append(attachment);
+		},
+
+		removeAttachment : function(event) {
+			event.preventDefault();
+			var el = jQuery(event.currentTarget);
+			var id = el.data('id');
+			if (id !== undefined) {
+				var data = {
+					id : id
+				};
+				data[K2SessionToken] = 1;
+				jQuery.ajax({
+					type : 'POST',
+					url : 'index.php?option=com_k2&task=attachments.remove&format=json',
+					data : data,
+					success : function() {
+						el.parents('.appItemAttachment').remove();
+					}
+				});
+			} else {
+				el.parents('.appItemAttachment').remove();
+			}
 		}
 	});
 	return K2ViewItem;

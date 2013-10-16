@@ -57,4 +57,23 @@ class K2ControllerAttachments extends K2Controller
 		return $this;
 	}
 
+	public function remove()
+	{
+		// Check for token
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
+		// Get id from input
+		$input = JFactory::getApplication()->input;
+		$id = $input->get('id', 0, 'int');
+
+		// Get resource
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/attachments.php';
+		$attachment = K2Attachments::getInstance($id);
+
+		// Delete
+		$attachment->delete();
+
+		return $this;
+	}
+
 }
