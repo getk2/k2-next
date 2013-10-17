@@ -106,7 +106,7 @@
             <input type="hidden" name="attachments[id][]" class="appItemAttachmentId" disabled="disabled" />
             <button class="appItemAttachmentRemove"><%= l('K2_REMOVE') %></button>
         </div>
-        
+        <input type="hidden" name="tmpId" value="<%= row.tmpId %>" / >
         <input type="hidden" name="id" value="<%= row.id %>" / >
         <% _(form.jform).each(function(field) { %>
         <%= field.label %>

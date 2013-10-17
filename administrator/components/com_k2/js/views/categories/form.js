@@ -91,6 +91,7 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher'], functi
 				var formData = {};
 				formData['id'] = this.model.get('id');
 				formData[K2SessionToken] = 1;
+				formData['tmpId'] = this.model.get('tmpId');
 				this.$el.find('#appCategoryImageFile').fileupload({
 					dataType : 'json',
 					url : 'index.php?option=com_k2&task=categories.image&format=json',

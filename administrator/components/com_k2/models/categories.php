@@ -216,6 +216,18 @@ class K2ModelCategories extends K2Model
 
 	}
 
+	protected function onAfterSave(&$data, $table)
+	{
+		if (isset($data['image']) && $data['image'])
+		{
+			require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
+			$filesystem = K2FileSystem::getInstance();
+			$filesystem->rename('media/k2/categories/'.$data['image'], 'media/k2/categories/'.$table->id.'.jpg');
+			$table->image = $table->id.'.jpg';
+			$table->store();
+		}
+	}
+
 	public function saveOrder($ids, $ordering)
 	{
 		$table = $this->getTable();

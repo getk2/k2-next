@@ -31,16 +31,40 @@ class K2ControllerCategories extends K2Controller
 		require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/imageprocessor.php';
 		$processor = K2ImageProcessor::getInstance();
 
+		// Get input
 		$input = JFactory::getApplication()->input;
-		$id = $input->get('id', uniqid(), 'int');
+		$id = $input->get('id', 0, 'int');
+		$tmpId = $input->get('tmpId', '', 'cmd');
 		$imageFile = $input->files->get('imageFile');
+
+		// Set some variables
 		$source = $imageFile['tmp_name'];
-		$filename = $imageFile['name'];
+		$filename = ($id) ? $id.'.jpg' : $tmpId.'.jpg';
+		$path = 'media/k2/categories';
+
+		// Try to open the image to ensure it's a valid image file
 		$image = $processor->open($source);
-		$filesystem->write('media/k2/categories/'.$filename, $image->__toString(), true);
+
+		// Write it to the filesystem
+		$filesystem->write($path.'/'.$filename, $image->__toString(), true);
+
+		// If the category exists update now the database field
+		if ($id)
+		{
+			$model = K2Model::getInstance('Categories', 'K2Model');
+			$model->setState('id', $id);
+			$data = array(
+				'id' => $id,
+				'image' => $filename
+			);
+			$model->setState('data', $data);
+			$model->save();
+		}
+
+		// Prepare the response
 		$response = new stdClass;
-		$response->value = $id;
-		$response->preview = JURI::root(true).'/media/k2/categories/'.$filename.'?t='.time();
+		$response->value = ($id) ? '' : $filename;
+		$response->preview = JURI::root(true).'/'.$path.'/'.$filename.'?t='.time();
 		echo json_encode($response);
 		return $this;
 

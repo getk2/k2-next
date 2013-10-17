@@ -78,6 +78,11 @@ class K2Categories extends K2Resource
 			'params',
 			'rules'
 		));
+
+		if ($this->image)
+		{
+			$this->image = JURI::root(true).'/media/k2/categories/'.$this->image;
+		}
 	}
 
 }

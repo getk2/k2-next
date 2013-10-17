@@ -23,7 +23,7 @@ class K2ViewSettings extends K2View
 	{
 		// Set title
 		$this->setTitle('K2_SETTINGS');
-		
+
 		// Set row
 		$this->setRow(null);
 
@@ -39,7 +39,7 @@ class K2ViewSettings extends K2View
 		// Render
 		$this->render();
 	}
-	
+
 	/**
 	 * Helper method for fetching a single row and pass it to K2 response.
 	 * This is triggered by the edit function.
