@@ -16,41 +16,37 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 		itemViewContainer : 'tbody',
 		itemView : K2ViewItemsRow,
 		onCompositeCollectionRendered : function() {
-			this.initSorting('ordering', K2Session.get('items.sorting') === 'ordering' );
+			this.initSorting(this.$el.find('table tbody'), 'ordering', K2Session.get('items.sorting') === 'ordering');
 		},
-		initSorting : function(column, enabled) {
-			require(['widgets/sortable/jquery-sortable-min', 'css!widgets/sortable/sortable.css'], _.bind(function() {
-				var startValue = 1;
-				this.$el.find('table').sortable({
-					containerSelector : 'table',
-					itemPath : '> tbody',
-					itemSelector : 'tbody tr',
-					placeholder : '<tr class="appSortingPlaceholder"/>',
+		initSorting : function(element, column, enabled) {
+			if (element.sortable !== undefined) {
+				element.sortable('destroy');
+				element.unbind();
+			}
+			require(['widgets/sortable/jquery.sortable'], _.bind(function() {
+				var startValue = element.find('input[name="' + column + '[]"]:first').val();
+				element.sortable({
+					forcePlaceholderSize : true,
+					items : 'tbody tr',
 					handle : '.appOrderingHandle',
-					onDragStart : function(item, container, _super) {
-						startValue = container.el.find('input[name="' + column + '[]"]:first').val();
-						_super(item, container);
-					},
-					onDrop : function(item, container, _super) {
-						var value = startValue;
-						var keys = [];
-						var values = [];
-						container.el.find('input[name="' + column + '[]"]').each(function(index) {
-							var row = jQuery(this);
-							keys.push(row.data('id'));
-							values.push(value);
-							value++;
-						});
-						_super(item, container);
-						K2Dispatcher.trigger('app:controller:saveOrder', keys, values, column);
-					}
+				}).bind('sortupdate', function(e, ui) {
+					var value = startValue;
+					var keys = [];
+					var values = [];
+					element.find('input[name="' + column + '[]"]').each(function(index) {
+						var row = jQuery(this);
+						keys.push(row.data('id'));
+						values.push(value);
+						value++;
+					});
+					K2Dispatcher.trigger('app:controller:saveOrder', keys, values, column);
 				});
 				if (enabled) {
-					this.$el.find('table').sortable('enable');
-					this.$el.find('input[name="' + column + '[]"], .appActionSaveOrder').prop('disabled', false);
+					element.sortable('enable');
+					element.find('input[name="' + column + '[]"], .appActionSaveOrder').prop('disabled', false);
 				} else {
-					this.$el.find('table').sortable('disable');
-					this.$el.find('input[name="' + column + '[]"], .appActionSaveOrder').prop('disabled', true);
+					element.sortable('disable');
+					element.find('input[name="' + column + '[]"], .appActionSaveOrder').prop('disabled', true);
 				}
 			}, this));
 		}

@@ -188,7 +188,6 @@ class K2ModelCategories extends K2Model
 		}
 	}
 
-
 	/**
 	 * onBeforeSave method.
 	 * @param   array  $data     The data to be saved.
@@ -215,6 +214,12 @@ class K2ModelCategories extends K2Model
 			$table->setLocation($data['parent_id'], 'last-child');
 		}
 
+	}
+
+	public function saveOrder($ids, $ordering)
+	{
+		$table = $this->getTable();
+		$table->saveorder($ids, $ordering);
 	}
 
 }

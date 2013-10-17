@@ -2,10 +2,7 @@
     <input class="appRowToggler" name="id[]" id="appCheckBox<%= id %>" value="<%= id %>" type="checkbox" />
 </label></td>
 <td><a class="appEditLink" href="<%= link %>"><%= str_repeat('-', level) %><%= title %></a></td>
-<td class="appCategoryParent<%= parent_id %>"><span class="appOrderingHandle">DRAG ME</span></td>
-<td>
-<input type="text" maxlength="6" size="6" name="ordering[]" value="<%= ordering %>" data-id="<%= id %>" />
-</td>
+<td><span class="appOrderingHandle">DRAG ME</span><input type="hidden" maxlength="6" size="6" name="ordering[]" value="" data-id="<%= id %>" /></td>
 <td><a class="appActionToggleState appPublishedState<%= published == 1 ? ' appStateActive' : '' %>" data-state="published" data-id="<%= id %>"><%= published %></a></td>
 <td><%= viewLevel %></td>
 <td><%= authorName %></td>

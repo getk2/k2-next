@@ -6,6 +6,9 @@ define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categor
 		events : {
 			'click a.appEditLink' : 'edit',
 		},
+		onRender : function() {
+			this.el.addClass('appCategoryParent' + this.model.get('parent_id'));
+		},
 		edit : function(event) {
 			event.preventDefault();
 			K2Dispatcher.trigger('app:controller:edit', this.model.get('id'));
@@ -16,45 +19,57 @@ define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categor
 		itemViewContainer : 'tbody',
 		itemView : K2ViewCategoriesRow,
 		onCompositeCollectionRendered : function() {
-			this.initSorting('ordering', K2Session.get('categories.sorting') === 'ordering');
+			var groups = [];
+			_.each(this.$el.find('tr'), function(tr) {
+				var className = jQuery(tr).attr('class');
+				if (className !== undefined) {
+					groups.push(className);
+				}
+			});
+			groups = _.uniq(groups);
+			this.initSorting(this.$el.find('table tbody'), 'ordering', K2Session.get('categories.sorting') === 'ordering', groups);
 		},
-		initSorting : function(column, enabled) {
-			require(['widgets/sortable/jquery-sortable-min', 'css!widgets/sortable/sortable.css'], _.bind(function() {
-				var startValue = 1;
-				this.$el.find('table').sortable({
-					containerSelector : 'table',
-					itemPath : '> tbody',
-					itemSelector : 'tbody tr',
-					placeholder : '<tr class="appSortingPlaceholder"/>',
-					handle : '.appOrderingHandle',
-					isValidTarget : function(item, container) {
-						return true;
-					},
-					onDragStart : function(item, container, _super) {
-						startValue = container.el.find('input[name="' + column + '[]"]:first').val();
-						_super(item, container);
-					},
-					onDrop : function(item, container, _super) {
-						var value = startValue;
-						var keys = [];
-						var values = [];
-						container.el.find('input[name="' + column + '[]"]').each(function(index) {
-							var row = jQuery(this);
-							keys.push(row.data('id'));
-							values.push(value);
-							value++;
-						});
-						_super(item, container);
-						K2Dispatcher.trigger('app:controller:saveOrder', keys, values, column);
+		initSorting : function(element, column, enabled, groups) {
+			if (element.sortable !== undefined) {
+				element.sortable('destroy');
+				element.unbind();
+			}
+			require(['widgets/sortable/jquery.sortable'], _.bind(function() {
+				var events = [];
+				var isUpdating = false;
+				_.each(groups, function(group) {
+					element.sortable({
+						forcePlaceholderSize : true,
+						items : 'tbody tr.' + group,
+						handle : '.appOrderingHandle',
+
+					}).bind('sortupdate', function(e, ui) {
+						var timestamp = e.timeStamp;
+						if (_.indexOf(events, timestamp) === -1 && isUpdating === false) {
+							isUpdating = true;
+							events.push(timestamp);
+							var selector = jQuery(ui.item[0]).attr('class');
+							var keys = [];
+							var values = [];
+							var value = 1;
+							element.find('tr.' + selector + ' input[name="' + column + '[]"]').each(function(index) {
+								var row = jQuery(this);
+								keys.push(row.data('id'));
+								values.push(value);
+								value++;
+							});
+							K2Dispatcher.trigger('app:controller:saveOrder', keys, values, column);
+						}
+					});
+					if (enabled) {
+						element.sortable('enable');
+						element.find('input[name="' + column + '[]"], .appActionSaveOrder').prop('disabled', false);
+					} else {
+						element.sortable('disable');
+						element.find('input[name="' + column + '[]"], .appActionSaveOrder').prop('disabled', true);
 					}
 				});
-				if (enabled) {
-					this.$el.find('table').sortable('enable');
-					this.$el.find('input[name="' + column + '[]"], .appActionSaveOrder').prop('disabled', false);
-				} else {
-					this.$el.find('table').sortable('disable');
-					this.$el.find('input[name="' + column + '[]"], .appActionSaveOrder').prop('disabled', true);
-				}
+
 			}, this));
 		}
 	});

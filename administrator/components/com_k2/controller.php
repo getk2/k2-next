@@ -303,21 +303,30 @@ class K2Controller extends JControllerLegacy
 		JArrayHelper::toInteger($ids);
 		$states = $this->input->get('states', array(), 'array');
 
-		foreach ($ids as $key => $id)
+		// Handle categories sorting different than any other patch request
+		if (array_key_exists('ordering', $states) && $this->resourceType == 'categories')
 		{
-			$data = array();
-			$data['id'] = $id;
-			foreach ($states as $state => $values)
+			$this->model->saveOrder($ids, $states['ordering']);
+		}
+		else
+		{
+			foreach ($ids as $key => $id)
 			{
-				$data[$state] = is_array($values) ? $values[$key] : $values;
-			}
-			$this->model->setState('data', $data);
-			$result = $this->model->save();
-			if (!$result)
-			{
-				K2Response::throwError($this->model->getError());
+				$data = array();
+				$data['id'] = $id;
+				foreach ($states as $state => $values)
+				{
+					$data[$state] = is_array($values) ? $values[$key] : $values;
+				}
+				$this->model->setState('data', $data);
+				$result = $this->model->save();
+				if (!$result)
+				{
+					K2Response::throwError($this->model->getError());
+				}
 			}
 		}
+
 	}
 
 	/**
