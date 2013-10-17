@@ -21,6 +21,9 @@ class K2ViewSettings extends K2View
 
 	public function edit($id)
 	{
+		// Set title
+		$this->setTitle('K2_SETTINGS');
+		
 		// Set row
 		$this->setRow(null);
 
