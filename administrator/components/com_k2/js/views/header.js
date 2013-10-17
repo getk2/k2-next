@@ -25,7 +25,7 @@ define(['marionette', 'text!layouts/header.html', 'dispatcher'], function(Marion
 				});
 			}, this);
 		},
-		
+
 		add : function(event) {
 			event.preventDefault();
 			K2Dispatcher.trigger('app:controller:add');
@@ -33,7 +33,13 @@ define(['marionette', 'text!layouts/header.html', 'dispatcher'], function(Marion
 
 		save : function(event) {
 			event.preventDefault();
-			K2Dispatcher.trigger('app:controller:save', 'edit');
+			var el = jQuery(event.currentTarget);
+			var resource = el.data('resource');
+			if (resource === 'settings') {
+				K2Dispatcher.trigger('app:controller:save', 'custom', 'settings');
+			} else {
+				K2Dispatcher.trigger('app:controller:save', 'edit');
+			}
 		},
 
 		saveAndNew : function(event) {

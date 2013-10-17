@@ -167,6 +167,9 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 						jQuery('#appImagePreview').attr('src', response.preview);
 						jQuery('#appItemImageValue').val(response.value);
 						jQuery('#appItemImageFlag').val(1);
+					},
+					error : function(xhr) {
+						K2Dispatcher.trigger('app:message', 'error', xhr.responseText);
 					}
 				});
 			}, this));
@@ -202,6 +205,9 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 						var response = data.result;
 						attachment.find('.appItemAttachmentId').val(response.id);
 						attachment.find('.appItemAttachmentRemove').data('id', response.id);
+					},
+					error : function(xhr) {
+						K2Dispatcher.trigger('app:message', 'error', xhr.responseText);
 					}
 				});
 			}, this));
@@ -221,8 +227,11 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 					type : 'POST',
 					url : 'index.php?option=com_k2&task=attachments.remove&format=json',
 					data : data,
-					success : function() {
+					done : function() {
 						el.parents('.appItemAttachment').remove();
+					},
+					error : function(xhr) {
+						K2Dispatcher.trigger('app:message', 'error', xhr.responseText);
 					}
 				});
 			} else {

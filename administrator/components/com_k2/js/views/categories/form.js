@@ -5,6 +5,11 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher'], functi
 		modelEvents : {
 			'change' : 'render'
 		},
+		initialize : function() {
+			K2Dispatcher.on('app:controller:beforeSave', function() {
+				this.onBeforeSave();
+			}, this);
+		},
 		serializeData : function() {
 			var data = {
 				'row' : this.model.toJSON(),
@@ -13,7 +18,7 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher'], functi
 			return data;
 		},
 		onBeforeSave : function() {
-			K2Editor.save('text');
+			K2Editor.save('description');
 		},
 		onDomRefresh : function() {
 			// Initialize the editor
@@ -88,13 +93,16 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher'], functi
 				formData[K2SessionToken] = 1;
 				this.$el.find('#appCategoryImageFile').fileupload({
 					dataType : 'json',
-					url : 'index.php?option=com_k2&task=items.image&format=json',
+					url : 'index.php?option=com_k2&task=categories.image&format=json',
 					formData : formData,
 					done : function(e, data) {
 						var response = data.result;
 						jQuery('#appImagePreview').attr('src', response.preview);
 						jQuery('#appCategoryImageValue').val(response.value);
-						jQuery('#appCategoryImageFlag').val(1);
+						jQuery('#appCategoryImage').val(response.value);
+					},
+					error : function(xhr) {
+						K2Dispatcher.trigger('app:message', 'error', xhr.responseText);
 					}
 				});
 			}, this));

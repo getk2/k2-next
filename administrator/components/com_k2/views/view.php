@@ -304,7 +304,7 @@ class K2View extends JViewLegacy
 		{
 			$_form->category = K2HelperHTML::categories('catid', false, $row->catid);
 		}
-		
+
 		// Category field
 		if (property_exists($row, 'parent_id'))
 		{
@@ -326,14 +326,14 @@ class K2View extends JViewLegacy
 			$value = trim($row->fulltext) != '' ? $row->introtext.'<hr id="system-readmore" />'.$row->fulltext : $row->introtext;
 			$_form->text = $editor->display('text', $value, '100%', '300', '40', '5');
 		}
-		
+
 		// Description field
 		if (property_exists($row, 'description'))
 		{
 			require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/editor.php';
 			$config = JFactory::getConfig();
 			$editor = K2Editor::getInstance($config->get('editor'));
-			$_form->description = $editor->display('text', $row->description, '100%', '300', '40', '5');
+			$_form->description = $editor->display('description', $row->description, '100%', '300', '40', '5');
 		}
 
 		// Check if form file exists
@@ -433,12 +433,17 @@ class K2View extends JViewLegacy
 		{
 			K2Response::addAction('save', 'K2_SAVE', array(
 				'class' => 'appAction',
-				'id' => 'appActionSave'
+				'id' => 'appActionSave',
+				'data-resource' => $this->getName()
 			));
-			K2Response::addAction('saveAndNew', 'K2_SAVE_AND_NEW', array(
-				'class' => 'appAction',
-				'id' => 'appActionSaveAndNew'
-			));
+			if ($this->getName() != 'settings')
+			{
+				K2Response::addAction('saveAndNew', 'K2_SAVE_AND_NEW', array(
+					'class' => 'appAction',
+					'id' => 'appActionSaveAndNew'
+				));
+			}
+
 			K2Response::addAction('saveAndClose', 'K2_SAVE_AND_CLOSE', array(
 				'class' => 'appAction',
 				'id' => 'appActionSaveAndClose'

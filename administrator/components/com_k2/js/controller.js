@@ -28,8 +28,8 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 			}, this);
 
 			// Listener for save events.
-			K2Dispatcher.on('app:controller:save', function(redirect) {
-				this.save(redirect);
+			K2Dispatcher.on('app:controller:save', function(redirect, callback) {
+				this.save(redirect, callback);
 			}, this);
 
 			// Listener for close event.
@@ -215,7 +215,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 		},
 
 		// Sabe function. Saves the model and redirects properly.
-		save : function(redirect) {
+		save : function(redirect, callback) {
 
 			// Trigger the onBeforeSave event
 			K2Dispatcher.trigger('app:controller:beforeSave');
@@ -234,6 +234,8 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 						this.edit();
 					} else if (redirect === 'edit') {
 						this.edit(this.model.get('id'));
+					} else if(redirect === 'custom' && callback) {
+						this[callback]();
 					}
 				}, this),
 				error : _.bind(function(model, xhr, options) {
@@ -330,6 +332,42 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 					this.enqueueMessage('error', xhr.responseText);
 				}, this)
 			});
+		},
+
+		settings : function() {
+						
+			// Load the required files
+			require(['models/settings', 'views/settings/form'], _.bind(function(Model, View) {
+
+				// Create the model
+				this.model = new Model();
+
+				// Fetch the data from server
+				this.model.fetch({
+
+					// Success callback
+					success : _.bind(function() {
+
+						// Create the view
+						var view = new View({
+							model : this.model
+						});
+
+						// Render the view
+						K2Dispatcher.trigger('app:region:show', view, 'content');
+
+
+					}, this),
+					error : _.bind(function(model, xhr, options) {
+						this.enqueueMessage('error', xhr.responseText);
+					}, this)
+				});
+
+			}, this));
+		},
+		
+		information : function() {
+			
 		}
 	});
 

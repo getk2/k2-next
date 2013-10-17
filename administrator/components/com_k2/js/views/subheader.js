@@ -26,6 +26,7 @@ define(['marionette', 'text!layouts/subheader.html', 'dispatcher'], function(Mar
 					'toolbar' : response.toolbar,
 					'states' : response.states
 				});
+				this.hideToolbar();
 			}, this);
 
 			K2Dispatcher.on('app:view:toolbar', function(show) {

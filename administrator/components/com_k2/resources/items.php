@@ -74,6 +74,7 @@ class K2Items extends K2Resource
 		$this->link = '#items/edit/'.$this->id;
 		JFilterOutput::objectHTMLSafe($this, ENT_QUOTES, array(
 			'image',
+			'metadata',
 			'plugins',
 			'params',
 			'rules'

@@ -73,6 +73,7 @@ class K2Categories extends K2Resource
 		// Prepare specific properties
 		$this->link = '#categories/edit/'.$this->id;
 		JFilterOutput::objectHTMLSafe($this, ENT_QUOTES, array(
+			'metadata',
 			'plugins',
 			'params',
 			'rules'

@@ -58,6 +58,10 @@ class K2Controller extends JControllerLegacy
 		{
 			// Add the Backbone response class to auto load
 			require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/response.php';
+			
+			// Add custom error handling for JSON requests to avoid breaking the JSON response from server
+			set_error_handler('K2Response::errorHandler');
+			set_exception_handler('K2Response::exceptionHandler');
 
 			// Determine the resource type. We need that in order to be able to load the correct model.
 			if (strpos($config['originalTask'], '.') === false)

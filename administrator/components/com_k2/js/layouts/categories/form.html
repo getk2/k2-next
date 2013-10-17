@@ -42,9 +42,10 @@
         <span><%= l('K2_MODERATOR') %></span>
         <span><%= row.moderatorName %></span>
     </div>
-    <label for="appCategoryImage"><%= l('K2_IMAGE') %></label>
+    <label for="appCategoryImageFile"><%= l('K2_IMAGE') %></label>
     <input type="file" id="appCategoryImageFile" name="imageFile" />
     <img alt="<%- l('K2_PREVIEW') %>" src="<%- row.image %>" id="appImagePreview" />
+    <input type="hidden" id="appCategoryImage" name="image" value="<%= row.image %>" />
     <label for="description"><%= l('K2_DESCRIPTION') %></label> <%= form.description %>
     <input type="hidden" name="id" value="<%= row.id %>" / >
     
@@ -54,6 +55,21 @@
     <% }); %>
     <h2><%= l('K2_METADATA') %></h2>
     <% _(form.metadata).each(function(field) { %>
+    <%= field.label %>
+    <%= field.input %>
+    <% }); %>
+    <h2><%= l('K2_CATEGORY_LAYOUT_OPTIONS') %></h2>
+    <% _(form.categoryLayoutOptions).each(function(field) { %>
+    <%= field.label %>
+    <%= field.input %>
+    <% }); %>
+    <h2><%= l('K2_CATEGORY_VIEW_OPTIONS') %></h2>
+    <% _(form.categoryViewOptions).each(function(field) { %>
+    <%= field.label %>
+    <%= field.input %>
+    <% }); %>
+    <h2><%= l('K2_CATEGORY_IMAGE_OPTIONS') %></h2>
+    <% _(form.categoryImageOptions).each(function(field) { %>
     <%= field.label %>
     <%= field.input %>
     <% }); %>

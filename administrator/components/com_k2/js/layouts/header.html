@@ -16,7 +16,7 @@
 <ul id="appActions">
     <% _(actions).each(function(button) { %>
     <li>
-        <button <% if(button.attributes.id) { %> id="<%= button.attributes.id %>" <% } %> <% if(button.attributes.class) { %> class="<%= button.attributes.class %>" <% } %>>
+        <button <% if(button.attributes.id) { %> id="<%= button.attributes.id %>" <% } %> <% if(button.attributes.class) { %> class="<%= button.attributes.class %>" <% } %> <% if(button.attributes['data-resource']) { %> data-resource="<%= button.attributes['data-resource'] %>" <% } %>>
             <%= button.name %>
         </button>
     </li>

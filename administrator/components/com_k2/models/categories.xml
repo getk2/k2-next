@@ -4,7 +4,7 @@
 		<fieldset name="jform"></fieldset>
 	</fields>
 	<fields name="params">
-		<fieldset name="category-item-layout" addfieldpath="/administrator/components/com_k2/fields">
+		<fieldset name="categoryLayoutOptions" addfieldpath="/administrator/components/com_k2/fields">
 			<param name="" type="header" default="K2_LAYOUT_TEMPLATE" label="" description=""/>
 			<field name="theme" type="template" default="default" label="K2_SELECT_A_TEMPLATE"/>
 			<field name="" type="header" default="K2_LAYOUT_GRID" label="" description=""/>
@@ -86,7 +86,7 @@
 				<option value="1">K2_SHOW</option>
 			</field>
 		</fieldset>
-		<fieldset name="category-view-options" addfieldpath="/administrator/components/com_k2/fields">
+		<fieldset name="categoryViewOptions" addfieldpath="/administrator/components/com_k2/fields">
 			<field name="catTitle" type="radio" default="1" label="K2_TITLE" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
@@ -141,7 +141,7 @@
 				<option value="1">K2_SHOW</option>
 			</field>
 		</fieldset>
-		<fieldset name="item-image-options" addfieldpath="/administrator/components/com_k2/fields">
+		<fieldset name="categoryImageOptions" addfieldpath="/administrator/components/com_k2/fields">
 			<field name="itemImageXS" type="text" default="" label="K2_XSMALL_IMAGE_WIDTH_IN_PX" size="4" description="K2_IF_NO_VALUE_IS_ENTERED_THE_RELATED_SETTING_FROM_THE_COMPONENTS_GLOBAL_PARAMETERS_WILL_BE_RETRIEVED"/>
 			<field name="itemImageS" type="text" default="" label="K2_SMALL_IMAGE_WIDTH_IN_PX" size="4" description="K2_IF_NO_VALUE_IS_ENTERED_THE_RELATED_SETTING_FROM_THE_COMPONENTS_GLOBAL_PARAMETERS_WILL_BE_RETRIEVED"/>
 			<field name="itemImageM" type="text" default="" label="K2_MEDIUM_IMAGE_WIDTH_IN_PX" size="4" description="K2_IF_NO_VALUE_IS_ENTERED_THE_RELATED_SETTING_FROM_THE_COMPONENTS_GLOBAL_PARAMETERS_WILL_BE_RETRIEVED"/>

@@ -680,5 +680,11 @@ class K2Response
 		header('HTTP/1.1 '.$status);
 		jexit($text);
 	}
+	
+	public static function exceptionHandler($exception)
+	{
+		header('HTTP/1.1 500');
+		jexit($exception->getMessage());
+	}
 
 }

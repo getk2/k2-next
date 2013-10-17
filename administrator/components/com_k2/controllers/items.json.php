@@ -43,36 +43,23 @@ class K2ControllerItems extends K2Controller
 		$id = $input->get('id', uniqid(), 'int');
 		$imageFile = $input->files->get('image_file');
 		$source = $imageFile['tmp_name'];
-		try
-		{
-			$image = $processor->open($source);
-		}
-		catch(Exception $e)
-		{
-			jexit($e->getMessage());
-		}
 
+		$image = $processor->open($source);
 		$baseFileName = md5('Image'.$id);
-		try
-		{
-			$filesystem->write('media/k2/items/src/'.$baseFileName.'.jpg', $image->__toString(), true);
-			foreach ($sizes as $size => $width)
-			{
-				$filename = $baseFileName.'_'.$size.'.jpg';
-				$image->resize($image->getSize()->widen($width));
-				$filesystem->write('media/k2/items/cache/'.$filename, $image->__toString(), true);
-			}
-		}
-		catch(Exception $e)
-		{
-			jexit($e->getMessage());
-		}
 
+		$filesystem->write('media/k2/items/src/'.$baseFileName.'.jpg', $image->__toString(), true);
+		foreach ($sizes as $size => $width)
+		{
+			$filename = $baseFileName.'_'.$size.'.jpg';
+			$image->resize($image->getSize()->widen($width));
+			$filesystem->write('media/k2/items/cache/'.$filename, $image->__toString(), true);
+		}
 		$response = new stdClass;
 		$response->value = $id;
 		$response->preview = JURI::root(true).'/media/k2/items/cache/'.$baseFileName.'_S.jpg?t='.time();
 		echo json_encode($response);
 		return $this;
+
 	}
 
 }
