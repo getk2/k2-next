@@ -98,9 +98,8 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher'], functi
 					formData : formData,
 					done : function(e, data) {
 						var response = data.result;
-						jQuery('#appImagePreview').attr('src', response.preview);
+						jQuery('#appCategoryImagePreview').attr('src', response.preview);
 						jQuery('#appCategoryImageValue').val(response.value);
-						jQuery('#appCategoryImage').val(response.value);
 					},
 					error : function(xhr) {
 						K2Dispatcher.trigger('app:message', 'error', xhr.responseText);

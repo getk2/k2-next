@@ -48,22 +48,9 @@ class K2ControllerCategories extends K2Controller
 		// Write it to the filesystem
 		$filesystem->write($path.'/'.$filename, $image->__toString(), true);
 
-		// If the category exists update now the database field
-		if ($id)
-		{
-			$model = K2Model::getInstance('Categories', 'K2Model');
-			$model->setState('id', $id);
-			$data = array(
-				'id' => $id,
-				'image' => $filename
-			);
-			$model->setState('data', $data);
-			$model->save();
-		}
-
 		// Prepare the response
 		$response = new stdClass;
-		$response->value = ($id) ? '' : $filename;
+		$response->value = $filename;
 		$response->preview = JURI::root(true).'/'.$path.'/'.$filename.'?t='.time();
 		echo json_encode($response);
 		return $this;

@@ -218,12 +218,16 @@ class K2ModelCategories extends K2Model
 
 	protected function onAfterSave(&$data, $table)
 	{
-		if (isset($data['image']) && $data['image'])
+		// If we have a tmpId we need to rename the image and update the field
+		if (isset($data['image']) && $data['image'] && isset($data['tmpId']) && $data['tmpId'])
 		{
 			require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
 			$filesystem = K2FileSystem::getInstance();
-			$filesystem->rename('media/k2/categories/'.$data['image'], 'media/k2/categories/'.$table->id.'.jpg');
-			$table->image = $table->id.'.jpg';
+			$path = 'media/k2/categories';
+			$source = $data['image'];
+			$target = $table->id.'.jpg';
+			$filesystem->rename($path.'/'.$source, $path.'/'.$target);
+			$table->image = $target;
 			$table->store();
 		}
 	}

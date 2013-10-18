@@ -42,10 +42,13 @@
         <span><%= l('K2_MODERATOR') %></span>
         <span><%= row.moderatorName %></span>
     </div>
+    
     <label for="appCategoryImageFile"><%= l('K2_IMAGE') %></label>
     <input type="file" id="appCategoryImageFile" name="imageFile" />
-    <img alt="<%- l('K2_PREVIEW') %>" src="<%- row.image %>" id="appImagePreview" />
-    <input type="hidden" id="appCategoryImage" name="image" />
+    <img alt="<%- l('K2_PREVIEW') %>" src="<%- row.image %>" id="appCategoryImagePreview" />
+    <input type="hidden" id="appCategoryImageValue" name="image" value="<%- row.image %>"  />
+    
+    
     <label for="description"><%= l('K2_DESCRIPTION') %></label> <%= form.description %>
     
     <input type="hidden" name="tmpId" value="<%= row.tmpId %>" / >
