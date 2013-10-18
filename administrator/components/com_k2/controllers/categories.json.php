@@ -18,7 +18,7 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/controller.php';
 
 class K2ControllerCategories extends K2Controller
 {
-	public function image()
+	public function addImage()
 	{
 		// Check for token
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
@@ -48,6 +48,15 @@ class K2ControllerCategories extends K2Controller
 		// Write it to the filesystem
 		$filesystem->write($path.'/'.$filename, $image->__toString(), true);
 
+		// Update the database if needed
+		if ($id)
+		{
+			$row = JTable::getInstance('Categories', 'K2Table');
+			$row->load($id);
+			$row->image = $filename;
+			$row->store();
+		}
+
 		// Prepare the response
 		$response = new stdClass;
 		$response->value = $filename;
@@ -55,6 +64,46 @@ class K2ControllerCategories extends K2Controller
 		echo json_encode($response);
 		return $this;
 
+	}
+
+	public function removeImage()
+	{
+		// Check for token
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
+		// Filesystem
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
+		$filesystem = K2FileSystem::getInstance();
+
+		// Get input
+		$input = JFactory::getApplication()->input;
+		$id = $input->get('id', 0, 'int');
+		$tmpId = $input->get('tmpId', '', 'cmd');
+		$image = $input->get('image', '', 'cmd');
+
+		// Compute the key
+		$key = 'media/k2/categories/'.$image;
+
+		// Remove the file
+		if ($filesystem->has($key))
+		{
+			$filesystem->delete($key);
+		}
+
+		// Update the database if needed
+		if ($id)
+		{
+			$row = JTable::getInstance('Categories', 'K2Table');
+			$row->load($id);
+			$row->image = '';
+			$row->store();
+		}
+		
+		// Response
+		echo json_encode(true);
+
+		// Return
+		return $this;
 	}
 
 }

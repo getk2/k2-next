@@ -45,8 +45,13 @@
     
     <label for="appCategoryImageFile"><%= l('K2_IMAGE') %></label>
     <input type="file" id="appCategoryImageFile" name="imageFile" />
-    <img alt="<%- l('K2_PREVIEW') %>" src="<%- row.image %>" id="appCategoryImagePreview" />
     <input type="hidden" id="appCategoryImageValue" name="image" value="<%- row.imageValue %>"  />
+    
+    <div class="appCategoryImagePreviewContainer">
+        <img alt="<%- l('K2_PREVIEW') %>" src="<%- row.image %>" id="appCategoryImagePreview" />
+        <button id="appCategoryImageRemove"><%= l('K2_REMOVE_IMAGE') %></button>
+    </div>
+    
     
     
     <label for="description"><%= l('K2_DESCRIPTION') %></label> <%= form.description %>

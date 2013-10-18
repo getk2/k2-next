@@ -5,6 +5,9 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher'], functi
 		modelEvents : {
 			'change' : 'render'
 		},
+		events : {
+			'click #appCategoryImageRemove' : 'removeImage'
+		},
 		initialize : function() {
 			K2Dispatcher.on('app:controller:beforeSave', function() {
 				this.onBeforeSave();
@@ -23,6 +26,13 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher'], functi
 		onDomRefresh : function() {
 			// Initialize the editor
 			K2Editor.init();
+
+			// Show/Hide the preview image
+			if (this.model.get('image')) {
+				this.$el.find('.appCategoryImagePreviewContainer').show();
+			} else {
+				this.$el.find('.appCategoryImagePreviewContainer').hide();
+			}
 
 			// Auto complete fields
 			require(['widgets/select2/select2', 'css!widgets/select2/select2.css'], _.bind(function() {
@@ -94,15 +104,16 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher'], functi
 				formData['tmpId'] = this.model.get('tmpId');
 				this.$el.find('#appCategoryImageFile').fileupload({
 					dataType : 'json',
-					url : 'index.php?option=com_k2&task=categories.image&format=json',
+					url : 'index.php?option=com_k2&task=categories.addImage&format=json',
 					formData : formData,
 					done : function(e, data) {
 						var response = data.result;
+						jQuery('.appCategoryImagePreviewContainer').show();
 						jQuery('#appCategoryImagePreview').attr('src', response.preview);
 						jQuery('#appCategoryImageValue').val(response.value);
 					},
-					error : function(xhr) {
-						K2Dispatcher.trigger('app:message', 'error', xhr.responseText);
+					fail : function(e, data) {
+						K2Dispatcher.trigger('app:message', 'error', data.jqXHR.responseText);
 					}
 				});
 			}, this));
@@ -114,6 +125,26 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher'], functi
 					parse : 'rel'
 				});
 			}
+		},
+		removeImage : function(event) {
+			event.preventDefault();
+			var formData = {};
+			formData['id'] = this.model.get('id');
+			formData[K2SessionToken] = 1;
+			formData['tmpId'] = this.model.get('tmpId');
+			formData['image'] = jQuery('#appCategoryImageValue').val();
+			jQuery.ajax({
+				dataType : 'json',
+				type : 'POST',
+				url : 'index.php?option=com_k2&task=categories.removeImage&format=json',
+				data : formData
+			}).done(function(data, status, xhr) {
+				jQuery('#appCategoryImagePreview').attr('src', '');
+				jQuery('#appCategoryImageValue').val('');
+				jQuery('.appCategoryImagePreviewContainer').hide();
+			}).fail(function(xhr, status, error) {
+				K2Dispatcher.trigger('app:message', 'error', xhr.responseText);
+			});
 		}
 	});
 	return K2ViewCategory;

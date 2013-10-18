@@ -31,7 +31,7 @@ class K2Response
 	 * @var string $title
 	 */
 	public static $title = '';
-	
+
 	/**
 	 * The states array.
 	 *
@@ -361,7 +361,7 @@ class K2Response
 	{
 		return self::$states;
 	}
-	
+
 	/**
 	 * Setter function for the states variable.
 	 *
@@ -383,7 +383,6 @@ class K2Response
 	{
 		return self::$form;
 	}
-
 
 	/**
 	 * Adds a filter to the filters array that will be rendered on the page.
@@ -678,13 +677,12 @@ class K2Response
 	public static function throwError($text, $status = 400)
 	{
 		header('HTTP/1.1 '.$status);
-		jexit($text);
+		die($text);
 	}
-	
+
 	public static function exceptionHandler($exception)
 	{
-		header('HTTP/1.1 500');
-		jexit($exception->getMessage());
+		self::throwError($exception->getMessage(), $exception->getCode());
 	}
 
 }
