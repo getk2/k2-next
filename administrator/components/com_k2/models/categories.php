@@ -213,7 +213,7 @@ class K2ModelCategories extends K2Model
 			$data['created'] = JFactory::getDate($createdDateTime, $userTimeZone)->toSql();
 		}
 
-		if (isset($data['parent_id']))
+		if (isset($data['parent_id']) && !$data['id'])
 		{
 			$table->setLocation($data['parent_id'], 'last-child');
 		}
