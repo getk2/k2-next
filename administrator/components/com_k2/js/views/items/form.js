@@ -7,7 +7,8 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 		},
 		events : {
 			'click #appActionAddAttachment' : 'addAttachment',
-			'click .appItemAttachmentRemove' : 'removeAttachment'
+			'click .appItemAttachmentRemove' : 'removeAttachment',
+			'click #appItemImageRemove' : 'removeImage'
 		},
 		initialize : function() {
 			K2Dispatcher.on('app:controller:beforeSave', function() {
@@ -28,8 +29,14 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 			// Initialize the editor
 			K2Editor.init();
 
-			// Auto complete fields
+			// Show/Hide the preview image
+			if (this.model.get('image_flag') > 0) {
+				this.$el.find('.appItemImagePreviewContainer').show();
+			} else {
+				this.$el.find('.appItemImagePreviewContainer').hide();
+			}
 
+			// Auto complete fields
 			require(['widgets/select2/select2', 'css!widgets/select2/select2.css'], _.bind(function() {
 
 				// Tags
@@ -158,18 +165,19 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 				var formData = {};
 				formData['id'] = this.model.get('id');
 				formData[K2SessionToken] = 1;
+				formData['tmpId'] = this.model.get('tmpId');
 				this.$el.find('#appItemImageFile').fileupload({
 					dataType : 'json',
-					url : 'index.php?option=com_k2&task=items.image&format=json',
+					url : 'index.php?option=com_k2&task=items.addImage&format=json',
 					formData : formData,
 					done : function(e, data) {
 						var response = data.result;
-						jQuery('#appImagePreview').attr('src', response.preview);
-						jQuery('#appItemImageValue').val(response.value);
-						jQuery('#appItemImageFlag').val(1);
+						jQuery('.appItemImagePreviewContainer').show();
+						jQuery('#appItemImagePreview').attr('src', response.preview);
+						jQuery('#appItemImageFlag').val('1');
 					},
-					error : function(xhr) {
-						K2Dispatcher.trigger('app:message', 'error', xhr.responseText);
+					fail : function(e, data) {
+						K2Dispatcher.trigger('app:message', 'error', data.jqXHR.responseText);
 					}
 				});
 			}, this));
@@ -181,6 +189,27 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 					parse : 'rel'
 				});
 			}
+		},
+
+		removeImage : function(event) {
+			event.preventDefault();
+			var formData = {};
+			formData['id'] = this.model.get('id');
+			formData[K2SessionToken] = 1;
+			formData['tmpId'] = this.model.get('tmpId');
+			formData['image'] = jQuery('#appItemImageValue').val();
+			jQuery.ajax({
+				dataType : 'json',
+				type : 'POST',
+				url : 'index.php?option=com_k2&task=items.removeImage&format=json',
+				data : formData
+			}).done(function(data, status, xhr) {
+				jQuery('#appItemImagePreview').attr('src', '');
+				jQuery('#appItemImageFlag').val('0');
+				jQuery('.appItemImagePreviewContainer').hide();
+			}).fail(function(xhr, status, error) {
+				K2Dispatcher.trigger('app:message', 'error', xhr.responseText);
+			});
 		},
 
 		addAttachment : function(event) {

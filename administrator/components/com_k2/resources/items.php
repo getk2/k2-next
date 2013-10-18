@@ -132,6 +132,8 @@ class K2Items extends K2Resource
 			{
 				$images[$size] = JURI::root(true).'/media/k2/items/cache/'.$baseFileName.'_'.$size.'.jpg?t='.$timestamp;
 			}
+
+			$this->imagePreview = $this->images[$size];
 		}
 		return $images;
 	}

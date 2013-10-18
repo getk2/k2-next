@@ -342,7 +342,8 @@ class K2ModelItems extends K2Model
 			}
 		}
 
-		if (isset($data['imageValue']) && $data['imageValue'] && $data['imageValue'] != $this->getState('id'))
+		// If we have a tmpId we need to rename the image and update the field
+		if ($data['image_flag'] && isset($data['tmpId']) && $data['tmpId'])
 		{
 			$sizes = array(
 				'XL' => 600,
@@ -354,15 +355,14 @@ class K2ModelItems extends K2Model
 
 			require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
 			$filesystem = K2FileSystem::getInstance();
-			$baseSourceFileName = md5('Image'.$data['imageValue']);
-			$baseTargetFileName = md5('Image'.$this->getState('id'));
+			$baseSourceFileName = $data['tmpId'];
+			$baseTargetFileName = md5('Image'.$table->id);
 
 			// Original image
 			$path = 'media/k2/items/src';
 			$source = $baseSourceFileName.'.jpg';
 			$target = $baseTargetFileName.'.jpg';
-			$filesystem->write($path.'/'.$target, $filesystem->read($path.'/'.$source), true);
-			$filesystem->delete($path.'/'.$source);
+			$filesystem->rename($path.'/'.$source, $path.'/'.$target);
 
 			// Resized images
 			$path = 'media/k2/items/cache';
@@ -370,8 +370,7 @@ class K2ModelItems extends K2Model
 			{
 				$source = $baseSourceFileName.'_'.$size.'.jpg';
 				$target = $baseTargetFileName.'_'.$size.'.jpg';
-				$filesystem->write($path.'/'.$target, $filesystem->read($path.'/'.$source), true);
-				$filesystem->delete($path.'/'.$source);
+				$filesystem->rename($path.'/'.$source, $path.'/'.$target);
 			}
 
 		}

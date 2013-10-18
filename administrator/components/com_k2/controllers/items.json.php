@@ -18,7 +18,7 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/controller.php';
 
 class K2ControllerItems extends K2Controller
 {
-	public function image()
+	public function addImage()
 	{
 		// Check for token
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
@@ -40,26 +40,96 @@ class K2ControllerItems extends K2Controller
 		);
 
 		$input = JFactory::getApplication()->input;
-		$id = $input->get('id', uniqid(), 'int');
-		$imageFile = $input->files->get('image_file');
+		$id = $input->get('id', 0, 'int');
+		$tmpId = $input->get('tmpId', '', 'cmd');
+		$imageFile = $input->files->get('imageFile');
+		$path = 'media/k2/items';
 		$source = $imageFile['tmp_name'];
 
 		$image = $processor->open($source);
-		$baseFileName = md5('Image'.$id);
+		$baseFileName = ($id) ? md5('Image'.$id) : $tmpId;
 
-		$filesystem->write('media/k2/items/src/'.$baseFileName.'.jpg', $image->__toString(), true);
+		$filesystem->write($path.'/src/'.$baseFileName.'.jpg', $image->__toString(), true);
 		foreach ($sizes as $size => $width)
 		{
 			$filename = $baseFileName.'_'.$size.'.jpg';
 			$image->resize($image->getSize()->widen($width));
-			$filesystem->write('media/k2/items/cache/'.$filename, $image->__toString(), true);
+			$filesystem->write($path.'/cache/'.$filename, $image->__toString(), true);
 		}
+
+		// Update the database if needed
+		if ($id)
+		{
+			$row = JTable::getInstance('Items', 'K2Table');
+			$row->load($id);
+			$row->image_flag = 1;
+			$row->store();
+		}
+
+		// Response
 		$response = new stdClass;
-		$response->value = $id;
-		$response->preview = JURI::root(true).'/media/k2/items/cache/'.$baseFileName.'_S.jpg?t='.time();
+		$response->preview = JURI::root(true).'/'.$path.'/cache/'.$baseFileName.'_S.jpg?t='.time();
 		echo json_encode($response);
 		return $this;
 
+	}
+
+	public function removeImage()
+	{
+		// Check for token
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
+		// Filesystem
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
+		$filesystem = K2FileSystem::getInstance();
+
+		// Get input
+		$input = JFactory::getApplication()->input;
+		$id = $input->get('id', 0, 'int');
+		$tmpId = $input->get('tmpId', '', 'cmd');
+		$image = $input->get('image', '', 'cmd');
+		$baseFileName = ($id) ? md5('Image'.$id) : $tmpId;
+
+		// Delete source image
+		$key = 'media/k2/items/src/'.$baseFileName.'.jpg';
+		if ($filesystem->has($key))
+		{
+			$filesystem->delete($key);
+		}
+
+		// Get sizes. @TODO Fetch from params
+		$sizes = array(
+			'XL' => 600,
+			'L' => 400,
+			'M' => 240,
+			'S' => 180,
+			'XS' => 100
+		);
+
+		foreach ($sizes as $size => $width)
+		{
+			// Delete source image
+			$key = 'media/k2/items/cache/'.$baseFileName.'_'.$size.'.jpg';
+			if ($filesystem->has($key))
+			{
+				$filesystem->delete($key);
+			}
+		}
+
+		// Update the database if needed
+		if ($id)
+		{
+			$row = JTable::getInstance('Items', 'K2Table');
+			$row->load($id);
+			$row->image_flag = 0;
+			$row->store();
+		}
+
+		// Response
+		echo json_encode(true);
+
+		// Return
+		return $this;
 	}
 
 }
