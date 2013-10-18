@@ -116,6 +116,7 @@ class K2Items extends K2Resource
 	public function getImages()
 	{
 		$images = array();
+		$this->image_flag = (int)$this->image_flag;
 		if ($this->id && $this->image_flag)
 		{
 			$sizes = array(

@@ -73,10 +73,10 @@
         
         <label for="appItemImageFile"><%= l('K2_IMAGE') %></label>
         <input type="file" id="appItemImageFile" name="imageFile" />
-        <input type="hidden" id="appItemImageFlag" name="image_flag" value="<%- row.image_flag %>"  />
+        <input type="hidden" id="appItemImageFlag" name="image_flag"  />
     
         <div class="appItemImagePreviewContainer">
-            <img alt="<%- l('K2_PREVIEW') %>" src="<%- row.imagePreview %>" id="appItemImagePreview" />
+            <img alt="<%- l('K2_PREVIEW') %>" id="appItemImagePreview" />
             <button id="appItemImageRemove"><%= l('K2_REMOVE_IMAGE') %></button>
         </div>
         

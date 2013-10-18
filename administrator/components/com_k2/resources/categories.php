@@ -82,12 +82,12 @@ class K2Categories extends K2Resource
 		));
 
 		// Image
-		$this->imageValue = $this->image;
+		$this->image = (string) $this->image;
 		if ($this->image)
 		{
 			$modifiedDate = ((int)$this->modified > 0) ? $this->modified : $this->created;
 			$timestamp = JFactory::getDate($modifiedDate)->toUnix();
-			$this->image = JURI::root(true).'/media/k2/categories/'.$this->image.'?t='.$timestamp;
+			$this->imagePreview = JURI::root(true).'/media/k2/categories/'.$this->image.'?t='.$timestamp;
 		}
 
 		// Template
