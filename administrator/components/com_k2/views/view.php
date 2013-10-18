@@ -353,22 +353,24 @@ class K2View extends JViewLegacy
 			$formName = 'K2'.ucfirst($this->getName()).'Form';
 			$formPath = JPATH_ADMINISTRATOR.'/components/com_k2/models/'.$this->getName().'.xml';
 
+			// Convert JRegistry instances to plain object so JForm can bind them
+			if (property_exists($row, 'metadata'))
+			{
+				$row->metadata = $row->metadata->toObject();
+			}
+			if (property_exists($row, 'params'))
+			{
+				$row->params = $row->params->toObject();
+			}
+			if (property_exists($row, 'plugins'))
+			{
+				$row->plugins = $row->plugins->toObject();
+			}
+
 			// Get the form instance
 			$form = JForm::getInstance($formName, $formPath);
 
 			// Bind values
-			if (property_exists($row, 'metadata'))
-			{
-				$row->metadata = json_decode($row->metadata);
-			}
-			if (property_exists($row, 'params'))
-			{
-				$row->params = json_decode($row->params);
-			}
-			if (property_exists($row, 'plugins'))
-			{
-				$row->plugins = json_decode($row->plugins);
-			}
 			$form->bind($row);
 
 			// Import plugins to extend the form

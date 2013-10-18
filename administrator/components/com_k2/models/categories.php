@@ -149,6 +149,7 @@ class K2ModelCategories extends K2Model
 		{
 			switch($sorting)
 			{
+				default:
 				case 'id' :
 					$order = 'category.id DESC';
 					break;
@@ -178,6 +179,9 @@ class K2ModelCategories extends K2Model
 					break;
 				case 'language' :
 					$order = 'languageTitle ASC';
+					break;
+				case 'image' :
+					$order = 'category.image DESC';
 					break;
 			}
 		}

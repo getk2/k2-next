@@ -5,9 +5,15 @@
 <td><span class="appOrderingHandle">DRAG ME</span><input type="hidden" maxlength="6" size="6" name="ordering[]" value="" data-id="<%= id %>" /></td>
 <td><a class="appActionToggleState appPublishedState<%= published == 1 ? ' appStateActive' : '' %>" data-state="published" data-id="<%= id %>"><%= published %></a></td>
 <td><%= viewLevel %></td>
+<td><%= template %></td>
 <td><%= authorName %></td>
 <td><%= createdOn %></td>
 <td><%= moderatorName %></td>
 <td><%= modifiedOn %></td>
+<td>
+    <% if(image) { %>
+        <a href="<%= image %>"><%= l('K2_PREVIEW') %></a>
+    <% } %>
+</td>
 <td><%= languageTitle %></td>
 <td><%= id %></td>

@@ -70,8 +70,10 @@ class K2Categories extends K2Resource
 		// Prepare generic properties like dates and authors
 		parent::prepare($mode);
 
-		// Prepare specific properties
+		// link
 		$this->link = '#categories/edit/'.$this->id;
+
+		// Escape fpr HTML inputs
 		JFilterOutput::objectHTMLSafe($this, ENT_QUOTES, array(
 			'metadata',
 			'plugins',
@@ -79,12 +81,17 @@ class K2Categories extends K2Resource
 			'rules'
 		));
 
+		// Image
+		$this->imageValue = $this->image;
 		if ($this->image)
 		{
 			$modifiedDate = ((int)$this->modified > 0) ? $this->modified : $this->created;
 			$timestamp = JFactory::getDate($modifiedDate)->toUnix();
 			$this->image = JURI::root(true).'/media/k2/categories/'.$this->image.'?t='.$timestamp;
 		}
+
+		// Template
+		$this->template = $this->params->get('theme');
 	}
 
 }

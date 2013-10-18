@@ -117,6 +117,21 @@ class K2Resource
 			}
 		}
 
+		if (property_exists($this, 'metadata'))
+		{
+			$this->metadata = new JRegistry($this->metadata);
+		}
+
+		if (property_exists($this, 'params'))
+		{
+			$this->params = new JRegistry($this->params);
+		}
+
+		if (property_exists($this, 'plugins'))
+		{
+			$this->plugins = new JRegistry($this->plugins);
+		}
+
 		if (property_exists($this, 'language') && property_exists($this, 'languageTitle') && empty($this->languageTitle))
 		{
 
