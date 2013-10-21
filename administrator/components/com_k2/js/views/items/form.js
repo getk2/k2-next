@@ -321,7 +321,7 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 					done : function(e, data) {
 						var response = data.result;
 						attachment.find('.appItemAttachmentId').val(response.id);
-						attachment.find('.appItemAttachmentDownload').removeAttr('disabled').data('url', jQuery('<div/>').html(response.link).text());
+						attachment.find('.appItemAttachmentDownload').removeAttr('disabled').data('url', response.link);
 						attachment.find('.appItemAttachmentRemove').data('id', response.id);
 						attachment.find('input.appItemAttachmentName').val(response.name);
 						attachment.find('input.appItemAttachmentTitle').val(response.title);
@@ -362,7 +362,8 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 		downloadAttachment : function(event) {
 			event.preventDefault();
 			var el = jQuery(event.currentTarget);
-			window.location = el.data('url');
+			var url = _.unescape(el.data('url'));
+			window.location = url;
 		},
 		// Remove attachments
 		removeAttachments : function() {
