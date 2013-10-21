@@ -12,13 +12,16 @@ define(['marionette', 'dispatcher', 'text!layouts/media/default.html', 'jqueryui
 			}, this));
 		},
 		onShow : function() {
-			SqueezeBox.open(this.el, {
-				handler : 'adopt',
-				size : {
-					x : 800,
-					y : 400
-				}
-			});
+			require(['widgets/magnific/jquery.magnific-popup.min', 'css!widgets/magnific/magnific-popup.css'], _.bind(function() {
+				jQuery.magnificPopup.open({
+					alignTop : false,
+					closeBtnInside : true,
+					items : {
+						src : this.el,
+						type : 'inline'
+					}
+				});
+			}, this));
 		}
 	});
 	return K2ViewMedia;

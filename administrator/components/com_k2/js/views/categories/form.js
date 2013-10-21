@@ -225,6 +225,7 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher'], functi
 		},
 
 		setImageFromServer : function(path) {
+			jQuery.magnificPopup.close();
 			var self = this;
 			var formData = {};
 			formData['id'] = self.model.get('id');
