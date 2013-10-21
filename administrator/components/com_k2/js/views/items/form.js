@@ -12,9 +12,10 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 
 		// UI events
 		events : {
+			'click #appItemImageRemove' : 'removeImage',
 			'click #appActionAddAttachment' : 'addAttachment',
 			'click .appItemAttachmentRemove' : 'removeAttachment',
-			'click #appItemImageRemove' : 'removeImage'
+			'click .appItemAttachmentDownload' : 'downloadAttachment'
 		},
 
 		// Initialize
@@ -58,6 +59,10 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 				// Delete any uploaded images
 				if (this.image.get('value') > 0) {
 					this.removeImage();
+				}
+				// Delete any uploaded attachments
+				if (this.$el.find('.appItemAttachmentId').length > 1) {
+					this.removeAttachments();
 				}
 			}
 		},
@@ -256,64 +261,6 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 			});
 		},
 
-		// Add attachment
-		addAttachment : function(event) {
-			event.preventDefault();
-			var attachment = this.$el.find('#appItemAttachmentPlaceholder').clone();
-			attachment.removeAttr('id');
-			attachment.addClass('appItemAttachment');
-			attachment.find('input').removeAttr('disabled');
-			attachment.on('input').removeAttr('disabled');
-			attachment.find('.appItemAttachmentRemove').click(_.bind(function(event) {
-				this.removeAttachment(event);
-			}, this));
-			require(['widgets/uploader/jquery.iframe-transport', 'widgets/uploader/jquery.fileupload'], _.bind(function() {
-				var formData = {};
-				formData['id'] = this.model.get('id');
-				formData[K2SessionToken] = 1;
-				attachment.find('input[type="file"]').fileupload({
-					dataType : 'json',
-					url : 'index.php?option=com_k2&task=attachments.upload&format=json',
-					formData : formData,
-					done : function(e, data) {
-						var response = data.result;
-						attachment.find('.appItemAttachmentId').val(response.id);
-						attachment.find('.appItemAttachmentRemove').data('id', response.id);
-					},
-					error : function(xhr) {
-						K2Dispatcher.trigger('app:message', 'error', xhr.responseText);
-					}
-				});
-			}, this));
-			this.$el.find('#appItemAttachments').append(attachment);
-		},
-
-		// Remove atachment
-		removeAttachment : function(event) {
-			event.preventDefault();
-			var el = jQuery(event.currentTarget);
-			var id = el.data('id');
-			if (id !== undefined) {
-				var data = {
-					id : id
-				};
-				data[K2SessionToken] = 1;
-				jQuery.ajax({
-					type : 'POST',
-					url : 'index.php?option=com_k2&task=attachments.remove&format=json',
-					data : data,
-					done : function() {
-						el.parents('.appItemAttachment').remove();
-					},
-					error : function(xhr) {
-						K2Dispatcher.trigger('app:message', 'error', xhr.responseText);
-					}
-				});
-			} else {
-				el.parents('.appItemAttachment').remove();
-			}
-		},
-
 		// Set the image preview depending on the image state
 		setImagePreview : function() {
 			this.$el.find('#appItemImageFlag').val(this.image.get('value'));
@@ -323,6 +270,110 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 			} else {
 				this.$el.find('.appItemImagePreviewContainer').show();
 			}
+		},
+
+		// Add attachment
+		addAttachment : function(event) {
+			// Prevent default
+			event.preventDefault();
+
+			// Get attachment element
+			var attachment = this.$el.find('#appItemAttachmentPlaceholder').clone();
+
+			// Prepare the element
+			attachment.removeAttr('id');
+			attachment.addClass('appItemAttachment');
+			attachment.find('input').removeAttr('disabled');
+
+			// Download event
+			//attachment.find('.appItemAttachmentDownload').unbind('click').click(function(event) {
+			//	event.preventDefault();
+			//	this.downloadAttachment(event);
+			//});
+
+			// Remove event
+			//attachment.find('.appItemAttachmentRemove').unbind('click').click(_.bind(function(event) {
+			//	event.preventDefault();
+			//	this.removeAttachment(event);
+			//}, this));
+
+			// Upload event
+			require(['widgets/uploader/jquery.iframe-transport', 'widgets/uploader/jquery.fileupload'], _.bind(function() {
+				var self = this;
+				attachment.find('input[type="file"]').fileupload({
+					dataType : 'json',
+					url : 'index.php?option=com_k2&task=items.addAttachment&format=json',
+					formData : function() {
+						return [{
+							name : 'id',
+							value : self.model.get('id')
+						}, {
+							name : 'name',
+							value : attachment.find('input.appItemAttachmentName').val()
+						}, {
+							name : 'title',
+							value : attachment.find('input.appItemAttachmentTitle').val()
+						}, {
+							name : K2SessionToken,
+							value : 1
+						}];
+					},
+					done : function(e, data) {
+						var response = data.result;
+						attachment.find('.appItemAttachmentId').val(response.id);
+						attachment.find('.appItemAttachmentDownload').removeAttr('disabled').data('url', jQuery('<div/>').html(response.link).text());
+						attachment.find('.appItemAttachmentRemove').data('id', response.id);
+						attachment.find('input.appItemAttachmentName').val(response.name);
+						attachment.find('input.appItemAttachmentTitle').val(response.title);
+					},
+					fail : function(e, data) {
+						K2Dispatcher.trigger('app:message', 'error', data.jqXHR.responseText);
+					}
+				});
+			}, this));
+			this.$el.find('#appItemAttachments').append(attachment);
+		},
+
+		// Remove atachment
+		removeAttachment : function(event) {
+			event.preventDefault();
+			var self = this;
+			var el = jQuery(event.currentTarget);
+			var id = el.data('id');
+			if (id !== undefined) {
+				var formData = {};
+				formData['id'] = id;
+				formData[K2SessionToken] = 1;
+				jQuery.ajax({
+					dataType : 'json',
+					type : 'POST',
+					url : 'index.php?option=com_k2&task=items.removeAttachment&format=json',
+					data : formData
+				}).done(function(data, status, xhr) {
+					el.parents('.appItemAttachment').remove();
+				}).fail(function(xhr, status, error) {
+					K2Dispatcher.trigger('app:message', 'error', xhr.responseText);
+				});
+			} else {
+				el.parents('.appItemAttachment').remove();
+			}
+		},
+		// Download attachment
+		downloadAttachment : function(event) {
+			event.preventDefault();
+			var el = jQuery(event.currentTarget);
+			window.location = el.data('url');
+		},
+		// Remove attachments
+		removeAttachments : function() {
+			var formData = {};
+			formData = this.$el.find('.appItemAttachmentId').serialize() + '&' + K2SessionToken + '=1';
+			jQuery.ajax({
+				dataType : 'json',
+				type : 'POST',
+				url : 'index.php?option=com_k2&task=items.removeAttachment&format=json',
+				data : formData
+			});
 		}
 	});
 	return K2ViewItem;

@@ -132,4 +132,89 @@ class K2ControllerItems extends K2Controller
 		return $this;
 	}
 
+	public function addAttachment()
+	{
+		// Check for token
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
+		// Filesystem
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
+		$filesystem = K2FileSystem::getInstance();
+
+		// Get file from input
+		$input = JFactory::getApplication()->input;
+		$id = $input->get('id', 0, 'int');
+		$attachments = $input->files->get('attachments');
+		$file = $attachments['file'][0];
+		$name = $input->get('name', '', 'string');
+		$title = $input->get('title', '', 'string');
+		if (trim($name) == '')
+		{
+			$name = $file['name'];
+		}
+		if (trim($title) == '')
+		{
+			$title = $file['name'];
+		}
+		$path = 'media/k2/attachments';
+
+		// Get model
+		K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
+		$model = K2Model::getInstance('Attachments', 'K2Model');
+
+		// Save the attachment
+		$filesystem->write($path.'/'.$file['name'], file_get_contents($file['tmp_name']), true);
+		$data = array(
+			'itemId' => $id,
+			'file' => $file['name'],
+			'name' => $name,
+			'title' => $title
+		);
+		$model->setState('data', $data);
+		$model->save();
+
+		// Response
+		$attachment = $model->getRow();
+		echo json_encode($attachment);
+
+		// Return
+		return $this;
+	}
+
+	public function removeAttachment()
+	{
+		// Check for token
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
+		// Get id from input
+		$input = JFactory::getApplication()->input;
+		$attachments = $input->getArray(array('attachments' => array('id' => 'array')));
+		$id = $input->get('id', 0, 'int');
+		$rows = array($id);
+		foreach ($attachments['attachments']['id'] as $attachmentId)
+		{
+			$rows[] = (int)$attachmentId;
+		}
+		$rows = array_unique($rows);
+		$rows = array_filter($rows);
+
+		if (count($rows))
+		{
+			// Load resource class
+			require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/attachments.php';
+			foreach ($rows as $id)
+			{
+				// Get attachment
+				$attachment = K2Attachments::getInstance($id);
+
+				// Delete
+				$attachment->delete();
+			}
+		}
+
+		// Return
+		echo json_encode(true);
+		return $this;
+	}
+
 }
