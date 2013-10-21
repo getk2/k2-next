@@ -170,40 +170,51 @@ class K2ControllerItems extends K2Controller
 		// Setup some variables depending on source
 		if ($attachmentPath)
 		{
-			$targetFilename = basename($attachmentPath);
+			$fileValue = '';
+			$urlValue = $attachmentPath;
+			$filename = basename($urlValue);
 			$buffer = $filesystem->read($attachmentPath);
 		}
 		else
 		{
-			$targetFilename = $file['name'];
+			$fileValue = $file['name'];
+			$urlValue = '';
+			$filename = $fileValue;
 			$buffer = file_get_contents($file['tmp_name']);
 		}
 
 		// Handle empty fields
 		if (trim($name) == '')
 		{
-			$name = $targetFilename;
+			$name = $filename;
 		}
 		if (trim($title) == '')
 		{
-			$title = $targetFilename;
+			$title = $filename;
 		}
 
 		// Get model
 		K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
 		$model = K2Model::getInstance('Attachments', 'K2Model');
 
-		// Save the attachment
-		$filesystem->write($path.'/'.$targetFilename, $buffer, true);
+		// Save the attachment if it is an upload
+		if($fileValue)
+		{
+			$filesystem->write($path.'/'.$fileValue, $buffer, true);
+		}
+		
 		$data = array(
 			'id' => $id,
 			'itemId' => $itemId,
-			'file' => $targetFilename,
+			'file' => $fileValue,
+			'url' => $urlValue,
 			'name' => $name,
 			'title' => $title
 		);
+		
 		$model->setState('data', $data);
 		$model->save();
+		
 
 		// Response
 		$attachment = $model->getRow();

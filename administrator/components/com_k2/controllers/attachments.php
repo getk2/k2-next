@@ -71,8 +71,17 @@ class K2ControllerAttachments extends K2Controller
 		require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
 		$filesystem = K2FileSystem::getInstance();
 
+		// Determine the key
+		if ($attachment->file)
+		{
+			$key = 'media/k2/attachments/'.$attachment->file;
+		}
+		else if ($attachment->url)
+		{
+			$key = $attachment->url;
+		}
+
 		// Check if file exists
-		$key = 'media/k2/attachments/'.$attachment->file;
 		if (!$filesystem->has($key))
 		{
 			JError::raiseError(404, JText::_('K2_NOT_FOUND'));
