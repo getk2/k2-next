@@ -97,4 +97,51 @@ class K2HelperHTML extends K2Helper
 		return '<input type="text" class="appActionSearch"  name="'.$name.'" />';
 	}
 
+	public static function template($name = 'template', $value = null)
+	{
+		jimport('joomla.filesystem.folder');
+		$application = JFactory::getApplication();
+		$componentPath = JPATH_SITE.'/components/com_k2/templates';
+		$componentFolders = JFolder::folders($componentPath);
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+		$query->select($db->quoteName('template'))->from($db->quoteName('#__template_styles'))->where($db->quoteName('client_id').' = 0')->where($db->quoteName('home').' = 1');
+		$db->setQuery($query);
+		$defaultemplate = $db->loadResult();
+
+		if (JFolder::exists(JPATH_SITE.'/templates/'.$defaultemplate.'/html/com_k2/templates'))
+		{
+			$templatePath = JPATH_SITE.'/templates/'.$defaultemplate.'/html/com_k2/templates';
+		}
+		else
+		{
+			$templatePath = JPATH_SITE.'/templates/'.$defaultemplate.'/html/com_k2';
+		}
+
+		if (JFolder::exists($templatePath))
+		{
+			$templateFolders = JFolder::folders($templatePath);
+			$folders = @array_merge($templateFolders, $componentFolders);
+			$folders = @array_unique($folders);
+		}
+		else
+		{
+			$folders = $componentFolders;
+		}
+
+		$exclude = 'default';
+		$options = array();
+		foreach ($folders as $folder)
+		{
+			if (preg_match(chr(1).$exclude.chr(1), $folder))
+			{
+				continue;
+			}
+			$options[] = JHtml::_('select.option', $folder, $folder);
+		}
+
+		array_unshift($options, JHtml::_('select.option', '', '-- '.JText::_('K2_USE_DEFAULT').' --'));
+		return JHtml::_('select.genericlist', $options, $name, '', 'value', 'text', $value);
+	}
+
 }

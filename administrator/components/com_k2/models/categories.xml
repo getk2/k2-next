@@ -6,8 +6,6 @@
 	<fields name="params">
 		<fieldset name="categoryLayoutOptions" addfieldpath="/administrator/components/com_k2/fields">
 			<field type="k2language"/>
-			<field name="" type="header" default="K2_LAYOUT_TEMPLATE" label="" description=""/>
-			<field name="theme" type="template" default="default" label="K2_SELECT_A_TEMPLATE"/>
 			<field name="" type="header" default="K2_LAYOUT_GRID" label="" description=""/>
 			<field name="num_leading_items" type="text" size="4" default="2" label="K2_LEADING_COUNT" description="K2_NUMBER_OF_ITEMS_TO_DISPLAY_AS_LEADING"/>
 			<field name="num_leading_columns" type="text" size="4" default="1" label="K2_COLUMNS_FOR_LEADING" description=""/>

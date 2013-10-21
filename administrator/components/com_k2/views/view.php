@@ -311,10 +311,22 @@ class K2View extends JViewLegacy
 			$_form->category = K2HelperHTML::categories('catid', false, $row->catid);
 		}
 
-		// Category field
+		// Category parent field
 		if (property_exists($row, 'parent_id'))
 		{
 			$_form->parent = K2HelperHTML::categories('parent_id', false, $row->parent_id, $row->id, true);
+		}
+		
+		// Category inheritance
+		if (property_exists($row, 'inheritance'))
+		{
+			$_form->inheritance = K2HelperHTML::categories('inheritance', false, $row->inheritance, $row->id, true);
+		}
+		
+		// Category template
+		if (property_exists($row, 'template'))
+		{
+			$_form->template = K2HelperHTML::template('template', $row->template);
 		}
 
 		// Language field
