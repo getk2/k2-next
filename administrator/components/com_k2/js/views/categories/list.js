@@ -30,15 +30,15 @@ define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categor
 			this.initSorting(this.$el.find('table tbody'), 'ordering', K2Session.get('categories.sorting') === 'ordering', groups);
 		},
 		initSorting : function(element, column, enabled, groups) {
-			if (element.sortable !== undefined) {
-				element.sortable('destroy');
+			if (element.ordering !== undefined) {
+				element.ordering('destroy');
 				element.unbind();
 			}
 			require(['widgets/sortable/jquery.sortable'], _.bind(function() {
 				var events = [];
 				var isUpdating = false;
 				_.each(groups, function(group) {
-					element.sortable({
+					element.ordering({
 						forcePlaceholderSize : true,
 						items : 'tbody tr.' + group,
 						handle : '.appOrderingHandle',
@@ -62,10 +62,10 @@ define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categor
 						}
 					});
 					if (enabled) {
-						element.sortable('enable');
+						element.ordering('enable');
 						element.find('input[name="' + column + '[]"], .appActionSaveOrder').prop('disabled', false);
 					} else {
-						element.sortable('disable');
+						element.ordering('disable');
 						element.find('input[name="' + column + '[]"], .appActionSaveOrder').prop('disabled', true);
 					}
 				});
