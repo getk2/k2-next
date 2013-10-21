@@ -3,7 +3,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 	var K2Controller = Marionette.Controller.extend({
 
 		// The available resources for request. Any other request returns a 404 error.
-		resources : ['items', 'categories', 'tags', 'comments', 'users', 'extrafields', 'information', 'settings'],
+		resources : ['items', 'categories', 'tags', 'comments', 'users', 'extrafields', 'media', 'information', 'settings'],
 
 		// Holds the current resource type.
 		resource : 'items',
@@ -234,7 +234,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 						this.edit();
 					} else if (redirect === 'edit') {
 						this.edit(this.model.get('id'));
-					} else if(redirect === 'custom' && callback) {
+					} else if (redirect === 'custom' && callback) {
 						this[callback]();
 					}
 				}, this),
@@ -335,7 +335,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 		},
 
 		settings : function() {
-						
+
 			// Load the required files
 			require(['models/settings', 'views/settings/form'], _.bind(function(Model, View) {
 
@@ -356,7 +356,6 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 						// Render the view
 						K2Dispatcher.trigger('app:region:show', view, 'content');
 
-
 					}, this),
 					error : _.bind(function(model, xhr, options) {
 						this.enqueueMessage('error', xhr.responseText);
@@ -365,9 +364,9 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 
 			}, this));
 		},
-		
+
 		information : function() {
-			
+
 		}
 	});
 

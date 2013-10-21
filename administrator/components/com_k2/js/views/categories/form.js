@@ -13,7 +13,8 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher'], functi
 
 		// UI events
 		events : {
-			'click #appCategoryImageRemove' : 'removeImage'
+			'click #appCategoryImageRemove' : 'removeImage',
+			'click #appCategoryImageBrowseServer' : 'browseServer'
 		},
 
 		// Initialize
@@ -31,6 +32,11 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher'], functi
 			this.image.on('change', _.bind(function() {
 				this.setImagePreview();
 			}, this));
+
+			// Add a listener selecting ai image from the media manager
+			K2Dispatcher.on('app:media:file', function(path) {
+				this.setImageFromServer(path);
+			}, this);
 
 		},
 
@@ -203,6 +209,39 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher'], functi
 			} else {
 				this.$el.find('.appCategoryImagePreviewContainer').show();
 			}
+		},
+
+		browseServer : function(event) {
+			event.preventDefault();
+			require(['views/media/default'], _.bind(function(View) {
+
+				// Create the view
+				var view = new View();
+
+				// Render the view
+				K2Dispatcher.trigger('app:region:show', view, 'modal');
+
+			}, this));
+		},
+
+		setImageFromServer : function(path) {
+			var self = this;
+			var formData = {};
+			formData['id'] = self.model.get('id');
+			formData['tmpId'] = self.model.get('tmpId');
+			formData['imagePath'] = path;
+			formData[K2SessionToken] = 1;
+			jQuery.ajax({
+				dataType : 'json',
+				type : 'POST',
+				url : 'index.php?option=com_k2&task=categories.addImage&format=json',
+				data : formData
+			}).done(function(data, status, xhr) {
+				self.image.set('value', data.value);
+				self.image.set('previewURL', data.preview);
+			}).fail(function(xhr, status, error) {
+				K2Dispatcher.trigger('app:message', 'error', xhr.responseText);
+			});
 		}
 	});
 	return K2ViewCategory;

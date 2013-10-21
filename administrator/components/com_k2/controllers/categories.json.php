@@ -36,14 +36,26 @@ class K2ControllerCategories extends K2Controller
 		$id = $input->get('id', 0, 'int');
 		$tmpId = $input->get('tmpId', '', 'cmd');
 		$imageFile = $input->files->get('imageFile');
+		$imagePath = $input->get('imagePath', '', 'string');
+		$imagePath = str_replace(JURI::root(true).'/', '', $imagePath);
 
 		// Set some variables
-		$source = $imageFile['tmp_name'];
 		$filename = ($id) ? $id.'.jpg' : $tmpId.'.jpg';
 		$path = 'media/k2/categories';
 
-		// Try to open the image to ensure it's a valid image file
-		$image = $processor->open($source);
+		if ($imagePath)
+		{
+			$buffer = $filesystem->read($imagePath);
+			// Try to open the image to ensure it's a valid image file
+			$image = $processor->load($buffer);
+
+		}
+		else
+		{
+			$source = $imageFile['tmp_name'];
+			// Try to open the image to ensure it's a valid image file
+			$image = $processor->open($source);
+		}
 
 		// Write it to the filesystem
 		$filesystem->write($path.'/'.$filename, $image->__toString(), true);
@@ -98,7 +110,7 @@ class K2ControllerCategories extends K2Controller
 			$row->image = '';
 			$row->store();
 		}
-		
+
 		// Response
 		echo json_encode(true);
 
