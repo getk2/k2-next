@@ -20,6 +20,7 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 		},
 		initSorting : function(element, column, enabled) {
 			if (element.sortable !== undefined) {
+				element.sortable('destroy');
 				element.unbind();
 			}
 			require(['widgets/sortable/jquery.sortable'], _.bind(function() {
