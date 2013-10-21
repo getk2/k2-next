@@ -14,7 +14,7 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher'], functi
 		// UI events
 		events : {
 			'click #appCategoryImageRemove' : 'removeImage',
-			'click #appCategoryImageBrowseServer' : 'browseServer'
+			'click #appCategoryImageBrowseServer' : 'browseServerForImage'
 		},
 
 		// Initialize
@@ -33,8 +33,8 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher'], functi
 				this.setImagePreview();
 			}, this));
 
-			// Add a listener selecting ai image from the media manager
-			K2Dispatcher.on('app:media:file', function(path) {
+			// Add a listener selecting an image from the media manager
+			K2Dispatcher.on('app:category:selectImage', function(path) {
 				this.setImageFromServer(path);
 			}, this);
 
@@ -211,21 +211,12 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher'], functi
 			}
 		},
 
-		browseServer : function(event) {
+		browseServerForImage : function(event) {
 			event.preventDefault();
-			require(['views/media/default'], _.bind(function(View) {
-
-				// Create the view
-				var view = new View();
-
-				// Render the view
-				K2Dispatcher.trigger('app:region:show', view, 'modal');
-
-			}, this));
+			K2Dispatcher.trigger('app:controller:browseServer', {callback : 'app:category:selectImage'});
 		},
 
 		setImageFromServer : function(path) {
-			jQuery.magnificPopup.close();
 			var self = this;
 			var formData = {};
 			formData['id'] = self.model.get('id');

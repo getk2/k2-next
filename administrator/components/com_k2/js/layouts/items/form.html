@@ -73,6 +73,9 @@
         
         <label for="appItemImageFile"><%= l('K2_IMAGE') %></label>
         <input type="file" id="appItemImageFile" name="imageFile" />
+        
+        <button id="appItemImageBrowseServer"><%= l('K2_BROWSE_SERVER') %></button>
+        
         <input type="hidden" id="appItemImageFlag" name="image_flag"  />
     
         <div class="appItemImagePreviewContainer">
@@ -91,7 +94,7 @@
             <% _.each(row.attachments, function(attachment) { %>
                 <div class="appItemAttachment">
                     <label><%= l('K2_FILE') %></label>
-                    <input type="file" class="appItemAttachmentFile" name="attachments[file][]" /> 
+                    <input type="file" class="appItemAttachmentFile" name="attachments[file][]" /> <button class="appItemAttachmentBrowseServer" data-id="<%- attachment.id %>"><%= l('K2_BROWSE_SERVER') %></button>
                     <label><%= l('K2_NAME') %></label>
                     <input type="text" class="appItemAttachmentName" name="attachments[name][]" value="<%- attachment.name %>" />
                     <label><%= l('K2_TITLE') %></label>
@@ -105,7 +108,7 @@
         
         <div id="appItemAttachmentPlaceholder">
             <label><%= l('K2_FILE') %></label>
-            <input type="file" class="appItemAttachmentFile" name="attachments[file][]" /> 
+            <input type="file" class="appItemAttachmentFile" name="attachments[file][]" /> <button class="appItemAttachmentBrowseServer"><%= l('K2_BROWSE_SERVER') %></button>
             <label><%= l('K2_NAME') %></label>
             <input type="text" class="appItemAttachmentName" name="attachments[name][]" disabled="disabled" />
             <label><%= l('K2_TITLE') %></label>

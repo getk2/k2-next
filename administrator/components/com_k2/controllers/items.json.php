@@ -43,10 +43,24 @@ class K2ControllerItems extends K2Controller
 		$id = $input->get('id', 0, 'int');
 		$tmpId = $input->get('tmpId', '', 'cmd');
 		$imageFile = $input->files->get('imageFile');
+		$imagePath = $input->get('imagePath', '', 'string');
+		$imagePath = str_replace(JURI::root(true).'/', '', $imagePath);
 		$path = 'media/k2/items';
-		$source = $imageFile['tmp_name'];
 
-		$image = $processor->open($source);
+		if ($imagePath)
+		{
+			$buffer = $filesystem->read($imagePath);
+			// Try to open the image to ensure it's a valid image file
+			$image = $processor->load($buffer);
+
+		}
+		else
+		{
+			$source = $imageFile['tmp_name'];
+			// Try to open the image to ensure it's a valid image file
+			$image = $processor->open($source);
+		}
+
 		$baseFileName = ($id) ? md5('Image'.$id) : $tmpId;
 
 		$filesystem->write($path.'/src/'.$baseFileName.'.jpg', $image->__toString(), true);
@@ -144,29 +158,47 @@ class K2ControllerItems extends K2Controller
 		// Get file from input
 		$input = JFactory::getApplication()->input;
 		$id = $input->get('id', 0, 'int');
+		$itemId = $input->get('itemId', 0, 'int');
 		$attachments = $input->files->get('attachments');
 		$file = $attachments['file'][0];
 		$name = $input->get('name', '', 'string');
 		$title = $input->get('title', '', 'string');
+		$attachmentPath = $input->get('attachmentPath', '', 'string');
+		$attachmentPath = str_replace(JURI::root(true).'/', '', $attachmentPath);
+		$path = 'media/k2/attachments';
+
+		// Setup some variables depending on source
+		if ($attachmentPath)
+		{
+			$targetFilename = basename($attachmentPath);
+			$buffer = $filesystem->read($attachmentPath);
+		}
+		else
+		{
+			$targetFilename = $file['name'];
+			$buffer = file_get_contents($file['tmp_name']);
+		}
+
+		// Handle empty fields
 		if (trim($name) == '')
 		{
-			$name = $file['name'];
+			$name = $targetFilename;
 		}
 		if (trim($title) == '')
 		{
-			$title = $file['name'];
+			$title = $targetFilename;
 		}
-		$path = 'media/k2/attachments';
 
 		// Get model
 		K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
 		$model = K2Model::getInstance('Attachments', 'K2Model');
 
 		// Save the attachment
-		$filesystem->write($path.'/'.$file['name'], file_get_contents($file['tmp_name']), true);
+		$filesystem->write($path.'/'.$targetFilename, $buffer, true);
 		$data = array(
-			'itemId' => $id,
-			'file' => $file['name'],
+			'id' => $id,
+			'itemId' => $itemId,
+			'file' => $targetFilename,
 			'name' => $name,
 			'title' => $title
 		);

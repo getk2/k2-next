@@ -67,6 +67,11 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 				this.collection.setState(state, value);
 			}, this);
 
+			// Listener for browse server event
+			K2Dispatcher.on('app:controller:browseServer', function(options) {
+				this.browseServer(options);
+			}, this);
+
 		},
 
 		// Executes the request based on the URL.
@@ -367,6 +372,13 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 
 		information : function() {
 
+		},
+
+		browseServer : function(options) {
+			require(['views/media/modal'], _.bind(function(K2ViewMediaModal) {
+				var view = new K2ViewMediaModal(options);
+				K2Dispatcher.trigger('app:region:show', view, 'modal');
+			}, this));
 		}
 	});
 
