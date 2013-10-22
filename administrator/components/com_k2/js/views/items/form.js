@@ -17,7 +17,10 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 			'click #appActionAddAttachment' : 'addAttachment',
 			'click .appItemAttachmentRemove' : 'removeAttachment',
 			'click .appItemAttachmentDownload' : 'downloadAttachment',
-			'click .appItemAttachmentBrowseServer' : 'browseServerForAttachment'
+			'click .appItemAttachmentBrowseServer' : 'browseServerForAttachment',
+			'click #appActionAddMedia' : 'addMedia',
+			'click .appItemMediaRemove' : 'removeMedia',
+			'click .appItemMediaBrowseServer' : 'browseServerForMedia'
 		},
 
 		// Initialize
@@ -44,6 +47,11 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 			// Add a listener selecting an attachment from the media manager
 			K2Dispatcher.on('app:item:selectAttachment', function(path) {
 				this.setAttachmentFromServer(path);
+			}, this);
+
+			// Add a listener selecting a media file from the media manager
+			K2Dispatcher.on('app:item:selectMedia', function(path) {
+				this.setMediaFromServer(path);
 			}, this);
 
 		},
@@ -76,6 +84,11 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 				if (this.$el.find('.appItemAttachmentId').length > 1) {
 					this.removeAttachments();
 				}
+
+				// Delete any uploaded media files
+				if (this.$el.find('.appItemMediaUpload').length > 1) {
+					this.removeMediaFolder();
+				}
 			}
 		},
 
@@ -90,6 +103,11 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 			// Initialize uploader for existing attachments
 			this.$el.find('.appItemAttachment').each(_.bind(function(index, el) {
 				this.setUpAttachmentUploader(jQuery(el));
+			}, this));
+
+			// Initialize uploader for existing media
+			this.$el.find('.appItemMediaEntry').each(_.bind(function(index, el) {
+				this.setUpMediaUploader(jQuery(el));
 			}, this));
 		},
 
@@ -447,6 +465,129 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 				attachment.find('.appItemAttachmentRemove').data('id', data.id);
 				attachment.find('input.appItemAttachmentName').val(data.name);
 				attachment.find('input.appItemAttachmentTitle').val(data.title);
+			}).fail(function(xhr, status, error) {
+				K2Dispatcher.trigger('app:message', 'error', xhr.responseText);
+			});
+		},
+
+		// Add media
+		addMedia : function(event) {
+			// Prevent default
+			event.preventDefault();
+
+			// Get attachment element
+			var media = this.$el.find('#appItemMediaPlaceholder').clone();
+
+			// Prepare the element
+			media.removeAttr('id');
+			media.addClass('appItemMediaEntry');
+			media.find('input').removeAttr('disabled');
+			media.find('textarea').removeAttr('disabled');
+
+			// Upload event
+			this.setUpMediaUploader(media);
+
+			this.$el.find('#appItemMedia').append(media);
+		},
+
+		// Remove media
+		removeMedia : function(event) {
+			event.preventDefault();
+			var el = jQuery(event.currentTarget);
+			var media = jQuery(el.parents('.appItemMedia').get(0));
+			var uploadedFile = media.find('input.appItemMediaUpload').val();
+			if (uploadedFile) {
+				var data = {};
+				data['file'] = uploadedFile;
+				data['id'] = this.model.get('id');
+				data['tmpId'] = this.model.get('tmpId');
+				data[K2SessionToken] = 1;
+				jQuery.ajax({
+					dataType : 'json',
+					type : 'POST',
+					url : 'index.php?option=com_k2&task=items.removeMediaFile&format=json',
+					data : data
+				}).done(function(data, status, xhr) {
+					media.remove();
+				}).fail(function(xhr, status, error) {
+					K2Dispatcher.trigger('app:message', 'error', xhr.responseText);
+				});
+			} else {
+				media.remove();
+			}
+		},
+
+		// Remove media
+		removeMediaFolder : function() {
+			var data = 'folder=' + this.model.get('tmpId') + '&' + K2SessionToken + '=1';
+			jQuery.ajax({
+				dataType : 'json',
+				type : 'POST',
+				url : 'index.php?option=com_k2&task=items.removeMediaFolder&format=json',
+				data : data
+			});
+		},
+
+		browseServerForMedia : function(event) {
+			event.preventDefault();
+			// Mark the current media with a class
+			var el = jQuery(event.currentTarget).parents('.appItemMediaEntry').get(0).addClass('appItemCurrentMedia');
+			K2Dispatcher.trigger('app:controller:browseServer', {
+				callback : 'app:item:selectMedia'
+			});
+		},
+
+		// Media upload event
+		setUpMediaUploader : function(media) {
+			var id = this.model.get('id');
+			var tmpId = this.model.get('tmpId');
+			require(['widgets/uploader/jquery.iframe-transport', 'widgets/uploader/jquery.fileupload'], function() {
+				media.find('input[type="file"]').fileupload({
+					dataType : 'json',
+					url : 'index.php?option=com_k2&task=items.addMedia&format=json',
+					formData : function() {
+						return [{
+							name : 'id',
+							value : id,
+						}, {
+							name : 'tmpId',
+							value : tmpId
+						}, {
+							name : 'currentFile',
+							value : media.find('input.appItemMediaUpload').val()
+						}, {
+							name : K2SessionToken,
+							value : 1
+						}];
+					},
+					done : function(e, data) {
+						var response = data.result;
+						media.find('input.appItemMediaUrl').val(response.url);
+						media.find('input.appItemMediaUpload').val(response.upload);
+					},
+					fail : function(e, data) {
+						K2Dispatcher.trigger('app:message', 'error', data.jqXHR.responseText);
+					}
+				});
+			});
+		},
+
+		setMediaFromServer : function(path) {
+			var media = this.$el.find('.appItemCurrentMedia');
+			var url = path.replace(K2SitePath + '/', '');
+			media.find('input.appItemMediaUrl').val(url);
+			var data = {};
+			data['file'] = media.find('input.appItemMediaUpload').val();
+			data['id'] = this.model.get('id');
+			data['tmpId'] = this.model.get('tmpId');
+			data[K2SessionToken] = 1;
+			jQuery.ajax({
+				dataType : 'json',
+				type : 'POST',
+				url : 'index.php?option=com_k2&task=items.removeMediaFile&format=json',
+				data : data
+			}).done(function(data, status, xhr) {
+				media.find('input.appItemMediaUpload').val('');
 			}).fail(function(xhr, status, error) {
 				K2Dispatcher.trigger('app:message', 'error', xhr.responseText);
 			});

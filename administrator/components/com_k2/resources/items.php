@@ -73,12 +73,14 @@ class K2Items extends K2Resource
 		// Prepare specific properties
 		$this->link = '#items/edit/'.$this->id;
 		JFilterOutput::objectHTMLSafe($this, ENT_QUOTES, array(
-			'image',
+			'media',
 			'metadata',
 			'plugins',
 			'params',
 			'rules'
 		));
+
+		$this->media = json_decode($this->media);
 
 		$this->hits = (int)$this->hits;
 

@@ -198,11 +198,11 @@ class K2ControllerItems extends K2Controller
 		$model = K2Model::getInstance('Attachments', 'K2Model');
 
 		// Save the attachment if it is an upload
-		if($fileValue)
+		if ($fileValue)
 		{
 			$filesystem->write($path.'/'.$fileValue, $buffer, true);
 		}
-		
+
 		$data = array(
 			'id' => $id,
 			'itemId' => $itemId,
@@ -211,10 +211,9 @@ class K2ControllerItems extends K2Controller
 			'name' => $name,
 			'title' => $title
 		);
-		
+
 		$model->setState('data', $data);
 		$model->save();
-		
 
 		// Response
 		$attachment = $model->getRow();
@@ -252,6 +251,110 @@ class K2ControllerItems extends K2Controller
 
 				// Delete
 				$attachment->delete();
+			}
+		}
+
+		// Return
+		echo json_encode(true);
+		return $this;
+	}
+
+	public function addMedia()
+	{
+		// Check for token
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
+		// Filesystem
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
+		$filesystem = K2FileSystem::getInstance();
+
+		// Get input
+		$input = JFactory::getApplication()->input;
+		$id = $input->get('id', 0, 'int');
+		$tmpId = $input->get('tmpId', '', 'cmd');
+		$currentFile = $input->get('currentFile', '', 'cmd');
+		$folder = ($id) ? $id : $tmpId;
+		$media = $input->files->get('media');
+		$file = $media['file'][0];
+
+		// Setup some variables
+		$path = 'media/k2/media/'.$folder;
+		$filename = $file['name'];
+		$buffer = file_get_contents($file['tmp_name']);
+		$target = $path.'/'.$filename;
+
+		// If the current file is uploaded then we should remove it when we upload a new one
+		if ($currentFile && $filesystem->has($path.'/'.$currentFile))
+		{
+			$filesystem->delete($path.'/'.$currentFile);
+		}
+
+		// Write it to the filesystem
+		$filesystem->write($target, $buffer, true);
+
+		// Response
+		$response = new stdClass;
+		$response->upload = $filename;
+		$response->url = $target;
+		echo json_encode($response);
+
+		// Return
+		return $this;
+
+	}
+
+	public function removeMediaFile()
+	{
+		// Check for token
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
+		// Get id from input
+		$input = JFactory::getApplication()->input;
+		$id = $input->get('id', 0, 'int');
+		$tmpId = $input->get('tmpId', '', 'cmd');
+		$folder = ($id) ? $id : $tmpId;
+		$file = $input->get('file', '', 'cmd');
+
+		// Filesystem
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
+		$filesystem = K2FileSystem::getInstance();
+
+		// Key
+		$key = 'media/k2/media/'.$folder.'/'.$file;
+
+		// Delete
+		if ($filesystem->has($key))
+		{
+			$filesystem->delete($key);
+		}
+
+		// Return
+		echo json_encode(true);
+		return $this;
+	}
+
+	public function removeMediaFolder()
+	{
+		// Check for token
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
+		// Get id from input
+		$input = JFactory::getApplication()->input;
+		$folder = $input->get('folder', '', 'cmd');
+
+		if ($folder)
+		{
+			// Filesystem
+			require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
+			$filesystem = K2FileSystem::getInstance();
+
+			// Key
+			$key = 'media/k2/media/'.$folder;
+
+			// Delete
+			if ($filesystem->has($key))
+			{
+				$filesystem->delete($key);
 			}
 		}
 

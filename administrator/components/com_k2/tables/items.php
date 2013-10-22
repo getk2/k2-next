@@ -96,6 +96,7 @@ class K2TableItems extends K2Table
 
 		return true;
 	}
+
 	/**
 	 * Method to bind an associative array or object to the JTable instance.This
 	 * method only binds properties that are publicly accessible and optionally

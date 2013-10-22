@@ -31,7 +31,7 @@ class K2ViewK2 extends JViewLegacy
 		// Add the session token and the editor
 		$document->addScriptDeclaration('var K2SessionToken = "'.JSession::getFormToken().'";');
 		$document->addScriptDeclaration('var K2Editor = '.$this->getEditor().';');
-
+		$document->addScriptDeclaration('var K2SitePath = "'.JURI::root(true).'";');
 		$document->addScriptDeclaration('var K2Language = '.$this->getLanguage().';');
 
 		// Load the application

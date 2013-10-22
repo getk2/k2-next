@@ -316,6 +316,34 @@ class K2ModelItems extends K2Model
 			}
 		}
 
+		if (isset($data['media']))
+		{
+			$media = array();
+			if ($data['media'])
+			{
+				$urls = $data['media']['url'];
+				$uploads = $data['media']['upload'];
+				$providers = $data['media']['provider'];
+				$ids = $data['media']['id'];
+				$embed = $data['media']['embed'];
+				$captions = $data['media']['caption'];
+				$credits = $data['media']['credits'];
+				foreach ($urls as $key => $value)
+				{
+					$mediaEntry = new stdClass;
+					$mediaEntry->url = $urls[$key];
+					$mediaEntry->upload = $uploads[$key];
+					$mediaEntry->provider = $providers[$key];
+					$mediaEntry->id = $ids[$key];
+					$mediaEntry->embed = $embed[$key];
+					$mediaEntry->caption = $captions[$key];
+					$mediaEntry->credits = $credits[$key];
+					$media[] = $mediaEntry;
+				}
+			}
+			$data['media'] = json_encode($media);
+		}
+
 	}
 
 	/**
@@ -385,10 +413,10 @@ class K2ModelItems extends K2Model
 			$names = $data['attachments']['name'];
 			$titles = $data['attachments']['title'];
 
-			foreach ($ids as $key => $id)
+			foreach ($ids as $key => $value)
 			{
 				$data = array();
-				$data['id'] = $id;
+				$data['id'] = $ids[$key];
 				$data['name'] = $names[$key];
 				$data['title'] = $titles[$key];
 				$data['itemId'] = $this->getState('id');

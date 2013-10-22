@@ -82,6 +82,6 @@
 #appSubheader .appFilters div.appFilter {
 	display: inline-block;
 }
-#appItemAttachmentPlaceholder {
+#appItemAttachmentPlaceholder, #appItemMediaPlaceholder {
 	display: none;
 }

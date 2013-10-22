@@ -63,31 +63,32 @@
         <div>
             <span><%= l('K2_MODERATOR') %></span>
             <span><%= row.moderatorName %></span>
-        </div> <label for="appItemTags"><%= l('K2_TAGS') %></label>
+        </div> 
+        
+         
+        <label for="text"><%= l('K2_TEXT') %></label>
+        <%= form.text %>
+        <div class="appClr"></div>
+        
+        <!-- Tags -->
+        <label for="appItemTags"><%= l('K2_TAGS') %></label>
         <input type="hidden" name="tags" id="appItemTags" />
+        
+        <!-- Image -->
+        <label for="appItemImageFile"><%= l('K2_IMAGE') %></label>
+        <input type="file" id="appItemImageFile" name="imageFile" />
+        <button id="appItemImageBrowseServer"><%= l('K2_BROWSE_SERVER') %></button>
         <label><%= l('K2_IMAGE_CAPTION') %></label>
         <input type="text" name="image_caption" value="<%- row.image_caption %>" />
         <label><%= l('K2_IMAGE_CREDITS') %></label>
         <input type="text" name="image_credits" value="<%- row.image_credits %>" />
-        
-        
-        <label for="appItemImageFile"><%= l('K2_IMAGE') %></label>
-        <input type="file" id="appItemImageFile" name="imageFile" />
-        
-        <button id="appItemImageBrowseServer"><%= l('K2_BROWSE_SERVER') %></button>
-        
         <input type="hidden" id="appItemImageFlag" name="image_flag"  />
-    
         <div class="appItemImagePreviewContainer">
             <img alt="<%- l('K2_PREVIEW') %>" id="appItemImagePreview" />
             <button id="appItemImageRemove"><%= l('K2_REMOVE_IMAGE') %></button>
         </div>
-        
-       
-        
-        
-        <label for="text"><%= l('K2_TEXT') %></label> <%= form.text %>
-        
+
+        <!-- Attachments -->
         <button id="appActionAddAttachment"><%= l('K2_ADD_ATTACHMENT') %></button>
         
         <div id="appItemAttachments">
@@ -117,6 +118,67 @@
             <button class="appItemAttachmentRemove"><%= l('K2_REMOVE') %></button>
             <button class="appItemAttachmentDownload" disabled="disabled"><%= l('K2_DOWNLOAD') %></button>
         </div>
+        
+        <!-- Media -->
+        <button id="appActionAddMedia"><%= l('K2_ADD_MEDIA') %></button>
+        
+        <div id="appItemMedia">
+            <% _.each(row.media, function(media) { %>
+                <div class="appItemMediaEntry">
+                    <label><%= l('K2_FILE') %></label>
+                    <input type="file" class="appItemMediaFile" name="media[file][]" /> 
+                    <input type="hidden" class="appItemMediaUpload" name="media[upload][]" value="<%- media.upload %>" /> 
+                    
+                    <label><%= l('K2_URL') %></label>
+                    <input type="text" class="appItemMediaUrl" name="media[url][]" value="<%- media.url %>" /> <button class="appItemMediaBrowseServer"><%= l('K2_BROWSE_SERVER') %></button>
+                    
+                    <label><%= l('K2_PROVIDER') %></label>
+                    <input type="text" class="appItemMediaProvider" name="media[provider][]" value="<%- media.provider %>" /> 
+                    
+                    <label><%= l('K2_ID') %></label>
+                    <input type="text" class="appItemMediaId" name="media[id][]" value="<%- media.id %>" /> 
+                    
+                    <label><%= l('K2_EMBED') %></label>
+                    <textarea class="appItemMediaEmbed" name="media[embed][]"><%= media.embed %></textarea>
+                    
+                    <label><%= l('K2_MEDIA_CAPTION') %></label>
+                    <input type="text" class="appItemMediaCaption" name="media[caption][]" value="<%- media.caption %>" />
+                    
+                    <label><%= l('K2_MEDIA_CREDITS') %></label>
+                    <input type="text" class="appItemMediaCredits" name="media[credits][]" value="<%- media.credits %>" />
+                    
+                    <button class="appItemMediaRemove"><%= l('K2_REMOVE') %></button>
+                </div>
+            <% }); %>
+        </div>
+        
+        <div id="appItemMediaPlaceholder">
+            <label><%= l('K2_FILE') %></label>
+            <input type="file" class="appItemMediaFile" name="media[file][]" /> 
+            <input type="hidden" class="appItemMediaUpload" name="media[upload][]" /> 
+
+            <label><%= l('K2_URL') %></label>
+            <input type="text" class="appItemMediaUrl" name="media[url][]" disabled="disabled" /> <button class="appItemMediaBrowseServer"><%= l('K2_BROWSE_SERVER') %></button>
+            
+            <label><%= l('K2_PROVIDER') %></label>
+            <input type="text" class="appItemMediaProvider" name="media[provider][]" disabled="disabled" /> 
+            
+            <label><%= l('K2_ID') %></label>
+            <input type="text" class="appItemMediaId" name="media[id][]" disabled="disabled" /> 
+            
+            <label><%= l('K2_EMBED') %></label>
+            <textarea class="appItemMediaEmbed" name="media[embed][]" disabled="disabled"></textarea>
+            
+            <label><%= l('K2_MEDIA_CAPTION') %></label>
+            <input type="text" class="appItemMediaCaption" name="media[caption][]" disabled="disabled" />
+            
+            <label><%= l('K2_MEDIA_CREDITS') %></label>
+            <input type="text" class="appItemMediaCredits" name="media[credits][]" disabled="disabled" />
+            
+            <button class="appItemMediaRemove"><%= l('K2_REMOVE') %></button>
+        </div>
+        
+        
         <input type="hidden" name="tmpId" value="<%= row.tmpId %>" / >
         <input type="hidden" name="id" value="<%= row.id %>" / >
         <% _(form.jform).each(function(field) { %>
