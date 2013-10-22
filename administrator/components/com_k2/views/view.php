@@ -316,13 +316,13 @@ class K2View extends JViewLegacy
 		{
 			$_form->parent = K2HelperHTML::categories('parent_id', false, $row->parent_id, $row->id, true);
 		}
-		
+
 		// Category inheritance
 		if (property_exists($row, 'inheritance'))
 		{
 			$_form->inheritance = K2HelperHTML::categories('inheritance', false, $row->inheritance, $row->id, true);
 		}
-		
+
 		// Category template
 		if (property_exists($row, 'template'))
 		{
@@ -478,7 +478,7 @@ class K2View extends JViewLegacy
 
 			if ($user->authorise('core.create', 'com_k2'))
 			{
-				if ($this->getName() == 'items' || $this->getName() == 'categories' || $this->getName() == 'tags')
+				if ($this->getName() == 'items' || $this->getName() == 'categories' || $this->getName() == 'tags' || $this->getName() == 'extrafieldsgroups')
 				{
 					K2Response::addAction('add', 'K2_ADD', array(
 						'class' => 'appAction',
@@ -519,6 +519,11 @@ class K2View extends JViewLegacy
 				'href' => '#tags',
 				'class' => 'appMenuLink',
 				'id' => 'k2ItemsLink'
+			), 'primary');
+			K2Response::addMenuLink('extrafieldsgroups', 'K2_EXTRA_FIELDS_GROUPS', array(
+				'href' => '#extrafieldsgroups',
+				'class' => 'appMenuLink',
+				'id' => 'k2ExtraFieldsGroupsLink'
 			), 'primary');
 
 		}

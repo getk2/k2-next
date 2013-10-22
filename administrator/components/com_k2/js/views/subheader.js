@@ -90,6 +90,7 @@ define(['marionette', 'text!layouts/subheader.html', 'dispatcher'], function(Mar
 		},
 
 		showToolbar : function() {
+			this.$el.find('#appToolbarCounter').text(jQuery('input.appRowToggler:checked').length);
 			this.$el.find('.appToolbar').show();
 		},
 
