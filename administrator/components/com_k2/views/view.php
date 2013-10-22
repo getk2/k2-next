@@ -330,9 +330,9 @@ class K2View extends JViewLegacy
 		}
 		
 		// Category parent field
-		if (property_exists($row, 'extra_fields_group'))
+		if (property_exists($row, 'extraFieldsGroups'))
 		{
-			$_form->extra_fields_group = K2HelperHTML::extraFieldsGroups('extra_fields_group', true, $row->extra_fields_group);
+			$_form->extraFieldsGroups = K2HelperHTML::extraFieldsGroups('extraFieldsGroups[]', true, $row->extraFieldsGroups, 'multiple="multiple"');
 		}
 
 		// Language field

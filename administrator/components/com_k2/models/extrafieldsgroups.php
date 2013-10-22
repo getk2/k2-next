@@ -23,7 +23,10 @@ class K2ModelExtraFieldsGroups extends K2Model
 		$query = $db->getQuery(true);
 
 		// Select rows
-		$query->select('*')->from($db->quoteName('#__k2_extra_fields_groups'));
+		$query->select($db->quoteName('extraFieldsGroup').'.*')->from($db->quoteName('#__k2_extra_fields_groups', 'extraFieldsGroup'));
+
+		// Join over the categories xref
+		$query->leftJoin($db->quoteName('#__k2_extra_fields_groups_xref', 'xref').' ON '.$db->quoteName('extraFieldsGroup.id').' = '.$db->quoteName('xref.groupId'));
 
 		// Set query conditions
 		$this->setQueryConditions($query);
@@ -56,7 +59,10 @@ class K2ModelExtraFieldsGroups extends K2Model
 		$query = $db->getQuery(true);
 
 		// Select statement
-		$query->select('COUNT(*)')->from($db->quoteName('#__k2_extra_fields_groups'));
+		$query->select('COUNT(*)')->from($db->quoteName('#__k2_extra_fields_groups', 'extraFieldsGroup'));
+
+		// Join over the categories xref
+		$query->leftJoin($db->quoteName('#__k2_extra_fields_groups_xref', 'xref').' ON '.$db->quoteName('extraFieldsGroup.id').' = '.$db->quoteName('xref.groupId'));
 
 		// Set query conditions
 		$this->setQueryConditions($query);
@@ -90,6 +96,11 @@ class K2ModelExtraFieldsGroups extends K2Model
 			{
 				$query->where($db->quoteName('id').' = '.(int)$id);
 			}
+		}
+		if ($this->getState('categoryId'))
+		{
+			$categoryId = $this->getState('categoryId');
+			$query->where($db->quoteName('xref.categoryId').' = '.(int)$categoryId);
 		}
 		if ($this->getState('search'))
 		{
@@ -126,6 +137,45 @@ class K2ModelExtraFieldsGroups extends K2Model
 		{
 			$query->order($order);
 		}
+	}
+
+	public function assignToCategory($groupId, $categoryId)
+	{
+		// Get database
+		$db = $this->getDBO();
+
+		// Get query
+		$query = $db->getQuery(true);
+
+		// Delete any duplicates
+		$query->delete('#__k2_extra_fields_groups_xref')->where($db->quoteName('groupId').' = '.(int)$groupId)->where($db->quoteName('categoryId').' = '.(int)$categoryId);
+		$db->setQuery($query);
+		$db->execute();
+
+		// Insert query
+		$query->insert('#__k2_extra_fields_groups_xref')->columns('groupId, categoryId')->values((int)$groupId.','.(int)$categoryId);
+		$db->setQuery($query);
+		$db->execute();
+
+		// Return
+		return true;
+	}
+	
+	public function unassignAllFromCategory($categoryId)
+	{
+		// Get database
+		$db = $this->getDBO();
+
+		// Get query
+		$query = $db->getQuery(true);
+
+		// Delete all extra fields groups assignements of the specific category
+		$query->delete('#__k2_extra_fields_groups_xref')->where($db->quoteName('categoryId').' = '.(int)$categoryId);
+		$db->setQuery($query);
+		$db->execute();
+
+		// Return
+		return true;
 	}
 
 }

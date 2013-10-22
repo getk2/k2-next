@@ -144,7 +144,7 @@ class K2HelperHTML extends K2Helper
 		return JHtml::_('select.genericlist', $options, $name, '', 'value', 'text', $value);
 	}
 
-	public static function extraFieldsGroups($name = 'extra_fields_group', $none = false, $value = null)
+	public static function extraFieldsGroups($name = 'extra_fields_group', $none = false, $value = null, $attributes = '')
 	{
 		$options = array();
 		if ($none)
@@ -158,7 +158,7 @@ class K2HelperHTML extends K2Helper
 		{
 			$options[] = JHtml::_('select.option', $row->id, $row->name);
 		}
-		return JHtml::_('select.genericlist', $options, $name, '', 'value', 'text', $value);
+		return JHtml::_('select.genericlist', $options, $name, $attributes, 'value', 'text', $value);
 	}
 
 }

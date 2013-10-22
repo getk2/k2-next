@@ -149,7 +149,7 @@ class K2ModelCategories extends K2Model
 		{
 			switch($sorting)
 			{
-				default:
+				default :
 				case 'id' :
 					$order = 'category.id DESC';
 					break;
@@ -234,6 +234,19 @@ class K2ModelCategories extends K2Model
 			$table->image = $target;
 			$table->store();
 		}
+
+		if (isset($data['extraFieldsGroups']) && $data['extraFieldsGroups'])
+		{
+			$model = K2Model::getInstance('ExtraFieldsGroups', 'K2Model');
+			$categoryId = $this->getState('id');
+			$model->unassignAllFromCategory($categoryId);
+			$data['extraFieldsGroups'] = array_filter($data['extraFieldsGroups']);
+			foreach ($data['extraFieldsGroups'] as $groupId)
+			{
+				$model->assignToCategory((int)$groupId, (int)$categoryId);
+			}
+		}
+
 	}
 
 	public function saveOrder($ids, $ordering)
