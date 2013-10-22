@@ -144,4 +144,21 @@ class K2HelperHTML extends K2Helper
 		return JHtml::_('select.genericlist', $options, $name, '', 'value', 'text', $value);
 	}
 
+	public static function extraFieldsGroups($name = 'extra_fields_group', $none = false, $value = null)
+	{
+		$options = array();
+		if ($none)
+		{
+			$options[] = JHtml::_('select.option', '', JText::_('K2_NONE'));
+		}
+		$model = K2Model::getInstance('ExtraFieldsGroups', 'K2Model');
+		$model->setState('sorting', 'name');
+		$rows = $model->getRows();
+		foreach ($rows as $row)
+		{
+			$options[] = JHtml::_('select.option', $row->id, $row->name);
+		}
+		return JHtml::_('select.genericlist', $options, $name, '', 'value', 'text', $value);
+	}
+
 }

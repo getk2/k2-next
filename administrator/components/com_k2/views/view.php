@@ -328,6 +328,12 @@ class K2View extends JViewLegacy
 		{
 			$_form->template = K2HelperHTML::template('template', $row->template);
 		}
+		
+		// Category parent field
+		if (property_exists($row, 'extra_fields_group'))
+		{
+			$_form->extra_fields_group = K2HelperHTML::extraFieldsGroups('extra_fields_group', true, $row->extra_fields_group);
+		}
 
 		// Language field
 		if (property_exists($row, 'language'))
