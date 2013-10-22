@@ -98,18 +98,23 @@ class K2Categories extends K2Resource
 	public function getExtraFieldsGroups()
 	{
 		$extraFieldsGroups = array();
+		$extraFieldsGroupsValues = array();
+		$extraFieldsGroupsNames = array();
 		if ($this->id)
 		{
 			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
 			$model = K2Model::getInstance('ExtraFieldsGroups', 'K2Model');
 			$model->setState('categoryId', $this->id);
-			$rows = $model->getRows();
-			$extraFieldsGroups = array_map(function($row)
+			$extraFieldsGroups = $model->getRows();
+			foreach ($extraFieldsGroups as $extraFieldsGroup)
 			{
-				return $row->id;
-			}, $rows);
+				$extraFieldsGroupsValues[] = $extraFieldsGroup->id;
+				$extraFieldsGroupsNames[] = $extraFieldsGroup->name;
+			}
 		}
 		$this->extraFieldsGroups = $extraFieldsGroups;
+		$this->extraFieldsGroupsValues = $extraFieldsGroupsValues;
+		$this->extraFieldsGroupsNames = $extraFieldsGroupsNames;
 	}
 
 }
