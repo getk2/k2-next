@@ -213,7 +213,9 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher'], functi
 
 		browseServerForImage : function(event) {
 			event.preventDefault();
-			K2Dispatcher.trigger('app:controller:browseServer', {callback : 'app:category:selectImage'});
+			K2Dispatcher.trigger('app:controller:browseServer', {
+				callback : 'app:category:selectImage'
+			});
 		},
 
 		setImageFromServer : function(path) {

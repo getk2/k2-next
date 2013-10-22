@@ -57,4 +57,21 @@ class K2Tags extends K2Resource
 		}
 		return self::$instances[$id];
 	}
+	
+	/**
+	 * Prepares the row for output
+	 *
+	 * @param string $mode	The mode for preparing data. 'site' for fron-end data, 'admin' for administrator operations.
+	 *
+	 * @return void
+	 */
+	public function prepare($mode = null)
+	{
+		// Prepare generic properties like dates and authors
+		parent::prepare($mode);
+
+		// Prepare specific properties
+		$this->link = '#tags/edit/'.$this->id;
+
+	}
 }

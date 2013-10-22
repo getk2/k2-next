@@ -3,23 +3,11 @@ define(['marionette', 'text!layouts/tags/list.html', 'text!layouts/tags/row.html
 		tagName : 'tr',
 		template : _.template(row),
 		events : {
-			'click .appInlineEdit' : 'edit',
-			'blur .appInlineEdit' : 'save',
+			'click a.appEditLink' : 'edit',
 		},
 		edit : function(event) {
-			var el = jQuery(event.currentTarget);
-			el.prop('contenteditable', true).focus();
-		},
-		save : function(event) {
-			var el = jQuery(event.currentTarget);
-			el.prop('contenteditable', false);
-			this.model.set(el.data('attribute'), el.text(), {
-				silent : true
-			});
-			this.model.save(this.model.changed, {
-				patch : true,
-				wait : true
-			});
+			event.preventDefault();
+			K2Dispatcher.trigger('app:controller:edit', this.model.get('id'));
 		}
 	});
 	var K2ViewTags = Marionette.CompositeView.extend({

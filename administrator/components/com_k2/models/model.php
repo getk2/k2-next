@@ -130,12 +130,38 @@ class K2Model extends JModelLegacy
 			$this->setError($table->getError());
 			return false;
 		}
+		$this->onBeforeDelete($table);
 		if (!$table->delete())
 		{
 			$this->setError($table->getError());
 			return false;
 		}
+		$this->onAfterDelete($table);
 		return true;
+	}
+
+	/**
+	 * onBeforeDelete method. 		Hook for chidlren model.
+	 *
+	 * @param   JTable  $table     	The table object.
+	 *
+	 * @return void
+	 */
+
+	protected function onBeforeDelete($table)
+	{
+	}
+
+	/**
+	 * onAfterDelete method. Hook for chidlren model.
+	 *
+	 * @param   JTable  $table     	The table object.
+	 *
+	 * @return void
+	 */
+
+	protected function onAfterDelete($table)
+	{
 	}
 
 	/**

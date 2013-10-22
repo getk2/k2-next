@@ -1,4 +1,4 @@
-define(['marionette', 'text!layouts/tags/form.html','dispatcher'], function(Marionette, template, K2Dispatcher) {'use strict';
+define(['marionette', 'text!layouts/tags/form.html', 'dispatcher'], function(Marionette, template, K2Dispatcher) {'use strict';
 	var K2ViewTag = Marionette.ItemView.extend({
 		template : _.template(template),
 		modelEvents : {

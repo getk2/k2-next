@@ -58,9 +58,6 @@ class K2ModelTags extends K2Model
 		// Select statement
 		$query->select('COUNT(*)')->from($db->quoteName('#__k2_tags', 'tag'));
 
-		// Join over the tags mapping
-		$query->leftJoin($db->quoteName('#__k2_tags_xref', 'xref').' ON '.$db->quoteName('xref.tagId').' = '.$db->quoteName('tag.id'));
-
 		// Set query conditions
 		$this->setQueryConditions($query);
 
@@ -145,6 +142,32 @@ class K2ModelTags extends K2Model
 		{
 			$query->order($order);
 		}
+	}
+
+	/**
+	 * onAfterDelete method. Hook for chidlren model.
+	 *
+	 * @param   JTable  $table     	The table object.
+	 *
+	 * @return void
+	 */
+
+	protected function onAfterDelete($table)
+	{
+		// Get database
+		$db = $this->getDBO();
+
+		// Get query
+		$query = $db->getQuery(true);
+
+		// Delete
+		$query->delete('#__k2_tags_xref')->where($db->quoteName('tagId').' = '.(int)$this->getState('id'));
+		$db->setQuery($query);
+		$db->execute();
+
+		// Return
+		return true;
+
 	}
 
 	public function addTag($name)
