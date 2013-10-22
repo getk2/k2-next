@@ -1,5 +1,4 @@
-'use strict';
-define(['backbone', 'model'], function(Backbone, K2Model) {
+define(['backbone', 'model'], function(Backbone, K2Model) {'use strict';
 
 	var K2ModelTag = K2Model.extend({
 

@@ -29,7 +29,7 @@ class K2ViewTags extends K2View
 	public function show()
 	{
 		// Set title
-		K2Response::setTitle(JText::_('K2_TAGS'));
+		$this->setTitle('K2_TAGS');
 
 		// Set user states
 		$this->setUserStates();
@@ -68,7 +68,7 @@ class K2ViewTags extends K2View
 	public function edit($id = null)
 	{
 		// Set title
-		K2Response::setTitle(JText::_('K2_TAG'));
+		$this->setTitle('K2_TAG');
 
 		// Set row
 		$this->setRow($id);
@@ -92,7 +92,7 @@ class K2ViewTags extends K2View
 		$this->setUserState('page', 1, 'int');
 		$this->setUserState('search', '', 'string');
 		$this->setUserState('published', '', 'cmd');
-		$this->setUserState('sorting', 'id', 'string');
+		$this->setUserState('sorting', 'ordering', 'string');
 	}
 
 	protected function setFilters()
@@ -102,12 +102,15 @@ class K2ViewTags extends K2View
 		$sortingOptions = array(
 			'K2_ID' => 'id',
 			'K2_NAME' => 'name',
-			'K2_PUBLISHED' => 'published',
+			'K2_PUBLISHED' => 'published'
 		);
-		K2Response::addFilter('sorting', $this->getUserState('sorting'), JText::_('K2_SORT_BY'), K2HelperHTML::sorting($this->getUserState('sorting'), $sortingOptions));
+		K2Response::addFilter('sorting', JText::_('K2_SORT_BY'), K2HelperHTML::sorting($sortingOptions), false, 'header');
+
+		// Search filter
+		K2Response::addFilter('search', JText::_('K2_SEARCH'), K2HelperHTML::search(), false, 'sidebar');
 
 		// Published filter
-		K2Response::addFilter('published', $this->getUserState('published'), JText::_('K2_PUBLISHED'), K2HelperHTML::published($this->getUserState('published')), true);
+		K2Response::addFilter('published', JText::_('K2_PUBLISHED'), K2HelperHTML::published(), true, 'sidebar');
 
 	}
 
@@ -115,11 +118,11 @@ class K2ViewTags extends K2View
 	{
 		K2Response::addToolbarAction('published', 'K2_TOGGLE_PUBLISHED_STATE', array(
 			'data-state' => 'published',
-			'class' => 'appBatchStateToggler',
-			'id' => 'appBatchPublishedToggler'
+			'class' => 'appActionToggleState',
+			'id' => 'appActionTogglePublishedState'
 		));
 
-		K2Response::addToolbarAction('delete', 'K2_DELETE', array('id' => 'appDeleteButton'));
+		K2Response::addToolbarAction('remove', 'K2_DELETE', array('id' => 'appActionRemove'));
 	}
 
 }

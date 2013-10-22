@@ -43,7 +43,7 @@ class K2Categories extends K2Resource
 	 *
 	 * @param integer $id	The id of the item to get.
 	 *
-	 * @return K2Item The item object.
+	 * @return K2Category The category object.
 	 */
 	public static function getInstance($id)
 	{

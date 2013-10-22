@@ -78,7 +78,7 @@ class K2ModelCategories extends K2Model
 		$this->setQueryConditions($query);
 
 		// Hook for plugins
-		$this->setQueryConditions($query, 'com_k2.categories.count');
+		$this->onBeforeSetQuery($query, 'com_k2.categories.count');
 
 		// Set the query
 		$db->setQuery($query);

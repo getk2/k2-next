@@ -43,7 +43,7 @@ class K2Attachments extends K2Resource
 	 *
 	 * @param integer $id	The id of the item to get.
 	 *
-	 * @return K2Item The item object.
+	 * @return K2Attachment The attachment object.
 	 */
 	public static function getInstance($id)
 	{

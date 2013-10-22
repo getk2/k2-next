@@ -1,5 +1,4 @@
-'use strict';
-define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backbone, Marionette, K2Dispatcher) {
+define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backbone, Marionette, K2Dispatcher) {'use strict';
 
 	var K2Model = Backbone.Model.extend({
 

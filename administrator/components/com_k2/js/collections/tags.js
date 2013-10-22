@@ -1,5 +1,4 @@
-'use strict';
-define(['backbone', 'collection', 'models/tags'], function(Backbone, K2Collection, K2ModelTags) {
+define(['backbone', 'collection', 'models/tags'], function(Backbone, K2Collection, K2ModelTags) {'use strict';
 	var K2CollectionTags = K2Collection.extend({
 		model : K2ModelTags,
 		url : function() {

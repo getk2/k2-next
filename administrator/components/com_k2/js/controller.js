@@ -1,5 +1,4 @@
-'use strict';
-define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], function(_, Backbone, Marionette, K2Dispatcher, K2Session) {
+define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], function(_, Backbone, Marionette, K2Dispatcher, K2Session) {'use strict';
 	var K2Controller = Marionette.Controller.extend({
 
 		// The available resources for request. Any other request returns a 404 error.

@@ -1,6 +1,4 @@
-'use strict';
-
-define(['marionette'], function(Marionette) {
+define(['marionette'], function(Marionette) {'use strict';
 	var K2Router = Marionette.AppRouter.extend({
 		appRoutes : {
 			'settings' : 'settings',

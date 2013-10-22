@@ -41,7 +41,7 @@ class K2ModelTags extends K2Model
 		$data = $db->loadAssocList();
 
 		// Generate K2 resources instances from the result data.
-		$rows = $this->getResources($data, 'tag');
+		$rows = $this->getResources($data);
 
 		// Return rows
 		return (array)$rows;
@@ -65,7 +65,7 @@ class K2ModelTags extends K2Model
 		$this->setQueryConditions($query);
 
 		// Hook for plugins
-		$this->setQueryConditions($query, 'com_k2.tags.count');
+		$this->onBeforeSetQuery($query, 'com_k2.tags.count');
 
 		// Set the query
 		$db->setQuery($query);

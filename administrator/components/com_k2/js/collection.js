@@ -1,5 +1,4 @@
-'use strict';
-define(['backbone', 'model', 'dispatcher'], function(Backbone, K2Model, K2Dispatcher) {
+define(['backbone', 'model', 'dispatcher'], function(Backbone, K2Model, K2Dispatcher) {'use strict';
 
 	var K2Collection = Backbone.Collection.extend({
 

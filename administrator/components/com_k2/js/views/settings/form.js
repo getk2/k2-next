@@ -1,5 +1,4 @@
-'use strict';
-define(['marionette', 'text!layouts/settings/form.html','dispatcher'], function(Marionette, template, K2Dispatcher) {
+define(['marionette', 'text!layouts/settings/form.html','dispatcher'], function(Marionette, template, K2Dispatcher) {'use strict';
 	var K2ViewSettings = Marionette.ItemView.extend({
 		template : _.template(template),
 		modelEvents : {

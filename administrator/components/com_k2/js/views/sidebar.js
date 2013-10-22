@@ -1,5 +1,4 @@
-'use strict';
-define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session'], function(Marionette, template, K2Dispatcher, K2Session) {
+define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session'], function(Marionette, template, K2Dispatcher, K2Session) {'use strict';
 
 	var K2ViewSidebar = Marionette.ItemView.extend({
 

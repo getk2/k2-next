@@ -1,5 +1,4 @@
-'use strict';
-define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'views/subheader', 'views/sidebar'], function(Marionette, K2Router, K2Controller, K2Dispatcher, HeaderView, SubheaderView, SidebarView) {
+define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'views/subheader', 'views/sidebar'], function(Marionette, K2Router, K2Controller, K2Dispatcher, HeaderView, SubheaderView, SidebarView) {'use strict';
 
 	// Backbone.sync
 	// -------------

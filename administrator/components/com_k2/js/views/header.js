@@ -1,5 +1,4 @@
-'use strict';
-define(['marionette', 'text!layouts/header.html', 'dispatcher'], function(Marionette, template, K2Dispatcher) {
+define(['marionette', 'text!layouts/header.html', 'dispatcher'], function(Marionette, template, K2Dispatcher) {'use strict';
 
 	var K2ViewHeader = Marionette.ItemView.extend({
 
