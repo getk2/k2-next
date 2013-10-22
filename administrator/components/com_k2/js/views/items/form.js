@@ -494,7 +494,7 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 		removeMedia : function(event) {
 			event.preventDefault();
 			var el = jQuery(event.currentTarget);
-			var media = jQuery(el.parents('.appItemMedia').get(0));
+			var media = jQuery(el.parents('.appItemMediaEntry').get(0));
 			var uploadedFile = media.find('input.appItemMediaUpload').val();
 			if (uploadedFile) {
 				var data = {};
