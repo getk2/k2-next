@@ -328,11 +328,17 @@ class K2View extends JViewLegacy
 		{
 			$_form->template = K2HelperHTML::template('template', $row->template);
 		}
-		
-		// Category parent field
+
+		// Category extra fields groups
 		if (property_exists($row, 'extraFieldsGroupsValues'))
 		{
-			$_form->extraFieldsGroups = K2HelperHTML::extraFieldsGroups('extraFieldsGroups[]', true, $row->extraFieldsGroupsValues, 'multiple="multiple"');
+			$_form->extraFieldsGroups = K2HelperHTML::extraFieldsGroups('extraFieldsGroups[]', 'K2_NONE', $row->extraFieldsGroupsValues, 'multiple="multiple"');
+		}
+
+		// Extra field group
+		if (property_exists($row, 'group'))
+		{
+			$_form->group = K2HelperHTML::extraFieldsGroups('group', false, $row->group);
 		}
 
 		// Language field
@@ -484,7 +490,7 @@ class K2View extends JViewLegacy
 
 			if ($user->authorise('core.create', 'com_k2'))
 			{
-				if ($this->getName() == 'items' || $this->getName() == 'categories' || $this->getName() == 'tags' || $this->getName() == 'extrafieldsgroups')
+				if ($this->getName() != 'settings')
 				{
 					K2Response::addAction('add', 'K2_ADD', array(
 						'class' => 'appAction',
@@ -525,6 +531,11 @@ class K2View extends JViewLegacy
 				'href' => '#tags',
 				'class' => 'appMenuLink',
 				'id' => 'k2ItemsLink'
+			), 'primary');
+			K2Response::addMenuLink('extrafields', 'K2_EXTRA_FIELDS', array(
+				'href' => '#extrafields',
+				'class' => 'appMenuLink',
+				'id' => 'k2ExtraFieldsLink'
 			), 'primary');
 			K2Response::addMenuLink('extrafieldsgroups', 'K2_EXTRA_FIELDS_GROUPS', array(
 				'href' => '#extrafieldsgroups',

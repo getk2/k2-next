@@ -149,7 +149,7 @@ class K2HelperHTML extends K2Helper
 		$options = array();
 		if ($none)
 		{
-			$options[] = JHtml::_('select.option', '', JText::_('K2_NONE'));
+			$options[] = JHtml::_('select.option', '', JText::_($none));
 		}
 		$model = K2Model::getInstance('ExtraFieldsGroups', 'K2Model');
 		$model->setState('sorting', 'name');

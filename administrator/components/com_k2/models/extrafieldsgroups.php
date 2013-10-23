@@ -90,11 +90,11 @@ class K2ModelExtraFieldsGroups extends K2Model
 			if (is_array($id))
 			{
 				JArrayHelper::toInteger($id);
-				$query->where($db->quoteName('id').' IN '.$id);
+				$query->where($db->quoteName('extraFieldsGroup.id').' IN '.$id);
 			}
 			else
 			{
-				$query->where($db->quoteName('id').' = '.(int)$id);
+				$query->where($db->quoteName('extraFieldsGroup.id').' = '.(int)$id);
 			}
 		}
 		if ($this->getState('categoryId'))
@@ -109,8 +109,8 @@ class K2ModelExtraFieldsGroups extends K2Model
 			if ($search)
 			{
 				$search = $db->escape($search, true);
-				$query->where('( LOWER('.$db->quoteName('name').') LIKE '.$db->Quote('%'.$search.'%', false).' 
-				OR '.$db->quoteName('id').' = '.(int)$search.')');
+				$query->where('( LOWER('.$db->quoteName('extraFieldsGroup.name').') LIKE '.$db->Quote('%'.$search.'%', false).' 
+				OR '.$db->quoteName('extraFieldsGroup.id').' = '.(int)$search.')');
 			}
 		}
 	}
@@ -125,10 +125,10 @@ class K2ModelExtraFieldsGroups extends K2Model
 			{
 				default :
 				case 'id' :
-					$order = 'id DESC';
+					$order = 'extraFieldsGroup.id DESC';
 					break;
 				case 'name' :
-					$order = 'name ASC';
+					$order = 'extraFieldsGroup.name ASC';
 					break;
 			}
 		}
@@ -160,7 +160,7 @@ class K2ModelExtraFieldsGroups extends K2Model
 		// Return
 		return true;
 	}
-	
+
 	public function unassignAllFromCategory($categoryId)
 	{
 		// Get database

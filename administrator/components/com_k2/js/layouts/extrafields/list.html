@@ -1,0 +1,22 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <td><label for="appRowsToggler" class="appCheckbox" title="<%- l('K2_SELECT_ALL') %>">
+                    <input id="appRowsToggler" type="checkbox" />
+                </label>
+            </td>
+            <td><a class="appActionSort" data-sorting="name"><%= l('K2_NAME') %></a></td>
+            <td><a class="appActionSort" data-sorting="group"><%= l('K2_GROUP') %></a></td>
+            <td></td>
+            <td>
+                <a class="appActionSort" data-sorting="ordering"><%= l('K2_ORDER') %></a>
+                <button data-column="ordering" class="appActionSaveOrder">
+                    <%= l('K2_SAVE_ORDER') %>
+                </button>
+            </td>
+            <td><a class="appActionSort" data-sorting="published"><%= l('K2_PUBLISHED') %></a></td>
+            <td><a class="appActionSort" data-sorting="id"><%= l('K2_ID') %></a></td>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
