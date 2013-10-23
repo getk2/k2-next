@@ -108,6 +108,7 @@ class K2ViewExtraFields extends K2View
 			'K2_ID' => 'id',
 			'K2_NAME' => 'name',
 			'K2_GROUP' => 'group',
+			'K2_TYPE' => 'type',
 			'K2_ORDERING' => 'ordering',
 			'K2_PUBLISHED' => 'published'
 		);

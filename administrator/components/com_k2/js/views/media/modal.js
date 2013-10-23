@@ -7,7 +7,8 @@ define(['marionette', 'dispatcher', 'text!layouts/media/default.html', 'jqueryui
 				this.$el.elfinder({
 					url : 'index.php?option=com_k2&task=media.connector&format=json',
 					getFileCallback : function(path) {
-						K2Dispatcher.trigger(callback, path);
+						var url = path.replace(K2SitePath + '/', '');
+						K2Dispatcher.trigger(callback, url);
 						jQuery.magnificPopup.close();
 					}
 				}).elfinder('instance');

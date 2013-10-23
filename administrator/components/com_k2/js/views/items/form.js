@@ -574,7 +574,7 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 
 		setMediaFromServer : function(path) {
 			var media = this.$el.find('.appItemCurrentMedia');
-			var url = path.replace(K2SitePath + '/', '');
+			var url = path;
 			media.find('input.appItemMediaUrl').val(url);
 			var data = {};
 			data['file'] = media.find('input.appItemMediaUpload').val();

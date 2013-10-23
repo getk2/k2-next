@@ -4,6 +4,9 @@ define(['marionette', 'text!layouts/extrafields/form.html', 'dispatcher'], funct
 		modelEvents : {
 			'change' : 'render'
 		},
+		events : {
+			'change #type' : 'renderExtraField'
+		},
 		serializeData : function() {
 			var data = {
 				'row' : this.model.toJSON(),
@@ -11,6 +14,14 @@ define(['marionette', 'text!layouts/extrafields/form.html', 'dispatcher'], funct
 			};
 			return data;
 		},
+		onDomRefresh : function() {
+			this.renderExtraField();
+		},
+		renderExtraField : function() {
+			var type = this.$el.find('#type').val();
+			var definitions = this.model.get('definitions');
+			this.$el.find('#appExtraFieldInput').html(definitions[type]);
+		}
 	});
 	return K2ViewExtraFields;
 });

@@ -136,9 +136,17 @@ class K2ModelExtraFields extends K2Model
 					$ordering = 'groupName';
 					$direction = 'ASC';
 					break;
+				case 'type' :
+					$ordering = 'type';
+					$direction = 'ASC';
+					break;
 				case 'published' :
 					$order = 'extraField.published';
 					$direction = 'DESC';
+					break;
+				case 'ordering' :
+					$order = 'extraField.ordering';
+					$direction = 'ASC';
 					break;
 			}
 		}

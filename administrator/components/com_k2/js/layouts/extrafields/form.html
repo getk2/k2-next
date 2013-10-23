@@ -3,8 +3,18 @@
     <label for="name"><%= l('K2_NAME') %></label>
     <input type="text" name="name" id="name" value="<%- row.name %>" />
     
+    <label for="alias"><%= l('K2_ALIAS') %></label>
+    <input type="text" name="alias" id="alias" value="<%- row.alias %>" />
+    
     <label for="group"><%= l('K2_EXTRA_FIELDS_GROUP') %></label>
     <%= form.group %>
+
+    <label><%= l('K2_REQUIRED') %></label>
+    <label> <%= l('K2_YES') %>
+        <input type="radio" name="required" value="1" <%= (row.required > 0) ? 'checked="checked"': '' %>/> </label>
+    <label> <%= l('K2_NO') %>
+        <input type="radio" name="required" value="0" <%= (row.required < 1) ? 'checked="checked"': '' %> />
+    </label>
 
     <label><%= l('K2_PUBLISHED') %></label>
     <label> <%= l('K2_YES') %>
@@ -12,6 +22,12 @@
     <label> <%= l('K2_NO') %>
         <input type="radio" name="published" value="0" <%= (row.published < 1) ? 'checked="checked"': '' %> />
     </label>
+    
+    <label for="type"><%= l('K2_EXTRA_FIELDS_TYPE') %></label>
+    <%= form.type %>
+    
+    <label><%= l('K2_EXTRA_FIELDS_DEFAULT') %></label>
+    <div id="appExtraFieldInput"></div>
 
     <input type="hidden" name="id" value="<%= row.id %>" / >
 
