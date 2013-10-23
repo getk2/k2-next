@@ -412,7 +412,8 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 		browseServerForImage : function(event) {
 			event.preventDefault();
 			K2Dispatcher.trigger('app:controller:browseServer', {
-				callback : 'app:item:selectImage'
+				callback : 'app:item:selectImage',
+				modal: true
 			});
 		},
 
@@ -421,7 +422,8 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 			// Mark the current attachment with a class
 			var el = jQuery(event.currentTarget).parents('.appItemAttachment').get(0).addClass('appItemCurrentAttachment');
 			K2Dispatcher.trigger('app:controller:browseServer', {
-				callback : 'app:item:selectAttachment'
+				callback : 'app:item:selectAttachment',
+				modal: true
 			});
 		},
 
@@ -533,7 +535,8 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 			// Mark the current media with a class
 			var el = jQuery(event.currentTarget).parents('.appItemMediaEntry').get(0).addClass('appItemCurrentMedia');
 			K2Dispatcher.trigger('app:controller:browseServer', {
-				callback : 'app:item:selectMedia'
+				callback : 'app:item:selectMedia',
+				modal: true
 			});
 		},
 

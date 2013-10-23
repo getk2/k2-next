@@ -374,8 +374,8 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 		},
 
 		browseServer : function(options) {
-			require(['views/media/modal'], _.bind(function(K2ViewMediaModal) {
-				var view = new K2ViewMediaModal(options);
+			require(['views/media/default'], _.bind(function(K2ViewMedia) {
+				var view = new K2ViewMedia(options);
 				K2Dispatcher.trigger('app:region:show', view, 'modal');
 			}, this));
 		}

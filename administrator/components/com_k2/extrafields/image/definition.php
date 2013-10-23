@@ -22,7 +22,8 @@ defined('_JEXEC') or die ;
 				jQuery('#extraFieldImageSrc').val(path);
 			});
 			K2Dispatcher.trigger('app:controller:browseServer', {
-				callback : 'app:extraField:selectImage'
+				callback : 'app:extraField:selectImage',
+				modal : true
 			});
 		});
 	});
