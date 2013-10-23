@@ -341,6 +341,12 @@ class K2View extends JViewLegacy
 			$_form->group = K2HelperHTML::extraFieldsGroups('group', false, $row->group);
 		}
 
+		// Extra field type
+		if (property_exists($row, 'type'))
+		{
+			$_form->type = K2HelperHTML::extraFieldsTypes('type', 'K2_SELECT_TYPE', $row->type);
+		}
+
 		// Language field
 		if (property_exists($row, 'language'))
 		{

@@ -161,4 +161,22 @@ class K2HelperHTML extends K2Helper
 		return JHtml::_('select.genericlist', $options, $name, $attributes, 'value', 'text', $value);
 	}
 
+	public static function extraFieldsTypes($name = 'extra_fields_type', $none = false, $value = null, $attributes = '')
+	{
+		$options = array();
+		if ($none)
+		{
+			$options[] = JHtml::_('select.option', '', JText::_($none));
+		}
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/extrafields.php';
+
+		$rows = K2HelperExtraFields::getTypes();
+
+		foreach ($rows as $row)
+		{
+			$options[] = JHtml::_('select.option', $row, JText::_('K2_EXTRA_FIELD_TYPE_'.strtoupper($row)));
+		}
+		return JHtml::_('select.genericlist', $options, $name, $attributes, 'value', 'text', $value);
+	}
+
 }
