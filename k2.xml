@@ -9,6 +9,17 @@
 	<version>3.0.0</version>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<description>Thank you for installing K2 by JoomlaWorks, the powerful content extension for Joomla!</description>
+	<scriptfile></scriptfile>
+	<install>
+		<sql>
+			<file driver="mysqli" charset="utf8">install.sql</file>
+		</sql>
+	</install>
+	<uninstall>
+		<sql>
+			<file driver="mysqli" charset="utf8">uninstall.sql</file>
+		</sql>
+	</uninstall>
 	<files></files>
 	<administration>
 		<menu>COM_K2</menu>
@@ -25,11 +36,27 @@
 			<menu view="info" link="option=com_k2#info">K2_INFORMATION</menu>
 		</submenu>
 		<files folder="administrator/components/com_k2">
+			<folder>classes</folder>
+			<folder>controllers</folder>
+			<folder>css</folder>
+			<folder>extrafields</folder>
+			<folder>fields</folder>
+			<folder>helpers</folder>
+			<folder>js</folder>
+			<folder>language</folder>
+			<folder>models</folder>
+			<folder>resources</folder>
+			<folder>tables</folder>
+			<folder>vendor</folder>
+			<folder>views</folder>
+			<filename>access.xml</filename>
+			<filename>config.xml</filename>
+			<filename>controller.php</filename>
+			<filename>install.sql</filename>
 			<filename>k2.php</filename>
 		</files>
 	</administration>
 	<config>
-		<fields>
-		</fields>
+		<fields></fields>
 	</config>
 </extension>

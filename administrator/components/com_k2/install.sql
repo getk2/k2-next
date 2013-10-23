@@ -1,4 +1,22 @@
 --
+-- Table structure for table `#__k2_attachments`
+--
+
+CREATE TABLE IF NOT EXISTS `#__k2_attachments` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `itemId` int(10) unsigned NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `file` varchar(255) NOT NULL,
+  `url` varchar(255) NOT NULL,
+  `downloads` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `itemId` (`itemId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `#__k2_categories`
 --
 
@@ -16,6 +34,9 @@ CREATE TABLE IF NOT EXISTS `#__k2_categories` (
   `trashed` tinyint(1) NOT NULL,
   `access` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `description` text NOT NULL,
+  `image` varchar(255) NOT NULL,
+  `template` varchar(255) NOT NULL,
+  `inheritance` int(10) unsigned NOT NULL,
   `created` datetime NOT NULL,
   `created_by` int(10) unsigned NOT NULL,
   `created_by_alias` varchar(255) NOT NULL,
@@ -23,9 +44,7 @@ CREATE TABLE IF NOT EXISTS `#__k2_categories` (
   `modified_by` int(10) unsigned NOT NULL,
   `checked_out` int(10) unsigned NOT NULL,
   `checked_out_time` datetime NOT NULL,
-  `metadata` varchar(255) NOT NULL,
-  `metadesc` varchar(255) NOT NULL,
-  `metakey` varchar(255) NOT NULL,
+  `metadata` text NOT NULL,
   `plugins` text NOT NULL,
   `params` text NOT NULL,
   `language` varchar(7) NOT NULL,
@@ -41,7 +60,54 @@ CREATE TABLE IF NOT EXISTS `#__k2_categories` (
   KEY `modified_by` (`modified_by`),
   KEY `checked_out` (`checked_out`),
   KEY `language` (`language`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=24 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__k2_extra_fields`
+--
+
+CREATE TABLE IF NOT EXISTS `#__k2_extra_fields` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `alias` varchar(255) NOT NULL,
+  `value` text NOT NULL,
+  `required` tinyint(1) NOT NULL,
+  `type` varchar(255) NOT NULL,
+  `group` int(10) unsigned NOT NULL,
+  `published` tinyint(1) NOT NULL,
+  `ordering` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `alias` (`alias`),
+  KEY `type` (`type`),
+  KEY `group` (`group`),
+  KEY `published` (`published`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__k2_extra_fields_groups`
+--
+
+CREATE TABLE IF NOT EXISTS `#__k2_extra_fields_groups` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__k2_extra_fields_groups_xref`
+--
+
+CREATE TABLE IF NOT EXISTS `#__k2_extra_fields_groups_xref` (
+  `groupId` int(10) unsigned NOT NULL,
+  `categoryId` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`groupId`,`categoryId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -61,7 +127,9 @@ CREATE TABLE IF NOT EXISTS `#__k2_items` (
   `catid` int(10) unsigned NOT NULL,
   `introtext` mediumtext NOT NULL,
   `fulltext` mediumtext NOT NULL,
-  `image` text NOT NULL,
+  `image_flag` tinyint(1) NOT NULL,
+  `image_caption` varchar(255) NOT NULL,
+  `image_credits` varchar(255) NOT NULL,
   `media` text NOT NULL,
   `galleries` text NOT NULL,
   `ordering` int(11) NOT NULL,
@@ -91,8 +159,9 @@ CREATE TABLE IF NOT EXISTS `#__k2_items` (
   KEY `created_by` (`created_by`),
   KEY `modified_by` (`modified_by`),
   KEY `checked_out` (`checked_out`),
-  KEY `ordering` (`ordering`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=35 ;
+  KEY `ordering` (`ordering`),
+  KEY `image` (`image_flag`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -120,7 +189,7 @@ CREATE TABLE IF NOT EXISTS `#__k2_tags` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `alias` (`alias`),
   KEY `published` (`published`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
