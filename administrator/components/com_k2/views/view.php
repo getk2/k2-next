@@ -548,6 +548,11 @@ class K2View extends JViewLegacy
 				'class' => 'appMenuLink',
 				'id' => 'k2ExtraFieldsGroupsLink'
 			), 'primary');
+			K2Response::addMenuLink('media', 'K2_MEDIA_MANAGER', array(
+				'href' => '#media',
+				'class' => 'appMenuLink',
+				'id' => 'k2MediaManagerLink'
+			), 'primary');
 
 		}
 
