@@ -33,6 +33,9 @@
 				$(options.connectWith).add(this).data('connectWith', options.connectWith);
 			}
 			items.attr('draggable', 'true').on('dragstart.h5s', function(e) {
+				
+				$(this).parent().trigger('sortstart');
+				
 				if (options.handle && !isHandle) {
 					return false;
 				}

@@ -244,14 +244,21 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 			// Image uploader
 			require(['widgets/uploader/jquery.iframe-transport', 'widgets/uploader/jquery.fileupload'], _.bind(function() {
 				var self = this;
-				var formData = {};
-				formData['id'] = self.model.get('id');
-				formData['tmpId'] = self.model.get('tmpId');
-				formData[K2SessionToken] = 1;
 				self.$el.find('#appItemImageFile').fileupload({
 					dataType : 'json',
 					url : 'index.php?option=com_k2&task=items.addImage&format=json',
-					formData : formData,
+					formData : function() {
+						return [{
+							name : 'id',
+							value : self.model.get('id')
+						}, {
+							name : 'tmpId',
+							value : self.model.get('tmpId')
+						}, {
+							name : K2SessionToken,
+							value : 1
+						}];
+					},
 					done : function(e, data) {
 						var response = data.result;
 						self.image.set('value', '1');
@@ -413,7 +420,7 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 			event.preventDefault();
 			K2Dispatcher.trigger('app:controller:browseServer', {
 				callback : 'app:item:selectImage',
-				modal: true
+				modal : true
 			});
 		},
 
@@ -423,7 +430,7 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 			var el = jQuery(event.currentTarget).parents('.appItemAttachment').get(0).addClass('appItemCurrentAttachment');
 			K2Dispatcher.trigger('app:controller:browseServer', {
 				callback : 'app:item:selectAttachment',
-				modal: true
+				modal : true
 			});
 		},
 
@@ -536,7 +543,7 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 			var el = jQuery(event.currentTarget).parents('.appItemMediaEntry').get(0).addClass('appItemCurrentMedia');
 			K2Dispatcher.trigger('app:controller:browseServer', {
 				callback : 'app:item:selectMedia',
-				modal: true
+				modal : true
 			});
 		},
 

@@ -1,4 +1,4 @@
-define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categories/row.html', 'dispatcher', 'session'], function(Marionette, list, row, K2Dispatcher, K2Session) {'use strict';
+define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categories/row.html', 'dispatcher', 'session', 'widgets'], function(Marionette, list, row, K2Dispatcher, K2Session, K2Widgets) {'use strict';
 	var K2ViewCategoriesRow = Marionette.ItemView.extend({
 		tagName : 'tr',
 		template : _.template(row),
@@ -26,49 +26,10 @@ define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categor
 				}
 			});
 			groups = _.uniq(groups);
-			this.initSorting(this.$el.find('table tbody'), 'ordering', K2Session.get('categories.sorting') === 'ordering', groups);
-		},
-		initSorting : function(element, column, enabled, groups) {
-			if (element.ordering !== undefined) {
-				element.ordering('destroy');
-				element.unbind();
-			}
-			require(['widgets/sortable/jquery.sortable'], _.bind(function() {
-				var events = [];
-				var isUpdating = false;
-				_.each(groups, function(group) {
-					element.ordering({
-						forcePlaceholderSize : true,
-						items : 'tbody tr.' + group,
-						handle : '.appOrderingHandle',
-
-					}).bind('sortupdate', function(e, ui) {
-						var timestamp = e.timeStamp;
-						if (_.indexOf(events, timestamp) === -1 && isUpdating === false) {
-							isUpdating = true;
-							events.push(timestamp);
-							var selector = jQuery(ui.item[0]).attr('class');
-							var keys = [];
-							var values = [];
-							var value = 1;
-							element.find('tr.' + selector + ' input[name="' + column + '[]"]').each(function(index) {
-								var row = jQuery(this);
-								keys.push(row.data('id'));
-								values.push(value);
-								value++;
-							});
-							K2Dispatcher.trigger('app:controller:saveOrder', keys, values, column);
-						}
-					});
-					if (enabled) {
-						element.ordering('enable');
-						element.find('input[name="' + column + '[]"], .appActionSaveOrder').prop('disabled', false);
-					} else {
-						element.ordering('disable');
-						element.find('input[name="' + column + '[]"], .appActionSaveOrder').prop('disabled', true);
-					}
+			_.each(groups, _.bind(function(group) {
+				K2Widgets.ordering(this.$el.find('table tbody'), 'ordering', K2Session.get('categories.sorting') === 'ordering', {
+					items : 'tbody tr.' + group
 				});
-
 			}, this));
 		}
 	});

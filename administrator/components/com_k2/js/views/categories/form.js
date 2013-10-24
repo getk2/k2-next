@@ -148,14 +148,21 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher'], functi
 			// Image uploader
 			require(['widgets/uploader/jquery.iframe-transport', 'widgets/uploader/jquery.fileupload'], _.bind(function() {
 				var self = this;
-				var formData = {};
-				formData['id'] = self.model.get('id');
-				formData['tmpId'] = self.model.get('tmpId');
-				formData[K2SessionToken] = 1;
 				self.$el.find('#appCategoryImageFile').fileupload({
 					dataType : 'json',
 					url : 'index.php?option=com_k2&task=categories.addImage&format=json',
-					formData : formData,
+					formData : function() {
+						return [{
+							name : 'id',
+							value : self.model.get('id')
+						}, {
+							name : 'tmpId',
+							value : self.model.get('tmpId')
+						}, {
+							name : K2SessionToken,
+							value : 1
+						}];
+					},
 					done : function(e, data) {
 						var response = data.result;
 						self.image.set('value', response.value);
