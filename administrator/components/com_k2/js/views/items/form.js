@@ -20,7 +20,9 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 			'click .appItemAttachmentBrowseServer' : 'browseServerForAttachment',
 			'click #appActionAddMedia' : 'addMedia',
 			'click .appItemMediaRemove' : 'removeMedia',
-			'click .appItemMediaBrowseServer' : 'browseServerForMedia'
+			'click .appItemMediaBrowseServer' : 'browseServerForMedia',
+			'click #appActionAddGallery' : 'addGallery',
+			'click .appItemGalleryRemove' : 'removeGallery',
 		},
 
 		// Initialize
@@ -88,6 +90,11 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 				// Delete any uploaded media files
 				if (this.$el.find('.appItemMediaUpload').length > 1) {
 					this.removeMediaFolder();
+				}
+				
+				// Delete any uploaded galleries
+				if (this.$el.find('.appItemGalleryUpload').length > 1) {
+					this.removeGalleries();
 				}
 			}
 		},
@@ -601,7 +608,99 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 			}).fail(function(xhr, status, error) {
 				K2Dispatcher.trigger('app:message', 'error', xhr.responseText);
 			});
-		}
+		},
+
+		// Add gallery
+		addGallery : function(event) {
+			// Prevent default
+			event.preventDefault();
+
+			// Get attachment element
+			var gallery = this.$el.find('#appItemGalleryPlaceholder').clone();
+
+			// Prepare the element
+			gallery.removeAttr('id');
+			gallery.addClass('appItemGalleryEntry');
+			gallery.find('input').removeAttr('disabled');
+			gallery.find('textarea').removeAttr('disabled');
+
+			// Upload event
+			this.setUpGalleryUploader(gallery);
+
+			this.$el.find('#appItemGallery').append(gallery);
+		},
+
+		// Remove gallery
+		removeGallery : function(event) {
+			event.preventDefault();
+			var el = jQuery(event.currentTarget);
+			var gallery = jQuery(el.parents('.appItemGalleryEntry').get(0));
+			var uploadedGallery = gallery.find('input.appItemGalleryUpload').val();
+			if (uploadedGallery) {
+				var data = {};
+				data['folder'] = uploadedGallery;
+				data['id'] = this.model.get('id');
+				data['tmpId'] = this.model.get('tmpId');
+				data[K2SessionToken] = 1;
+				jQuery.ajax({
+					dataType : 'json',
+					type : 'POST',
+					url : 'index.php?option=com_k2&task=items.removeGallery&format=json',
+					data : data
+				}).done(function(data, status, xhr) {
+					gallery.remove();
+				}).fail(function(xhr, status, error) {
+					K2Dispatcher.trigger('app:message', 'error', xhr.responseText);
+				});
+			} else {
+				gallery.remove();
+			}
+		},
+		
+		// Remove galleries
+		removeGalleries : function() {
+			var data = 'folder=' + this.model.get('tmpId') + '&' + K2SessionToken + '=1';
+			jQuery.ajax({
+				dataType : 'json',
+				type : 'POST',
+				url : 'index.php?option=com_k2&task=items.removeGalleries&format=json',
+				data : data
+			});
+		},
+
+		// Gallery upload event
+		setUpGalleryUploader : function(gallery) {
+			var id = this.model.get('id');
+			var tmpId = this.model.get('tmpId');
+			require(['widgets/uploader/jquery.iframe-transport', 'widgets/uploader/jquery.fileupload'], function() {
+				gallery.find('input[type="file"]').fileupload({
+					dataType : 'json',
+					url : 'index.php?option=com_k2&task=items.addGallery&format=json',
+					formData : function() {
+						return [{
+							name : 'id',
+							value : id,
+						}, {
+							name : 'tmpId',
+							value : tmpId
+						}, {
+							name : 'currentGallery',
+							value : gallery.find('input.appItemGalleryUpload').val()
+						}, {
+							name : K2SessionToken,
+							value : 1
+						}];
+					},
+					done : function(e, data) {
+						var response = data.result;
+						gallery.find('input.appItemGalleryUpload').val(response.upload);
+					},
+					fail : function(e, data) {
+						K2Dispatcher.trigger('app:message', 'error', data.jqXHR.responseText);
+					}
+				});
+			});
+		},
 	});
 	return K2ViewItem;
 });

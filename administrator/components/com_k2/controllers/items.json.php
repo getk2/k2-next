@@ -363,4 +363,146 @@ class K2ControllerItems extends K2Controller
 		return $this;
 	}
 
+	public function addGallery()
+	{
+		// Check for token
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
+		// Filesystem
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
+		$filesystem = K2FileSystem::getInstance();
+
+		// Get input
+		$input = JFactory::getApplication()->input;
+		$id = $input->get('id', 0, 'int');
+		$tmpId = $input->get('tmpId', '', 'cmd');
+		$currentGallery = $input->get('currentGallery', '', 'cmd');
+		$newGallery = uniqid();
+		$folder = ($id) ? $id : $tmpId;
+		$galleries = $input->files->get('galleries');
+		$archive = $galleries['file'][0];
+
+		// Extract the gallery to a temporaty folder
+		jimport('joomla.archive.archive');
+		jimport('joomla.filesystem.file');
+		jimport('joomla.filesystem.folder');
+
+		// Random temporary path
+		$tmpFolder = JPATH_SITE.'/media/k2/galleries/'.uniqid();
+
+		// Create the folder
+		JFolder::create($tmpFolder);
+
+		// Upload the file to the temporary folder
+		JFile::upload($archive['tmp_name'], $tmpFolder.'/'.$archive['name']);
+
+		// Extract the archive
+		JArchive::extract($tmpFolder.'/'.$archive['name'], $tmpFolder);
+
+		// Delete the archive
+		JFile::delete($tmpFolder.'/'.$archive['name']);
+
+		// Transfer the files of the archive to the current filesystem
+		$files = JFolder::files($tmpFolder);
+		$target = 'media/k2/galleries/'.$folder.'/'.$newGallery;
+		foreach ($files as $file)
+		{
+			$buffer = JFile::read($file);
+			$filesystem->write($target.'/'.$file, $buffer, true);
+		}
+
+		// Delete the temporary folder
+		JFolder::delete($tmpFolder);
+
+		// If the current gallery is uploaded then we should remove it when we upload a new one
+		if ($currentGallery && $filesystem->has('media/k2/galleries/'.$folder.'/'.$currentGallery))
+		{
+			$filesystem->delete('media/k2/galleries/'.$folder.'/'.$currentGallery);
+		}
+
+		// Response
+		$response = new stdClass;
+		$response->upload = $newGallery;
+		echo json_encode($response);
+
+		// Return
+		return $this;
+
+	}
+
+	public function removeGallery()
+	{
+		// Check for token
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
+		// Get id from input
+		$input = JFactory::getApplication()->input;
+		$id = $input->get('id', 0, 'int');
+		$tmpId = $input->get('tmpId', '', 'cmd');
+		$itemFolder = ($id) ? $id : $tmpId;
+		$folder = $input->get('folder', '', 'cmd');
+
+		if ($folder)
+		{
+			// Filesystem
+			require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
+			$filesystem = K2FileSystem::getInstance();
+
+			// Key
+			$galleryKey = 'media/k2/galleries/'.$itemFolder.'/'.$folder;
+
+			$files = $filesystem->listKeys($galleryKey);
+
+			foreach ($files['keys'] as $key)
+			{
+				if ($filesystem->has($key))
+				{
+					$filesystem->delete($key);
+				}
+			}
+			$filesystem->delete($galleryKey);
+
+		}
+
+		// Return
+		echo json_encode(true);
+		return $this;
+	}
+
+	public function removeGalleries()
+	{
+		// Check for token
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
+		// Get id from input
+		$input = JFactory::getApplication()->input;
+		$folder = $input->get('folder', '', 'cmd');
+
+		if ($folder)
+		{
+			// Filesystem
+			require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
+			$filesystem = K2FileSystem::getInstance();
+
+			// Key
+			$rootKey = 'media/k2/galleries/'.$folder;
+			$keys = $filesystem->listKeys($rootKey);
+			$files = array_unique($keys['keys']);
+			$folders = array_unique($keys['dirs']);
+			foreach ($files as $key)
+			{
+				$filesystem->delete($key);
+			}
+			foreach ($folders as $key)
+			{
+				$filesystem->delete($key);
+			}
+			$filesystem->delete($rootKey);
+		}
+
+		// Return
+		echo json_encode(true);
+		return $this;
+	}
+
 }

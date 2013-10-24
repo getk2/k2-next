@@ -316,6 +316,7 @@ class K2ModelItems extends K2Model
 			}
 		}
 
+		// Media
 		if (isset($data['media']))
 		{
 			$media = array();
@@ -342,6 +343,25 @@ class K2ModelItems extends K2Model
 				}
 			}
 			$data['media'] = json_encode($media);
+		}
+
+		// Galleries
+		if (isset($data['galleries']))
+		{
+			$galleries = array();
+			if ($data['galleries'])
+			{
+				$urls = $data['galleries']['url'];
+				$uploads = $data['galleries']['upload'];
+				foreach ($urls as $key => $value)
+				{
+					$galleryEntry = new stdClass;
+					$galleryEntry->url = $urls[$key];
+					$galleryEntry->upload = $uploads[$key];
+					$galleries[] = $galleryEntry;
+				}
+			}
+			$data['galleries'] = json_encode($galleries);
 		}
 
 	}
@@ -401,6 +421,17 @@ class K2ModelItems extends K2Model
 				$filesystem->rename($path.'/'.$source, $path.'/'.$target);
 			}
 
+		}
+
+		// If we have a tmpId we need to rename the gallery directory
+		if ($data['galleries'] && isset($data['tmpId']) && $data['tmpId'])
+		{
+			require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
+			$filesystem = K2FileSystem::getInstance();
+			$path = 'media/k2/galleries';
+			$source = $data['tmpId'];
+			$target = $table->id;
+			$filesystem->rename($path.'/'.$source, $path.'/'.$target);
 		}
 
 		if (isset($data['attachments']))

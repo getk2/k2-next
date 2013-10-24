@@ -74,6 +74,7 @@ class K2Items extends K2Resource
 		$this->link = '#items/edit/'.$this->id;
 		JFilterOutput::objectHTMLSafe($this, ENT_QUOTES, array(
 			'media',
+			'galleries',
 			'metadata',
 			'plugins',
 			'params',
@@ -81,6 +82,7 @@ class K2Items extends K2Resource
 		));
 
 		$this->media = json_decode($this->media);
+		$this->galleries = json_decode($this->galleries);
 
 		$this->hits = (int)$this->hits;
 
