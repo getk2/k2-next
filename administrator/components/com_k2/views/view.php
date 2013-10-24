@@ -543,7 +543,7 @@ class K2View extends JViewLegacy
 				'class' => 'appMenuLink',
 				'id' => 'k2ExtraFieldsLink'
 			), 'primary');
-			K2Response::addMenuLink('extrafieldsgroups', 'K2_EXTRA_FIELDS_GROUPS', array(
+			K2Response::addMenuLink('extrafieldsgroups', 'K2_EXTRA_FIELD_GROUPS', array(
 				'href' => '#extrafieldsgroups',
 				'class' => 'appMenuLink',
 				'id' => 'k2ExtraFieldsGroupsLink'

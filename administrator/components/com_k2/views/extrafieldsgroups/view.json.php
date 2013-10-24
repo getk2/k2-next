@@ -29,7 +29,7 @@ class K2ViewExtraFieldsGroups extends K2View
 	public function show()
 	{
 		// Set title
-		$this->setTitle('K2_EXTRA_FIELDS_GROUPS');
+		$this->setTitle('K2_EXTRA_FIELD_GROUPS');
 
 		// Set user states
 		$this->setUserStates();
