@@ -26,6 +26,18 @@ class K2HelperExtraFields extends K2Helper
 	 */
 	public static $types = null;
 
+	/**
+	 * Holds the available extra fields scopes.
+	 *
+	 * @var array $types
+	 */
+	public static $scopes = array(
+		'item',
+		'category',
+		'user',
+		'tag'
+	);
+
 	public static function getTypes()
 	{
 		if (is_null(self::$types))
@@ -34,6 +46,11 @@ class K2HelperExtraFields extends K2Helper
 			self::$types = JFolder::folders(JPATH_ADMINISTRATOR.'/components/com_k2/extrafields');
 		}
 		return self::$types;
+	}
+
+	public static function getScopes()
+	{
+		return self::$scopes;
 	}
 
 }

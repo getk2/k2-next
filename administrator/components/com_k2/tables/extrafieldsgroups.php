@@ -26,7 +26,15 @@ class K2TableExtraFieldsGroups extends K2Table
 			$this->setError(JText::_('K2_EXTRA_FIELD_GROUP_MUST_HAVE_A_NAME'));
 			return false;
 		}
-
+		
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/extrafields.php';
+		$scopes = K2HelperExtraFields::getScopes();
+		
+		if(!in_array($this->scope, $scopes))
+		{
+			
+		}
+		
 		return true;
 	}
 

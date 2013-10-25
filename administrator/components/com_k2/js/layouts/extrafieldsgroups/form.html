@@ -3,6 +3,21 @@
     <label for="name"><%= l('K2_NAME') %></label>
     <input type="text" name="name" id="name" value="<%- row.name %>" />
 
+    <label for="scope"><%= l('K2_SCOPE') %></label>
+    <%= form.scope %>
+    
+    <label><%= l('K2_ALL') %>
+        <input type="radio" name="assignmentsSwitch" value="all" />
+    </label>
+    <label><%= l('K2_SELECT_FROM_LIST') %>
+        <input type="radio" name="assignmentsSwitch" value="select" />
+    </label> 
+    <label><%= l('K2_NONE') %>
+        <input type="radio" name="assignmentsSwitch" value="none" />
+    </label> 
+        
+    <div id="appExtraFieldGroupAssignments"></div>
+
     <input type="hidden" name="id" value="<%= row.id %>" / >
     
     <% _(form.jform).each(function(field) { %>

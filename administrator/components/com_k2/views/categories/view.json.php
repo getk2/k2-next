@@ -102,7 +102,7 @@ class K2ViewCategories extends K2View
 	{
 
 		// Language filter
-		K2Response::addFilter('language', JText::_('K2_SELECT_LANGUAGE'), K2HelperHTML::language(), false, 'header');
+		K2Response::addFilter('language', JText::_('K2_SELECT_LANGUAGE'), K2HelperHTML::language('language', '', 'K2_ANY'), false, 'header');
 
 		// Sorting filter
 		$sortingOptions = array(

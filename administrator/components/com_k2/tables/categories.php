@@ -58,6 +58,11 @@ class K2TableCategories extends K2TableNested
 		{
 			$this->alias = $this->title;
 		}
+		
+		if(!$this->parent_id)
+		{
+			$this->parent_id = 1;
+		}
 
 		if (JFactory::getConfig()->get('unicodeslugs') == 1)
 		{

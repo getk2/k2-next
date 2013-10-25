@@ -37,12 +37,12 @@ class K2HelperHTML extends K2Helper
 		return JHtml::_('select.radiolist', $options, $name, '', 'value', 'text', $value);
 	}
 
-	public static function language($name = 'language', $none = true, $value = null)
+	public static function language($name = 'language', $value = null, $none = false)
 	{
 		$options = JHtml::_('contentlanguage.existing', true, true);
 		if ($none)
 		{
-			array_unshift($options, JHtml::_('select.option', '', JText::_('K2_ANY')));
+			array_unshift($options, JHtml::_('select.option', '', JText::_($none)));
 		}
 		return JHtml::_('select.genericlist', $options, $name, '', 'value', 'text', $value);
 	}
@@ -58,7 +58,7 @@ class K2HelperHTML extends K2Helper
 		return JHtml::_('select.genericlist', $list, $name, '', 'value', 'text', $value);
 	}
 
-	public static function categories($name = 'catid', $none = false, $value = null, $exclude = null, $root = false)
+	public static function categories($name = 'catid', $value = null, $none = false, $exclude = null, $attributes = '')
 	{
 		$model = K2Model::getInstance('Categories', 'K2Model');
 		$model->setState('sorting', 'ordering');
@@ -66,11 +66,7 @@ class K2HelperHTML extends K2Helper
 		$options = array();
 		if ($none)
 		{
-			$options[] = JHtml::_('select.option', '', JText::_('K2_ANY'));
-		}
-		if ($root)
-		{
-			$options[] = JHtml::_('select.option', '1', JText::_('K2_NONE'));
+			$options[] = JHtml::_('select.option', '', JText::_($none));
 		}
 		foreach ($rows as $row)
 		{
@@ -89,7 +85,7 @@ class K2HelperHTML extends K2Helper
 			}
 
 		}
-		return JHtml::_('select.genericlist', $options, $name, '', 'value', 'text', $value);
+		return JHtml::_('select.genericlist', $options, $name, $attributes, 'value', 'text', $value);
 	}
 
 	public static function search($name = 'search')
@@ -144,7 +140,7 @@ class K2HelperHTML extends K2Helper
 		return JHtml::_('select.genericlist', $options, $name, '', 'value', 'text', $value);
 	}
 
-	public static function extraFieldsGroups($name = 'extra_fields_group', $none = false, $value = null, $attributes = '')
+	public static function extraFieldsGroups($name = 'extra_fields_group', $value = null, $none = false, $attributes = '', $scope = null)
 	{
 		$options = array();
 		if ($none)
@@ -153,6 +149,10 @@ class K2HelperHTML extends K2Helper
 		}
 		$model = K2Model::getInstance('ExtraFieldsGroups', 'K2Model');
 		$model->setState('sorting', 'name');
+		if (!is_null($scope))
+		{
+			$model->setState('scope', $scope);
+		}
 		$rows = $model->getRows();
 		foreach ($rows as $row)
 		{
@@ -161,7 +161,19 @@ class K2HelperHTML extends K2Helper
 		return JHtml::_('select.genericlist', $options, $name, $attributes, 'value', 'text', $value);
 	}
 
-	public static function extraFieldsTypes($name = 'extra_fields_type', $none = false, $value = null, $attributes = '')
+	public static function extraFieldsScopes($name = 'scope', $value = null, $attributes = '')
+	{
+		$options = array();
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/extrafields.php';
+		$rows = K2HelperExtraFields::getScopes();
+		foreach ($rows as $row)
+		{
+			$options[] = JHtml::_('select.option', $row, JText::_('K2_EXTRA_FIELD_SCOPE_'.strtoupper($row)));
+		}
+		return JHtml::_('select.genericlist', $options, $name, $attributes, 'value', 'text', $value);
+	}
+
+	public static function extraFieldsTypes($name = 'extra_fields_type', $value = null, $none = false, $attributes = '')
 	{
 		$options = array();
 		if ($none)
@@ -175,6 +187,24 @@ class K2HelperHTML extends K2Helper
 		foreach ($rows as $row)
 		{
 			$options[] = JHtml::_('select.option', $row, JText::_('K2_EXTRA_FIELD_TYPE_'.strtoupper($row)));
+		}
+		return JHtml::_('select.genericlist', $options, $name, $attributes, 'value', 'text', $value);
+	}
+	
+	public static function usergroups($name = 'usergroups', $value = null, $none = false, $attributes = '')
+	{
+		$options = array();
+		if ($none)
+		{
+			$options[] = JHtml::_('select.option', '', JText::_($none));
+		}
+		
+		$model = K2Model::getInstance('UserGroups', 'K2Model');
+		$rows = $model->getRows();
+
+		foreach ($rows as $row)
+		{
+			$options[] = JHtml::_('select.option', $row->id, str_repeat('-', $row->level).$row->title);
 		}
 		return JHtml::_('select.genericlist', $options, $name, $attributes, 'value', 'text', $value);
 	}

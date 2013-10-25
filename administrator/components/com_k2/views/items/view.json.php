@@ -105,7 +105,7 @@ class K2ViewItems extends K2View
 	{
 
 		// Language filter
-		K2Response::addFilter('language', JText::_('K2_SELECT_LANGUAGE'), K2HelperHTML::language(), false, 'header');
+		K2Response::addFilter('language', JText::_('K2_SELECT_LANGUAGE'), K2HelperHTML::language('language', '', 'K2_ANY'), false, 'header');
 
 		// Sorting filter
 		$sortingOptions = array(
@@ -126,7 +126,7 @@ class K2ViewItems extends K2View
 		K2Response::addFilter('sorting', JText::_('K2_SORT_BY'), K2HelperHTML::sorting($sortingOptions), false, 'header');
 		
 		// Categories filter
-		K2Response::addFilter('category', JText::_('K2_CATEGORY'), K2HelperHTML::categories('category', true), false, 'header');
+		K2Response::addFilter('category', JText::_('K2_CATEGORY'), K2HelperHTML::categories('category', null, 'K2_ANY'), false, 'header');
 
 		// Search filter
 		K2Response::addFilter('search', JText::_('K2_SEARCH'), K2HelperHTML::search(), false, 'sidebar');

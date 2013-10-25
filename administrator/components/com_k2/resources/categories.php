@@ -104,7 +104,8 @@ class K2Categories extends K2Resource
 		{
 			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
 			$model = K2Model::getInstance('ExtraFieldsGroups', 'K2Model');
-			$model->setState('categoryId', $this->id);
+			$model->setState('scope', 'category');
+			$model->setState('resourceId', $this->id);
 			$extraFieldsGroups = $model->getRows();
 			foreach ($extraFieldsGroups as $extraFieldsGroup)
 			{

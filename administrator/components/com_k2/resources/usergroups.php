@@ -13,10 +13,10 @@ defined('_JEXEC') or die ;
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/resource.php';
 
 /**
- * K2 extra field group resource class.
+ * K2 user group resource class.
  */
 
-class K2ExtraFieldsGroups extends K2Resource
+class K2UserGroups extends K2Resource
 {
 
 	/**
@@ -43,21 +43,21 @@ class K2ExtraFieldsGroups extends K2Resource
 	 *
 	 * @param integer $id	The id of the item to get.
 	 *
-	 * @return K2ExtraFieldGroup The tag object.
+	 * @return K2Tag The tag object.
 	 */
 	public static function getInstance($id)
 	{
 		if (empty(self::$instances[$id]))
 		{
 			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
-			$model = K2Model::getInstance('ExtraFieldsGroups', 'K2Model');
+			$model = K2Model::getInstance('UserGroups', 'K2Model');
 			$model->setState('id', $id);
 			$item = $model->getRow();
 			self::$instances[$id] = $item;
 		}
 		return self::$instances[$id];
 	}
-
+	
 	/**
 	 * Prepares the row for output
 	 *
@@ -71,23 +71,7 @@ class K2ExtraFieldsGroups extends K2Resource
 		parent::prepare($mode);
 
 		// Prepare specific properties
-		$this->link = '#extrafieldsgroups/edit/'.$this->id;
-
-		// Resources
-		$this->assignments = $this->getAssignments();
+		$this->link = '#usergroups/edit/'.$this->id;
 
 	}
-
-	public function getAssignments()
-	{
-		$assignments = array();
-		if ($this->id)
-		{
-			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
-			$model = K2Model::getInstance('ExtraFieldsGroups', 'K2Model');
-			$assignments = $model->getAssignments($this->id);
-		}
-		return $assignments;
-	}
-
 }

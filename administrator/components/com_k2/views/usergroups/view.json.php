@@ -13,10 +13,10 @@ defined('_JEXEC') or die ;
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/views/view.php';
 
 /**
- * Extra fields JSON view.
+ * User groups JSON view.
  */
 
-class K2ViewExtraFields extends K2View
+class K2ViewUserGroups extends K2View
 {
 
 	/**
@@ -29,7 +29,7 @@ class K2ViewExtraFields extends K2View
 	public function show()
 	{
 		// Set title
-		$this->setTitle('K2_EXTRA_FIELDS');
+		$this->setTitle('K2_USER_GROUPS');
 
 		// Set user states
 		$this->setUserStates();
@@ -68,7 +68,7 @@ class K2ViewExtraFields extends K2View
 	public function edit($id = null)
 	{
 		// Set title
-		$this->setTitle('K2_EXTRA_FIELD');
+		$this->setTitle('K2_USER_GROUP');
 
 		// Set row
 		$this->setRow($id);
@@ -92,33 +92,20 @@ class K2ViewExtraFields extends K2View
 		$this->setUserState('page', 1, 'int');
 		$this->setUserState('search', '', 'string');
 		$this->setUserState('published', '', 'cmd');
-		$this->setUserState('group', '', 'cmd');
-		$this->setUserState('type', '', 'cmd');
 		$this->setUserState('sorting', 'ordering', 'string');
 	}
 
 	protected function setFilters()
 	{
-
-		// Group filter
-		K2Response::addFilter('group', JText::_('K2_GROUP'), K2HelperHTML::extraFieldsGroups('group', null, 'K2_ANY'), false, 'header');
-
 		// Sorting filter
 		$sortingOptions = array(
 			'K2_ID' => 'id',
-			'K2_NAME' => 'name',
-			'K2_GROUP' => 'group',
-			'K2_TYPE' => 'type',
-			'K2_ORDERING' => 'ordering',
-			'K2_PUBLISHED' => 'published'
+			'K2_TITLE' => 'title'
 		);
 		K2Response::addFilter('sorting', JText::_('K2_SORT_BY'), K2HelperHTML::sorting($sortingOptions), false, 'header');
 
 		// Search filter
 		K2Response::addFilter('search', JText::_('K2_SEARCH'), K2HelperHTML::search(), false, 'sidebar');
-		
-		// Published filter
-		K2Response::addFilter('published', JText::_('K2_PUBLISHED'), K2HelperHTML::published(), true, 'sidebar');
 
 	}
 

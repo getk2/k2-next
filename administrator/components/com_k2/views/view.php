@@ -308,19 +308,19 @@ class K2View extends JViewLegacy
 		// Category field
 		if (property_exists($row, 'catid'))
 		{
-			$_form->category = K2HelperHTML::categories('catid', false, $row->catid);
+			$_form->category = K2HelperHTML::categories('catid', $row->catid);
 		}
 
 		// Category parent field
 		if (property_exists($row, 'parent_id'))
 		{
-			$_form->parent = K2HelperHTML::categories('parent_id', false, $row->parent_id, $row->id, true);
+			$_form->parent = K2HelperHTML::categories('parent_id', $row->parent_id, 'K2_NONE', $row->id);
 		}
 
 		// Category inheritance
 		if (property_exists($row, 'inheritance'))
 		{
-			$_form->inheritance = K2HelperHTML::categories('inheritance', false, $row->inheritance, $row->id, true);
+			$_form->inheritance = K2HelperHTML::categories('inheritance', $row->inheritance, 'K2_NONE', $row->id);
 		}
 
 		// Category template
@@ -332,25 +332,43 @@ class K2View extends JViewLegacy
 		// Category extra fields groups
 		if (property_exists($row, 'extraFieldsGroupsValues'))
 		{
-			$_form->extraFieldsGroups = K2HelperHTML::extraFieldsGroups('extraFieldsGroups[]', 'K2_NONE', $row->extraFieldsGroupsValues, 'multiple="multiple"');
+			$_form->extraFieldsGroups = K2HelperHTML::extraFieldsGroups('extraFieldsGroups[]', $row->extraFieldsGroupsValues, 'K2_NONE', 'multiple="multiple"', 'category');
+		}
+
+		// Extra fields groups scopes and references
+		if (property_exists($row, 'scope'))
+		{
+			$_form->scope = K2HelperHTML::extraFieldsScopes('scope', $row->scope);
+			$assignments = array();
+			$assignments['item'] = K2HelperHTML::categories('assignments[]', null, false, false, 'multiple="multiple"');
+			$assignments['category'] = $assignments['item'];
+			$assignments['user'] = K2HelperHTML::usergroups('assignments[]', null, false, 'multiple="multiple"');
+			$_form->assignments = $assignments;
+
+		}
+
+		// Extra fields groups scope references
+		if (property_exists($row, 'scope'))
+		{
+			$_form->scope = K2HelperHTML::extraFieldsScopes('scope', $row->scope);
 		}
 
 		// Extra field group
 		if (property_exists($row, 'group'))
 		{
-			$_form->group = K2HelperHTML::extraFieldsGroups('group', false, $row->group);
+			$_form->group = K2HelperHTML::extraFieldsGroups('group', $row->group);
 		}
 
 		// Extra field type
 		if (property_exists($row, 'type'))
 		{
-			$_form->type = K2HelperHTML::extraFieldsTypes('type', 'K2_SELECT_TYPE', $row->type);
+			$_form->type = K2HelperHTML::extraFieldsTypes('type', $row->type, 'K2_SELECT_TYPE');
 		}
 
 		// Language field
 		if (property_exists($row, 'language'))
 		{
-			$_form->language = K2HelperHTML::language('language', false, $row->language);
+			$_form->language = K2HelperHTML::language('language', $row->language);
 		}
 
 		// Text field
@@ -547,6 +565,11 @@ class K2View extends JViewLegacy
 				'href' => '#extrafieldsgroups',
 				'class' => 'appMenuLink',
 				'id' => 'k2ExtraFieldsGroupsLink'
+			), 'primary');
+			K2Response::addMenuLink('usergroups', 'K2_USER_GROUPS', array(
+				'href' => '#usergroups',
+				'class' => 'appMenuLink',
+				'id' => 'k2UserGroupsLink'
 			), 'primary');
 			K2Response::addMenuLink('media', 'K2_MEDIA_MANAGER', array(
 				'href' => '#media',

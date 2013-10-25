@@ -94,7 +94,9 @@ CREATE TABLE IF NOT EXISTS `#__k2_extra_fields` (
 CREATE TABLE IF NOT EXISTS `#__k2_extra_fields_groups` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
+  `scope` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `scope` (`scope`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -105,8 +107,8 @@ CREATE TABLE IF NOT EXISTS `#__k2_extra_fields_groups` (
 
 CREATE TABLE IF NOT EXISTS `#__k2_extra_fields_groups_xref` (
   `groupId` int(10) unsigned NOT NULL,
-  `categoryId` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`groupId`,`categoryId`)
+  `resourceId` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`groupId`,`resourceId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------

@@ -2,7 +2,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 	var K2Controller = Marionette.Controller.extend({
 
 		// The available resources for request. Any other request returns a 404 error.
-		resources : ['items', 'categories', 'tags', 'comments', 'users', 'extrafieldsgroups', 'extrafields', 'media', 'information', 'settings'],
+		resources : ['items', 'categories', 'tags', 'comments', 'users', 'extrafieldsgroups', 'extrafields', 'usergroups', 'media', 'information', 'settings'],
 
 		// Holds the current resource type.
 		resource : 'items',
