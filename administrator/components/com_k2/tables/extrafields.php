@@ -501,7 +501,8 @@ class K2TableExtraFields extends K2Table
 			'ӭ',
 			'ю',
 			'я',
-			'-'
+			'-',
+			' '
 		);
 		$replacements = array(
 			'A',
@@ -966,6 +967,7 @@ class K2TableExtraFields extends K2Table
 			'e',
 			'yu',
 			'ya',
+			'',
 			''
 		);
 		$this->alias = str_replace($searches, $replacements, $this->alias);
