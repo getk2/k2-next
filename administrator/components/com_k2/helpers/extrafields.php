@@ -38,6 +38,20 @@ class K2HelperExtraFields extends K2Helper
 		'tag'
 	);
 
+	/**
+	 * Holds the available extra fields groups per scope.
+	 *
+	 * @var array $groups
+	 */
+	public static $groups = array();
+
+	/**
+	 * Holds the available extra fields definitions.
+	 *
+	 * @var array $definitions
+	 */
+	public static $definitions = null;
+
 	public static function getTypes()
 	{
 		if (is_null(self::$types))
@@ -51,6 +65,69 @@ class K2HelperExtraFields extends K2Helper
 	public static function getScopes()
 	{
 		return self::$scopes;
+	}
+
+	public static function getGroups($scope = 'item')
+	{
+		if (!isset(self::$groups[$scope]))
+		{
+			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
+			$model = K2Model::getInstance('ExtraFieldsGroups', 'K2Model');
+			$model->setState('scope', $scope);
+			self::$groups[$scope] = $model->getRows();
+		}
+		return self::$groups[$scope];
+	}
+
+	public static function getDefinitions()
+	{
+		if (is_null(self::$definitions))
+		{
+			jimport('joomla.filesystem.file');
+			$definitions = array();
+			$types = self::getTypes();
+			foreach ($types as $type)
+			{
+				if (JFile::exists(JPATH_ADMINISTRATOR.'/components/com_k2/extrafields/'.$type.'/definition.php'))
+				{
+					$field = new JRegistry();
+					ob_start();
+					include JPATH_ADMINISTRATOR.'/components/com_k2/extrafields/'.$type.'/definition.php';
+					$definition = ob_get_contents();
+					ob_end_clean();
+					$definitions[$type] = $definition;
+				}
+			}
+			self::$definitions = $definitions;
+		}
+		return self::$definitions;
+	}
+
+	public static function getItemExtraFields($categoryId, $values)
+	{
+		$groups = array();
+		$values = json_decode($values);
+
+		foreach (self::getGroups('item') as $group)
+		{
+			if ($group->assignments->mode == 'all' || ($group->assignments->mode == 'specific' && in_array($categoryId, $group->assignments->categories)))
+			{
+				foreach ($group->fields as $field)
+				{
+					if (property_exists($values, $field->id))
+					{
+						$index = $field->id;
+						$resourceValues = $values->$index;
+						$defaults = json_decode($field->value);
+						$activeValues = array_merge((array)$defaults, (array)$resourceValues);
+						$field->value = json_encode((object)$activeValues);
+					}
+					$field->input = $field->getInput();
+				}
+				$groups[] = $group;
+			}
+		}
+		return $groups;
 	}
 
 }

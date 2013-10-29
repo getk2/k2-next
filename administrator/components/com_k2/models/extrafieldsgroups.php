@@ -132,7 +132,7 @@ class K2ModelExtraFieldsGroups extends K2Model
 		}
 	}
 
-	protected function onAfterSave(&$data, $table)
+	protected function onBeforeSave(&$data, $table)
 	{
 		if (isset($data['assignments']))
 		{

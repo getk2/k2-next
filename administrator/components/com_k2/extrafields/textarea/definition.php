@@ -11,9 +11,9 @@
 defined('_JEXEC') or die ; ?>
 
 <label><?php echo JText::_('K2_ROWS'); ?></label>
-<input name="value[rows]" type="text" value="<?php echo $this->escape($field->get('rows')); ?>" />
+<input name="value[rows]" type="text" value="<?php echo (int)$field->get('rows'); ?>" />
 <label><?php echo JText::_('K2_COLUMNS'); ?></label>
-<input name="value[columns]" type="text" value="<?php echo $this->escape($field->get('columns')); ?>" />
+<input name="value[columns]" type="text" value="<?php echo (int)$field->get('columns'); ?>" />
 <div><textarea rows="10" cols="40" name="value[value]"><?php echo $field->get('value'); ?></textarea></div>
 <label><?php echo JText::_('K2_USE_EDITOR'); ?></label>
 <input value="1" name="value[editor]" type="checkbox" <?php if($field->get('editor')) { echo 'checked="checked"';} ?> />

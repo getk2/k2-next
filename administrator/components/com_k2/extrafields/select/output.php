@@ -10,4 +10,6 @@
 // no direct access
 defined('_JEXEC') or die ; ?>
 
-<img src="<?php echo $field->get('src'); ?>" alt="<?php echo $field->get('alt'); ?>" />
+<?php foreach($field->get('options') as $option): ?>
+	<div><?php echo $option; ?></div>
+<?php endforeach; ?>

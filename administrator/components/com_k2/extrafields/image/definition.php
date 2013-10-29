@@ -11,19 +11,21 @@
 defined('_JEXEC') or die ;
 ?>
 <label><?php echo JText::_('K2_SOURCE'); ?></label>
-<input type="text" name="value[src]" value="<?php echo $this->escape($field->get('src')); ?>" id="extraFieldImageSrc" /> <button id="extraFieldImageBrowseServer"><?php echo JText::_('K2_BROWSE_SERVER'); ?></button>
+<input type="text" name="value[src]" value="<?php echo htmlspecialchars($field->get('src'), ENT_QUOTES, 'UTF-8'); ?>" id="extraFieldImageSrc" /> <button id="extraFieldImageBrowseServer"><?php echo JText::_('K2_BROWSE_SERVER'); ?></button>
 <label><?php echo JText::_('K2_ALT'); ?></label>
-<input type="text" name="value[alt]" value="<?php echo $this->escape($field->get('alt')); ?>" />
+<input type="text" name="value[alt]" value="<?php echo htmlspecialchars($field->get('alt'), ENT_QUOTES, 'UTF-8'); ?>" />
 <script type="text/javascript">
-	jQuery('#extraFieldImageBrowseServer').click(function(event) {
-		event.preventDefault();
-		require(['dispatcher'], function(K2Dispatcher) {
-			K2Dispatcher.on('app:extraField:selectImage', function(path) {
-				jQuery('#extraFieldImageSrc').val(path);
-			});
-			K2Dispatcher.trigger('app:controller:browseServer', {
-				callback : 'app:extraField:selectImage',
-				modal : true
+	jQuery(document).on('K2ExtraFields', function() {
+		jQuery('#extraFieldImageBrowseServer').click(function(event) {
+			event.preventDefault();
+			require(['dispatcher'], function(K2Dispatcher) {
+				K2Dispatcher.on('app:extraField:selectImage', function(path) {
+					jQuery('#extraFieldImageSrc').val(path);
+				});
+				K2Dispatcher.trigger('app:controller:browseServer', {
+					callback : 'app:extraField:selectImage',
+					modal : true
+				});
 			});
 		});
 	});

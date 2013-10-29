@@ -10,4 +10,4 @@
 // no direct access
 defined('_JEXEC') or die ; ?>
 
-<img src="<?php echo $this->escape($field->get('src')); ?>" alt="<?php echo $this->escape($field->get('alt')); ?>" />
+<img src="<?php echo htmlspecialchars($field->get('src'), ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($field->get('alt'), ENT_QUOTES, 'UTF-8'); ?>" />

@@ -75,6 +75,7 @@ class K2Items extends K2Resource
 		JFilterOutput::objectHTMLSafe($this, ENT_QUOTES, array(
 			'media',
 			'galleries',
+			'extra_fields',
 			'metadata',
 			'plugins',
 			'params',

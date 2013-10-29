@@ -20,7 +20,7 @@ defined('_JEXEC') or die ;
 <div id="extraFieldSelectOptions">
 	<?php foreach($field->get('options') as $option): ?>
 	<div class="extraFieldSelectOption">
-		<input type="text" name="value[options][]" value="<?php echo $this->escape($option); ?>"> <button class="extraFieldSelectRemoveOption"><?php echo JText::_('K2_REMOVE'); ?></button>
+		<input type="text" name="value[options][]" value="<?php echo htmlspecialchars($option, ENT_QUOTES, 'UTF-8'); ?>"> <button class="extraFieldSelectRemoveOption"><?php echo JText::_('K2_REMOVE'); ?></button>
 	</div>
 	<?php endforeach; ?>
 </div>

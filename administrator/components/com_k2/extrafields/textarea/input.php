@@ -16,10 +16,10 @@ $editor = K2Editor::getInstance($config->get('editor'));
 ?>
 
 <?php if($field->get('editor')) : ?>
-	<?php echo $editor->display('extra_fields['.$this->id.']', $field->get('value'), '100%', '300', (int)$field->get('rows', '10'), (int)$field->get('columns', '40')); ?>
+	<?php echo $editor->display('extra_fields['.$this->id.'][value]', $field->get('value'), '100%', '300', (int)$field->get('rows', '10'), (int)$field->get('columns', '40')); ?>
 	<script type="text/javascript">
 	K2Editor.init();
 	</script>
 <?php else : ?>
-	<textarea rows="<?php echo (int)$field->get('rows', '10'); ?>" cols="<?php echo (int)$field->get('columns', '40'); ?>" name="extra_fields[<?php echo $this->id; ?>]"><?php echo $field->get('value'); ?></textarea>
+	<textarea rows="<?php echo (int)$field->get('rows', '10'); ?>" cols="<?php echo (int)$field->get('columns', '40'); ?>" name="extra_fields[<?php echo $this->id; ?>][value]"><?php echo $field->get('value'); ?></textarea>
 <?php endif; ?>

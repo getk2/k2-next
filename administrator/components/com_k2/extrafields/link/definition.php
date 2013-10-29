@@ -11,9 +11,9 @@
 defined('_JEXEC') or die ;
 ?>
 <label><?php echo JText::_('K2_TEXT'); ?></label>
-<input type="text" name="value[text]" value="<?php echo $this->escape($field->get('text')); ?>" />
+<input type="text" name="value[text]" value="<?php echo htmlspecialchars($field->get('text'), ENT_QUOTES, 'UTF-8'); ?>" />
 <label><?php echo JText::_('K2_URL'); ?></label>
-<input type="text" name="value[url]" value="<?php echo $this->escape($field->get('url')); ?>" />
+<input type="text" name="value[url]" value="<?php echo htmlspecialchars($field->get('url'), ENT_QUOTES, 'UTF-8'); ?>" />
 <label><?php echo JText::_('K2_OPEN_IN'); ?></label>
 <select id="extraFieldLinkTarget" name="value[target]">
     <option value="same"><?php echo JText::_('K2_SAME_WINDOW'); ?></option>
@@ -22,5 +22,7 @@ defined('_JEXEC') or die ;
     <option value="lightbox"><?php echo JText::_('K2_LIGHTBOX_POPUP'); ?></option>
 </select>
 <script type="text/javascript">
-	jQuery('#extraFieldLinkTarget').val('<?php echo $this->escape($field->get('target')); ?>');
+	jQuery(document).on('K2ExtraFields', function() {
+		jQuery('#extraFieldLinkTarget').val('<?php echo $field->get('target'); ?>');
+	});
 </script>

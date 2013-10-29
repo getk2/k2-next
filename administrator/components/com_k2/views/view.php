@@ -308,7 +308,9 @@ class K2View extends JViewLegacy
 		// Category field
 		if (property_exists($row, 'catid'))
 		{
-			$_form->category = K2HelperHTML::categories('catid', $row->catid);
+			$_form->category = K2HelperHTML::categories('catid', $row->catid, 'K2_SELECT_CATEGORY');
+			require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/extrafields.php';
+			$_form->extraFields = K2HelperExtraFields::getItemExtraFields($row->catid, $row->extra_fields);
 		}
 
 		// Category parent field
@@ -351,6 +353,12 @@ class K2View extends JViewLegacy
 		if (property_exists($row, 'type'))
 		{
 			$_form->type = K2HelperHTML::extraFieldsTypes('type', $row->type, 'K2_SELECT_TYPE');
+			$definitions = K2HelperExtraFields::getDefinitions();
+			if ($row->id)
+			{
+				$definitions[$row->type] = $row->getDefinition();
+			}
+			$_form->definitions = $definitions;
 		}
 
 		// Language field

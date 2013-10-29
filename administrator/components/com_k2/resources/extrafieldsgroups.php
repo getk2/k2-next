@@ -75,7 +75,23 @@ class K2ExtraFieldsGroups extends K2Resource
 
 		// Assignments
 		$this->assignments = json_decode($this->assignments);
+		
+		// Get group fields
+		$this->fields = $this->getFields();
 
+	}
+
+	public function getFields()
+	{
+		$fields = array();
+		if ($this->id)
+		{
+			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
+			$model = K2Model::getInstance('ExtraFields', 'K2Model');
+			$model->setState('group', $this->id);
+			$fields = $model->getRows();
+		}
+		return $fields;
 	}
 
 }

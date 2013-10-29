@@ -123,6 +123,9 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 
 			// Initialize the editor
 			K2Editor.init();
+			
+			// Proxy event for extra fields custom javascript code
+			jQuery(document).trigger('K2ExtraFields');
 
 			// Auto complete fields
 			require(['widgets/select2/select2', 'css!widgets/select2/select2.css'], _.bind(function() {

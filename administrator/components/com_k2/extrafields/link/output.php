@@ -30,4 +30,4 @@ switch ($field->target)
 		break;
 }
 ?>
-<a <?php echo $attributes; ?> href="<?php echo $field->get('url'); ?>"><?php echo $field->get('text'); ?></a>
+<a <?php echo $attributes; ?> href="<?php echo htmlspecialchars($field->get('url'), ENT_QUOTES, 'UTF-8'); ?>"><?php echo $field->get('text'); ?></a>

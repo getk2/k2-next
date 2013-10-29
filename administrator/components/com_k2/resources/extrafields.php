@@ -11,6 +11,7 @@
 defined('_JEXEC') or die ;
 
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/resource.php';
+jimport('joomla.filesystem.file');
 
 /**
  * K2 extra field resource class.
@@ -72,75 +73,37 @@ class K2ExtraFields extends K2Resource
 
 		// Prepare specific properties
 		$this->link = '#extrafields/edit/'.$this->id;
-		
+
 		// Set type label
 		$this->typeName = JText::_('K2_EXTRA_FIELD_TYPE_'.strtoupper($this->type));
 
-		// Get types
-		$this->getDefinitions();
-
 	}
 
-	public function getDefinitions()
-	{
-		$definitions = array();
-		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/extrafields.php';
-		$types = K2HelperExtraFields::getTypes();
-		foreach ($types as $type)
-		{
-			$definitions[$type] = $this->getFieldDefinition($type);
-		}
-		$this->definitions = $definitions;
-	}
-	
-	public function getFieldDefinition($type)
+	public function getDefinition()
 	{
 		$definition = '';
-		jimport('joomla.filesystem.folder');
-		if (JFolder::exists(JPATH_ADMINISTRATOR.'/components/com_k2/extrafields/'.$type))
+		if (JFile::exists(JPATH_ADMINISTRATOR.'/components/com_k2/extrafields/'.$this->type.'/definition.php'))
 		{
-			$field = ($type == $this->type) ? new JRegistry($this->value) : new JRegistry();
+			$field = new JRegistry($this->value);
 			ob_start();
-			include JPATH_ADMINISTRATOR.'/components/com_k2/extrafields/'.$type.'/definition.php';
+			include JPATH_ADMINISTRATOR.'/components/com_k2/extrafields/'.$this->type.'/definition.php';
 			$definition = ob_get_contents();
 			ob_end_clean();
 		}
 		return $definition;
 	}
-
-	public function getFieldInput($type)
+	
+	public function getInput()
 	{
 		$input = '';
-		jimport('joomla.filesystem.folder');
-		if (JFolder::exists(JPATH_ADMINISTRATOR.'/components/com_k2/extrafields/'.$type))
+		if (JFile::exists(JPATH_ADMINISTRATOR.'/components/com_k2/extrafields/'.$this->type.'/input.php'))
 		{
-			$field = ($type == $this->type) ? new JRegistry($this->value) : new JRegistry();
+			$field = new JRegistry($this->value);
 			ob_start();
-			include JPATH_ADMINISTRATOR.'/components/com_k2/extrafields/'.$type.'/input.php';
+			include JPATH_ADMINISTRATOR.'/components/com_k2/extrafields/'.$this->type.'/input.php';
 			$input = ob_get_contents();
 			ob_end_clean();
 		}
 		return $input;
 	}
-
-	public function getFieldOutput($type, $value)
-	{
-		$output = '';
-		jimport('joomla.filesystem.folder');
-		if (JFolder::exists(JPATH_ADMINISTRATOR.'/components/com_k2/extrafields/'.$type))
-		{
-			$field = new JRegistry($value);
-			ob_start();
-			include JPATH_ADMINISTRATOR.'/components/com_k2/extrafields/'.$type.'/output.php';
-			$output = ob_get_contents();
-			ob_end_clean();
-		}
-		return $output;
-	}
-
-	public function escape($string)
-	{
-		return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
-	}
-
 }

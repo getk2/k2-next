@@ -363,6 +363,12 @@ class K2ModelItems extends K2Model
 			}
 			$data['galleries'] = json_encode($galleries);
 		}
+		
+		// Extra fields
+		if (isset($data['extra_fields']))
+		{
+			$data['extra_fields'] = json_encode($data['extra_fields']);
+		}
 
 	}
 

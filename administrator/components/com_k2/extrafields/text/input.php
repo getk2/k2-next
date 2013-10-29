@@ -10,4 +10,4 @@
 // no direct access
 defined('_JEXEC') or die ; ?>
 
-<input type="text" name="value[value]" value="<?php echo $this->escape($field->get('value')); ?>" />
+<input type="text" name="extra_fields[<?php echo $this->id; ?>][value]" value="<?php echo htmlspecialchars($field->get('value'), ENT_QUOTES, 'UTF-8'); ?>" />
