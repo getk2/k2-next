@@ -6,7 +6,7 @@ define(['marionette', 'text!layouts/extrafieldsgroups/form.html', 'dispatcher'],
 		},
 		events : {
 			'change #scope' : 'updateAssignmentsField',
-			'change input[name="assignmentsSwitch"]': 'updateAssignmentsSelection'
+			'change input[name="assignments[mode]"]' : 'updateAssignmentsSelection'
 		},
 		serializeData : function() {
 			var data = {
@@ -25,23 +25,13 @@ define(['marionette', 'text!layouts/extrafieldsgroups/form.html', 'dispatcher'],
 			var scope = this.$el.find('#scope').val();
 			this.$el.find('#appExtraFieldGroupAssignments').html(assignments[scope]);
 			if (this.model.get('scope') === scope) {
-					var assignmentsValue = this.model.get('assignments');
-				var assignmentsSwitchValue;
-				this.$el.find('#appExtraFieldGroupAssignments select').val(assignmentsValue);
-			
-				if(assignmentsValue.length === 0) {
-					assignmentsSwitchValue = 'none';
-				} else if(assignmentsValue.length === 1 && assignmentsValue[0] === '0') {
-					assignmentsSwitchValue = 'all';
-				} else {
-					assignmentsSwitchValue = 'select';
-				}
-				this.$el.find('input[name="assignmentsSwitch"]').val([assignmentsSwitchValue]);
+				var assignmentsValue = this.model.get('assignments');
+				this.$el.find('input[name="assignments[mode]"]').val([assignmentsValue.mode]);
 			}
-		}, 
+		},
 		updateAssignmentsSelection : function() {
-			var value = this.$el.find('input[name="assignmentsSwitch"]:checked').val();
-			if(value === 'all') {
+			var value = this.$el.find('input[name="assignments[mode]"]:checked').val();
+			if (value === 'all') {
 				this.$el.find('#appExtraFieldGroupAssignments select').prop('disabled', true);
 				this.$el.find('#appExtraFieldGroupAssignments select option').attr('selected', 'selected');
 			} else if (value === 'none') {

@@ -90,32 +90,5 @@ class K2Categories extends K2Resource
 			$this->imagePreview = JURI::root(true).'/media/k2/categories/'.$this->image.'?t='.$timestamp;
 		}
 
-		// Extra fields groups
-		$this->getExtraFieldsGroups();
-
 	}
-
-	public function getExtraFieldsGroups()
-	{
-		$extraFieldsGroups = array();
-		$extraFieldsGroupsValues = array();
-		$extraFieldsGroupsNames = array();
-		if ($this->id)
-		{
-			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
-			$model = K2Model::getInstance('ExtraFieldsGroups', 'K2Model');
-			$model->setState('scope', 'category');
-			$model->setState('resourceId', $this->id);
-			$extraFieldsGroups = $model->getRows();
-			foreach ($extraFieldsGroups as $extraFieldsGroup)
-			{
-				$extraFieldsGroupsValues[] = $extraFieldsGroup->id;
-				$extraFieldsGroupsNames[] = $extraFieldsGroup->name;
-			}
-		}
-		$this->extraFieldsGroups = $extraFieldsGroups;
-		$this->extraFieldsGroupsValues = $extraFieldsGroupsValues;
-		$this->extraFieldsGroupsNames = $extraFieldsGroupsNames;
-	}
-
 }

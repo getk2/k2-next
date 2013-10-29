@@ -73,21 +73,9 @@ class K2ExtraFieldsGroups extends K2Resource
 		// Prepare specific properties
 		$this->link = '#extrafieldsgroups/edit/'.$this->id;
 
-		// Resources
-		$this->assignments = $this->getAssignments();
+		// Assignments
+		$this->assignments = json_decode($this->assignments);
 
-	}
-
-	public function getAssignments()
-	{
-		$assignments = array();
-		if ($this->id)
-		{
-			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
-			$model = K2Model::getInstance('ExtraFieldsGroups', 'K2Model');
-			$assignments = $model->getAssignments($this->id);
-		}
-		return $assignments;
 	}
 
 }

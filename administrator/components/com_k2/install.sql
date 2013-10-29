@@ -95,21 +95,10 @@ CREATE TABLE IF NOT EXISTS `#__k2_extra_fields_groups` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `scope` varchar(255) NOT NULL,
+  `assignments` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `scope` (`scope`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `#__k2_extra_fields_groups_xref`
---
-
-CREATE TABLE IF NOT EXISTS `#__k2_extra_fields_groups_xref` (
-  `groupId` int(10) unsigned NOT NULL,
-  `resourceId` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`groupId`,`resourceId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 

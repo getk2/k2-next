@@ -25,9 +25,6 @@ class K2ModelExtraFieldsGroups extends K2Model
 		// Select rows
 		$query->select($db->quoteName('extraFieldsGroup').'.*')->from($db->quoteName('#__k2_extra_fields_groups', 'extraFieldsGroup'));
 
-		// Join over the resoures xref
-		$query->leftJoin($db->quoteName('#__k2_extra_fields_groups_xref', 'xref').' ON '.$db->quoteName('extraFieldsGroup.id').' = '.$db->quoteName('xref.groupId'));
-
 		// Set query conditions
 		$this->setQueryConditions($query);
 
@@ -60,9 +57,6 @@ class K2ModelExtraFieldsGroups extends K2Model
 
 		// Select statement
 		$query->select('COUNT(*)')->from($db->quoteName('#__k2_extra_fields_groups', 'extraFieldsGroup'));
-
-		// Join over the resources xref
-		$query->leftJoin($db->quoteName('#__k2_extra_fields_groups_xref', 'xref').' ON '.$db->quoteName('extraFieldsGroup.id').' = '.$db->quoteName('xref.groupId'));
 
 		// Set query conditions
 		$this->setQueryConditions($query);
@@ -100,11 +94,6 @@ class K2ModelExtraFieldsGroups extends K2Model
 		if ($this->getState('scope'))
 		{
 			$query->where($db->quoteName('extraFieldsGroup.scope').' = '.$db->quote($this->getState('scope')));
-		}
-		if ($this->getState('resourceId'))
-		{
-			$resourceId = $this->getState('resourceId');
-			$query->where($db->quoteName('xref.resourceId').' = '.(int)$resourceId);
 		}
 		if ($this->getState('search'))
 		{
@@ -145,73 +134,10 @@ class K2ModelExtraFieldsGroups extends K2Model
 
 	protected function onAfterSave(&$data, $table)
 	{
-		if (isset($data['assignmentsSwitch']))
+		if (isset($data['assignments']))
 		{
-			$this->unassign($table->id);
-			if ($data['assignmentsSwitch'] == 'all')
-			{
-				$this->assign($table->id, array(0));
-			}
-			elseif ($data['assignmentsSwitch'] == 'select')
-			{
-				$this->assign($table->id, $data['assignments']);
-			}
+			$data['assignments'] = json_encode($data['assignments']);
 		}
-
-	}
-
-	public function assign($groupId, $resources)
-	{
-		// Get database
-		$db = $this->getDBO();
-
-		foreach ($resources as $resourceId)
-		{
-			// Delete any duplicates
-			$query = $db->getQuery(true);
-			$query->delete('#__k2_extra_fields_groups_xref')->where($db->quoteName('groupId').' = '.(int)$groupId)->where($db->quoteName('resourceId').' = '.(int)$resourceId);
-			$db->setQuery($query);
-			$db->execute();
-
-			// Insert query
-			$query = $db->getQuery(true);
-			$query->insert('#__k2_extra_fields_groups_xref')->columns('groupId, resourceId')->values((int)$groupId.','.(int)$resourceId);
-			$db->setQuery($query);
-			$db->execute();
-		}
-
-		// Return
-		return true;
-	}
-
-	public function unassign($groupId)
-	{
-		// Get database
-		$db = $this->getDBO();
-
-		// Delete all group assignements
-		$query = $db->getQuery(true);
-		$query->delete('#__k2_extra_fields_groups_xref')->where($db->quoteName('groupId').' = '.(int)$groupId);
-		$db->setQuery($query);
-		$db->execute();
-
-		// Return
-		return true;
-	}
-
-	public function getAssignments($groupId)
-	{
-		// Get database
-		$db = $this->getDBO();
-
-		// Delete all group assignements
-		$query = $db->getQuery(true);
-		$query->select('resourceId')->from('#__k2_extra_fields_groups_xref')->where($db->quoteName('groupId').' = '.(int)$groupId);
-		$db->setQuery($query);
-		$assignments = $db->loadColumn();
-
-		// Return
-		return $assignments;
 	}
 
 }

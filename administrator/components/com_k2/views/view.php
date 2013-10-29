@@ -329,28 +329,16 @@ class K2View extends JViewLegacy
 			$_form->template = K2HelperHTML::template('template', $row->template);
 		}
 
-		// Category extra fields groups
-		if (property_exists($row, 'extraFieldsGroupsValues'))
-		{
-			$_form->extraFieldsGroups = K2HelperHTML::extraFieldsGroups('extraFieldsGroups[]', $row->extraFieldsGroupsValues, 'K2_NONE', 'multiple="multiple"', 'category');
-		}
-
 		// Extra fields groups scopes and references
 		if (property_exists($row, 'scope'))
 		{
 			$_form->scope = K2HelperHTML::extraFieldsScopes('scope', $row->scope);
 			$assignments = array();
-			$assignments['item'] = K2HelperHTML::categories('assignments[]', null, false, false, 'multiple="multiple"');
+			$assignments['item'] = K2HelperHTML::categories('assignments[categories][]', $row->assignments->categories, false, false, 'multiple="multiple"');
 			$assignments['category'] = $assignments['item'];
-			$assignments['user'] = K2HelperHTML::usergroups('assignments[]', null, false, 'multiple="multiple"');
+			$assignments['user'] = K2HelperHTML::usergroups('assignments[usergroups][]', $row->assignments->usergroups, false, 'multiple="multiple"');
 			$_form->assignments = $assignments;
 
-		}
-
-		// Extra fields groups scope references
-		if (property_exists($row, 'scope'))
-		{
-			$_form->scope = K2HelperHTML::extraFieldsScopes('scope', $row->scope);
 		}
 
 		// Extra field group
