@@ -153,7 +153,8 @@ class K2Controller extends JControllerLegacy
 					$this->delete();
 					break;
 			}
-
+			// Backbone.js v1.1 requires that we send some kind of response back, otherwise thinks we have an error.
+			echo json_encode(true);
 		}
 
 		// Return

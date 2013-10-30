@@ -22,7 +22,7 @@ defined('_JEXEC') or die ;
     <option value="lightbox"><?php echo JText::_('K2_LIGHTBOX_POPUP'); ?></option>
 </select>
 <script type="text/javascript">
-	jQuery(document).on('K2ExtraFields', function() {
-		jQuery('#extraFieldLinkTarget').val('<?php echo $field->get('target'); ?>');
+	jQuery(document).on('K2ExtraFieldsRender', function() {
+		jQuery('#extraFieldLinkTarget').val(<?php echo json_encode($field->get('target')); ?>);
 	});
 </script>

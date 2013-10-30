@@ -1,9 +1,14 @@
-define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Marionette, template, K2Dispatcher) {'use strict';
+define(['marionette', 'text!layouts/items/form.html', 'dispatcher', 'views/extrafields/widget', 'collections/extrafieldswidget'], function(Marionette, template, K2Dispatcher, K2ViewExtraFieldsWidget, K2CollectionExtraFieldsWidget) {'use strict';
 	// K2 item form view
-	var K2ViewItem = Marionette.ItemView.extend({
+	var K2ViewItem = Marionette.Layout.extend({
 
 		// Template
 		template : _.template(template),
+
+		// Regions
+		regions : {
+			extraFieldsRegion : '#appItemExtraFields'
+		},
 
 		// Model events
 		modelEvents : {
@@ -23,6 +28,7 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 			'click .appItemMediaBrowseServer' : 'browseServerForMedia',
 			'click #appActionAddGallery' : 'addGallery',
 			'click .appItemGalleryRemove' : 'removeGallery',
+			'change #catid' : 'renderExtraFields',
 		},
 
 		// Initialize
@@ -55,6 +61,16 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 			K2Dispatcher.on('app:item:selectMedia', function(path) {
 				this.setMediaFromServer(path);
 			}, this);
+
+			// Setup extra fields collection
+			this.extraFieldsCollection = new K2CollectionExtraFieldsWidget([], {
+				scope : 'item',
+				resourceId : this.model.get('id'),
+				filterId : this.model.get('catid')
+			});
+			this.extraFieldsCollection.fetch({
+				reset : true
+			});
 
 		},
 
@@ -91,7 +107,7 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 				if (this.$el.find('.appItemMediaUpload').length > 1) {
 					this.removeMediaFolder();
 				}
-				
+
 				// Delete any uploaded galleries
 				if (this.$el.find('.appItemGalleryUpload').length > 1) {
 					this.removeGalleries();
@@ -116,6 +132,24 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 			this.$el.find('.appItemMediaEntry').each(_.bind(function(index, el) {
 				this.setUpMediaUploader(jQuery(el));
 			}, this));
+			
+		
+			
+		},
+		
+		onShow : function() {
+			// Show extra fields
+			this.extraFieldsRegion.show(new K2ViewExtraFieldsWidget({
+				collection : this.extraFieldsCollection
+			}));
+		},
+
+		renderExtraFields : function(event) {
+			event.preventDefault();
+			this.extraFieldsCollection.setOption('filterId', this.$el.find('#catid').val());
+			this.extraFieldsCollection.fetch({
+				reset : true
+			});
 		},
 
 		// OnDomRefresh event ( Marionette.js build in event )
@@ -123,7 +157,7 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 
 			// Initialize the editor
 			K2Editor.init();
-			
+
 			// Proxy event for extra fields custom javascript code
 			jQuery(document).trigger('K2ExtraFields');
 
@@ -659,7 +693,7 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher'], function(Ma
 				gallery.remove();
 			}
 		},
-		
+
 		// Remove galleries
 		removeGalleries : function() {
 			var data = 'folder=' + this.model.get('tmpId') + '&' + K2SessionToken + '=1';

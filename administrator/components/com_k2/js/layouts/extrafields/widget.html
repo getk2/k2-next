@@ -1,0 +1,11 @@
+<h2><%= l('K2_EXTRA_FIELDS') %></h2>
+<% _.each(items, function(group) { %> 
+    <h3><%= group.name %></h3>
+    <fieldset>
+        <% _.each(group.fields, function(field) { %>
+        <div>
+            <label><%= field.name %></label> <%= field.input %>
+        </div>
+        <% }); %>
+    </fieldset>
+<% }); %>

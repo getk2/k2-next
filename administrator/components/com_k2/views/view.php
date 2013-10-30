@@ -309,8 +309,6 @@ class K2View extends JViewLegacy
 		if (property_exists($row, 'catid'))
 		{
 			$_form->category = K2HelperHTML::categories('catid', $row->catid, 'K2_SELECT_CATEGORY');
-			require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/extrafields.php';
-			$_form->extraFields = K2HelperExtraFields::getItemExtraFields($row->catid, $row->extra_fields);
 		}
 
 		// Category parent field

@@ -22,9 +22,7 @@ define(['marionette', 'text!layouts/extrafields/form.html', 'dispatcher'], funct
 			var form = this.model.getForm();
 			var definitions = form.get('definitions');
 			this.$el.find('#appExtraFieldDefinition').html(definitions[type]);
-			// Proxy event for extra fields custom javascript code
-			jQuery(document).trigger('K2ExtraFields');
-
+			jQuery(document).trigger('K2ExtraFieldsRender');
 		}
 	});
 	return K2ViewExtraFields;

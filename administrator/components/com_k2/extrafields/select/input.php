@@ -30,7 +30,7 @@ if($field->get('multiple'))
 </select>
 
 <script type="text/javascript">
-	jQuery(document).on('K2ExtraFields', function() {
-		jQuery('#extraFieldId<?php echo $this->id; ?>').val('<?php echo $field->get('value'); ?>');
+	jQuery(document).on('K2ExtraFieldsRender', function() {
+		jQuery('#extraFieldId<?php echo $this->id; ?>').val(<?php echo json_encode($field->get('value')); ?>);
 	});
 </script>

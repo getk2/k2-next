@@ -11,11 +11,11 @@
 defined('_JEXEC') or die ;
 ?>
 <label><?php echo JText::_('K2_SOURCE'); ?></label>
-<input type="text" name="value[src]" value="<?php echo htmlspecialchars($field->get('src'), ENT_QUOTES, 'UTF-8'); ?>" id="extraFieldImageSrc" /> <button id="extraFieldImageBrowseServer"><?php echo JText::_('K2_BROWSE_SERVER'); ?></button>
+<input type="text" name="<?php echo $field->get('_name'); ?>[src]" value="<?php echo htmlspecialchars($field->get('src'), ENT_QUOTES, 'UTF-8'); ?>" id="extraFieldImageSrc" /> <button id="extraFieldImageBrowseServer"><?php echo JText::_('K2_BROWSE_SERVER'); ?></button>
 <label><?php echo JText::_('K2_ALT'); ?></label>
-<input type="text" name="value[alt]" value="<?php echo htmlspecialchars($field->get('alt'), ENT_QUOTES, 'UTF-8'); ?>" />
+<input type="text" name="<?php echo $field->get('_name'); ?>[alt]" value="<?php echo htmlspecialchars($field->get('alt'), ENT_QUOTES, 'UTF-8'); ?>" />
 <script type="text/javascript">
-	jQuery(document).on('K2ExtraFields', function() {
+	jQuery(document).on('K2ExtraFieldsRender', function() {
 		jQuery('#extraFieldImageBrowseServer').click(function(event) {
 			event.preventDefault();
 			require(['dispatcher'], function(K2Dispatcher) {

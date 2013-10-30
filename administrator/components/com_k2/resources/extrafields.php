@@ -85,6 +85,8 @@ class K2ExtraFields extends K2Resource
 		if (JFile::exists(JPATH_ADMINISTRATOR.'/components/com_k2/extrafields/'.$this->type.'/definition.php'))
 		{
 			$field = new JRegistry($this->value);
+			$field->set('_id', 'K2ExtraField'.$this->type);
+			$field->set('_name', 'value');
 			ob_start();
 			include JPATH_ADMINISTRATOR.'/components/com_k2/extrafields/'.$this->type.'/definition.php';
 			$definition = ob_get_contents();

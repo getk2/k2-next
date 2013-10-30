@@ -83,7 +83,9 @@ class K2Model extends JModelLegacy
 			}
 
 		}
+		
 		$this->onBeforeSave($data, $table);
+		
 		if (!$table->save($data))
 		{
 			$this->setError($table->getError());
