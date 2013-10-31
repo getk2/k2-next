@@ -335,6 +335,7 @@ class K2View extends JViewLegacy
 			$_form->scope = K2HelperHTML::extraFieldsScopes('scope', $row->scope);
 			$assignments = array();
 			$assignments['item'] = K2HelperHTML::categories('assignments[categories][]', $row->assignments->categories, false, false, 'multiple="multiple"');
+			//JHtml::_('select.booleanlist', 'assignments[recursive]', null, $row->assignments->recursive);
 			$assignments['category'] = $assignments['item'];
 			$assignments['user'] = K2HelperHTML::usergroups('assignments[usergroups][]', $row->assignments->usergroups, false, 'multiple="multiple"');
 			$_form->assignments = $assignments;
