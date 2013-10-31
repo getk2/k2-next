@@ -11,22 +11,6 @@
 defined('_JEXEC') or die ;
 ?>
 <label><?php echo JText::_('K2_SOURCE'); ?></label>
-<input type="text" name="extra_fields[<?php echo $this->id; ?>][src]" value="<?php echo htmlspecialchars($field->get('src'), ENT_QUOTES, 'UTF-8'); ?>" id="extraFieldImageSrc" /> <button id="extraFieldImageBrowseServer"><?php echo JText::_('K2_BROWSE_SERVER'); ?></button>
+<input type="text" name="extra_fields[<?php echo $this->id; ?>][src]" value="<?php echo htmlspecialchars($field->get('src'), ENT_QUOTES, 'UTF-8'); ?>" data-k2-widget="browse" /> 
 <label><?php echo JText::_('K2_ALT'); ?></label>
 <input type="text" name="extra_fields[<?php echo $this->id; ?>][alt]" value="<?php echo htmlspecialchars($field->get('alt'), ENT_QUOTES, 'UTF-8'); ?>" />
-<script type="text/javascript">
-	jQuery(document).on('K2ExtraFieldsRender', function() {
-		jQuery('#extraFieldImageBrowseServer').click(function(event) {
-			event.preventDefault();
-			require(['dispatcher'], function(K2Dispatcher) {
-				K2Dispatcher.on('app:extraField:selectImage', function(path) {
-					jQuery('#extraFieldImageSrc').val(path);
-				});
-				K2Dispatcher.trigger('app:controller:browseServer', {
-					callback : 'app:extraField:selectImage',
-					modal : true
-				});
-			});
-		});
-	});
-</script>

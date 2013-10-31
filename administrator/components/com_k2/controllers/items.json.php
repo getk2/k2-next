@@ -50,14 +50,12 @@ class K2ControllerItems extends K2Controller
 		if ($imagePath)
 		{
 			$buffer = $filesystem->read($imagePath);
-			// Try to open the image to ensure it's a valid image file
 			$image = $processor->load($buffer);
 
 		}
 		else
 		{
 			$source = $imageFile['tmp_name'];
-			// Try to open the image to ensure it's a valid image file
 			$image = $processor->open($source);
 		}
 
@@ -101,7 +99,6 @@ class K2ControllerItems extends K2Controller
 		$input = JFactory::getApplication()->input;
 		$id = $input->get('id', 0, 'int');
 		$tmpId = $input->get('tmpId', '', 'cmd');
-		$image = $input->get('image', '', 'cmd');
 		$baseFileName = ($id) ? md5('Image'.$id) : $tmpId;
 
 		// Delete source image

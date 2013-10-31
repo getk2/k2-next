@@ -11,6 +11,7 @@
 defined('_JEXEC') or die ;
 
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/controller.php';
+jimport('joomla.filesystem.file');
 
 /**
  * Media JSON controller.
@@ -20,7 +21,7 @@ class K2ControllerMedia extends K2Controller
 {
 	public function connector()
 	{
-		$mainframe = JFactory::getApplication();
+		$application = JFactory::getApplication();
 		$params = JComponentHelper::getParams('com_media');
 		$root = $params->get('file_path', 'media');
 		$folder = JRequest::getVar('folder', $root, 'default', 'path');
@@ -37,28 +38,25 @@ class K2ControllerMedia extends K2Controller
 				$folder = $root;
 			}
 		}
-
 		// Disable debug
 		JRequest::setVar('debug', false);
-
 		$url = JURI::root(true).'/'.$folder;
-		$path = JPATH_SITE.DS.JPath::clean($folder);
-
+		$path = JPATH_SITE.'/'.JPath::clean($folder);
 		JPath::check($path);
-		include_once JPATH_COMPONENT_ADMINISTRATOR.'/lib/elfinder/elFinderConnector.class.php';
-		include_once JPATH_COMPONENT_ADMINISTRATOR.'/lib/elfinder/elFinder.class.php';
-		include_once JPATH_COMPONENT_ADMINISTRATOR.'/lib/elfinder/elFinderVolumeDriver.class.php';
-		include_once JPATH_COMPONENT_ADMINISTRATOR.'/lib/elfinder/elFinderVolumeLocalFileSystem.class.php';
+		include_once JPATH_COMPONENT_ADMINISTRATOR.'/js/widgets/elfinder/php/elFinderConnector.class.php';
+		include_once JPATH_COMPONENT_ADMINISTRATOR.'/js/widgets/elfinder/php/elFinder.class.php';
+		include_once JPATH_COMPONENT_ADMINISTRATOR.'/js/widgets/elfinder/php/elFinderVolumeDriver.class.php';
+		include_once JPATH_COMPONENT_ADMINISTRATOR.'/js/widgets/elfinder/php/elFinderVolumeLocalFileSystem.class.php';
 		function access($attr, $path, $data, $volume)
 		{
-			$mainframe = JFactory::getApplication();
-			// Hide PHP files.
+			$application = JFactory::getApplication();
+			
 			$ext = strtolower(JFile::getExt(basename($path)));
 			if ($ext == 'php')
 			{
 				return true;
 			}
-
+			
 			// Hide files and folders starting with .
 			if (strpos(basename($path), '.') === 0 && $attr == 'hidden')
 			{
@@ -71,10 +69,10 @@ class K2ControllerMedia extends K2Controller
 					return true;
 					break;
 				case 'write' :
-					return ($mainframe->isSite()) ? false : true;
+					return ($application->isSite()) ? false : true;
 					break;
 				case 'locked' :
-					return ($mainframe->isSite()) ? true : false;
+					return ($application->isSite()) ? true : false;
 					break;
 				case 'hidden' :
 					return false;
@@ -83,7 +81,7 @@ class K2ControllerMedia extends K2Controller
 
 		}
 
-		if ($mainframe->isAdmin())
+		if ($application->isAdmin())
 		{
 			$permissions = array(
 				'read' => true,
@@ -97,16 +95,13 @@ class K2ControllerMedia extends K2Controller
 				'write' => false
 			);
 		}
-		$options = array(
-			'debug' => false,
-			'roots' => array( array(
+		$options = array('roots' => array( array(
 					'driver' => 'LocalFileSystem',
 					'path' => $path,
 					'URL' => $url,
 					'accessControl' => 'access',
 					'defaults' => $permissions
-				))
-		);
+				)));
 		$connector = new elFinderConnector(new elFinder($options));
 		$connector->run();
 		return $this;

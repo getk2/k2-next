@@ -1,4 +1,4 @@
-define(['marionette', 'text!layouts/items/form.html', 'dispatcher', 'views/extrafields/widget', 'collections/extrafieldswidget'], function(Marionette, template, K2Dispatcher, K2ViewExtraFieldsWidget, K2CollectionExtraFieldsWidget) {'use strict';
+define(['marionette', 'text!layouts/items/form.html', 'dispatcher', 'widgets/widget', 'views/extrafields/widget', 'collections/extrafieldswidget', 'views/attachments/widget', 'collections/attachmentswidget'], function(Marionette, template, K2Dispatcher, K2Widget, K2ViewExtraFieldsWidget, K2CollectionExtraFieldsWidget, K2ViewAttachmentsWidget, K2CollectionAttachmentsWidget) {'use strict';
 	// K2 item form view
 	var K2ViewItem = Marionette.Layout.extend({
 
@@ -7,6 +7,7 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher', 'views/extra
 
 		// Regions
 		regions : {
+			attachmentsRegion : '#appItemAttachments',
 			extraFieldsRegion : '#appItemExtraFields'
 		},
 
@@ -18,17 +19,15 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher', 'views/extra
 		// UI events
 		events : {
 			'click #appItemImageRemove' : 'removeImage',
-			'click #appItemImageBrowseServer' : 'browseServerForImage',
-			'click #appActionAddAttachment' : 'addAttachment',
-			'click .appItemAttachmentRemove' : 'removeAttachment',
-			'click .appItemAttachmentDownload' : 'downloadAttachment',
-			'click .appItemAttachmentBrowseServer' : 'browseServerForAttachment',
+			'change #catid' : 'renderExtraFields',
+
+			
 			'click #appActionAddMedia' : 'addMedia',
 			'click .appItemMediaRemove' : 'removeMedia',
 			'click .appItemMediaBrowseServer' : 'browseServerForMedia',
 			'click #appActionAddGallery' : 'addGallery',
 			'click .appItemGalleryRemove' : 'removeGallery',
-			'change #catid' : 'renderExtraFields',
+
 		},
 
 		// Initialize
@@ -39,27 +38,14 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher', 'views/extra
 				this.onBeforeSave();
 			}, this);
 
-			// Add a model for image
-			this.image = new Backbone.Model();
+			// Add a listener for the image upload callback
+			K2Dispatcher.on('item:image:upload', function(e, data) {
+				this.setImagePreview(data.result.preview, 1);
+			}, this);
 
-			// Add a listener for change event
-			this.image.on('change', _.bind(function() {
-				this.setImagePreview();
-			}, this));
-
-			// Add a listener selecting an image from the media manager
-			K2Dispatcher.on('app:item:selectImage', function(path) {
+			// Add a listener for the image select callback
+			K2Dispatcher.on('item:image:select', function(path) {
 				this.setImageFromServer(path);
-			}, this);
-
-			// Add a listener selecting an attachment from the media manager
-			K2Dispatcher.on('app:item:selectAttachment', function(path) {
-				this.setAttachmentFromServer(path);
-			}, this);
-
-			// Add a listener selecting a media file from the media manager
-			K2Dispatcher.on('app:item:selectMedia', function(path) {
-				this.setMediaFromServer(path);
 			}, this);
 
 			// Setup extra fields collection
@@ -71,6 +57,23 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher', 'views/extra
 			this.extraFieldsCollection.fetch({
 				reset : true
 			});
+
+			// Setup attachments collection
+			this.attachmentsCollection = new K2CollectionAttachmentsWidget();
+			this.attachmentsCollection.setItemId(this.model.get('id'));
+			this.attachmentsCollection.fetch({
+				reset : true
+			});
+
+			// Add a listener selecting an attachment from the media manager
+			K2Dispatcher.on('app:item:selectAttachment', function(path) {
+				this.setAttachmentFromServer(path);
+			}, this);
+
+			// Add a listener selecting a media file from the media manager
+			K2Dispatcher.on('app:item:selectMedia', function(path) {
+				this.setMediaFromServer(path);
+			}, this);
 
 		},
 
@@ -95,9 +98,8 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher', 'views/extra
 			//is it new?
 			if (this.model.isNew()) {
 				// Delete any uploaded images
-				if (this.image.get('value') > 0) {
-					this.removeImage();
-				}
+				this.removeImage();
+
 				// Delete any uploaded attachments
 				if (this.$el.find('.appItemAttachmentId').length > 1) {
 					this.removeAttachments();
@@ -117,11 +119,13 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher', 'views/extra
 
 		// onRender event
 		onRender : function() {
-			// Update image properties from model properties
-			this.image.set({
-				value : this.model.get('image_flag'),
-				previewURL : this.model.get('imagePreview')
-			});
+
+			// Update radio buttons value
+			this.$el.find('input[name="published"]').val([this.model.get('published')]);
+			this.$el.find('input[name="featured"]').val([this.model.get('featured')]);
+
+			// Handle image preview
+			this.setImagePreview(this.model.get('imagePreview'), this.model.get('image_flag'));
 
 			// Initialize uploader for existing attachments
 			this.$el.find('.appItemAttachment').each(_.bind(function(index, el) {
@@ -132,12 +136,16 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher', 'views/extra
 			this.$el.find('.appItemMediaEntry').each(_.bind(function(index, el) {
 				this.setUpMediaUploader(jQuery(el));
 			}, this));
-			
-		
-			
+
 		},
-		
+
 		onShow : function() {
+
+			// Show attachments
+			this.attachmentsRegion.show(new K2ViewAttachmentsWidget({
+				collection : this.attachmentsCollection
+			}));
+
 			// Show extra fields
 			this.extraFieldsRegion.show(new K2ViewExtraFieldsWidget({
 				collection : this.extraFieldsCollection
@@ -155,172 +163,31 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher', 'views/extra
 		// OnDomRefresh event ( Marionette.js build in event )
 		onDomRefresh : function() {
 
-			// Initialize the editor
-			K2Editor.init();
+			// Setup widgets
+			K2Widget.updateEvents();
 
 			// Proxy event for extra fields custom javascript code
 			jQuery(document).trigger('K2ExtraFields');
 
-			// Auto complete fields
-			require(['widgets/select2/select2', 'css!widgets/select2/select2.css'], _.bind(function() {
+		},
 
-				// Tags
-				var tagsInput = this.$el.find(this.$el.find('#appItemTags'));
-				var tags = [];
-				_.each(this.model.get('tags'), function(tag) {
-					tags.push(tag.name);
-				});
-				tagsInput.val(tags.join(','));
-				tagsInput.select2({
-					tags : tags,
-					width : '300px',
-					placeholder : l('K2_ENTER_SOME_TAGS'),
-					tokenSeparators : [','],
-					initSelection : function(element, callback) {
-						var data = [];
-						jQuery(element.val().split(',')).each(function() {
-							data.push({
-								id : this,
-								text : this
-							});
-						});
-						callback(data);
-					},
-					createSearchChoice : function(term, data) {
-						if (jQuery(data).filter(function() {
-							return this.text.localeCompare(term) === 0;
-						}).length === 0) {
-							return {
-								id : term,
-								text : term
-							};
-						}
-					},
-					ajax : {
-						url : 'index.php?option=com_k2&task=tags.search&format=json',
-						dataType : 'json',
-						quietMillis : 100,
-						data : function(term, page) {
-							return {
-								search : term,
-								sorting : 'name',
-								limit : 50,
-								page : page,
-							};
-						},
-						results : function(data, page) {
-							var tags = [];
-							jQuery.each(data.rows, function(index, row) {
-								var tag = {}
-								tags.push({
-									id : row.name,
-									text : row.name
-								});
-							});
-							var more = (page * 50) < data.total;
-							return {
-								results : tags,
-								more : more
-							};
-						}
-					}
-				});
-
-				// Author
-				var authorField = this.$el.find('#appItemAuthor');
-				var authorId = authorField.val();
-				var authorName = this.model.get('authorName');
-				authorField.select2({
-					minimumInputLength : 1,
-					width : '300px',
-					placeholder : l('K2_SELECT_AUTHOR'),
-					initSelection : function(element, callback) {
-						if (authorId) {
-							var data = {
-								id : authorId,
-								text : authorName
-							};
-							callback(data);
-						}
-					},
-					ajax : {
-						url : 'index.php?option=com_k2&task=users.search&format=json',
-						dataType : 'json',
-						quietMillis : 100,
-						data : function(term, page) {// page is the one-based page number tracked by Select2
-							return {
-								search : term,
-								sorting : 'name',
-								limit : 50,
-								page : page,
-							};
-						},
-						results : function(data, page) {
-							var users = [];
-							jQuery.each(data.rows, function(index, row) {
-								var tag = {}
-								users.push({
-									id : row.id,
-									text : row.name
-								});
-							});
-							var more = (page * 50) < data.total;
-							return {
-								results : users,
-								more : more
-							};
-						}
-					},
-				});
-
-			}, this));
-
-			// Date fields
-			require(['widgets/pickadate/picker', 'widgets/pickadate/picker.date', 'widgets/pickadate/picker.time', 'css!widgets/pickadate/themes/default.css', 'css!widgets/pickadate/themes/default.date.css', 'css!widgets/pickadate/themes/default.time.css'], _.bind(function() {
-				this.$el.find('.appDatePicker').pickadate({
-					format : 'yyyy-mm-dd'
-				});
-				this.$el.find('.appTimePicker').pickatime({
-					format : 'HH:i'
-				});
-			}, this));
-
-			// Image uploader
-			require(['widgets/uploader/jquery.iframe-transport', 'widgets/uploader/jquery.fileupload'], _.bind(function() {
-				var self = this;
-				self.$el.find('#appItemImageFile').fileupload({
-					dataType : 'json',
-					url : 'index.php?option=com_k2&task=items.addImage&format=json',
-					formData : function() {
-						return [{
-							name : 'id',
-							value : self.model.get('id')
-						}, {
-							name : 'tmpId',
-							value : self.model.get('tmpId')
-						}, {
-							name : K2SessionToken,
-							value : 1
-						}];
-					},
-					done : function(e, data) {
-						var response = data.result;
-						self.image.set('value', '1');
-						self.image.set('previewURL', response.preview);
-					},
-					fail : function(e, data) {
-						K2Dispatcher.trigger('app:message', 'error', data.jqXHR.responseText);
-					}
-				});
-			}, this));
-
-			// Restore Joomla! modal events
-			if ( typeof (SqueezeBox) !== 'undefined') {
-				SqueezeBox.initialize({});
-				SqueezeBox.assign($$('a.modal-button'), {
-					parse : 'rel'
-				});
-			}
+		setImageFromServer : function(path) {
+			var self = this;
+			var formData = {};
+			formData['id'] = self.model.get('id');
+			formData['tmpId'] = self.model.get('tmpId');
+			formData['imagePath'] = path;
+			formData[K2SessionToken] = 1;
+			jQuery.ajax({
+				dataType : 'json',
+				type : 'POST',
+				url : 'index.php?option=com_k2&task=items.addImage&format=json',
+				data : formData
+			}).done(function(data, status, xhr) {
+				self.setImagePreview(data.preview, 1)
+			}).fail(function(xhr, status, error) {
+				K2Dispatcher.trigger('app:message', 'error', xhr.responseText);
+			});
 		},
 
 		// Remove image
@@ -328,30 +195,28 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher', 'views/extra
 			if (event !== undefined) {
 				event.preventDefault();
 			}
-			var self = this;
 			var formData = {};
-			formData['id'] = self.model.get('id');
-			formData['tmpId'] = self.model.get('tmpId');
-			formData['image'] = jQuery('#appItemImageValue').val();
+			formData['id'] = this.model.get('id');
+			formData['tmpId'] = this.model.get('tmpId');
 			formData[K2SessionToken] = 1;
+			var self = this;
 			jQuery.ajax({
 				dataType : 'json',
 				type : 'POST',
 				url : 'index.php?option=com_k2&task=items.removeImage&format=json',
 				data : formData
 			}).done(function(data, status, xhr) {
-				self.image.set('value', '0');
-				self.image.set('previewURL', '');
+				self.setImagePreview('', 0);
 			}).fail(function(xhr, status, error) {
 				K2Dispatcher.trigger('app:message', 'error', xhr.responseText);
 			});
 		},
 
 		// Set the image preview depending on the image state
-		setImagePreview : function() {
-			this.$el.find('#appItemImageFlag').val(this.image.get('value'));
-			this.$el.find('#appItemImagePreview').attr('src', this.image.get('previewURL'));
-			if (this.image.get('value') < 1) {
+		setImagePreview : function(previewUrl, value) {
+			this.$el.find('#appItemImageFlag').val(value);
+			this.$el.find('#appItemImagePreview').attr('src', previewUrl);
+			if (value < 1) {
 				this.$el.find('.appItemImagePreviewContainer').hide();
 			} else {
 				this.$el.find('.appItemImagePreviewContainer').show();
@@ -441,13 +306,7 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher', 'views/extra
 				el.parents('.appItemAttachment').remove();
 			}
 		},
-		// Download attachment
-		downloadAttachment : function(event) {
-			event.preventDefault();
-			var el = jQuery(event.currentTarget);
-			var url = _.unescape(el.data('url'));
-			window.location = url;
-		},
+		
 		// Remove attachments
 		removeAttachments : function() {
 			var formData = {};
@@ -460,14 +319,6 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher', 'views/extra
 			});
 		},
 
-		browseServerForImage : function(event) {
-			event.preventDefault();
-			K2Dispatcher.trigger('app:controller:browseServer', {
-				callback : 'app:item:selectImage',
-				modal : true
-			});
-		},
-
 		browseServerForAttachment : function(event) {
 			event.preventDefault();
 			// Mark the current attachment with a class
@@ -475,26 +326,6 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher', 'views/extra
 			K2Dispatcher.trigger('app:controller:browseServer', {
 				callback : 'app:item:selectAttachment',
 				modal : true
-			});
-		},
-
-		setImageFromServer : function(path) {
-			var self = this;
-			var formData = {};
-			formData['id'] = self.model.get('id');
-			formData['tmpId'] = self.model.get('tmpId');
-			formData['imagePath'] = path;
-			formData[K2SessionToken] = 1;
-			jQuery.ajax({
-				dataType : 'json',
-				type : 'POST',
-				url : 'index.php?option=com_k2&task=items.addImage&format=json',
-				data : formData
-			}).done(function(data, status, xhr) {
-				self.image.set('value', '1');
-				self.image.set('previewURL', data.preview);
-			}).fail(function(xhr, status, error) {
-				K2Dispatcher.trigger('app:message', 'error', xhr.responseText);
 			});
 		},
 

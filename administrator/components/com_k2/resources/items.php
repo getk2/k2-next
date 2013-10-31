@@ -99,6 +99,13 @@ class K2Items extends K2Resource
 		}
 
 		$this->tags = $this->getTags();
+		
+		$tagsValue = array();
+		foreach($this->tags as $tag)
+		{
+			$tagsValue[] = $tag->name;
+		}
+		$this->tagsValue = implode(',', $tagsValue);
 
 		$this->images = $this->getImages();
 

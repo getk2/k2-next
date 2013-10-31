@@ -1,4 +1,4 @@
-define(['marionette', 'text!layouts/extrafields/form.html', 'dispatcher'], function(Marionette, template, K2Dispatcher) {'use strict';
+define(['marionette', 'text!layouts/extrafields/form.html', 'dispatcher', 'widgets/widget'], function(Marionette, template, K2Dispatcher, K2Widget) {'use strict';
 	var K2ViewExtraFields = Marionette.ItemView.extend({
 		template : _.template(template),
 		modelEvents : {
@@ -16,13 +16,13 @@ define(['marionette', 'text!layouts/extrafields/form.html', 'dispatcher'], funct
 		},
 		onDomRefresh : function() {
 			this.renderExtraField();
+			K2Widget.updateEvents();
 		},
 		renderExtraField : function() {
 			var type = this.$el.find('#type').val();
 			var form = this.model.getForm();
 			var definitions = form.get('definitions');
 			this.$el.find('#appExtraFieldDefinition').html(definitions[type]);
-			jQuery(document).trigger('K2ExtraFieldsRender');
 		}
 	});
 	return K2ViewExtraFields;

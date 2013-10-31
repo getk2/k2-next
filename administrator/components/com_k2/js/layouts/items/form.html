@@ -11,223 +11,218 @@
 
     <label><%= l('K2_PUBLISHED') %></label>
     <label> <%= l('K2_YES') %>
-        <input type="radio" name="published" value="1" <%= (row.published > 0) ? 'checked="checked"': '' %>
-        /> </label>
-    <label> <%= l('K2_NO') %>
-        <input type="radio" name="published" value="0" <%= (row.published < 1) ? 'checked="checked"': '' %> />
-        </label>
-
-        <label><%= l('K2_FEATURED') %></label>
-        <label>
-        <%= l('K2_YES') %><input type="radio" name="featured" value="1" <%= (row.featured > 0) ? 'checked="checked"': '' %> />
+        <input type="radio" name="published" value="1"/>
     </label>
-    <label> <%= l('K2_NO') %><input type="radio" name="featured" value="0" <%= (row.featured < 1) ? 'checked="checked"': '' %> />
-        </label>
-        <label for="access"><%= l('K2_ACCESS') %></label>
-        <%= form.access %>
+    <label> <%= l('K2_NO') %>
+        <input type="radio" name="published" value="0" />
+    </label>
 
-        <label for="language"><%= l('K2_LANGUAGE') %></label>
-        <%= form.language %>
+    <label><%= l('K2_FEATURED') %></label>
+    <label> <%= l('K2_YES') %>
+        <input type="radio" name="featured" value="1"/>
+    </label>
+    <label> <%= l('K2_NO') %>
+        <input type="radio" name="featured" value="0" />
+    </label>
+    <label for="access"><%= l('K2_ACCESS') %></label>
+    <%= form.access %>
 
-        <label for="created_by_alias"><%= l('K2_AUTHOR_ALIAS') %></label>
-        <input id="created_by_alias" type="text" name="created_by_alias" value="<%- row.created_by_alias %>" />
+    <label for="language"><%= l('K2_LANGUAGE') %></label>
+    <%= form.language %>
 
-        <label for="createdDate"><%= l('K2_CREATED_DATE') %></label>
-        <input class="appDatePicker" id="createdDate" type="text" name="createdDate" value="<%- row.createdDate %>" />
-        <label for="createdTime"><%= l('K2_CREATED_TIME') %></label>
-        <input class="appTimePicker" id="createdTime" type="text" name="createdTime" value="<%- row.createdTime %>" />
+    <label for="created_by_alias"><%= l('K2_AUTHOR_ALIAS') %></label>
+    <input id="created_by_alias" type="text" name="created_by_alias" value="<%- row.created_by_alias %>" />
 
-        <div>
+    <label for="createdDate"><%= l('K2_CREATED_DATE') %></label>
+    <input id="createdDate" data-widget="datepicker" type="text" name="createdDate" value="<%- row.createdDate %>" />
+    <label for="createdTime"><%= l('K2_CREATED_TIME') %></label>
+    <input id="createdTime" data-widget="timepicker" type="text" name="createdTime" value="<%- row.createdTime %>" />
+
+    <div>
         <span><%= l('K2_MODIFIED_DATE') %></span>
         <span><%= row.modifiedOn %></span>
-        </div>
+    </div>
 
-        <label for="publishUpDate"><%= l('K2_START_PUBLISHING_DATE') %></label>
-        <input class="appDatePicker" id="publishUpDate" type="text" name="publishUpDate" value="<%- row.publishUpDate %>" />
-        <label for="publishUpTime"><%= l('K2_START_PUBLISHING_TIME') %></label>
-        <input class="appTimePicker" id="publishUpTime" type="text" name="publishUpTime" value="<%- row.publishUpTime %>" />
-        <label for="publishDownDate"><%= l('K2_FINISH_PUBLISHING_DATE') %></label>
-        <input class="appDatePicker" id="publishDownDate" type="text" name="publishDownDate" value="<%- row.publishDownDate %>" />
-        <label for="publishDownTime"><%= l('K2_FINISH_PUBLISHING_TIME') %></label>
-        <input class="appTimePicker" id="publishDownTime" type="text" name="publishDownTime" value="<%- row.publishDownTime %>" /> <label for="startDate"><%= l('K2_START_DATE') %></label>
-        <input class="appDatePicker" id="startDate" type="text" name="startDate" value="<%- row.startDate %>" />
-        <label for="startTime"><%= l('K2_START_TIME') %></label>
-        <input class="appTimePicker" id="startTime" type="text" name="startTime" value="<%- row.startTime %>" />
-        <label for="endDate"><%= l('K2_END_DATE') %></label>
-        <input class="appDatePicker" id="endDate" type="text" name="endDate" value="<%- row.endDate %>" />
-        <label for="endTime"><%= l('K2_END_TIME') %></label>
-        <input class="appTimePicker" id="endTime" type="text" name="endTime" value="<%- row.endTime %>" />
-        <label><%= l('K2_AUTHOR') %></label>
-        <input id="appItemAuthor" type="hidden" name="created_by" value="<%- row.created_by %>" />
-        <span><%= row.authorName %></span>
-        <div>
-            <span><%= l('K2_MODERATOR') %></span>
-            <span><%= row.moderatorName %></span>
-        </div> 
-        
-         
-        <label for="text"><%= l('K2_TEXT') %></label>
-        <%= form.text %>
-        <div class="appClr"></div>
-        
-        <!-- Tags -->
-        <label for="appItemTags"><%= l('K2_TAGS') %></label>
-        <input type="hidden" name="tags" id="appItemTags" />
-        
-        <!-- Image -->
-        <label for="appItemImageFile"><%= l('K2_IMAGE') %></label>
-        <input type="file" id="appItemImageFile" name="imageFile" />
-        <button id="appItemImageBrowseServer"><%= l('K2_BROWSE_SERVER') %></button>
-        <label><%= l('K2_IMAGE_CAPTION') %></label>
-        <input type="text" name="image_caption" value="<%- row.image_caption %>" />
-        <label><%= l('K2_IMAGE_CREDITS') %></label>
-        <input type="text" name="image_credits" value="<%- row.image_credits %>" />
-        <input type="hidden" id="appItemImageFlag" name="image_flag"  />
-        <div class="appItemImagePreviewContainer">
-            <img alt="<%- l('K2_PREVIEW') %>" id="appItemImagePreview" />
-            <button id="appItemImageRemove"><%= l('K2_REMOVE_IMAGE') %></button>
-        </div>
+    <label for="publishUpDate"><%= l('K2_START_PUBLISHING_DATE') %></label>
+    <input data-widget="datepicker" id="publishUpDate" type="text" name="publishUpDate" value="<%- row.publishUpDate %>" />
 
-        <!-- Attachments -->
-        <button id="appActionAddAttachment"><%= l('K2_ADD_ATTACHMENT') %></button>
-        
-        <div id="appItemAttachments">
-            <% _.each(row.attachments, function(attachment) { %>
-                <div class="appItemAttachment">
-                    <label><%= l('K2_FILE') %></label>
-                    <input type="file" class="appItemAttachmentFile" name="attachments[file][]" /> <button class="appItemAttachmentBrowseServer" data-id="<%- attachment.id %>"><%= l('K2_BROWSE_SERVER') %></button>
-                    <label><%= l('K2_NAME') %></label>
-                    <input type="text" class="appItemAttachmentName" name="attachments[name][]" value="<%- attachment.name %>" />
-                    <label><%= l('K2_TITLE') %></label>
-                    <input type="text" class="appItemAttachmentTitle" name="attachments[title][]" value="<%- attachment.title %>" />
-                    <input type="hidden" class="appItemAttachmentId" name="attachments[id][]" value="<%- attachment.id %>"  />
-                    <button class="appItemAttachmentRemove" data-id="<%- attachment.id %>"><%= l('K2_REMOVE') %></button>
-                    <button class="appItemAttachmentDownload" data-url="<%- attachment.link %>"><%= l('K2_DOWNLOAD') %></button>
-                </div>
-            <% }); %>
-        </div>
-        
-        <div id="appItemAttachmentPlaceholder">
+    <label for="publishUpTime"><%= l('K2_START_PUBLISHING_TIME') %></label>
+    <input data-widget="timepicker" id="publishUpTime" type="text" name="publishUpTime" value="<%- row.publishUpTime %>" />
+
+    <label for="publishDownDate"><%= l('K2_FINISH_PUBLISHING_DATE') %></label>
+    <input data-widget="datepicker" id="publishDownDate" type="text" name="publishDownDate" value="<%- row.publishDownDate %>" />
+
+    <label for="publishDownTime"><%= l('K2_FINISH_PUBLISHING_TIME') %></label>
+    <input data-widget="timepicker" id="publishDownTime" type="text" name="publishDownTime" value="<%- row.publishDownTime %>" />
+
+    <label for="startDate"><%= l('K2_START_DATE') %></label>
+    <input data-widget="datepicker" id="startDate" type="text" name="startDate" value="<%- row.startDate %>" />
+
+    <label for="startTime"><%= l('K2_START_TIME') %></label>
+    <input data-widget="timepicker" id="startTime" type="text" name="startTime" value="<%- row.startTime %>" />
+
+    <label for="endDate"><%= l('K2_END_DATE') %></label>
+    <input data-widget="datepicker" id="endDate" type="text" name="endDate" value="<%- row.endDate %>" />
+
+    <label for="endTime"><%= l('K2_END_TIME') %></label>
+    <input data-widget="timepicker" id="endTime" type="text" name="endTime" value="<%- row.endTime %>" />
+
+    <label><%= l('K2_AUTHOR') %></label>
+    <input data-widget="user" data-name="<%- row.authorName %>" type="hidden" name="created_by" value="<%- row.created_by %>" />
+
+    <div>
+        <span><%= l('K2_MODERATOR') %></span>
+        <span><%= row.moderatorName %></span>
+    </div>
+
+    <label for="text"><%= l('K2_TEXT') %></label>
+    <div data-widget="editor"><%= form.text %></div>
+
+    <!-- Tags -->
+    <label><%= l('K2_TAGS') %></label>
+    <input data-widget="tags" value="<%= row.tagsValue %>" type="hidden" name="tags" />
+
+    <!-- Image -->
+    <label><%= l('K2_IMAGE') %></label>
+    <input type="file" name="imageFile" data-widget="uploader" data-url="index.php?option=com_k2&task=items.addImage&format=json&id=<%- row.id %>&tmpId=<%- row.tmpId %>" data-callback="item:image:upload" />
+    <input type="text" name="imagePath" data-widget="browser" data-callback="item:image:select" /> 
+    
+    <input type="hidden" id="appItemImageFlag" name="image_flag" value="<%- row.image_flag %>"  />
+    <div class="appItemImagePreviewContainer">
+        <img alt="<%- l('K2_PREVIEW') %>" id="appItemImagePreview" src="<%- row.imagePreview %>" />
+        <button id="appItemImageRemove">
+            <%= l('K2_REMOVE_IMAGE') %>
+        </button>
+    </div>
+    
+    <label><%= l('K2_IMAGE_CAPTION') %></label>
+    <input type="text" name="image_caption" value="<%- row.image_caption %>" />
+    
+    <label><%= l('K2_IMAGE_CREDITS') %></label>
+    <input type="text" name="image_credits" value="<%- row.image_credits %>" />
+    
+
+    <!-- Attachments -->
+    <div id="appItemAttachments"></div>
+
+    <!-- Media -->
+    <button id="appActionAddMedia">
+        <%= l('K2_ADD_MEDIA') %>
+    </button>
+    <div id="appItemMedia">
+        <% _.each(row.media, function(media) { %>
+        <div class="appItemMediaEntry">
             <label><%= l('K2_FILE') %></label>
-            <input type="file" class="appItemAttachmentFile" name="attachments[file][]" /> <button class="appItemAttachmentBrowseServer"><%= l('K2_BROWSE_SERVER') %></button>
-            <label><%= l('K2_NAME') %></label>
-            <input type="text" class="appItemAttachmentName" name="attachments[name][]" disabled="disabled" />
-            <label><%= l('K2_TITLE') %></label>
-            <input type="text" class="appItemAttachmentTitle" name="attachments[title][]"  disabled="disabled" />
-            <input type="hidden" class="appItemAttachmentId" name="attachments[id][]" disabled="disabled"  />
-            <button class="appItemAttachmentRemove"><%= l('K2_REMOVE') %></button>
-            <button class="appItemAttachmentDownload" disabled="disabled"><%= l('K2_DOWNLOAD') %></button>
-        </div>
-        
-        <!-- Media -->
-        <button id="appActionAddMedia"><%= l('K2_ADD_MEDIA') %></button>
-        
-        <div id="appItemMedia">
-            <% _.each(row.media, function(media) { %>
-                <div class="appItemMediaEntry">
-                    <label><%= l('K2_FILE') %></label>
-                    <input type="file" class="appItemMediaFile" name="media[file][]" /> 
-                    <input type="hidden" class="appItemMediaUpload" name="media[upload][]" value="<%- media.upload %>" /> 
-                    
-                    <label><%= l('K2_URL') %></label>
-                    <input type="text" class="appItemMediaUrl" name="media[url][]" value="<%- media.url %>" /> <button class="appItemMediaBrowseServer"><%= l('K2_BROWSE_SERVER') %></button>
-                    
-                    <label><%= l('K2_PROVIDER') %></label>
-                    <input type="text" class="appItemMediaProvider" name="media[provider][]" value="<%- media.provider %>" /> 
-                    
-                    <label><%= l('K2_ID') %></label>
-                    <input type="text" class="appItemMediaId" name="media[id][]" value="<%- media.id %>" /> 
-                    
-                    <label><%= l('K2_EMBED') %></label>
-                    <textarea class="appItemMediaEmbed" name="media[embed][]"><%= media.embed %></textarea>
-                    
-                    <label><%= l('K2_MEDIA_CAPTION') %></label>
-                    <input type="text" class="appItemMediaCaption" name="media[caption][]" value="<%- media.caption %>" />
-                    
-                    <label><%= l('K2_MEDIA_CREDITS') %></label>
-                    <input type="text" class="appItemMediaCredits" name="media[credits][]" value="<%- media.credits %>" />
-                    
-                    <button class="appItemMediaRemove"><%= l('K2_REMOVE') %></button>
-                </div>
-            <% }); %>
-        </div>
-        
-        <div id="appItemMediaPlaceholder">
-            <label><%= l('K2_FILE') %></label>
-            <input type="file" class="appItemMediaFile" name="media[file][]" /> 
-            <input type="hidden" class="appItemMediaUpload" name="media[upload][]" /> 
+            <input type="file" class="appItemMediaFile" name="media[file][]" />
+            <input type="hidden" class="appItemMediaUpload" name="media[upload][]" value="<%- media.upload %>" />
 
             <label><%= l('K2_URL') %></label>
-            <input type="text" class="appItemMediaUrl" name="media[url][]" disabled="disabled" /> <button class="appItemMediaBrowseServer"><%= l('K2_BROWSE_SERVER') %></button>
-            
+            <input type="text" class="appItemMediaUrl" name="media[url][]" value="<%- media.url %>" />
+            <button class="appItemMediaBrowseServer">
+                <%= l('K2_BROWSE_SERVER') %>
+            </button>
+
             <label><%= l('K2_PROVIDER') %></label>
-            <input type="text" class="appItemMediaProvider" name="media[provider][]" disabled="disabled" /> 
-            
+            <input type="text" class="appItemMediaProvider" name="media[provider][]" value="<%- media.provider %>" />
+
             <label><%= l('K2_ID') %></label>
-            <input type="text" class="appItemMediaId" name="media[id][]" disabled="disabled" /> 
-            
+            <input type="text" class="appItemMediaId" name="media[id][]" value="<%- media.id %>" />
+
             <label><%= l('K2_EMBED') %></label>
-            <textarea class="appItemMediaEmbed" name="media[embed][]" disabled="disabled"></textarea>
-            
+            <textarea class="appItemMediaEmbed" name="media[embed][]"><%= media.embed %></textarea>                                        
+                    
             <label><%= l('K2_MEDIA_CAPTION') %></label>
-            <input type="text" class="appItemMediaCaption" name="media[caption][]" disabled="disabled" />
-            
+            <input type="text" class="appItemMediaCaption" name="media[caption][]" value="<%- media.caption %>" />
+
             <label><%= l('K2_MEDIA_CREDITS') %></label>
-            <input type="text" class="appItemMediaCredits" name="media[credits][]" disabled="disabled" />
+            <input type="text" class="appItemMediaCredits" name="media[credits][]" value="<%- media.credits %>" />
+
+            <button class="appItemMediaRemove">
+                <%= l('K2_REMOVE') %>
+            </button>
+        </div>
+        <% }); %>
+    </div>
+    <div id="appItemMediaPlaceholder">
+        <label><%= l('K2_FILE') %></label>
+        <input type="file" class="appItemMediaFile" name="media[file][]" />
+        <input type="hidden" class="appItemMediaUpload" name="media[upload][]" />
+
+        <label><%= l('K2_URL') %></label>
+        <input type="text" class="appItemMediaUrl" name="media[url][]" disabled="disabled" />
+        <button class="appItemMediaBrowseServer">
+            <%= l('K2_BROWSE_SERVER') %>
+        </button>
+
+        <label><%= l('K2_PROVIDER') %></label>
+        <input type="text" class="appItemMediaProvider" name="media[provider][]" disabled="disabled" />
+
+        <label><%= l('K2_ID') %></label>
+        <input type="text" class="appItemMediaId" name="media[id][]" disabled="disabled" />
+
+        <label><%= l('K2_EMBED') %></label>
+        <textarea class="appItemMediaEmbed" name="media[embed][]" disabled="disabled"></textarea>                            
             
-            <button class="appItemMediaRemove"><%= l('K2_REMOVE') %></button>
-        </div>
-        
-        
-        <!-- Gallery -->
-        <button id="appActionAddGallery"><%= l('K2_ADD_GALLERY') %></button>
-        
-        <div id="appItemGallery">
-            <% _.each(row.galleries, function(gallery) { %>
-                <div class="appItemGalleryEntry">
-                    <label><%= l('K2_FILE') %></label>
-                    <input type="file" class="appItemGalleryFile" name="galleries[file][]" /> 
-                    <input type="hidden" class="appItemGalleryUpload" name="galleries[upload][]" value="<%- gallery.upload %>" /> 
-                    
-                    <label><%= l('K2_URL') %></label>
-                    <input type="text" class="appItemGalleryUrl" name="galleries[url][]" value="<%- gallery.url %>" />
-                    
-                    <button class="appItemGalleryRemove"><%= l('K2_REMOVE') %></button>
-                </div>
-            <% }); %>
-        </div>
-        
-        <div id="appItemGalleryPlaceholder">
+ <label><%= l('K2_MEDIA_CAPTION') %></label>
+        <input type="text" class="appItemMediaCaption" name="media[caption][]" disabled="disabled" />
+
+        <label><%= l('K2_MEDIA_CREDITS') %></label>
+        <input type="text" class="appItemMediaCredits" name="media[credits][]" disabled="disabled" />
+
+        <button class="appItemMediaRemove">
+            <%= l('K2_REMOVE') %>
+        </button>
+    </div>
+    <!-- Gallery -->
+    <button id="appActionAddGallery">
+        <%= l('K2_ADD_GALLERY') %>
+    </button>
+    <div id="appItemGallery">
+        <% _.each(row.galleries, function(gallery) { %>
+        <div class="appItemGalleryEntry">
             <label><%= l('K2_FILE') %></label>
-            <input type="file" class="appItemGalleryFile" name="galleries[file][]" /> 
-            <input type="hidden" class="appItemGalleryUpload" name="galleries[upload][]" /> 
+            <input type="file" class="appItemGalleryFile" name="galleries[file][]" />
+            <input type="hidden" class="appItemGalleryUpload" name="galleries[upload][]" value="<%- gallery.upload %>" />
 
             <label><%= l('K2_URL') %></label>
-            <input type="text" class="appItemGalleryUrl" name="galleries[url][]" disabled="disabled" /> 
-            
-            <button class="appItemGalleryRemove"><%= l('K2_REMOVE') %></button>
+            <input type="text" class="appItemGalleryUrl" name="galleries[url][]" value="<%- gallery.url %>" />
+
+            <button class="appItemGalleryRemove">
+                <%= l('K2_REMOVE') %>
+            </button>
         </div>
-        
-        
-        <!-- Extra Fields -->
-        <div id="appItemExtraFields"></div>
-        
-        <input type="hidden" name="tmpId" value="<%= row.tmpId %>" / >
-        <input type="hidden" name="id" value="<%= row.id %>" / >
-        <% _(form.jform).each(function(field) { %>
-        <%= field.label %>
-        <%= field.input %>
-        <% }); %> <h2><%= l('K2_METADATA') %></h2> <% _(form.metadata).each(function(field) { %>
-        <%= field.label %>
-        <%= field.input %>
-        <% }); %> <h2><%= l('K2_LISTING_OPTIONS') %></h2> <% _(form.listingOptions).each(function(field) { %>
-        <%= field.label %>
-        <%= field.input %>
-        <% }); %> <h2><%= l('K2_ITEM_OPTIONS') %></h2> <% _(form.itemOptions).each(function(field) { %>
-        <%= field.label %>
-        <%= field.input %>
-        <% }); %> <h2><%= l('K2_PERMISSIONS') %></h2> <% _(form.permissions).each(function(field) { %>
-        <%= field.label %>
-        <%= field.input %>
         <% }); %>
+    </div>
+    <div id="appItemGalleryPlaceholder">
+        <label><%= l('K2_FILE') %></label>
+        <input type="file" class="appItemGalleryFile" name="galleries[file][]" />
+        <input type="hidden" class="appItemGalleryUpload" name="galleries[upload][]" />
+
+        <label><%= l('K2_URL') %></label>
+        <input type="text" class="appItemGalleryUrl" name="galleries[url][]" disabled="disabled" />
+
+        <button class="appItemGalleryRemove">
+            <%= l('K2_REMOVE') %>
+        </button>
+    </div>
+    <!-- Extra Fields -->
+    <div id="appItemExtraFields"></div>
+    <input type="hidden" name="tmpId" value="<%= row.tmpId %>" / >
+    <input type="hidden" name="id" value="<%= row.id %>" / >
+    <% _(form.jform).each(function(field) { %>
+    <%= field.label %>
+    <%= field.input %>
+    <% }); %> <h2><%= l('K2_METADATA') %></h2> <% _(form.metadata).each(function(field) { %>
+    <%= field.label %>
+    <%= field.input %>
+    <% }); %> <h2><%= l('K2_LISTING_OPTIONS') %></h2> <% _(form.listingOptions).each(function(field) { %>
+    <%= field.label %>
+    <%= field.input %>
+    <% }); %> <h2><%= l('K2_ITEM_OPTIONS') %></h2> <% _(form.itemOptions).each(function(field) { %>
+    <%= field.label %>
+    <%= field.input %>
+    <% }); %> <h2><%= l('K2_PERMISSIONS') %></h2> <% _(form.permissions).each(function(field) { %>
+    <%= field.label %>
+    <%= field.input %>
+    <% }); %>
 </form>
