@@ -10,13 +10,11 @@
 // no direct access
 defined('_JEXEC') or die ;
 
-require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/helper.php';
-
 /**
  * K2 Extra Fields helper class.
  */
 
-class K2HelperExtraFields extends K2Helper
+class K2HelperExtraFields
 {
 
 	/**

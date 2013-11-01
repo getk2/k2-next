@@ -1,4 +1,4 @@
-define(['marionette', 'text!layouts/items/form.html', 'dispatcher', 'widgets/widget', 'views/extrafields/widget', 'collections/extrafieldswidget', 'views/attachments/widget', 'collections/attachmentswidget'], function(Marionette, template, K2Dispatcher, K2Widget, K2ViewExtraFieldsWidget, K2CollectionExtraFieldsWidget, K2ViewAttachmentsWidget, K2CollectionAttachmentsWidget) {'use strict';
+define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/extrafields/widget', 'collections/extrafieldswidget', 'views/attachments/widget', 'collections/attachments', 'views/galleries/widget'], function(K2Dispatcher, K2Widget, template, K2ViewExtraFieldsWidget, K2CollectionExtraFieldsWidget, K2ViewAttachmentsWidget, K2CollectionAttachments, K2ViewGalleriesWidget) {'use strict';
 	// K2 item form view
 	var K2ViewItem = Marionette.Layout.extend({
 
@@ -8,12 +8,13 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher', 'widgets/wid
 		// Regions
 		regions : {
 			attachmentsRegion : '#appItemAttachments',
+			galleriesRegion : '#appItemGalleries',
 			extraFieldsRegion : '#appItemExtraFields'
 		},
 
 		// Model events
 		modelEvents : {
-			'change' : 'render'
+			'sync' : 'update'
 		},
 
 		// UI events
@@ -21,7 +22,6 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher', 'widgets/wid
 			'click #appItemImageRemove' : 'removeImage',
 			'change #catid' : 'renderExtraFields',
 
-			
 			'click #appActionAddMedia' : 'addMedia',
 			'click .appItemMediaRemove' : 'removeMedia',
 			'click .appItemMediaBrowseServer' : 'browseServerForMedia',
@@ -46,28 +46,6 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher', 'widgets/wid
 			// Add a listener for the image select callback
 			K2Dispatcher.on('item:image:select', function(path) {
 				this.setImageFromServer(path);
-			}, this);
-
-			// Setup extra fields collection
-			this.extraFieldsCollection = new K2CollectionExtraFieldsWidget([], {
-				scope : 'item',
-				resourceId : this.model.get('id'),
-				filterId : this.model.get('catid')
-			});
-			this.extraFieldsCollection.fetch({
-				reset : true
-			});
-
-			// Setup attachments collection
-			this.attachmentsCollection = new K2CollectionAttachmentsWidget();
-			this.attachmentsCollection.setItemId(this.model.get('id'));
-			this.attachmentsCollection.fetch({
-				reset : true
-			});
-
-			// Add a listener selecting an attachment from the media manager
-			K2Dispatcher.on('app:item:selectAttachment', function(path) {
-				this.setAttachmentFromServer(path);
 			}, this);
 
 			// Add a listener selecting a media file from the media manager
@@ -97,13 +75,11 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher', 'widgets/wid
 		onBeforeClose : function() {
 			//is it new?
 			if (this.model.isNew()) {
+
+				K2Dispatcher.trigger('attachments:delete');
+
 				// Delete any uploaded images
 				this.removeImage();
-
-				// Delete any uploaded attachments
-				if (this.$el.find('.appItemAttachmentId').length > 1) {
-					this.removeAttachments();
-				}
 
 				// Delete any uploaded media files
 				if (this.$el.find('.appItemMediaUpload').length > 1) {
@@ -117,6 +93,30 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher', 'widgets/wid
 			}
 		},
 
+		update : function() {
+			
+			this.render();
+			// Attachments
+			this.attachmentsCollection = new K2CollectionAttachments(this.model.get('attachments'));
+			this.attachmentsRegion.show(new K2ViewAttachmentsWidget({
+				collection : this.attachmentsCollection
+			}));
+			// Galleries
+			var galleriesModel = Backbone.Model.extend({
+				defaults : {
+					file : null,
+					url : null
+				}
+			});
+			var galleriesCollection = Backbone.Collection.extend({
+				model : galleriesModel
+			});
+			this.galleriesCollection = new galleriesCollection(this.model.get('galleries'));
+			this.galleriesRegion.show(new K2ViewGalleriesWidget({
+				collection : this.galleriesCollection
+			}));
+		},
+
 		// onRender event
 		onRender : function() {
 
@@ -127,29 +127,11 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher', 'widgets/wid
 			// Handle image preview
 			this.setImagePreview(this.model.get('imagePreview'), this.model.get('image_flag'));
 
-			// Initialize uploader for existing attachments
-			this.$el.find('.appItemAttachment').each(_.bind(function(index, el) {
-				this.setUpAttachmentUploader(jQuery(el));
-			}, this));
-
 			// Initialize uploader for existing media
 			this.$el.find('.appItemMediaEntry').each(_.bind(function(index, el) {
 				this.setUpMediaUploader(jQuery(el));
 			}, this));
 
-		},
-
-		onShow : function() {
-
-			// Show attachments
-			this.attachmentsRegion.show(new K2ViewAttachmentsWidget({
-				collection : this.attachmentsCollection
-			}));
-
-			// Show extra fields
-			this.extraFieldsRegion.show(new K2ViewExtraFieldsWidget({
-				collection : this.extraFieldsCollection
-			}));
 		},
 
 		renderExtraFields : function(event) {
@@ -158,13 +140,27 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher', 'widgets/wid
 			this.extraFieldsCollection.fetch({
 				reset : true
 			});
+			// Show extra fields
+			this.extraFieldsRegion.show(new K2ViewExtraFieldsWidget({
+				collection : this.extraFieldsCollection
+			}));
 		},
 
 		// OnDomRefresh event ( Marionette.js build in event )
 		onDomRefresh : function() {
 
+			// Editor
+			K2Editor.init();
+			// Restore Joomla! modal events
+			if ( typeof (SqueezeBox) !== 'undefined') {
+				SqueezeBox.initialize({});
+				SqueezeBox.assign($$('a.modal-button'), {
+					parse : 'rel'
+				});
+			}
+
 			// Setup widgets
-			K2Widget.updateEvents();
+			K2Widget.updateEvents(this.$el);
 
 			// Proxy event for extra fields custom javascript code
 			jQuery(document).trigger('K2ExtraFields');
@@ -221,137 +217,6 @@ define(['marionette', 'text!layouts/items/form.html', 'dispatcher', 'widgets/wid
 			} else {
 				this.$el.find('.appItemImagePreviewContainer').show();
 			}
-		},
-
-		// Attachment upload event
-		setUpAttachmentUploader : function(attachment) {
-			var itemId = this.model.get('id');
-			require(['widgets/uploader/jquery.iframe-transport', 'widgets/uploader/jquery.fileupload'], function() {
-				attachment.find('input[type="file"]').fileupload({
-					dataType : 'json',
-					url : 'index.php?option=com_k2&task=items.addAttachment&format=json',
-					formData : function() {
-						return [{
-							name : 'id',
-							value : attachment.find('input.appItemAttachmentId').val()
-						}, {
-							name : 'itemId',
-							value : itemId
-						}, {
-							name : 'name',
-							value : attachment.find('input.appItemAttachmentName').val()
-						}, {
-							name : 'title',
-							value : attachment.find('input.appItemAttachmentTitle').val()
-						}, {
-							name : K2SessionToken,
-							value : 1
-						}];
-					},
-					done : function(e, data) {
-						var response = data.result;
-						attachment.find('.appItemAttachmentId').val(response.id);
-						attachment.find('.appItemAttachmentDownload').removeAttr('disabled').data('url', response.link);
-						attachment.find('.appItemAttachmentRemove').data('id', response.id);
-						attachment.find('input.appItemAttachmentName').val(response.name);
-						attachment.find('input.appItemAttachmentTitle').val(response.title);
-					},
-					fail : function(e, data) {
-						K2Dispatcher.trigger('app:message', 'error', data.jqXHR.responseText);
-					}
-				});
-			});
-		},
-
-		// Add attachment
-		addAttachment : function(event) {
-			// Prevent default
-			event.preventDefault();
-
-			// Get attachment element
-			var attachment = this.$el.find('#appItemAttachmentPlaceholder').clone();
-
-			// Prepare the element
-			attachment.removeAttr('id');
-			attachment.addClass('appItemAttachment');
-			attachment.find('input').removeAttr('disabled');
-
-			// Upload event
-			this.setUpAttachmentUploader(attachment);
-
-			this.$el.find('#appItemAttachments').append(attachment);
-		},
-
-		// Remove atachment
-		removeAttachment : function(event) {
-			event.preventDefault();
-			var self = this;
-			var el = jQuery(event.currentTarget);
-			var id = el.data('id');
-			if (id !== undefined) {
-				var formData = {};
-				formData['id'] = id;
-				formData[K2SessionToken] = 1;
-				jQuery.ajax({
-					dataType : 'json',
-					type : 'POST',
-					url : 'index.php?option=com_k2&task=items.removeAttachment&format=json',
-					data : formData
-				}).done(function(data, status, xhr) {
-					el.parents('.appItemAttachment').remove();
-				}).fail(function(xhr, status, error) {
-					K2Dispatcher.trigger('app:message', 'error', xhr.responseText);
-				});
-			} else {
-				el.parents('.appItemAttachment').remove();
-			}
-		},
-		
-		// Remove attachments
-		removeAttachments : function() {
-			var formData = {};
-			formData = this.$el.find('.appItemAttachmentId').serialize() + '&' + K2SessionToken + '=1';
-			jQuery.ajax({
-				dataType : 'json',
-				type : 'POST',
-				url : 'index.php?option=com_k2&task=items.removeAttachment&format=json',
-				data : formData
-			});
-		},
-
-		browseServerForAttachment : function(event) {
-			event.preventDefault();
-			// Mark the current attachment with a class
-			var el = jQuery(event.currentTarget).parents('.appItemAttachment').get(0).addClass('appItemCurrentAttachment');
-			K2Dispatcher.trigger('app:controller:browseServer', {
-				callback : 'app:item:selectAttachment',
-				modal : true
-			});
-		},
-
-		setAttachmentFromServer : function(path) {
-			var attachment = this.$el.find('.appItemCurrentAttachment');
-			var formData = {};
-			formData['id'] = attachment.find('.appItemAttachmentId').val();
-			formData['itemId'] = this.model.get('id');
-			formData['name'] = attachment.find('.appItemAttachmentName').val();
-			formData['title'] = attachment.find('.appItemAttachmentTitle').val();
-			formData['attachmentPath'] = path;
-			formData[K2SessionToken] = 1;
-			jQuery.ajax({
-				dataType : 'json',
-				type : 'POST',
-				url : 'index.php?option=com_k2&task=items.addAttachment&format=json',
-				data : formData
-			}).done(function(data, status, xhr) {
-				attachment.find('.appItemAttachmentId').val(data.id);
-				attachment.find('.appItemAttachmentDownload').removeAttr('disabled').data('url', data.link);
-				attachment.find('.appItemAttachmentRemove').data('id', data.id);
-				attachment.find('input.appItemAttachmentName').val(data.name);
-				attachment.find('input.appItemAttachmentTitle').val(data.title);
-			}).fail(function(xhr, status, error) {
-				K2Dispatcher.trigger('app:message', 'error', xhr.responseText);
-			});
 		},
 
 		// Add media

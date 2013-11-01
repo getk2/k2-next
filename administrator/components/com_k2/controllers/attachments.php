@@ -74,7 +74,7 @@ class K2ControllerAttachments extends K2Controller
 		// Determine the key
 		if ($attachment->file)
 		{
-			$key = 'media/k2/attachments/'.$attachment->file;
+			$key = 'media/k2/attachments/'.$attachment->itemId.'/'.$attachment->file;
 		}
 		else if ($attachment->url)
 		{

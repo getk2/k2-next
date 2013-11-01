@@ -16,7 +16,7 @@ define(['marionette', 'text!layouts/extrafields/form.html', 'dispatcher', 'widge
 		},
 		onDomRefresh : function() {
 			this.renderExtraField();
-			K2Widget.updateEvents();
+			K2Widget.updateEvents(this.$el);
 		},
 		renderExtraField : function() {
 			var type = this.$el.find('#type').val();

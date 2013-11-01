@@ -191,10 +191,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 
 				// Fetch the data from server
 				this.model.fetch({
-
-					// Success callback
 					success : _.bind(function() {
-
 						// Create the view
 						var view = new View({
 							model : this.model
@@ -208,7 +205,6 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 
 						// Update the URL without triggering the router function
 						this.redirect(this.resource + suffix, false);
-
 					}, this),
 					error : _.bind(function(model, xhr, options) {
 						this.enqueueMessage('error', xhr.responseText);

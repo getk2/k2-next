@@ -1,38 +1,68 @@
-define(['marionette', 'text!layouts/attachments/widget.html', 'widgets/widget'], function(Marionette, template, K2Widget) {'use strict';
-	var K2ViewAttachmentsWidget = Marionette.ItemView.extend({
-		template : _.template(template),
-		collectionEvents : {
-			'reset' : 'render',
-			'add' : 'render',
-			'remove' : 'render'
-		},
+define(['dispatcher', 'widgets/widget', 'text!layouts/attachments/list.html', 'text!layouts/attachments/row.html'], function(K2Dispatcher, K2Widget, listTemplate, rowTemplate) {'use strict';
+
+	var K2ViewAttachmentsRow = Marionette.ItemView.extend({
+		tagName : 'div',
+		template : _.template(rowTemplate),
 		events : {
-			'click #appAddAttachment' : 'addAttachment',
 			'click .appRemoveAttachment' : 'removeAttachment',
 			'click .appDownloadAttachment' : 'downloadAttachment'
 		},
-		onDomRefresh : function() {
-			K2Widget.updateEvents();
+		modelEvents : {
+			'sync' : 'render'
 		},
-		addAttachment : function(event) {
-			event.preventDefault();
-			var attachment = new Backbone.Model();
-			attachment.set('id', attachment.cid);
-			this.collection.add(attachment);
+		initialize : function() {
+			K2Dispatcher.on('attachments:select:' + this.model.cid, function(url) {
+				this.model.set('url', url);
+				this.model.set('file', '');
+				this.saveAttachment();
+			}, this);
+			K2Dispatcher.on('attachments:upload:' + this.model.cid, function(e, data) {
+				this.model.set('file', data.result);
+				this.model.set('url', '');
+				this.saveAttachment();
+			}, this);
+		},
+		onDomRefresh : function() {
+			K2Widget.updateEvents(this.$el);
 		},
 		removeAttachment : function(event) {
 			event.preventDefault();
-			var element = jQuery(event.currentTarget);
-			var attachment = this.collection.get(element.data('id'));
-			this.collection.remove(attachment);
+			this.model.destroy();
 		},
 		downloadAttachment : function(event) {
 			event.preventDefault();
-			var element = jQuery(event.currentTarget);
-			var attachment = this.collection.get(element.data('id'));
-			var url = _.unescape(attachment.get('link'));
-			window.location = url;
+			if (this.model.get('link')) {
+				var url = _.unescape(this.model.get('link'));
+				window.location = url;
+			}
+		},
+		saveAttachment : function() {
+			this.model.set('name', this.$el.find('input[name="attachments[name][]"]').val());
+			this.model.set('title', this.$el.find('input[name="attachments[title][]"]').val());
+			this.model.save();
 		}
 	});
-	return K2ViewAttachmentsWidget;
+
+	var K2ViewAttachments = Marionette.CompositeView.extend({
+		template : _.template(listTemplate),
+		itemViewContainer : '#appAttachments',
+		itemView : K2ViewAttachmentsRow,
+		events : {
+			'click #appAddAttachment' : 'addAttachment'
+		},
+		initialize : function() {
+			K2Dispatcher.on('attachments:delete', function() {
+				_.each(this.collection.models, function(model) {
+					model.destroy();
+				});
+			}, this);
+		},
+		addAttachment : function(event) {
+			event.preventDefault();
+			this.collection.add({
+				'itemId' : this.collection.getState('itemId')
+			});
+		}
+	});
+	return K2ViewAttachments;
 });

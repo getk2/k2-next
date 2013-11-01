@@ -363,7 +363,7 @@ class K2ModelItems extends K2Model
 			}
 			$data['galleries'] = json_encode($galleries);
 		}
-		
+
 		// Extra fields
 		if (isset($data['extra_fields']))
 		{
@@ -443,12 +443,17 @@ class K2ModelItems extends K2Model
 		if (isset($data['attachments']))
 		{
 
+			require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
+			$filesystem = K2FileSystem::getInstance();
+
 			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
 			$model = K2Model::getInstance('Attachments', 'K2Model');
 
 			$ids = $data['attachments']['id'];
 			$names = $data['attachments']['name'];
 			$titles = $data['attachments']['title'];
+			$files = $data['attachments']['file'];
+			$path = 'media/k2/attachments';
 
 			foreach ($ids as $key => $value)
 			{
@@ -457,6 +462,15 @@ class K2ModelItems extends K2Model
 				$data['name'] = $names[$key];
 				$data['title'] = $titles[$key];
 				$data['itemId'] = $this->getState('id');
+				$data['file'] = $files[$key];
+				if (strpos($data['file'], '/') === 0)
+				{
+					list($folder, $file) = explode('/', $data['file']);
+					$source = $path.'/'.$folder.'/'.$file;
+					$target = $path.'/'.$this->getState('id').'/'.$file;
+					$filesystem->rename($source, $target);
+					$data['file'] = $file;
+				}
 				$model->setState('data', $data);
 				$model->save();
 			}

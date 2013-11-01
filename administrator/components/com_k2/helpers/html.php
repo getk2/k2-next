@@ -10,13 +10,11 @@
 // no direct access
 defined('_JEXEC') or die ;
 
-require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/helper.php';
-
 /**
  * K2 HTML helper class.
  */
 
-class K2HelperHTML extends K2Helper
+class K2HelperHTML
 {
 
 	public static function published($name = 'published', $value = null)

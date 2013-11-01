@@ -2,51 +2,41 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 	var K2Widget = {
 
 		// Adds the widgets to the elements
-		updateEvents : function() {
+		updateEvents : function(container) {
 			// Copy this to a variable
 			var self = this;
 			// Browse server
-			jQuery('input[data-widget="browser"]').each(function() {
-				self.browser(jQuery(this));
+			container.find('input[data-widget]').each(function() {
+				self.attachWidget(jQuery(this));
 			});
-			// Date picker
-			jQuery('input[data-widget="datepicker"]').each(function() {
-				self.datepicker(jQuery(this));
-			});
-			// Date picker
-			jQuery('input[data-widget="timepicker"]').each(function() {
-				self.timepicker(jQuery(this));
-			});
-			// User selector
-			jQuery('input[data-widget="user"]').each(function() {
-				self.user(jQuery(this));
-			});
-			// Tags selector
-			jQuery('input[data-widget="tags"]').each(function() {
-				self.tags(jQuery(this));
-			});
-			// Editor
-			jQuery('*[data-widget="editor"]').each(function() {
-				self.editor(jQuery(this));
-			});
-			// Uploader
-			jQuery('input[data-widget="uploader"]').each(function() {
-				self.uploader(jQuery(this));
-			});
+			
+		},
+		
+		attachWidget : function(element) {
+			var widget = element.data('widget');
+			var active = element.data('active');
+			if(!active) {
+				this[widget](element);
+				element.data('active', true);
+			}
 		},
 
 		browser : function(element) {
+
 			// Create the button
 			var button = jQuery('<button>' + l('K2_BROWSE_SERVER') + '</button>');
+
+			// Generate a unique callback
+			var callback = 'app:media:' + jQuery.now();
+			
 			// Add the click event
 			button.on('click', function(event) {
 				// Stop the event
 				event.preventDefault();
-				// Add class to the element who triggered the modal
-				element.addClass('appBrowseServerActiveField');
+
 				// Open the modal
 				K2Dispatcher.trigger('app:controller:browseServer', {
-					callback : 'browseServerSelectFile',
+					callback : callback,
 					modal : true
 				});
 			});
@@ -54,9 +44,8 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 			element.after(button);
 
 			// Callback when a file is selected
-			K2Dispatcher.on('browseServerSelectFile', function(path) {
+			K2Dispatcher.on(callback, function(path) {
 				element.val(path);
-				element.removeClass('appBrowseServerActiveField');
 				K2Dispatcher.trigger(element.data('callback'), path);
 			});
 		},
@@ -182,14 +171,7 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 			});
 		},
 		editor : function(element) {
-			K2Editor.init();
-			// Restore Joomla! modal events
-			if ( typeof (SqueezeBox) !== 'undefined') {
-				SqueezeBox.initialize({});
-				SqueezeBox.assign($$('a.modal-button'), {
-					parse : 'rel'
-				});
-			}
+			
 		},
 		uploader : function(element) {
 			require(['widgets/uploader/jquery.iframe-transport', 'widgets/uploader/jquery.fileupload'], function() {

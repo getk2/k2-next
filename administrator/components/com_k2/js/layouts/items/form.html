@@ -76,7 +76,7 @@
     </div>
 
     <label for="text"><%= l('K2_TEXT') %></label>
-    <div data-widget="editor"><%= form.text %></div>
+    <%= form.text %>
 
     <!-- Tags -->
     <label><%= l('K2_TAGS') %></label>
@@ -104,6 +104,9 @@
 
     <!-- Attachments -->
     <div id="appItemAttachments"></div>
+    
+    <!-- Galleries -->
+    <div id="appItemGalleries"></div>
 
     <!-- Media -->
     <button id="appActionAddMedia">
@@ -173,38 +176,8 @@
             <%= l('K2_REMOVE') %>
         </button>
     </div>
-    <!-- Gallery -->
-    <button id="appActionAddGallery">
-        <%= l('K2_ADD_GALLERY') %>
-    </button>
-    <div id="appItemGallery">
-        <% _.each(row.galleries, function(gallery) { %>
-        <div class="appItemGalleryEntry">
-            <label><%= l('K2_FILE') %></label>
-            <input type="file" class="appItemGalleryFile" name="galleries[file][]" />
-            <input type="hidden" class="appItemGalleryUpload" name="galleries[upload][]" value="<%- gallery.upload %>" />
 
-            <label><%= l('K2_URL') %></label>
-            <input type="text" class="appItemGalleryUrl" name="galleries[url][]" value="<%- gallery.url %>" />
 
-            <button class="appItemGalleryRemove">
-                <%= l('K2_REMOVE') %>
-            </button>
-        </div>
-        <% }); %>
-    </div>
-    <div id="appItemGalleryPlaceholder">
-        <label><%= l('K2_FILE') %></label>
-        <input type="file" class="appItemGalleryFile" name="galleries[file][]" />
-        <input type="hidden" class="appItemGalleryUpload" name="galleries[upload][]" />
-
-        <label><%= l('K2_URL') %></label>
-        <input type="text" class="appItemGalleryUrl" name="galleries[url][]" disabled="disabled" />
-
-        <button class="appItemGalleryRemove">
-            <%= l('K2_REMOVE') %>
-        </button>
-    </div>
     <!-- Extra Fields -->
     <div id="appItemExtraFields"></div>
     <input type="hidden" name="tmpId" value="<%= row.tmpId %>" / >

@@ -36,7 +36,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 
 		url : function() {
 			var base = _.result(this, 'urlRoot') || _.result(this.collection, 'url') || urlError();
-			base += '&id=' + this.get('id');
+			base += '&id=' + this.id;
 			return base;
 		},
 
@@ -70,6 +70,11 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 			var attrs = {};
 			attrs[state] = (this.get(state) > 0 ) ? 0 : 1;
 			this.save(attrs, params);
+		},
+		bind : function(input) {
+			_.each(input, _.bind(function(field) {
+				this.set(field.name, field.value);
+			}, this));
 		}
 	});
 

@@ -1,0 +1,12 @@
+<div class="appGallery">
+    <label><%= l('K2_FILE') %></label>
+    <input type="file" name="file" />
+    <input type="hidden" name="galleries[file][]" value="<%- file %>" />
+
+    <label><%= l('K2_URL') %></label>
+    <input type="text" name="galleries[url][]" value="<%- url %>" />
+
+    <button class="appRemoveGallery">
+        <%= l('K2_REMOVE') %>
+    </button>
+</div>

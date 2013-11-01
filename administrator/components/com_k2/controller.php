@@ -58,7 +58,7 @@ class K2Controller extends JControllerLegacy
 		{
 			// Add the Backbone response class to auto load
 			require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/response.php';
-			
+
 			// Add custom error handling for JSON requests to avoid breaking the JSON response from server
 			set_error_handler('K2Response::errorHandler');
 			set_exception_handler('K2Response::exceptionHandler');
@@ -153,8 +153,6 @@ class K2Controller extends JControllerLegacy
 					$this->delete();
 					break;
 			}
-			// Backbone.js v1.1 requires that we send some kind of response back, otherwise thinks we have an error.
-			echo json_encode(true);
 		}
 
 		// Return
@@ -227,6 +225,7 @@ class K2Controller extends JControllerLegacy
 	protected function update()
 	{
 		$this->save();
+		echo json_encode(true);
 	}
 
 	/**
@@ -255,7 +254,7 @@ class K2Controller extends JControllerLegacy
 				K2Response::throwError($this->model->getError());
 			}
 		}
-
+		echo json_encode(true);
 	}
 
 	/**
@@ -287,7 +286,6 @@ class K2Controller extends JControllerLegacy
 		{
 			K2Response::throwError($this->model->getError());
 		}
-
 	}
 
 	/**
@@ -331,7 +329,7 @@ class K2Controller extends JControllerLegacy
 				}
 			}
 		}
-
+		echo json_encode(true);
 	}
 
 	/**

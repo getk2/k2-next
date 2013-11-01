@@ -42,6 +42,14 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'vie
 			url : _.result(model, 'url') || urlError()
 		};
 
+		// Convert any model attributes to data
+		_.each(options.attrs, function(value, attribute) {
+			options.data.push({
+				name : 'states[' + attribute + ']',
+				value : value
+			});
+		});
+
 		// For create, update, patch and delete methods pass as aerguments the method and the session token.
 		if (method !== 'read') {
 			options.data.push({
@@ -53,14 +61,6 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'vie
 				value : 1
 			});
 		}
-
-		// Convert any model attributes to data
-		_.each(options.attrs, function(value, attribute) {
-			options.data.push({
-				name : 'states[' + attribute + ']',
-				value : value
-			});
-		});
 
 		// Make the request, allowing the user to override any Ajax options
 		var xhr = options.xhr = Backbone.ajax(_.extend(params, options));
@@ -186,12 +186,12 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'vie
 	K2Dispatcher.on('app:message', function(type, text) {
 		alert('Type:' + type + ' Message: ' + text);
 	});
-	
+
 	// Modal display listener
 	K2Dispatcher.on('app:modal', function(view) {
-		
+
 	});
-	
+
 	// Update event listener. Triggered when the server response is parsed.
 	K2Dispatcher.on('app:update', function(response) {
 

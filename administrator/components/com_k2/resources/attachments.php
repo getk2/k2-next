@@ -86,23 +86,42 @@ class K2Attachments extends K2Resource
 	public function delete()
 	{
 		// First check if we have any files to delete
+		$this->deleteFile();
+
+		// Delete
+		$model = K2Model::getInstance('Attachments', 'K2Model');
+		$model->setState('id', $this->id);
+		$model->delete();
+	}
+
+	public function deleteFile()
+	{
 		if ($this->file)
 		{
 			// Filesystem
 			require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
 			$filesystem = K2FileSystem::getInstance();
 
-			$key = 'media/k2/attachments/'.$this->file;
-			if ($filesystem->has($key))
+			$keys = array();
+			$path = 'media/k2/attachments';
+			if ($this->itemId)
 			{
-				$filesystem->delete($key);
+				$keys[] = $path.'/'.$this->itemId.'/'.$this->file;
+			}
+			else
+			{
+				list($folder, $file) = explode('/', $this->file);
+				$keys[] = $path.'/'.$folder.'/'.$file;
+				$keys[] = $path.'/'.$folder;
+			}
+			foreach ($keys as $key)
+			{
+				if ($filesystem->has($key))
+				{
+					$filesystem->delete($key);
+				}
 			}
 		}
-
-		// Delete
-		$model = K2Model::getInstance('Attachments', 'K2Model');
-		$model->setState('id', $this->id);
-		$model->delete();
 	}
 
 }
