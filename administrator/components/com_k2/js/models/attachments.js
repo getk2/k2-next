@@ -22,6 +22,7 @@ define(['backbone'], function(Backbone) {'use strict';
 		},
 		sync : function(method, model, options) {
 			// Convert any model attributes to data if options data is empty
+			options.data = [];
 			_.each(model.attributes, function(value, attribute) {
 				options.data.push({
 					name : attribute,
