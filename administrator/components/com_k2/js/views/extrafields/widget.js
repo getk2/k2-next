@@ -18,6 +18,7 @@ define(['marionette', 'text!layouts/extrafields/widget.html', 'dispatcher'], fun
 			'reset' : 'render'
 		},
 		initialize : function(options) {
+			K2Dispatcher.off('extrafields:update');
 			this.collection = new K2CollectionExtraFieldsWidget(options.data);
 			this.collection.setOption('scope', options.scope);
 			this.collection.setOption('filterId', options.filterId);

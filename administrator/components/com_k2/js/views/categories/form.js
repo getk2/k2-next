@@ -14,7 +14,7 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher', 'widget
 
 		// Model events
 		modelEvents : {
-			'sync' : 'update'
+			'change' : 'render'
 		},
 
 		// Initialize
@@ -24,6 +24,23 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher', 'widget
 			K2Dispatcher.on('app:controller:beforeSave', function() {
 				this.onBeforeSave();
 			}, this);
+
+			// Determine current itemId
+			var itemId = this.model.get('id') || this.model.get('tmpId');
+
+			// Image
+			this.imageView = new K2ViewImageWidget({
+				data : this.model,
+				itemId : itemId,
+				type : 'category'
+			});
+
+			// Extra fields
+			this.extraFieldsView = new K2ViewExtraFieldsWidget({
+				filterId : this.model.get('parent_id'),
+				resourceId : this.model.get('id'),
+				scope : 'category'
+			});
 
 		},
 
@@ -36,26 +53,10 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher', 'widget
 			return data;
 		},
 
-		update : function() {
+		onShow : function() {
 
-			this.render();
-
-			// Determine current itemId
-			var itemId = this.model.get('id') || this.model.get('tmpId');
-
-			// Image
-			this.imageRegion.show(new K2ViewImageWidget({
-				data : this.model,
-				itemId : itemId,
-				type : 'category'
-			}));
-
-			// Extra fields
-			this.extraFieldsRegion.show(new K2ViewExtraFieldsWidget({
-				filterId : this.model.get('parent_id'),
-				resourceId : this.model.get('id'),
-				scope : 'category'
-			}));
+			this.imageRegion.show(this.imageView);
+			this.extraFieldsRegion.show(this.extraFieldsView);
 
 		},
 
@@ -75,7 +76,7 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher', 'widget
 				K2Dispatcher.trigger('image:delete');
 			}
 		},
-		
+
 		// onRender event
 		onRender : function() {
 

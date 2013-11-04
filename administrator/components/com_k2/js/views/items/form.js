@@ -14,14 +14,13 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 			extraFieldsRegion : '#appItemExtraFields'
 		},
 
-		// Model events
-		modelEvents : {
-			'sync' : 'update'
-		},
-
 		// UI events
 		events : {
 			'change #catid' : 'updateExtraFields'
+		},
+
+		modelEvents : {
+			'change' : 'render'
 		},
 
 		// Initialize
@@ -31,6 +30,42 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 			K2Dispatcher.on('app:controller:beforeSave', function() {
 				this.onBeforeSave();
 			}, this);
+
+			// Determine current itemId
+			var itemId = this.model.get('id') || this.model.get('tmpId');
+
+			// Image
+			this.imageView = new K2ViewImageWidget({
+				data : this.model,
+				itemId : itemId,
+				type : 'item'
+			});
+
+			// Attachments
+			this.attachmentsView = new K2ViewAttachmentsWidget({
+				data : this.model.get('attachments'),
+				itemId : itemId
+			});
+
+			// Galleries
+			this.galleriesView = new K2ViewGalleriesWidget({
+				data : this.model.get('galleries'),
+				itemId : itemId
+			});
+
+			// Media
+			this.mediaView = new K2ViewMediaWidget({
+				data : this.model.get('media'),
+				itemId : itemId
+			});
+
+			// Extra fields
+			this.extraFieldsView = new K2ViewExtraFieldsWidget({
+				data : this.model.getForm().get('extraFields'),
+				filterId : this.model.get('catid'),
+				resourceId : this.model.get('id'),
+				scope : 'item'
+			});
 
 		},
 
@@ -61,54 +96,13 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 			}
 		},
 
-		update : function() {
-
-			this.render();
-
-			// Determine current itemId
-			var itemId = this.model.get('id') || this.model.get('tmpId');
-
-			// Image
-			this.imageRegion.show(new K2ViewImageWidget({
-				data : this.model,
-				itemId : itemId,
-				type : 'item'
-			}));
-
-			// Attachments
-			this.attachmentsRegion.show(new K2ViewAttachmentsWidget({
-				data : this.model.get('attachments'),
-				itemId : itemId
-			}));
-
-			// Galleries
-			this.galleriesRegion.show(new K2ViewGalleriesWidget({
-				data : this.model.get('galleries'),
-				itemId : itemId
-			}));
-
-			// Media
-			this.mediaRegion.show(new K2ViewMediaWidget({
-				data : this.model.get('media'),
-				itemId : itemId
-			}));
-			
-			// Extra fields
-			this.extraFieldsRegion.show(new K2ViewExtraFieldsWidget({
-				data : this.model.getForm().get('extraFields'),
-				filterId : this.model.get('catid'),
-				resourceId : this.model.get('id'),
-				scope : 'item'
-			}));
-
-		},
-
 		// onRender event
 		onRender : function() {
 
 			// Update radio buttons value
 			this.$el.find('input[name="published"]').val([this.model.get('published')]);
 			this.$el.find('input[name="featured"]').val([this.model.get('featured')]);
+
 		},
 
 		updateExtraFields : function(event) {
@@ -136,6 +130,23 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 			// Proxy event for extra fields custom javascript code
 			jQuery(document).trigger('K2ExtraFields');
 
+		},
+
+		onShow : function() {
+			// Image
+			this.imageRegion.show(this.imageView);
+
+			// Attachments
+			this.attachmentsRegion.show(this.attachmentsView);
+
+			// Galleries
+			this.galleriesRegion.show(this.galleriesView);
+
+			// Media
+			this.mediaRegion.show(this.mediaView);
+
+			// Extra fields
+			this.extraFieldsRegion.show(this.extraFieldsView);
 		}
 	});
 	return K2ViewItem;
