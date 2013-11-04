@@ -95,6 +95,7 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 			
 			// Extra fields
 			this.extraFieldsRegion.show(new K2ViewExtraFieldsWidget({
+				data : this.model.getForm().get('extraFields'),
 				filterId : this.model.get('catid'),
 				resourceId : this.model.get('id'),
 				scope : 'item'

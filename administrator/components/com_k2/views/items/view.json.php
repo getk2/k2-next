@@ -166,6 +166,8 @@ class K2ViewItems extends K2View
 		$editor = K2Editor::getInstance($config->get('editor'));
 		$value = trim($row->fulltext) != '' ? $row->introtext.'<hr id="system-readmore" />'.$row->fulltext : $row->introtext;
 		$form->text = $editor->display('text', $value, '100%', '300', '40', '5');
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/extrafields.php';
+		$form->extraFields = K2HelperExtraFields::getItemExtraFields($row->catid, $row->extra_fields);
 	}
 
 }
