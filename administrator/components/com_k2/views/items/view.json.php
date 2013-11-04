@@ -124,7 +124,7 @@ class K2ViewItems extends K2View
 			'K2_HITS' => 'hits'
 		);
 		K2Response::addFilter('sorting', JText::_('K2_SORT_BY'), K2HelperHTML::sorting($sortingOptions), false, 'header');
-		
+
 		// Categories filter
 		K2Response::addFilter('category', JText::_('K2_CATEGORY'), K2HelperHTML::categories('category', null, 'K2_ANY'), false, 'header');
 
@@ -136,8 +136,6 @@ class K2ViewItems extends K2View
 
 		// Featured filter
 		K2Response::addFilter('featured', JText::_('K2_FEATURED'), K2HelperHTML::featured(), true, 'sidebar');
-
-
 
 	}
 
@@ -156,6 +154,18 @@ class K2ViewItems extends K2View
 		K2Response::addToolbarAction('batch', 'K2_BATCH', array('id' => 'appActionBatch'));
 
 		K2Response::addToolbarAction('remove', 'K2_DELETE', array('id' => 'appActionRemove'));
+	}
+
+	protected function setFormFields(&$form, $row)
+	{
+		$form->language = K2HelperHTML::language('language', $row->language);
+		$form->access = JHtml::_('access.level', 'access', $row->access, '', false);
+		$form->category = K2HelperHTML::categories('catid', $row->catid, 'K2_SELECT_CATEGORY');
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/editor.php';
+		$config = JFactory::getConfig();
+		$editor = K2Editor::getInstance($config->get('editor'));
+		$value = trim($row->fulltext) != '' ? $row->introtext.'<hr id="system-readmore" />'.$row->fulltext : $row->introtext;
+		$form->text = $editor->display('text', $value, '100%', '300', '40', '5');
 	}
 
 }

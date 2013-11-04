@@ -287,7 +287,7 @@ class K2View extends JViewLegacy
 
 	/**
 	 * Loads the XML form and pass the fields to the response.
-	 * Children may need to override this method.
+	 * Usually there would be no need to override this method.
 	 *
 	 * @return void
 	 */
@@ -298,92 +298,6 @@ class K2View extends JViewLegacy
 
 		// Initialize form object
 		$_form = new stdClass;
-
-		// Access field
-		if (property_exists($row, 'access'))
-		{
-			$_form->access = JHtml::_('access.level', 'access', $row->access, '', false);
-		}
-
-		// Category field
-		if (property_exists($row, 'catid'))
-		{
-			$_form->category = K2HelperHTML::categories('catid', $row->catid, 'K2_SELECT_CATEGORY');
-		}
-
-		// Category parent field
-		if (property_exists($row, 'parent_id'))
-		{
-			$_form->parent = K2HelperHTML::categories('parent_id', $row->parent_id, 'K2_NONE', $row->id);
-		}
-
-		// Category inheritance
-		if (property_exists($row, 'inheritance'))
-		{
-			$_form->inheritance = K2HelperHTML::categories('inheritance', $row->inheritance, 'K2_NONE', $row->id);
-		}
-
-		// Category template
-		if (property_exists($row, 'template'))
-		{
-			$_form->template = K2HelperHTML::template('template', $row->template);
-		}
-
-		// Extra fields groups scopes and references
-		if (property_exists($row, 'scope'))
-		{
-			$_form->scope = K2HelperHTML::extraFieldsScopes('scope', $row->scope);
-			$assignments = array();
-			$assignments['item'] = K2HelperHTML::categories('assignments[categories][]', $row->assignments->categories, false, false, 'multiple="multiple"');
-			//JHtml::_('select.booleanlist', 'assignments[recursive]', null, $row->assignments->recursive);
-			$assignments['category'] = $assignments['item'];
-			$assignments['user'] = K2HelperHTML::usergroups('assignments[usergroups][]', $row->assignments->usergroups, false, 'multiple="multiple"');
-			$_form->assignments = $assignments;
-
-		}
-
-		// Extra field group
-		if (property_exists($row, 'group'))
-		{
-			$_form->group = K2HelperHTML::extraFieldsGroups('group', $row->group);
-		}
-
-		// Extra field type
-		if (property_exists($row, 'type'))
-		{
-			$_form->type = K2HelperHTML::extraFieldsTypes('type', $row->type, 'K2_SELECT_TYPE');
-			$definitions = K2HelperExtraFields::getDefinitions();
-			if ($row->id)
-			{
-				$definitions[$row->type] = $row->getDefinition();
-			}
-			$_form->definitions = $definitions;
-		}
-
-		// Language field
-		if (property_exists($row, 'language'))
-		{
-			$_form->language = K2HelperHTML::language('language', $row->language);
-		}
-
-		// Text field
-		if (property_exists($row, 'introtext') && property_exists($row, 'fulltext'))
-		{
-			require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/editor.php';
-			$config = JFactory::getConfig();
-			$editor = K2Editor::getInstance($config->get('editor'));
-			$value = trim($row->fulltext) != '' ? $row->introtext.'<hr id="system-readmore" />'.$row->fulltext : $row->introtext;
-			$_form->text = $editor->display('text', $value, '100%', '300', '40', '5');
-		}
-
-		// Description field
-		if (property_exists($row, 'description'))
-		{
-			require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/editor.php';
-			$config = JFactory::getConfig();
-			$editor = K2Editor::getInstance($config->get('editor'));
-			$_form->description = $editor->display('description', $row->description, '100%', '300', '40', '5');
-		}
 
 		// Check if form file exists
 		jimport('joomla.filesystem.file');
@@ -444,7 +358,19 @@ class K2View extends JViewLegacy
 			}
 		}
 
+		$this->setFormFields($_form, $row);
+
 		K2Response::setForm($_form);
+	}
+
+	/**
+	 * Hook for children views to allow them attach fields to the form object.
+	 * Children views usually should override this method.
+	 *
+	 * @return void
+	 */
+	protected function setFormFields(&$form, $row)
+	{
 	}
 
 	/**

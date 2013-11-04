@@ -116,7 +116,7 @@ class K2ViewExtraFields extends K2View
 
 		// Search filter
 		K2Response::addFilter('search', JText::_('K2_SEARCH'), K2HelperHTML::search(), false, 'sidebar');
-		
+
 		// Published filter
 		K2Response::addFilter('published', JText::_('K2_PUBLISHED'), K2HelperHTML::published(), true, 'sidebar');
 
@@ -125,6 +125,19 @@ class K2ViewExtraFields extends K2View
 	protected function setToolbar()
 	{
 		K2Response::addToolbarAction('remove', 'K2_DELETE', array('id' => 'appActionRemove'));
+	}
+
+	protected function setFormFields(&$form, $row)
+	{
+		$form->group = K2HelperHTML::extraFieldsGroups('group', $row->group);
+		$form->type = K2HelperHTML::extraFieldsTypes('type', $row->type, 'K2_SELECT_TYPE');
+		$definitions = K2HelperExtraFields::getDefinitions();
+		if ($row->id)
+		{
+			$definitions[$row->type] = $row->getDefinition();
+		}
+		$form->definitions = $definitions;
+
 	}
 
 }

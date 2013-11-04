@@ -140,4 +140,17 @@ class K2ViewCategories extends K2View
 		K2Response::addToolbarAction('remove', 'K2_DELETE', array('id' => 'appActionRemove'));
 	}
 
+	protected function setFormFields(&$form, $row)
+	{
+		$form->language = K2HelperHTML::language('language', $row->language);
+		$form->access = JHtml::_('access.level', 'access', $row->access, '', false);
+		$form->parent = K2HelperHTML::categories('parent_id', $row->parent_id, 'K2_NONE', $row->id);
+		$form->inheritance = K2HelperHTML::categories('inheritance', $row->inheritance, 'K2_NONE', $row->id);
+		$form->template = K2HelperHTML::template('template', $row->template);
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/editor.php';
+		$config = JFactory::getConfig();
+		$editor = K2Editor::getInstance($config->get('editor'));
+		$form->description = $editor->display('description', $row->description, '100%', '300', '40', '5');
+	}
+
 }

@@ -75,6 +75,13 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher', 'widget
 				K2Dispatcher.trigger('image:delete');
 			}
 		},
+		
+		// onRender event
+		onRender : function() {
+
+			// Update radio buttons value
+			this.$el.find('input[name="published"]').val([this.model.get('published')]);
+		},
 
 		// OnDomRefresh event ( Marionette.js build in event )
 		onDomRefresh : function() {
