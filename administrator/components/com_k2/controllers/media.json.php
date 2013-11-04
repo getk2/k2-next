@@ -19,6 +19,88 @@ jimport('joomla.filesystem.file');
 
 class K2ControllerMedia extends K2Controller
 {
+
+	public function upload()
+	{
+		// Check for token
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
+		// Filesystem
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
+		$filesystem = K2FileSystem::getInstance();
+
+		// Get input
+		$input = JFactory::getApplication()->input;
+		$itemId = $input->get('itemId', '', 'cmd');
+		$upload = $input->get('upload', '', 'cmd');
+		$folder = $itemId;
+		$file = $input->files->get('file');
+
+		// Setup some variables
+		$path = 'media/k2/media/'.$folder;
+		$filename = $file['name'];
+		$buffer = file_get_contents($file['tmp_name']);
+		$target = $path.'/'.$filename;
+
+		// If the current file is uploaded then we should remove it when we upload a new one
+		if ($upload && $filesystem->has($path.'/'.$upload))
+		{
+			$filesystem->delete($path.'/'.$upload);
+		}
+
+		// Write it to the filesystem
+		$filesystem->write($target, $buffer, true);
+
+		// Response
+		$response = new stdClass;
+		$response->upload = $filename;
+		$response->url = $target;
+		echo json_encode($response);
+
+		// Return
+		return $this;
+
+	}
+
+	/**
+	 * Delete function.
+	 * Deletes a resource.
+	 * Usually there will be no need to override this function.
+	 *
+	 * @return void
+	 */
+	protected function delete()
+	{
+		// Check for token
+		JSession::checkToken() or K2Response::throwError(JText::_('JINVALID_TOKEN'));
+
+		// Get id from input
+		$input = JFactory::getApplication()->input;
+		$itemId = $input->get('itemId', '', 'cmd');
+		$upload = $input->get('upload', '', 'cmd');
+		$folder = $itemId;
+
+		if ($upload)
+		{
+			// Filesystem
+			require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
+			$filesystem = K2FileSystem::getInstance();
+
+			// Key
+			$key = 'media/k2/media/'.$folder.'/'.$upload;
+
+			// Delete
+			if ($filesystem->has($key))
+			{
+				$filesystem->delete($key);
+			}
+		}
+
+		// Return
+		echo json_encode(true);
+		return $this;
+	}
+
 	public function connector()
 	{
 		$application = JFactory::getApplication();
@@ -50,13 +132,13 @@ class K2ControllerMedia extends K2Controller
 		function access($attr, $path, $data, $volume)
 		{
 			$application = JFactory::getApplication();
-			
+
 			$ext = strtolower(JFile::getExt(basename($path)));
 			if ($ext == 'php')
 			{
 				return true;
 			}
-			
+
 			// Hide files and folders starting with .
 			if (strpos(basename($path), '.') === 0 && $attr == 'hidden')
 			{

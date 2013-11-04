@@ -1,7 +1,7 @@
-define(['text!layouts/galleries/list.html', 'text!layouts/galleries/row.html', 'widgets/widget', 'dispatcher'], function(listTemplate, rowTemplate, K2Widget, K2Dispatcher) {'use strict';
+define(['text!layouts/media/list.html', 'text!layouts/media/row.html', 'widgets/widget', 'dispatcher'], function(listTemplate, rowTemplate, K2Widget, K2Dispatcher) {'use strict';
 
 	// Model
-	var Gallery = Backbone.Model.extend({
+	var MediaModel = Backbone.Model.extend({
 		initialize : function() {
 			this.set('cid', this.cid);
 		},
@@ -10,9 +10,14 @@ define(['text!layouts/galleries/list.html', 'text!layouts/galleries/row.html', '
 			itemId : null,
 			cid : null,
 			upload : null,
-			url : null
+			url : null,
+			provider : null,
+			id : null,
+			embed : null,
+			caption : null,
+			credits : null
 		},
-		urlRoot : 'index.php?option=com_k2&task=galleries.sync&format=json',
+		urlRoot : 'index.php?option=com_k2&task=media.sync&format=json',
 		url : function() {
 			var base = _.result(this, 'urlRoot') || _.result(this.collection, 'url') || urlError();
 			if (this.isNew())
@@ -22,62 +27,66 @@ define(['text!layouts/galleries/list.html', 'text!layouts/galleries/row.html', '
 	});
 
 	// Collection
-	var Galleries = Backbone.Collection.extend({
-		model : Gallery
+	var MediaCollection = Backbone.Collection.extend({
+		model : MediaModel
 	});
 
 	// Row view
-	var K2ViewGalleriesRow = Marionette.ItemView.extend({
+	var K2ViewMediaRow = Marionette.ItemView.extend({
 		tagName : 'div',
 		template : _.template(rowTemplate),
 		events : {
-			'click .appRemoveGallery' : 'removeGallery'
+			'click .appRemoveMedia' : 'removeMedia'
 		},
 		modelEvents : {
 			'change' : 'render'
 		},
 		initialize : function() {
-			K2Dispatcher.on('galleries:upload:' + this.model.cid, function(e, data) {
-				this.model.set('upload', data.result);
+			K2Dispatcher.on('media:select:' + this.model.cid, function(url) {
+				this.model.set('url', url);
+				this.model.set('file', '');
+			}, this);
+			K2Dispatcher.on('media:upload:' + this.model.cid, function(e, data) {
+				this.model.set('upload', data.result.upload);
 				this.model.set('url', '');
 			}, this);
 		},
 		onDomRefresh : function() {
 			K2Widget.updateEvents(this.$el);
 		},
-		removeGallery : function(event) {
+		removeMedia : function(event) {
 			event.preventDefault();
 			this.model.destroy();
 		}
 	});
 
 	// List view
-	var K2ViewGalleries = Marionette.CompositeView.extend({
+	var K2ViewMedia = Marionette.CompositeView.extend({
 		template : _.template(listTemplate),
-		itemViewContainer : '#appGalleries',
-		itemView : K2ViewGalleriesRow,
+		itemViewContainer : '#appMedia',
+		itemView : K2ViewMediaRow,
 		events : {
-			'click #appAddGallery' : 'addGallery'
+			'click #appAddMedia' : 'addMedia'
 		},
 		initialize : function(options) {
 			this.itemId = options.itemId;
-			this.collection = new Galleries(options.data);
+			this.collection = new MediaCollection(options.data);
 			_.each(this.collection.models, function(model) {
 				model.set('itemId', options.itemId);
 			});
 
-			K2Dispatcher.on('galleries:delete', function() {
+			K2Dispatcher.on('media:delete', function() {
 				_.each(this.collection.models, function(model) {
 					model.destroy();
 				});
 			}, this);
 		},
-		addGallery : function(event) {
+		addMedia : function(event) {
 			event.preventDefault();
 			this.collection.add({
 				itemId : this.itemId
 			});
 		}
 	});
-	return K2ViewGalleries;
+	return K2ViewMedia;
 });

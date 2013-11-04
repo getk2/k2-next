@@ -371,7 +371,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 
 		media : function() {
 			// Load the required files
-			require(['models/media', 'views/media/default'], _.bind(function(Model, View) {
+			require(['models/media', 'views/media/manager'], _.bind(function(Model, View) {
 
 				// Create the model
 				this.model = new Model();
@@ -400,8 +400,8 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 		},
 
 		browseServer : function(options) {
-			require(['views/media/default'], _.bind(function(K2ViewMedia) {
-				var view = new K2ViewMedia(options);
+			require(['views/media/manager'], _.bind(function(K2ViewMediaManager) {
+				var view = new K2ViewMediaManager(options);
 				K2Dispatcher.trigger('app:region:show', view, 'modal');
 			}, this));
 		}

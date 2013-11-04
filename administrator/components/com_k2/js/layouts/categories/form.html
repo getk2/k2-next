@@ -34,31 +34,28 @@
     <input id="created_by_alias" type="text" name="created_by_alias" value="<%- row.created_by_alias %>" />
 
     <label for="createdDate"><%= l('K2_CREATED_DATE') %></label>
-    <input class="appDatePicker" id="createdDate" type="text" name="createdDate" value="<%- row.createdDate %>" />
+    <input id="createdDate" data-widget="datepicker" type="text" name="createdDate" value="<%- row.createdDate %>" />
     <label for="createdTime"><%= l('K2_CREATED_TIME') %></label>
-    <input class="appTimePicker" id="createdTime" type="text" name="createdTime" value="<%- row.createdTime %>" />
+    <input id="createdTime" data-widget="timepicker" type="text" name="createdTime" value="<%- row.createdTime %>" />
 
     <div>
         <span><%= l('K2_MODIFIED_DATE') %></span><span><%= row.modifiedOn %></span>
     </div>
+    
     <label><%= l('K2_AUTHOR') %></label>
-    <input id="appCategoryAuthor" type="hidden" name="created_by" value="<%- row.created_by %>" />
-    <span><%= row.authorName %></span>
+    <input data-widget="user" data-name="<%- row.authorName %>" type="hidden" name="created_by" value="<%- row.created_by %>" />
+    
+ 
     <div>
         <span><%= l('K2_MODERATOR') %></span>
         <span><%= row.moderatorName %></span>
     </div>
     
-    <label for="appCategoryImageFile"><%= l('K2_IMAGE') %></label>
-    <input type="file" id="appCategoryImageFile" name="imageFile" />
-    <input type="hidden" id="appCategoryImageValue" name="image"  />
-    <button id="appCategoryImageBrowseServer"><%= l('K2_BROWSE_SERVER') %></button>
+    <!-- Image -->
+    <div id="appCategoryImage"></div>
     
-    <div class="appCategoryImagePreviewContainer">
-        <img alt="<%- l('K2_PREVIEW') %>" id="appCategoryImagePreview" />
-        <button id="appCategoryImageRemove"><%= l('K2_REMOVE_IMAGE') %></button>
-    </div>
-    
+    <!-- Extra Fields -->
+    <div id="appCategoryExtraFields"></div>
     
     
     <label for="description"><%= l('K2_DESCRIPTION') %></label> <%= form.description %>

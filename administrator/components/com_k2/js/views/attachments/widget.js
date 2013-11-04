@@ -1,4 +1,4 @@
-define(['dispatcher', 'widgets/widget', 'text!layouts/attachments/list.html', 'text!layouts/attachments/row.html'], function(K2Dispatcher, K2Widget, listTemplate, rowTemplate) {'use strict';
+define(['dispatcher', 'widgets/widget', 'text!layouts/attachments/list.html', 'text!layouts/attachments/row.html', 'collections/attachments'], function(K2Dispatcher, K2Widget, listTemplate, rowTemplate, K2CollectionAttachments) {'use strict';
 
 	var K2ViewAttachmentsRow = Marionette.ItemView.extend({
 		tagName : 'div',
@@ -50,7 +50,10 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/attachments/list.html', 't
 		events : {
 			'click #appAddAttachment' : 'addAttachment'
 		},
-		initialize : function() {
+		initialize : function(options) {
+			this.itemId = options.itemId;
+			this.collection = new K2CollectionAttachments(options.data);
+			this.collection.setState('itemId', this.itemId);
 			K2Dispatcher.on('attachments:delete', function() {
 				_.each(this.collection.models, function(model) {
 					model.destroy();

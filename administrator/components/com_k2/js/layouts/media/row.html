@@ -1,0 +1,27 @@
+<div class="appMediaEntry">
+    <label><%= l('K2_FILE') %></label>
+    <input type="file" name="file" data-widget="uploader" data-url="index.php?option=com_k2&task=media.upload&itemId=<%- itemId %>&upload=<%- upload %>&format=json" data-callback="media:upload:<%- cid %>" />
+    <input type="hidden" name="media[upload][]" value="<%- upload %>" />
+
+    <label><%= l('K2_URL') %></label>
+    <input type="text" name="media[url][]" value="<%- url %>" data-widget="browser" data-callback="media:select:<%- cid %>" />
+
+    <label><%= l('K2_PROVIDER') %></label>
+    <input type="text" name="media[provider][]" value="<%- provider %>" />
+
+    <label><%= l('K2_ID') %></label>
+    <input type="text" name="media[id][]" value="<%- id %>" />
+
+    <label><%= l('K2_EMBED') %></label>
+    <textarea name="media[embed][]"><%= embed %></textarea>
+    
+    <label><%= l('K2_MEDIA_CAPTION') %></label>
+    <input type="text" name="media[caption][]" value="<%- caption %>" />
+
+    <label><%= l('K2_MEDIA_CREDITS') %></label>
+    <input type="text" name="media[credits][]" value="<%- credits %>" />
+
+    <button class="appRemoveMedia">
+        <%= l('K2_REMOVE') %>
+    </button>
+</div>
