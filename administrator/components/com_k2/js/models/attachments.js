@@ -7,6 +7,7 @@ define(['backbone'], function(Backbone) {'use strict';
 		defaults : {
 			id : null,
 			itemId : null,
+			tmpId : null,
 			name : null,
 			title : null,
 			file : null,

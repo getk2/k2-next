@@ -55,9 +55,9 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/attachments/list.html', 't
 			'click #appAddAttachment' : 'addAttachment'
 		},
 		initialize : function(options) {
-			this.itemId = options.itemId;
 			this.collection = new K2CollectionAttachments(options.data);
-			this.collection.setState('itemId', this.itemId);
+			this.collection.setState('itemId', options.itemId);
+			this.collection.setState('tmpId', options.tmpId);
 			this.on('delete', function() {
 				_.each(this.collection.models, function(model) {
 					model.destroy({
@@ -69,7 +69,8 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/attachments/list.html', 't
 		addAttachment : function(event) {
 			event.preventDefault();
 			this.collection.add({
-				'itemId' : this.collection.getState('itemId')
+				'itemId' : this.collection.getState('itemId'),
+				'tmpId' : this.collection.getState('tmpId')
 			});
 		}
 	});

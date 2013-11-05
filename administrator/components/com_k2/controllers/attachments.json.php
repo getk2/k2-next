@@ -45,6 +45,8 @@ class K2ControllerAttachments extends K2Controller
 		$input = JFactory::getApplication()->input;
 		$id = $input->get('id', 0, 'int');
 		$itemId = $input->get('itemId', 0, 'int');
+		$tmpId = $input->get('tmpId', '', 'cmd');
+		$folder = $itemId ? $itemId : $tmpId;
 		$file = $input->files->get('file');
 
 		// Get attachment instance
@@ -56,12 +58,10 @@ class K2ControllerAttachments extends K2Controller
 		$filename = $file['name'];
 		if ($itemId)
 		{
-			$folder = $itemId;
 			$value = $filename;
 		}
 		else
 		{
-			$folder = uniqid();
 			$value = $folder.'/'.$filename;
 		}
 
@@ -110,6 +110,9 @@ class K2ControllerAttachments extends K2Controller
 			// Delete
 			$attachment->delete();
 		}
+
+		echo json_encode(true);
+
 	}
 
 }

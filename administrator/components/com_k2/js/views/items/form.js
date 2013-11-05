@@ -31,32 +31,30 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 				this.onBeforeSave();
 			}, this);
 
-			// Determine current itemId
-			var itemId = this.model.get('id') || this.model.get('tmpId');
-
 			// Image
 			this.imageView = new K2ViewImageWidget({
 				data : this.model.get('_image'),
-				itemId : itemId,
+				itemId : this.model.get('id') || this.model.get('tmpId'),
 				type : 'item'
 			});
 
 			// Attachments
 			this.attachmentsView = new K2ViewAttachmentsWidget({
 				data : this.model.get('attachments'),
-				itemId : itemId
+				itemId : this.model.get('id'),
+				tmpId : this.model.get('tmpId')
 			});
 
 			// Galleries
 			this.galleriesView = new K2ViewGalleriesWidget({
 				data : this.model.get('galleries'),
-				itemId : itemId
+				itemId : this.model.get('id') || this.model.get('tmpId')
 			});
 
 			// Media
 			this.mediaView = new K2ViewMediaWidget({
 				data : this.model.get('media'),
-				itemId : itemId
+				itemId : this.model.get('id') || this.model.get('tmpId')
 			});
 
 			// Extra fields

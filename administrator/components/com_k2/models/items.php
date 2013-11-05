@@ -395,7 +395,6 @@ class K2ModelItems extends K2Model
 
 	protected function onAfterSave(&$data, $table)
 	{
-		$data = $this->getState('data');
 		if (isset($data['tags']) && JString::trim($data['tags']) != '')
 		{
 			$model = K2Model::getInstance('Tags', 'K2Model');
@@ -472,22 +471,27 @@ class K2ModelItems extends K2Model
 
 			foreach ($ids as $key => $value)
 			{
-				$data = array();
-				$data['id'] = $ids[$key];
-				$data['name'] = $names[$key];
-				$data['title'] = $titles[$key];
-				$data['itemId'] = $this->getState('id');
-				$data['file'] = $files[$key];
-				if (strpos($data['file'], '/') === 0)
+				$attachmentsData = array();
+				$attachmentsData['id'] = $ids[$key];
+				$attachmentsData['name'] = $names[$key];
+				$attachmentsData['title'] = $titles[$key];
+				$attachmentsData['itemId'] = $this->getState('id');
+				$attachmentsData['file'] = $files[$key];
+				if ($data['tmpId'])
 				{
-					list($folder, $file) = explode('/', $data['file']);
+					list($folder, $file) = explode('/', $attachmentsData['file']);
 					$source = $path.'/'.$folder.'/'.$file;
 					$target = $path.'/'.$this->getState('id').'/'.$file;
 					$filesystem->rename($source, $target);
-					$data['file'] = $file;
+					$attachmentsData['file'] = $file;
 				}
-				$model->setState('data', $data);
+				$model->setState('data', $attachmentsData);
 				$model->save();
+			}
+
+			if ($data['tmpId'] && $filesystem->has($path.'/'.$data['tmpId']))
+			{
+				$filesystem->delete($path.'/'.$data['tmpId']);
 			}
 
 		}

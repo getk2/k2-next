@@ -102,25 +102,30 @@ class K2Attachments extends K2Resource
 			require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
 			$filesystem = K2FileSystem::getInstance();
 
-			$keys = array();
 			$path = 'media/k2/attachments';
 			if ($this->itemId)
 			{
-				$keys[] = $path.'/'.$this->itemId.'/'.$this->file;
+				$folder = $this->itemId;
+				$key = $path.'/'.$folder.'/'.$this->file;
 			}
 			else
 			{
 				list($folder, $file) = explode('/', $this->file);
-				$keys[] = $path.'/'.$folder.'/'.$file;
-				$keys[] = $path.'/'.$folder;
+				$key = $path.'/'.$folder.'/'.$file;
 			}
-			foreach ($keys as $key)
+
+			if ($filesystem->has($key))
 			{
-				if ($filesystem->has($key))
-				{
-					$filesystem->delete($key);
-				}
+				$filesystem->delete($key);
 			}
+
+			$keys = $filesystem->listKeys($path.'/'.$folder.'/');
+
+			if (empty($keys['keys']) && $filesystem->has($path.'/'.$folder))
+			{
+				$filesystem->delete($path.'/'.$folder);
+			}
+
 		}
 	}
 
