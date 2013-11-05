@@ -107,7 +107,7 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 
 		updateExtraFields : function(event) {
 			event.preventDefault();
-			K2Dispatcher.trigger('extrafields:update', this.$el.find('#catid').val());
+			this.extraFieldsView.trigger('filter', this.$el.find('#catid').val());
 		},
 
 		// OnDomRefresh event ( Marionette.js build in event )
