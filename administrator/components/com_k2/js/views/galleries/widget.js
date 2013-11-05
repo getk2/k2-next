@@ -47,7 +47,9 @@ define(['text!layouts/galleries/list.html', 'text!layouts/galleries/row.html', '
 		},
 		removeGallery : function(event) {
 			event.preventDefault();
-			this.model.destroy();
+			this.model.destroy({
+				wait : true
+			});
 		}
 	});
 
@@ -68,7 +70,9 @@ define(['text!layouts/galleries/list.html', 'text!layouts/galleries/row.html', '
 
 			this.on('delete', function() {
 				_.each(this.collection.models, function(model) {
-					model.destroy();
+					model.destroy({
+						wait : true
+					});
 				});
 			});
 		},

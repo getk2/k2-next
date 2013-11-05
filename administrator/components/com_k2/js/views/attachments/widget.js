@@ -27,7 +27,9 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/attachments/list.html', 't
 		},
 		removeAttachment : function(event) {
 			event.preventDefault();
-			this.model.destroy();
+			this.model.destroy({
+				wait : true
+			});
 		},
 		downloadAttachment : function(event) {
 			event.preventDefault();
@@ -58,7 +60,9 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/attachments/list.html', 't
 			this.collection.setState('itemId', this.itemId);
 			this.on('delete', function() {
 				_.each(this.collection.models, function(model) {
-					model.destroy();
+					model.destroy({
+						wait : true
+					});
 				});
 			});
 		},

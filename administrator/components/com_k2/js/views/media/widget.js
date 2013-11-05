@@ -56,7 +56,9 @@ define(['text!layouts/media/list.html', 'text!layouts/media/row.html', 'widgets/
 		},
 		removeMedia : function(event) {
 			event.preventDefault();
-			this.model.destroy();
+			this.model.destroy({
+				wait : true
+			});
 		}
 	});
 
@@ -77,7 +79,9 @@ define(['text!layouts/media/list.html', 'text!layouts/media/row.html', 'widgets/
 
 			this.on('delete', function() {
 				_.each(this.collection.models, function(model) {
-					model.destroy();
+					model.destroy({
+						wait : true
+					});
 				});
 			});
 		},
