@@ -6,11 +6,14 @@
     <label><%= l('K2_PUBLISHED') %></label>
     
     <label> <%= l('K2_YES') %>
-        <input type="radio" name="published" value="1" <%= (row.published > 0) ? 'checked="checked"': '' %>/>
+        <input type="radio" name="published" value="1" />
     </label>
     <label> <%= l('K2_NO') %>
-        <input type="radio" name="published" value="0" <%= (row.published < 1) ? 'checked="checked"': '' %> />
+        <input type="radio" name="published" value="0" />
     </label>
+    
+    <!-- Extra Fields -->
+    <div id="appTagExtraFields"></div>
 
     <input type="hidden" name="id" value="<%= row.id %>" / >
     

@@ -12,6 +12,11 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher', 'widget
 			extraFieldsRegion : '#appCategoryExtraFields'
 		},
 
+		// UI events
+		events : {
+			'change #parent_id' : 'updateExtraFields'
+		},
+
 		// Model events
 		modelEvents : {
 			'change' : 'render'
@@ -37,6 +42,7 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher', 'widget
 
 			// Extra fields
 			this.extraFieldsView = new K2ViewExtraFieldsWidget({
+				data : this.model.getForm().get('extraFields'),
 				filterId : this.model.get('parent_id'),
 				resourceId : this.model.get('id'),
 				scope : 'category'
@@ -82,6 +88,11 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher', 'widget
 
 			// Update radio buttons value
 			this.$el.find('input[name="published"]').val([this.model.get('published')]);
+		},
+		
+		updateExtraFields : function(event) {
+			event.preventDefault();
+			this.extraFieldsView.trigger('filter', this.$el.find('#parent_id').val());
 		},
 
 		// OnDomRefresh event ( Marionette.js build in event )

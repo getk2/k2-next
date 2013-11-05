@@ -151,6 +151,8 @@ class K2ViewCategories extends K2View
 		$config = JFactory::getConfig();
 		$editor = K2Editor::getInstance($config->get('editor'));
 		$form->description = $editor->display('description', $row->description, '100%', '300', '40', '5');
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/extrafields.php';
+		$form->extraFields = K2HelperExtraFields::getCategoryExtraFields($row->catid, $row->extra_fields);
 	}
 
 }

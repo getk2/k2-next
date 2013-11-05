@@ -233,6 +233,12 @@ class K2ModelCategories extends K2Model
 			}
 		}
 
+		// Extra fields
+		if (isset($data['extra_fields']))
+		{
+			$data['extra_fields'] = json_encode($data['extra_fields']);
+		}
+
 	}
 
 	protected function onAfterSave(&$data, $table)

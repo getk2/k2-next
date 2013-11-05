@@ -29,14 +29,16 @@ class K2ControllerExtraFields extends K2Controller
 			require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/items.php';
 			$item = K2Items::getInstance($resourceId);
 			$values = $item->extra_fields;
+			$fields = K2HelperExtraFields::getItemExtraFields($filterId, $values);
 		}
 		else if ($scope == 'category')
 		{
 			require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/categories.php';
 			$category = K2Categories::getInstance($resourceId);
 			$values = $category->extra_fields;
+			$fields = K2HelperExtraFields::getCategoryExtraFields($filterId, $values);
 		}
-		$fields = K2HelperExtraFields::getItemExtraFields($filterId, $values);
+		
 		echo json_encode($fields);
 		return $this;
 	}

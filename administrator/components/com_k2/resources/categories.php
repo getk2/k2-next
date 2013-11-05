@@ -76,6 +76,7 @@ class K2Categories extends K2Resource
 		// Escape fpr HTML inputs
 		JFilterOutput::objectHTMLSafe($this, ENT_QUOTES, array(
 			'image',
+			'extra_fields',
 			'metadata',
 			'plugins',
 			'params',

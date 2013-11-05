@@ -37,9 +37,11 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/attachments/list.html', 't
 			}
 		},
 		saveAttachment : function() {
-			this.model.set('name', this.$el.find('input[name="attachments[name][]"]').val());
-			this.model.set('title', this.$el.find('input[name="attachments[title][]"]').val());
-			this.model.save();
+			var data = [];
+			this.model.save({
+				'name' : this.$el.find('input[name="attachments[name][]"]').val(),
+				'title' : this.$el.find('input[name="attachments[title][]"]').val()
+			});
 		}
 	});
 

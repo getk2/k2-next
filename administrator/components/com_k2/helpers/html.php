@@ -56,7 +56,7 @@ class K2HelperHTML
 		return JHtml::_('select.genericlist', $list, $name, '', 'value', 'text', $value);
 	}
 
-	public static function categories($name = 'catid', $value = null, $none = false, $exclude = null, $attributes = '')
+	public static function categories($name = 'catid', $value = null, $none = false, $exclude = null, $attributes = '', $recursive = false)
 	{
 		$model = K2Model::getInstance('Categories', 'K2Model');
 		$model->setState('sorting', 'ordering');
@@ -83,7 +83,13 @@ class K2HelperHTML
 			}
 
 		}
-		return JHtml::_('select.genericlist', $options, $name, $attributes, 'value', 'text', $value);
+
+		$output = JHtml::_('select.genericlist', $options, $name, $attributes, 'value', 'text', $value);
+		if ($recursive)
+		{
+			$output .= '<label>'.JText::_($recursive->label).'</label>'.JHtml::_('select.booleanlist', $recursive->name, null, $recursive->value);
+		}
+		return $output;
 	}
 
 	public static function search($name = 'search')
@@ -188,7 +194,7 @@ class K2HelperHTML
 		}
 		return JHtml::_('select.genericlist', $options, $name, $attributes, 'value', 'text', $value);
 	}
-	
+
 	public static function usergroups($name = 'usergroups', $value = null, $none = false, $attributes = '')
 	{
 		$options = array();
@@ -196,7 +202,7 @@ class K2HelperHTML
 		{
 			$options[] = JHtml::_('select.option', '', JText::_($none));
 		}
-		
+
 		$model = K2Model::getInstance('UserGroups', 'K2Model');
 		$rows = $model->getRows();
 

@@ -22,7 +22,7 @@ define(['backbone'], function(Backbone) {'use strict';
 		},
 		sync : function(method, model, options) {
 			// Convert any model attributes to data if options data is empty
-			if(options.data === undefined) {
+			if (options.data === undefined) {
 				options.data = [];
 			}
 			_.each(model.attributes, function(value, attribute) {
@@ -31,6 +31,7 @@ define(['backbone'], function(Backbone) {'use strict';
 					value : value
 				});
 			});
+			return Backbone.sync.apply(this, arguments);
 		}
 	});
 

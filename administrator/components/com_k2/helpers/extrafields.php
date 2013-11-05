@@ -105,10 +105,70 @@ class K2HelperExtraFields
 	{
 		$groups = array();
 		$values = json_decode($values);
-
+		$search = array();
 		foreach (self::getGroups('item') as $group)
 		{
-			if ($group->assignments->mode == 'all' || ($group->assignments->mode == 'specific' && in_array($categoryId, $group->assignments->categories)))
+			if ($group->assignments->mode == 'specific')
+			{
+				$search = $group->assignments->categories;
+				if ($group->assignments->recursive)
+				{
+					foreach ($group->assignments->categories as $id)
+					{
+						$table = JTable::getInstance('Categories', 'K2Table');
+						foreach ($table->getTree($id) as $category)
+						{
+							$search[] = $category->id;
+						}
+					}
+				}
+				$search = array_unique($search);
+			}
+
+			if ($group->assignments->mode == 'all' || ($group->assignments->mode == 'specific' && in_array($categoryId, $search)))
+			{
+				foreach ($group->fields as $field)
+				{
+					if (property_exists($values, $field->id))
+					{
+						$index = $field->id;
+						$resourceValues = $values->$index;
+						$defaults = json_decode($field->value);
+						$activeValues = array_merge((array)$defaults, (array)$resourceValues);
+						$field->value = json_encode((object)$activeValues);
+					}
+					$field->input = $field->getInput();
+				}
+				$groups[] = $group;
+			}
+		}
+		return $groups;
+	}
+
+	public static function getCategoryExtraFields($parentId, $values)
+	{
+		$groups = array();
+		$values = json_decode($values);
+
+		foreach (self::getGroups('category') as $group)
+		{
+			if ($group->assignments->mode == 'specific')
+			{
+				$search = $group->assignments->categories;
+				if ($group->assignments->recursive)
+				{
+					foreach ($group->assignments->categories as $id)
+					{
+						$table = JTable::getInstance('Categories', 'K2Table');
+						foreach ($table->getTree($id) as $category)
+						{
+							$search[] = $category->id;
+						}
+					}
+				}
+				$search = array_unique($search);
+			}
+			if ($group->assignments->mode == 'all' || ($group->assignments->mode == 'specific' && in_array($parentId, $search)))
 			{
 				foreach ($group->fields as $field)
 				{

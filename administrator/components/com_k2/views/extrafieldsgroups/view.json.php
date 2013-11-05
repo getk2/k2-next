@@ -118,8 +118,11 @@ class K2ViewExtraFieldsGroups extends K2View
 	{
 		$form->scope = K2HelperHTML::extraFieldsScopes('scope', $row->scope);
 		$assignments = array();
-		$assignments['item'] = K2HelperHTML::categories('assignments[categories][]', $row->assignments->categories, false, false, 'multiple="multiple"');
-		//JHtml::_('select.booleanlist', 'assignments[recursive]', null, $row->assignments->recursive);
+		$recursive = new stdClass;
+		$recursive->label = 'K2_APPLY_RECUSRIVELY';
+		$recursive->name = 'assignments[recursive]';
+		$recursive->value = $row->assignments->recursive;
+		$assignments['item'] = K2HelperHTML::categories('assignments[categories][]', $row->assignments->categories, false, false, 'multiple="multiple"', $recursive);
 		$assignments['category'] = $assignments['item'];
 		$assignments['user'] = K2HelperHTML::usergroups('assignments[usergroups][]', $row->assignments->usergroups, false, 'multiple="multiple"');
 		$form->assignments = $assignments;
