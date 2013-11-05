@@ -66,11 +66,11 @@ define(['text!layouts/galleries/list.html', 'text!layouts/galleries/row.html', '
 				model.set('itemId', options.itemId);
 			});
 
-			K2Dispatcher.on('galleries:delete', function() {
+			this.on('delete', function() {
 				_.each(this.collection.models, function(model) {
 					model.destroy();
 				});
-			}, this);
+			});
 		},
 		addGallery : function(event) {
 			event.preventDefault();

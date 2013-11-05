@@ -2,14 +2,15 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 
 	// Model
 	var ImageModel = Backbone.Model.extend({
+		idAttribute : 'upload',
 		defaults : {
 			itemId : null,
 			type : null,
 			upload : null,
-			image_flag : null,
-			image_caption : null,
-			imagePreview : null,
-			image_credits : null
+			flag : null,
+			caption : null,
+			preview : null,
+			credits : null
 		},
 		urlRoot : 'index.php?option=com_k2&task=image.sync&format=json',
 		url : function() {
@@ -28,30 +29,38 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 			'click #appRemoveImage' : 'removeImage'
 		},
 		modelEvents : {
-			'change' : 'render'
+			'change:preview' : 'render'
 		},
 		initialize : function(options) {
-			this.model = new ImageModel(options.data.attributes);
+			this.model = new ImageModel(options.data);
 			this.model.set('itemId', options.itemId);
 			this.model.set('type', options.type);
+
 			K2Dispatcher.on('image:select', function(path) {
 				this.setImageFromServer(path);
 			}, this);
+
 			K2Dispatcher.on('image:upload', function(e, data) {
-				this.model.set('imagePreview', data.result.preview);
+				this.model.set('flag', 1);
 				this.model.set('upload', data.result.upload);
-				this.model.set('image_flag', 1);
+				this.model.set('preview', data.result.preview);
 			}, this);
-			K2Dispatcher.on('image:delete', function() {
+
+			this.on('delete', function() {
 				this.model.destroy();
-			}, this);
+			});
+
 		},
 		onDomRefresh : function() {
 			K2Widget.updateEvents(this.$el);
 		},
 		removeImage : function(event) {
 			event.preventDefault();
-			this.model.set('image_flag', 0);
+			this.model.set('flag', 0);
+			this.model.set('upload', '');
+			this.model.set('caption', '');
+			this.model.set('credits', '');
+			this.model.set('preview', '');
 			this.model.destroy();
 		},
 		setImageFromServer : function(path) {
@@ -67,9 +76,9 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 				url : 'index.php?option=com_k2&task=image.upload&format=json',
 				data : data
 			}).done(function(data, status, xhr) {
-				self.model.set('imagePreview', data.preview);
+				self.model.set('preview', data.preview);
 				self.model.set('upload', data.upload);
-				self.model.set('image_flag', 1);
+				self.model.set('flag', 1);
 			}).fail(function(xhr, status, error) {
 				K2Dispatcher.trigger('app:message', 'error', xhr.responseText);
 			});

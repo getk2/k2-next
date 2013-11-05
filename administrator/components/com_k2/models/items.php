@@ -316,6 +316,14 @@ class K2ModelItems extends K2Model
 			}
 		}
 
+		// Image. Convert input to db compatible fields
+		if (isset($data['image']) && is_array($data['image']))
+		{
+			$data['image_flag'] = $data['image']['flag'];
+			$data['image_caption'] = $data['image']['caption'];
+			$data['image_credits'] = $data['image']['credits'];
+		}
+
 		// Media
 		if (isset($data['media']))
 		{
@@ -397,7 +405,7 @@ class K2ModelItems extends K2Model
 		}
 
 		// If we have a tmpId we need to rename the image and update the field
-		if ($data['image_flag'] && isset($data['tmpId']) && $data['tmpId'])
+		if (isset($data['image']) && is_array($data['image']) && $data['tmpId'])
 		{
 			$sizes = array(
 				'XL' => 600,
@@ -409,7 +417,7 @@ class K2ModelItems extends K2Model
 
 			require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
 			$filesystem = K2FileSystem::getInstance();
-			$baseSourceFileName = $data['tmpId'];
+			$baseSourceFileName = $data['image']['upload'];
 			$baseTargetFileName = md5('Image'.$table->id);
 
 			// Original image

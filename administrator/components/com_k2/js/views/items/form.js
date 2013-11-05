@@ -36,7 +36,7 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 
 			// Image
 			this.imageView = new K2ViewImageWidget({
-				data : this.model,
+				data : this.model.get('_image'),
 				itemId : itemId,
 				type : 'item'
 			});
@@ -89,10 +89,10 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 		onBeforeClose : function() {
 			// Clean up uploaded files
 			if (this.model.isNew()) {
-				K2Dispatcher.trigger('image:delete');
-				K2Dispatcher.trigger('attachments:delete');
-				K2Dispatcher.trigger('galleries:delete');
-				K2Dispatcher.trigger('media:delete');
+				this.imageView.trigger('delete');
+				this.attachmentsView.trigger('delete');
+				this.galleriesView.trigger('delete');
+				this.mediaView.trigger('delete');
 			}
 		},
 

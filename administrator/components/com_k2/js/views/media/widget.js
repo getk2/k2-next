@@ -75,11 +75,11 @@ define(['text!layouts/media/list.html', 'text!layouts/media/row.html', 'widgets/
 				model.set('itemId', options.itemId);
 			});
 
-			K2Dispatcher.on('media:delete', function() {
+			this.on('delete', function() {
 				_.each(this.collection.models, function(model) {
 					model.destroy();
 				});
-			}, this);
+			});
 		},
 		addMedia : function(event) {
 			event.preventDefault();

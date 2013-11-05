@@ -99,9 +99,9 @@ class K2Items extends K2Resource
 		}
 
 		$this->tags = $this->getTags();
-		
+
 		$tagsValue = array();
-		foreach($this->tags as $tag)
+		foreach ($this->tags as $tag)
 		{
 			$tagsValue[] = $tag->name;
 		}
@@ -145,8 +145,14 @@ class K2Items extends K2Resource
 			{
 				$images[$size] = JURI::root(true).'/media/k2/items/cache/'.$baseFileName.'_'.$size.'.jpg?t='.$timestamp;
 			}
+			$this->image = $this->images[$size];
 
-			$this->imagePreview = $this->images[$size];
+			$this->_image = new stdClass;
+			$this->_image->preview = $this->image;
+			$this->_image->upload = $baseFileName;
+			$this->_image->credits = $this->image_credits;
+			$this->_image->caption = $this->image_caption;
+			$this->_image->flag = $this->image_flag;
 		}
 		return $images;
 	}

@@ -54,11 +54,11 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/attachments/list.html', 't
 			this.itemId = options.itemId;
 			this.collection = new K2CollectionAttachments(options.data);
 			this.collection.setState('itemId', this.itemId);
-			K2Dispatcher.on('attachments:delete', function() {
+			this.on('delete', function() {
 				_.each(this.collection.models, function(model) {
 					model.destroy();
 				});
-			}, this);
+			});
 		},
 		addAttachment : function(event) {
 			event.preventDefault();

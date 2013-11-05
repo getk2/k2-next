@@ -1,11 +1,11 @@
 <h2><%= l('K2_IMAGE') %></h2>
 <input type="file" name="file" data-widget="uploader" data-url="index.php?option=com_k2&task=image.upload&format=json&itemId=<%- itemId %>&type=<%- type %>" data-callback="image:upload" />
-<input type="text" name="path" data-widget="browser" data-callback="image:select" />
-<input type="hidden" name="upload" value="<%- upload %>"  />
-<input type="hidden" name="image_flag" value="<%- image_flag %>"  />
-<% if(image_flag) { %>
+<input type="text" name="image[path]" data-widget="browser" data-callback="image:select" />
+<input type="hidden" name="image[upload]" value="<%- upload %>"  />
+<input type="hidden" name="image[flag]" value="<%- flag %>"  />
+<% if(flag) { %>
 <div>
-    <img alt="<%- l('K2_PREVIEW') %>" src="<%- imagePreview %>" />
+    <img alt="<%- l('K2_PREVIEW') %>" src="<%- preview %>" />
     <button id="appRemoveImage">
         <%= l('K2_REMOVE_IMAGE') %>
     </button>
@@ -13,7 +13,7 @@
 <% } %>
 
 <label><%= l('K2_IMAGE_CAPTION') %></label>
-<input type="text" name="image_caption" value="<%- image_caption %>" />
+<input type="text" name="image[caption]" value="<%- caption %>" />
 
 <label><%= l('K2_IMAGE_CREDITS') %></label>
-<input type="text" name="image_credits" value="<%- image_credits %>" />
+<input type="text" name="image[credits]" value="<%- credits %>" />
