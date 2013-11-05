@@ -47,7 +47,9 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 			}, this);
 
 			this.on('delete', function() {
-				this.model.destroy();
+				if (this.model.get('flag') > 0) {
+					this.model.destroy();
+				}
 			});
 
 		},
@@ -56,12 +58,13 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 		},
 		removeImage : function(event) {
 			event.preventDefault();
+			this.model.destroy();
 			this.model.set('flag', 0);
 			this.model.set('upload', '');
 			this.model.set('caption', '');
 			this.model.set('credits', '');
 			this.model.set('preview', '');
-			this.model.destroy();
+
 		},
 		setImageFromServer : function(path) {
 			var data = {};

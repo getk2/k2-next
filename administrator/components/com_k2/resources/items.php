@@ -73,6 +73,7 @@ class K2Items extends K2Resource
 		// Prepare specific properties
 		$this->link = '#items/edit/'.$this->id;
 		JFilterOutput::objectHTMLSafe($this, ENT_QUOTES, array(
+			'image',
 			'media',
 			'galleries',
 			'extra_fields',
@@ -128,8 +129,9 @@ class K2Items extends K2Resource
 	public function getImages()
 	{
 		$images = array();
-		$this->image_flag = (int)$this->image_flag;
-		if ($this->id && $this->image_flag)
+		$this->_image = json_decode($this->image);
+		$this->_image->flag = (int)$this->_image->flag;
+		if ($this->id && $this->_image->flag)
 		{
 			$sizes = array(
 				'XL' => 600,
@@ -146,13 +148,8 @@ class K2Items extends K2Resource
 				$images[$size] = JURI::root(true).'/media/k2/items/cache/'.$baseFileName.'_'.$size.'.jpg?t='.$timestamp;
 			}
 			$this->image = $this->images[$size];
-
-			$this->_image = new stdClass;
 			$this->_image->preview = $this->image;
 			$this->_image->upload = $baseFileName;
-			$this->_image->credits = $this->image_credits;
-			$this->_image->caption = $this->image_caption;
-			$this->_image->flag = $this->image_flag;
 		}
 		return $images;
 	}

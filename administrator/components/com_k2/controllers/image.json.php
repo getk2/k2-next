@@ -129,7 +129,9 @@ class K2ControllerImage extends K2Controller
 			JTable::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/tables');
 			$row = JTable::getInstance('Items', 'K2Table');
 			$row->load($itemId);
-			$row->image_flag = 1;
+			$image = json_decode($row->image);
+			$image->flag = 1;
+			$row->image = json_encode($image);
 			$row->store();
 		}
 
@@ -187,7 +189,9 @@ class K2ControllerImage extends K2Controller
 			JTable::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/tables');
 			$row = JTable::getInstance('Items', 'K2Table');
 			$row->load($itemId);
-			$row->image_flag = 0;
+			$image = json_decode($row->image);
+			$image->flag = 0;
+			$row->image = json_encode($image);
 			$row->store();
 		}
 
