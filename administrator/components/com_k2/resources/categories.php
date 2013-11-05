@@ -75,6 +75,7 @@ class K2Categories extends K2Resource
 
 		// Escape fpr HTML inputs
 		JFilterOutput::objectHTMLSafe($this, ENT_QUOTES, array(
+			'image',
 			'metadata',
 			'plugins',
 			'params',
@@ -82,13 +83,17 @@ class K2Categories extends K2Resource
 		));
 
 		// Image
-		$this->image = (string)$this->image;
-		if ($this->image)
+		$this->_image = json_decode($this->image);
+		$this->_image->flag = (int)$this->_image->flag;
+		if ($this->id && $this->_image->flag)
 		{
+			$baseFileName = md5('Image'.$this->id).'.jpg';
 			$modifiedDate = ((int)$this->modified > 0) ? $this->modified : $this->created;
 			$timestamp = JFactory::getDate($modifiedDate)->toUnix();
-			$this->imagePreview = JURI::root(true).'/media/k2/categories/'.$this->image.'?t='.$timestamp;
+			$this->image = JURI::root(true).'/media/k2/categories/'.$baseFileName.'?t='.$timestamp;
+			$this->_image->preview = $this->image;
+			$this->_image->upload = $baseFileName;
 		}
-
 	}
+
 }

@@ -218,21 +218,37 @@ class K2ModelCategories extends K2Model
 			$table->setLocation($data['parent_id'], 'last-child');
 		}
 
+		// Image
+		if (isset($data['image']))
+		{
+			if ($data['image']['flag'])
+			{
+				unset($data['image']['path']);
+				unset($data['image']['upload']);
+				$data['image'] = json_encode($data['image']);
+			}
+			else
+			{
+				$data['image'] = '';
+			}
+		}
+
 	}
 
 	protected function onAfterSave(&$data, $table)
 	{
 		// If we have a tmpId we need to rename the image and update the field
-		if (isset($data['image']) && $data['image'] && isset($data['tmpId']) && $data['tmpId'])
+		if (isset($data['tmpId']) && $data['tmpId'] && isset($data['image']['flag']) && $data['image']['flag'])
 		{
 			require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
 			$filesystem = K2FileSystem::getInstance();
+			$baseSourceFileName = md5('Image'.$data['tmpId']);
+			$baseTargetFileName = md5('Image'.$table->id);
+
 			$path = 'media/k2/categories';
-			$source = $data['image'];
-			$target = $table->id.'.jpg';
+			$source = $baseSourceFileName.'.jpg';
+			$target = $baseTargetFileName.'.jpg';
 			$filesystem->rename($path.'/'.$source, $path.'/'.$target);
-			$table->image = $target;
-			$table->store();
 		}
 
 	}

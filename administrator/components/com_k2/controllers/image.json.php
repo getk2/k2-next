@@ -221,7 +221,7 @@ class K2ControllerImage extends K2Controller
 		$imagePath = str_replace(JURI::root(true).'/', '', $imagePath);
 
 		// Set some variables
-		$filename = $itemId.'.jpg';
+		$filename = md5('Image'.$itemId).'.jpg';
 		$path = 'media/k2/categories';
 
 		if ($imagePath)
@@ -245,7 +245,9 @@ class K2ControllerImage extends K2Controller
 			JTable::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/tables');
 			$row = JTable::getInstance('Categories', 'K2Table');
 			$row->load($itemId);
-			$row->image = $filename;
+			$image = json_decode($row->image);
+			$image->flag = 1;
+			$row->image = json_encode($image);
 			$row->store();
 		}
 
@@ -285,7 +287,9 @@ class K2ControllerImage extends K2Controller
 			JTable::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/tables');
 			$row = JTable::getInstance('Categories', 'K2Table');
 			$row->load($itemId);
-			$row->image = '';
+			$image = json_decode($row->image);
+			$image->flag = 0;
+			$row->image = json_encode($image);
 			$row->store();
 		}
 

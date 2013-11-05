@@ -30,7 +30,7 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher', 'widget
 
 			// Image
 			this.imageView = new K2ViewImageWidget({
-				data : this.model,
+				data : this.model.get('_image'),
 				itemId : itemId,
 				type : 'category'
 			});
@@ -73,7 +73,7 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher', 'widget
 			// Is it new?
 			if (this.model.isNew()) {
 				// Delete any uploaded images
-				K2Dispatcher.trigger('image:delete');
+				this.imageView.trigger('delete');
 			}
 		},
 
