@@ -154,7 +154,7 @@ class K2ControllerImage extends K2Controller
 			);
 			foreach ($sizes as $size => $width)
 			{
-				$keys[] = 'media/k2/items/cache/'.$baseFileName.'_'.$size.'.jpg';
+				$keys[] = 'media/k2/items/cache/'.$id.'_'.$size.'.jpg';
 			}
 			// Get table
 			JTable::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/tables');
