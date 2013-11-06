@@ -114,4 +114,13 @@ class K2ViewUserGroups extends K2View
 		K2Response::addToolbarAction('remove', 'K2_DELETE', array('id' => 'appActionRemove'));
 	}
 
+	protected function setFormFields(&$form, $row)
+	{
+		if (!$row->id)
+		{
+			require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/html.php';
+			$form->parent_id = K2HelperHTML::usergroups('parent_id', null, false, '');
+		}
+	}
+
 }

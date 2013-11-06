@@ -1,11 +1,23 @@
 <form id="k2UserGroupForm" class="appEditForm">
 
-    <label for="name"><%= l('K2_NAME') %></label>
-    <input type="text" name="name" id="name" value="<%- row.name %>" />
-
+    <label for="name"><%= l('K2_TITLE') %></label>
+    <input type="text" name="title" id="title" value="<%- row.title %>" />
+    
+    <% if(row.id) { %>
+    <input type="hidden" name="parent_id" value="<%= row.parent_id %>" / >
+    <% } else { %>
+    <label><%= l('K2_PARENT') %></label>
+    <%= form.parent_id %>
+    <% } %>
     <input type="hidden" name="id" value="<%= row.id %>" / >
     
     <% _(form.jform).each(function(field) { %>
+    <%= field.label %>
+    <%= field.input %>
+    <% }); %>
+    
+    <h2><%= l('K2_PERMISSIONS') %></h2> 
+    <% _(form.permissions).each(function(field) { %>
     <%= field.label %>
     <%= field.input %>
     <% }); %>
