@@ -212,5 +212,23 @@ class K2HelperHTML
 		}
 		return JHtml::_('select.genericlist', $options, $name, $attributes, 'value', 'text', $value);
 	}
+	
+	public static function tags($name = 'tags', $value = null, $none = false, $attributes = '')
+	{
+		$options = array();
+		if ($none)
+		{
+			$options[] = JHtml::_('select.option', '', JText::_($none));
+		}
+
+		$model = K2Model::getInstance('Tags', 'K2Model');
+		$rows = $model->getRows();
+
+		foreach ($rows as $row)
+		{
+			$options[] = JHtml::_('select.option', $row->id, $row->name);
+		}
+		return JHtml::_('select.genericlist', $options, $name, $attributes, 'value', 'text', $value);
+	}
 
 }

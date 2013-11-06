@@ -125,6 +125,7 @@ class K2ViewExtraFieldsGroups extends K2View
 		$assignments['item'] = K2HelperHTML::categories('assignments[categories][]', $row->assignments->categories, false, false, 'multiple="multiple"', $recursive);
 		$assignments['category'] = $assignments['item'];
 		$assignments['user'] = K2HelperHTML::usergroups('assignments[usergroups][]', $row->assignments->usergroups, false, 'multiple="multiple"');
+		$assignments['tag'] = K2HelperHTML::tags('assignments[tags][]', $row->assignments->tags, false, 'multiple="multiple"');
 		$form->assignments = $assignments;
 
 	}

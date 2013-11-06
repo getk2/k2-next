@@ -127,19 +127,7 @@ class K2HelperExtraFields
 
 			if ($group->assignments->mode == 'all' || ($group->assignments->mode == 'specific' && in_array($categoryId, $search)))
 			{
-				foreach ($group->fields as $field)
-				{
-					if (property_exists($values, $field->id))
-					{
-						$index = $field->id;
-						$resourceValues = $values->$index;
-						$defaults = json_decode($field->value);
-						$activeValues = array_merge((array)$defaults, (array)$resourceValues);
-						$field->value = json_encode((object)$activeValues);
-					}
-					$field->input = $field->getInput();
-				}
-				$groups[] = $group;
+				$groups[] = self::renderGroup($group, $values);
 			}
 		}
 		return $groups;
@@ -170,22 +158,60 @@ class K2HelperExtraFields
 			}
 			if ($group->assignments->mode == 'all' || ($group->assignments->mode == 'specific' && in_array($parentId, $search)))
 			{
-				foreach ($group->fields as $field)
-				{
-					if (property_exists($values, $field->id))
-					{
-						$index = $field->id;
-						$resourceValues = $values->$index;
-						$defaults = json_decode($field->value);
-						$activeValues = array_merge((array)$defaults, (array)$resourceValues);
-						$field->value = json_encode((object)$activeValues);
-					}
-					$field->input = $field->getInput();
-				}
-				$groups[] = $group;
+				$groups[] = self::renderGroup($group, $values);
 			}
 		}
 		return $groups;
+	}
+
+	public static function getUserExtraFields($userId, $values)
+	{
+		$groups = array();
+		$values = json_decode($values);
+		$user = JFactory::getUser($userId);
+		$usergroups = $user->getAuthorisedGroups();
+
+		foreach (self::getGroups('user') as $group)
+		{
+			if ($group->assignments->mode == 'all' || ($group->assignments->mode == 'specific' && count(array_intersect($usergroups, $group->assignments->usergroups)) > 0))
+			{
+				$groups[] = self::renderGroup($group, $values);
+			}
+		}
+		return $groups;
+	}
+
+	public static function getTagExtraFields($tagId, $values)
+	{
+		$groups = array();
+		$values = json_decode($values);
+
+		foreach (self::getGroups('tag') as $group)
+		{
+			if ($group->assignments->mode == 'all' || ($group->assignments->mode == 'specific' && in_array($tagId, $group->assignments->tags)))
+			{
+				$groups[] = self::renderGroup($group, $values);
+			}
+		}
+		return $groups;
+	}
+
+	private static function renderGroup($group, $values)
+	{
+		foreach ($group->fields as $field)
+		{
+			if (property_exists($values, $field->id))
+			{
+				$index = $field->id;
+				$resourceValues = $values->$index;
+				$defaults = json_decode($field->value);
+				$activeValues = array_merge((array)$defaults, (array)$resourceValues);
+				$field->value = json_encode((object)$activeValues);
+			}
+			$field->input = $field->getInput();
+		}
+
+		return $group;
 	}
 
 }

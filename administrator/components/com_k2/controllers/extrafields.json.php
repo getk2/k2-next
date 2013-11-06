@@ -38,7 +38,17 @@ class K2ControllerExtraFields extends K2Controller
 			$values = $category->extra_fields;
 			$fields = K2HelperExtraFields::getCategoryExtraFields($filterId, $values);
 		}
-		
+		else if ($scope == 'user')
+		{
+			$fields = K2HelperExtraFields::getUserExtraFields($filterId, null);
+		}
+		else if ($scope == 'tag')
+		{
+			require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/tags.php';
+			$tag = K2Tags::getInstance($resourceId);
+			$values = $tag->extra_fields;
+			$fields = K2HelperExtraFields::getTagExtraFields($filterId, $values);
+		}
 		echo json_encode($fields);
 		return $this;
 	}

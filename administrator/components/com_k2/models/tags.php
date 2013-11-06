@@ -143,6 +143,23 @@ class K2ModelTags extends K2Model
 			$query->order($order);
 		}
 	}
+	
+	/**
+	 * onBeforeSave method.
+	 * @param   array  $data     The data to be saved.
+	 *
+	 * @return void
+	 */
+
+	protected function onBeforeSave(&$data, $table)
+	{
+		// Extra fields
+		if (isset($data['extra_fields']))
+		{
+			$data['extra_fields'] = json_encode($data['extra_fields']);
+		}
+
+	}
 
 	/**
 	 * onAfterDelete method. Hook for chidlren model.
