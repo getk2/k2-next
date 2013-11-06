@@ -75,12 +75,17 @@ class K2HelperImages
 		return $result;
 	}
 
-	public static function removeResourceImage($type, $id)
+	public static function removeResourceImage($type, $resourceId, $id = null)
 	{
 
 		if (!in_array($type, self::getTypes()))
 		{
 			return false;
+		}
+
+		if (is_null($id))
+		{
+			$id = md5('Image'.$resourceId);
 		}
 
 		if ($type == 'item')

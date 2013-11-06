@@ -73,7 +73,7 @@ class K2ControllerImage extends K2Controller
 		$itemId = $input->get('itemId', 0, 'int');
 
 		// Remove image using helper
-		K2HelperImages::removeResourceImage($type, $id);
+		K2HelperImages::removeResourceImage($type, $itemId, $id);
 
 		// Update the database if needed
 		if ($itemId)
