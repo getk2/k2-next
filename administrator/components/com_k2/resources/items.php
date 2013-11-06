@@ -130,8 +130,7 @@ class K2Items extends K2Resource
 	{
 		$images = array();
 		$this->_image = json_decode($this->image);
-		$this->_image->flag = (int)$this->_image->flag;
-		if ($this->id && $this->_image->flag)
+		if ($this->id && $this->image)
 		{
 			$sizes = array(
 				'XL' => 600,
@@ -149,7 +148,7 @@ class K2Items extends K2Resource
 			}
 			$this->image = $this->images[$size];
 			$this->_image->preview = $this->image;
-			$this->_image->upload = $baseFileName;
+			$this->_image->id = $baseFileName;
 		}
 		return $images;
 	}

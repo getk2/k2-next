@@ -33,8 +33,7 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 
 			// Image
 			this.imageView = new K2ViewImageWidget({
-				data : this.model.get('_image'),
-				itemId : this.model.get('id') || this.model.get('tmpId'),
+				row : this.model,
 				type : 'item'
 			});
 

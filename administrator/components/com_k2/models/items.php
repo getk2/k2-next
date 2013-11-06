@@ -319,10 +319,11 @@ class K2ModelItems extends K2Model
 		// Image
 		if (isset($data['image']))
 		{
-			if ($data['image']['flag'])
+			if ($data['image']['id'])
 			{
+				$this->setState('imageId', $data['image']['id']);
 				unset($data['image']['path']);
-				unset($data['image']['upload']);
+				unset($data['image']['id']);
 				$data['image'] = json_encode($data['image']);
 			}
 			else
@@ -395,6 +396,7 @@ class K2ModelItems extends K2Model
 
 	protected function onAfterSave(&$data, $table)
 	{
+		// Tags
 		if (isset($data['tags']) && JString::trim($data['tags']) != '')
 		{
 			$model = K2Model::getInstance('Tags', 'K2Model');
@@ -410,37 +412,40 @@ class K2ModelItems extends K2Model
 			}
 		}
 
-		// If we have a tmpId we need to rename the image and update the field
-		if (isset($data['tmpId']) && $data['tmpId'] && isset($data['image']['flag']) && $data['image']['flag'])
+		// If we have a tmpId we have a new item and we need to handle accordingly uploaded files
+		if (isset($data['tmpId']) && $data['tmpId'])
 		{
-			$sizes = array(
-				'XL' => 600,
-				'L' => 400,
-				'M' => 240,
-				'S' => 180,
-				'XS' => 100
-			);
-
-			require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
-			$filesystem = K2FileSystem::getInstance();
-			$baseSourceFileName = md5('Image'.$data['tmpId']);
-			$baseTargetFileName = md5('Image'.$table->id);
-
-			// Original image
-			$path = 'media/k2/items/src';
-			$source = $baseSourceFileName.'.jpg';
-			$target = $baseTargetFileName.'.jpg';
-			$filesystem->rename($path.'/'.$source, $path.'/'.$target);
-
-			// Resized images
-			$path = 'media/k2/items/cache';
-			foreach ($sizes as $size => $width)
+			// Image
+			if ($this->getState('imageId'))
 			{
-				$source = $baseSourceFileName.'_'.$size.'.jpg';
-				$target = $baseTargetFileName.'_'.$size.'.jpg';
-				$filesystem->rename($path.'/'.$source, $path.'/'.$target);
-			}
+				$sizes = array(
+					'XL' => 600,
+					'L' => 400,
+					'M' => 240,
+					'S' => 180,
+					'XS' => 100
+				);
 
+				require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
+				$filesystem = K2FileSystem::getInstance();
+				$baseSourceFileName = $this->getState('imageId');
+				$baseTargetFileName = md5('Image'.$table->id);
+
+				// Original image
+				$path = 'media/k2/items/src';
+				$source = $baseSourceFileName.'.jpg';
+				$target = $baseTargetFileName.'.jpg';
+				$filesystem->rename($path.'/'.$source, $path.'/'.$target);
+
+				// Resized images
+				$path = 'media/k2/items/cache';
+				foreach ($sizes as $size => $width)
+				{
+					$source = $baseSourceFileName.'_'.$size.'.jpg';
+					$target = $baseTargetFileName.'_'.$size.'.jpg';
+					$filesystem->rename($path.'/'.$source, $path.'/'.$target);
+				}
+			}
 		}
 
 		// If we have a tmpId we need to rename the gallery directory

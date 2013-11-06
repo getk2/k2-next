@@ -85,15 +85,14 @@ class K2Categories extends K2Resource
 
 		// Image
 		$this->_image = json_decode($this->image);
-		$this->_image->flag = (int)$this->_image->flag;
-		if ($this->id && $this->_image->flag)
+		if ($this->id && $this->image)
 		{
-			$baseFileName = md5('Image'.$this->id).'.jpg';
+			$baseFileName = md5('Image'.$this->id);
 			$modifiedDate = ((int)$this->modified > 0) ? $this->modified : $this->created;
 			$timestamp = JFactory::getDate($modifiedDate)->toUnix();
-			$this->image = JURI::root(true).'/media/k2/categories/'.$baseFileName.'?t='.$timestamp;
+			$this->image = JURI::root(true).'/media/k2/categories/'.$baseFileName.'.jpg?t='.$timestamp;
 			$this->_image->preview = $this->image;
-			$this->_image->upload = $baseFileName;
+			$this->_image->id = $baseFileName;
 		}
 	}
 

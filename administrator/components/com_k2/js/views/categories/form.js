@@ -35,8 +35,7 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher', 'widget
 
 			// Image
 			this.imageView = new K2ViewImageWidget({
-				data : this.model.get('_image'),
-				itemId : itemId,
+				row : this.model,
 				type : 'category'
 			});
 

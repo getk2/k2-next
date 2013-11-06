@@ -119,6 +119,14 @@ class K2ControllerGalleries extends K2Controller
 			}
 			$filesystem->delete($galleryKey);
 
+			// Check if the item folder contains more galleries. If not delete it.
+			$keys = $filesystem->listKeys('media/k2/galleries/'.$itemFolder.'/');
+			var_dump($keys);
+			if (empty($keys['dirs']))
+			{
+				$filesystem->delete('media/k2/galleries/'.$itemFolder);
+			}
+
 		}
 
 		// Return

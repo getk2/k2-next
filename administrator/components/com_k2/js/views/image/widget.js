@@ -2,14 +2,13 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 
 	// Model
 	var ImageModel = Backbone.Model.extend({
-		idAttribute : 'upload',
 		defaults : {
+			id : null,
+			tmpId : null,
 			itemId : null,
 			type : null,
-			upload : null,
-			flag : null,
-			caption : null,
 			preview : null,
+			caption : null,
 			credits : null
 		},
 		urlRoot : 'index.php?option=com_k2&task=image.sync&format=json',
@@ -17,7 +16,20 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 			var base = _.result(this, 'urlRoot') || _.result(this.collection, 'url') || urlError();
 			if (this.isNew())
 				return base;
-			return base + '&type=' + encodeURIComponent(this.get('type')) + '&itemId=' + encodeURIComponent(this.get('itemId')) + '&upload=' + encodeURIComponent(this.get('upload'));
+			return base + '&id=' + encodeURIComponent(this.get('id'));
+		},
+		sync : function(method, model, options) {
+			// Convert any model attributes to data if options data is empty
+			if (options.data === undefined) {
+				options.data = [];
+			}
+			_.each(model.attributes, function(value, attribute) {
+				options.data.push({
+					name : attribute,
+					value : value
+				});
+			});
+			return Backbone.sync.apply(this, arguments);
 		}
 	});
 
@@ -26,14 +38,18 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 		tagName : 'div',
 		template : _.template(template),
 		events : {
-			'click #appRemoveImage' : 'removeImage'
+			'click #appRemoveImage' : 'removeImage',
+			'input input[name="image[caption]"]' : 'updateCaption',
+			'input input[name="image[credits]"]' : 'updateCredits'
 		},
 		modelEvents : {
 			'change:preview' : 'render'
 		},
 		initialize : function(options) {
-			this.model = new ImageModel(options.data);
-			this.model.set('itemId', options.itemId);
+
+			this.model = new ImageModel(options.row.get('_image'));
+			this.model.set('tmpId', options.row.get('tmpId'));
+			this.model.set('itemId', options.row.get('id'));
 			this.model.set('type', options.type);
 
 			K2Dispatcher.on('image:select', function(path) {
@@ -41,15 +57,12 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 			}, this);
 
 			K2Dispatcher.on('image:upload', function(e, data) {
-				this.model.set('flag', 1);
-				this.model.set('upload', data.result.upload);
+				this.model.set('id', data.result.id);
 				this.model.set('preview', data.result.preview);
 			}, this);
 
 			this.on('delete', function() {
-				if (this.model.get('flag') > 0) {
-					this.model.destroy();
-				}
+				this.model.destroy();
 			});
 
 		},
@@ -59,8 +72,7 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 		removeImage : function(event) {
 			event.preventDefault();
 			this.model.destroy();
-			this.model.set('flag', 0);
-			this.model.set('upload', '');
+			this.model.set('id', null);
 			this.model.set('caption', '');
 			this.model.set('credits', '');
 			this.model.set('preview', '');
@@ -68,6 +80,7 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 		},
 		setImageFromServer : function(path) {
 			var data = {};
+			data['tmpId'] = this.model.get('tmpId');
 			data['itemId'] = this.model.get('itemId');
 			data['type'] = this.model.get('type');
 			data['path'] = path;
@@ -80,12 +93,17 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 				data : data
 			}).done(function(data, status, xhr) {
 				self.model.set('preview', data.preview);
-				self.model.set('upload', data.upload);
-				self.model.set('flag', 1);
+				self.model.set('id', data.id);
 			}).fail(function(xhr, status, error) {
 				K2Dispatcher.trigger('app:message', 'error', xhr.responseText);
 			});
 		},
+		updateCaption : function() {
+			this.model.set('caption', this.$el.find('input[name="image[caption]"]').val());
+		},
+		updateCredits : function() {
+			this.model.set('credits', this.$el.find('input[name="image[credits]"]').val());
+		}
 	});
 
 	return K2ViewImage;

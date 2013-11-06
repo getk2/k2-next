@@ -221,10 +221,11 @@ class K2ModelCategories extends K2Model
 		// Image
 		if (isset($data['image']))
 		{
-			if ($data['image']['flag'])
+			if ($data['image']['id'])
 			{
+				$this->setState('imageId', $data['image']['id']);
 				unset($data['image']['path']);
-				unset($data['image']['upload']);
+				unset($data['image']['id']);
 				$data['image'] = json_encode($data['image']);
 			}
 			else
@@ -243,18 +244,22 @@ class K2ModelCategories extends K2Model
 
 	protected function onAfterSave(&$data, $table)
 	{
-		// If we have a tmpId we need to rename the image and update the field
-		if (isset($data['tmpId']) && $data['tmpId'] && isset($data['image']['flag']) && $data['image']['flag'])
+		// If we have a tmpId we have a new category and we need to handle accordingly uploaded files
+		if (isset($data['tmpId']) && $data['tmpId'])
 		{
-			require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
-			$filesystem = K2FileSystem::getInstance();
-			$baseSourceFileName = md5('Image'.$data['tmpId']);
-			$baseTargetFileName = md5('Image'.$table->id);
+			// Image
+			if ($this->getState('imageId'))
+			{
+				require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
+				$filesystem = K2FileSystem::getInstance();
+				$baseSourceFileName = $this->getState('imageId');
+				$baseTargetFileName = md5('Image'.$table->id);
 
-			$path = 'media/k2/categories';
-			$source = $baseSourceFileName.'.jpg';
-			$target = $baseTargetFileName.'.jpg';
-			$filesystem->rename($path.'/'.$source, $path.'/'.$target);
+				$path = 'media/k2/categories';
+				$source = $baseSourceFileName.'.jpg';
+				$target = $baseTargetFileName.'.jpg';
+				$filesystem->rename($path.'/'.$source, $path.'/'.$target);
+			}
 		}
 
 	}
