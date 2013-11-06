@@ -99,6 +99,25 @@ class K2HelperImages
 
 	}
 
+	public static function getResourceImages($type, $resource)
+	{
+
+		if (!in_array($type, self::getTypes()))
+		{
+			return false;
+		}
+
+		if ($type == 'item')
+		{
+			return self::_getItemImages($resource);
+		}
+		else if ($type == 'category')
+		{
+			return self::_getCategoryImage($resource);
+		}
+
+	}
+
 	private static function _generateItemImage($baseFileName, $imageResource)
 	{
 		// Filesystem
@@ -194,6 +213,73 @@ class K2HelperImages
 		{
 			$filesystem->delete($key);
 		}
+	}
+
+	private static function _getItemImages($item)
+	{
+		// Save path
+		$savepath = 'media/k2/items';
+
+		// Images
+		$images = array();
+		$id = null;
+
+		// Value
+		$value = json_decode($item->image);
+
+		if ($value->flag)
+		{
+			// Sizes
+			$sizes = array(
+				'XL' => 600,
+				'L' => 400,
+				'M' => 240,
+				'S' => 180,
+				'XS' => 100
+			);
+			$id = md5('Image'.$item->id);
+			$modifiedDate = ((int)$item->modified > 0) ? $item->modified : $item->created;
+			$timestamp = JFactory::getDate($modifiedDate)->toUnix();
+			foreach ($sizes as $size => $width)
+			{
+				$images[$size] = JURI::root(true).'/'.$savepath.'/cache/'.$id.'_'.$size.'.jpg?t='.$timestamp;
+			}
+		}
+
+		// Return
+		$result = new stdClass;
+		$result->images = $images;
+		$result->id = $id;
+
+		return $result;
+	}
+
+	private static function _getCategoryImage($category)
+	{
+		// Save path
+		$savepath = 'media/k2/categories';
+
+		// Images
+		$image = null;
+		$id = null;
+
+		// Value
+		$value = json_decode($category->image);
+		
+		if ($value->flag)
+		{
+			$id = md5('Image'.$category->id);
+			$modifiedDate = ((int)$category->modified > 0) ? $category->modified : $category->created;
+			$timestamp = JFactory::getDate($modifiedDate)->toUnix();
+			$image = JURI::root(true).'/'.$savepath.'/'.$id.'.jpg?t='.$timestamp;
+		}
+
+		// Return
+		$result = new stdClass;
+		$result->image = $image;
+		$result->id = $id;
+		
+		return $result;
 	}
 
 }

@@ -129,26 +129,15 @@ class K2Items extends K2Resource
 	public function getImages()
 	{
 		$images = array();
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/images.php';
+		$result = K2HelperImages::getResourceImages('item', $this);
 		$this->_image = json_decode($this->image);
-		if ($this->id && $this->_image->flag)
+		if (count($result->images))
 		{
-			$sizes = array(
-				'XL' => 600,
-				'L' => 400,
-				'M' => 240,
-				'S' => 180,
-				'XS' => 100
-			);
-			$baseFileName = md5('Image'.$this->id);
-			$modifiedDate = ((int)$this->modified > 0) ? $this->modified : $this->created;
-			$timestamp = JFactory::getDate($modifiedDate)->toUnix();
-			foreach ($sizes as $size => $width)
-			{
-				$images[$size] = JURI::root(true).'/media/k2/items/cache/'.$baseFileName.'_'.$size.'.jpg?t='.$timestamp;
-			}
-			$this->image = $this->images[$size];
+			$images = $result->images;
+			$this->image = $images['XL'];
 			$this->_image->preview = $this->image;
-			$this->_image->id = $baseFileName;
+			$this->_image->id = $result->id;
 		}
 		return $images;
 	}

@@ -84,16 +84,23 @@ class K2Categories extends K2Resource
 		));
 
 		// Image
+		$this->image = $this->getImage();
+
+	}
+
+	public function getImage()
+	{
+		$image = null;
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/images.php';
+		$result = K2HelperImages::getResourceImages('category', $this);
 		$this->_image = json_decode($this->image);
-		if ($this->id && $this->_image->flag)
+		if ($result->image)
 		{
-			$baseFileName = md5('Image'.$this->id);
-			$modifiedDate = ((int)$this->modified > 0) ? $this->modified : $this->created;
-			$timestamp = JFactory::getDate($modifiedDate)->toUnix();
-			$this->image = JURI::root(true).'/media/k2/categories/'.$baseFileName.'.jpg?t='.$timestamp;
-			$this->_image->preview = $this->image;
-			$this->_image->id = $baseFileName;
+			$image = $result->image;
+			$this->_image->preview = $result->image;
+			$this->_image->id = $result->id;
 		}
+		return $image;
 	}
 
 }
