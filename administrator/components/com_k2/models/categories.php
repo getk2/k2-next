@@ -221,17 +221,11 @@ class K2ModelCategories extends K2Model
 		// Image
 		if (isset($data['image']))
 		{
-			if ($data['image']['id'])
-			{
-				$this->setState('imageId', $data['image']['id']);
-				unset($data['image']['path']);
-				unset($data['image']['id']);
-				$data['image'] = json_encode($data['image']);
-			}
-			else
-			{
-				$data['image'] = '';
-			}
+			$this->setState('imageId', $data['image']['id']);
+			$data['image']['flag'] = (int)(bool)$data['image']['id'];
+			unset($data['image']['path']);
+			unset($data['image']['id']);
+			$data['image'] = json_encode($data['image']);
 		}
 
 		// Extra fields

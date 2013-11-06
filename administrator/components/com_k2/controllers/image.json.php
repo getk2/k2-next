@@ -102,8 +102,9 @@ class K2ControllerImage extends K2Controller
 		if ($itemId)
 		{
 			$row->load($itemId);
-			$image = new stdClass;
-			$row->image = json_encode($image);
+			$value = json_decode($row->image);
+			$value->flag = 1;
+			$row->image = json_encode($value);
 			$row->store();
 		}
 
@@ -181,7 +182,9 @@ class K2ControllerImage extends K2Controller
 		if ($itemId)
 		{
 			$row->load($itemId);
-			$row->image = '';
+			$value = json_decode($row->image);
+			$value->flag = 0;
+			$row->image = json_encode($value);
 			$row->store();
 		}
 

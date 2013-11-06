@@ -85,7 +85,7 @@ class K2Categories extends K2Resource
 
 		// Image
 		$this->_image = json_decode($this->image);
-		if ($this->id && $this->image)
+		if ($this->id && $this->_image->flag)
 		{
 			$baseFileName = md5('Image'.$this->id);
 			$modifiedDate = ((int)$this->modified > 0) ? $this->modified : $this->created;

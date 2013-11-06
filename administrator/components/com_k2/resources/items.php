@@ -130,7 +130,7 @@ class K2Items extends K2Resource
 	{
 		$images = array();
 		$this->_image = json_decode($this->image);
-		if ($this->id && $this->image)
+		if ($this->id && $this->_image->flag)
 		{
 			$sizes = array(
 				'XL' => 600,

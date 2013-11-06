@@ -2,6 +2,9 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 
 	// Model
 	var ImageModel = Backbone.Model.extend({
+		initialize : function() {
+			this.set('cid', this.cid);
+		},
 		defaults : {
 			id : null,
 			tmpId : null,
@@ -52,11 +55,11 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 			this.model.set('itemId', options.row.get('id'));
 			this.model.set('type', options.type);
 
-			K2Dispatcher.on('image:select', function(path) {
+			K2Dispatcher.on('image:select:' + this.model.cid, function(path) {
 				this.setImageFromServer(path);
 			}, this);
 
-			K2Dispatcher.on('image:upload', function(e, data) {
+			K2Dispatcher.on('image:upload:' + this.model.cid, function(e, data) {
 				this.model.set('id', data.result.id);
 				this.model.set('preview', data.result.preview);
 			}, this);
@@ -92,8 +95,8 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 				url : 'index.php?option=com_k2&task=image.upload&format=json',
 				data : data
 			}).done(function(data, status, xhr) {
-				self.model.set('preview', data.preview);
 				self.model.set('id', data.id);
+				self.model.set('preview', data.preview);
 			}).fail(function(xhr, status, error) {
 				K2Dispatcher.trigger('app:message', 'error', xhr.responseText);
 			});
