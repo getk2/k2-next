@@ -46,6 +46,45 @@ class K2TableItems extends K2Table
 		return $this->title;
 	}
 
+	/**
+	 * Method to get the parent asset id for the record
+	 *
+	 * @param   JTable   $table  A JTable object (optional) for the asset parent
+	 * @param   integer  $id     The id (optional) of the content.
+	 *
+	 * @return  integer
+	 *
+	 * @since   11.1
+	 */
+	protected function _getAssetParentId($table = null, $id = null)
+	{
+		$assetId = null;
+
+		// This is a article under a category.
+		if ($this->catid)
+		{
+			// Build the query to get the asset id for the parent category.
+			$query = $this->_db->getQuery(true)->select($this->_db->quoteName('asset_id'))->from($this->_db->quoteName('#__k2_categories'))->where($this->_db->quoteName('id').' = '.(int)$this->catid);
+
+			// Get the asset id from the database.
+			$this->_db->setQuery($query);
+			if ($result = $this->_db->loadResult())
+			{
+				$assetId = (int)$result;
+			}
+		}
+
+		// Return the asset id.
+		if ($assetId)
+		{
+			return $assetId;
+		}
+		else
+		{
+			return parent::_getAssetParentId($table, $id);
+		}
+	}
+
 	public function check()
 	{
 		if (JString::trim($this->title) == '')

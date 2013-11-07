@@ -22,11 +22,11 @@
 		<action name="core.edit.state" title="JACTION_EDITSTATE" description="K2_SLIDES_ACCESS_EDITSTATE_DESCRIPTION" />
 	</section>
 	<section name="testcategory">
-		<action name="k2.create" title="K2_ADD_ITEMS" description="K2_ADD_ITEMS_DESC" />
-		<action name="k2.delete" title="K2_DELETE_ITEMS" description="K2_DELETE_ITEMS_DESC" />
-		<action name="k2.edit" title="K2_EDIT_ANY_ITEM" description="K2_EDIT_ANY_ITEM_DESC" />
-		<action name="k2.publish" title="K2_PUBLISH_ITEMS" description="K2_PUBLISH_ITEMS_DESC" />
-		<action name="k2.edit.own" title="K2_EDIT_OWN_ITEMS" description="K2_EDIT_OWN_ITEMS_DESC" />
+		<action name="core.create" title="K2_ADD_ITEMS" description="K2_ADD_ITEMS_DESC" />
+		<action name="core.delete" title="K2_DELETE_ITEMS" description="K2_DELETE_ITEMS_DESC" />
+		<action name="core.edit" title="K2_EDIT_ANY_ITEM" description="K2_EDIT_ANY_ITEM_DESC" />
+		<action name="core.edit.state" title="K2_PUBLISH_ITEMS" description="K2_PUBLISH_ITEMS_DESC" />
+		<action name="core.edit.own" title="K2_EDIT_OWN_ITEMS" description="K2_EDIT_OWN_ITEMS_DESC" />
 		<action name="k2.comment" title="K2_POST_COMMENTS" description="K2_POST_COMMENTS_DESC" />
 	</section>
 </access>
