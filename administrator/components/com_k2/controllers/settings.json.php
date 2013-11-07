@@ -43,12 +43,18 @@ class K2ControllerSettings extends K2Controller
 		$data = $input['jform'];
 
 		// Use Joomla! model for saving settings
+		if(version_compare(JVERSION, '3.2', 'ge'))
+		{
+			require_once JPATH_SITE.'/components/com_config/model/cms.php';
+			require_once JPATH_SITE.'/components/com_config/model/form.php';
+		}
+
 		JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_config/models');
 		$model = JModelLegacy::getInstance('Component', 'ConfigModel');
 
 		// Get form
 		JForm::addFormPath(JPATH_ADMINISTRATOR.'/components/com_k2');
-		$form = JForm::getInstance('com_fpss.settings', 'config', array('control' => 'jform'), false, '/config');
+		$form = JForm::getInstance('com_k2.settings', 'config', array('control' => 'jform'), false, '/config');
 
 		// Validate the posted data
 		$return = $model->validate($form, $data);

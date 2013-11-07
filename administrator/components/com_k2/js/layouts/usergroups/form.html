@@ -11,15 +11,66 @@
     <% } %>
     <input type="hidden" name="id" value="<%= row.id %>" / >
     
+    
+   
+    
+    
+    
+    <h2><%= l('K2_PERMISSIONS') %></h2> 
+    
+     
+    <table>
+        <% _(row.permissions.actions).each(function(action) { %>
+        <tr>
+            <td>
+                <label><%= action.title %></label>
+                <label><%= l('K2_NO') %>
+                <input type="radio" name="permissions[actions][<%- action.name %>]" value="0" />
+                </label>
+                <label><%= l('K2_YES') %>
+                <input type="radio" name="permissions[actions][<%- action.name %>]" value="1" checked="checked" />
+                </label>
+            </td>
+        </tr>
+         <% }); %>
+    </table>
+    <label><%= l('K2_ALL') %>
+        <input type="radio" name="permissions[mode]" value="all" />
+    </label>
+    <label><%= l('K2_SELECT_FROM_LIST') %>
+        <input type="radio" name="permissions[mode]" value="specific" />
+    </label> 
+    <label><%= l('K2_NONE') %>
+        <input type="radio" name="permissions[mode]" value="none" />
+    </label> 
+    <%= form.categories %>
+     
+    
+     
+    <h2><%= l('K2_PERMISSIONS') %></h2> 
+    <table>
+        <tr>
+            <td></td>
+            <% _(row.permissions.actions).each(function(action) { %>
+            <td><label><%= action.title %> </label></td>
+            <% }); %>
+        </tr>
+    <% _(row.permissions.categories).each(function(category) { %>
+        <tr data-parent="<%- category.parent_id %>" data-id="<%- category.id %>">
+            <td><%= str_repeat('-', category.level) + category.title %></td>
+            <% _(row.permissions.actions).each(function(action) { %>
+                <td><input type="checkbox" name="<%- action.name %>" <% if(category.values[action.name]){ print('checked="checked"');} %> /></label> </td>
+            <% }); %>
+        </tr>
+    <% }); %>
+    </table>
+    
     <% _(form.jform).each(function(field) { %>
     <%= field.label %>
     <%= field.input %>
     <% }); %>
     
-    <h2><%= l('K2_PERMISSIONS') %></h2> 
-    <% _(form.permissions).each(function(field) { %>
-    <%= field.label %>
-    <%= field.input %>
-    <% }); %>
+    
+  
    
 </form>

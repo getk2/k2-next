@@ -116,9 +116,14 @@ class K2ViewUserGroups extends K2View
 
 	protected function setFormFields(&$form, $row)
 	{
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/html.php';
+		$recursive = new stdClass;
+		$recursive->label = 'K2_APPLY_RECUSRIVELY';
+		$recursive->name = 'permissions[recursive]';
+		$form->categories = K2HelperHTML::categories('permissions[categories][]', null, false, false, 'multiple="multiple"', $recursive);
+
 		if (!$row->id)
 		{
-			require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/html.php';
 			$form->parent_id = K2HelperHTML::usergroups('parent_id', null, false, '');
 		}
 	}

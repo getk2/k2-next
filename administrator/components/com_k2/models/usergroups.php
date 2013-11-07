@@ -43,7 +43,17 @@ class K2ModelUserGroups extends K2Model
 		$input->set('limitstart', $this->getState('limitstart'));
 		$input->set('filter_order', $ordering);
 		$input->set('filter_order_Dir', $direction);
-		
+
+		if ($this->getState('id'))
+		{
+			$input->set('filter_search', 'id:'.$this->getState('id'));
+			$model->setState('filter.search', 'id:'.$this->getState('id'));
+		}
+		else
+		{
+			$input->set('filter_search', '');
+			$model->setState('filter.search', '');
+		}
 
 		$model->setState('list.ordering', $ordering);
 		$model->setState('list.direction', $direction);
@@ -153,9 +163,56 @@ class K2ModelUserGroups extends K2Model
 		$data = $this->getState('data');
 		$this->onBeforeSave($data, $table);
 		$model->save($data);
-		$this->setState('id', $table->id);
+		$this->setState('id', $model->getState('group.id'));
 		$this->onAfterSave($data, $table);
 		return true;
+	}
+
+	/**
+	 * onAfterSave method. Hook for chidlren model to save extra data.
+	 *
+	 * @return void
+	 */
+
+	protected function onAfterSave(&$data, $table)
+	{
+		// Categories permissions
+		if (isset($data['permissions']))
+		{
+
+			$groupId = $this->getState('id');
+			$model = K2Model::getInstance('Categories', 'K2Model');
+			$categories = $model->getRows();
+			foreach ($categories as $category)
+			{
+				$assetId = $category->asset_id;
+				$rules = array();
+				foreach ($data['permissions']['actions'] as $action => $value)
+				{
+					// Set the value from the input
+					$rules[$action] = array($groupId => $value);
+
+					// For non selected categories the value is the opposite for the selected
+					if (!in_array($category->id, $data['permissions']['categories']))
+					{
+						if ($data['permissions']['recursive'])
+						{
+							unset($rules[$action]);
+						}
+						else
+						{
+							$rules[$action] = array($groupId => 0);
+						}
+					}
+
+				}
+				$asset = JTable::getInstance('Asset');
+				$asset->load($assetId);
+				$asset->rules = json_encode($rules);
+				$asset->store();
+			}
+
+		}
 	}
 
 	/**
@@ -197,6 +254,66 @@ class K2ModelUserGroups extends K2Model
 	public function getTable($name = 'Usergroup', $prefix = 'JTable', $options = array())
 	{
 		return parent::getTable($name, $prefix, $options);
+	}
+
+	public function getGroupPermissions()
+	{
+		// Get actions
+		$actions = JAccess::getActionsFromFile(JPATH_ADMINISTRATOR.'/components/com_k2/access.xml', $xpath = "/access/section[@name='category']/");
+
+		// Get database
+		$db = $this->getDBO();
+
+		// Get query
+		$query = $db->getQuery(true);
+
+		// Select rows
+		$query->select($db->quoteName('rules'));
+		$query->from($db->quoteName('#__assets'));
+		$query->where($db->quoteName('name').' LIKE '.$db->quote('%'.$db->escape('root.').'%'));
+		$query->order($db->quoteName('lft').' ASC');
+
+		// Set query
+		$db->setQuery($query);
+
+		// Get result
+		$rootRules = json_decode($db->loadColumn());
+		$groupId = $this->getState('id');
+		$isSuperUsersGroup = isset($rootRules['core.admin']->$groupId) && $rootRules['core.admin']->$groupId > 0;
+
+		// Get rows
+		$categories = $db->loadObjectList();
+
+		// Get query
+		$query = $db->getQuery(true);
+
+		// Select rows
+		$query->select('*');
+		$query->from($db->quoteName('#__assets'));
+		$query->where($db->quoteName('name').' LIKE '.$db->quote('%'.$db->escape('com_k2.category').'%'));
+		$query->order($db->quoteName('lft').' ASC');
+
+		// Set query
+		$db->setQuery($query);
+
+		// Get rows
+		$categories = $db->loadObjectList();
+
+		foreach ($categories as $category)
+		{
+			$category->rules = (array)json_decode($category->rules);
+			$category->values = array();
+			foreach ($actions as $action)
+			{
+				$category->values[$action->name] = (isset($category->rules[$action->name]->$groupId) && $category->rules[$action->name]->$groupId > 0) || $isSuperUsersGroup;
+			}
+		}
+
+		// Return
+		$result = new stdClass;
+		$result->actions = $actions;
+		$result->categories = $categories;
+		return $result;
 	}
 
 }

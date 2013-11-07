@@ -56,7 +56,7 @@ class K2HelperHTML
 		return JHtml::_('select.genericlist', $list, $name, '', 'value', 'text', $value);
 	}
 
-	public static function categories($name = 'catid', $value = null, $none = false, $exclude = null, $attributes = '', $recursive = false)
+	public static function categories($name = 'catid', $value = null, $none = false, $exclude = null, $attributes = '', $recursive = false, $valueProperty = 'id')
 	{
 		$model = K2Model::getInstance('Categories', 'K2Model');
 		$model->setState('sorting', 'ordering');
@@ -79,7 +79,8 @@ class K2HelperHTML
 				{
 					$title .= JText::_('K2_UNPUBLISHED_CATEGORY_NOTICE');
 				}
-				$options[] = JHtml::_('select.option', $row->id, $title);
+				$optionValue = $row->$valueProperty;
+				$options[] = JHtml::_('select.option', $optionValue, $title);
 			}
 
 		}

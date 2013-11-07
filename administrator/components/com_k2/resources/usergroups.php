@@ -57,7 +57,7 @@ class K2UserGroups extends K2Resource
 		}
 		return self::$instances[$id];
 	}
-	
+
 	/**
 	 * Prepares the row for output
 	 *
@@ -72,6 +72,19 @@ class K2UserGroups extends K2Resource
 
 		// Prepare specific properties
 		$this->link = '#usergroups/edit/'.$this->id;
+		
+		// Permissions
+		$this->permissions = $this->getPermissions();
 
 	}
+
+	public function getPermissions()
+	{
+		K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
+		$model = K2Model::getInstance('UserGroups', 'K2Model');
+		$model->setState('id', $this->id);
+		$permissions = $model->getGroupPermissions();
+		return $permissions;
+	}
+
 }
