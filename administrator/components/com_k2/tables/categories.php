@@ -77,7 +77,7 @@ class K2TableCategories extends K2TableNested
 		elseif ($assetId === null)
 		{
 			// Build the query to get the asset id for the parent category.
-			$query = $this->_db->getQuery(true)->select($this->_db->quoteName('id'))->from($this->_db->quoteName('#__assets'))->where($this->_db->quoteName('name').' = '.$this->_db->quote($this->extension));
+			$query = $this->_db->getQuery(true)->select($this->_db->quoteName('id'))->from($this->_db->quoteName('#__assets'))->where($this->_db->quoteName('name').' = '.$this->_db->quote('com_k2'));
 
 			// Get the asset id from the database.
 			$this->_db->setQuery($query);

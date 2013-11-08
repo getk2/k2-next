@@ -114,9 +114,12 @@ class K2ViewUserGroups extends K2View
 		K2Response::addToolbarAction('remove', 'K2_DELETE', array('id' => 'appActionRemove'));
 	}
 
-	protected function setFormFields(&$form, $row)
+	protected function prepareJForm(&$form, $row)
 	{
-		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/html.php';
+		
+		$form->setFieldAttribute('rules', 'groupId', $row->id);
+		
+		/*require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/html.php';
 		$recursive = new stdClass;
 		$recursive->label = 'K2_APPLY_RECUSRIVELY';
 		$recursive->name = 'permissions[recursive]';
@@ -125,7 +128,7 @@ class K2ViewUserGroups extends K2View
 		if (!$row->id)
 		{
 			$form->parent_id = K2HelperHTML::usergroups('parent_id', null, false, '');
-		}
+		}*/
 	}
 
 }

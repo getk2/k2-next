@@ -17,6 +17,15 @@ class JFormFieldK2Rules extends JFormFieldRules
 {
 	var $type = 'K2Rules';
 
+	/**
+	 * Method to get the field input markup for Access Control Lists.
+	 * Optionally can be associated with a specific component and section.
+	 *
+	 * @return  string  The field input markup.
+	 *
+	 * @since   11.1
+	 * @todo:   Add access check.
+	 */
 	protected function getInput()
 	{
 		JHtml::_('bootstrap.tooltip');
@@ -149,7 +158,7 @@ class JFormFieldK2Rules extends JFormFieldRules
 				$html[] = '<td headers="settings-th'.$group->value.'">';
 
 				$html[] = '<select class="input-small" name="'.$this->name.'['.$action->name.']['.$group->value.']" id="'.$this->id.'_'.$action->name.'_'.$group->value.'" title="'.JText::sprintf('JLIB_RULES_SELECT_ALLOW_DENY_GROUP', JText::_($action->title), trim($group->text)).'">';
-
+								
 				$inheritedRule = JAccess::checkGroup($group->value, $action->name, $assetId);
 
 				// Get the actual setting for the action for this group.

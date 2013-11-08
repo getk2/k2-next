@@ -341,6 +341,9 @@ class K2View extends JViewLegacy
 				$form,
 				$row
 			));
+			
+			// Pass the JForm to the model before attaching the fields
+			$this->prepareJForm($form, $row);
 
 			// Attach the JForm fields to the form
 			foreach ($form->getFieldsets() as $fieldset)
@@ -370,6 +373,15 @@ class K2View extends JViewLegacy
 	 * @return void
 	 */
 	protected function setFormFields(&$form, $row)
+	{
+	}
+	
+	/**
+	 * Hook for children views to allow them to modify the JForm object.
+	 *
+	 * @return void
+	 */
+	protected function prepareJForm(&$form, $row)
 	{
 	}
 

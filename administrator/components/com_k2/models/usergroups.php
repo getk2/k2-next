@@ -49,10 +49,8 @@ class K2ModelUserGroups extends K2Model
 			$input->set('filter_search', 'id:'.$this->getState('id'));
 			$model->setState('filter.search', 'id:'.$this->getState('id'));
 		}
-		else
-		{
+		else {
 			$input->set('filter_search', '');
-			$model->setState('filter.search', '');
 		}
 
 		$model->setState('list.ordering', $ordering);
@@ -62,6 +60,12 @@ class K2ModelUserGroups extends K2Model
 		$model->setState('list.limit', $this->getState('limit'));
 
 		$data = $model->getItems();
+
+		// Reset input
+		$input->set('limitstart', '');
+		$input->set('filter_order', '');
+		$input->set('filter_order_Dir', '');
+		$input->set('filter_search', '');
 
 		// Generate K2 resources instances from the result data.
 		$rows = $this->getResources($data);
@@ -176,43 +180,74 @@ class K2ModelUserGroups extends K2Model
 
 	protected function onAfterSave(&$data, $table)
 	{
-		// Categories permissions
-		if (isset($data['permissions']))
-		{
 
+		if (isset($data['rules']))
+		{
 			$groupId = $this->getState('id');
 			$model = K2Model::getInstance('Categories', 'K2Model');
 			$categories = $model->getRows();
-			foreach ($categories as $category)
+			foreach ($data['rules']['assets'] as $assetId)
 			{
-				$assetId = $category->asset_id;
-				$rules = array();
-				foreach ($data['permissions']['actions'] as $action => $value)
-				{
-					// Set the value from the input
-					$rules[$action] = array($groupId => $value);
-
-					// For non selected categories the value is the opposite for the selected
-					if (!in_array($category->id, $data['permissions']['categories']))
-					{
-						if ($data['permissions']['recursive'])
-						{
-							unset($rules[$action]);
-						}
-						else
-						{
-							$rules[$action] = array($groupId => 0);
-						}
-					}
-
-				}
 				$asset = JTable::getInstance('Asset');
 				$asset->load($assetId);
-				$asset->rules = json_encode($rules);
-				$asset->store();
+				$rules = json_decode($asset->rules);
+
+				foreach ($data['rules']['actions'][$assetId] as $action => $value)
+				{
+					$rule = isset($rules->$action) ? (array)$rules->$action : array();
+					$newRule = array();
+					foreach ($rule as $group => $allow)
+					{
+						$newRule[(int)$group] = $allow;
+					}
+					if (!is_numeric($value))
+					{
+						unset($newRule[(int)$groupId]);
+					}
+					else
+					{
+						$newRule[(int)$groupId] = (int)$value;
+					}
+					$rule = $newRule;
+					$rules->$action = (object)$rule;
+					$asset->rules = json_encode($rules);
+					$asset->store();
+				}
 			}
 
 		}
+
+		// Categories permissions
+		/*if (isset($data['permissions']))
+		 {
+		 $groupId = $this->getState('id');
+		 $model = K2Model::getInstance('Categories', 'K2Model');
+		 $categories = $model->getRows();
+		 foreach ($categories as $category)
+		 {
+		 $assetId = $category->asset_id;
+		 $asset = JTable::getInstance('Asset');
+		 $asset->load($assetId);
+		 $rules = json_decode($asset->rules);
+		 foreach ($data['permissions']['actions'] as $action => $value)
+		 {
+		 if (in_array($category->id, $data['permissions']['categories']))
+		 {
+		 $rule = isset($rules->$action) ? (array)$rules->$action : array();
+		 $newRule = array();
+		 foreach ($rule as $group => $allow)
+		 {
+		 $newRule[(int)$group] = (int)$allow;
+		 }
+		 $newRule[(int)$groupId] = (int)$value;
+		 $rule = $newRule;
+		 $rules->$action = (object)$rule;
+		 $asset->rules = json_encode($rules);
+		 $asset->store();
+		 }
+		 }
+		 }
+		 }*/
 	}
 
 	/**
@@ -280,9 +315,6 @@ class K2ModelUserGroups extends K2Model
 		$rootRules = json_decode($db->loadColumn());
 		$groupId = $this->getState('id');
 		$isSuperUsersGroup = isset($rootRules['core.admin']->$groupId) && $rootRules['core.admin']->$groupId > 0;
-
-		// Get rows
-		$categories = $db->loadObjectList();
 
 		// Get query
 		$query = $db->getQuery(true);

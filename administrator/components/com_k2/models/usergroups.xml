@@ -5,8 +5,7 @@
 	</fields>
 	<fields>
 		<fieldset name="permissions" addfieldpath="/administrator/components/com_k2/fields/">
-			<field name="asset_id" type="hidden" filter="unset" />
-			<field id="rules" name="rules" type="k2rules" label="JFIELD_RULES_LABEL" translate_label="false" filter="rules" validate="rules" class="inputbox" component="com_k2" section="category"/>
+			<field id="rules" name="rules" type="k2grouprules" label="JFIELD_RULES_LABEL" translate_label="false" filter="rules" validate="rules" class="inputbox" section="category" />
 		</fieldset>
 	</fields>
 </form>
