@@ -16,7 +16,7 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/resource.php';
  * K2 user group resource class.
  */
 
-class K2UserGroups extends K2Resource
+class K2Users extends K2Resource
 {
 
 	/**
@@ -50,7 +50,7 @@ class K2UserGroups extends K2Resource
 		if (empty(self::$instances[$id]))
 		{
 			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
-			$model = K2Model::getInstance('UserGroups', 'K2Model');
+			$model = K2Model::getInstance('Users', 'K2Model');
 			$model->setState('id', $id);
 			$item = $model->getRow();
 			self::$instances[$id] = $item;
@@ -71,7 +71,7 @@ class K2UserGroups extends K2Resource
 		parent::prepare($mode);
 
 		// Prepare specific properties
-		$this->link = '#usergroups/edit/'.$this->id;
+		$this->link = '#users/edit/'.$this->id;
 	}
 
 }

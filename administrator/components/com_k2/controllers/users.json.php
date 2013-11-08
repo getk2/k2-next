@@ -13,7 +13,7 @@ defined('_JEXEC') or die ;
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/controller.php';
 
 /**
- * Tags JSON controller.
+ * Users JSON controller.
  */
 
 class K2ControllerUsers extends K2Controller

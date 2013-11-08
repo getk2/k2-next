@@ -128,4 +128,36 @@ class K2ModelUsers extends K2Model
 		}
 	}
 
+	/**
+	 * Save method.
+	 *
+	 * @return boolean	True on success false on failure.
+	 */
+
+	public function save()
+	{
+		JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_users/models');
+		$model = JModelLegacy::getInstance('User', 'UsersModel');
+		$table = $this->getTable();
+		$data = $this->getState('data');
+		$this->onBeforeSave($data, $table);
+		$model->save($data);
+		$this->setState('id', $model->getState('user.id'));
+		$this->onAfterSave($data, $table);
+		return true;
+	}
+
+	/**
+	 * Method to get a table object, load it if necessary.
+	 *
+	 * @param   string  $name     The table name. Optional.
+	 * @param   string  $prefix   The class prefix. Optional.
+	 * @param   array   $options  Configuration array for model. Optional.
+	 *
+	 * @return  JTable  A JTable object
+	 */
+	public function getTable($name = 'User', $prefix = 'JTable', $options = array())
+	{
+		return parent::getTable($name, $prefix, $options);
+	}
 }

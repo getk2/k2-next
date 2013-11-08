@@ -504,6 +504,11 @@ class K2View extends JViewLegacy
 				'class' => 'appMenuLink',
 				'id' => 'k2UserGroupsLink'
 			), 'primary');
+			K2Response::addMenuLink('users', 'K2_USERS', array(
+				'href' => '#users',
+				'class' => 'appMenuLink',
+				'id' => 'k2UsersLink'
+			), 'primary');
 			K2Response::addMenuLink('media', 'K2_MEDIA_MANAGER', array(
 				'href' => '#media',
 				'class' => 'appMenuLink',
