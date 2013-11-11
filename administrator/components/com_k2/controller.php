@@ -136,10 +136,15 @@ class K2Controller extends JControllerLegacy
 			// Get BackboneJS method variable
 			$this->_method = $this->input->get('_method', '', 'cmd');
 
+			// Check permissions
+			if (!$this->checkPermissions($this->_method))
+			{
+				K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'), 403);
+			}
+
 			// Execute the task based on the Backbone method
 			switch($this->_method)
 			{
-				default :
 				case 'POST' :
 					$this->create();
 					break;
@@ -305,6 +310,13 @@ class K2Controller extends JControllerLegacy
 		$ids = $this->input->get('id', array(), 'array');
 		JArrayHelper::toInteger($ids);
 		$states = $this->input->get('states', array(), 'array');
+		
+		// Ensure we have ids
+		$ids = array_filter($ids);
+		if(!count($ids))
+		{
+			K2Response::throwError('', 401);
+		}
 
 		// Handle categories sorting different than any other patch request
 		if (array_key_exists('ordering', $states) && $this->resourceType == 'categories')
@@ -334,136 +346,14 @@ class K2Controller extends JControllerLegacy
 
 	/**
 	 * This function checks if the user is authorized to perform an action.
-	 * It determines the action based on the request and checks for the appropriate permissions.
+	 *
+	 * @param string $method 	The method to be performed.
 	 *
 	 * @return boolean
 	 */
-	private function checkPermissions()
+	protected function checkPermissions($method)
 	{
-		// Get application
-		$application = JFactory::getApplication();
-
-		// Get variables from URL
-		$option = $application->input->get('option', '', 'cmd');
-		$view = $application->input->get('view', '', 'cmd');
-		$id = $application->input->get('id', null, 'int');
-
-		// Get user
-		$user = JFactory::getUser();
-
-		// Generic manage permission check
-		if (!$user->authorise('core.manage', $option))
-		{
-			$application->enqueueMessage(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_EXECUTE_THIS_TASK'), 'error');
-			return false;
-		}
-
-		// Settings permissions check
-		if ($view == 'settings' && !$user->authorise('core.admin', $option))
-		{
-			$application->enqueueMessage(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_EXECUTE_THIS_TASK'), 'error');
-			return false;
-		}
-
-		// Initialize variables
-		$asset = $option;
-		$action = false;
-
-		// If we are in items context get the item to check against it's category
-		if ($view == 'items')
-		{
-			if ($id)
-			{
-				JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.'/tables');
-				$item = JTable::getInstance('Items', 'K2Table');
-				$item->load($id);
-				$category = $item->catid;
-				$owner = $item->created_by;
-			}
-			else
-			{
-				$category = $application->input->get('catid', 0, 'int');
-				$owner = $user->id;
-			}
-			$asset .= '.category.'.$category;
-		}
-
-		// Detect the action we need to check
-		$method = $application->input->getMethod();
-		if ($method == 'GET' && !is_null($id))
-		{
-			if ($id)
-			{
-				$action = 'core.edit';
-				if (isset($owner) && $owner == $user->id)
-				{
-					$action .= '.own';
-				}
-			}
-			else
-			{
-				$action = 'core.create';
-			}
-
-		}
-		else if ($method == 'POST')
-		{
-
-			// Get the Backbone method
-			$_method = $application->input->get('_method', '', 'cmd');
-
-			switch($_method)
-			{
-				default :
-				case 'POST' :
-					$action = 'core.create';
-					break;
-				case 'PUT' :
-					$action = 'core.edit';
-					if (isset($owner) && $owner == $user->id)
-					{
-						$action .= '.own';
-					}
-					break;
-				case 'PATCH' :
-					$_models = $application->input->get('models', array(), 'array');
-					if (isset($_models[0]))
-					{
-						$data = json_decode($_models[0]);
-					}
-					else
-					{
-						$_model = $application->input->get('model', '', 'string');
-						$data = json_decode($_model);
-					}
-					if (property_exists($data, 'published') || property_exists($data, 'featured'))
-					{
-						$action = 'core.edit.state';
-					}
-					else
-					{
-						$action = 'core.edit';
-						if (isset($owner) && $owner == $user->id)
-						{
-							$action .= '.own';
-						}
-					}
-					break;
-				case 'DELETE' :
-					$action = 'core.delete';
-					break;
-			}
-		}
-
-		if ($action)
-		{
-			if (!$user->authorise($action, $asset))
-			{
-				$application->enqueueMessage(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_EXECUTE_THIS_TASK'), 'error');
-				return false;
-			}
-		}
-
+		return true;
 	}
 
 }

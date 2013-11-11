@@ -50,7 +50,7 @@ class K2ViewItems extends K2View
 		$this->setMenu();
 
 		// Set Actions
-		$this->setActions();
+		$this->setListActions();
 
 		// Render
 		parent::render();
@@ -80,7 +80,7 @@ class K2ViewItems extends K2View
 		$this->setMenu('edit');
 
 		// Set Actions
-		$this->setActions('edit');
+		$this->setFormActions();
 
 		// Render
 		parent::render();
@@ -169,7 +169,36 @@ class K2ViewItems extends K2View
 		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/extrafields.php';
 		$form->extraFields = K2HelperExtraFields::getItemExtraFields($row->catid, $row->extra_fields);
 	}
-	
+
+	/**
+	 * Hook for children views to allow them set the menu for the list requests.
+	 * Children views usually will not need to override this method.
+	 *
+	 * @return void
+	 */
+	protected function setListActions()
+	{
+		$user = JFactory::getUser();
+		$model = K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2');
+		$model = K2Model::getInstance('Categories', 'K2Model');
+		$categories = $model->getRows();
+		$canAdd = false;
+		foreach ($categories as $category)
+		{
+			if ($user->authorise('k2.item.create', 'com_k2.category.'.$category->id))
+			{
+				$canAdd = true;
+			}
+		}
+		if ($user->authorise('k2.item.create', 'com_k2') || $canAdd)
+		{
+			K2Response::addAction('add', 'K2_ADD', array(
+				'class' => 'appAction',
+				'id' => 'appActionAdd'
+			));
+		}
+	}
+
 	protected function setBatchActions()
 	{
 		//K2Response::addBatchAction('batch', 'K2_BATCH', array('id' => 'appActionBatch'));

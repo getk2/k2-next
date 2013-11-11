@@ -234,6 +234,19 @@ class K2ModelCategories extends K2Model
 			$data['extra_fields'] = json_encode($data['extra_fields']);
 		}
 
+		// Check for edit state permission
+		if (!$user->authorise('k2.category.edit.state', 'com_k2'))
+		{
+			if ($table->id)
+			{
+				$data['published'] = $table->published;
+			}
+			else
+			{
+				$data['published'] = 0;
+			}
+		}
+
 	}
 
 	protected function onAfterSave(&$data, $table)

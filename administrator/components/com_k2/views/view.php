@@ -67,7 +67,7 @@ class K2View extends JViewLegacy
 		$this->setMenu();
 
 		// Set Actions
-		$this->setActions();
+		$this->setListActions();
 
 		// Render
 		$this->render();
@@ -94,7 +94,7 @@ class K2View extends JViewLegacy
 		$this->setMenu('edit');
 
 		// Set Actions
-		$this->setActions('edit');
+		$this->setFormActions();
 
 		// Render
 		$this->render();
@@ -341,7 +341,7 @@ class K2View extends JViewLegacy
 				$form,
 				$row
 			));
-			
+
 			// Pass the JForm to the model before attaching the fields
 			$this->prepareJForm($form, $row);
 
@@ -375,7 +375,7 @@ class K2View extends JViewLegacy
 	protected function setFormFields(&$form, $row)
 	{
 	}
-	
+
 	/**
 	 * Hook for children views to allow them to modify the JForm object.
 	 *
@@ -406,66 +406,54 @@ class K2View extends JViewLegacy
 	}
 
 	/**
-	 * Hook for children views to allow them set the menu for the list and edit requests.
+	 * Hook for children views to allow them set the menu for the list requests.
 	 * Children views usually will not need to override this method.
-	 *
-	 * @param   string  $mode	The mode of the menu. It is null for lists and has the value of 'edit' in edit requests.
 	 *
 	 * @return void
 	 */
-	protected function setActions($mode = null)
+	protected function setListActions()
 	{
-		// Get user
-		$user = JFactory::getUser();
-
-		if ($mode == 'edit')
-		{
-			K2Response::addAction('save', 'K2_SAVE', array(
-				'class' => 'appAction',
-				'id' => 'appActionSave',
-				'data-resource' => $this->getName()
-			));
-			if ($this->getName() != 'settings')
-			{
-				K2Response::addAction('saveAndNew', 'K2_SAVE_AND_NEW', array(
-					'class' => 'appAction',
-					'id' => 'appActionSaveAndNew'
-				));
-			}
-
-			K2Response::addAction('saveAndClose', 'K2_SAVE_AND_CLOSE', array(
-				'class' => 'appAction',
-				'id' => 'appActionSaveAndClose'
-			));
-			K2Response::addAction('close', 'K2_CLOSE', array(
-				'class' => 'appAction',
-				'id' => 'appActionClose'
-			));
-		}
-		else
-		{
-
-			if ($user->authorise('core.create', 'com_k2'))
-			{
-				if ($this->getName() != 'settings')
-				{
-					K2Response::addAction('add', 'K2_ADD', array(
-						'class' => 'appAction',
-						'id' => 'appActionAdd'
-					));
-				}
-			}
-		}
+		K2Response::addAction('add', 'K2_ADD', array(
+			'class' => 'appAction',
+			'id' => 'appActionAdd'
+		));
 	}
-	
-	
+
+	/**
+	 * Hook for children views to allow them set the menu for the edit requests.
+	 * Children views usually will not need to override this method.
+	 *
+	 * @return void
+	 */
+	protected function setFormActions()
+	{
+		K2Response::addAction('save', 'K2_SAVE', array(
+			'class' => 'appAction',
+			'id' => 'appActionSave',
+			'data-resource' => $this->getName()
+		));
+		K2Response::addAction('saveAndNew', 'K2_SAVE_AND_NEW', array(
+			'class' => 'appAction',
+			'id' => 'appActionSaveAndNew'
+		));
+		K2Response::addAction('saveAndClose', 'K2_SAVE_AND_CLOSE', array(
+			'class' => 'appAction',
+			'id' => 'appActionSaveAndClose'
+		));
+		K2Response::addAction('close', 'K2_CLOSE', array(
+			'class' => 'appAction',
+			'id' => 'appActionClose'
+		));
+	}
+
 	/**
 	 * Hook for children views to allow them set the batch actions for the list requests.
 	 *
 	 * @return void
 	 */
 	protected function setBatchActions()
-	{}
+	{
+	}
 
 	/**
 	 * Hook for children views to allow them set the menu for the list and edit requests.
@@ -493,21 +481,29 @@ class K2View extends JViewLegacy
 				'class' => 'appMenuLink',
 				'id' => 'k2CategoriesLink'
 			), 'primary');
-			K2Response::addMenuLink('tags', 'K2_TAGS', array(
-				'href' => '#tags',
-				'class' => 'appMenuLink',
-				'id' => 'k2ItemsLink'
-			), 'primary');
-			K2Response::addMenuLink('extrafields', 'K2_EXTRA_FIELDS', array(
-				'href' => '#extrafields',
-				'class' => 'appMenuLink',
-				'id' => 'k2ExtraFieldsLink'
-			), 'primary');
-			K2Response::addMenuLink('extrafieldsgroups', 'K2_EXTRA_FIELD_GROUPS', array(
-				'href' => '#extrafieldsgroups',
-				'class' => 'appMenuLink',
-				'id' => 'k2ExtraFieldsGroupsLink'
-			), 'primary');
+			if ($user->authorise('k2.tags.manage', 'com_k2'))
+			{
+				K2Response::addMenuLink('tags', 'K2_TAGS', array(
+					'href' => '#tags',
+					'class' => 'appMenuLink',
+					'id' => 'k2ItemsLink'
+				), 'primary');
+			}
+			if ($user->authorise('k2.extrafields.manage', 'com_k2'))
+			{
+				K2Response::addMenuLink('extrafields', 'K2_EXTRA_FIELDS', array(
+					'href' => '#extrafields',
+					'class' => 'appMenuLink',
+					'id' => 'k2ExtraFieldsLink'
+				), 'primary');
+
+				K2Response::addMenuLink('extrafieldsgroups', 'K2_EXTRA_FIELD_GROUPS', array(
+					'href' => '#extrafieldsgroups',
+					'class' => 'appMenuLink',
+					'id' => 'k2ExtraFieldsGroupsLink'
+				), 'primary');
+			}
+
 			K2Response::addMenuLink('usergroups', 'K2_USER_GROUPS', array(
 				'href' => '#usergroups',
 				'class' => 'appMenuLink',

@@ -50,7 +50,7 @@ class K2ViewCategories extends K2View
 		$this->setMenu();
 
 		// Set Actions
-		$this->setActions();
+		$this->setListActions();
 
 		// Render
 		parent::render();
@@ -80,7 +80,7 @@ class K2ViewCategories extends K2View
 		$this->setMenu('edit');
 
 		// Set Actions
-		$this->setActions('edit');
+		$this->setFormActions();
 
 		// Render
 		parent::render();
@@ -130,14 +130,20 @@ class K2ViewCategories extends K2View
 
 	protected function setToolbar()
 	{
-		K2Response::addToolbarAction('published', 'K2_TOGGLE_PUBLISHED_STATE', array(
-			'data-state' => 'published',
-			'class' => 'appActionToggleState',
-			'id' => 'appActionTogglePublishedState'
-		));
+		$user = JFactory::getUser();
+		if ($user->authorise('k2.category.edit.state', 'com_k2'))
+		{
+			K2Response::addToolbarAction('published', 'K2_TOGGLE_PUBLISHED_STATE', array(
+				'data-state' => 'published',
+				'class' => 'appActionToggleState',
+				'id' => 'appActionTogglePublishedState'
+			));
+		}
 		K2Response::addToolbarAction('batch', 'K2_BATCH', array('id' => 'appActionBatch'));
-
-		K2Response::addToolbarAction('remove', 'K2_DELETE', array('id' => 'appActionRemove'));
+		if ($user->authorise('k2.category.delete', 'com_k2'))
+		{
+			K2Response::addToolbarAction('remove', 'K2_DELETE', array('id' => 'appActionRemove'));
+		}
 	}
 
 	protected function setFormFields(&$form, $row)
@@ -153,6 +159,24 @@ class K2ViewCategories extends K2View
 		$form->description = $editor->display('description', $row->description, '100%', '300', '40', '5');
 		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/extrafields.php';
 		$form->extraFields = K2HelperExtraFields::getCategoryExtraFields($row->catid, $row->extra_fields);
+	}
+
+	/**
+	 * Hook for children views to allow them set the menu for the list requests.
+	 * Children views usually will not need to override this method.
+	 *
+	 * @return void
+	 */
+	protected function setListActions()
+	{
+		$user = JFactory::getUser();
+		if ($user->authorise('k2.category.create', 'com_k2'))
+		{
+			K2Response::addAction('add', 'K2_ADD', array(
+				'class' => 'appAction',
+				'id' => 'appActionAdd'
+			));
+		}
 	}
 
 }

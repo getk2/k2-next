@@ -50,7 +50,7 @@ class K2ViewUserGroups extends K2View
 		$this->setMenu();
 
 		// Set Actions
-		$this->setActions();
+		$this->setListActions();
 
 		// Render
 		parent::render();
@@ -80,7 +80,7 @@ class K2ViewUserGroups extends K2View
 		$this->setMenu('edit');
 
 		// Set Actions
-		$this->setActions('edit');
+		$this->setFormActions();
 
 		// Render
 		parent::render();

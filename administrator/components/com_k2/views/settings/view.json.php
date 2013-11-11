@@ -34,7 +34,7 @@ class K2ViewSettings extends K2View
 		$this->setMenu('edit');
 
 		// Set Actions
-		$this->setActions('edit');
+		$this->setFormActions();
 
 		// Render
 		$this->render();
@@ -87,6 +87,29 @@ class K2ViewSettings extends K2View
 			$_form->$name = $array;
 		}
 		K2Response::setForm($_form);
+	}
+
+	/**
+	 * Hook for children views to allow them set the menu for the edit requests.
+	 * Children views usually will not need to override this method.
+	 *
+	 * @return void
+	 */
+	protected function setFormActions()
+	{
+		K2Response::addAction('save', 'K2_SAVE', array(
+			'class' => 'appAction',
+			'id' => 'appActionSave',
+			'data-resource' => $this->getName()
+		));
+		K2Response::addAction('saveAndClose', 'K2_SAVE_AND_CLOSE', array(
+			'class' => 'appAction',
+			'id' => 'appActionSaveAndClose'
+		));
+		K2Response::addAction('close', 'K2_CLOSE', array(
+			'class' => 'appAction',
+			'id' => 'appActionClose'
+		));
 	}
 
 }

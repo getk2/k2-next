@@ -3,24 +3,36 @@
 	<section name="component">
 		<action name="core.admin" title="JACTION_ADMIN" description="JACTION_ADMIN_COMPONENT_DESC" />
 		<action name="core.manage" title="JACTION_MANAGE" description="JACTION_MANAGE_COMPONENT_DESC" />
-		<action name="core.create" title="K2_ADD_ITEMS" description="K2_ADD_ITEMS_DESC" />
-		<action name="core.delete" title="K2_DELETE_ITEMS" description="K2_DELETE_ITEMS_DESC" />
-		<action name="core.edit" title="K2_EDIT_ANY_ITEM" description="K2_EDIT_ANY_ITEM_DESC" />
-		<action name="core.edit.state" title="K2_PUBLISH_ITEMS" description="K2_PUBLISH_ITEMS_DESC" />
-		<action name="core.edit.own" title="K2_EDIT_OWN_ITEMS" description="K2_EDIT_OWN_ITEMS_DESC" />
-		<action name="k2.comment" title="K2_POST_COMMENTS" description="K2_POST_COMMENTS_DESC" />
+		<action name="k2.tags.manage" title="K2_MANAGE_TAGS" description="K2_MANAGE_TAGS_DESC"  />
+		<action name="k2.extrafields.manage" title="K2_MANAGE_EXTRA_FIELDS" description="K2_MANAGE_EXTRA_FIELDS_DESC"  />
+		<action name="k2.category.create" title="K2_ADD_CATEGORIES" description="K2_ADD_CATEGORIES_DESC" />
+		<action name="k2.category.edit" title="K2_EDIT_ANY_CATEGORY" description="K2_EDIT_ANY_CATEGORY_DESC" />
+		<action name="k2.category.edit.own" title="K2_EDIT_OWN_CATEGORIES" description="K2_EDIT_OWN_CATEGORIES_DESC" />
+		<action name="k2.category.edit.state" title="K2_EDIT_CATEGORIES_STATE" description="K2_EDIT_CATEGORIES_STATE_DESC" />
+		<action name="k2.category.delete" title="K2_DELETE_CATEGORIES" description="K2_DELETE_CATEGORIES_DESC" />
+		<action name="k2.item.create" title="K2_ADD_ITEMS" description="K2_ADD_ITEMS_DESC"  />
+		<action name="k2.item.edit" title="K2_EDIT_ANY_ITEM" description="K2_EDIT_ANY_ITEM_DESC"  />
+		<action name="k2.item.edit.own" title="K2_EDIT_OWN_ITEMS" description="K2_EDIT_OWN_ITEMS_DESC"  />
+		<action name="k2.item.edit.state" title="K2_EDIT_ITEMS_STATE" description="K2_EDIT_ITEMS_STATE_DESC"  />
+		<action name="k2.item.edit.state.featured" title="K2_EDIT_ITEMS_FEATURED_STATE" description="K2_EDIT_ITEMS_FEATURED_STATE_DESC"  />
+		<action name="k2.item.delete" title="K2_DELETE_ITEMS" description="K2_DELETE_ITEMS_DESC"  />
+		<action name="k2.comment.create" title="K2_ADD_COMMENTS" description="K2_ADD_COMMENTS_DESC"  />
+		<action name="k2.comment.edit" title="K2_EDIT_ANY_COMMENT" description="K2_EDIT_ANY_COMMENT_DESC"  />
+		<action name="k2.comment.edit.own" title="K2_EDIT_OWN_COMMENTS" description="K2_EDIT_OWN_COMMENTS_DESC"  />
 	</section>
 	<section name="category">
-		<action name="core.create" title="K2_ADD_ITEMS" description="K2_ADD_ITEMS_DESC" />
-		<action name="core.delete" title="K2_DELETE_ITEMS" description="K2_DELETE_ITEMS_DESC" />
-		<action name="core.edit" title="K2_EDIT_ANY_ITEM" description="K2_EDIT_ANY_ITEM_DESC" />
-		<action name="core.edit.state" title="K2_PUBLISH_ITEMS" description="K2_PUBLISH_ITEMS_DESC" />
-		<action name="core.edit.own" title="K2_EDIT_OWN_ITEMS" description="K2_EDIT_OWN_ITEMS_DESC" />
-		<action name="k2.comment" title="K2_POST_COMMENTS" description="K2_POST_COMMENTS_DESC" />
+		<action name="k2.item.create" title="K2_ADD_ITEMS" description="K2_DELETE_CATEGORY_DESC"  />
+		<action name="k2.item.edit" title="K2_EDIT_ANY_ITEM" description="K2_EDIT_ANY_ITEM_DESC"   />
+		<action name="k2.item.edit.own" title="K2_EDIT_OWN_ITEMS" description="K2_EDIT_OWN_ITEMS_DESC"  />
+		<action name="k2.item.edit.state" title="K2_EDIT_ITEMS_STATE" description="K2_EDIT_ITEMS_STATE_DESC"  />
+		<action name="k2.item.edit.state.featured" title="K2_EDIT_ITEMS_FEATURED_STATE" description="K2_EDIT_ITEMS_FEATURED_STATE_DESC"  />
+		<action name="k2.item.delete" title="K2_DELETE_ITEMS" description="K2_DELETE_ITEMS_DESC"  />
+		<action name="k2.comment.create" title="K2_ADD_COMMENTS" description="K2_ADD_COMMENTS_DESC"  />
 	</section>
 	<section name="item">
-		<action name="core.delete" title="JACTION_DELETE" description="K2_SLIDES_ACCESS_DELETE_DESCRIPTION" />
-		<action name="core.edit" title="JACTION_EDIT" description="K2_SLIDES_ACCESS_EDIT_DESCRIPTION" />
-		<action name="core.edit.state" title="JACTION_EDITSTATE" description="K2_SLIDES_ACCESS_EDITSTATE_DESCRIPTION" />
+		<action name="k2.item.edit" title="K2_EDIT_ANY_ITEM" description="K2_EDIT_ANY_ITEM_DESC"  />
+		<action name="k2.item.edit.state" title="K2_EDIT_ITEMS_STATE" description="K2_EDIT_ITEMS_STATE_DESC"  />
+		<action name="k2.item.edit.state.featured" title="K2_EDIT_ITEMS_FEATURED_STATE" description="K2_EDIT_ITEMS_FEATURED_STATE_DESC"  />
+		<action name="k2.item.delete" title="K2_DELETE_ITEMS" description="K2_DELETE_ITEMS_DESC"  />
 	</section>
 </access>

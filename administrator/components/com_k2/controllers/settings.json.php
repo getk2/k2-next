@@ -18,6 +18,13 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/controller.php';
 
 class K2ControllerSettings extends K2Controller
 {
+
+	protected function checkPermissions($method)
+	{
+		$user = JFactory::getUser();
+		return $user->authorise('core.admin', 'com_k2');
+	}
+
 	/**
 	 * Default implementation for save function.
 	 * This function saves a row and then performs inside routing to fetch the data for the next screen.
@@ -43,7 +50,7 @@ class K2ControllerSettings extends K2Controller
 		$data = $input['jform'];
 
 		// Use Joomla! model for saving settings
-		if(version_compare(JVERSION, '3.2', 'ge'))
+		if (version_compare(JVERSION, '3.2', 'ge'))
 		{
 			require_once JPATH_SITE.'/components/com_config/model/cms.php';
 			require_once JPATH_SITE.'/components/com_config/model/form.php';
