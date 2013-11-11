@@ -169,5 +169,10 @@ class K2ViewItems extends K2View
 		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/extrafields.php';
 		$form->extraFields = K2HelperExtraFields::getItemExtraFields($row->catid, $row->extra_fields);
 	}
+	
+	protected function setBatchActions()
+	{
+		//K2Response::addBatchAction('batch', 'K2_BATCH', array('id' => 'appActionBatch'));
+	}
 
 }

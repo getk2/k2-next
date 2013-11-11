@@ -457,6 +457,15 @@ class K2View extends JViewLegacy
 			}
 		}
 	}
+	
+	
+	/**
+	 * Hook for children views to allow them set the batch actions for the list requests.
+	 *
+	 * @return void
+	 */
+	protected function setBatchActions()
+	{}
 
 	/**
 	 * Hook for children views to allow them set the menu for the list and edit requests.
