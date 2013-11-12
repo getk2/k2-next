@@ -27,9 +27,8 @@ class K2ModelItems extends K2Model
 
 		// Join over the categories
 		$query->select($db->quoteName('category.title', 'categoryName'));
-		$query->select($db->quoteName('category.published', 'categoryPublished'));
+		$query->select($db->quoteName('category.state', 'categoryState'));
 		$query->select($db->quoteName('category.access', 'categoryAccess'));
-		$query->select($db->quoteName('category.trashed', 'categoryTrashed'));
 		$query->leftJoin($db->quoteName('#__k2_categories', 'category').' ON '.$db->quoteName('category.id').' = '.$db->quoteName('item.catid'));
 
 		// Join over the language
@@ -111,17 +110,9 @@ class K2ModelItems extends K2Model
 		{
 			$query->where($db->quoteName('item.language').' = '.$db->quote($this->getState('language')));
 		}
-		if (is_numeric($this->getState('published')))
+		if (is_numeric($this->getState('state')))
 		{
-			$query->where($db->quoteName('item.published').' = '.(int)$this->getState('published'));
-		}
-		if (is_numeric($this->getState('featured')))
-		{
-			$query->where($db->quoteName('item.featured').' = '.(int)$this->getState('featured'));
-		}
-		if (is_numeric($this->getState('trashed')))
-		{
-			$query->where($db->quoteName('item.trashed').' = '.(int)$this->getState('trashed'));
+			$query->where($db->quoteName('item.state').' = '.(int)$this->getState('state'));
 		}
 		if ($this->getState('category'))
 		{
@@ -173,9 +164,9 @@ class K2ModelItems extends K2Model
 				OR LOWER('.$db->quoteName('item.fulltext').') LIKE '.$db->Quote('%'.$search.'%', false).')');
 			}
 		}
-		if (is_numeric($this->getState('category.published')))
+		if (is_numeric($this->getState('category.state')))
 		{
-			$query->where($db->quoteName('category.published').' = '.(int)$this->getState('category.published'));
+			$query->where($db->quoteName('category.state').' = '.(int)$this->getState('category.state'));
 		}
 		if (is_numeric($this->getState('category.access')))
 		{
@@ -200,11 +191,8 @@ class K2ModelItems extends K2Model
 				case 'ordering' :
 					$order = 'item.ordering ASC';
 					break;
-				case 'featured' :
-					$order = 'item.featured DESC';
-					break;
-				case 'published' :
-					$order = 'item.published DESC';
+				case 'state' :
+					$order = 'item.state DESC';
 					break;
 				case 'category' :
 					$order = 'categoryName ASC';
@@ -259,7 +247,7 @@ class K2ModelItems extends K2Model
 			// Permissions context for new items is the category
 			$context = 'com_k2.category.'.$data['catid'];
 
-			// If the user has not the permission to create item in this category stop the processs. Otherwise handle the published and featured states
+			// If the user has not the permission to create item in this category stop the processs. Otherwise handle the item state
 			if (!$user->authorise('k2.item.create', $context))
 			{
 				$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
@@ -267,14 +255,20 @@ class K2ModelItems extends K2Model
 			}
 			else
 			{
-				// User can create the item but cannot edit it's states so we set them to 0
-				if (!$user->authorise('k2.item.edit.state', $context))
+				// Determine the allowed state values
+				$allowedStateValues = array();
+				$allowedStateValues[] = 0;
+				if ($user->authorise('k2.item.edit.state', $context))
 				{
-					$data['published'] = 0;
+					$allowedStateValues[] = 1;
+					if ($user->authorise('k2.item.edit.state.featured', $context))
+					{
+						$allowedStateValues[] = 2;
+					}
 				}
-				if (!$user->authorise('k2.item.edit.state.featured', $context))
+				if (!in_array($data['state'], $allowedStateValues))
 				{
-					$data['featured'] = 0;
+					$data['state'] = end($allowedStateValues);
 				}
 			}
 
@@ -284,31 +278,46 @@ class K2ModelItems extends K2Model
 		{
 			$context = 'com_k2.item.'.$table->id;
 			$canEdit = $user->authorise('k2.item.edit', $context) || ($user->authorise('k2.item.edit.own', $context) && $user->id == $table->created_by);
-			$canEditState = $user->authorise('k2.item.edit.state', $context);
-			$canEditFeaturedState = $user->authorise('k2.item.edit.state.featured', $context);
+			$canEditState = true;
+
+			// Determine the allowed state values
+			if ($table->state != $data['state'])
+			{
+				$allowedStateValues = array();
+				if ($user->authorise('k2.item.edit.state', $context))
+				{
+					$allowedStateValues[] = 0;
+					$allowedStateValues[] = 1;
+					if ($user->authorise('k2.item.edit.state.featured', $context))
+					{
+						$allowedStateValues[] = 2;
+					}
+				}
+				if (!in_array($data['state'], $allowedStateValues))
+				{
+					$canEditState = false;
+				}
+			}
 
 			// User cannot edit the item neither it's states. Stop the process
-			if (!$canEdit && !$canEditState && !$canEditFeaturedState)
+			if (!$canEdit && !$canEditState)
 			{
 				$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
 				return false;
 			}
 			else
 			{
-				// Store the input states values in case we need them after
-				$published = $data['published'];
-				$featured = $data['featured'];
-
 				// User cannot edit the item. Reset the input
 				if (!$canEdit)
 				{
 					$data = array();
 					$data['id'] = $table->id;
 				}
-
 				// Set the states values depending on permissions
-				$data['published'] = ($canEditState) ? $published : $table->published;
-				$data['featured'] = ($canEditFeaturedState) ? $featured : $table->featured;
+				if (!$canEditState)
+				{
+					$data['state'] = $table->state;
+				}
 			}
 
 		}

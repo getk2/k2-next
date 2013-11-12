@@ -17,21 +17,20 @@ defined('_JEXEC') or die ;
 class K2HelperHTML
 {
 
-	public static function published($name = 'published', $value = null)
+	public static function state($name = 'state', $value = null, $trashed = false, $featured = false)
 	{
 		$options = array();
 		$options[] = JHTML::_('select.option', '', JText::_('K2_ALL'));
-		$options[] = JHTML::_('select.option', 1, JText::_('K2_YES'));
-		$options[] = JHTML::_('select.option', 0, JText::_('K2_NO'));
-		return JHtml::_('select.radiolist', $options, $name, '', 'value', 'text', $value);
-	}
-
-	public static function featured($name = 'featured', $value = null)
-	{
-		$options = array();
-		$options[] = JHTML::_('select.option', '', JText::_('K2_ALL'));
-		$options[] = JHTML::_('select.option', 1, JText::_('K2_YES'));
-		$options[] = JHTML::_('select.option', 0, JText::_('K2_NO'));
+		if ($trashed)
+		{
+			$options[] = JHTML::_('select.option', -1, JText::_('K2_TRASHED'));
+		}
+		$options[] = JHTML::_('select.option', 0, JText::_('K2_UNPUBLISHED'));
+		$options[] = JHTML::_('select.option', 1, JText::_('K2_PUBLISHED'));
+		if ($featured)
+		{
+			$options[] = JHTML::_('select.option', 2, JText::_('K2_FEATURED'));
+		}
 		return JHtml::_('select.radiolist', $options, $name, '', 'value', 'text', $value);
 	}
 
@@ -71,11 +70,11 @@ class K2HelperHTML
 			if ($exclude != $row->id)
 			{
 				$title = str_repeat('-', intval($row->level) - 1).$row->title;
-				if ($row->trashed)
+				if ($row->state == -1)
 				{
 					$title .= JText::_('K2_TRASHED_CATEGORY_NOTICE');
 				}
-				else if (!$row->published)
+				else if ($row->state == 0)
 				{
 					$title .= JText::_('K2_UNPUBLISHED_CATEGORY_NOTICE');
 				}
@@ -213,7 +212,7 @@ class K2HelperHTML
 		}
 		return JHtml::_('select.genericlist', $options, $name, $attributes, 'value', 'text', $value);
 	}
-	
+
 	public static function tags($name = 'tags', $value = null, $none = false, $attributes = '')
 	{
 		$options = array();

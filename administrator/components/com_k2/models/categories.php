@@ -98,13 +98,9 @@ class K2ModelCategories extends K2Model
 		{
 			$query->where($db->quoteName('category.language').' = '.$db->quote($this->getState('language')));
 		}
-		if (is_numeric($this->getState('published')))
+		if (is_numeric($this->getState('state')))
 		{
-			$query->where($db->quoteName('category.published').' = '.(int)$this->getState('published'));
-		}
-		if (is_numeric($this->getState('trashed')))
-		{
-			$query->where($db->quoteName('category.trashed').' = '.(int)$this->getState('trashed'));
+			$query->where($db->quoteName('category.state').' = '.(int)$this->getState('state'));
 		}
 		if ($this->getState('access'))
 		{
@@ -159,8 +155,8 @@ class K2ModelCategories extends K2Model
 				case 'ordering' :
 					$order = 'category.lft ASC';
 					break;
-				case 'published' :
-					$order = 'category.published DESC';
+				case 'state' :
+					$order = 'category.state DESC';
 					break;
 				case 'author' :
 					$order = 'authorName ASC';
@@ -212,7 +208,7 @@ class K2ModelCategories extends K2Model
 			// Detect the context
 			$context = (isset($data['parent_id']) && $data['parent_id']) ? 'com_k2.category.'.$data['parent_id'] : 'com_k2';
 
-			// If the user has not the permission to create category stop the processs. Otherwise handle the published state
+			// If the user has not the permission to create category stop the processs. Otherwise handle the category state
 			if (!$user->authorise('k2.category.create', $context))
 			{
 				$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
@@ -220,10 +216,10 @@ class K2ModelCategories extends K2Model
 			}
 			else
 			{
-				// User can create the category but cannot edit it's state so we set the category unpublished
+				// User can create the category but cannot edit it's state so we set the category state to 0
 				if (!$user->authorise('k2.category.edit.state', $context))
 				{
-					$data['published'] = 0;
+					$data['state'] = 0;
 				}
 			}
 
@@ -247,7 +243,7 @@ class K2ModelCategories extends K2Model
 			else
 			{
 				// Store the input states values in case we need them after
-				$published = $data['published'];
+				$state = $data['state'];
 
 				// User cannot edit the item. Reset the input
 				if (!$canEdit)
@@ -257,7 +253,7 @@ class K2ModelCategories extends K2Model
 				}
 
 				// Set the states values depending on permissions
-				$data['published'] = ($canEditState) ? $published : $table->published;
+				$data['state'] = ($canEditState) ? $state : $table->state;
 			}
 		}
 

@@ -82,12 +82,25 @@ class K2Items extends K2Resource
 			'params',
 			'rules'
 		));
+		
+		// Permisisons
+		$user = JFactory::getUser();
+		$this->canEdit = $user->authorise('k2.item.edit', 'com_k2.item.'.$this->id) || ($user->id == $this->created_by && $user->authorise('k2.item.edit.own', 'com_k2.item.'.$this->id));
+		$this->canEditState = $user->authorise('k2.item.edit.state', 'com_k2.item.'.$this->id);
+		$this->canEditFeaturedState = $user->authorise('k2.item.edit.state.featured', 'com_k2.item.'.$this->id);
+		$this->canDelete = $user->authorise('k2.item.delete', 'com_k2.item.'.$this->id);
+		$this->canSort = $user->authorise('k2.item.edit', 'com_k2');
 
+		// Media
 		$this->media = json_decode($this->media);
+		
+		// Galleries
 		$this->galleries = json_decode($this->galleries);
 
+		// Hits
 		$this->hits = (int)$this->hits;
-
+		
+		// Start and end dates
 		if ((int)$this->start_date > 0)
 		{
 			$this->startDate = JHtml::_('date', $this->start_date, 'Y-m-d');
@@ -98,9 +111,9 @@ class K2Items extends K2Resource
 			$this->endDate = JHtml::_('date', $this->end_date, 'Y-m-d');
 			$this->endTime = JHtml::_('date', $this->end_date, 'H:i');
 		}
-
+		
+		// Tags
 		$this->tags = $this->getTags();
-
 		$tagsValue = array();
 		foreach ($this->tags as $tag)
 		{
@@ -108,8 +121,10 @@ class K2Items extends K2Resource
 		}
 		$this->tagsValue = implode(',', $tagsValue);
 
+		// Images
 		$this->images = $this->getImages();
-
+		
+		// Attachments
 		$this->attachments = $this->getAttachments();
 	}
 
@@ -161,8 +176,8 @@ class K2Items extends K2Resource
 		$date = JFactory::getDate();
 		$now = $date->toSql();
 
-		// Published check
-		if (!$this->published || !$this->categoryPublished || $this->trashed || $this->categoryTrashed)
+		// State check
+		if ($this->state < 1 || $this->categoryState < 1)
 		{
 			JError::raiseError(404, JText::_('K2_NOT_FOUND'));
 			return false;

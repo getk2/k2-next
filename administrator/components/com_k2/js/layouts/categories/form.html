@@ -17,13 +17,12 @@
 
     
     <% if(row.canEditState) { %>
-    <label><%= l('K2_PUBLISHED') %></label>
-    <label> <%= l('K2_YES') %>
-        <input type="radio" name="published" value="1" />
-    </label>
-    <label> <%= l('K2_NO') %>
-        <input type="radio" name="published" value="0" />
-    </label>
+    <label><%= l('K2_STATE') %></label>
+    <select name="state">
+        <option value="-1"><%= l('K2_TRASHED') %></option>
+        <option value="0"><%= l('K2_UNPUBLISHED') %></option>
+        <option value="1"><%= l('K2_PUBLISHED') %></option>
+    </select>
     <% } else { %>
     <input type="hidden" name="published" value="<%= row.published %>" />
     <% } %>

@@ -6,7 +6,7 @@ define(['backbone', 'model'], function(Backbone, K2Model) {'use strict';
 			id : null,
 			asset_id : null,
 			title : null,
-			published : null,
+			state : null,
 			access : null,
 			ordering : null,
 			language : null,

@@ -15,7 +15,10 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 		itemViewContainer : 'tbody',
 		itemView : K2ViewItemsRow,
 		onCompositeCollectionRendered : function() {
-			K2Widgets.ordering(this.$el.find('table tbody'), 'ordering', K2Session.get('items.sorting') === 'ordering');
+			var model = this.collection.at(0);
+			if (model && model.get('canSort')) {
+				K2Widgets.ordering(this.$el.find('table tbody'), 'ordering', K2Session.get('items.sorting') === 'ordering');
+			}
 		}
 	});
 	return K2ViewItems;

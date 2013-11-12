@@ -6,7 +6,7 @@ define(['backbone', 'model'], function(Backbone, K2Model) {'use strict';
 			id : null,
 			name : null,
 			alias : null,
-			published : null
+			state : null
 		},
 
 		urlRoot : function() {

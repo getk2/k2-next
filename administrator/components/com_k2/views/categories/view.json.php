@@ -92,8 +92,7 @@ class K2ViewCategories extends K2View
 		$this->setUserState('page', 1, 'int');
 		$this->setUserState('search', '', 'string');
 		$this->setUserState('access', 0, 'int');
-		$this->setUserState('trashed', '', 'cmd');
-		$this->setUserState('published', '', 'cmd');
+		$this->setUserState('state', '', 'cmd');
 		$this->setUserState('language', '', 'string');
 		$this->setUserState('sorting', 'ordering', 'string');
 	}
@@ -105,11 +104,11 @@ class K2ViewCategories extends K2View
 		K2Response::addFilter('language', JText::_('K2_SELECT_LANGUAGE'), K2HelperHTML::language('language', '', 'K2_ANY'), false, 'header');
 
 		// Sorting filter
-		$sortingOptions = array(
+		/*$sortingOptions = array(
 			'K2_ID' => 'id',
 			'K2_TITLE' => 'title',
 			'K2_ORDERING' => 'ordering',
-			'K2_PUBLISHED' => 'published',
+			'K2_STATE' => 'state',
 			'K2_AUTHOR' => 'author',
 			'K2_MODERATOR' => 'moderator',
 			'K2_ACCESS_LEVEL' => 'access',
@@ -118,19 +117,19 @@ class K2ViewCategories extends K2View
 			'K2_IMAGE' => 'image',
 			'K2_LANGUAGE' => 'language'
 		);
-		K2Response::addFilter('sorting', JText::_('K2_SORT_BY'), K2HelperHTML::sorting($sortingOptions), false, 'header');
+		K2Response::addFilter('sorting', JText::_('K2_SORT_BY'), K2HelperHTML::sorting($sortingOptions), false, 'header');*/
 
 		// Search filter
 		K2Response::addFilter('search', JText::_('K2_SEARCH'), K2HelperHTML::search(), false, 'sidebar');
 
-		// Published filter
-		K2Response::addFilter('published', JText::_('K2_PUBLISHED'), K2HelperHTML::published(), true, 'sidebar');
+		// State filter
+		K2Response::addFilter('state', JText::_('K2_STATE'), K2HelperHTML::state('state', null, true), true, 'sidebar');
 
 	}
 
 	protected function setToolbar()
 	{
-		// Check permissions for the current rows to determine if we should show the published toggler and the delete button
+		// Check permissions for the current rows to determine if we should show the state togglers and the delete button
 		$rows = K2Response::getRows();
 		$canEditState = false;
 		$canDelete = false;
@@ -147,8 +146,9 @@ class K2ViewCategories extends K2View
 		}
 		if ($canEditState)
 		{
-			K2Response::addToolbarAction('published', 'K2_TOGGLE_PUBLISHED_STATE', array(
-				'data-state' => 'published',
+			K2Response::addToolbarAction('publish', 'K2_PUBLISH', array(
+				'data-state' => 'state',
+				'data-value' => '1',
 				'class' => 'appActionToggleState',
 				'id' => 'appActionTogglePublishedState'
 			));

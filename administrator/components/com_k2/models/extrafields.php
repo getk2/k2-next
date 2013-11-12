@@ -81,9 +81,9 @@ class K2ModelExtraFields extends K2Model
 	private function setQueryConditions(&$query)
 	{
 		$db = $this->getDBO();
-		if (is_numeric($this->getState('published')))
+		if (is_numeric($this->getState('state')))
 		{
-			$query->where($db->quoteName('extraField.published').' = '.(int)$this->getState('published'));
+			$query->where($db->quoteName('extraField.state').' = '.(int)$this->getState('state'));
 		}
 		if ($this->getState('id'))
 		{
@@ -140,8 +140,8 @@ class K2ModelExtraFields extends K2Model
 					$ordering = 'type';
 					$direction = 'ASC';
 					break;
-				case 'published' :
-					$ordering = 'extraField.published';
+				case 'state' :
+					$ordering = 'extraField.state';
 					$direction = 'DESC';
 					break;
 				case 'ordering' :

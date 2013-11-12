@@ -83,9 +83,9 @@ class K2ModelTags extends K2Model
 			$query->leftJoin($db->quoteName('#__k2_tags_xref', 'xref').' ON '.$db->quoteName('xref.tagId').' = '.$db->quoteName('tag.id'));
 			$query->where($db->quoteName('xref.itemId').' = '.(int)$this->getState('itemId'));
 		}
-		if (is_numeric($this->getState('published')))
+		if (is_numeric($this->getState('state')))
 		{
-			$query->where($db->quoteName('tag.published').' = '.(int)$this->getState('published'));
+			$query->where($db->quoteName('tag.state').' = '.(int)$this->getState('state'));
 		}
 		if ($this->getState('id'))
 		{
@@ -132,8 +132,8 @@ class K2ModelTags extends K2Model
 				case 'name' :
 					$order = 'name ASC';
 					break;
-				case 'published' :
-					$order = 'published DESC';
+				case 'state' :
+					$order = 'state DESC';
 					break;
 			}
 		}
@@ -225,7 +225,7 @@ class K2ModelTags extends K2Model
 		{
 			$data = array(
 				'name' => $name,
-				'published' => 1
+				'state' => 1
 			);
 			$this->setState('data', $data);
 			if (!$this->save())

@@ -11,7 +11,7 @@
 <td><span class="appOrderingHandle">DRAG ME</span><input type="hidden" maxlength="6" size="6" name="ordering[]" value="" data-id="<%= id %>" /></td>
 <td>
     <% if(canEditState) { %>
-    <a class="appActionToggleState appPublishedState<%= published == 1 ? ' appStateActive' : '' %>" data-state="published" data-id="<%= id %>"><%= published %></a>
+    <a class="appActionToggleState appPublishedState<%= state == 1 ? ' appStateActive' : '' %>" data-id="<%= id %>"><%= state %></a>
     <% } else { %>
     <%= published %>
     <% } %>

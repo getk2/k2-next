@@ -92,9 +92,7 @@ class K2ViewItems extends K2View
 		$this->setUserState('page', 1, 'int');
 		$this->setUserState('search', '', 'string');
 		$this->setUserState('access', 0, 'int');
-		$this->setUserState('trashed', '', 'cmd');
-		$this->setUserState('published', '', 'cmd');
-		$this->setUserState('featured', '', 'cmd');
+		$this->setUserState('state', '', 'cmd');
 		$this->setUserState('category', '', 'cmd');
 		$this->setUserState('user', 0, 'int');
 		$this->setUserState('language', '', 'string');
@@ -141,19 +139,49 @@ class K2ViewItems extends K2View
 
 	protected function setToolbar()
 	{
-		K2Response::addToolbarAction('featured', 'K2_TOGGLE_FEATURED_STATE', array(
-			'data-state' => 'featured',
-			'class' => 'appActionToggleState',
-			'id' => 'appActionToggleFeaturedState'
-		));
-		K2Response::addToolbarAction('published', 'K2_TOGGLE_PUBLISHED_STATE', array(
-			'data-state' => 'published',
-			'class' => 'appActionToggleState',
-			'id' => 'appActionTogglePublishedState'
-		));
+		// Check permissions for the current rows to determine if we should show the states togglers and the delete button
+		$rows = K2Response::getRows();
+		$canEditState = false;
+		$canEditFeaturedState = false;
+		$canDelete = false;
+		foreach ($rows as $row)
+		{
+			if ($row->canEditState)
+			{
+				$canEditState = true;
+			}
+			if ($row->canEditFeaturedState)
+			{
+				$canEditFeaturedState = true;
+			}
+			if ($row->canDelete)
+			{
+				$canDelete = true;
+			}
+		}
+
+		if ($canEditFeaturedState)
+		{
+			K2Response::addToolbarAction('featured', 'K2_TOGGLE_FEATURED_STATE', array(
+				'data-state' => 'featured',
+				'class' => 'appActionToggleState',
+				'id' => 'appActionToggleFeaturedState'
+			));
+		}
+		if ($canEditState)
+		{
+			K2Response::addToolbarAction('published', 'K2_TOGGLE_PUBLISHED_STATE', array(
+				'data-state' => 'published',
+				'class' => 'appActionToggleState',
+				'id' => 'appActionTogglePublishedState'
+			));
+		}
 		K2Response::addToolbarAction('batch', 'K2_BATCH', array('id' => 'appActionBatch'));
 
-		K2Response::addToolbarAction('remove', 'K2_DELETE', array('id' => 'appActionRemove'));
+		if ($canDelete)
+		{
+			K2Response::addToolbarAction('remove', 'K2_DELETE', array('id' => 'appActionRemove'));
+		}
 	}
 
 	protected function setFormFields(&$form, $row)
@@ -179,18 +207,7 @@ class K2ViewItems extends K2View
 	protected function setListActions()
 	{
 		$user = JFactory::getUser();
-		$model = K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2');
-		$model = K2Model::getInstance('Categories', 'K2Model');
-		$categories = $model->getRows();
-		$canAdd = false;
-		foreach ($categories as $category)
-		{
-			if ($user->authorise('k2.item.create', 'com_k2.category.'.$category->id))
-			{
-				$canAdd = true;
-			}
-		}
-		if ($user->authorise('k2.item.create', 'com_k2') || $canAdd)
+		if ($user->authorise('k2.item.create', 'com_k2'))
 		{
 			K2Response::addAction('add', 'K2_ADD', array(
 				'class' => 'appAction',
