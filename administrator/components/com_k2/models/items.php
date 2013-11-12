@@ -240,15 +240,79 @@ class K2ModelItems extends K2Model
 	}
 
 	/**
-	 * onBeforeSave method.
-	 * @param   array  $data     The data to be saved.
+	 * onBeforeSave method. Hook for chidlren model to prepare the data.
 	 *
-	 * @return void
+	 * @param   array  $data     The data to be saved.
+	 * @param   JTable  $table   The table object.
+	 *
+	 * @return boolean
 	 */
 
 	protected function onBeforeSave(&$data, $table)
 	{
+		// User
 		$user = JFactory::getUser();
+
+		// Create action
+		if (!$table->id)
+		{
+			// Permissions context for new items is the category
+			$context = 'com_k2.category.'.$data['catid'];
+
+			// If the user has not the permission to create item in this category stop the processs. Otherwise handle the published and featured states
+			if (!$user->authorise('k2.item.create', $context))
+			{
+				$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
+				return false;
+			}
+			else
+			{
+				// User can create the item but cannot edit it's states so we set them to 0
+				if (!$user->authorise('k2.item.edit.state', $context))
+				{
+					$data['published'] = 0;
+				}
+				if (!$user->authorise('k2.item.edit.state.featured', $context))
+				{
+					$data['featured'] = 0;
+				}
+			}
+
+		}
+		// Edit action
+		if ($table->id)
+		{
+			$context = 'com_k2.item.'.$table->id;
+			$canEdit = $user->authorise('k2.item.edit', $context) || ($user->authorise('k2.item.edit.own', $context) && $user->id == $table->created_by);
+			$canEditState = $user->authorise('k2.item.edit.state', $context);
+			$canEditFeaturedState = $user->authorise('k2.item.edit.state.featured', $context);
+
+			// User cannot edit the item neither it's states. Stop the process
+			if (!$canEdit && !$canEditState && !$canEditFeaturedState)
+			{
+				$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
+				return false;
+			}
+			else
+			{
+				// Store the input states values in case we need them after
+				$published = $data['published'];
+				$featured = $data['featured'];
+
+				// User cannot edit the item. Reset the input
+				if (!$canEdit)
+				{
+					$data = array();
+					$data['id'] = $table->id;
+				}
+
+				// Set the states values depending on permissions
+				$data['published'] = ($canEditState) ? $published : $table->published;
+				$data['featured'] = ($canEditFeaturedState) ? $featured : $table->featured;
+			}
+
+		}
+
 		$configuration = JFactory::getConfig();
 		$userTimeZone = $user->getParam('timezone', $configuration->get('offset'));
 

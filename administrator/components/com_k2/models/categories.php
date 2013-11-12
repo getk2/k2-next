@@ -206,33 +206,14 @@ class K2ModelCategories extends K2Model
 		// User
 		$user = JFactory::getUser();
 
-		// Detect context for create action
-		$context = 'com_k2';
-		if ($table->id)
-		{
-			if ($table->parent_id)
-			{
-				$context .= '.category.'.$table->parent_id;
-			}
-		}
-		else
-		{
-			if (isset($data['parent_id']) && $data['parent_id'])
-			{
-				$context .= '.category.'.$data['parent_id'];
-			}
-		}
-
-		// Actions
-		$canAdd = $user->authorise('k2.category.create', $context);
-		$canEdit = $user->authorise('k2.category.edit', 'com_k2.category.'.$table->id) || ($user->authorise('k2.category.edit.own', 'com_k2.category.'.$table->id) && $user->id == $table->created_by);
-		$canEditState = $user->authorise('k2.category.edit.state', 'com_k2.category.'.$table->id);
-
 		// Create action
 		if (!$table->id)
 		{
+			// Detect the context
+			$context = (isset($data['parent_id']) && $data['parent_id']) ? 'com_k2.category.'.$data['parent_id'] : 'com_k2';
+
 			// If the user has not the permission to create category stop the processs. Otherwise handle the published state
-			if (!$canAdd)
+			if (!$user->authorise('k2.category.create', $context))
 			{
 				$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
 				return false;
@@ -240,7 +221,7 @@ class K2ModelCategories extends K2Model
 			else
 			{
 				// User can create the category but cannot edit it's state so we set the category unpublished
-				if (!$canEditState)
+				if (!$user->authorise('k2.category.edit.state', $context))
 				{
 					$data['published'] = 0;
 				}
@@ -250,26 +231,34 @@ class K2ModelCategories extends K2Model
 		// Edit action
 		if ($table->id)
 		{
+			// Detect the context
+			$context = 'com_k2.category.'.$table->id;
+
+			// Actions
+			$canEdit = $user->authorise('k2.category.edit', $context) || ($user->authorise('k2.item.edit.own', $context) && $user->id == $table->created_by);
+			$canEditState = $user->authorise('k2.item.edit.state', $context);
+
 			// User cannot edit the category neither it's state. Stop the process
 			if (!$canEdit && !$canEditState)
 			{
 				$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
 				return false;
 			}
-			// User can edit the category but not it' state. Preserve the current category state
-			else if ($canEdit && !$canEditState)
+			else
 			{
-				$data['published'] = $table->published;
-			}
-			// User cannot edit the category but has the permission to edit it's state. Update only the state.
-			else if (!$canEdit && $canEditState)
-			{
+				// Store the input states values in case we need them after
 				$published = $data['published'];
-				$data = array();
-				$data['id'] = $table->id;
-				$data['published'] = $published;
-			}
 
+				// User cannot edit the item. Reset the input
+				if (!$canEdit)
+				{
+					$data = array();
+					$data['id'] = $table->id;
+				}
+
+				// Set the states values depending on permissions
+				$data['published'] = ($canEditState) ? $published : $table->published;
+			}
 		}
 
 		// Get timezone
