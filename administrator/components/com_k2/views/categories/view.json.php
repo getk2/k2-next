@@ -130,8 +130,22 @@ class K2ViewCategories extends K2View
 
 	protected function setToolbar()
 	{
-		$user = JFactory::getUser();
-		if ($user->authorise('k2.category.edit.state', 'com_k2'))
+		// Check permissions for the current rows to determine if we should show the published toggler and the delete button
+		$rows = K2Response::getRows();
+		$canEditState = false;
+		$canDelete = false;
+		foreach ($rows as $row)
+		{
+			if ($row->canEditState)
+			{
+				$canEditState = true;
+			}
+			if ($row->canDelete)
+			{
+				$canDelete = true;
+			}
+		}
+		if ($canEditState)
 		{
 			K2Response::addToolbarAction('published', 'K2_TOGGLE_PUBLISHED_STATE', array(
 				'data-state' => 'published',
@@ -140,7 +154,7 @@ class K2ViewCategories extends K2View
 			));
 		}
 		K2Response::addToolbarAction('batch', 'K2_BATCH', array('id' => 'appActionBatch'));
-		if ($user->authorise('k2.category.delete', 'com_k2'))
+		if ($canDelete)
 		{
 			K2Response::addToolbarAction('remove', 'K2_DELETE', array('id' => 'appActionRemove'));
 		}

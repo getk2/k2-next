@@ -18,19 +18,23 @@ define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categor
 		itemViewContainer : 'tbody',
 		itemView : K2ViewCategoriesRow,
 		onCompositeCollectionRendered : function() {
-			var groups = [];
-			_.each(this.$el.find('tr'), function(tr) {
-				var className = jQuery(tr).attr('class');
-				if (className !== undefined) {
-					groups.push(className);
-				}
-			});
-			groups = _.uniq(groups);
-			_.each(groups, _.bind(function(group) {
-				K2Widgets.ordering(this.$el.find('table tbody'), 'ordering', K2Session.get('categories.sorting') === 'ordering', {
-					items : 'tbody tr.' + group
+			var model = this.collection.at(0);
+			if (model && model.get('canSort')) {
+				var groups = [];
+				_.each(this.$el.find('tr'), function(tr) {
+					var className = jQuery(tr).attr('class');
+					if (className !== undefined) {
+						groups.push(className);
+					}
 				});
-			}, this));
+				groups = _.uniq(groups);
+				_.each(groups, _.bind(function(group) {
+					K2Widgets.ordering(this.$el.find('table tbody'), 'ordering', K2Session.get('categories.sorting') === 'ordering', {
+						items : 'tbody tr.' + group
+					});
+				}, this));
+			}
+
 		}
 	});
 	return K2ViewCategories;

@@ -143,22 +143,33 @@ class K2ModelTags extends K2Model
 			$query->order($order);
 		}
 	}
-	
-	/**
-	 * onBeforeSave method.
-	 * @param   array  $data     The data to be saved.
-	 *
-	 * @return void
-	 */
 
+	/**
+	 * onBeforeSave method. Hook for chidlren model to prepare the data.
+	 *
+	 * @param   array  $data     The data to be saved.
+	 * @param   JTable  $table   The table object.
+	 *
+	 * @return boolean
+	 */
 	protected function onBeforeSave(&$data, $table)
 	{
+		// User
+		$user = JFactory::getUser();
+
+		// Permissions check
+		if (!$user->authorise('k2.tags.manage'))
+		{
+			$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
+			return false;
+		}
+
 		// Extra fields
 		if (isset($data['extra_fields']))
 		{
 			$data['extra_fields'] = json_encode($data['extra_fields']);
 		}
-
+		return true;
 	}
 
 	/**
@@ -166,7 +177,7 @@ class K2ModelTags extends K2Model
 	 *
 	 * @param   JTable  $table     	The table object.
 	 *
-	 * @return void
+	 * @return boolean
 	 */
 
 	protected function onAfterDelete($table)

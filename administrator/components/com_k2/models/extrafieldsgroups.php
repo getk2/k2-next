@@ -132,12 +132,32 @@ class K2ModelExtraFieldsGroups extends K2Model
 		}
 	}
 
+	/**
+	 * onBeforeSave method. Hook for chidlren model to prepare the data.
+	 *
+	 * @param   array  $data     The data to be saved.
+	 * @param   JTable  $table   The table object.
+	 *
+	 * @return boolean
+	 */
 	protected function onBeforeSave(&$data, $table)
 	{
+		// User
+		$user = JFactory::getUser();
+
+		// Permissions check
+		if (!$user->authorise('k2.extrafields.manage'))
+		{
+			$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
+			return false;
+		}
+
+		// Assignments
 		if (isset($data['assignments']))
 		{
 			$data['assignments'] = json_encode($data['assignments']);
 		}
+		return true;
 	}
 
 }

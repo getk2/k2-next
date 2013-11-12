@@ -248,6 +248,7 @@ class K2ModelUserGroups extends K2Model
 		 }
 		 }
 		 }*/
+		 return true;
 	}
 
 	/**

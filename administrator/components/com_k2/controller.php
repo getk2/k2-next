@@ -136,12 +136,6 @@ class K2Controller extends JControllerLegacy
 			// Get BackboneJS method variable
 			$this->_method = $this->input->get('_method', '', 'cmd');
 
-			// Check permissions
-			if (!$this->checkPermissions($this->_method))
-			{
-				K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'), 403);
-			}
-
 			// Execute the task based on the Backbone method
 			switch($this->_method)
 			{
@@ -310,10 +304,10 @@ class K2Controller extends JControllerLegacy
 		$ids = $this->input->get('id', array(), 'array');
 		JArrayHelper::toInteger($ids);
 		$states = $this->input->get('states', array(), 'array');
-		
+
 		// Ensure we have ids
 		$ids = array_filter($ids);
-		if(!count($ids))
+		if (!count($ids))
 		{
 			K2Response::throwError('', 401);
 		}
@@ -321,7 +315,11 @@ class K2Controller extends JControllerLegacy
 		// Handle categories sorting different than any other patch request
 		if (array_key_exists('ordering', $states) && $this->resourceType == 'categories')
 		{
-			$this->model->saveOrder($ids, $states['ordering']);
+			$result = $this->model->saveOrder($ids, $states['ordering']);
+			if (!$result)
+			{
+				K2Response::throwError($this->model->getError());
+			}
 		}
 		else
 		{
@@ -342,18 +340,6 @@ class K2Controller extends JControllerLegacy
 			}
 		}
 		echo json_encode(true);
-	}
-
-	/**
-	 * This function checks if the user is authorized to perform an action.
-	 *
-	 * @param string $method 	The method to be performed.
-	 *
-	 * @return boolean
-	 */
-	protected function checkPermissions($method)
-	{
-		return true;
 	}
 
 }

@@ -18,13 +18,6 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/controller.php';
 
 class K2ControllerSettings extends K2Controller
 {
-
-	protected function checkPermissions($method)
-	{
-		$user = JFactory::getUser();
-		return $user->authorise('core.admin', 'com_k2');
-	}
-
 	/**
 	 * Default implementation for save function.
 	 * This function saves a row and then performs inside routing to fetch the data for the next screen.
@@ -37,6 +30,13 @@ class K2ControllerSettings extends K2Controller
 	{
 		// Check for token
 		JSession::checkToken() or K2Response::throwError(JText::_('JINVALID_TOKEN'));
+
+		// Permissions
+		$user = JFactory::getUser();
+		if (!$user->authorise('core.admin', 'com_k2'))
+		{
+			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
+		}
 
 		// Data
 		$input = JRequest::get('post');

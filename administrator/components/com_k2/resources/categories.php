@@ -72,10 +72,13 @@ class K2Categories extends K2Resource
 
 		// link
 		$this->link = '#categories/edit/'.$this->id;
-		
-		// Permisisons flag
+
+		// Permisisons
 		$user = JFactory::getUser();
 		$this->canEdit = $user->authorise('k2.category.edit', 'com_k2.category.'.$this->id) || ($user->id == $this->created_by && $user->authorise('k2.category.edit.own', 'com_k2.category.'.$this->id));
+		$this->canEditState = $user->authorise('k2.category.edit.state', 'com_k2.category.'.$this->id);
+		$this->canDelete = $user->authorise('k2.category.delete', 'com_k2.category.'.$this->id);
+		$this->canSort = $user->authorise('k2.category.edit', 'com_k2');
 
 		// Escape fpr HTML inputs
 		JFilterOutput::objectHTMLSafe($this, ENT_QUOTES, array(

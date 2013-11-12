@@ -380,6 +380,8 @@ class K2ModelItems extends K2Model
 			$data['extra_fields'] = json_encode($data['extra_fields']);
 		}
 
+		return true;
+
 	}
 
 	/**
@@ -494,7 +496,7 @@ class K2ModelItems extends K2Model
 			}
 
 		}
-
+		return true;
 	}
 
 }

@@ -21,18 +21,23 @@
 		<action name="k2.comment.edit.own" title="K2_EDIT_OWN_COMMENTS" description="K2_EDIT_OWN_COMMENTS_DESC"  />
 	</section>
 	<section name="category">
-		<action name="k2.item.create" title="K2_ADD_ITEMS" description="K2_DELETE_CATEGORY_DESC"  />
-		<action name="k2.item.edit" title="K2_EDIT_ANY_ITEM" description="K2_EDIT_ANY_ITEM_DESC"   />
-		<action name="k2.item.edit.own" title="K2_EDIT_OWN_ITEMS" description="K2_EDIT_OWN_ITEMS_DESC"  />
-		<action name="k2.item.edit.state" title="K2_EDIT_ITEMS_STATE" description="K2_EDIT_ITEMS_STATE_DESC"  />
-		<action name="k2.item.edit.state.featured" title="K2_EDIT_ITEMS_FEATURED_STATE" description="K2_EDIT_ITEMS_FEATURED_STATE_DESC"  />
-		<action name="k2.item.delete" title="K2_DELETE_ITEMS" description="K2_DELETE_ITEMS_DESC"  />
-		<action name="k2.comment.create" title="K2_ADD_COMMENTS" description="K2_ADD_COMMENTS_DESC"  />
+		<action name="k2.category.create" title="K2_ADD_CATEGORIES_UNDER_THIS_CATEGORY" description="K2_ADD_CATEGORIES_UNDER_THIS_CATEGORY_DESC" />
+		<action name="k2.category.edit" title="K2_EDIT_ANY_CATEGORY_UNDER_THIS_CATEGORY" description="K2_EDIT_ANY_CATEGORY__UNDER_THIS_CATEGORY_DESC" />
+		<action name="k2.category.edit.own" title="K2_EDIT_OWN_CATEGORIES_UNDER_THIS_CATEGORY" description="K2_EDIT_OWN_CATEGORIES_UNDER_THIS_CATEGORY_DESC" />
+		<action name="k2.category.edit.state" title="K2_EDIT_CATEGORIES_STATE_UNDER_THIS_CATEGORY" description="K2_EDIT_CATEGORIES_STATE_UNDER_THIS_CATEGORY_DESC" />
+		<action name="k2.category.delete" title="K2_DELETE_CATEGORIES_UNDER_THIS_CATEGORY" description="K2_DELETE_CATEGORIES_UNDER_THIS_CATEGORY_DESC" />
+		<action name="k2.item.create" title="K2_ADD_ITEMS_UNDER_THIS_CATEGORY" description="K2_DELETE_CATEGORY_UNDER_THIS_CATEGORY_DESC"  />
+		<action name="k2.item.edit" title="K2_EDIT_ANY_ITEM_UNDER_THIS_CATEGORY" description="K2_EDIT_ANY_ITEM_UNDER_THIS_CATEGORY_DESC"   />
+		<action name="k2.item.edit.own" title="K2_EDIT_OWN_ITEMS_UNDER_THIS_CATEGORY" description="K2_EDIT_OWN_ITEMS_UNDER_THIS_CATEGORY_DESC"  />
+		<action name="k2.item.edit.state" title="K2_EDIT_ITEMS_STATE_UNDER_THIS_CATEGORY" description="K2_EDIT_ITEMS_STATE_UNDER_THIS_CATEGORY_DESC"  />
+		<action name="k2.item.edit.state.featured" title="K2_EDIT_ITEMS_FEATURED_STATE_UNDER_THIS_CATEGORY" description="K2_EDIT_ITEMS_FEATURED_STATE_UNDER_THIS_CATEGORY_DESC"  />
+		<action name="k2.item.delete" title="K2_DELETE_ITEMS_UNDER_THIS_CATEGORY" description="K2_DELETE_ITEMS_UNDER_THIS_CATEGORY_DESC"  />
+		<action name="k2.comment.create" title="K2_ADD_COMMENTS_TO_ITEMS_UNDER_THIS_CATEGORY" description="K2_ADD_COMMENTS_TO_ITEMS_UNDER_THIS_CATEGORY_DESC"  />
 	</section>
 	<section name="item">
-		<action name="k2.item.edit" title="K2_EDIT_ANY_ITEM" description="K2_EDIT_ANY_ITEM_DESC"  />
-		<action name="k2.item.edit.state" title="K2_EDIT_ITEMS_STATE" description="K2_EDIT_ITEMS_STATE_DESC"  />
-		<action name="k2.item.edit.state.featured" title="K2_EDIT_ITEMS_FEATURED_STATE" description="K2_EDIT_ITEMS_FEATURED_STATE_DESC"  />
-		<action name="k2.item.delete" title="K2_DELETE_ITEMS" description="K2_DELETE_ITEMS_DESC"  />
+		<action name="k2.item.edit" title="K2_EDIT_THIS_ITEM" description="K2_EDIT_THIS_ITEM_DESC"  />
+		<action name="k2.item.edit.state" title="K2_EDIT_THIS_ITEM_STATE" description="K2_EDIT_THIS_ITEM_STATE_DESC"  />
+		<action name="k2.item.edit.state.featured" title="K2_EDIT_THIS_ITEM_FEATURED_STATE" description="K2_EDIT_THIS_ITEM_FEATURED_STATE_DESC"  />
+		<action name="k2.item.delete" title="K2_DELETE_THIS_ITEM" description="K2_DELETE_THIS_ITEM_DESC"  />
 	</section>
 </access>

@@ -193,15 +193,86 @@ class K2ModelCategories extends K2Model
 	}
 
 	/**
-	 * onBeforeSave method.
-	 * @param   array  $data     The data to be saved.
+	 * onBeforeSave method. Hook for chidlren model to prepare the data.
 	 *
-	 * @return void
+	 * @param   array  $data     The data to be saved.
+	 * @param   JTable  $table   The table object.
+	 *
+	 * @return boolean
 	 */
 
 	protected function onBeforeSave(&$data, $table)
 	{
+		// User
 		$user = JFactory::getUser();
+
+		// Detect context for create action
+		$context = 'com_k2';
+		if ($table->id)
+		{
+			if ($table->parent_id)
+			{
+				$context .= '.category.'.$table->parent_id;
+			}
+		}
+		else
+		{
+			if (isset($data['parent_id']) && $data['parent_id'])
+			{
+				$context .= '.category.'.$data['parent_id'];
+			}
+		}
+
+		// Actions
+		$canAdd = $user->authorise('k2.category.create', $context);
+		$canEdit = $user->authorise('k2.category.edit', 'com_k2.category.'.$table->id) || ($user->authorise('k2.category.edit.own', 'com_k2.category.'.$table->id) && $user->id == $table->created_by);
+		$canEditState = $user->authorise('k2.category.edit.state', 'com_k2.category.'.$table->id);
+
+		// Create action
+		if (!$table->id)
+		{
+			// If the user has not the permission to create category stop the processs. Otherwise handle the published state
+			if (!$canAdd)
+			{
+				$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
+				return false;
+			}
+			else
+			{
+				// User can create the category but cannot edit it's state so we set the category unpublished
+				if (!$canEditState)
+				{
+					$data['published'] = 0;
+				}
+			}
+
+		}
+		// Edit action
+		if ($table->id)
+		{
+			// User cannot edit the category neither it's state. Stop the process
+			if (!$canEdit && !$canEditState)
+			{
+				$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
+				return false;
+			}
+			// User can edit the category but not it' state. Preserve the current category state
+			else if ($canEdit && !$canEditState)
+			{
+				$data['published'] = $table->published;
+			}
+			// User cannot edit the category but has the permission to edit it's state. Update only the state.
+			else if (!$canEdit && $canEditState)
+			{
+				$published = $data['published'];
+				$data = array();
+				$data['id'] = $table->id;
+				$data['published'] = $published;
+			}
+
+		}
+
+		// Get timezone
 		$configuration = JFactory::getConfig();
 		$userTimeZone = $user->getParam('timezone', $configuration->get('offset'));
 
@@ -213,6 +284,7 @@ class K2ModelCategories extends K2Model
 			$data['created'] = JFactory::getDate($createdDateTime, $userTimeZone)->toSql();
 		}
 
+		// Update category location
 		if (isset($data['parent_id']) && !$data['id'])
 		{
 			$table->setLocation($data['parent_id'], 'last-child');
@@ -234,20 +306,18 @@ class K2ModelCategories extends K2Model
 			$data['extra_fields'] = json_encode($data['extra_fields']);
 		}
 
-		// Check for edit state permission
-		if (!$user->authorise('k2.category.edit.state', 'com_k2'))
-		{
-			if ($table->id)
-			{
-				$data['published'] = $table->published;
-			}
-			else
-			{
-				$data['published'] = 0;
-			}
-		}
+		return true;
 
 	}
+
+	/**
+	 * onAfterSave method. Hook for chidlren model to save extra data.
+	 *
+	 * @param   array  $data     The data passed to the save function.
+	 * @param   JTable  $table   The table object.
+	 *
+	 * @return boolean
+	 */
 
 	protected function onAfterSave(&$data, $table)
 	{
@@ -268,13 +338,42 @@ class K2ModelCategories extends K2Model
 				$filesystem->rename($path.'/'.$source, $path.'/'.$target);
 			}
 		}
+		return true;
+	}
 
+	/**
+	 * onBeforeDelete method. 		Hook for chidlren model.
+	 *
+	 * @param   JTable  $table     	The table object.
+	 *
+	 * @return boolean
+	 */
+
+	protected function onBeforeDelete($table)
+	{
+		$user = JFactory::getUser();
+		if (!$user->authorise('k2.category.delete', 'com_k2.category.'.$table->id))
+		{
+			$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
+			return false;
+		}
 	}
 
 	public function saveOrder($ids, $ordering)
 	{
+		$user = JFactory::getUser();
+		if (!$user->authorise('k2.category.edit', 'com_k2'))
+		{
+			$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
+			return false;
+		}
 		$table = $this->getTable();
-		$table->saveorder($ids, $ordering);
+		if (!$table->saveorder($ids, $ordering))
+		{
+			$this->setError($table->getError());
+			return false;
+		}
+		return true;
 	}
 
 }

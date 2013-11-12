@@ -17,13 +17,6 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/controller.php';
 
 class K2ControllerExtraFields extends K2Controller
 {
-	
-	protected function checkPermissions($method)
-	{
-		$user = JFactory::getUser();
-		return $user->authorise('k2.extrafields.manage', 'com_k2');
-	}
-	
 	public function render()
 	{
 		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/extrafields.php';

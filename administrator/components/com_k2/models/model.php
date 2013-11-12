@@ -83,38 +83,49 @@ class K2Model extends JModelLegacy
 			}
 
 		}
-		
-		$this->onBeforeSave($data, $table);
-		
+		if (!$this->onBeforeSave($data, $table))
+		{
+			return false;
+		}
 		if (!$table->save($data))
 		{
 			$this->setError($table->getError());
 			return false;
 		}
 		$this->setState('id', $table->id);
-		$this->onAfterSave($data, $table);
+		if (!$this->onAfterSave($data, $table))
+		{
+			return false;
+		}
 		return true;
 	}
 
 	/**
 	 * onBeforeSave method. Hook for chidlren model to prepare the data.
-	 * @param   array  $data     The data to be saved.
 	 *
-	 * @return void
+	 * @param   array  $data     The data to be saved.
+	 * @param   JTable  $table   The table object.
+	 *
+	 * @return boolean
 	 */
 
 	protected function onBeforeSave(&$data, $table)
 	{
+		return true;
 	}
 
 	/**
 	 * onAfterSave method. Hook for chidlren model to save extra data.
 	 *
-	 * @return void
+	 * @param   array  $data     The data passed to the save function.
+	 * @param   JTable  $table   The table object.
+	 *
+	 * @return boolean
 	 */
 
 	protected function onAfterSave(&$data, $table)
 	{
+		return true;
 	}
 
 	/**
@@ -132,13 +143,19 @@ class K2Model extends JModelLegacy
 			$this->setError($table->getError());
 			return false;
 		}
-		$this->onBeforeDelete($table);
+		if (!$this->onBeforeDelete($table))
+		{
+			return false;
+		}
 		if (!$table->delete())
 		{
 			$this->setError($table->getError());
 			return false;
 		}
-		$this->onAfterDelete($table);
+		if (!$this->onAfterDelete($table))
+		{
+			return false;
+		}
 		return true;
 	}
 
@@ -147,11 +164,12 @@ class K2Model extends JModelLegacy
 	 *
 	 * @param   JTable  $table     	The table object.
 	 *
-	 * @return void
+	 * @return boolean
 	 */
 
 	protected function onBeforeDelete($table)
 	{
+		return true;
 	}
 
 	/**
@@ -159,11 +177,12 @@ class K2Model extends JModelLegacy
 	 *
 	 * @param   JTable  $table     	The table object.
 	 *
-	 * @return void
+	 * @return boolean
 	 */
 
 	protected function onAfterDelete($table)
 	{
+		return true;
 	}
 
 	/**
