@@ -323,6 +323,19 @@ class K2ModelCategories extends K2Model
 				$filesystem->rename($path.'/'.$source, $path.'/'.$target);
 			}
 		}
+
+		if (!$table->rebuildPath($table->id))
+		{
+			$this->setError($table->getError());
+			return false;
+		}
+
+		if (!$table->rebuild($table->id, $table->lft, $table->level, $table->path))
+		{
+			$this->setError($table->getError());
+			return false;
+		}
+
 		return true;
 	}
 
@@ -342,6 +355,7 @@ class K2ModelCategories extends K2Model
 			$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
 			return false;
 		}
+		return true;
 	}
 
 	public function saveOrder($ids, $ordering)

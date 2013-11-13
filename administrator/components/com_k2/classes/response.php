@@ -108,6 +108,28 @@ class K2Response
 	 * @var array $messages
 	 */
 	public static $messages = array();
+	
+	/**
+	 * Setter function for the response variable.
+	 *
+	 * @param mixed $response
+	 *
+	 * @return void
+	 */
+	public static function setResponse($response)
+	{
+		self::$response = $response;
+	}
+
+	/**
+	 * Getter function for the response variable.
+	 *
+	 * @return mixed $response
+	 */
+	public static function getResponse()
+	{
+		return self::$response;
+	}
 
 	/**
 	 * Setter function for the title variable.

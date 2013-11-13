@@ -18,4 +18,27 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/controller.php';
 
 class K2ControllerCategories extends K2Controller
 {
+	public function saveOrder()
+	{
+		// Check for token
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
+		// Get input
+		$id = $this->input->get('id', 0, 'int');
+		$parent_id = $this->input->get('parent_id', 1, 'int');
+		$reference_id = $this->input->get('reference_id', 0, 'int');
+		$location = $this->input->get('location', '', 'cmd');
+
+		// Get table
+		$table = $this->model->getTable();
+
+		// Update
+		if(!$table->moveByReference($reference_id, $location, $id))
+		{
+			K2Response::throwError($table->getError());
+		}
+		
+		return $this;
+	}
+
 }

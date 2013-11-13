@@ -3,14 +3,8 @@
     <label for="name"><%= l('K2_NAME') %></label>
     <input type="text" name="name" id="name" value="<%- row.name %>" />
 
-    <label><%= l('K2_PUBLISHED') %></label>
-    
-    <label> <%= l('K2_YES') %>
-        <input type="radio" name="published" value="1" />
-    </label>
-    <label> <%= l('K2_NO') %>
-        <input type="radio" name="published" value="0" />
-    </label>
+    <label><%= l('K2_STATE') %></label>
+    <%= form.state %>
     
     <!-- Extra Fields -->
     <div id="appTagExtraFields"></div>

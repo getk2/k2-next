@@ -19,14 +19,12 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/controller.php';
 class K2ControllerSettings extends K2Controller
 {
 	/**
-	 * Default implementation for save function.
-	 * This function saves a row and then performs inside routing to fetch the data for the next screen.
-	 * Create and update requests are routed here by the main Sync function.
-	 * Usually there will be no need to override this function.
+	 * Update function.
+	 * Updates an existing resource.
 	 *
 	 * @return void
 	 */
-	protected function save()
+	protected function update()
 	{
 		// Check for token
 		JSession::checkToken() or K2Response::throwError(JText::_('JINVALID_TOKEN'));

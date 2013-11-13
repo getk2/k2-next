@@ -93,15 +93,6 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 			}
 		},
 
-		// onRender event
-		onRender : function() {
-
-			// Update radio buttons value
-			this.$el.find('input[name="published"]').val([this.model.get('published')]);
-			this.$el.find('input[name="featured"]').val([this.model.get('featured')]);
-
-		},
-
 		updateExtraFields : function(event) {
 			event.preventDefault();
 			this.extraFieldsView.trigger('filter', this.$el.find('#catid').val());

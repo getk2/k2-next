@@ -9,17 +9,16 @@
     <input type="text" maxlength="6" size="6" name="ordering[]" value="<%= ordering %>" data-id="<%= id %>" />
 </td>
 <td>
-    <% if(canEditFeaturedState) { %>
-    <a class="appActionToggleState appFeaturedState<%= featured == 1 ? ' appStateActive' : '' %>" data-state="featured" data-id="<%= id %>"><%= featured %></a>
-    <% } else { %>
-    <%= featured %>
-    <% } %>
-</td>
-<td>
     <% if(canEditState) { %>
-    <a class="appActionToggleState appPublishedState<%= published == 1 ? ' appStateActive' : '' %>" data-state="published" data-id="<%= id %>"><%= published %></a>
+    <a class="appActionToggleState appPublishedState<%= state > 0 ? ' appStateActive' : '' %>" data-state="published" data-id="<%= id %>"><%= state %></a>
     <% } else { %>
-    <%= published %>
+    <%= state %>
+    <% } %>
+
+    <% if(canEditState && canEditFeaturedState) { %>
+    <a class="appActionToggleState appFeaturedState<%= state > 1 ? ' appStateActive' : '' %>" data-state="featured" data-id="<%= id %>"><%= state %></a>
+    <% } else { %>
+    <%= state %>
     <% } %>
 </td>
 <td><%= categoryName %></td>

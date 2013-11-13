@@ -94,7 +94,7 @@ class K2ControllerGalleries extends K2Controller
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		// Get id from input
-		$input = JFactory::getApplication()->input;
+		$input = $this->input;
 		$itemId = $input->get('itemId', '', 'cmd');
 		$itemFolder = $itemId;
 		$upload = $input->get('upload', '', 'cmd');
@@ -130,8 +130,7 @@ class K2ControllerGalleries extends K2Controller
 		}
 
 		// Return
-		echo json_encode(true);
-		return $this;
+		K2Response::setResponse(true);
 	}
 
 }

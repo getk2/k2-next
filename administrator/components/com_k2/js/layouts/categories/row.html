@@ -1,31 +1,34 @@
-<td class="appCheckboxHolder"><label for="appCheckBox<%= id %>" class="appCheckbox">
-    <input class="appRowToggler" name="id[]" id="appCheckBox<%= id %>" value="<%= id %>" type="checkbox" />
-</label></td>
-<td>
+<span class="appCheckboxHolder">
+    <label for="appCheckBox<%= id %>" class="appCheckbox">
+        <input class="appRowToggler" name="id[]" id="appCheckBox<%= id %>" value="<%= id %>" type="checkbox" />
+    </label>
+</span>
+<span>
     <% if(canEdit) { %>
     <a class="appEditLink" href="<%= link %>"><%= str_repeat('-', level) %><%= title %></a>
     <% } else { %>
         <%= str_repeat('-', level) %><%= title %>
     <% } %>
-</td>
-<td><span class="appOrderingHandle">DRAG ME</span><input type="hidden" maxlength="6" size="6" name="ordering[]" value="" data-id="<%= id %>" /></td>
-<td>
+</span>
+<span><span class="appOrderingHandle">DRAG ME</span><input type="text" maxlength="6" size="6" name="lft[]" value="<%- lft %>" /></span>
+<span>
     <% if(canEditState) { %>
-    <a class="appPublishToggler <%= state == 1 ? ' appStateActive' : '' %>" data-id="<%= id %>"><%= state %></a>
+    <a class="appActionToggleState <%= state == 1 ? ' appStateActive' : '' %>" data-id="<%= id %>" data-state="published"><%= state %></a>
     <% } else { %>
-    <%= published %>
+    <%= state %>
     <% } %>
-</td>
-<td><%= viewLevel %></td>
-<td><%= template %></td>
-<td><%= authorName %></td>
-<td><%= createdOn %></td>
-<td><%= moderatorName %></td>
-<td><%= modifiedOn %></td>
-<td>
+</span>
+<span><%= viewLevel %></span>
+<span><%= template %></span>
+<span><%= authorName %></span>
+<span><%= createdOn %></span>
+<span><%= moderatorName %></span>
+<span><%= modifiedOn %></span>
+<span>
     <% if(image) { %>
         <a href="<%= image %>"><%= l('K2_PREVIEW') %></a>
     <% } %>
-</td>
-<td><%= languageTitle %></td>
-<td><%= id %></td>
+</span>
+<span><%= languageTitle %></span>
+<span><%= id %></span>
+<ul data-parent="<%- id %>"></ul>

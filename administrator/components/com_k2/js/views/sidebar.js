@@ -11,6 +11,7 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session'], fun
 
 		events : {
 			'change .appFilters input' : 'filter',
+			'change .appFilters select' : 'filter',
 			'click .appActionResetFilters' : 'resetFilters'
 		},
 
@@ -55,6 +56,13 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session'], fun
 					el.val('');
 				}
 				K2Dispatcher.trigger('app:controller:setCollectionState', name, '');
+			});
+			this.$el.find('.appFilter select').each(function() {
+				var el = jQuery(this);
+				var value = el.find('option:first').val();
+				el.val(value);
+				var name = el.attr('name');
+				K2Dispatcher.trigger('app:controller:setCollectionState', name, value);
 			});
 			K2Dispatcher.trigger('app:subheader:resetFilters');
 		}

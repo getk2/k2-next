@@ -15,9 +15,6 @@ define(['marionette', 'text!layouts/tags/form.html', 'views/extrafields/widget']
 		regions : {
 			extraFieldsRegion : '#appTagExtraFields'
 		},
-		onRender : function() {
-			this.$el.find('input[name="published"]').val([this.model.get('published')]);
-		},
 		onShow : function() {
 			this.extraFieldsRegion.show(this.extraFieldsView);
 		},

@@ -6,7 +6,7 @@ define(['marionette', 'text!layouts/subheader.html', 'dispatcher'], function(Mar
 
 		events : {
 			'change .appFilters select' : 'filter',
-			'click .appActionToggleState' : 'toggleState',
+			'click .appActionSetState' : 'setState',
 			'click #appActionRemove' : 'remove',
 			'click .appActionCloseToolbar' : 'closeToolbar'
 		},
@@ -81,12 +81,12 @@ define(['marionette', 'text!layouts/subheader.html', 'dispatcher'], function(Mar
 			K2Dispatcher.trigger('app:controller:batchDelete', rows);
 		},
 
-		toggleState : function(event) {
+		setState : function(event) {
 			event.preventDefault();
 			var rows = jQuery('input.appRowToggler:checked').serializeArray();
 			var el = jQuery(event.currentTarget);
-			var state = el.data('state');
-			K2Dispatcher.trigger('app:controller:batchToggleState', rows, state);
+			var value = el.data('value');
+			K2Dispatcher.trigger('app:controller:batchSetState', rows, value);
 		},
 
 		showToolbar : function() {

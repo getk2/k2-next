@@ -109,22 +109,16 @@ class K2View extends JViewLegacy
 
 	protected function render()
 	{
-		// Pass the states to the response
+		// Unset not used states
 		unset($this->userStates['page']);
 		unset($this->userStates['limit']);
 		unset($this->userStates['limitstart']);
+
+		// Pass the states to the response
 		K2Response::setStates($this->userStates);
 
-		// Get the response
-		$response = K2Response::render();
-
-		// Trigger an event before outputing the response
-		$dispatcher = JDispatcher::getInstance();
-		JPluginHelper::importPlugin('k2');
-		$dispatcher->trigger('onBeforeRenderK2Response', array(&$response));
-
-		// Output the JSON response.
-		echo json_encode($response);
+		// Render
+		K2Response::render();
 	}
 
 	/**

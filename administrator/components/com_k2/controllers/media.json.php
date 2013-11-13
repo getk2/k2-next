@@ -75,7 +75,7 @@ class K2ControllerMedia extends K2Controller
 		JSession::checkToken() or K2Response::throwError(JText::_('JINVALID_TOKEN'));
 
 		// Get id from input
-		$input = JFactory::getApplication()->input;
+		$input = $this->input;
 		$itemId = $input->get('itemId', '', 'cmd');
 		$upload = $input->get('upload', '', 'cmd');
 		$folder = $itemId;
@@ -96,9 +96,9 @@ class K2ControllerMedia extends K2Controller
 			}
 		}
 
-		// Return
-		echo json_encode(true);
-		return $this;
+		// Response
+		K2Response::setResponse(true);
+
 	}
 
 	public function connector()

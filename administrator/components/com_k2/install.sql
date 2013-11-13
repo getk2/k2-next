@@ -30,8 +30,7 @@ CREATE TABLE IF NOT EXISTS `#__k2_categories` (
   `level` int(10) unsigned NOT NULL DEFAULT '0',
   `title` varchar(255) NOT NULL,
   `alias` varchar(255) NOT NULL DEFAULT '',
-  `published` tinyint(1) NOT NULL,
-  `trashed` tinyint(1) NOT NULL,
+  `state` tinyint(1) NOT NULL,
   `access` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `description` text NOT NULL,
   `image` varchar(255) NOT NULL,
@@ -53,8 +52,7 @@ CREATE TABLE IF NOT EXISTS `#__k2_categories` (
   KEY `idx_left_right` (`lft`,`rgt`),
   KEY `parent_id` (`parent_id`),
   KEY `level` (`level`),
-  KEY `published` (`published`),
-  KEY `trashed` (`trashed`),
+  KEY `state` (`state`),
   KEY `access` (`access`),
   KEY `created_by` (`created_by`),
   KEY `modified_by` (`modified_by`),
@@ -76,13 +74,13 @@ CREATE TABLE IF NOT EXISTS `#__k2_extra_fields` (
   `required` tinyint(1) NOT NULL,
   `type` varchar(255) NOT NULL,
   `group` int(10) unsigned NOT NULL,
-  `published` tinyint(1) NOT NULL,
+  `state` tinyint(1) NOT NULL,
   `ordering` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `alias` (`alias`),
   KEY `type` (`type`),
   KEY `group` (`group`),
-  KEY `published` (`published`)
+  KEY `state` (`state`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -111,9 +109,7 @@ CREATE TABLE IF NOT EXISTS `#__k2_items` (
   `asset_id` int(10) unsigned NOT NULL,
   `title` varchar(255) NOT NULL,
   `alias` varchar(255) NOT NULL,
-  `published` tinyint(1) NOT NULL,
-  `featured` tinyint(1) NOT NULL,
-  `trashed` tinyint(1) NOT NULL,
+  `state` tinyint(1) NOT NULL,
   `access` tinyint(3) unsigned NOT NULL,
   `catid` int(10) unsigned NOT NULL,
   `introtext` mediumtext NOT NULL,
@@ -141,9 +137,7 @@ CREATE TABLE IF NOT EXISTS `#__k2_items` (
   `language` char(7) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `alias` (`alias`),
-  KEY `published` (`published`),
-  KEY `featured` (`featured`),
-  KEY `trashed` (`trashed`),
+  KEY `state` (`state`),
   KEY `catid` (`catid`),
   KEY `language` (`language`),
   KEY `access` (`access`),
@@ -176,10 +170,10 @@ CREATE TABLE IF NOT EXISTS `#__k2_tags` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `alias` varchar(255) NOT NULL,
-  `published` tinyint(1) NOT NULL,
+  `state` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `alias` (`alias`),
-  KEY `published` (`published`)
+  KEY `state` (`state`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------

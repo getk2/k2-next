@@ -8,7 +8,7 @@ define(['marionette', 'text!layouts/list.html', 'dispatcher'], function(Marionet
 		},
 		events : {
 			'click .appActionSort' : 'sort',
-			'click .appPublishToggler' : 'togglePublishedState',
+			'click .appActionToggleState' : 'toggleState',
 			'click .appActionSaveOrder' : 'saveOrder',
 			'change #appRowsToggler' : 'toggleRowsSelection',
 			'change .appRowToggler' : 'toggleRowSelection'
@@ -26,12 +26,12 @@ define(['marionette', 'text!layouts/list.html', 'dispatcher'], function(Marionet
 			K2Dispatcher.trigger('app:subheader:sort', sorting);
 			K2Dispatcher.trigger('app:controller:filter', 'sorting', sorting);
 		},
-		togglePublishedState : function(event) {
+		toggleState : function(event) {
 			event.preventDefault();
 			var el = jQuery(event.currentTarget);
 			var id = el.data('id');
 			var state = el.data('state');
-			K2Dispatcher.trigger('app:controller:toggleState', id, 'state');
+			K2Dispatcher.trigger('app:controller:toggleState', id, state);
 		},
 		saveOrder : function(event) {
 			event.preventDefault();

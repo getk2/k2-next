@@ -1,25 +1,20 @@
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <td><label for="appRowsToggler" class="appCheckbox" title="<%- l('K2_SELECT_ALL') %>">
-                    <input id="appRowsToggler" type="checkbox" />
-                </label>
-            </td>
-            <td><%= l('K2_TITLE') %></td>
-            <td>
-                <%= l('K2_ORDER') %>
-            </td>
-            <td><%= l('K2_STATE') %></td>
-            <td><%= l('K2_ACCESS') %></td>
-            <td><%= l('K2_TEMPLATE') %></td>
-            <td><%= l('K2_AUTHOR') %></td>
-            <td><%= l('K2_CREATED') %></td>
-            <td><%= l('K2_MODERATOR') %></td>
-            <td><%= l('K2_MODIFIED') %></td>
-            <td><%= l('K2_IMAGE') %></td>
-            <td><%= l('K2_LANGUAGE') %></td>
-            <td><%= l('K2_ID') %></td>
-        </tr>
-    </thead>
-    <tbody></tbody>
-</table>
+<ul>
+    <li>
+        <span><label for="appRowsToggler" class="appCheckbox" title="<%- l('K2_SELECT_ALL') %>">
+                <input id="appRowsToggler" type="checkbox" />
+            </label></span>
+        <span><%= l('K2_TITLE') %></span>
+        <span> <%= l('K2_ORDER') %> </span>
+        <span><%= l('K2_STATE') %></span>
+        <span><%= l('K2_ACCESS') %></span>
+        <span><%= l('K2_TEMPLATE') %></span>
+        <span><%= l('K2_AUTHOR') %></span>
+        <span><%= l('K2_CREATED') %></span>
+        <span><%= l('K2_MODERATOR') %></span>
+        <span><%= l('K2_MODIFIED') %></span>
+        <span><%= l('K2_IMAGE') %></span>
+        <span><%= l('K2_LANGUAGE') %></span>
+        <span><%= l('K2_ID') %></span>
+    </li>
+</ul>
+<ul id="appCategories" data-parent="1"></ul>

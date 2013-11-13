@@ -18,20 +18,6 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/controller.php';
 
 class K2ControllerAttachments extends K2Controller
 {
-	protected function read($mode = 'row', $id = null)
-	{
-		// Get input
-		$input = JFactory::getApplication()->input;
-
-		// Get the model
-		$model = $this->getModel($this->resourceType);
-		$model->setState('itemId', $input->get('itemId', 0, 'int'));
-		K2Response::setRows($model->getRows());
-		$response = K2Response::render();
-		echo json_encode($response);
-		return $this;
-	}
-
 	public function upload()
 	{
 		// Check for token
@@ -111,7 +97,7 @@ class K2ControllerAttachments extends K2Controller
 			$attachment->delete();
 		}
 
-		echo json_encode(true);
+		K2Response::setResponse(true);
 
 	}
 

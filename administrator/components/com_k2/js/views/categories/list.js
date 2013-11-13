@@ -1,40 +1,95 @@
 define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categories/row.html', 'dispatcher', 'session', 'widgets'], function(Marionette, list, row, K2Dispatcher, K2Session, K2Widgets) {'use strict';
-	var K2ViewCategoriesRow = Marionette.ItemView.extend({
-		tagName : 'tr',
+	var K2ViewCategoriesRow = Marionette.CompositeView.extend({
+		tagName : 'li',
 		template : _.template(row),
 		events : {
 			'click a.appEditLink' : 'edit',
 		},
-		onRender : function() {
-			this.el.addClass('appCategoryParent' + this.model.get('parent_id'));
-		},
 		edit : function(event) {
 			event.preventDefault();
 			K2Dispatcher.trigger('app:controller:edit', this.model.get('id'));
+		},
+		initialize : function(options) {
+			if (options.tree != undefined) {
+				console.info(this.model.get('title'));
+				var tree = options.tree.where({
+					parent_id : this.model.get('id')
+				});
+				var collection = new Backbone.Collection(tree);
+				this.collection = collection;
+			}
+		},
+		onRender : function() {
+			this.$el.attr('data-id', this.model.get('id'));
+		},
+		appendHtml : function(cv, iv) {
+			cv.$("ul:first").append(iv.el);
 		}
 	});
 	var K2ViewCategories = Marionette.CompositeView.extend({
 		template : _.template(list),
-		itemViewContainer : 'tbody',
+		itemViewContainer : '#appCategories',
 		itemView : K2ViewCategoriesRow,
-		onCompositeCollectionRendered : function() {
-			var model = this.collection.at(0);
-			if (model && model.get('canSort')) {
-				var groups = [];
-				_.each(this.$el.find('tr'), function(tr) {
-					var className = jQuery(tr).attr('class');
-					if (className !== undefined) {
-						groups.push(className);
+		initialize : function() {
+			this.tree = this.collection;
+			this.collection = new Backbone.Collection(this.tree.where({
+				level : '1'
+			}));
+		},
+		itemViewOptions : function(model, index) {
+			var tree = this.tree;
+			return {
+				tree : tree
+			};
+		},
+		onCollectionRendered : function() {
+			var el = this.$el.find('#appCategories');
+			require(['widgets/sortable/jquery-sortable-min'], function() {
+				el.sortable({
+					handle : '.appOrderingHandle',
+					onDrop : function(item, container, _super) {
+						var id = item.data('id');
+						var parent = item.parent();
+						var parent_id = parent.data('parent');
+						var index = parent.children().index(item);
+						if (index == 0) {
+							var location = 'first-child';
+							var reference_id = parent_id;
+						} else {
+							var location = 'after';
+							var reference_id = item.prev().data('id');
+						}
+						var data = [{
+							name : 'id',
+							value : id
+						}, {
+							name : 'parent_id',
+							value : parent_id
+						}, {
+							name : 'location',
+							value : location
+						}, {
+							name : 'reference_id',
+							value : reference_id
+						}, {
+							name : K2SessionToken,
+							value : 1
+						}];
+						jQuery.ajax({
+							dataType : 'json',
+							type : 'POST',
+							url : 'index.php?option=com_k2&task=categories.saveOrder&format=json',
+							data : data
+						}).done(function(data, status, xhr) {
+
+						}).fail(function(xhr, status, error) {
+
+						});
+
+						_super(item);
 					}
 				});
-				groups = _.uniq(groups);
-				_.each(groups, _.bind(function(group) {
-					K2Widgets.ordering(this.$el.find('table tbody'), 'ordering', K2Session.get('categories.sorting') === 'ordering', {
-						items : 'tbody tr.' + group
-					});
-				}, this));
-			}
-
+			});
 		}
 	});
 	return K2ViewCategories;

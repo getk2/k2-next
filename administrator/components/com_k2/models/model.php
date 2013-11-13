@@ -19,6 +19,22 @@ class K2Model extends JModelLegacy
 {
 
 	/**
+	 * Returns a Model object, always creating it
+	 *
+	 * @param   string  $type    The model type to instantiate
+	 * @param   string  $prefix  Prefix for the model class name. Optional.
+	 * @param   array   $config  Configuration array for model. Optional.
+	 *
+	 * @return  mixed   A model object or false on failure
+	 *
+	 * @since   11.1
+	 */
+	public static function getInstance($type, $prefix = 'K2Model', $config = array())
+	{
+		return parent::getInstance($type, $prefix, $config);
+	}
+
+	/**
 	 * Add a directory where JModelLegacy should search for models.
 	 * You may either pass a string or an array of directories.
 	 * We need to override this since K2Model::getInstance will always refer to the parent.
@@ -32,6 +48,20 @@ class K2Model extends JModelLegacy
 	public static function addIncludePath($path = '', $prefix = 'K2Model')
 	{
 		return parent::addIncludePath($path, $prefix);
+	}
+
+	/**
+	 * Method to get a table object, load it if necessary.
+	 *
+	 * @param   string  $name     The table name. Optional.
+	 * @param   string  $prefix   The class prefix. Optional.
+	 * @param   array   $options  Configuration array for model. Optional.
+	 *
+	 * @return  JTable  A JTable object
+	 */
+	public function getTable($name = '', $prefix = 'K2Table', $options = array())
+	{
+		return parent::getTable($name, $prefix, $options);
 	}
 
 	/**
@@ -183,20 +213,6 @@ class K2Model extends JModelLegacy
 	protected function onAfterDelete($table)
 	{
 		return true;
-	}
-
-	/**
-	 * Method to get a table object, load it if necessary.
-	 *
-	 * @param   string  $name     The table name. Optional.
-	 * @param   string  $prefix   The class prefix. Optional.
-	 * @param   array   $options  Configuration array for model. Optional.
-	 *
-	 * @return  JTable  A JTable object
-	 */
-	public function getTable($name = '', $prefix = 'K2Table', $options = array())
-	{
-		return parent::getTable($name, $prefix, $options);
 	}
 
 	/**

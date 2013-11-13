@@ -91,7 +91,7 @@ class K2ViewExtraFields extends K2View
 		$this->setUserState('limit', 10, 'int');
 		$this->setUserState('page', 1, 'int');
 		$this->setUserState('search', '', 'string');
-		$this->setUserState('published', '', 'cmd');
+		$this->setUserState('state', '', 'cmd');
 		$this->setUserState('group', '', 'cmd');
 		$this->setUserState('type', '', 'cmd');
 		$this->setUserState('sorting', 'ordering', 'string');
@@ -110,15 +110,15 @@ class K2ViewExtraFields extends K2View
 			'K2_GROUP' => 'group',
 			'K2_TYPE' => 'type',
 			'K2_ORDERING' => 'ordering',
-			'K2_PUBLISHED' => 'published'
+			'K2_STATE' => 'state'
 		);
 		K2Response::addFilter('sorting', JText::_('K2_SORT_BY'), K2HelperHTML::sorting($sortingOptions), false, 'header');
 
 		// Search filter
 		K2Response::addFilter('search', JText::_('K2_SEARCH'), K2HelperHTML::search(), false, 'sidebar');
 
-		// Published filter
-		K2Response::addFilter('published', JText::_('K2_PUBLISHED'), K2HelperHTML::published(), true, 'sidebar');
+		// State filter
+		K2Response::addFilter('state', JText::_('K2_STATE'), K2HelperHTML::state(), true, 'sidebar');
 
 	}
 

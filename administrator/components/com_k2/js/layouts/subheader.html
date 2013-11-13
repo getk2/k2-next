@@ -22,7 +22,7 @@
     <span id="appToolbarTitle"><%= l('K2_SELECTED') %></span>
     <ul id="appToolbarActions">
         <% _(toolbar).each(function(button) { %>
-        <button <% if(button.attributes.id) { %> id="<%= button.attributes.id %>" <% } %> <% if(button.attributes.class) { %> class="<%= button.attributes.class %>" <% } %> <% if(button.attributes['data-state']) { %> data-state="<%= button.attributes['data-state'] %>" <% } %>>
+        <button <% _.each(button.attributes, function(value, name) { print(name + '="' + value + '" ');}) %>>
             <%= button.name %>
         </button>
         <% }); %>

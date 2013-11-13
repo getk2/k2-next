@@ -68,7 +68,11 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 			}
 			_.extend(params, options);
 			var attrs = {};
-			attrs[state] = (this.get(state) > 0 ) ? 0 : 1;
+			if(state == 'published') {
+				attrs['state'] = (this.get('state') > 0 ) ? 0 : 1;
+			} else if (state == 'featured') {
+				attrs['state'] = (this.get('state') > 1 ) ? 1 : 2;
+			}
 			this.save(attrs, params);
 		},
 		bind : function(input) {

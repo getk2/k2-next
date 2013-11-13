@@ -91,7 +91,7 @@ class K2ViewUsers extends K2View
 		$this->setUserState('limit', 10, 'int');
 		$this->setUserState('page', 1, 'int');
 		$this->setUserState('search', '', 'string');
-		$this->setUserState('published', '', 'cmd');
+		$this->setUserState('state', '', 'cmd');
 		$this->setUserState('sorting', 'ordering', 'string');
 	}
 

@@ -154,6 +154,9 @@ class K2Controller extends JControllerLegacy
 			}
 		}
 
+		// Show the response
+		echo json_encode(K2Response::getResponse());
+
 		// Return
 		return $this;
 	}
@@ -205,26 +208,88 @@ class K2Controller extends JControllerLegacy
 	 */
 	protected function create()
 	{
-		$this->save();
+		// Check for token
+		JSession::checkToken() or K2Response::throwError(JText::_('JINVALID_TOKEN'));
 
-		// For new records we need to return the id in order to allow the client to know.
-		$object = new stdClass;
-		$object->id = $this->model->getState('id');
-		echo json_encode($object);
+		// Get input data
+		$data = $this->input->getArray();
+
+		// Ensure we are not passed with an id
+		$data['id'] = null;
+
+		// Pass data to the model
+		$this->model->setState('data', $data);
+
+		// Save
+		$result = $this->model->save();
+
+		// Handle save result
+		if ($result)
+		{
+			// Save was successful try to checkin the row
+			if (!$this->model->checkin($this->model->getState('id')))
+			{
+				// An error occured while trying to checkin. Notify the client.
+				K2Response::throwError($this->model->getError());
+			}
+
+			// Row saved. Pass the id of the new object to the client.
+			$row = new stdClass;
+			$row->id = $this->model->getState('id');
+			K2Response::setResponse($row);
+		}
+		else
+		{
+			// An error occured while saving. Notify the client.
+			K2Response::throwError($this->model->getError());
+		}
 	}
 
 	/**
 	 * Update function.
 	 * Updates an existing resource.
 	 *
-	 * @param boolean $patch	True if we apply a patch operation instead of a full update.
-	 *
 	 * @return void
 	 */
 	protected function update()
 	{
-		$this->save();
-		echo json_encode(true);
+		// Check for token
+		JSession::checkToken() or K2Response::throwError(JText::_('JINVALID_TOKEN'));
+
+		// Ensure we have an id
+		$id = $this->input->get('id', 0, 'int');
+		if (!$id)
+		{
+			K2Response::throwError(JText::_('K2_INVALID_INPUT'));
+		}
+
+		// Get input data
+		$data = $this->input->getArray();
+
+		// Pass data to the model
+		$this->model->setState('data', $data);
+
+		// Save
+		$result = $this->model->save();
+
+		// Handle save result
+		if ($result)
+		{
+			// Save was successful try to checkin the row
+			if (!$this->model->checkin($this->model->getState('id')))
+			{
+				// An error occured while trying to checkin. Notify the client.
+				K2Response::throwError($this->model->getError());
+			}
+
+			// Row saved. Pass the id of the new object to the client.
+			K2Response::setResponse($result);
+		}
+		else
+		{
+			// An error occured while saving. Notify the client.
+			K2Response::throwError($this->model->getError());
+		}
 	}
 
 	/**
@@ -253,38 +318,7 @@ class K2Controller extends JControllerLegacy
 				K2Response::throwError($this->model->getError());
 			}
 		}
-		echo json_encode(true);
-	}
-
-	/**
-	 * Default implementation for save function.
-	 * This function saves a row and then performs inside routing to fetch the data for the next screen.
-	 * Create and update requests are routed here by the main Sync function.
-	 * Usually there will be no need to override this function.
-	 *
-	 * @return void
-	 */
-	protected function save()
-	{
-		// Check for token
-		JSession::checkToken() or K2Response::throwError(JText::_('JINVALID_TOKEN'));
-
-		// Save
-		$data = JRequest::get('post', 2);
-		$this->model->setState('data', $data);
-		$result = $this->model->save();
-		// If save was successful checkin the row
-		if ($result)
-		{
-			if (!$this->model->checkin($this->model->getState('id')))
-			{
-				K2Response::throwError($this->model->getError());
-			}
-		}
-		else
-		{
-			K2Response::throwError($this->model->getError());
-		}
+		K2Response::setResponse($result);
 	}
 
 	/**
@@ -309,7 +343,7 @@ class K2Controller extends JControllerLegacy
 		$ids = array_filter($ids);
 		if (!count($ids))
 		{
-			K2Response::throwError('', 401);
+			K2Response::throwError('K2_NO_ROWS_SELECTED', 401);
 		}
 
 		// Handle categories sorting different than any other patch request
@@ -339,7 +373,7 @@ class K2Controller extends JControllerLegacy
 				}
 			}
 		}
-		echo json_encode(true);
+		K2Response::setResponse($result);
 	}
 
 }

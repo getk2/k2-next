@@ -110,8 +110,7 @@ class K2ViewItems extends K2View
 			'K2_ID' => 'id',
 			'K2_TITLE' => 'title',
 			'K2_ORDERING' => 'ordering',
-			'K2_FEATURED' => 'featured',
-			'K2_PUBLISHED' => 'published',
+			'K2_STATE' => 'state',
 			'K2_CATEGORY' => 'category',
 			'K2_AUTHOR' => 'author',
 			'K2_MODERATOR' => 'moderator',
@@ -129,11 +128,8 @@ class K2ViewItems extends K2View
 		// Search filter
 		K2Response::addFilter('search', JText::_('K2_SEARCH'), K2HelperHTML::search(), false, 'sidebar');
 
-		// Published filter
-		K2Response::addFilter('published', JText::_('K2_PUBLISHED'), K2HelperHTML::published(), true, 'sidebar');
-
-		// Featured filter
-		K2Response::addFilter('featured', JText::_('K2_FEATURED'), K2HelperHTML::featured(), true, 'sidebar');
+		// State filter
+		K2Response::addFilter('state', JText::_('K2_STATE'), K2HelperHTML::state('state', null, true, true), true, 'sidebar');
 
 	}
 
@@ -162,18 +158,33 @@ class K2ViewItems extends K2View
 
 		if ($canEditFeaturedState)
 		{
-			K2Response::addToolbarAction('featured', 'K2_TOGGLE_FEATURED_STATE', array(
-				'data-state' => 'featured',
-				'class' => 'appActionToggleState',
-				'id' => 'appActionToggleFeaturedState'
+			K2Response::addToolbarAction('feature', 'K2_FEATURE', array(
+				'data-value' => '2',
+				'class' => 'appActionSetState',
+				'id' => 'appActionFeature'
+			));
+			K2Response::addToolbarAction('unfeature', 'K2_UNFEATURE', array(
+				'data-value' => '1',
+				'class' => 'appActionSetState',
+				'id' => 'appActionUnFeature'
 			));
 		}
 		if ($canEditState)
 		{
-			K2Response::addToolbarAction('published', 'K2_TOGGLE_PUBLISHED_STATE', array(
-				'data-state' => 'published',
-				'class' => 'appActionToggleState',
-				'id' => 'appActionTogglePublishedState'
+			K2Response::addToolbarAction('publish', 'K2_PUBLISH', array(
+				'data-value' => '1',
+				'class' => 'appActionSetState',
+				'id' => 'appActionPublish'
+			));
+			K2Response::addToolbarAction('unpublish', 'K2_UNPUBLISH', array(
+				'data-value' => '0',
+				'class' => 'appActionSetState',
+				'id' => 'appActionUnpublish'
+			));
+			K2Response::addToolbarAction('trash', 'K2_TRASH', array(
+				'data-value' => '-1',
+				'class' => 'appActionSetState',
+				'id' => 'appActionTrash'
 			));
 		}
 		K2Response::addToolbarAction('batch', 'K2_BATCH', array('id' => 'appActionBatch'));
