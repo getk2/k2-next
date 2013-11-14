@@ -16,10 +16,8 @@
         <input type="radio" name="required" value="0" <%= (row.required < 1) ? 'checked="checked"': '' %> />
     </label>
 
-    <% if(row.canEditState) { %>
     <label><%= l('K2_STATE') %></label>
     <%= form.state %>
-    <% } %>
     
     <label for="type"><%= l('K2_EXTRA_FIELDS_TYPE') %></label>
     <%= form.type %>

@@ -29,6 +29,8 @@ class K2ModelItems extends K2Model
 		$query->select($db->quoteName('category.title', 'categoryName'));
 		$query->select($db->quoteName('category.state', 'categoryState'));
 		$query->select($db->quoteName('category.access', 'categoryAccess'));
+		$query->select($db->quoteName('category.level', 'categoryLevel'));
+		$query->select($db->quoteName('category.path', 'categoryPath'));
 		$query->leftJoin($db->quoteName('#__k2_categories', 'category').' ON '.$db->quoteName('category.id').' = '.$db->quoteName('item.catid'));
 
 		// Join over the language
@@ -189,7 +191,7 @@ class K2ModelItems extends K2Model
 					$order = 'item.title ASC';
 					break;
 				case 'ordering' :
-					$order = 'item.ordering ASC';
+					$order = 'category.lft ASC, item.ordering ASC';
 					break;
 				case 'state' :
 					$order = 'item.state DESC';
@@ -387,6 +389,16 @@ class K2ModelItems extends K2Model
 			{
 				$data['end_date'] = '';
 			}
+		}
+
+		// Ordering
+		if (!$table->id)
+		{
+			$data['ordering'] = $table->getNextOrder('catid = '.(int)$data['catid']);
+		}
+		else
+		{
+			$data['ordering'] = $table->ordering;
 		}
 
 		// Image

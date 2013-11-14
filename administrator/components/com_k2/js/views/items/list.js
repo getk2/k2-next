@@ -1,4 +1,16 @@
-define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.html', 'dispatcher', 'session', 'widgets'], function(Marionette, list, row, K2Dispatcher, K2Session, K2Widgets) {'use strict';
+define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.html', 'text!layouts/items/list_reorder.html', 'text!layouts/items/row_reorder.html', 'dispatcher', 'session', 'widgets'], function(Marionette, list, row, listReorder, rowReorder, K2Dispatcher, K2Session, K2Widgets) {'use strict';
+
+	var K2ViewItemsRowReorder = Marionette.CompositeView.extend({
+		tagName : 'li',
+		template : _.template(rowReorder),
+		initialize : function() {
+			this.collection = new Backbone.Collection(this.model.get('children'));
+		},
+		appendHtml : function(compositeView, itemView) {
+			compositeView.$('ul:first').append(itemView.el);
+		}
+	});
+
 	var K2ViewItemsRow = Marionette.ItemView.extend({
 		tagName : 'tr',
 		template : _.template(row),
@@ -14,11 +26,40 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 		template : _.template(list),
 		itemViewContainer : 'tbody',
 		itemView : K2ViewItemsRow,
-		onCompositeCollectionRendered : function() {
-			var model = this.collection.at(0);
-			if (model && model.get('canSort')) {
-				K2Widgets.ordering(this.$el.find('table tbody'), 'ordering', K2Session.get('items.sorting') === 'ordering');
-			}
+		events : {
+			'click .appActionReorder' : 'reorder'
+		},
+		reorder : function() {
+			this.buildTree();
+			this.template = _.template(listReorder);
+			this.itemViewContainer = '#appItems';
+			this.itemView = K2ViewItemsRowReorder;
+			this.render();
+		},
+		buildTree : function() {
+			// Rebuild the collection in tree way
+			var tree = new Backbone.Collection();
+			_.each(this.collection.models, _.bind(function(model) {
+
+				var categories = model.get('categoryPath').split(',');
+				_.each(categories, function(alias, index) {
+					var children = _.rest(categories, index);
+					if (model.get('categoryAlias') === category) {
+						children.push(model);
+					}
+					tree.add({
+						id : alias,
+						children : children
+					}, {
+						silent : true,
+						merge : true
+					});
+				});
+			}, this));
+
+			this.collection.reset(tree, {
+				silent : true
+			});
 		}
 	});
 	return K2ViewItems;

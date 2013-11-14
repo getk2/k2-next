@@ -124,10 +124,13 @@ class K2ViewTags extends K2View
 
 		K2Response::addToolbarAction('remove', 'K2_DELETE', array('id' => 'appActionRemove'));
 	}
-	
+
 	protected function setFormFields(&$form, $row)
 	{
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/html.php';
+		$form->state = K2HelperHTML::state('state', $row->state);
 		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/extrafields.php';
 		$form->extraFields = K2HelperExtraFields::getTagExtraFields($row->id, $row->extra_fields);
 	}
+
 }
