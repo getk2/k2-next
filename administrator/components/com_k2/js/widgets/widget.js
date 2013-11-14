@@ -194,10 +194,9 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 			});
 		},
 		ordering : function(element, column, enabled) {
-			var el = element.find('table');
-			var minimumValue = el.find('input[name="' + column + '[]"]:first').val();
+			var minimumValue = element.find('input[name="' + column + '[]"]:first').val();
 			require(['widgets/sortable/jquery-sortable-min'], function() {
-				el.sortable({
+				element.find('table').sortable({
 					handle : '.appOrderingHandle[data-column="' + column + '"]',
 					containerSelector : 'table',
 					itemPath : '> tbody',
@@ -207,7 +206,7 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 						var value = minimumValue;
 						var keys = [];
 						var values = [];
-						el.find('input[name="' + column + '[]"]').each(function(index) {
+						element.find('input[name="' + column + '[]"]').each(function(index) {
 							keys.push(jQuery(this).data('id'));
 							values.push(value);
 							value++;
@@ -219,11 +218,11 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 
 				// Enable or disable the sorting
 				if (enabled) {
-					el.sortable('enable');
+					element.find('table').sortable('enable');
 					element.find('input[name="' + column + '[]"]').prop('disabled', false);
 					element.find('.appActionSaveOrder[data-column="' + column + '"]').prop('disabled', false);
 				} else {
-					el.sortable('disable');
+					element.find('table').sortable('disable');
 					element.find('input[name="' + column + '[]"]').prop('disabled', true);
 					element.find('.appActionSaveOrder[data-column="' + column + '"]').prop('disabled', true);
 				}

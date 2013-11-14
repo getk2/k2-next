@@ -96,9 +96,23 @@ body.dragging, body.dragging * {
 	z-index: 2000;
 }
 
-ol.example li.placeholder {
+.placeholder {
 	position: relative;
+	background: none repeat scroll 0 0 #FF0000;
+	border: medium none;
+	display: block;
+	margin: 0;
+	padding: 0;
 }
-ol.example li.placeholder:before {
+.placeholder:before {
+	content: "";
 	position: absolute;
+	width: 0;
+	height: 0;
+	border: 5px solid transparent;
+	border-left-color: red;
+	margin-top: -5px;
+	left: -5px;
+	border-right: none;
 }
+
