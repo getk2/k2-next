@@ -4,9 +4,9 @@
     </label>
 </td>
 <td><a class="appEditLink" href="<%= link %>"><%= title %></a></td>
-<td><span class="appOrderingHandle">DRAG ME</span></td>
+<td><span class="appOrderingHandle" data-column="ordering">DRAG ME</span></td>
 <td>
-    <input type="text" maxlength="6" size="6" name="ordering[]" value="<%= ordering %>" data-id="<%= id %>" />
+    <input type="text" maxlength="6" size="6" name="ordering[]" value="<%= ordering %>" data-id="<%= id %>" disabled="disabled" />
 </td>
 <td>
     <% if(canEditState) { %>

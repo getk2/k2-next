@@ -1,22 +1,8 @@
 <span class="appCheckboxHolder"> <label for="appCheckBox<%= id %>" class="appCheckbox">
         <input class="appRowToggler" name="id[]" id="appCheckBox<%= id %>" value="<%= id %>" type="checkbox" />
     </label> </span>
-<span><a class="appEditLink" href="<%= link %>"><%= title %></a></span>
+<span><%= title %></a></span>
 <span><span class="appOrderingHandle">DRAG ME</span></span>
-<span> <% if(canEditState) { %> <a class="appActionToggleState appPublishedState<%= state > 0 ? ' appStateActive' : '' %>" data-state="published" data-id="<%= id %>"><%= state %></a> <% } else { %>
-    <%= state %>
-    <% } %>
-
-    <% if(canEditState && canEditFeaturedState) { %> <a class="appActionToggleState appFeaturedState<%= state > 1 ? ' appStateActive' : '' %>" data-state="featured" data-id="<%= id %>"><%= state %></a> <% } else { %>
-    <%= state %>
-    <% } %> </span>
 <span><%= categoryName %></span>
-<span><%= viewLevel %></span>
-<span><%= authorName %></span>
-<span><%= createdOn %></span>
-<span><%= moderatorName %></span>
-<span><%= modifiedOn %></span>
-<span><%= hits %></span>
-<span><%= languageTitle %></span>
 <span><%= id %></span>
 <ul></ul>

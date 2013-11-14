@@ -1,4 +1,4 @@
-define(['marionette', 'text!layouts/extrafields/list.html', 'text!layouts/extrafields/row.html', 'dispatcher', 'session', 'widgets'], function(Marionette, list, row, K2Dispatcher, K2Session, K2Widgets) {'use strict';
+define(['marionette', 'text!layouts/extrafields/list.html', 'text!layouts/extrafields/row.html', 'dispatcher', 'session', 'widgets/widget'], function(Marionette, list, row, K2Dispatcher, K2Session, K2Widget) {'use strict';
 	var K2ViewExtraFieldsRow = Marionette.ItemView.extend({
 		tagName : 'tr',
 		template : _.template(row),
@@ -15,7 +15,7 @@ define(['marionette', 'text!layouts/extrafields/list.html', 'text!layouts/extraf
 		itemViewContainer : 'tbody',
 		itemView : K2ViewExtraFieldsRow,
 		onCompositeCollectionRendered : function() {
-			K2Widgets.ordering(this.$el.find('table tbody'), 'ordering', K2Session.get('extrafields.sorting') === 'ordering');
+			K2Widget.ordering(this.$el, 'ordering', K2Session.get('extrafields.sorting') === 'ordering');
 		}
 	});
 	return K2ViewExtraFields;

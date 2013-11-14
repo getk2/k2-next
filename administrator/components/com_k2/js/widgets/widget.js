@@ -9,13 +9,13 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 			container.find('input[data-widget]').each(function() {
 				self.attachWidget(jQuery(this));
 			});
-			
+
 		},
-		
+
 		attachWidget : function(element) {
 			var widget = element.data('widget');
 			var active = element.data('active');
-			if(!active) {
+			if (!active) {
 				this[widget](element);
 				element.data('active', true);
 			}
@@ -28,7 +28,7 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 
 			// Generate a unique callback
 			var callback = 'app:media:' + jQuery.now();
-			
+
 			// Add the click event
 			button.on('click', function(event) {
 				// Stop the event
@@ -171,7 +171,7 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 			});
 		},
 		editor : function(element) {
-			
+
 		},
 		uploader : function(element) {
 			require(['widgets/uploader/jquery.iframe-transport', 'widgets/uploader/jquery.fileupload'], function() {
@@ -191,6 +191,43 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 						K2Dispatcher.trigger('app:message', 'error', data.jqXHR.responseText);
 					}
 				});
+			});
+		},
+		ordering : function(element, column, enabled) {
+			var el = element.find('table');
+			var minimumValue = el.find('input[name="' + column + '[]"]:first').val();
+			require(['widgets/sortable/jquery-sortable-min'], function() {
+				el.sortable({
+					handle : '.appOrderingHandle[data-column="' + column + '"]',
+					containerSelector : 'table',
+					itemPath : '> tbody',
+					itemSelector : 'tr',
+					placeholder : '<tr class="placeholder"/>',
+					onDrop : function(item, container, _super) {
+						var value = minimumValue;
+						var keys = [];
+						var values = [];
+						el.find('input[name="' + column + '[]"]').each(function(index) {
+							keys.push(jQuery(this).data('id'));
+							values.push(value);
+							value++;
+						});
+						K2Dispatcher.trigger('app:controller:saveOrder', keys, values, column);
+						_super(item);
+					}
+				});
+
+				// Enable or disable the sorting
+				if (enabled) {
+					el.sortable('enable');
+					element.find('input[name="' + column + '[]"]').prop('disabled', false);
+					element.find('.appActionSaveOrder[data-column="' + column + '"]').prop('disabled', false);
+				} else {
+					el.sortable('disable');
+					element.find('input[name="' + column + '[]"]').prop('disabled', true);
+					element.find('.appActionSaveOrder[data-column="' + column + '"]').prop('disabled', true);
+				}
+
 			});
 		}
 	};

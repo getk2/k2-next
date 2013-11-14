@@ -396,10 +396,6 @@ class K2ModelItems extends K2Model
 		{
 			$data['ordering'] = $table->getNextOrder('catid = '.(int)$data['catid']);
 		}
-		else
-		{
-			$data['ordering'] = $table->ordering;
-		}
 
 		// Image
 		if (isset($data['image']))

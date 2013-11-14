@@ -110,6 +110,7 @@ class K2ViewItems extends K2View
 			'K2_ID' => 'id',
 			'K2_TITLE' => 'title',
 			'K2_ORDERING' => 'ordering',
+			'K2_FEATURED_ORDERING' => 'featured_ordering',
 			'K2_STATE' => 'state',
 			'K2_CATEGORY' => 'category',
 			'K2_AUTHOR' => 'author',
