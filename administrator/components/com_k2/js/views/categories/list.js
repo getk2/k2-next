@@ -2,48 +2,45 @@ define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categor
 	var K2ViewCategoriesRow = Marionette.CompositeView.extend({
 		tagName : 'li',
 		template : _.template(row),
-		events : {
-			'click a.appEditLink' : 'edit',
-		},
-		edit : function(event) {
-			event.preventDefault();
-			K2Dispatcher.trigger('app:controller:edit', this.model.get('id'));
-		},
-		initialize : function(options) {
-			if (options.tree != undefined) {
-				console.info(this.model.get('title'));
-				var tree = options.tree.where({
-					parent_id : this.model.get('id')
-				});
-				var collection = new Backbone.Collection(tree);
-				this.collection = collection;
-			}
+		initialize : function() {
+			this.collection = new Backbone.Collection(this.model.get('children'));
 		},
 		onRender : function() {
 			this.$el.attr('data-id', this.model.get('id'));
 		},
-		appendHtml : function(cv, iv) {
-			cv.$("ul:first").append(iv.el);
+		appendHtml : function(compositeView, itemView) {
+			compositeView.$('ul:first').append(itemView.el);
 		}
 	});
 	var K2ViewCategories = Marionette.CompositeView.extend({
 		template : _.template(list),
 		itemViewContainer : '#appCategories',
 		itemView : K2ViewCategoriesRow,
+		collectionEvents : {
+			'reset' : 'buildTree',
+		},
 		initialize : function() {
-			this.tree = this.collection;
-			this.collection = new Backbone.Collection(this.tree.where({
+			this.buildTree();
+		},
+		buildTree : function() {
+			// Rebuild the collection in tree way
+			_.each(this.collection.models, _.bind(function(model) {
+				var children = this.collection.where({
+					parent_id : model.get('id')
+				});
+				model.set('children', children);
+			}, this));
+			this.collection.reset(this.collection.where({
 				level : '1'
-			}));
+			}), {
+				silent : true
+			});
 		},
-		itemViewOptions : function(model, index) {
-			var tree = this.tree;
-			return {
-				tree : tree
-			};
-		},
-		onCollectionRendered : function() {
+		onCompositeCollectionRendered : function() {
+
+			// Enable sorting
 			var el = this.$el.find('#appCategories');
+			var collection = this.collection;
 			require(['widgets/sortable/jquery-sortable-min'], function() {
 				el.sortable({
 					handle : '.appOrderingHandle',
@@ -52,40 +49,14 @@ define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categor
 						var parent = item.parent();
 						var parent_id = parent.data('parent');
 						var index = parent.children().index(item);
-						if (index == 0) {
+						if (index === 0) {
 							var location = 'first-child';
 							var reference_id = parent_id;
 						} else {
 							var location = 'after';
 							var reference_id = item.prev().data('id');
 						}
-						var data = [{
-							name : 'id',
-							value : id
-						}, {
-							name : 'parent_id',
-							value : parent_id
-						}, {
-							name : 'location',
-							value : location
-						}, {
-							name : 'reference_id',
-							value : reference_id
-						}, {
-							name : K2SessionToken,
-							value : 1
-						}];
-						jQuery.ajax({
-							dataType : 'json',
-							type : 'POST',
-							url : 'index.php?option=com_k2&task=categories.saveOrder&format=json',
-							data : data
-						}).done(function(data, status, xhr) {
-
-						}).fail(function(xhr, status, error) {
-
-						});
-
+						collection.moveByReference(reference_id, location, id);
 						_super(item);
 					}
 				});

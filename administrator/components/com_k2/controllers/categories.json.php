@@ -22,22 +22,42 @@ class K2ControllerCategories extends K2Controller
 	{
 		// Check for token
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		
+		// Get user
+		$user = JFactory::getUser();
+		
+		// Check permissions
+		if(!$user->authorise('k2.category.edit', 'com_k2'))
+		{
+			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
+		}
 
 		// Get input
 		$id = $this->input->get('id', 0, 'int');
-		$parent_id = $this->input->get('parent_id', 1, 'int');
 		$reference_id = $this->input->get('reference_id', 0, 'int');
 		$location = $this->input->get('location', '', 'cmd');
+		
+		// Valid location values
+		$locations = array(
+			'first-child',
+			'after'
+		);
+
+		// Ensure that we have valid input
+		if (!$id || $reference_id < 1 || !in_array($location, $locations))
+		{
+			K2Response::throwError(JText::_('K2_INVALID_INPUT'));
+		}
 
 		// Get table
 		$table = $this->model->getTable();
 
 		// Update
-		if(!$table->moveByReference($reference_id, $location, $id))
+		if (!$table->moveByReference($reference_id, $location, $id))
 		{
 			K2Response::throwError($table->getError());
 		}
-		
+
 		return $this;
 	}
 

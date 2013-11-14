@@ -5,12 +5,12 @@
 </span>
 <span>
     <% if(canEdit) { %>
-    <a class="appEditLink" href="<%= link %>"><%= str_repeat('-', level) %><%= title %></a>
+    <a class="appEditLink" href="<%= link %>"><%= str_repeat('-', level - 1) %><%= title %></a>
     <% } else { %>
         <%= str_repeat('-', level) %><%= title %>
     <% } %>
 </span>
-<span><span class="appOrderingHandle">DRAG ME</span><input type="text" maxlength="6" size="6" name="lft[]" value="<%- lft %>" /></span>
+<span><span class="appOrderingHandle">DRAG ME</span></span>
 <span>
     <% if(canEditState) { %>
     <a class="appActionToggleState <%= state == 1 ? ' appStateActive' : '' %>" data-id="<%= id %>" data-state="published"><%= state %></a>
