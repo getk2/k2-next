@@ -14,7 +14,7 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 			caption : null,
 			credits : null
 		},
-		urlRoot : 'index.php?option=com_k2&task=image.sync&format=json',
+		urlRoot : 'index.php?option=com_k2&task=images.sync&format=json',
 		url : function() {
 			var base = _.result(this, 'urlRoot') || _.result(this.collection, 'url') || urlError();
 			if (this.isNew())

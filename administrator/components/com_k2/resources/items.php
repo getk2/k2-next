@@ -151,7 +151,7 @@ class K2Items extends K2Resource
 		if (count($result->images))
 		{
 			$images = $result->images;
-			$this->image = $images['XL'];
+			$this->image = $images['S'];
 			$this->_image->preview = $this->image;
 			$this->_image->id = $result->id;
 		}
