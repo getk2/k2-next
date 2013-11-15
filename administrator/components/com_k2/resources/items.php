@@ -11,6 +11,7 @@
 defined('_JEXEC') or die ;
 
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/resource.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/items.php';
 
 /**
  * K2 item resource class.
@@ -50,7 +51,7 @@ class K2Items extends K2Resource
 		if (empty(self::$instances[$id]))
 		{
 			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
-			$model = K2Model::getInstance('Items', 'K2Model');
+			$model = K2Model::getInstance('Items');
 			$model->setState('id', $id);
 			$item = $model->getRow();
 			self::$instances[$id] = $item;
