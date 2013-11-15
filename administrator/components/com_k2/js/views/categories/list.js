@@ -30,8 +30,12 @@ define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categor
 				});
 				model.set('children', children);
 			}, this));
+
+			// Detect the start level
+			var startLevel = _.min(this.collection.pluck('level'));
+
 			this.collection.reset(this.collection.where({
-				level : '1'
+				level : startLevel
 			}), {
 				silent : true
 			});
