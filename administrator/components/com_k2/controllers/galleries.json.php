@@ -11,6 +11,8 @@
 defined('_JEXEC') or die ;
 
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/controller.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/items.php';
 
 /**
  * Galleries JSON controller.
@@ -25,7 +27,6 @@ class K2ControllerGalleries extends K2Controller
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		// Filesystem
-		require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
 		$filesystem = K2FileSystem::getInstance();
 
 		// Get input
@@ -35,6 +36,22 @@ class K2ControllerGalleries extends K2Controller
 		$gallery = uniqid();
 		$folder = $itemId;
 		$archive = $file = $input->files->get('archive');
+
+		// Permissions check
+		if (is_numeric($itemId))
+		{
+			// Existing items check permission for specific item
+			$authorised = K2Items::getInstance($itemId)->canEdit;
+		}
+		else
+		{
+			// New items. We can only check the generic create permission. We cannot check against specific category since we do not know the category of the item.
+			$authorised = JFactory::getUser()->authorise('k2.item.create', 'com_k2');
+		}
+		if (!$authorised)
+		{
+			K2Response::throwError('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION', 403);
+		}
 
 		// Extract the gallery to a temporaty folder
 		jimport('joomla.archive.archive');
@@ -99,6 +116,22 @@ class K2ControllerGalleries extends K2Controller
 		$itemFolder = $itemId;
 		$upload = $input->get('upload', '', 'cmd');
 
+		// Permissions check
+		$user = JFactory::getUser();
+		if (is_numeric($itemId))
+		{
+			// Existing items check permission for specific item
+			$authorised = K2Items::getInstance($itemId)->canEdit;
+		}
+		else
+		{
+			$authorised = true;
+		}
+		if (!$authorised)
+		{
+			K2Response::throwError('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION', 403);
+		}
+
 		if ($upload)
 		{
 			// Filesystem
@@ -121,7 +154,6 @@ class K2ControllerGalleries extends K2Controller
 
 			// Check if the item folder contains more galleries. If not delete it.
 			$keys = $filesystem->listKeys('media/k2/galleries/'.$itemFolder.'/');
-			var_dump($keys);
 			if (empty($keys['dirs']))
 			{
 				$filesystem->delete('media/k2/galleries/'.$itemFolder);
