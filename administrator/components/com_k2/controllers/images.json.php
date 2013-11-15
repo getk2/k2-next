@@ -38,7 +38,6 @@ class K2ControllerImages extends K2Controller
 		$path = str_replace(JURI::root(true).'/', '', $path);
 
 		// Permissions check
-		$user = JFactory::getUser();
 		if ($itemId)
 		{
 			if ($type = 'item')
@@ -52,7 +51,7 @@ class K2ControllerImages extends K2Controller
 		}
 		else
 		{
-			$authorised = $user->authorise('k2.'.$type.'.create', 'com_k2');
+			$authorised = JFactory::getUser()->authorise('k2.'.$type.'.create', 'com_k2');
 		}
 		if (!$authorised)
 		{
@@ -97,7 +96,6 @@ class K2ControllerImages extends K2Controller
 		$itemId = $input->get('itemId', 0, 'int');
 
 		// Permissions check
-		$user = JFactory::getUser();
 		if ($itemId)
 		{
 			if ($type = 'item')
