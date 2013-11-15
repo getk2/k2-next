@@ -92,7 +92,7 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 			jQuery.ajax({
 				dataType : 'json',
 				type : 'POST',
-				url : 'index.php?option=com_k2&task=image.upload&format=json',
+				url : 'index.php?option=com_k2&task=images.upload&format=json',
 				data : data
 			}).done(function(data, status, xhr) {
 				self.model.set('id', data.id);

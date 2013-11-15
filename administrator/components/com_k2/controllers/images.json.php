@@ -12,12 +12,14 @@ defined('_JEXEC') or die ;
 
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/controller.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/images.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/items.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/categories.php';
 
 /**
  * Image JSON controller.
  */
 
-class K2ControllerImage extends K2Controller
+class K2ControllerImages extends K2Controller
 {
 
 	public function upload()
@@ -34,6 +36,28 @@ class K2ControllerImage extends K2Controller
 		$file = $input->files->get('file');
 		$path = $input->get('path', '', 'string');
 		$path = str_replace(JURI::root(true).'/', '', $path);
+
+		// Permissions check
+		$user = JFactory::getUser();
+		if ($itemId)
+		{
+			if ($type = 'item')
+			{
+				$authorised = K2Items::getInstance($itemId)->canEdit;
+			}
+			else
+			{
+				$authorised = K2Categories::getInstance($itemId)->canEdit;
+			}
+		}
+		else
+		{
+			$authorised = $user->authorise('k2.'.$type.'.create', 'com_k2');
+		}
+		if (!$authorised)
+		{
+			K2Response::throwError('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION', 403);
+		}
 
 		// Add image using helper
 		$image = K2HelperImages::addResourceImage($type, $id, $file, $path);
@@ -71,6 +95,28 @@ class K2ControllerImage extends K2Controller
 		$type = $input->get('type', '', 'cmd');
 		$id = $input->get('id', '', 'cmd');
 		$itemId = $input->get('itemId', 0, 'int');
+
+		// Permissions check
+		$user = JFactory::getUser();
+		if ($itemId)
+		{
+			if ($type = 'item')
+			{
+				$authorised = K2Items::getInstance($itemId)->canEdit;
+			}
+			else
+			{
+				$authorised = K2Categories::getInstance($itemId)->canEdit;
+			}
+		}
+		else
+		{
+			$authorised = true;
+		}
+		if (!$authorised)
+		{
+			K2Response::throwError('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION', 403);
+		}
 
 		// Remove image using helper
 		K2HelperImages::removeResourceImage($type, $itemId, $id);
