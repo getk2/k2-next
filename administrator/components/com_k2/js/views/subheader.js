@@ -86,7 +86,8 @@ define(['marionette', 'text!layouts/subheader.html', 'dispatcher'], function(Mar
 			var rows = jQuery('input.appRowToggler:checked').serializeArray();
 			var el = jQuery(event.currentTarget);
 			var value = el.data('value');
-			K2Dispatcher.trigger('app:controller:batchSetState', rows, value);
+			var state = el.data('state');
+			K2Dispatcher.trigger('app:controller:batchSetState', rows, value, state);
 		},
 
 		showToolbar : function() {

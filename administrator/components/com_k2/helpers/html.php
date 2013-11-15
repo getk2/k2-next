@@ -17,16 +17,12 @@ defined('_JEXEC') or die ;
 class K2HelperHTML
 {
 
-	public static function state($name = 'state', $value = null, $trashed = false, $featured = false, $all = false)
+	public static function state($name = 'state', $value = null, $all = false, $trashed = false, $type = 'select')
 	{
 		$options = array();
 		if ($all)
 		{
 			$options[] = JHTML::_('select.option', '', JText::_($all));
-		}
-		if ($featured)
-		{
-			$options[] = JHTML::_('select.option', 2, JText::_('K2_FEATURED'));
 		}
 		$options[] = JHTML::_('select.option', 1, JText::_('K2_PUBLISHED'));
 		$options[] = JHTML::_('select.option', 0, JText::_('K2_UNPUBLISHED'));
@@ -34,7 +30,23 @@ class K2HelperHTML
 		{
 			$options[] = JHTML::_('select.option', -1, JText::_('K2_TRASHED'));
 		}
-		return JHtml::_('select.genericlist', $options, $name, '', 'value', 'text', $value);
+		if ($type == 'select')
+		{
+			return JHtml::_('select.genericlist', $options, $name, '', 'value', 'text', $value);
+		}
+		else
+		{
+			return JHtml::_('select.radiolist', $options, $name, '', 'value', 'text', $value);
+		}
+	}
+
+	public static function featured($name = 'featured', $value = null)
+	{
+		$options = array();
+		$options[] = JHTML::_('select.option', '', JText::_('K2_ALL'));
+		$options[] = JHTML::_('select.option', 1, JText::_('K2_YES'));
+		$options[] = JHTML::_('select.option', 0, JText::_('K2_NO'));
+		return JHtml::_('select.radiolist', $options, $name, '', 'value', 'text', $value);
 	}
 
 	public static function language($name = 'language', $value = null, $none = false)

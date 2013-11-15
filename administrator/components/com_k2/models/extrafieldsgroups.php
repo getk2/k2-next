@@ -160,4 +160,23 @@ class K2ModelExtraFieldsGroups extends K2Model
 		return true;
 	}
 
+	/**
+	 * onBeforeDelete method. 		Hook for chidlren model.
+	 *
+	 * @param   JTable  $table     	The table object.
+	 *
+	 * @return boolean
+	 */
+
+	protected function onBeforeDelete($table)
+	{
+		$user = JFactory::getUser();
+		if (!$user->authorise('k2.extrafields.manage'))
+		{
+			$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
+			return false;
+		}
+		return true;
+	}
+
 }

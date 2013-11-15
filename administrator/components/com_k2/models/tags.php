@@ -173,6 +173,28 @@ class K2ModelTags extends K2Model
 	}
 
 	/**
+	 * onBeforeDelete method. 		Hook for chidlren model.
+	 *
+	 * @param   JTable  $table     	The table object.
+	 *
+	 * @return boolean
+	 */
+
+	protected function onBeforeDelete($table)
+	{
+		// User
+		$user = JFactory::getUser();
+
+		// Permissions check
+		if (!$user->authorise('k2.tags.manage'))
+		{
+			$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
+			return false;
+		}
+		return true;
+	}
+
+	/**
 	 * onAfterDelete method. Hook for chidlren model.
 	 *
 	 * @param   JTable  $table     	The table object.

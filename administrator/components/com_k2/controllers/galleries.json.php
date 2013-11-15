@@ -13,6 +13,7 @@ defined('_JEXEC') or die ;
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/controller.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/items.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/galleries.php';
 
 /**
  * Galleries JSON controller.
@@ -113,7 +114,6 @@ class K2ControllerGalleries extends K2Controller
 		// Get id from input
 		$input = $this->input;
 		$itemId = $input->get('itemId', '', 'cmd');
-		$itemFolder = $itemId;
 		$upload = $input->get('upload', '', 'cmd');
 
 		// Permissions check
@@ -132,33 +132,10 @@ class K2ControllerGalleries extends K2Controller
 			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'), 403);
 		}
 
+		// If the gallery has been set, try to delete it
 		if ($upload)
 		{
-			// Filesystem
-			require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
-			$filesystem = K2FileSystem::getInstance();
-
-			// Key
-			$galleryKey = 'media/k2/galleries/'.$itemFolder.'/'.$upload;
-
-			$files = $filesystem->listKeys($galleryKey);
-
-			foreach ($files['keys'] as $key)
-			{
-				if ($filesystem->has($key))
-				{
-					$filesystem->delete($key);
-				}
-			}
-			$filesystem->delete($galleryKey);
-
-			// Check if the item folder contains more galleries. If not delete it.
-			$keys = $filesystem->listKeys('media/k2/galleries/'.$itemFolder.'/');
-			if (empty($keys['dirs']))
-			{
-				$filesystem->delete('media/k2/galleries/'.$itemFolder);
-			}
-
+			K2HelperGalleries::remove($upload, $itemId);
 		}
 
 		// Return

@@ -12,8 +12,6 @@
     <% if(row.canEditState) { %>
     <label><%= l('K2_STATE') %></label>
     <%= form.state %>
-    <% } else { %>
-    <input type="hidden" name="state" value="<%= row.state %>" />
     <% } %>
 
     <% if(row.canEditFeaturedState) { %>
@@ -24,8 +22,6 @@
     <label> <%= l('K2_NO') %>
         <input type="radio" name="featured" value="0" />
     </label>
-    <% } else { %>
-    <input type="hidden" name="featured" value="<%= row.featured %>" />
     <% } %>
 
     <label for="access"><%= l('K2_ACCESS') %></label>

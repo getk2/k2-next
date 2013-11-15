@@ -97,6 +97,10 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 			event.preventDefault();
 			this.extraFieldsView.trigger('filter', this.$el.find('#catid').val());
 		},
+		
+		onRender : function() {
+			this.$('input[name="featured"]').val([this.model.get('featured')]);
+		},
 
 		// OnDomRefresh event ( Marionette.js build in event )
 		onDomRefresh : function() {

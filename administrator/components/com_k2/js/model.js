@@ -21,8 +21,8 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 			if (resp.form !== undefined) {
 				this.setForm(resp.form);
 			}
-			
-			if(resp.requirejs) {
+
+			if (resp.requirejs) {
 				eval(resp.requirejs);
 			}
 
@@ -68,11 +68,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 			}
 			_.extend(params, options);
 			var attrs = {};
-			if(state == 'published') {
-				attrs['state'] = (this.get('state') > 0 ) ? 0 : 1;
-			} else if (state == 'featured') {
-				attrs['state'] = (this.get('state') > 1 ) ? 1 : 2;
-			}
+			attrs[state] = (this.get(state) > 0 ) ? 0 : 1;
 			this.save(attrs, params);
 		},
 		bind : function(input) {

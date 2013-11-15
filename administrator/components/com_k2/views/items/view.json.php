@@ -112,6 +112,7 @@ class K2ViewItems extends K2View
 			'K2_ORDERING' => 'ordering',
 			'K2_FEATURED_ORDERING' => 'featured_ordering',
 			'K2_STATE' => 'state',
+			'K2_FEATURED' => 'featured',
 			'K2_CATEGORY' => 'category',
 			'K2_AUTHOR' => 'author',
 			'K2_MODERATOR' => 'moderator',
@@ -130,8 +131,10 @@ class K2ViewItems extends K2View
 		K2Response::addFilter('search', JText::_('K2_SEARCH'), K2HelperHTML::search(), false, 'sidebar');
 
 		// State filter
-		K2Response::addFilter('state', JText::_('K2_STATE'), K2HelperHTML::state('state', null, true, true, 'K2_ANY'), true, 'sidebar');
+		K2Response::addFilter('state', JText::_('K2_STATE'), K2HelperHTML::state('state', null, 'K2_ANY', true, 'radio'), true, 'sidebar');
 
+		// Featured filter
+		K2Response::addFilter('featured', JText::_('K2_FEATURED'), K2HelperHTML::featured(), true, 'sidebar');
 	}
 
 	protected function setToolbar()
@@ -160,29 +163,36 @@ class K2ViewItems extends K2View
 		if ($canEditFeaturedState)
 		{
 			K2Response::addToolbarAction('feature', 'K2_FEATURE', array(
-				'data-value' => '2',
+				'data-state' => 'featured',
+				'data-value' => '1',
 				'class' => 'appActionSetState',
 				'id' => 'appActionFeature'
 			));
 			K2Response::addToolbarAction('unfeature', 'K2_UNFEATURE', array(
-				'data-value' => '1',
+				'data-state' => 'featured',
+				'data-value' => '0',
 				'class' => 'appActionSetState',
 				'id' => 'appActionUnFeature'
 			));
 		}
+
 		if ($canEditState)
 		{
 			K2Response::addToolbarAction('publish', 'K2_PUBLISH', array(
+				'data-state' => 'state',
 				'data-value' => '1',
 				'class' => 'appActionSetState',
 				'id' => 'appActionPublish'
 			));
 			K2Response::addToolbarAction('unpublish', 'K2_UNPUBLISH', array(
+				'data-state' => 'state',
 				'data-value' => '0',
 				'class' => 'appActionSetState',
 				'id' => 'appActionUnpublish'
 			));
+
 			K2Response::addToolbarAction('trash', 'K2_TRASH', array(
+				'data-state' => 'state',
 				'data-value' => '-1',
 				'class' => 'appActionSetState',
 				'id' => 'appActionTrash'
@@ -198,6 +208,7 @@ class K2ViewItems extends K2View
 
 	protected function setFormFields(&$form, $row)
 	{
+		$form->state = K2HelperHTML::state('state', $row->state, false, true);
 		$form->language = K2HelperHTML::language('language', $row->language);
 		$form->access = JHtml::_('access.level', 'access', $row->access, '', false);
 		$form->category = K2HelperHTML::categories('catid', $row->catid, 'K2_SELECT_CATEGORY');

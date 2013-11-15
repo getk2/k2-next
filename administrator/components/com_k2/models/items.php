@@ -11,6 +11,9 @@
 defined('_JEXEC') or die ;
 
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/model.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/images.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/galleries.php';
 
 class K2ModelItems extends K2Model
 {
@@ -116,6 +119,10 @@ class K2ModelItems extends K2Model
 		{
 			$query->where($db->quoteName('item.state').' = '.(int)$this->getState('state'));
 		}
+		if (is_numeric($this->getState('featured')))
+		{
+			$query->where($db->quoteName('item.featured').' = '.(int)$this->getState('featured'));
+		}
 		if ($this->getState('category'))
 		{
 			$query->where($db->quoteName('item.catid').' = '.(int)$this->getState('category'));
@@ -196,6 +203,9 @@ class K2ModelItems extends K2Model
 				case 'state' :
 					$order = 'item.state DESC';
 					break;
+				case 'featured' :
+					$order = 'item.featured DESC';
+					break;
 				case 'category' :
 					$order = 'categoryName ASC';
 					break;
@@ -257,20 +267,16 @@ class K2ModelItems extends K2Model
 			}
 			else
 			{
-				// Determine the allowed state values
-				$allowedStateValues = array();
-				$allowedStateValues[] = 0;
-				if ($user->authorise('k2.item.edit.state', $context))
+				// User can create the item but cannot edit it's state so we set the item state to 0
+				if (!$user->authorise('k2.item.edit.state', $context))
 				{
-					$allowedStateValues[] = 1;
-					if ($user->authorise('k2.item.edit.state.featured', $context))
-					{
-						$allowedStateValues[] = 2;
-					}
+					$data['state'] = 0;
 				}
-				if (!in_array($data['state'], $allowedStateValues))
+
+				// User can create the item but cannot edit it's featured state so we set the item featured state to 0
+				if (!$user->authorise('k2.item.edit.state.featured', $context))
 				{
-					$data['state'] = end($allowedStateValues);
+					$data['featured'] = 0;
 				}
 			}
 
@@ -280,29 +286,11 @@ class K2ModelItems extends K2Model
 		{
 			$context = 'com_k2.item.'.$table->id;
 			$canEdit = $user->authorise('k2.item.edit', $context) || ($user->authorise('k2.item.edit.own', $context) && $user->id == $table->created_by);
-			$canEditState = true;
-
-			// Determine the allowed state values
-			if ($table->state != $data['state'])
-			{
-				$allowedStateValues = array();
-				if ($user->authorise('k2.item.edit.state', $context))
-				{
-					$allowedStateValues[] = 0;
-					$allowedStateValues[] = 1;
-					if ($user->authorise('k2.item.edit.state.featured', $context))
-					{
-						$allowedStateValues[] = 2;
-					}
-				}
-				if (!in_array($data['state'], $allowedStateValues))
-				{
-					$canEditState = false;
-				}
-			}
+			$canEditState = $user->authorise('k2.item.edit.state', $context);
+			$canEditFeaturedState = $user->authorise('k2.item.edit.state.featured', $context);
 
 			// User cannot edit the item neither it's states. Stop the process
-			if (!$canEdit && !$canEditState)
+			if (!$canEdit && !$canEditState && !$canEditFeaturedState)
 			{
 				$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
 				return false;
@@ -319,6 +307,10 @@ class K2ModelItems extends K2Model
 				if (!$canEditState)
 				{
 					$data['state'] = $table->state;
+				}
+				if (!$canEditFeaturedState)
+				{
+					$data['featured'] = $table->featured;
 				}
 			}
 
@@ -503,7 +495,6 @@ class K2ModelItems extends K2Model
 					'XS' => 100
 				);
 
-				require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
 				$filesystem = K2FileSystem::getInstance();
 				$baseSourceFileName = $this->getState('imageId');
 				$baseTargetFileName = md5('Image'.$table->id);
@@ -528,7 +519,6 @@ class K2ModelItems extends K2Model
 		// If we have a tmpId we need to rename the gallery directory
 		if ($data['galleries'] && isset($data['tmpId']) && $data['tmpId'])
 		{
-			require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
 			$filesystem = K2FileSystem::getInstance();
 			$path = 'media/k2/galleries';
 			$source = $data['tmpId'];
@@ -539,7 +529,6 @@ class K2ModelItems extends K2Model
 		if (isset($data['attachments']))
 		{
 
-			require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
 			$filesystem = K2FileSystem::getInstance();
 
 			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
@@ -578,6 +567,59 @@ class K2ModelItems extends K2Model
 
 		}
 		return true;
+	}
+
+	/**
+	 * onBeforeDelete method. 		Hook for chidlren model.
+	 *
+	 * @param   JTable  $table     	The table object.
+	 *
+	 * @return boolean
+	 */
+
+	protected function onBeforeDelete($table)
+	{
+		$user = JFactory::getUser();
+		if (!$user->authorise('k2.item.delete', 'com_k2.category.'.$table->catid))
+		{
+			$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
+			return false;
+		}
+
+		// Set some variables for later usage in the model
+		$this->setState('galleries', $table->galleries);
+
+		return true;
+	}
+
+	/**
+	 * onAfterDelete method. Hook for chidlren model.
+	 *
+	 * @param   JTable  $table     	The table object.
+	 *
+	 * @return boolean
+	 */
+
+	protected function onAfterDelete($table)
+	{
+
+		// Delete item image
+		K2HelperImages::removeResourceImage('item', $table->id);
+
+		// Delete item galleries
+
+		// Delete item media
+
+		// Delete item tags reference
+		$model = K2Model::getInstance('Tags', 'K2Model');
+		$itemId = $table->id;
+		$model->deleteItemTags($itemId);
+
+		// Delete item attachments
+
+		// Return
+		return true;
+
 	}
 
 }

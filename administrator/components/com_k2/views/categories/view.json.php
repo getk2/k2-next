@@ -123,7 +123,7 @@ class K2ViewCategories extends K2View
 		K2Response::addFilter('search', JText::_('K2_SEARCH'), K2HelperHTML::search(), false, 'sidebar');
 
 		// State filter
-		K2Response::addFilter('state', JText::_('K2_STATE'), K2HelperHTML::state('state', null, true, false, 'K2_ANY'), true, 'sidebar');
+		K2Response::addFilter('state', JText::_('K2_STATE'), K2HelperHTML::state('state', null, 'K2_ANY', true, 'radio'), true, 'sidebar');
 
 	}
 
@@ -147,16 +147,19 @@ class K2ViewCategories extends K2View
 		if ($canEditState)
 		{
 			K2Response::addToolbarAction('publish', 'K2_PUBLISH', array(
+				'data-state' => 'state',
 				'data-value' => '1',
 				'class' => 'appActionSetState',
 				'id' => 'appActionPublish'
 			));
 			K2Response::addToolbarAction('unpublish', 'K2_UNPUBLISH', array(
+				'data-state' => 'state',
 				'data-value' => '0',
 				'class' => 'appActionSetState',
 				'id' => 'appActionUnpublish'
 			));
 			K2Response::addToolbarAction('trash', 'K2_TRASH', array(
+				'data-state' => 'state',
 				'data-value' => '-1',
 				'class' => 'appActionSetState',
 				'id' => 'appActionTrash'
@@ -171,7 +174,7 @@ class K2ViewCategories extends K2View
 
 	protected function setFormFields(&$form, $row)
 	{
-		$form->state = K2HelperHTML::state('state', $row->state, true);
+		$form->state = K2HelperHTML::state('state', $row->state, false, true);
 		$form->language = K2HelperHTML::language('language', $row->language);
 		$form->access = JHtml::_('access.level', 'access', $row->access, '', false);
 		$form->parent = K2HelperHTML::categories('parent_id', $row->parent_id, 'K2_NONE', $row->id);

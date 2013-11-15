@@ -52,8 +52,8 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 			}, this);
 
 			// Listener for batch set state event.
-			K2Dispatcher.on('app:controller:batchSetState', function(rows, state) {
-				this.batchSetState(rows, state);
+			K2Dispatcher.on('app:controller:batchSetState', function(rows, value, state) {
+				this.batchSetState(rows,value, state);
 			}, this);
 
 			// Listener for save ordering
@@ -321,14 +321,14 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 		},
 
 		// Batch function. Updates the collection states depending on the filters and renders the list again.
-		batchSetState : function(rows, value) {
+		batchSetState : function(rows, value, state) {
 			var keys = [];
 			var values = [];
 			_.each(rows, function(row) {
 				keys.push(row.value);
 				values.push(value);
 			});
-			this.collection.batch(keys, values, 'state', {
+			this.collection.batch(keys, values, state, {
 				success : _.bind(function() {
 					this.list();
 				}, this),

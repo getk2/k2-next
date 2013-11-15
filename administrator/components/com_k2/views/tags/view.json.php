@@ -110,16 +110,23 @@ class K2ViewTags extends K2View
 		K2Response::addFilter('search', JText::_('K2_SEARCH'), K2HelperHTML::search(), false, 'sidebar');
 
 		// State filter
-		K2Response::addFilter('state', JText::_('K2_STATE'), K2HelperHTML::state('state', null, false, false, 'K2_ANY'), true, 'sidebar');
+		K2Response::addFilter('state', JText::_('K2_STATE'), K2HelperHTML::state('state', null, 'K2_ANY', false, 'radio'), true, 'sidebar');
 
 	}
 
 	protected function setToolbar()
 	{
-		K2Response::addToolbarAction('published', 'K2_TOGGLE_PUBLISHED_STATE', array(
-			'data-state' => 'published',
-			'class' => 'appActionToggleState',
-			'id' => 'appActionTogglePublishedState'
+		K2Response::addToolbarAction('publish', 'K2_PUBLISH', array(
+			'data-state' => 'state',
+			'data-value' => '1',
+			'class' => 'appActionSetState',
+			'id' => 'appActionPublish'
+		));
+		K2Response::addToolbarAction('unpublish', 'K2_UNPUBLISH', array(
+			'data-state' => 'state',
+			'data-value' => '0',
+			'class' => 'appActionSetState',
+			'id' => 'appActionUnpublish'
 		));
 
 		K2Response::addToolbarAction('remove', 'K2_DELETE', array('id' => 'appActionRemove'));
