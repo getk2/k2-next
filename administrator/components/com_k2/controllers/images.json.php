@@ -28,19 +28,18 @@ class K2ControllerImages extends K2Controller
 		JSession::checkToken() or K2Response::throwError(JText::_('JINVALID_TOKEN'));
 
 		// Get input
-		$input = JFactory::getApplication()->input;
-		$type = $input->get('type', '', 'cmd');
-		$itemId = $input->get('itemId', 0, 'int');
-		$tmpId = $input->get('tmpId', '', 'cmd');
+		$type = $this->input->get('type', '', 'cmd');
+		$itemId = $this->input->get('itemId', 0, 'int');
+		$tmpId = $this->input->get('tmpId', '', 'cmd');
 		$id = $itemId ? $itemId : $tmpId;
-		$file = $input->files->get('file');
-		$path = $input->get('path', '', 'string');
+		$file = $this->input->files->get('file');
+		$path = $this->input->get('path', '', 'string');
 		$path = str_replace(JURI::root(true).'/', '', $path);
 
 		// Permissions check
 		if ($itemId)
 		{
-			if ($type = 'item')
+			if ($type == 'item')
 			{
 				$authorised = K2Items::getInstance($itemId)->canEdit;
 			}
