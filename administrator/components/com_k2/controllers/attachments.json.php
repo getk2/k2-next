@@ -11,6 +11,9 @@
 defined('_JEXEC') or die ;
 
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/controller.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/items.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/attachments.php';
 
 /**
  * Attachments JSON controller.
@@ -21,10 +24,9 @@ class K2ControllerAttachments extends K2Controller
 	public function upload()
 	{
 		// Check for token
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or K2Response::throwError(JText::_('JINVALID_TOKEN'));
 
 		// Filesystem
-		require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
 		$filesystem = K2FileSystem::getInstance();
 
 		// Get file from input
@@ -35,9 +37,21 @@ class K2ControllerAttachments extends K2Controller
 		$folder = $itemId ? $itemId : $tmpId;
 		$file = $input->files->get('file');
 
-		// Get attachment instance
-		require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/attachments.php';
-		$attachment = K2Attachments::getInstance($id);
+		// Permissions check
+		if ($itemId)
+		{
+			// Existing items check permission for specific item
+			$authorised = K2Items::getInstance($itemId)->canEdit;
+		}
+		else
+		{
+			// New items. We can only check the generic create permission. We cannot check against specific category since we do not know the category of the item.
+			$authorised = JFactory::getUser()->authorise('k2.item.create', 'com_k2');
+		}
+		if (!$authorised)
+		{
+			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'), 403);
+		}
 
 		// Setup some variables
 		$path = 'media/k2/attachments';
@@ -61,7 +75,10 @@ class K2ControllerAttachments extends K2Controller
 			$filesystem->write($path.'/'.$folder.'/'.$filename, $buffer);
 
 			// Delete current file
-			$attachment->deleteFile();
+			$model = $this->getModel();
+			$model->setState('id', $id);
+			$attachment = $model->getRow();
+			$model->deleteFile($attachment);
 		}
 
 		// Response
@@ -87,14 +104,28 @@ class K2ControllerAttachments extends K2Controller
 		$input = $this->input->get('id', array(), 'array');
 		JArrayHelper::toInteger($input);
 
-		require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/attachments.php';
 		foreach ($input as $id)
 		{
 			// Get attachment
-			$attachment = K2Attachments::getInstance($id);
+			$model = $this->getModel();
+			$model->setState('id', $id);
+			$attachment = $model->getRow();
+
+			// If user tried to delete an attachment of a specific item we need to check permissions
+			if ($attachment->itemId)
+			{
+				// Get item
+				$item = K2Items::getInstance($attachment->itemId);
+
+				// Permissions check
+				if (!$item->canEdit)
+				{
+					K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'), 403);
+				}
+			}
 
 			// Delete
-			$attachment->delete();
+			$model->delete();
 		}
 
 		K2Response::setResponse(true);

@@ -11,6 +11,7 @@
 defined('_JEXEC') or die ;
 
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/model.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
 
 class K2ModelAttachments extends K2Model
 {
@@ -131,6 +132,95 @@ class K2ModelAttachments extends K2Model
 		$query->update($db->quoteName('#__k2_attachments'))->set($db->quoteName('downloads').' = ('.$db->quoteName('downloads').' + 1)')->where('id = '.(int)$this->getState('id'));
 		$db->setQuery($query);
 		$db->execute();
+	}
+
+	/**
+	 * onBeforeSave method. Hook for chidlren model to prepare the data.
+	 *
+	 * @param   array  $data     The data to be saved.
+	 * @param   JTable  $table   The table object.
+	 *
+	 * @return boolean
+	 */
+
+	protected function onBeforeSave(&$data, $table)
+	{
+		// Permissions check
+		$itemId = $data['itemId'];
+
+		// Check only for existing items
+		if (is_numeric($itemId) && $itemId > 0)
+		{
+			require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/items.php';
+			$item = K2Items::getInstance($data['itemId']);
+			if (!$item->canEdit)
+			{
+				$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * onBeforeDelete method. 		Hook for chidlren model.
+	 *
+	 * @param   JTable  $table     	The table object.
+	 *
+	 * @return boolean
+	 */
+
+	protected function onBeforeDelete($table)
+	{
+		// Permissions check
+		if ($table->itemId > 0)
+		{
+			require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/items.php';
+			$item = K2Items::getInstance($table->itemId);
+			if (!$item->canEdit)
+			{
+				$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
+				return false;
+			}
+		}
+
+		// Delete any associated files
+		$this->deleteFile($table);
+
+		return true;
+	}
+
+	private function deleteFile($table)
+	{
+		if ($table->file)
+		{
+			// Filesystem
+			$filesystem = K2FileSystem::getInstance();
+
+			$path = 'media/k2/attachments';
+			if ($table->itemId)
+			{
+				$folder = $table->itemId;
+				$key = $path.'/'.$folder.'/'.$table->file;
+			}
+			else
+			{
+				list($folder, $file) = explode('/', $this->file);
+				$key = $path.'/'.$folder.'/'.$file;
+			}
+
+			if ($filesystem->has($key))
+			{
+				$filesystem->delete($key);
+			}
+
+			$keys = $filesystem->listKeys($path.'/'.$folder.'/');
+
+			if (empty($keys['keys']) && $filesystem->has($path.'/'.$folder))
+			{
+				$filesystem->delete($path.'/'.$folder);
+			}
+		}
 	}
 
 }

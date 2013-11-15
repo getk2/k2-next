@@ -11,6 +11,7 @@
 defined('_JEXEC') or die ;
 
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/controller.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
 
 /**
  * Attachments JSON controller.
@@ -41,7 +42,6 @@ class K2ControllerAttachments extends K2Controller
 		}
 
 		// Get model
-		require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/model.php';
 		K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
 		$model = K2Model::getInstance('Attachments', 'K2Model');
 
@@ -49,12 +49,12 @@ class K2ControllerAttachments extends K2Controller
 		$model->setState('id', $id);
 		$attachment = $model->getRow();
 
-		// Verify that use has the permission to download this attachment
+		// Get item
 		$model = K2Model::getInstance('Items', 'K2Model');
 		$model->setState('id', $attachment->itemId);
 		$item = $model->getRow();
 
-		// If we are on front-end check access
+		// If we are on front-end check access verify that user has the permission to download this attachment
 		if ($application->isSite())
 		{
 			$item->checkSiteAccess();
@@ -68,7 +68,6 @@ class K2ControllerAttachments extends K2Controller
 		$dispatcher->trigger('onK2BeforeDownload', array(&$attachment));
 
 		// Filesystem
-		require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
 		$filesystem = K2FileSystem::getInstance();
 
 		// Determine the key

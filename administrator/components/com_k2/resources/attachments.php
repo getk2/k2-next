@@ -11,9 +11,10 @@
 defined('_JEXEC') or die ;
 
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/resource.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
 
 /**
- * K2 item resource class.
+ * K2 attachment resource class.
  */
 
 class K2Attachments extends K2Resource
@@ -81,52 +82,6 @@ class K2Attachments extends K2Resource
 		$model = K2Model::getInstance('Attachments', 'K2Model');
 		$model->setState('id', $this->id);
 		$model->download();
-	}
-
-	public function delete()
-	{
-		// First check if we have any files to delete
-		$this->deleteFile();
-
-		// Delete
-		$model = K2Model::getInstance('Attachments', 'K2Model');
-		$model->setState('id', $this->id);
-		$model->delete();
-	}
-
-	public function deleteFile()
-	{
-		if ($this->file)
-		{
-			// Filesystem
-			require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
-			$filesystem = K2FileSystem::getInstance();
-
-			$path = 'media/k2/attachments';
-			if ($this->itemId)
-			{
-				$folder = $this->itemId;
-				$key = $path.'/'.$folder.'/'.$this->file;
-			}
-			else
-			{
-				list($folder, $file) = explode('/', $this->file);
-				$key = $path.'/'.$folder.'/'.$file;
-			}
-
-			if ($filesystem->has($key))
-			{
-				$filesystem->delete($key);
-			}
-
-			$keys = $filesystem->listKeys($path.'/'.$folder.'/');
-
-			if (empty($keys['keys']) && $filesystem->has($path.'/'.$folder))
-			{
-				$filesystem->delete($path.'/'.$folder);
-			}
-
-		}
 	}
 
 }

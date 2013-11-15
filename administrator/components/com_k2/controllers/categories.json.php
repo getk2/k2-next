@@ -21,7 +21,7 @@ class K2ControllerCategories extends K2Controller
 	public function saveOrder()
 	{
 		// Check for token
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or K2Response::throwError(JText::_('JINVALID_TOKEN'));
 		
 		// Get user
 		$user = JFactory::getUser();
@@ -29,7 +29,7 @@ class K2ControllerCategories extends K2Controller
 		// Check permissions
 		if(!$user->authorise('k2.category.edit', 'com_k2'))
 		{
-			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
+			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'), 403);
 		}
 
 		// Get input

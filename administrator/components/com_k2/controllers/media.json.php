@@ -11,6 +11,9 @@
 defined('_JEXEC') or die ;
 
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/controller.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/items.php';
+
 jimport('joomla.filesystem.file');
 
 /**
@@ -23,10 +26,9 @@ class K2ControllerMedia extends K2Controller
 	public function upload()
 	{
 		// Check for token
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or K2Response::throwError(JText::_('JINVALID_TOKEN'));
 
 		// Filesystem
-		require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
 		$filesystem = K2FileSystem::getInstance();
 
 		// Get input
@@ -35,6 +37,22 @@ class K2ControllerMedia extends K2Controller
 		$upload = $input->get('upload', '', 'cmd');
 		$folder = $itemId;
 		$file = $input->files->get('file');
+
+		// Permissions check
+		if (is_numeric($itemId))
+		{
+			// Existing items check permission for specific item
+			$authorised = K2Items::getInstance($itemId)->canEdit;
+		}
+		else
+		{
+			// New items. We can only check the generic create permission. We cannot check against specific category since we do not know the category of the item.
+			$authorised = JFactory::getUser()->authorise('k2.item.create', 'com_k2');
+		}
+		if (!$authorised)
+		{
+			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'), 403);
+		}
 
 		// Setup some variables
 		$path = 'media/k2/media/'.$folder;
@@ -80,6 +98,21 @@ class K2ControllerMedia extends K2Controller
 		$upload = $input->get('upload', '', 'cmd');
 		$folder = $itemId;
 
+		// Permissions check
+		if (is_numeric($itemId))
+		{
+			// Existing items check permission for specific item
+			$authorised = K2Items::getInstance($itemId)->canEdit;
+		}
+		else
+		{
+			$authorised = true;
+		}
+		if (!$authorised)
+		{
+			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'), 403);
+		}
+
 		if ($upload)
 		{
 			// Filesystem
@@ -106,8 +139,8 @@ class K2ControllerMedia extends K2Controller
 		$application = JFactory::getApplication();
 		$params = JComponentHelper::getParams('com_media');
 		$root = $params->get('file_path', 'media');
-		$folder = JRequest::getVar('folder', $root, 'default', 'path');
-		$type = JRequest::getCmd('type', 'video');
+		$folder = $this->input->get('folder', $root, 'path');
+		$type = $this->input->get('type', 'video', 'cmd');
 		if (JString::trim($folder) == "")
 		{
 			$folder = $root;
@@ -121,7 +154,7 @@ class K2ControllerMedia extends K2Controller
 			}
 		}
 		// Disable debug
-		JRequest::setVar('debug', false);
+		$this->input->set('debug', false);
 		$url = JURI::root(true).'/'.$folder;
 		$path = JPATH_SITE.'/'.JPath::clean($folder);
 		JPath::check($path);

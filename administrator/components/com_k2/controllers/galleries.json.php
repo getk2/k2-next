@@ -24,7 +24,7 @@ class K2ControllerGalleries extends K2Controller
 	public function upload()
 	{
 		// Check for token
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or K2Response::throwError(JText::_('JINVALID_TOKEN'));
 
 		// Filesystem
 		$filesystem = K2FileSystem::getInstance();
@@ -50,7 +50,7 @@ class K2ControllerGalleries extends K2Controller
 		}
 		if (!$authorised)
 		{
-			K2Response::throwError('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION', 403);
+			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'), 403);
 		}
 
 		// Extract the gallery to a temporaty folder
@@ -108,7 +108,7 @@ class K2ControllerGalleries extends K2Controller
 	protected function delete()
 	{
 		// Check for token
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or K2Response::throwError(JText::_('JINVALID_TOKEN'));
 
 		// Get id from input
 		$input = $this->input;
@@ -129,7 +129,7 @@ class K2ControllerGalleries extends K2Controller
 		}
 		if (!$authorised)
 		{
-			K2Response::throwError('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION', 403);
+			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'), 403);
 		}
 
 		if ($upload)

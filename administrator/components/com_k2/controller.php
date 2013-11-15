@@ -332,7 +332,7 @@ class K2Controller extends JControllerLegacy
 	protected function patch()
 	{
 		// Check for token
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or K2Response::throwError(JText::_('JINVALID_TOKEN'));
 
 		// Batch update
 		$ids = $this->input->get('id', array(), 'array');
