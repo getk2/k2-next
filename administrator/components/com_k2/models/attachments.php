@@ -190,7 +190,7 @@ class K2ModelAttachments extends K2Model
 		return true;
 	}
 
-	private function deleteFile($table)
+	public function deleteFile($table)
 	{
 		if ($table->file)
 		{
@@ -205,7 +205,7 @@ class K2ModelAttachments extends K2Model
 			}
 			else
 			{
-				list($folder, $file) = explode('/', $this->file);
+				list($folder, $file) = explode('/', $table->file);
 				$key = $path.'/'.$folder.'/'.$file;
 			}
 

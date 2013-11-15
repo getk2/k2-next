@@ -75,10 +75,9 @@ class K2ControllerAttachments extends K2Controller
 			$filesystem->write($path.'/'.$folder.'/'.$filename, $buffer);
 
 			// Delete current file
-			$model = $this->getModel();
-			$model->setState('id', $id);
-			$attachment = $model->getRow();
-			$model->deleteFile($attachment);
+			$this->model->setState('id', $id);
+			$attachment = $this->model->getRow();
+			$this->model->deleteFile($attachment);
 		}
 
 		// Response
@@ -107,9 +106,8 @@ class K2ControllerAttachments extends K2Controller
 		foreach ($input as $id)
 		{
 			// Get attachment
-			$model = $this->getModel();
-			$model->setState('id', $id);
-			$attachment = $model->getRow();
+			$this->model->setState('id', $id);
+			$attachment = $this->model->getRow();
 
 			// If user tried to delete an attachment of a specific item we need to check permissions
 			if ($attachment->itemId)
@@ -125,7 +123,7 @@ class K2ControllerAttachments extends K2Controller
 			}
 
 			// Delete
-			$model->delete();
+			$this->model->delete();
 		}
 
 		K2Response::setResponse(true);
