@@ -6,6 +6,10 @@ define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categor
 			this.collection = new Backbone.Collection(this.model.get('children'));
 		},
 		onRender : function() {
+			// If the row is a nested one but it's parent is missing from the view, then add the extra padding
+			if (this.model.get('isOrphanNested')) {
+				this.$el.css('padding-left', ((this.model.get('level') - 1) * 25) + 'px');
+			}
 			this.$el.attr('data-id', this.model.get('id'));
 		},
 		appendHtml : function(compositeView, itemView) {
@@ -24,21 +28,28 @@ define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categor
 		},
 		buildTree : function() {
 			// Rebuild the collection in tree way
+			var remove = [];
 			_.each(this.collection.models, _.bind(function(model) {
+				model.set('prefix', '')
+				model.set('suffix', '')
 				var children = this.collection.where({
 					parent_id : model.get('id')
 				});
 				model.set('children', children);
+				_.each(children, function(child) {
+					remove.push(child);
+				});
 			}, this));
+			// Remove the rows we do not need anymore
+			this.collection.remove(remove);
 
-			// Detect the start level
-			var startLevel = _.min(this.collection.pluck('level'));
-
-			this.collection.reset(this.collection.where({
-				level : startLevel
-			}), {
-				silent : true
+			// Mark rows that are nested but their parents are missing from the view
+			_.each(this.collection.models, function(model) {
+				if (model.get('level') > 1) {
+					model.set('isOrphanNested', true);
+				}
 			});
+
 		},
 		onCompositeCollectionRendered : function() {
 

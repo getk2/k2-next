@@ -116,3 +116,18 @@ body.dragging, body.dragging * {
 	border-right: none;
 }
 
+.appGrid ul {
+	list-style:none;
+}
+
+#appCategories ul {
+	padding : 0;
+	margin : 0;
+}
+#appCategories li {
+	padding : 0;
+	margin : 0;
+}
+#appCategories ul li {
+	padding : 0 0 0 25px;
+}

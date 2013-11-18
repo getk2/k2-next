@@ -286,7 +286,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 
 		// Destroy function. Deletes an array of rows and renders again the list.
 		batchDelete : function(rows) {
-			this.collection.remove(rows, {
+			this.collection.destroy(rows, {
 				success : _.bind(function() {
 					this.list();
 				}, this),

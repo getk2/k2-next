@@ -46,7 +46,7 @@ define(['backbone', 'model', 'dispatcher'], function(Backbone, K2Model, K2Dispat
 			return this.states.get(state);
 		},
 
-		remove : function(rows, options) {
+		destroy : function(rows, options) {
 			options.data = rows;
 			var xhr = this.sync('delete', this, options);
 			return xhr;
