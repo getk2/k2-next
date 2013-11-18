@@ -27,11 +27,10 @@ define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categor
 			this.buildTree();
 		},
 		buildTree : function() {
+			
 			// Rebuild the collection in tree way
 			var remove = [];
 			_.each(this.collection.models, _.bind(function(model) {
-				model.set('prefix', '')
-				model.set('suffix', '')
 				var children = this.collection.where({
 					parent_id : model.get('id')
 				});
@@ -40,6 +39,7 @@ define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categor
 					remove.push(child);
 				});
 			}, this));
+			
 			// Remove the rows we do not need anymore
 			this.collection.remove(remove);
 
