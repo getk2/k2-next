@@ -125,7 +125,15 @@ class K2ModelItems extends K2Model
 		}
 		if ($this->getState('category'))
 		{
-			$query->where($db->quoteName('item.catid').' = '.(int)$this->getState('category'));
+			$model = K2Model::getInstance('Categories');
+			$root = $model->getTable();
+			$tree = $root->getTree((int)$this->getState('category'));
+			$categories = array();
+			foreach ($tree as $category)
+			{
+				$categories[] = $category->id;
+			}
+			$query->where($db->quoteName('item.catid').' IN ('.implode(',', $categories).')');
 		}
 		if ($this->getState('access'))
 		{

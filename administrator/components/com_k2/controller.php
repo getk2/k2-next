@@ -346,33 +346,22 @@ class K2Controller extends JControllerLegacy
 			K2Response::throwError('K2_NO_ROWS_SELECTED', 401);
 		}
 
-		// Handle categories sorting different than any other patch request
-		if (array_key_exists('ordering', $states) && $this->resourceType == 'categories')
+		foreach ($ids as $key => $id)
 		{
-			$result = $this->model->saveOrder($ids, $states['ordering']);
+			$data = array();
+			$data['id'] = $id;
+			foreach ($states as $state => $values)
+			{
+				$data[$state] = is_array($values) ? $values[$key] : $values;
+			}
+			$this->model->setState('data', $data);
+			$result = $this->model->save();
 			if (!$result)
 			{
 				K2Response::throwError($this->model->getError());
 			}
 		}
-		else
-		{
-			foreach ($ids as $key => $id)
-			{
-				$data = array();
-				$data['id'] = $id;
-				foreach ($states as $state => $values)
-				{
-					$data[$state] = is_array($values) ? $values[$key] : $values;
-				}
-				$this->model->setState('data', $data);
-				$result = $this->model->save();
-				if (!$result)
-				{
-					K2Response::throwError($this->model->getError());
-				}
-			}
-		}
+
 		K2Response::setResponse($result);
 	}
 

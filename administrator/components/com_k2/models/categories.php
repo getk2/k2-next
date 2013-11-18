@@ -135,6 +135,13 @@ class K2ModelCategories extends K2Model
 				OR LOWER('.$db->quoteName('category.description').') LIKE '.$db->Quote('%'.$search.'%', false).')');
 			}
 		}
+		if ($this->getState('root'))
+		{
+			$root = $this->getTable();
+			$root->load((int)$this->getState('root'));
+			$query->where($db->quoteName('category.lft').' >= '.(int)$root->lft);
+			$query->where($db->quoteName('category.rgt').' <= '.(int)$root->rgt);
+		}
 	}
 
 	private function setQuerySorting(&$query)

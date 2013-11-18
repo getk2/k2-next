@@ -94,11 +94,15 @@ class K2ViewCategories extends K2View
 		$this->setUserState('access', 0, 'int');
 		$this->setUserState('state', '', 'cmd');
 		$this->setUserState('language', '', 'string');
+		$this->setUserState('root', 0, 'int');
 		$this->setUserState('sorting', 'ordering', 'string');
 	}
 
 	protected function setFilters()
 	{
+				
+		// Root filter
+		K2Response::addFilter('root', JText::_('K2_ROOT'), K2HelperHTML::categories('root', null, 'K2_NONE'), true, 'header');
 
 		// Language filter
 		K2Response::addFilter('language', JText::_('K2_SELECT_LANGUAGE'), K2HelperHTML::language('language', '', 'K2_ANY'), false, 'header');
@@ -124,6 +128,7 @@ class K2ViewCategories extends K2View
 
 		// State filter
 		K2Response::addFilter('state', JText::_('K2_STATE'), K2HelperHTML::state('state', null, 'K2_ANY', true, 'radio'), true, 'sidebar');
+
 
 	}
 

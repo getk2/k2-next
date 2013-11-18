@@ -29,19 +29,7 @@ define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categor
 		buildTree : function() {
 			
 			// Rebuild the collection in tree way
-			var remove = [];
-			_.each(this.collection.models, _.bind(function(model) {
-				var children = this.collection.where({
-					parent_id : model.get('id')
-				});
-				model.set('children', children);
-				_.each(children, function(child) {
-					remove.push(child);
-				});
-			}, this));
-			
-			// Remove the rows we do not need anymore
-			this.collection.remove(remove);
+			this.collection.buildTree();
 
 			// Mark rows that are nested but their parents are missing from the view
 			_.each(this.collection.models, function(model) {

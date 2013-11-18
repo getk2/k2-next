@@ -1,0 +1,8 @@
+<span><%= title %></a></span>
+<span><%= id %></span>
+<ul class="items" data-category="<%= id %>">
+    <% _.each(rows, function(row) { %>
+        <li data-category="<%= row.get('catid') %>"><%= row.get('title') %> <span class="appOrderingHandle" data-column="ordering">DRAG ME</span> <input type="text" name="ordering[]" value="<%- row.get('ordering') %>" data-id="<%= row.get('id') %>" /></li>
+   <% }); %>
+</ul>
+<ul class="children"></ul>

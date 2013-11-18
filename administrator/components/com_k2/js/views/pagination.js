@@ -31,7 +31,7 @@ define(['marionette', 'text!layouts/pagination.html', 'dispatcher'], function(Ma
 			if (page === 'next') {
 				var newPage = currentPage + 1;
 			} else if (page === 'previous') {
-				var newPage = currentPage + 1;
+				var newPage = currentPage - 1;
 			} else {
 				var newPage = page;
 			}
