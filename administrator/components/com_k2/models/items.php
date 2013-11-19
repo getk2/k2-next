@@ -208,6 +208,9 @@ class K2ModelItems extends K2Model
 				case 'ordering' :
 					$order = 'category.lft ASC, item.ordering ASC';
 					break;
+				case 'featured_ordering' :
+					$order = 'item.featured_ordering ASC';
+					break;
 				case 'state' :
 					$order = 'item.state DESC';
 					break;
