@@ -93,6 +93,7 @@ class K2ViewItems extends K2View
 		$this->setUserState('search', '', 'string');
 		$this->setUserState('access', 0, 'int');
 		$this->setUserState('state', '', 'cmd');
+		$this->setUserState('featured', '', 'int');
 		$this->setUserState('category', '', 'cmd');
 		$this->setUserState('user', 0, 'int');
 		$this->setUserState('language', '', 'string');
