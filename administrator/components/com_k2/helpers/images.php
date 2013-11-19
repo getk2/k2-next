@@ -227,7 +227,7 @@ class K2HelperImages
 		// Value
 		$value = json_decode($item->image);
 
-		if ($value->flag)
+		if (isset($value->flag) && $value->flag)
 		{
 			// Sizes
 			$sizes = array(
@@ -265,8 +265,8 @@ class K2HelperImages
 
 		// Value
 		$value = json_decode($category->image);
-		
-		if ($value->flag)
+
+		if (isset($value->flag) && $value->flag)
 		{
 			$id = md5('Image'.$category->id);
 			$modifiedDate = ((int)$category->modified > 0) ? $category->modified : $category->created;
@@ -278,7 +278,7 @@ class K2HelperImages
 		$result = new stdClass;
 		$result->image = $image;
 		$result->id = $id;
-		
+
 		return $result;
 	}
 

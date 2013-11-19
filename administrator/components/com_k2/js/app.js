@@ -74,6 +74,7 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'vie
 
 	// Set the regions
 	K2.addRegions({
+		messages : '#appMessages',
 		header : '#appHeader',
 		sidebar : '#appSidebar',
 		subheader : '#appSubheader',
@@ -117,6 +118,14 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'vie
 		};
 
 	});
+	
+	// Render the messages view
+	require(['views/messages'], _.bind(function(MessagesView) {
+		var messages = new MessagesView({
+			collection : new Backbone.Collection
+		});
+		K2Dispatcher.trigger('app:region:show', messages, 'messages');
+	}, this));
 
 	// Render the header view
 	require(['views/header'], _.bind(function(HeaderView) {
@@ -194,7 +203,7 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'vie
 
 	// Update event listener. Triggered when the server response is parsed.
 	K2Dispatcher.on('app:update', function(response) {
-
+		K2Dispatcher.trigger('app:update:messages', response);
 		K2Dispatcher.trigger('app:update:header', response);
 		K2Dispatcher.trigger('app:update:subheader', response);
 		K2Dispatcher.trigger('app:update:sidebar', response);

@@ -12,7 +12,124 @@ defined('_JEXEC') or die ;
 
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/tables/nested.php';
 
-class K2TableCategories extends K2TableNested
+if (version_compare(JVERSION, '3.2', 'ge'))
+{
+	class K2TableNestedLegacy extends K2TableNested
+	{
+		/**
+		 * Get the parent asset id for the record
+		 *
+		 * @param   JTable   $table  A JTable object for the asset parent.
+		 * @param   integer  $id     The id for the asset
+		 *
+		 * @return  integer  The id of the asset's parent
+		 *
+		 * @since   11.1
+		 */
+		protected function _getAssetParentId(JTable $table = null, $id = null)
+		{
+			$assetId = null;
+
+			// This is a category under a category.
+			if ($this->parent_id > 1)
+			{
+				// Build the query to get the asset id for the parent category.
+				$query = $this->_db->getQuery(true)->select($this->_db->quoteName('asset_id'))->from($this->_db->quoteName('#__k2_categories'))->where($this->_db->quoteName('id').' = '.$this->parent_id);
+
+				// Get the asset id from the database.
+				$this->_db->setQuery($query);
+				if ($result = $this->_db->loadResult())
+				{
+					$assetId = (int)$result;
+				}
+			}
+			// This is a category that needs to parent with the extension.
+			elseif ($assetId === null)
+			{
+				// Build the query to get the asset id for the parent category.
+				$query = $this->_db->getQuery(true)->select($this->_db->quoteName('id'))->from($this->_db->quoteName('#__assets'))->where($this->_db->quoteName('name').' = '.$this->_db->quote('com_k2'));
+
+				// Get the asset id from the database.
+				$this->_db->setQuery($query);
+				if ($result = $this->_db->loadResult())
+				{
+					$assetId = (int)$result;
+				}
+			}
+			// Return the asset id.
+			if ($assetId)
+			{
+				return $assetId;
+			}
+			else
+			{
+				return parent::_getAssetParentId($table, $id);
+			}
+		}
+
+	}
+
+}
+else
+{
+	class K2TableNestedLegacy extends K2TableNested
+	{
+		/**
+		 * Get the parent asset id for the record
+		 *
+		 * @param   JTable   $table  A JTable object for the asset parent.
+		 * @param   integer  $id     The id for the asset
+		 *
+		 * @return  integer  The id of the asset's parent
+		 *
+		 * @since   11.1
+		 */
+		protected function _getAssetParentId($table = null, $id = null)
+		{
+			$assetId = null;
+
+			// This is a category under a category.
+			if ($this->parent_id > 1)
+			{
+				// Build the query to get the asset id for the parent category.
+				$query = $this->_db->getQuery(true)->select($this->_db->quoteName('asset_id'))->from($this->_db->quoteName('#__k2_categories'))->where($this->_db->quoteName('id').' = '.$this->parent_id);
+
+				// Get the asset id from the database.
+				$this->_db->setQuery($query);
+				if ($result = $this->_db->loadResult())
+				{
+					$assetId = (int)$result;
+				}
+			}
+			// This is a category that needs to parent with the extension.
+			elseif ($assetId === null)
+			{
+				// Build the query to get the asset id for the parent category.
+				$query = $this->_db->getQuery(true)->select($this->_db->quoteName('id'))->from($this->_db->quoteName('#__assets'))->where($this->_db->quoteName('name').' = '.$this->_db->quote('com_k2'));
+
+				// Get the asset id from the database.
+				$this->_db->setQuery($query);
+				if ($result = $this->_db->loadResult())
+				{
+					$assetId = (int)$result;
+				}
+			}
+			// Return the asset id.
+			if ($assetId)
+			{
+				return $assetId;
+			}
+			else
+			{
+				return parent::_getAssetParentId($table, $id);
+			}
+		}
+
+	}
+
+}
+
+class K2TableCategories extends K2TableNestedLegacy
 {
 	public function __construct($db)
 	{
@@ -44,57 +161,6 @@ class K2TableCategories extends K2TableNested
 	protected function _getAssetTitle()
 	{
 		return $this->title;
-	}
-
-	/**
-	 * Get the parent asset id for the record
-	 *
-	 * @param   JTable   $table  A JTable object for the asset parent.
-	 * @param   integer  $id     The id for the asset
-	 *
-	 * @return  integer  The id of the asset's parent
-	 *
-	 * @since   11.1
-	 */
-	protected function _getAssetParentId($table = null, $id = null)
-	{
-		$assetId = null;
-
-		// This is a category under a category.
-		if ($this->parent_id > 1)
-		{
-			// Build the query to get the asset id for the parent category.
-			$query = $this->_db->getQuery(true)->select($this->_db->quoteName('asset_id'))->from($this->_db->quoteName('#__k2_categories'))->where($this->_db->quoteName('id').' = '.$this->parent_id);
-
-			// Get the asset id from the database.
-			$this->_db->setQuery($query);
-			if ($result = $this->_db->loadResult())
-			{
-				$assetId = (int)$result;
-			}
-		}
-		// This is a category that needs to parent with the extension.
-		elseif ($assetId === null)
-		{
-			// Build the query to get the asset id for the parent category.
-			$query = $this->_db->getQuery(true)->select($this->_db->quoteName('id'))->from($this->_db->quoteName('#__assets'))->where($this->_db->quoteName('name').' = '.$this->_db->quote('com_k2'));
-
-			// Get the asset id from the database.
-			$this->_db->setQuery($query);
-			if ($result = $this->_db->loadResult())
-			{
-				$assetId = (int)$result;
-			}
-		}
-		// Return the asset id.
-		if ($assetId)
-		{
-			return $assetId;
-		}
-		else
-		{
-			return parent::_getAssetParentId($table, $id);
-		}
 	}
 
 	public function check()

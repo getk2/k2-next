@@ -26,6 +26,11 @@ class K2Items extends K2Resource
 	protected static $instances = array();
 
 	/**
+	 * @var integer	Hits.
+	 */
+	public $hits = 0;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param object $data
@@ -83,7 +88,7 @@ class K2Items extends K2Resource
 			'params',
 			'rules'
 		));
-		
+
 		// Permisisons
 		$user = JFactory::getUser();
 		$this->canEdit = $user->authorise('k2.item.edit', 'com_k2.item.'.$this->id) || ($user->id == $this->created_by && $user->authorise('k2.item.edit.own', 'com_k2.item.'.$this->id));
@@ -94,13 +99,13 @@ class K2Items extends K2Resource
 
 		// Media
 		$this->media = json_decode($this->media);
-		
+
 		// Galleries
 		$this->galleries = json_decode($this->galleries);
 
 		// Hits
 		$this->hits = (int)$this->hits;
-		
+
 		// Start and end dates
 		if ((int)$this->start_date > 0)
 		{
@@ -112,7 +117,7 @@ class K2Items extends K2Resource
 			$this->endDate = JHtml::_('date', $this->end_date, 'Y-m-d');
 			$this->endTime = JHtml::_('date', $this->end_date, 'H:i');
 		}
-		
+
 		// Tags
 		$this->tags = $this->getTags();
 		$tagsValue = array();
@@ -124,7 +129,7 @@ class K2Items extends K2Resource
 
 		// Images
 		$this->images = $this->getImages();
-		
+
 		// Attachments
 		$this->attachments = $this->getAttachments();
 	}

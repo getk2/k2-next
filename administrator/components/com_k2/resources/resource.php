@@ -58,7 +58,7 @@ class K2Resource
 		else
 		{
 			$application = JFactory::getApplication();
-			$application->enqueueMessage('Invalid property', 'error');
+			$application->enqueueMessage('Invalid property: '.$name, 'error');
 			return false;
 		}
 	}

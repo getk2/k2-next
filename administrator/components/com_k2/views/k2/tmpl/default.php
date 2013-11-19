@@ -10,6 +10,7 @@
 // no direct access
 defined('_JEXEC') or die ; ?>
 <div id="appApplication">
+	<div id="appMessages"></div>
     <div id="appHeader"></div>
     <div id="appSidebar"></div>
     <div id="appMain">

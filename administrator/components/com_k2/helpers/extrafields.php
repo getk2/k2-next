@@ -198,6 +198,10 @@ class K2HelperExtraFields
 
 	private static function renderGroup($group, $values)
 	{
+		if(is_null($values))
+		{
+			$values = new stdClass;
+		}
 		foreach ($group->fields as $field)
 		{
 			if (property_exists($values, $field->id))

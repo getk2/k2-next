@@ -1,0 +1,5 @@
+<ul class="appMessages">
+    <% _.each(items, function(message) { %>
+        <li class="<%- message.type %>"><%= message.message %></li>
+    <% }) %>
+</ul>

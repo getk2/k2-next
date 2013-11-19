@@ -121,11 +121,11 @@ class K2ViewExtraFieldsGroups extends K2View
 		$recursive = new stdClass;
 		$recursive->label = 'K2_APPLY_RECUSRIVELY';
 		$recursive->name = 'assignments[recursive]';
-		$recursive->value = $row->assignments->recursive;
-		$assignments['item'] = K2HelperHTML::categories('assignments[categories][]', $row->assignments->categories, false, false, 'multiple="multiple"', $recursive);
+		$recursive->value = isset($row->assignments->recursive) ? $row->assignments->recursive : 0;
+		$assignments['item'] = K2HelperHTML::categories('assignments[categories][]', isset($row->assignments->categories) ? $row->assignments->categories : array(), false, false, 'multiple="multiple"', $recursive);
 		$assignments['category'] = $assignments['item'];
-		$assignments['user'] = K2HelperHTML::usergroups('assignments[usergroups][]', $row->assignments->usergroups, false, 'multiple="multiple"');
-		$assignments['tag'] = K2HelperHTML::tags('assignments[tags][]', $row->assignments->tags, false, 'multiple="multiple"');
+		$assignments['user'] = K2HelperHTML::usergroups('assignments[usergroups][]', isset($row->assignments->usergroups) ? $row->assignments->usergroups : array(), false, 'multiple="multiple"');
+		$assignments['tag'] = K2HelperHTML::tags('assignments[tags][]', isset($row->assignments->tags) ? $row->assignments->tags : array(), false, 'multiple="multiple"');
 		$form->assignments = $assignments;
 
 	}
