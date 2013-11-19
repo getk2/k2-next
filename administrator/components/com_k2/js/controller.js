@@ -303,7 +303,6 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 			if (state !== 'sorting' && state !== 'limit' && state !== 'page') {
 				this.collection.setState('page', 1);
 			}
-			K2Session.set(this.resource + '.' + state, value);
 			this.resetCollection();
 		},
 

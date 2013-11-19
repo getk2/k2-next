@@ -15,7 +15,7 @@ define(['marionette', 'text!layouts/extrafields/list.html', 'text!layouts/extraf
 		itemViewContainer : 'tbody',
 		itemView : K2ViewExtraFieldsRow,
 		onCompositeCollectionRendered : function() {
-			K2Widget.ordering(this.$el, 'ordering', K2Session.get('extrafields.sorting') === 'ordering');
+			K2Widget.ordering(this.$el, 'ordering', this.collection.getState('sorting') === 'ordering');
 		}
 	});
 	return K2ViewExtraFields;

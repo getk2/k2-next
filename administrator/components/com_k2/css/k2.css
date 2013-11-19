@@ -117,17 +117,17 @@ body.dragging, body.dragging * {
 }
 
 .appGrid ul {
-	list-style:none;
+	list-style: none;
 }
 
-#appCategories ul {
-	padding : 0;
-	margin : 0;
+#appCategories ul, #appItems ul {
+	padding: 0;
+	margin: 0;
 }
-#appCategories li {
-	padding : 0;
-	margin : 0;
+#appCategories li, #appItems li {
+	padding: 0;
+	margin: 0;
 }
-#appCategories ul li {
-	padding : 0 0 0 25px;
+#appCategories ul li, #appItems ul li {
+	padding: 0 0 0 25px;
 }

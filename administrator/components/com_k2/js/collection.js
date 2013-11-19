@@ -23,6 +23,13 @@ define(['backbone', 'model', 'dispatcher'], function(Backbone, K2Model, K2Dispat
 				this.setPagination(resp.pagination);
 			}
 
+			// Update states from server in order to be available as variables when they have not set by the client
+			if (resp.states !== undefined) {
+				_.each(resp.states, _.bind(function(value, state) {
+					this.setState(state, value);
+				}, this));
+			}
+
 			// Trigger the update event to notify the application.
 			K2Dispatcher.trigger('app:update', resp);
 
