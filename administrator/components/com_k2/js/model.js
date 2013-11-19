@@ -22,10 +22,6 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 				this.setForm(resp.form);
 			}
 
-			if (resp.requirejs) {
-				eval(resp.requirejs);
-			}
-
 			// Trigger the update event to notify the generic application layouts for changes.
 			K2Dispatcher.trigger('app:update', resp);
 

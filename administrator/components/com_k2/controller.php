@@ -129,6 +129,10 @@ class K2Controller extends JControllerLegacy
 		{
 			$id = $this->input->get('id', null, 'int');
 			$id === null ? $this->read('collection') : $this->read('row', $id);
+			// For GET request we want to render the whole page, so send back the whole response
+			$response = K2Response::getResponse();
+			$response->method = $method;
+			echo json_encode($response);
 		}
 		// POST requests ( create, update, delete functionality)
 		else if ($method == 'POST')
@@ -152,10 +156,15 @@ class K2Controller extends JControllerLegacy
 					$this->delete();
 					break;
 			}
-		}
 
-		// Show the response
-		echo json_encode(K2Response::getResponse());
+			// For actions we only send back the status the row (if any) and the errors
+			$response = new stdClass;
+			$response->row = K2Response::getRow();
+			$response->status = K2Response::getStatus();
+			$response->messages = JFactory::getApplication()->getMessageQueue();
+			$response->method = $method;
+			echo json_encode($response);
+		}
 
 		// Return
 		return $this;
@@ -236,7 +245,8 @@ class K2Controller extends JControllerLegacy
 			// Row saved. Pass the id of the new object to the client.
 			$row = new stdClass;
 			$row->id = $this->model->getState('id');
-			K2Response::setResponse($row);
+			K2Response::setRow($row);
+			K2Response::setStatus(true);
 		}
 		else
 		{
@@ -282,8 +292,7 @@ class K2Controller extends JControllerLegacy
 				K2Response::throwError($this->model->getError());
 			}
 
-			// Row saved. Pass the id of the new object to the client.
-			K2Response::setResponse($result);
+			K2Response::setStatus(true);
 		}
 		else
 		{
@@ -318,7 +327,7 @@ class K2Controller extends JControllerLegacy
 				K2Response::throwError($this->model->getError());
 			}
 		}
-		K2Response::setResponse($result);
+		K2Response::setResponse(true);
 	}
 
 	/**

@@ -103,12 +103,19 @@ class K2Response
 	public static $form = null;
 
 	/**
+	 * Boolean containing the status of an action.
+	 *
+	 * @var boolean $status
+	 */
+	public static $status = false;
+
+	/**
 	 * Array containing the the messages enqueued by the application.
 	 *
 	 * @var array $messages
 	 */
 	public static $messages = array();
-	
+
 	/**
 	 * Setter function for the response variable.
 	 *
@@ -397,6 +404,28 @@ class K2Response
 	}
 
 	/**
+	 * Getter function for the status variable.
+	 *
+	 * @return boolean $status
+	 */
+	public static function getStatus()
+	{
+		return self::$status;
+	}
+
+	/**
+	 * Setter function for the status variable.
+	 *
+	 * @param boolean $status
+	 *
+	 * @return void
+	 */
+	public static function setStatus($status)
+	{
+		self::$status = $status;
+	}
+
+	/**
 	 * Getter function for the form variable.
 	 *
 	 * @return array $form
@@ -633,6 +662,7 @@ class K2Response
 		self::$response->batch = self::getBatch();
 		self::$response->row = self::getRow();
 		self::$response->form = self::getForm();
+		self::$response->status = self::getStatus();
 		self::$response->messages = JFactory::getApplication()->getMessageQueue();
 		return self::$response;
 	}
