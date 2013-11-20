@@ -636,13 +636,28 @@ class K2ModelItems extends K2Model
 		}
 
 		// Delete item media
+		$media = json_decode($this->getState('media'));
+		foreach ($media as $entry)
+		{
+			if (isset($entry->upload) && $entry->upload)
+			{
+				K2HelperMedia::remove($entry->upload, $table->id);
+			}
+		}
 
 		// Delete item tags reference
-		$model = K2Model::getInstance('Tags', 'K2Model');
-		$itemId = $table->id;
-		$model->deleteItemTags($itemId);
+		$tagsModel = K2Model::getInstance('Tags');
+		$tagsModel->deleteItemTags($table->id);
 
 		// Delete item attachments
+		$attachmentsModel = K2Model::getInstance('Attachments');
+		$attachmentsModel->setState('itemId', $table->id);
+		$attachments = $attachmentsModel->getRows();
+		foreach ($attachments as $attachment)
+		{
+			$attachmentsModel->setState('id', $attachment->id);
+			$attachmentsModel->delete();
+		}
 
 		// Return
 		return true;
