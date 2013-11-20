@@ -113,6 +113,7 @@ class K2ModelUsers extends K2Model
 		{
 			switch($sorting)
 			{
+				default :
 				case 'id' :
 					$ordering = 'user.id';
 					$direction = 'DESC';

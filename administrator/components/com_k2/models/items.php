@@ -199,6 +199,7 @@ class K2ModelItems extends K2Model
 		{
 			switch($sorting)
 			{
+				default :
 				case 'id' :
 					$ordering = 'item.id';
 					$direction = 'DESC';

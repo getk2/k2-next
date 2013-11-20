@@ -12,7 +12,7 @@ defined('_JEXEC') or die ;
 
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/model.php';
 
-class K2ModelTags extends K2Model
+class K2ModelComments extends K2Model
 {
 	public function getRows()
 	{
@@ -23,12 +23,7 @@ class K2ModelTags extends K2Model
 		$query = $db->getQuery(true);
 
 		// Select rows
-		$query->select($db->quoteName('tag').'.*')->from($db->quoteName('#__k2_tags', 'tag'));
-
-		// Nested query for counting tagged items per tag
-		$nested = $db->getQuery(true);
-		$nested->select('COUNT(*)')->from($db->quoteName('#__k2_tags_xref', 'xref'))->where($db->quoteName('xref.tagId').' = '.$db->quoteName('tag.id'));
-		$query->select('('.(string)$nested.') AS '.$db->quoteName('items'));
+		$query->select($db->quoteName('comment').'.*')->from($db->quoteName('#__k2_comments', 'comment'));
 
 		// Set query conditions
 		$this->setQueryConditions($query);
@@ -37,7 +32,7 @@ class K2ModelTags extends K2Model
 		$this->setQuerySorting($query);
 
 		// Hook for plugins
-		$this->onBeforeSetQuery($query, 'com_k2.tags.list');
+		$this->onBeforeSetQuery($query, 'com_k2.comments.list');
 
 		// Set the query
 		$db->setQuery($query, (int)$this->getState('limitstart'), (int)$this->getState('limit'));
@@ -61,13 +56,13 @@ class K2ModelTags extends K2Model
 		$query = $db->getQuery(true);
 
 		// Select statement
-		$query->select('COUNT(*)')->from($db->quoteName('#__k2_tags', 'tag'));
+		$query->select('COUNT(*)')->from($db->quoteName('#__k2_comments', 'comment'));
 
 		// Set query conditions
 		$this->setQueryConditions($query);
 
 		// Hook for plugins
-		$this->onBeforeSetQuery($query, 'com_k2.tags.count');
+		$this->onBeforeSetQuery($query, 'com_k2.comments.count');
 
 		// Set the query
 		$db->setQuery($query);
@@ -85,12 +80,11 @@ class K2ModelTags extends K2Model
 
 		if ($this->getState('itemId'))
 		{
-			$query->leftJoin($db->quoteName('#__k2_tags_xref', 'xref').' ON '.$db->quoteName('xref.tagId').' = '.$db->quoteName('tag.id'));
-			$query->where($db->quoteName('xref.itemId').' = '.(int)$this->getState('itemId'));
+			$query->where($db->quoteName('comment.itemId').' = '.(int)$this->getState('itemId'));
 		}
 		if (is_numeric($this->getState('state')))
 		{
-			$query->where($db->quoteName('tag.state').' = '.(int)$this->getState('state'));
+			$query->where($db->quoteName('comment.state').' = '.(int)$this->getState('state'));
 		}
 		if ($this->getState('id'))
 		{
@@ -98,16 +92,12 @@ class K2ModelTags extends K2Model
 			if (is_array($id))
 			{
 				JArrayHelper::toInteger($id);
-				$query->where($db->quoteName('tag.id').' IN '.$id);
+				$query->where($db->quoteName('comment.id').' IN '.$id);
 			}
 			else
 			{
-				$query->where($db->quoteName('tag.id').' = '.(int)$id);
+				$query->where($db->quoteName('comment.id').' = '.(int)$id);
 			}
-		}
-		if ($this->getState('alias'))
-		{
-			$query->where($db->quoteName('tag.alias').' = '.$db->quote($this->getState('alias')));
 		}
 		if ($this->getState('search'))
 		{
@@ -116,9 +106,7 @@ class K2ModelTags extends K2Model
 			if ($search)
 			{
 				$search = $db->escape($search, true);
-				$query->where('( LOWER('.$db->quoteName('tag.name').') LIKE '.$db->Quote('%'.$search.'%', false).' 
-				OR '.$db->quoteName('tag.id').' = '.(int)$search.'  
-				OR LOWER('.$db->quoteName('tag.alias').') LIKE '.$db->Quote('%'.$search.'%', false).')');
+				$query->where($db->quoteName('comment.text').' LIKE '.$db->Quote('%'.$search.'%', false));
 			}
 		}
 	}
@@ -133,15 +121,15 @@ class K2ModelTags extends K2Model
 			{
 				default :
 				case 'id' :
-					$ordering = 'id';
+					$ordering = 'comment.id';
 					$direction = 'DESC';
 					break;
 				case 'name' :
-					$ordering = 'name';
+					$ordering = 'comment.name';
 					$direction = 'ASC';
 					break;
 				case 'state' :
-					$ordering = 'state';
+					$ordering = 'comment.state';
 					$direction = 'DESC';
 					break;
 			}
