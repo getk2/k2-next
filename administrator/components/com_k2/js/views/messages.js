@@ -3,11 +3,17 @@ define(['marionette', 'text!layouts/messages.html', 'dispatcher'], function(Mari
 	var K2ViewMessages = Marionette.ItemView.extend({
 		template : _.template(template),
 		collectionEvents : {
-			'add' : 'render'
+			'reset' : 'render'
 		},
 		initialize : function() {
+			K2Dispatcher.on('app:message', function(type, text) {
+				this.collection.reset({
+					type : type,
+					message : text
+				});
+			}, this);
 			K2Dispatcher.on('app:update:messages', function(response) {
-				this.collection.set(response.messages);
+				this.collection.reset(response.messages);
 			}, this);
 		},
 	});

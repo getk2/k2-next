@@ -191,11 +191,6 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'vie
 		K2[region].reset();
 	});
 
-	// Message event listener
-	K2Dispatcher.on('app:message', function(type, text) {
-		alert('Type:' + type + ' Message: ' + text);
-	});
-
 	// Modal display listener
 	K2Dispatcher.on('app:modal', function(view) {
 

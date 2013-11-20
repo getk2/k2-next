@@ -78,21 +78,6 @@ define(['backbone', 'model', 'dispatcher'], function(Backbone, K2Model, K2Dispat
 			return xhr;
 		},
 
-		batchToggleState : function(rows, state, options) {
-			options.data = rows;
-			_.each(rows, _.bind(function(row) {
-				var id = row.value;
-				var model = this.get(id);
-				var newValue = model.get(state) > 0 ? 0 : 1;
-				options.data.push({
-					'name' : 'states[' + state + '][]',
-					'value' : newValue
-				});
-			}, this));
-			var xhr = this.sync('patch', this, options);
-			return xhr;
-		},
-
 		buildQuery : function() {
 			var query = '';
 			_.each(this.states.attributes, function(value, state) {

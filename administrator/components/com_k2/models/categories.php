@@ -298,6 +298,12 @@ class K2ModelCategories extends K2Model
 			$data['extra_fields'] = json_encode($data['extra_fields']);
 		}
 
+		// Add flag for moving a category to trash
+		if (isset($data['state']) && $data['state'] == -1 && $table->state != -1)
+		{
+			$this->setState('trash', true);
+		}
+
 		return true;
 
 	}
@@ -328,6 +334,25 @@ class K2ModelCategories extends K2Model
 				$source = $baseSourceFileName.'.jpg';
 				$target = $baseTargetFileName.'.jpg';
 				$filesystem->rename($path.'/'.$source, $path.'/'.$target);
+			}
+		}
+
+		// Handle trash action
+		if ($this->getState('trash'))
+		{
+			// Trash all subcategories and items
+			$categories = $this->getTable();
+			$tree = $categories->getTree($table->id);
+			foreach ($tree as $category)
+			{
+				if ($category->id != $table->id)
+				{
+					$subcategory = $this->getTable();
+					$subcategory->load($category->id);
+					$subcategory->state = -1;
+					$subcategory->store();
+				}
+				$this->trashItems($category->id);
 			}
 		}
 
@@ -362,6 +387,24 @@ class K2ModelCategories extends K2Model
 			$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
 			return false;
 		}
+		
+		// Check that the category is trashed
+		if($table->state != -1)
+		{
+			$this->setError(JText::_('K2_YOU_CAN_ONLY_DELETE_TRASHED_CATEGORIES'));
+			return false;
+		}
+		
+		// Check for categories and items under this category
+		$tree = $table->getTree();
+		foreach($tree as $category)
+		{
+			
+		}
+		$db = $this->getDBO();
+		$query = $db->getQuery(true);
+		$query->update($db->quoteName('#__k2_items'))->set($db->quoteName('state').' = -1')->where($db->quoteName('catid').' = '.(int)$categoryId);
+		
 		return true;
 	}
 
@@ -380,6 +423,25 @@ class K2ModelCategories extends K2Model
 			return false;
 		}
 		return true;
+	}
+
+	public function trashItems($categoryId)
+	{
+		// Get database
+		$db = $this->getDBO();
+
+		// Get query
+		$query = $db->getQuery(true);
+
+		// Update
+		$query->update($db->quoteName('#__k2_items'))->set($db->quoteName('state').' = -1')->where($db->quoteName('catid').' = '.(int)$categoryId);
+
+		// Set query
+		$db->setQuery($query);
+
+		// Execute
+		$db->execute();
+
 	}
 
 }

@@ -278,8 +278,8 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 				success : _.bind(function() {
 					this.resetCollection();
 				}, this),
-				error : _.bind(function(response) {
-					this.enqueueMessage('error', response.responseText);
+				error : _.bind(function(xhr) {
+					this.enqueueMessage('error', xhr.responseText);
 				}, this)
 			});
 		},
@@ -290,7 +290,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 				success : _.bind(function() {
 					this.list();
 				}, this),
-				error : _.bind(function(model, xhr, options) {
+				error : _.bind(function(xhr) {
 					this.enqueueMessage('error', xhr.responseText);
 				}, this)
 			});
@@ -331,7 +331,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 				success : _.bind(function() {
 					this.list();
 				}, this),
-				error : _.bind(function(model, xhr, options) {
+				error : _.bind(function(xhr) {
 					this.enqueueMessage('error', xhr.responseText);
 				}, this)
 			});
