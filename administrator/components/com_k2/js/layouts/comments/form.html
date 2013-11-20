@@ -1,0 +1,11 @@
+<form id="k2CommentForm" class="appEditForm">
+
+    <label for="name"><%= l('K2_NAME') %></label>
+    <input type="text" name="name" id="name" value="<%- row.name %>" />
+
+    <label><%= l('K2_STATE') %></label>
+    <%= form.state %>
+    
+    <input type="hidden" name="id" value="<%= row.id %>" / >
+    
+</form>

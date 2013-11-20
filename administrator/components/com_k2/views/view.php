@@ -480,9 +480,19 @@ class K2View extends JViewLegacy
 				K2Response::addMenuLink('tags', 'K2_TAGS', array(
 					'href' => '#tags',
 					'class' => 'appMenuLink',
-					'id' => 'k2ItemsLink'
+					'id' => 'k2TagsLink'
 				), 'primary');
 			}
+
+			if ($user->authorise('k2.comment.edit', 'com_k2') || $user->authorise('k2.comment.edit.own', 'com_k2'))
+			{
+				K2Response::addMenuLink('comments', 'K2_COMMENTS', array(
+					'href' => '#comments',
+					'class' => 'appMenuLink',
+					'id' => 'k2CommentsLink'
+				), 'primary');
+			}
+
 			if ($user->authorise('k2.extrafields.manage', 'com_k2'))
 			{
 				K2Response::addMenuLink('extrafields', 'K2_EXTRA_FIELDS', array(
