@@ -102,6 +102,10 @@ class K2ModelExtraFields extends K2Model
 		{
 			$query->where($db->quoteName('extraField.group').' = '.(int)$this->getState('group'));
 		}
+		if ($this->getState('type'))
+		{
+			$query->where($db->quoteName('extraField.type').' = '.$db->quote($this->getState('type')));
+		}
 		if ($this->getState('search'))
 		{
 			$search = JString::trim($this->getState('search'));

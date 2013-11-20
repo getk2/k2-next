@@ -99,6 +99,9 @@ class K2ViewExtraFields extends K2View
 
 	protected function setFilters()
 	{
+		
+		// Type filter
+		K2Response::addFilter('type', JText::_('K2_TYPE'), K2HelperHTML::extraFieldsTypes('type', null, 'K2_ANY'), false, 'header');
 
 		// Group filter
 		K2Response::addFilter('group', JText::_('K2_GROUP'), K2HelperHTML::extraFieldsGroups('group', null, 'K2_ANY'), false, 'header');
