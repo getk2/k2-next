@@ -194,59 +194,90 @@ class K2ModelItems extends K2Model
 	private function setQuerySorting(&$query)
 	{
 		$sorting = $this->getState('sorting');
-		$order = null;
+		$ordering = null;
 		if ($sorting)
 		{
 			switch($sorting)
 			{
 				case 'id' :
-					$order = 'item.id DESC';
+					$ordering = 'item.id';
+					$direction = 'DESC';
 					break;
 				case 'title' :
-					$order = 'item.title ASC';
+					$ordering = 'item.title';
+					$direction = 'ASC';
 					break;
 				case 'ordering' :
-					$order = 'category.lft ASC, item.ordering ASC';
+					$ordering = array(
+						'category.lft',
+						'item.ordering'
+					);
+					$direction = 'ASC';
 					break;
 				case 'featured_ordering' :
-					$order = 'item.featured_ordering ASC';
+					$ordering = 'item.featured_ordering';
+					$direction = 'ASC';
 					break;
 				case 'state' :
-					$order = 'item.state DESC';
+					$ordering = 'item.state';
+					$direction = 'DESC';
 					break;
 				case 'featured' :
-					$order = 'item.featured DESC';
+					$ordering = 'item.featured';
+					$direction = 'DESC';
 					break;
 				case 'category' :
-					$order = 'categoryName ASC';
+					$ordering = 'categoryName';
+					$direction = 'ASC';
 					break;
 				case 'author' :
-					$order = 'authorName ASC';
+					$ordering = 'authorName';
+					$direction = 'ASC';
 					break;
 				case 'moderator' :
-					$order = 'moderatorName ASC';
+					$ordering = 'moderatorName';
+					$direction = 'ASC';
 					break;
 				case 'access' :
-					$order = 'viewLevel ASC';
+					$ordering = 'viewLevel';
+					$direction = 'ASC';
 					break;
 				case 'created' :
-					$order = 'item.created DESC';
+					$ordering = 'item.created';
+					$direction = 'DESC';
 					break;
 				case 'modified' :
-					$order = 'item.modified DESC';
+					$ordering = 'item.modified';
+					$direction = 'DESC';
 					break;
 				case 'hits' :
-					$order = 'hits DESC';
+					$ordering = 'hits';
+					$direction = 'DESC';
 					break;
 				case 'language' :
-					$order = 'languageTitle ASC';
+					$ordering = 'languageTitle';
+					$direction = 'ASC';
 					break;
 			}
 		}
 		// Append sorting
-		if ($order)
+		if ($ordering)
 		{
-			$query->order($order);
+			$db = $this->getDbo();
+			if (is_array($ordering))
+			{
+				$conditions = array();
+				foreach ($ordering as $column)
+				{
+					$conditions[] = $db->quoteName($column).' '.$direction;
+				}
+				$query->order(implode(', ', $conditions));
+			}
+			else
+			{
+				$query->order($db->quoteName($ordering).' '.$direction);
+
+			}
 		}
 	}
 

@@ -90,68 +90,6 @@ class K2ModelUserGroups extends K2Model
 		return (int)$total;
 	}
 
-	private function setQueryConditions(&$query)
-	{
-		$db = $this->getDBO();
-
-		if ($this->getState('id'))
-		{
-			$id = $this->getState('id');
-			if (is_array($id))
-			{
-				JArrayHelper::toInteger($id);
-				$query->where($db->quoteName('extraFieldsGroup.id').' IN '.$id);
-			}
-			else
-			{
-				$query->where($db->quoteName('extraFieldsGroup.id').' = '.(int)$id);
-			}
-		}
-		if ($this->getState('scope'))
-		{
-			$query->where($db->quoteName('extraFieldsGroup.scope').' = '.$db->quote($this->getState('scope')));
-		}
-		if ($this->getState('resourceId'))
-		{
-			$resourceId = $this->getState('resourceId');
-			$query->where($db->quoteName('xref.resourceId').' = '.(int)$resourceId);
-		}
-		if ($this->getState('search'))
-		{
-			$search = JString::trim($this->getState('search'));
-			$search = JString::strtolower($search);
-			if ($search)
-			{
-				$search = $db->escape($search, true);
-				$query->where('( LOWER('.$db->quoteName('extraFieldsGroup.name').') LIKE '.$db->Quote('%'.$search.'%', false).' 
-				OR '.$db->quoteName('extraFieldsGroup.id').' = '.(int)$search.')');
-			}
-		}
-	}
-
-	private function setQuerySorting(&$query)
-	{
-		$sorting = $this->getState('sorting');
-		$order = null;
-		if ($sorting)
-		{
-			switch($sorting)
-			{
-				default :
-				case 'id' :
-					$order = 'extraFieldsGroup.id DESC';
-					break;
-				case 'name' :
-					$order = 'extraFieldsGroup.name ASC';
-					break;
-			}
-		}
-		// Append sorting
-		if ($order)
-		{
-			$query->order($order);
-		}
-	}
 
 	/**
 	 * Save method.
@@ -217,37 +155,6 @@ class K2ModelUserGroups extends K2Model
 
 		}
 
-		// Categories permissions
-		/*if (isset($data['permissions']))
-		 {
-		 $groupId = $this->getState('id');
-		 $model = K2Model::getInstance('Categories', 'K2Model');
-		 $categories = $model->getRows();
-		 foreach ($categories as $category)
-		 {
-		 $assetId = $category->asset_id;
-		 $asset = JTable::getInstance('Asset');
-		 $asset->load($assetId);
-		 $rules = json_decode($asset->rules);
-		 foreach ($data['permissions']['actions'] as $action => $value)
-		 {
-		 if (in_array($category->id, $data['permissions']['categories']))
-		 {
-		 $rule = isset($rules->$action) ? (array)$rules->$action : array();
-		 $newRule = array();
-		 foreach ($rule as $group => $allow)
-		 {
-		 $newRule[(int)$group] = (int)$allow;
-		 }
-		 $newRule[(int)$groupId] = (int)$value;
-		 $rule = $newRule;
-		 $rules->$action = (object)$rule;
-		 $asset->rules = json_encode($rules);
-		 $asset->store();
-		 }
-		 }
-		 }
-		 }*/
 		 return true;
 	}
 

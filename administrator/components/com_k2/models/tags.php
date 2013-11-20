@@ -126,26 +126,31 @@ class K2ModelTags extends K2Model
 	private function setQuerySorting(&$query)
 	{
 		$sorting = $this->getState('sorting');
-		$order = null;
+		$ordering = null;
 		if ($sorting)
 		{
 			switch($sorting)
 			{
 				case 'id' :
-					$order = 'id DESC';
+					$ordering = 'id';
+					$direction = 'DESC';
 					break;
 				case 'name' :
-					$order = 'name ASC';
+					$ordering = 'name';
+					$direction = 'ASC';
 					break;
 				case 'state' :
-					$order = 'state DESC';
+					$ordering = 'state';
+					$direction = 'DESC';
 					break;
 			}
 		}
+
 		// Append sorting
-		if ($order)
+		if ($ordering)
 		{
-			$query->order($order);
+			$db = $this->getDbo();
+			$query->order($db->quoteName($ordering).' '.$direction);
 		}
 	}
 

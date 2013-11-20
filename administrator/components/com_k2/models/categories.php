@@ -147,51 +147,63 @@ class K2ModelCategories extends K2Model
 	private function setQuerySorting(&$query)
 	{
 		$sorting = $this->getState('sorting');
-		$order = null;
+		$ordering = null;
 		if ($sorting)
 		{
 			switch($sorting)
 			{
 				default :
 				case 'id' :
-					$order = 'category.id DESC';
+					$ordering = 'category.id';
+					$direction = 'DESC';
 					break;
 				case 'title' :
-					$order = 'category.title ASC';
+					$ordering = 'category.title';
+					$direction = 'ASC';
 					break;
 				case 'ordering' :
-					$order = 'category.lft ASC';
+					$ordering = 'category.lft';
+					$direction = 'ASC';
 					break;
 				case 'state' :
-					$order = 'category.state DESC';
+					$ordering = 'category.state';
+					$direction = 'DESC';
 					break;
 				case 'author' :
-					$order = 'authorName ASC';
+					$ordering = 'authorName';
+					$direction = 'ASC';
 					break;
 				case 'moderator' :
-					$order = 'moderatorName ASC';
+					$ordering = 'moderatorName';
+					$direction = 'ASC';
 					break;
 				case 'access' :
-					$order = 'viewLevel ASC';
+					$ordering = 'viewLevel';
+					$direction = 'ASC';
 					break;
 				case 'created' :
-					$order = 'category.created DESC';
+					$ordering = 'category.created';
+					$direction = 'DESC';
 					break;
 				case 'modified' :
-					$order = 'category.modified DESC';
+					$order = 'category.modified';
+					$direction = 'DESC';
 					break;
 				case 'language' :
-					$order = 'languageTitle ASC';
+					$ordering = 'languageTitle';
+					$direction = 'ASC';
 					break;
 				case 'image' :
-					$order = 'category.image DESC';
+					$ordering = 'category.image';
+					$direction = 'DESC';
 					break;
 			}
 		}
 		// Append sorting
-		if ($order)
+		if ($ordering)
 		{
-			$query->order($order);
+			$db = $this->getDbo();
+			$query->order($db->quoteName($ordering).' '.$direction);
 		}
 	}
 

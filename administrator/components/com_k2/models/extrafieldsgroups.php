@@ -111,24 +111,28 @@ class K2ModelExtraFieldsGroups extends K2Model
 	private function setQuerySorting(&$query)
 	{
 		$sorting = $this->getState('sorting');
-		$order = null;
+		$ordering = null;
 		if ($sorting)
 		{
 			switch($sorting)
 			{
 				default :
 				case 'id' :
-					$order = 'extraFieldsGroup.id DESC';
+					$ordering = 'extraFieldsGroup.id';
+					$direction = 'DESC';
 					break;
 				case 'name' :
-					$order = 'extraFieldsGroup.name ASC';
+					$ordering = 'extraFieldsGroup.name';
+					$direction = 'ASC';
 					break;
 			}
 		}
+
 		// Append sorting
-		if ($order)
+		if ($ordering)
 		{
-			$query->order($order);
+			$db = $this->getDbo();
+			$query->order($db->quoteName($ordering).' '.$direction);
 		}
 	}
 

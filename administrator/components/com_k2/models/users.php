@@ -108,23 +108,27 @@ class K2ModelUsers extends K2Model
 	private function setQuerySorting(&$query)
 	{
 		$sorting = $this->getState('sorting');
-		$order = null;
+		$ordering = null;
 		if ($sorting)
 		{
 			switch($sorting)
 			{
 				case 'id' :
-					$order = 'user.id DESC';
+					$ordering = 'user.id';
+					$direction = 'DESC';
 					break;
 				case 'name' :
-					$order = 'user.name ASC';
+					$ordering = 'user.name';
+					$direction = 'ASC';
 					break;
 			}
 		}
+
 		// Append sorting
-		if ($order)
+		if ($ordering)
 		{
-			$query->order($order);
+			$db = $this->getDbo();
+			$query->order($db->quoteName($ordering).' '.$direction);
 		}
 	}
 
@@ -160,4 +164,5 @@ class K2ModelUsers extends K2Model
 	{
 		return parent::getTable($name, $prefix, $options);
 	}
+
 }
