@@ -182,6 +182,7 @@ class K2Model extends JModelLegacy
 			$this->setError($table->getError());
 			return false;
 		}
+		
 		if (!$this->onAfterDelete($table))
 		{
 			return false;

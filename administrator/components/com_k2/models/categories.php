@@ -387,24 +387,35 @@ class K2ModelCategories extends K2Model
 			$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
 			return false;
 		}
-		
+
 		// Check that the category is trashed
-		if($table->state != -1)
+		if ($table->state != -1)
 		{
 			$this->setError(JText::_('K2_YOU_CAN_ONLY_DELETE_TRASHED_CATEGORIES'));
 			return false;
 		}
-		
-		// Check for categories and items under this category
+
+		// Check for categories that are not trashed in the tree
 		$tree = $table->getTree();
-		foreach($tree as $category)
+		foreach ($tree as $category)
 		{
-			
+			if ($category->state != -1)
+			{
+				$this->setError(JText::_('K2_COULD_NOT_DELETE_CATEGORY_BECAUSE_IT_CONTAINS_NON_TRASHED_CATEGORIES'));
+				return false;
+			}
 		}
-		$db = $this->getDBO();
-		$query = $db->getQuery(true);
-		$query->update($db->quoteName('#__k2_items'))->set($db->quoteName('state').' = -1')->where($db->quoteName('catid').' = '.(int)$categoryId);
-		
+
+		// Ensure the category and it's children do not contain any items
+		$model = K2Model::getInstance('Items');
+		$model->setState('category', $table->id);
+		$count = $model->countRows();
+		if ($count)
+		{
+			$this->setError(JText::_('K2_COULD_NOT_DELETE_CATEGORY_BECAUSE_IT_CONTAINS_ITEMS'));
+			return false;
+		}
+
 		return true;
 	}
 
