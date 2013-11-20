@@ -13,6 +13,7 @@ defined('_JEXEC') or die ;
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/controller.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/items.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/media.php';
 
 jimport('joomla.filesystem.file');
 
@@ -28,15 +29,10 @@ class K2ControllerMedia extends K2Controller
 		// Check for token
 		JSession::checkToken() or K2Response::throwError(JText::_('JINVALID_TOKEN'));
 
-		// Filesystem
-		$filesystem = K2FileSystem::getInstance();
-
 		// Get input
-		$input = JFactory::getApplication()->input;
-		$itemId = $input->get('itemId', '', 'cmd');
-		$upload = $input->get('upload', '', 'cmd');
-		$folder = $itemId;
-		$file = $input->files->get('file');
+		$itemId = $this->input->get('itemId', '', 'cmd');
+		$upload = $this->input->get('upload', '', 'cmd');
+		$file = $this->input->files->get('file');
 
 		// Permissions check
 		if (is_numeric($itemId))
@@ -54,25 +50,14 @@ class K2ControllerMedia extends K2Controller
 			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'), 403);
 		}
 
-		// Setup some variables
-		$path = 'media/k2/media/'.$folder;
-		$filename = $file['name'];
-		$buffer = file_get_contents($file['tmp_name']);
-		$target = $path.'/'.$filename;
-
-		// If the current file is uploaded then we should remove it when we upload a new one
-		if ($upload && $filesystem->has($path.'/'.$upload))
+		// If the current file is uploaded then we should remove it before we upload a new one
+		if ($upload)
 		{
-			$filesystem->delete($path.'/'.$upload);
+			K2HelperMedia::remove($upload, $itemId);
 		}
 
-		// Write it to the filesystem
-		$filesystem->write($target, $buffer, true);
+		$response = K2HelperMedia::add($file, $itemId);
 
-		// Response
-		$response = new stdClass;
-		$response->upload = $filename;
-		$response->url = $target;
 		echo json_encode($response);
 
 		// Return
@@ -93,10 +78,8 @@ class K2ControllerMedia extends K2Controller
 		JSession::checkToken() or K2Response::throwError(JText::_('JINVALID_TOKEN'));
 
 		// Get id from input
-		$input = $this->input;
-		$itemId = $input->get('itemId', '', 'cmd');
-		$upload = $input->get('upload', '', 'cmd');
-		$folder = $itemId;
+		$itemId = $this->input->get('itemId', '', 'cmd');
+		$upload = $this->input->get('upload', '', 'cmd');
 
 		// Permissions check
 		if (is_numeric($itemId))
@@ -113,21 +96,7 @@ class K2ControllerMedia extends K2Controller
 			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'), 403);
 		}
 
-		if ($upload)
-		{
-			// Filesystem
-			require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
-			$filesystem = K2FileSystem::getInstance();
-
-			// Key
-			$key = 'media/k2/media/'.$folder.'/'.$upload;
-
-			// Delete
-			if ($filesystem->has($key))
-			{
-				$filesystem->delete($key);
-			}
-		}
+		K2HelperMedia::remove($upload, $itemId);
 
 		// Response
 		K2Response::setResponse(true);
