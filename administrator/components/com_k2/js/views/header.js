@@ -1,4 +1,4 @@
-define(['marionette', 'text!layouts/header.html', 'dispatcher'], function(Marionette, template, K2Dispatcher) {'use strict';
+define(['marionette', 'text!layouts/header.html', 'dispatcher', 'widgets/widget'], function(Marionette, template, K2Dispatcher, K2Widget) {'use strict';
 
 	var K2ViewHeader = Marionette.ItemView.extend({
 
@@ -23,6 +23,10 @@ define(['marionette', 'text!layouts/header.html', 'dispatcher'], function(Marion
 					'actions' : response.actions
 				});
 			}, this);
+		},
+
+		onDomRefresh : function() {
+			K2Widget.updateEvents(this.$el);
 		},
 
 		add : function(event) {

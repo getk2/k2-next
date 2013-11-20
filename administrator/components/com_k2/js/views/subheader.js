@@ -1,4 +1,4 @@
-define(['marionette', 'text!layouts/subheader.html', 'dispatcher'], function(Marionette, template, K2Dispatcher) {'use strict';
+define(['marionette', 'text!layouts/subheader.html', 'dispatcher', 'widgets/widget'], function(Marionette, template, K2Dispatcher, K2Widget) {'use strict';
 
 	var K2ViewSubheader = Marionette.ItemView.extend({
 
@@ -50,10 +50,14 @@ define(['marionette', 'text!layouts/subheader.html', 'dispatcher'], function(Mar
 				K2Dispatcher.trigger('app:controller:filter', 'page', 1);
 
 			}, this);
-			
+
 			K2Dispatcher.on('app:subheader:sort', function(sorting) {
 				this.$el.find('select[name="sorting"]').select2('val', sorting);
 			}, this);
+		},
+
+		onDomRefresh : function() {
+			K2Widget.updateEvents(this.$el);
 		},
 
 		onRender : function() {

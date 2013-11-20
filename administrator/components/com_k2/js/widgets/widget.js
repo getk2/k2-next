@@ -70,7 +70,7 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 				var userId = element.val();
 				var userName = element.data('name');
 				element.select2({
-					minimumInputLength : element.data('min') || 1,
+					minimumInputLength : element.data('min') || 0,
 					placeholder : element.data('placeholder') || l('K2_SELECT_AUTHOR'),
 					initSelection : function(element, callback) {
 						if (userId) {
