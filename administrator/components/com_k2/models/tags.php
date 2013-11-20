@@ -25,6 +25,11 @@ class K2ModelTags extends K2Model
 		// Select rows
 		$query->select($db->quoteName('tag').'.*')->from($db->quoteName('#__k2_tags', 'tag'));
 
+		// Nested query for counting tagged items per tag
+		$nested = $db->getQuery(true);
+		$nested->select('COUNT(*)')->from($db->quoteName('#__k2_tags_xref', 'xref'))->where($db->quoteName('xref.tagId').' = '.$db->quoteName('tag.id'));
+		$query->select('('.(string)$nested.') AS '.$db->quoteName('items'));
+
 		// Set query conditions
 		$this->setQueryConditions($query);
 

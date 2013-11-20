@@ -102,6 +102,7 @@ class K2ViewTags extends K2View
 		$sortingOptions = array(
 			'K2_ID' => 'id',
 			'K2_NAME' => 'name',
+			'K2_ITEMS' => 'items',
 			'K2_STATE' => 'state'
 		);
 		K2Response::addFilter('sorting', JText::_('K2_SORT_BY'), K2HelperHTML::sorting($sortingOptions), false, 'header');
