@@ -597,8 +597,16 @@ class K2ModelItems extends K2Model
 			return false;
 		}
 
+		// Check that the item is trashed
+		if ($table->state != -1)
+		{
+			$this->setError(JText::_('K2_YOU_CAN_ONLY_DELETE_TRASHED_ITEMS'));
+			return false;
+		}
+
 		// Set some variables for later usage in the model
 		$this->setState('galleries', $table->galleries);
+		$this->setState('media', $table->media);
 
 		return true;
 	}
@@ -618,6 +626,14 @@ class K2ModelItems extends K2Model
 		K2HelperImages::removeResourceImage('item', $table->id);
 
 		// Delete item galleries
+		$galleries = json_decode($this->getState('galleries'));
+		foreach ($galleries as $gallery)
+		{
+			if (isset($gallery->upload) && $gallery->upload)
+			{
+				K2HelperGalleries::remove($gallery->upload, $table->id);
+			}
+		}
 
 		// Delete item media
 

@@ -18,8 +18,48 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
 
 class K2HelperGalleries
 {
-	public static function add()
+	public static function add($archive, $itemId)
 	{
+		// Filesystem
+		$filesystem = K2FileSystem::getInstance();
+		
+		// Generate gallery name
+		$gallery = uniqid();
+		
+		// Extract the gallery to a temporaty folder
+		jimport('joomla.archive.archive');
+		jimport('joomla.filesystem.file');
+		jimport('joomla.filesystem.folder');
+
+		// Random temporary path
+		$tmpFolder = JPATH_SITE.'/media/k2/galleries/'.uniqid();
+
+		// Create the folder
+		JFolder::create($tmpFolder);
+
+		// Upload the file to the temporary folder
+		JFile::upload($archive['tmp_name'], $tmpFolder.'/'.$archive['name']);
+
+		// Extract the archive
+		JArchive::extract($tmpFolder.'/'.$archive['name'], $tmpFolder);
+
+		// Delete the archive
+		JFile::delete($tmpFolder.'/'.$archive['name']);
+
+		// Transfer the files of the archive to the current filesystem
+		$files = JFolder::files($tmpFolder);
+		$target = 'media/k2/galleries/'.$itemId.'/'.$gallery;
+		foreach ($files as $file)
+		{
+			$buffer = JFile::read($file);
+			$filesystem->write($target.'/'.$file, $buffer, true);
+		}
+
+		// Delete the temporary folder
+		JFolder::delete($tmpFolder);
+
+		// return
+		return $gallery;
 
 	}
 

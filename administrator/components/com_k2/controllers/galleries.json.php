@@ -34,8 +34,6 @@ class K2ControllerGalleries extends K2Controller
 		$input = JFactory::getApplication()->input;
 		$itemId = $input->get('itemId', '', 'cmd');
 		$upload = $input->get('upload', '', 'cmd');
-		$gallery = uniqid();
-		$folder = $itemId;
 		$archive = $file = $input->files->get('archive');
 
 		// Permissions check
@@ -53,43 +51,15 @@ class K2ControllerGalleries extends K2Controller
 		{
 			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'), 403);
 		}
+		
+		// Create the gallery
+		$gallery = K2HelperGalleries::add($archive, $itemId);
 
-		// Extract the gallery to a temporaty folder
-		jimport('joomla.archive.archive');
-		jimport('joomla.filesystem.file');
-		jimport('joomla.filesystem.folder');
-
-		// Random temporary path
-		$tmpFolder = JPATH_SITE.'/media/k2/galleries/'.uniqid();
-
-		// Create the folder
-		JFolder::create($tmpFolder);
-
-		// Upload the file to the temporary folder
-		JFile::upload($archive['tmp_name'], $tmpFolder.'/'.$archive['name']);
-
-		// Extract the archive
-		JArchive::extract($tmpFolder.'/'.$archive['name'], $tmpFolder);
-
-		// Delete the archive
-		JFile::delete($tmpFolder.'/'.$archive['name']);
-
-		// Transfer the files of the archive to the current filesystem
-		$files = JFolder::files($tmpFolder);
-		$target = 'media/k2/galleries/'.$folder.'/'.$gallery;
-		foreach ($files as $file)
-		{
-			$buffer = JFile::read($file);
-			$filesystem->write($target.'/'.$file, $buffer, true);
-		}
-
-		// Delete the temporary folder
-		JFolder::delete($tmpFolder);
 
 		// If the current gallery is uploaded then we should remove it when we upload a new one
-		if ($upload && $filesystem->has('media/k2/galleries/'.$folder.'/'.$upload))
+		if ($upload)
 		{
-			$filesystem->delete('media/k2/galleries/'.$folder.'/'.$upload);
+			K2HelperGalleries::remove($upload, $itemId);
 		}
 
 		// Response
