@@ -128,6 +128,22 @@ class K2ModelComments extends K2Model
 					$ordering = 'comment.name';
 					$direction = 'ASC';
 					break;
+				case 'email' :
+					$ordering = 'comment.email';
+					$direction = 'ASC';
+					break;
+				case 'url' :
+					$ordering = 'comment.url';
+					$direction = 'ASC';
+					break;
+				case 'ip' :
+					$ordering = 'comment.ip';
+					$direction = 'ASC';
+					break;
+				case 'date' :
+					$ordering = 'comment.date';
+					$direction = 'DESC';
+					break;
 				case 'state' :
 					$ordering = 'comment.state';
 					$direction = 'DESC';
@@ -232,6 +248,9 @@ class K2ModelComments extends K2Model
 			$data['ip'] = $_SERVER['REMOTE_ADDR'];
 			$data['date'] = JFactory::getDate()->toSql();
 
+			// Set a variable to indicate that this was a new comment
+			$this->setState('isNew', true);
+
 		}
 		// Edit existing comments
 		else
@@ -261,6 +280,24 @@ class K2ModelComments extends K2Model
 	}
 
 	/**
+	 * onAfterSave method. Hook for chidlren model to save extra data.
+	 *
+	 * @param   array  $data     The data passed to the save function.
+	 * @param   JTable  $table   The table object.
+	 *
+	 * @return boolean
+	 */
+
+	protected function onAfterSave(&$data, $table)
+	{
+		// Increase item comments counter for new comments
+		if ($this->getState('isNew'))
+		{
+			$this->increaseCommentsCounter($table->itemId);
+		}
+	}
+
+	/**
 	 * onBeforeDelete method. 		Hook for chidlren model.
 	 *
 	 * @param   JTable  $table     	The table object.
@@ -274,11 +311,17 @@ class K2ModelComments extends K2Model
 		$user = JFactory::getUser();
 
 		// Permissions check
-		if (!$user->authorise('k2.tags.manage'))
+		$canEditAnyComment = $user->authorise('k2.comment.edit', 'com_k2');
+		$canEditOwnComment = $user->authorise('k2.comment.edit.own', 'com_k2') && $table->userId > 0 && $table->userId == $user->id;
+		if (!$canEditAnyComment && !$canEditOwnComment)
 		{
 			$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
 			return false;
 		}
+
+		// Set the itemId to a state because we need it after delete
+		$this->setState('itemId', $table->itemId);
+
 		return true;
 	}
 
@@ -292,23 +335,15 @@ class K2ModelComments extends K2Model
 
 	protected function onAfterDelete($table)
 	{
-		// Get database
-		$db = $this->getDBO();
-
-		// Get query
-		$query = $db->getQuery(true);
-
-		// Delete
-		$query->delete('#__k2_tags_xref')->where($db->quoteName('tagId').' = '.(int)$this->getState('id'));
-		$db->setQuery($query);
-		$db->execute();
+		// Decrease comments counter
+		$this->decreaseCommentsCounter($this->getState('itemId'));
 
 		// Return
 		return true;
 
 	}
 
-	public function addTag($name)
+	private function decreaseCommentsCounter($itemId)
 	{
 		// Get database
 		$db = $this->getDBO();
@@ -316,41 +351,16 @@ class K2ModelComments extends K2Model
 		// Get query
 		$query = $db->getQuery(true);
 
-		// Select tag
-		$query->select('id')->from($db->quoteName('#__k2_tags'));
-
-		// Search
-		$search = JString::trim($name);
-		$search = JString::strtolower($search);
-		$query->where('LOWER('.$db->quoteName('name').') = '.$db->Quote($search));
-
-		// Set the query
+		// Update
+		$query->update('#__k2_stats');
+		$query->set($db->quoteName('comments').' = ('.$db->quoteName('comments').' - 1)');
+		$query->where($db->quoteName('itemId').' = '.(int)$itemId);
 		$db->setQuery($query);
-
-		// Get the result
-		$id = $db->loadResult();
-
-		// If it does not exist, add it
-		if (!$id)
-		{
-			$data = array(
-				'name' => $name,
-				'state' => 1
-			);
-			$this->setState('data', $data);
-			if (!$this->save())
-			{
-				return false;
-			}
-			$id = $this->getState('id');
-		}
-
-		// Return the tag id
-		return $id;
+		$db->execute();
 
 	}
 
-	public function deleteItemTags($itemId)
+	private function increaseCommentsCounter($itemId)
 	{
 		// Get database
 		$db = $this->getDBO();
@@ -358,35 +368,13 @@ class K2ModelComments extends K2Model
 		// Get query
 		$query = $db->getQuery(true);
 
-		// Delete
-		$query->delete('#__k2_tags_xref')->where($db->quoteName('itemId').' = '.(int)$itemId);
+		// Update
+		$query->update('#__k2_stats');
+		$query->set($db->quoteName('comments').' = ('.$db->quoteName('comments').' + 1)');
+		$query->where($db->quoteName('itemId').' = '.(int)$itemId);
 		$db->setQuery($query);
 		$db->execute();
 
-		// Return
-		return true;
-	}
-
-	public function tagItem($tagId, $itemId)
-	{
-		// Get database
-		$db = $this->getDBO();
-
-		// Get query
-		$query = $db->getQuery(true);
-
-		// Delete any duplicates
-		$query->delete('#__k2_tags_xref')->where($db->quoteName('tagId').' = '.(int)$tagId)->where($db->quoteName('itemId').' = '.(int)$itemId);
-		$db->setQuery($query);
-		$db->execute();
-
-		// Insert query
-		$query->insert('#__k2_tags_xref')->columns('tagId, itemId')->values((int)$tagId.','.(int)$itemId);
-		$db->setQuery($query);
-		$db->execute();
-
-		// Return
-		return true;
 	}
 
 }

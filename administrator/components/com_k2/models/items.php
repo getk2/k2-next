@@ -691,6 +691,13 @@ class K2ModelItems extends K2Model
 			$attachmentsModel->delete();
 		}
 
+		// Delete the statistics entry
+		$db = $this->getDBO();
+		$query = $db->getQuery(true);
+		$query->delete($db->quoteName('#__k2_stats'))->where($db->quoteName('itemId').' = '.(int)$table->id);
+		$db->setQuery($query);
+		$db->execute();
+
 		// Return
 		return true;
 
