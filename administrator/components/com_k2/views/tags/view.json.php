@@ -140,5 +140,23 @@ class K2ViewTags extends K2View
 		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/extrafields.php';
 		$form->extraFields = K2HelperExtraFields::getTagExtraFields($row->id, $row->extra_fields);
 	}
+	
+	/**
+	 * Hook for children views to allow them set the menu for the list requests.
+	 * Children views usually will not need to override this method.
+	 *
+	 * @return void
+	 */
+	protected function setListActions()
+	{
+		$user = JFactory::getUser();
+		if ($user->authorise('k2.tags.manage', 'com_k2'))
+		{
+			K2Response::addAction('add', 'K2_ADD', array(
+				'class' => 'appAction',
+				'id' => 'appActionAdd'
+			));
+		}
+	}
 
 }

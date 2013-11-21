@@ -407,10 +407,6 @@ class K2View extends JViewLegacy
 	 */
 	protected function setListActions()
 	{
-		K2Response::addAction('add', 'K2_ADD', array(
-			'class' => 'appAction',
-			'id' => 'appActionAdd'
-		));
 	}
 
 	/**

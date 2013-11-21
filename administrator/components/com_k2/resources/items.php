@@ -208,11 +208,22 @@ class K2Items extends K2Resource
 		{
 			if ($user->guest)
 			{
-				require_once JPATH_SITE.'/components/com_users/helpers/route.php';
-				$uri = JFactory::getURI();
-				$url = 'index.php?option=com_users&view=login&return='.base64_encode($uri->toString()).'&Itemid='.UsersHelperRoute::getLoginRoute();
+				// Get application
 				$application = JFactory::getApplication();
-				$application->redirect(JRoute::_($url, false), JText::_('K2_YOU_NEED_TO_LOGIN_FIRST'));
+
+				// Get document
+				$document = JFactory::getDocument();
+
+				// In front end HTML requests redirect the user to the login page
+				if ($application->isSite() && $document->getType() == 'html')
+				{
+					require_once JPATH_SITE.'/components/com_users/helpers/route.php';
+					$uri = JFactory::getURI();
+					$url = 'index.php?option=com_users&view=login&return='.base64_encode($uri->toString()).'&Itemid='.UsersHelperRoute::getLoginRoute();
+					$application->redirect(JRoute::_($url, false), JText::_('K2_YOU_NEED_TO_LOGIN_FIRST'));
+				}
+				
+				// Return false
 				return false;
 			}
 			else

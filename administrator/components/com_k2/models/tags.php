@@ -169,7 +169,7 @@ class K2ModelTags extends K2Model
 		$user = JFactory::getUser();
 
 		// Permissions check
-		if (!$user->authorise('k2.tags.manage'))
+		if (!$user->authorise('k2.tags.manage', 'com_k2'))
 		{
 			$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
 			return false;

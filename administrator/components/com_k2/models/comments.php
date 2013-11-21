@@ -153,21 +153,110 @@ class K2ModelComments extends K2Model
 	 */
 	protected function onBeforeSave(&$data, $table)
 	{
-		// User
+		// Get application
+		$application = JFactory::getApplication();
+
+		// Get user
 		$user = JFactory::getUser();
 
-		// Permissions check
-		if (!$user->authorise('k2.tags.manage'))
+		// New comments
+		if (!$table->id)
 		{
-			$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
-			return false;
+			// New comments only allowed in frontend
+			if ($application->isAdmin())
+			{
+				$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
+				return false;
+			}
+
+			// Get the item to check permissions
+			$model = K2Model::getInstance('Items');
+			$model->setState('id', $data['itemId']);
+			$item = $model->getRow();
+
+			// First check that user can actualy view the specific item
+			if (!$item->checkSiteAccess())
+			{
+				$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
+				return false;
+			}
+
+			// Check that the current user can comment on this category
+			if (!$user->authorise('k2.comment.create', 'com_k2.category.'.$item->catid))
+			{
+				$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
+				return false;
+			}
+
+			// Validate user data for guests
+			if ($user->guest)
+			{
+				// Check that the required fields have been set
+				if (trim($data['name']) == '' || trim($data['text']) == '' || trim($data['email']) == '')
+				{
+					$this->setError(JText::_('K2_YOU_NEED_TO_FILL_IN_ALL_REQUIRED_FIELDS'));
+					return false;
+				}
+
+				// Check that the email is valid
+				if (!JMailHelper::isEmailAddress($data['email']))
+				{
+					$this->setError(JText::_('K2_INVALID_EMAIL_ADDRESS'));
+					return false;
+				}
+
+				// Check for spoofing
+				$model = K2Model::getInstance('Users');
+				$spoofing = $model->checkSpoofing(trim($data['name']), $data['email']);
+				if ($spoofing > 0)
+				{
+					$this->setError(JText::_('K2_THE_NAME_OR_EMAIL_ADDRESS_YOU_TYPED_IS_ALREADY_IN_USE'));
+					return false;
+				}
+
+				// Enforce some data for guests
+				$data['userId'] = 0;
+
+			}
+			else
+			{
+				// Enforce some data for authenticated users
+				$data['userId'] = $user->id;
+				$data['name'] = $user->name;
+				$data['email'] = $user->email;
+			}
+
+			// @TODO Check captcha depending on settings
+
+			// Everything seems fine, lets enforce the common variables
+			$data['ip'] = $_SERVER['REMOTE_ADDR'];
+			$data['date'] = JFactory::getDate()->toSql();
+
+		}
+		// Edit existing comments
+		else
+		{
+			// Check permissions
+			$canEditAnyComment = $user->authorise('k2.comment.edit', 'com_k2');
+			$canEditOwnComment = $user->authorise('k2.comment.edit.own', 'com_k2') && $table->userId > 0 && $table->userId == $user->id;
+			if (!$canEditAnyComment && !$canEditOwnComment)
+			{
+				$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
+				return false;
+			}
+
+			// Edit is only allowed for comment text and state. The rest fields should not be edited.
+			$data['id'] = $table->id;
+			$data['itemId'] = $table->itemId;
+			$data['userId'] = $table->userId;
+			$data['name'] = $table->name;
+			$data['date'] = $table->date;
+			$data['email'] = $table->email;
+			$data['url'] = $table->url;
+			$data['ip'] = $table->ip;
+
 		}
 
-		// Extra fields
-		if (isset($data['extra_fields']))
-		{
-			$data['extra_fields'] = json_encode($data['extra_fields']);
-		}
 		return true;
 	}
 

@@ -130,4 +130,21 @@ class K2ViewExtraFieldsGroups extends K2View
 
 	}
 
+	/**
+	 * Hook for children views to allow them set the menu for the list requests.
+	 * Children views usually will not need to override this method.
+	 *
+	 * @return void
+	 */
+	protected function setListActions()
+	{
+		$user = JFactory::getUser();
+		if ($user->authorise('k2.extrafields.manage', 'com_k2'))
+		{
+			K2Response::addAction('add', 'K2_ADD', array(
+				'class' => 'appAction',
+				'id' => 'appActionAdd'
+			));
+		}
+	}
 }

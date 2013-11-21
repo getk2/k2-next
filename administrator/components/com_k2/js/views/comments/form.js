@@ -1,5 +1,5 @@
 define(['marionette', 'text!layouts/comments/form.html'], function(Marionette, template) {'use strict';
-	var K2ViewComment = Marionette.Item.extend({
+	var K2ViewComment = Marionette.ItemView.extend({
 		template : _.template(template),
 		modelEvents : {
 			'change' : 'render'

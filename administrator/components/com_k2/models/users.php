@@ -90,6 +90,10 @@ class K2ModelUsers extends K2Model
 				$query->where($db->quoteName('user.id').' = '.(int)$id);
 			}
 		}
+		if ($this->getState('email'))
+		{
+			$query->where($db->quoteName('user.email').' = '.$db->quote($this->getState('email')));
+		}
 		if ($this->getState('search'))
 		{
 			$search = JString::trim($this->getState('search'));
@@ -164,6 +168,30 @@ class K2ModelUsers extends K2Model
 	public function getTable($name = 'User', $prefix = 'JTable', $options = array())
 	{
 		return parent::getTable($name, $prefix, $options);
+	}
+
+	public function checkSpoofing($name, $email)
+	{
+		// Get database
+		$db = $this->getDBO();
+
+		// Get query
+		$query = $db->getQuery(true);
+
+		// Select statement
+		$query->select('COUNT(*)')->from($db->quoteName('#__users'));
+
+		// Conditions
+		$query->where($db->quoteName('email').' = '.$db->quote($this->getState('email')).' OR '.$db->quoteName('name').' = '.$db->quote($this->getState('name')));
+
+		// Set the query
+		$db->setQuery($query);
+
+		// Get the result
+		$total = $db->loadResult();
+
+		// Return the result
+		return (int)$total;
 	}
 
 }

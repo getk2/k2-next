@@ -99,7 +99,7 @@ class K2ViewExtraFields extends K2View
 
 	protected function setFilters()
 	{
-		
+
 		// Type filter
 		K2Response::addFilter('type', JText::_('K2_TYPE'), K2HelperHTML::extraFieldsTypes('type', null, 'K2_ANY'), false, 'header');
 
@@ -142,6 +142,24 @@ class K2ViewExtraFields extends K2View
 		}
 		$form->definitions = $definitions;
 
+	}
+
+	/**
+	 * Hook for children views to allow them set the menu for the list requests.
+	 * Children views usually will not need to override this method.
+	 *
+	 * @return void
+	 */
+	protected function setListActions()
+	{
+		$user = JFactory::getUser();
+		if ($user->authorise('k2.extrafields.manage', 'com_k2'))
+		{
+			K2Response::addAction('add', 'K2_ADD', array(
+				'class' => 'appAction',
+				'id' => 'appActionAdd'
+			));
+		}
 	}
 
 }
