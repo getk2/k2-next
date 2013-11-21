@@ -14,6 +14,8 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/model.php';
 
 class K2ModelUsers extends K2Model
 {
+	var $groups = null;
+
 	public function getRows()
 	{
 		// Get database
@@ -24,6 +26,18 @@ class K2ModelUsers extends K2Model
 
 		// Select rows
 		$query->select($db->quoteName('user').'.*')->from($db->quoteName('#__users', 'user'));
+
+		// Join over the K2 users
+		$query->select($db->quoteName('profile.description'));
+		$query->select($db->quoteName('profile.image'));
+		$query->select($db->quoteName('profile.url'));
+		$query->select($db->quoteName('profile.gender'));
+		$query->select($db->quoteName('profile.notes'));
+		$query->select($db->quoteName('profile.extra_fields'));
+		$query->select($db->quoteName('profile.ip'));
+		$query->select($db->quoteName('profile.hostname'));
+		$query->select($db->quoteName('profile.plugins'));
+		$query->leftJoin($db->quoteName('#__k2_users', 'profile').' ON '.$db->quoteName('user.id').' = '.$db->quoteName('profile.id'));
 
 		// Set query conditions
 		$this->setQueryConditions($query);
@@ -39,6 +53,32 @@ class K2ModelUsers extends K2Model
 
 		// Get rows
 		$data = $db->loadAssocList();
+
+		// Get user groups
+		$groups = $this->getGroups();
+		$userIds = array();
+		foreach ($data as $user)
+		{
+			$userIds[] = $user['id'];
+		}
+		$query = $db->getQuery(true);
+		$query->select('*');
+		$query->from($db->quoteName('#__user_usergroup_map', 'map'));
+		$query->where($db->quoteName('map.user_id').' IN ('.implode(',', $userIds).')');
+		$db->setQuery($query);
+		$mappings = $db->loadObjectList();
+
+		foreach ($data as &$user)
+		{
+			$user['groups'] = array();
+			foreach ($mappings as $mapping)
+			{
+				if ($mapping->user_id == $user['id'])
+				{
+					$user['groups'][] = $groups[$mapping->group_id]->title;
+				}
+			}
+		}
 
 		// Generate K2 resources instances from the result data.
 		$rows = $this->getResources($data);
@@ -168,6 +208,35 @@ class K2ModelUsers extends K2Model
 	public function getTable($name = 'User', $prefix = 'JTable', $options = array())
 	{
 		return parent::getTable($name, $prefix, $options);
+	}
+
+	public function getGroups()
+	{
+		if (!is_null($this->groups))
+		{
+			return $this->groups;
+		}
+
+		$db = $this->getDBO();
+
+		// Get query
+		$query = $db->getQuery(true);
+
+		// Select statement
+		$query->select(array(
+			$db->quoteName('id'),
+			$db->quoteName('title')
+		));
+
+		$query->from($db->quoteName('#__usergroups'));
+
+		// Set the query
+		$db->setQuery($query);
+
+		// Get the result
+		$this->groups = $db->loadObjectList('id');
+
+		return $this->groups;
 	}
 
 	public function checkSpoofing($name, $email)

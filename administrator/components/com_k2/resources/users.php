@@ -72,6 +72,8 @@ class K2Users extends K2Resource
 
 		// Prepare specific properties
 		$this->link = '#users/edit/'.$this->id;
+		
+		$this->groupsValue = implode(', ', $this->groups);
 	}
 
 }
