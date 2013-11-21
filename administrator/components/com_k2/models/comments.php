@@ -140,6 +140,10 @@ class K2ModelComments extends K2Model
 					$ordering = 'comment.ip';
 					$direction = 'ASC';
 					break;
+				case 'hostname' :
+					$ordering = 'comment.hostname';
+					$direction = 'ASC';
+					break;
 				case 'date' :
 					$ordering = 'comment.date';
 					$direction = 'DESC';
@@ -246,6 +250,7 @@ class K2ModelComments extends K2Model
 
 			// Everything seems fine, lets enforce the common variables
 			$data['ip'] = $_SERVER['REMOTE_ADDR'];
+			$data['hostname'] = gethostbyaddr($_SERVER['REMOTE_ADDR']);
 			$data['date'] = JFactory::getDate()->toSql();
 
 			// Set a variable to indicate that this was a new comment
@@ -273,6 +278,7 @@ class K2ModelComments extends K2Model
 			$data['email'] = $table->email;
 			$data['url'] = $table->url;
 			$data['ip'] = $table->ip;
+			$data['hostname'] = $table->hostname;
 
 		}
 

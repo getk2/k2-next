@@ -105,6 +105,7 @@ class K2ViewComments extends K2View
 			'K2_EMAIL' => 'email',
 			'K2_URL' => 'url',
 			'K2_IP' => 'ip',
+			'K2_HOSTNAME' => 'hostname',
 			'K2_DATE' => 'date',
 			'K2_STATE' => 'state'
 		);
