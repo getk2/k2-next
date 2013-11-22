@@ -246,4 +246,12 @@ class K2HelperHTML
 		return JHtml::_('select.genericlist', $options, $name, $attributes, 'value', 'text', $value);
 	}
 
+	public static function gender($name = 'gender', $value = null, $attributes = '')
+	{
+		$options = array();
+		$options[] = JHtml::_('select.option', 'm', JText::_('K2_MALE'));
+		$options[] = JHtml::_('select.option', 'f', JText::_('K2_FEMALE'));
+		return JHtml::_('select.radiolist', $options, $name, $attributes, 'value', 'text', $value);
+	}
+
 }

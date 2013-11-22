@@ -114,4 +114,55 @@ class K2ViewUsers extends K2View
 		K2Response::addToolbarAction('remove', 'K2_DELETE', array('id' => 'appActionRemove'));
 	}
 
+	/**
+	 * Hook for children views to allow them attach fields to the form object.
+	 * Children views usually should override this method.
+	 *
+	 * @return void
+	 */
+	protected function setFormFields(&$_form, $row)
+	{
+
+		// Import JForm
+		jimport('joomla.form.form');
+
+		// Determine form name and path
+		$formName = 'K2'.ucfirst($this->getName()).'Form';
+		$formPath = JPATH_ADMINISTRATOR.'/components/com_users/models/forms/user.xml';
+
+		// Convert JRegistry instances to plain object so JForm can bind them
+		$row->params = $row->params->toObject();
+
+		// Get the form instance
+		$form = JForm::getInstance($formName, $formPath);
+
+		// Bind values
+		$form->bind($row);
+
+		// Attach the JForm fields to the form
+		foreach ($form->getFieldsets() as $fieldset)
+		{
+			$array = array();
+			foreach ($form->getFieldset($fieldset->name) as $field)
+			{
+				$tmp = new stdClass;
+				$tmp->label = $field->label;
+				$tmp->input = $field->input;
+				$array[$field->name] = $tmp;
+			}
+			$name = $fieldset->name;
+			$_form->$name = $array;
+		}
+
+		JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_users/models');
+		$model = JModelLegacy::getInstance('User', 'UsersModel');
+		$assignedGroups = $model->getAssignedGroups($row->id);
+		$_form->groups = JHtml::_('access.usergroups', 'groups', $assignedGroups, true);
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/html.php';
+		$_form->gender = K2HelperHTML::gender('gender', $row->gender);
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/extrafields.php';
+		$_form->extraFields = K2HelperExtraFields::getUserExtraFields($row->id, $row->extra_fields);
+
+	}
+
 }

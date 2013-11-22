@@ -12,22 +12,10 @@ defined('_JEXEC') or die ;
 
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/tables/table.php';
 
-class K2TableExtraFieldsGroups extends K2Table
+class K2TableUsers extends K2Table
 {
 	public function __construct($db)
 	{
-		parent::__construct('#__k2_extra_fields_groups', 'id', $db);
+		parent::__construct('#__k2_users', 'id', $db);
 	}
-
-	public function check()
-	{
-		if (JString::trim($this->name) == '')
-		{
-			$this->setError(JText::_('K2_EXTRA_FIELD_GROUP_MUST_HAVE_A_NAME'));
-			return false;
-		}
-
-		return true;
-	}
-
 }

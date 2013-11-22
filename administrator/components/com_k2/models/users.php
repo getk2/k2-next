@@ -185,29 +185,79 @@ class K2ModelUsers extends K2Model
 
 	public function save()
 	{
-		JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_users/models');
-		$model = JModelLegacy::getInstance('User', 'UsersModel');
 		$table = $this->getTable();
 		$data = $this->getState('data');
-		$this->onBeforeSave($data, $table);
-		$model->save($data);
-		$this->setState('id', $model->getState('user.id'));
-		$this->onAfterSave($data, $table);
+
+		if (!$this->onBeforeSave($data, $table))
+		{
+			return false;
+		}
+
+		// If profile does not exists create the record before we save the data
+		if (!$table->load($data['id']) && (int)$data['id'] > 0)
+		{
+			// Create record
+			$db = $this->getDBO();
+			$query = $db->getQuery(true);
+			$query->insert($db->quoteName('#__k2_users'))->columns($db->quoteName('id'))->values((int)$data['id']);
+			$db->setQuery($query);
+			$db->execute();
+
+			// Try to load now the record
+			if (!$table->load($data['id']))
+			{
+				$this->setError($table->getError());
+				return false;
+			}
+			if ($table->isCheckedOut(JFactory::getUser()->get('id')))
+			{
+				$this->setError(JText::_('K2_ROW_IS_CURRENTLY_BEING_EDITED_BY_ANOTHER_AUTHOR'));
+				return false;
+			}
+
+		}
+
+		if (!$table->save($data))
+		{
+			$this->setError($table->getError());
+			return false;
+		}
+		$this->setState('id', $table->id);
+		if (!$this->onAfterSave($data, $table))
+		{
+			return false;
+		}
 		return true;
 	}
 
 	/**
-	 * Method to get a table object, load it if necessary.
+	 * onBeforeSave method. Hook for chidlren model to prepare the data.
 	 *
-	 * @param   string  $name     The table name. Optional.
-	 * @param   string  $prefix   The class prefix. Optional.
-	 * @param   array   $options  Configuration array for model. Optional.
+	 * @param   array  $data     The data to be saved.
+	 * @param   JTable  $table   The table object.
 	 *
-	 * @return  JTable  A JTable object
+	 * @return boolean
 	 */
-	public function getTable($name = 'User', $prefix = 'JTable', $options = array())
+	protected function onBeforeSave(&$data, $table)
 	{
-		return parent::getTable($name, $prefix, $options);
+		// First try to save the Joomla! user data. The model also makes checks for permissions
+		JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_users/models');
+		$model = JModelLegacy::getInstance('User', 'UsersModel');
+		$data = $this->getState('data');
+		if (!$model->save($data))
+		{
+			$this->setError($model->getError());
+			return false;
+		}
+		$this->setState('id', $model->getState('user.id'));
+
+		// Extra fields
+		if (isset($data['extra_fields']))
+		{
+			$data['extra_fields'] = json_encode($data['extra_fields']);
+		}
+		return true;
+
 	}
 
 	public function getGroups()

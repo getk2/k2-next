@@ -1,4 +1,8 @@
-<h2><%= l('K2_IMAGE') %></h2>
+<h2>
+    <% if(type !== 'user') { %>
+    <%= l('K2_IMAGE') %>
+    <% } %>
+</h2>
 <input type="file" name="file" data-widget="uploader" data-url="index.php?option=com_k2&task=images.upload&format=json&itemId=<%- itemId %>&tmpId=<%- tmpId %>&type=<%- type %>" data-callback="image:upload:<%- cid %>" />
 <input type="text" name="image[path]" data-widget="browser" data-callback="image:select:<%- cid %>" />
 <% if(preview) { %>
@@ -10,10 +14,11 @@
 </div>
 <% } %>
 
+<% if(type !== 'user') { %>
 <label><%= l('K2_IMAGE_CAPTION') %></label>
 <input type="text" name="image[caption]" value="<%- caption %>" />
 
 <label><%= l('K2_IMAGE_CREDITS') %></label>
 <input type="text" name="image[credits]" value="<%- credits %>" />
-
+<% } %>
 <input type="hidden" name="image[id]" value="<%- id %>" />
