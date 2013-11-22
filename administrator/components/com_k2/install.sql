@@ -185,7 +185,9 @@ CREATE TABLE IF NOT EXISTS `#__k2_items_stats` (
   `itemId` int(10) unsigned NOT NULL,
   `hits` bigint(10) unsigned NOT NULL,
   `comments` bigint(10) unsigned NOT NULL,
-  PRIMARY KEY (`itemId`)
+  PRIMARY KEY (`itemId`),
+  KEY `hits` (`hits`),
+  KEY `comments` (`comments`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -239,6 +241,21 @@ CREATE TABLE IF NOT EXISTS `#__k2_users` (
   `hostname` varchar(255) NOT NULL,
   `plugins` text NOT NULL,
   PRIMARY KEY (`id`),
+  KEY `items` (`items`),
+  KEY `comments` (`comments`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__k2_users_stats`
+--
+
+CREATE TABLE IF NOT EXISTS `#__k2_users_stats` (
+  `userId` int(10) unsigned NOT NULL,
+  `items` bigint(20) unsigned NOT NULL,
+  `comments` bigint(20) unsigned NOT NULL,
+  PRIMARY KEY (`userId`),
   KEY `items` (`items`),
   KEY `comments` (`comments`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
