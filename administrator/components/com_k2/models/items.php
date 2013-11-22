@@ -54,7 +54,7 @@ class K2ModelItems extends K2Model
 
 		// Join over the hits
 		$query->select($db->quoteName('stats.hits', 'hits'));
-		$query->leftJoin($db->quoteName('#__k2_stats', 'stats').' ON '.$db->quoteName('stats.itemId').' = '.$db->quoteName('item.id'));
+		$query->leftJoin($db->quoteName('#__k2_items_stats', 'stats').' ON '.$db->quoteName('stats.itemId').' = '.$db->quoteName('item.id'));
 
 		// Set query conditions
 		$this->setQueryConditions($query);
@@ -694,7 +694,7 @@ class K2ModelItems extends K2Model
 		// Delete the statistics entry
 		$db = $this->getDBO();
 		$query = $db->getQuery(true);
-		$query->delete($db->quoteName('#__k2_stats'))->where($db->quoteName('itemId').' = '.(int)$table->id);
+		$query->delete($db->quoteName('#__k2_items_stats'))->where($db->quoteName('itemId').' = '.(int)$table->id);
 		$db->setQuery($query);
 		$db->execute();
 

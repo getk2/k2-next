@@ -178,10 +178,10 @@ CREATE TABLE IF NOT EXISTS `#__k2_items` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__k2_stats`
+-- Table structure for table `#__k2_items_stats`
 --
 
-CREATE TABLE IF NOT EXISTS `#__k2_stats` (
+CREATE TABLE IF NOT EXISTS `#__k2_items_stats` (
   `itemId` int(10) unsigned NOT NULL,
   `hits` bigint(10) unsigned NOT NULL,
   `comments` bigint(10) unsigned NOT NULL,
