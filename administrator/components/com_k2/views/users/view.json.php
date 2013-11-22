@@ -139,6 +139,9 @@ class K2ViewUsers extends K2View
 		// Bind values
 		$form->bind($row);
 
+		$form->setValue('password', null);
+		$form->setValue('password2', null);
+
 		// Attach the JForm fields to the form
 		foreach ($form->getFieldsets() as $fieldset)
 		{
