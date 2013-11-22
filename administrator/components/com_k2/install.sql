@@ -1,3 +1,5 @@
+-- --------------------------------------------------------
+
 --
 -- Table structure for table `#__k2_attachments`
 --
@@ -12,7 +14,7 @@ CREATE TABLE IF NOT EXISTS `#__k2_attachments` (
   `downloads` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `itemId` (`itemId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -33,7 +35,8 @@ CREATE TABLE IF NOT EXISTS `#__k2_categories` (
   `state` tinyint(1) NOT NULL,
   `access` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `description` text NOT NULL,
-  `image` varchar(255) NOT NULL,
+  `image` text NOT NULL,
+  `extra_fields` longtext NOT NULL,
   `template` varchar(255) NOT NULL,
   `inheritance` int(10) unsigned NOT NULL,
   `created` datetime NOT NULL,
@@ -52,12 +55,36 @@ CREATE TABLE IF NOT EXISTS `#__k2_categories` (
   KEY `idx_left_right` (`lft`,`rgt`),
   KEY `parent_id` (`parent_id`),
   KEY `level` (`level`),
-  KEY `state` (`state`),
+  KEY `published` (`state`),
   KEY `access` (`access`),
   KEY `created_by` (`created_by`),
   KEY `modified_by` (`modified_by`),
   KEY `checked_out` (`checked_out`),
   KEY `language` (`language`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__k2_comments`
+--
+
+CREATE TABLE IF NOT EXISTS `#__k2_comments` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `itemId` int(10) unsigned NOT NULL,
+  `userId` int(10) unsigned NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `date` datetime NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `url` varchar(255) NOT NULL,
+  `ip` varchar(255) NOT NULL,
+  `hostname` varchar(255) NOT NULL,
+  `text` text NOT NULL,
+  `state` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `itemId` (`itemId`),
+  KEY `userId` (`userId`),
+  KEY `state` (`state`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -80,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `#__k2_extra_fields` (
   UNIQUE KEY `alias` (`alias`),
   KEY `type` (`type`),
   KEY `group` (`group`),
-  KEY `state` (`state`)
+  KEY `published` (`state`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -115,12 +142,12 @@ CREATE TABLE IF NOT EXISTS `#__k2_items` (
   `catid` int(10) unsigned NOT NULL,
   `introtext` mediumtext NOT NULL,
   `fulltext` mediumtext NOT NULL,
-  `image_flag` tinyint(1) NOT NULL,
-  `image_caption` varchar(255) NOT NULL,
-  `image_credits` varchar(255) NOT NULL,
+  `image` text NOT NULL,
   `media` text NOT NULL,
   `galleries` text NOT NULL,
+  `extra_fields` longtext NOT NULL,
   `ordering` int(11) NOT NULL,
+  `featured_ordering` int(11) NOT NULL,
   `created` datetime NOT NULL,
   `created_by` int(10) unsigned NOT NULL,
   `created_by_alias` varchar(255) NOT NULL,
@@ -138,16 +165,14 @@ CREATE TABLE IF NOT EXISTS `#__k2_items` (
   `language` char(7) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `alias` (`alias`),
-  KEY `state` (`state`),
-  KEY `featured` (`featured`),
+  KEY `published` (`state`),
   KEY `catid` (`catid`),
   KEY `language` (`language`),
   KEY `access` (`access`),
   KEY `created_by` (`created_by`),
   KEY `modified_by` (`modified_by`),
   KEY `checked_out` (`checked_out`),
-  KEY `ordering` (`ordering`),
-  KEY `image` (`image_flag`)
+  KEY `ordering` (`ordering`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -158,7 +183,8 @@ CREATE TABLE IF NOT EXISTS `#__k2_items` (
 
 CREATE TABLE IF NOT EXISTS `#__k2_stats` (
   `itemId` int(10) unsigned NOT NULL,
-  `hits` int(10) unsigned NOT NULL,
+  `hits` bigint(10) unsigned NOT NULL,
+  `comments` bigint(10) unsigned NOT NULL,
   PRIMARY KEY (`itemId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -173,9 +199,10 @@ CREATE TABLE IF NOT EXISTS `#__k2_tags` (
   `name` varchar(255) NOT NULL,
   `alias` varchar(255) NOT NULL,
   `state` tinyint(1) NOT NULL,
+  `extra_fields` longtext NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `alias` (`alias`),
-  KEY `state` (`state`)
+  KEY `published` (`state`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -190,4 +217,28 @@ CREATE TABLE IF NOT EXISTS `#__k2_tags_xref` (
   PRIMARY KEY (`tagId`,`itemId`),
   KEY `tagId` (`tagId`),
   KEY `itemId` (`itemId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__k2_users`
+--
+
+CREATE TABLE IF NOT EXISTS `#__k2_users` (
+  `id` int(10) unsigned NOT NULL,
+  `description` text NOT NULL,
+  `image` varchar(255) NOT NULL,
+  `url` varchar(255) NOT NULL,
+  `gender` varchar(255) NOT NULL,
+  `notes` text NOT NULL,
+  `extra_fields` longtext NOT NULL,
+  `items` bigint(20) unsigned NOT NULL,
+  `comments` bigint(20) unsigned NOT NULL,
+  `ip` varchar(255) NOT NULL,
+  `hostname` varchar(255) NOT NULL,
+  `plugins` text NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `items` (`items`),
+  KEY `comments` (`comments`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
