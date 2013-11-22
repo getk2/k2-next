@@ -300,13 +300,14 @@ class K2ModelComments extends K2Model
 		if ($this->getState('isNew'))
 		{
 			$this->increaseItemCommentsCounter($table->itemId);
+			// Increase user comments counter for new comments
+			if ($table->userId > 0)
+			{
+				$this->increaseUserCommentsCounter($table->userId);
+			}
 		}
-
-		// Increase user comments counter for new comments
-		if ($this->getState('isNew') && $table->userId > 0)
-		{
-			$this->increaseUserCommentsCounter($table->userId);
-		}
+		
+		return true;
 	}
 
 	/**
