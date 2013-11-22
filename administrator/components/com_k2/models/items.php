@@ -299,6 +299,9 @@ class K2ModelItems extends K2Model
 		// Create action
 		if (!$table->id)
 		{
+			// Set isNew flag
+			$this->setState('isNew', true);
+
 			// Permissions context for new items is the category
 			$context = 'com_k2.category.'.$data['catid'];
 
@@ -327,6 +330,13 @@ class K2ModelItems extends K2Model
 		// Edit action
 		if ($table->id)
 		{
+			// Set isNew flag
+			$this->setState('isNew', false);
+
+			// Set owner change flag
+			$this->setState('owner.changed', $data['created_by'] != $table->created_by);
+			$this->setState('owner', $table->created_by);
+
 			$context = 'com_k2.item.'.$table->id;
 			$canEdit = $user->authorise('k2.item.edit', $context) || ($user->authorise('k2.item.edit.own', $context) && $user->id == $table->created_by);
 			$canEditState = $user->authorise('k2.item.edit.state', $context);
@@ -609,6 +619,20 @@ class K2ModelItems extends K2Model
 			}
 
 		}
+
+		if ($this->getState('isNew'))
+		{
+			$this->increaseUserItemsCounter($table->created_by);
+		}
+		else
+		{
+			if ($this->getState('owner.changed'))
+			{
+				$this->decreaseUserItemsCounter($this->getState('owner'));
+				$this->decreaseUserItemsCounter($table->created_by);
+			}
+		}
+
 		return true;
 	}
 
@@ -639,6 +663,7 @@ class K2ModelItems extends K2Model
 		// Set some variables for later usage in the model
 		$this->setState('galleries', $table->galleries);
 		$this->setState('media', $table->media);
+		$this->setState('userId', $table->created_by);
 
 		return true;
 	}
@@ -698,8 +723,45 @@ class K2ModelItems extends K2Model
 		$db->setQuery($query);
 		$db->execute();
 
+		// Decrease users statistics
+		$this->decreaseUserItemsCounter($this->getState('userId'));
+
 		// Return
 		return true;
+
+	}
+
+	private function increaseUserItemsCounter($userId)
+	{
+		// Get database
+		$db = $this->getDBO();
+
+		// Get query
+		$query = $db->getQuery(true);
+
+		// Update
+		$query->update('#__k2_users_stats');
+		$query->set($db->quoteName('items').' = ('.$db->quoteName('items').' + 1)');
+		$query->where($db->quoteName('userId').' = '.(int)$userId);
+		$db->setQuery($query);
+		$db->execute();
+
+	}
+
+	private function decreaseUserItemsCounter($userId)
+	{
+		// Get database
+		$db = $this->getDBO();
+
+		// Get query
+		$query = $db->getQuery(true);
+
+		// Update
+		$query->update('#__k2_users_stats');
+		$query->set($db->quoteName('items').' = ('.$db->quoteName('items').' - 1)');
+		$query->where($db->quoteName('userId').' = '.(int)$userId);
+		$db->setQuery($query);
+		$db->execute();
 
 	}
 
