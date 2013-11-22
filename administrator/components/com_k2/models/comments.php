@@ -405,9 +405,9 @@ class K2ModelComments extends K2Model
 		$query = $db->getQuery(true);
 
 		// Update
-		$query->update('#__k2_users');
+		$query->update('#__k2_users_stats');
 		$query->set($db->quoteName('comments').' = ('.$db->quoteName('comments').' + 1)');
-		$query->where($db->quoteName('id').' = '.(int)$userId);
+		$query->where($db->quoteName('userId').' = '.(int)$userId);
 		$db->setQuery($query);
 		$db->execute();
 
@@ -422,9 +422,9 @@ class K2ModelComments extends K2Model
 		$query = $db->getQuery(true);
 
 		// Update
-		$query->update('#__k2_users');
+		$query->update('#__k2_users_stats');
 		$query->set($db->quoteName('comments').' = ('.$db->quoteName('comments').' - 1)');
-		$query->where($db->quoteName('id').' = '.(int)$userId);
+		$query->where($db->quoteName('userId').' = '.(int)$userId);
 		$db->setQuery($query);
 		$db->execute();
 
