@@ -299,7 +299,13 @@ class K2ModelComments extends K2Model
 		// Increase item comments counter for new comments
 		if ($this->getState('isNew'))
 		{
-			$this->increaseCommentsCounter($table->itemId);
+			$this->increaseItemCommentsCounter($table->itemId);
+		}
+
+		// Increase user comments counter for new comments
+		if ($this->getState('isNew') && $table->userId > 0)
+		{
+			$this->increaseUserCommentsCounter($table->userId);
 		}
 	}
 
@@ -327,6 +333,7 @@ class K2ModelComments extends K2Model
 
 		// Set the itemId to a state because we need it after delete
 		$this->setState('itemId', $table->itemId);
+		$this->setState('userId', $table->userId);
 
 		return true;
 	}
@@ -342,14 +349,37 @@ class K2ModelComments extends K2Model
 	protected function onAfterDelete($table)
 	{
 		// Decrease comments counter
-		$this->decreaseCommentsCounter($this->getState('itemId'));
+		$this->decreaseItemCommentsCounter($this->getState('itemId'));
+
+		// Increase user comments counter for new comments
+		if ($this->getState('isNew') && $this->getState('userId') > 0)
+		{
+			$this->decreaseUserCommentsCounter($this->getState('userId'));
+		}
 
 		// Return
 		return true;
 
 	}
 
-	private function decreaseCommentsCounter($itemId)
+	private function increaseItemCommentsCounter($itemId)
+	{
+		// Get database
+		$db = $this->getDBO();
+
+		// Get query
+		$query = $db->getQuery(true);
+
+		// Update
+		$query->update('#__k2_stats');
+		$query->set($db->quoteName('comments').' = ('.$db->quoteName('comments').' + 1)');
+		$query->where($db->quoteName('itemId').' = '.(int)$itemId);
+		$db->setQuery($query);
+		$db->execute();
+
+	}
+
+	private function decreaseItemCommentsCounter($itemId)
 	{
 		// Get database
 		$db = $this->getDBO();
@@ -366,7 +396,7 @@ class K2ModelComments extends K2Model
 
 	}
 
-	private function increaseCommentsCounter($itemId)
+	private function increaseUserCommentsCounter($userId)
 	{
 		// Get database
 		$db = $this->getDBO();
@@ -375,9 +405,26 @@ class K2ModelComments extends K2Model
 		$query = $db->getQuery(true);
 
 		// Update
-		$query->update('#__k2_stats');
+		$query->update('#__k2_users');
 		$query->set($db->quoteName('comments').' = ('.$db->quoteName('comments').' + 1)');
-		$query->where($db->quoteName('itemId').' = '.(int)$itemId);
+		$query->where($db->quoteName('id').' = '.(int)$userId);
+		$db->setQuery($query);
+		$db->execute();
+
+	}
+
+	private function decreaseUserCommentsCounter($userId)
+	{
+		// Get database
+		$db = $this->getDBO();
+
+		// Get query
+		$query = $db->getQuery(true);
+
+		// Update
+		$query->update('#__k2_users');
+		$query->set($db->quoteName('comments').' = ('.$db->quoteName('comments').' - 1)');
+		$query->where($db->quoteName('id').' = '.(int)$userId);
 		$db->setQuery($query);
 		$db->execute();
 
