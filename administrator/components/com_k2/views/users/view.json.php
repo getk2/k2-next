@@ -116,25 +116,33 @@ class K2ViewUsers extends K2View
 
 	protected function setToolbar()
 	{
-		K2Response::addToolbarAction('activate', 'K2_ACTIVATE', array(
-			'data-state' => 'activation',
-			'data-value' => '0',
-			'class' => 'appActionSetState',
-			'id' => 'appActionActivate'
-		));
-		K2Response::addToolbarAction('block', 'K2_BLOCK', array(
-			'data-state' => 'block',
-			'data-value' => '1',
-			'class' => 'appActionSetState',
-			'id' => 'appActionBlock'
-		));
-		K2Response::addToolbarAction('unblock', 'K2_UNBLOCK', array(
-			'data-state' => 'block',
-			'data-value' => '0',
-			'class' => 'appActionSetState',
-			'id' => 'appActionUnblock'
-		));
-		K2Response::addToolbarAction('remove', 'K2_DELETE', array('id' => 'appActionRemove'));
+		$user = JFactory::getUser();
+		if ($user->authorise('core.edit.state', 'com_users'))
+		{
+			K2Response::addToolbarAction('activate', 'K2_ACTIVATE', array(
+				'data-state' => 'activation',
+				'data-value' => '0',
+				'class' => 'appActionSetState',
+				'id' => 'appActionActivate'
+			));
+			K2Response::addToolbarAction('block', 'K2_BLOCK', array(
+				'data-state' => 'block',
+				'data-value' => '1',
+				'class' => 'appActionSetState',
+				'id' => 'appActionBlock'
+			));
+			K2Response::addToolbarAction('unblock', 'K2_UNBLOCK', array(
+				'data-state' => 'block',
+				'data-value' => '0',
+				'class' => 'appActionSetState',
+				'id' => 'appActionUnblock'
+			));
+		}
+		if ($user->authorise('core.delete', 'com_users'))
+		{
+			K2Response::addToolbarAction('remove', 'K2_DELETE', array('id' => 'appActionRemove'));
+		}
+
 	}
 
 	/**
@@ -145,10 +153,14 @@ class K2ViewUsers extends K2View
 	 */
 	protected function setListActions()
 	{
-		K2Response::addAction('add', 'K2_ADD', array(
-			'class' => 'appAction',
-			'id' => 'appActionAdd'
-		));
+		$user = JFactory::getUser();
+		if ($user->authorise('core.create', 'com_users'))
+		{
+			K2Response::addAction('add', 'K2_ADD', array(
+				'class' => 'appAction',
+				'id' => 'appActionAdd'
+			));
+		}
 	}
 
 	/**
@@ -168,7 +180,7 @@ class K2ViewUsers extends K2View
 		$formPath = JPATH_ADMINISTRATOR.'/components/com_users/models/forms/user.xml';
 
 		// Convert JRegistry instances to plain object so JForm can bind them
-		if($row->id)
+		if ($row->id)
 		{
 			$row->params = $row->params->toObject();
 		}
@@ -199,11 +211,12 @@ class K2ViewUsers extends K2View
 
 		JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_users/models');
 		$model = JModelLegacy::getInstance('User', 'UsersModel');
-		if($row->id)
+		if ($row->id)
 		{
 			$assignedGroups = $model->getAssignedGroups($row->id);
 		}
-		else {
+		else
+		{
 			$assignedGroups = null;
 		}
 		$_form->groups = JHtml::_('access.usergroups', 'groups', $assignedGroups, true);

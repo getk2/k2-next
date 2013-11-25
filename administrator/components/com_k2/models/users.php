@@ -208,8 +208,63 @@ class K2ModelUsers extends K2Model
 
 	public function save()
 	{
+		// Get some variables
 		$table = $this->getTable();
 		$data = $this->getState('data');
+
+		// Check permissions
+		$user = JFactory::getUser();
+		$id = (isset($data['id'])) ? $data['id'] : 0;
+
+		// Edit
+		if ($id)
+		{
+			// Actions
+			$canEdit = $user->authorise('core.edit', 'com_users');
+			$canEditState = $user->authorise('core.edit.state', 'com_users');
+
+			// User cannot edit the user neither it's state. Stop the process
+			if (!$canEdit && !$canEditState)
+			{
+				$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
+				return false;
+			}
+			else
+			{
+				// Store the input states values in case we need them after
+				$block = $data['block'];
+				$activation = $data['activation'];
+
+				// User cannot edit the item. Reset the input
+				if (!$canEdit)
+				{
+					$data = array();
+					$data['id'] = $table->id;
+				}
+
+				// Set the states values depending on permissions
+				if ($canEditState)
+				{
+					$data['block'] = $block;
+					$data['activation'] = $activation;
+				}
+				else
+				{
+					$jUser = JFactory::getUser($data['id']);
+					$data['block'] = $jUser->block;
+					$data['activation'] = $jUser->activation;
+				}
+			}
+
+		}
+		else
+		{
+			if (!$user->authorise('core.create', 'com_users'))
+			{
+				$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
+				return false;
+			}
+		}
 
 		// Load core users language files
 		$language = JFactory::getLanguage();
@@ -232,7 +287,7 @@ class K2ModelUsers extends K2Model
 			$this->setError($model->getError());
 			return false;
 		}
-		
+
 		$data['id'] = $model->getState('user.id');
 
 		// Continue with K2 user data. If profile does not exists create the record before we save the data
@@ -299,6 +354,15 @@ class K2ModelUsers extends K2Model
 
 	public function delete()
 	{
+		// Check permissions
+		$user = JFactory::getUser();
+		if (!$user->authorise('core.delete', 'com_users'))
+		{
+			$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
+			return false;
+		}
+
+		// Set some variables
 		$table = $this->getTable();
 		$id = $this->getState('id');
 
