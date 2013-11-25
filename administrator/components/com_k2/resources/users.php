@@ -74,6 +74,25 @@ class K2Users extends K2Resource
 		$this->link = '#users/edit/'.$this->id;
 		
 		$this->groupsValue = implode(', ', $this->groups);
+		
+		// Image
+		$this->image = $this->getImage();
+
 	}
 
+
+	public function getImage()
+	{
+		$image = null;
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/images.php';
+		$result = K2HelperImages::getResourceImages('user', $this);
+		$this->_image = new stdClass;
+		if ($result->image)
+		{
+			$image = $result->image;
+			$this->_image->preview = $result->image;
+			$this->_image->id = $result->id;
+		}
+		return $image;
+	}
 }

@@ -27,6 +27,9 @@ class K2ControllerImages extends K2Controller
 		// Check for token
 		JSession::checkToken() or K2Response::throwError(JText::_('JINVALID_TOKEN'));
 
+		// Get user
+		$user = JFactory::getUser();
+
 		// Get input
 		$type = $this->input->get('type', '', 'cmd');
 		$itemId = $this->input->get('itemId', 0, 'int');
@@ -43,14 +46,18 @@ class K2ControllerImages extends K2Controller
 			{
 				$authorised = K2Items::getInstance($itemId)->canEdit;
 			}
-			else
+			else if ($type == 'category')
 			{
 				$authorised = K2Categories::getInstance($itemId)->canEdit;
+			}
+			else if ($type == 'user')
+			{
+				$authorised = $user->authorise('core.edit', 'com_users') || $user->id == $itemId;
 			}
 		}
 		else
 		{
-			$authorised = JFactory::getUser()->authorise('k2.'.$type.'.create', 'com_k2');
+			$authorised = $user->authorise('k2.'.$type.'.create', 'com_k2');
 		}
 		if (!$authorised)
 		{
@@ -64,12 +71,32 @@ class K2ControllerImages extends K2Controller
 		if ($itemId)
 		{
 			JTable::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/tables');
-			$table = ($type == 'item') ? JTable::getInstance('Items', 'K2Table') : JTable::getInstance('Categories', 'K2Table');
-			$table->load($itemId);
-			$value = json_decode($table->image);
-			$value->flag = 1;
-			$table->image = json_encode($value);
-			$table->store();
+			if ($type == 'item')
+			{
+				$table = JTable::getInstance('Items', 'K2Table');
+				$table->load($itemId);
+				$value = json_decode($table->image);
+				$value->flag = 1;
+				$table->image = json_encode($value);
+				$table->store();
+			}
+			else if ($type == 'category')
+			{
+				$table = JTable::getInstance('Categories', 'K2Table');
+				$table->load($itemId);
+				$value = json_decode($table->image);
+				$value->flag = 1;
+				$table->image = json_encode($value);
+				$table->store();
+			}
+			else if ($type == 'user')
+			{
+				$table = JTable::getInstance('Users', 'K2Table');
+				$table->load($itemId);
+				$table->image = 1;
+				$table->store();
+			}
+
 		}
 
 		// Response
@@ -88,6 +115,9 @@ class K2ControllerImages extends K2Controller
 		// Check for token
 		JSession::checkToken() or K2Response::throwError(JText::_('JINVALID_TOKEN'));
 
+		// User
+		$user = JFactory::getUser();
+
 		// Get input
 		$input = $this->input;
 		$type = $input->get('type', '', 'cmd');
@@ -97,13 +127,17 @@ class K2ControllerImages extends K2Controller
 		// Permissions check
 		if ($itemId)
 		{
-			if ($type = 'item')
+			if ($type == 'item')
 			{
 				$authorised = K2Items::getInstance($itemId)->canEdit;
 			}
-			else
+			else if ($type == 'category')
 			{
 				$authorised = K2Categories::getInstance($itemId)->canEdit;
+			}
+			else if ($type == 'user')
+			{
+				$authorised = $user->authorise('core.edit', 'com_users') || $user->id == $itemId;
 			}
 		}
 		else
@@ -122,12 +156,32 @@ class K2ControllerImages extends K2Controller
 		if ($itemId)
 		{
 			JTable::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/tables');
-			$table = ($type == 'item') ? JTable::getInstance('Items', 'K2Table') : JTable::getInstance('Categories', 'K2Table');
-			$table->load($itemId);
-			$value = json_decode($table->image);
-			$value->flag = 0;
-			$table->image = json_encode($value);
-			$table->store();
+			if ($type == 'item')
+			{
+				$table = JTable::getInstance('Items', 'K2Table');
+				$table->load($itemId);
+				$value = json_decode($table->image);
+				$value->flag = 0;
+				$table->image = json_encode($value);
+				$table->store();
+			}
+			else if ($type == 'category')
+			{
+				$table = JTable::getInstance('Categories', 'K2Table');
+				$table->load($itemId);
+				$value = json_decode($table->image);
+				$value->flag = 0;
+				$table->image = json_encode($value);
+				$table->store();
+			}
+			else if ($type == 'user')
+			{
+				$table = JTable::getInstance('Users', 'K2Table');
+				$table->load($itemId);
+				$table->image = 0;
+				$table->store();
+			}
+
 		}
 
 		// Response

@@ -22,7 +22,8 @@ class K2HelperImages
 
 	private static $types = array(
 		'item',
-		'category'
+		'category',
+		'user'
 	);
 
 	private static function getTypes()
@@ -67,6 +68,10 @@ class K2HelperImages
 		{
 			$preview = self::_generateCategoryImage($baseFileName, $imageResource);
 		}
+		else if ($type == 'user')
+		{
+			$preview = self::_generateUserImage($baseFileName, $imageResource);
+		}
 
 		// Return
 		$result = new stdClass;
@@ -96,6 +101,10 @@ class K2HelperImages
 		{
 			$preview = self::_deleteCategoryImage($id);
 		}
+		else if ($type == 'user')
+		{
+			$preview = self::_deleteUserImage($id);
+		}
 
 	}
 
@@ -114,6 +123,10 @@ class K2HelperImages
 		else if ($type == 'category')
 		{
 			return self::_getCategoryImage($resource);
+		}
+		else if ($type == 'user')
+		{
+			return self::_getUserImage($resource);
 		}
 
 	}
@@ -164,6 +177,21 @@ class K2HelperImages
 		// Return
 		return JURI::root(true).'/'.$savepath.'/'.$baseFileName.'.jpg?t='.time();
 	}
+	
+	private static function _generateUserImage($baseFileName, $imageResource)
+	{
+		// Filesystem
+		$filesystem = K2FileSystem::getInstance();
+
+		// Save path
+		$savepath = 'media/k2/users';
+
+		// Write image file
+		$filesystem->write($savepath.'/'.$baseFileName.'.jpg', $imageResource->__toString(), true);
+
+		// Return
+		return JURI::root(true).'/'.$savepath.'/'.$baseFileName.'.jpg?t='.time();
+	}
 
 	private static function _deleteItemImage($id)
 	{
@@ -207,6 +235,22 @@ class K2HelperImages
 		// File to delete
 		$key = $savepath.'/'.$id.'.jpg';
 
+		// Delete the file
+		$filesystem = K2FileSystem::getInstance();
+		if ($filesystem->has($key))
+		{
+			$filesystem->delete($key);
+		}
+	}
+	
+	private static function _deleteUserImage($id)
+	{
+		// Save path
+		$savepath = 'media/k2/users';
+
+		// File to delete
+		$key = $savepath.'/'.$id.'.jpg';
+		
 		// Delete the file
 		$filesystem = K2FileSystem::getInstance();
 		if ($filesystem->has($key))
@@ -272,6 +316,30 @@ class K2HelperImages
 			$modifiedDate = ((int)$category->modified > 0) ? $category->modified : $category->created;
 			$timestamp = JFactory::getDate($modifiedDate)->toUnix();
 			$image = JURI::root(true).'/'.$savepath.'/'.$id.'.jpg?t='.$timestamp;
+		}
+
+		// Return
+		$result = new stdClass;
+		$result->image = $image;
+		$result->id = $id;
+
+		return $result;
+	}
+	
+	private static function _getUserImage($user)
+	{
+		// Save path
+		$savepath = 'media/k2/users';
+
+		// Images
+		$image = null;
+		$id = null;
+
+		// Value
+		if ($user->image)
+		{
+			$id = md5('Image'.$user->id);
+			$image = JURI::root(true).'/'.$savepath.'/'.$id.'.jpg';
 		}
 
 		// Return
