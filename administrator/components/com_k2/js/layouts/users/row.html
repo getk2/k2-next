@@ -5,6 +5,12 @@
 </td>
 <td><a class="appEditLink" href="<%= link %>"><%= name %></a></td>
 <td><%= username %></td>
+<td>
+    <a class="appActionToggleState <%= enabled == 1 ? ' appStateActive' : '' %>" data-id="<%= id %>" data-state="block"><%= enabled %></a>
+</td>
+<td>
+    <span class="appStateActive"><%= activated %></a>
+</td>
 <td><%= groupsValue %></td>
 <td><%= email %></td>
 <td><%= lastvisitDate %></td>

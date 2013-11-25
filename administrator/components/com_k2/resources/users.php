@@ -73,7 +73,13 @@ class K2Users extends K2Resource
 		// Prepare specific properties
 		$this->link = '#users/edit/'.$this->id;
 		
-		$this->groupsValue = implode(', ', $this->groups);
+		if($this->id)
+		{
+			$this->enabled = (int)!$this->block;
+			$this->activated = (int)!$this->activation;
+			$this->groupsValue = implode(', ', $this->groups);
+		}
+
 		
 		// Image
 		$this->image = $this->getImage();

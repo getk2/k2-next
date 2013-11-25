@@ -3,7 +3,7 @@ define(['marionette', 'text!layouts/users/list.html', 'text!layouts/users/row.ht
 		tagName : 'tr',
 		template : _.template(row),
 		events : {
-			'click a.appEditLink' : 'edit',
+			'click a.appEditLink' : 'edit'
 		},
 		edit : function(event) {
 			event.preventDefault();

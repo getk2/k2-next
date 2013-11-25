@@ -275,8 +275,9 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 
 		saveOrder : function(keys, values, column) {
 			this.collection.batch(keys, values, column, {
-				success : _.bind(function() {
+				success : _.bind(function(response) {
 					this.resetCollection();
+					K2Dispatcher.trigger('app:update:messages', response);
 				}, this),
 				error : _.bind(function(xhr) {
 					this.enqueueMessage('error', xhr.responseText);
@@ -287,8 +288,9 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 		// Destroy function. Deletes an array of rows and renders again the list.
 		batchDelete : function(rows) {
 			this.collection.destroy(rows, {
-				success : _.bind(function() {
+				success : _.bind(function(response) {
 					this.list();
+					K2Dispatcher.trigger('app:update:messages', response);
 				}, this),
 				error : _.bind(function(xhr) {
 					this.enqueueMessage('error', xhr.responseText);
@@ -328,8 +330,9 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 				values.push(value);
 			});
 			this.collection.batch(keys, values, state, {
-				success : _.bind(function() {
+				success : _.bind(function(response) {
 					this.list();
+					K2Dispatcher.trigger('app:update:messages', response);
 				}, this),
 				error : _.bind(function(xhr) {
 					this.enqueueMessage('error', xhr.responseText);

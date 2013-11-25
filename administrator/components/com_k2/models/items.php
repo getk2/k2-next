@@ -334,7 +334,7 @@ class K2ModelItems extends K2Model
 			$this->setState('isNew', false);
 
 			// Set owner change flag
-			$this->setState('owner.changed', $data['created_by'] != $table->created_by);
+			$this->setState('owner.changed', isset($data['created_by']) && $data['created_by'] != $table->created_by);
 			$this->setState('owner', $table->created_by);
 
 			$context = 'com_k2.item.'.$table->id;

@@ -100,7 +100,12 @@ class K2ViewUsers extends K2View
 		// Sorting filter
 		$sortingOptions = array(
 			'K2_ID' => 'id',
-			'K2_NAME' => 'name'
+			'K2_NAME' => 'name',
+			'K2_USERNAME' => 'username',
+			'K2_EMAIL' => 'email',
+			'K2_LAST_VISIT' => 'lastvisitDate',
+			'K2_IP' => 'ip',
+			'K2_HOSTNAME' => 'hostname',
 		);
 		K2Response::addFilter('sorting', JText::_('K2_SORT_BY'), K2HelperHTML::sorting($sortingOptions), false, 'header');
 
@@ -111,7 +116,39 @@ class K2ViewUsers extends K2View
 
 	protected function setToolbar()
 	{
+		K2Response::addToolbarAction('activate', 'K2_ACTIVATE', array(
+			'data-state' => 'activation',
+			'data-value' => '0',
+			'class' => 'appActionSetState',
+			'id' => 'appActionActivate'
+		));
+		K2Response::addToolbarAction('block', 'K2_BLOCK', array(
+			'data-state' => 'block',
+			'data-value' => '1',
+			'class' => 'appActionSetState',
+			'id' => 'appActionBlock'
+		));
+		K2Response::addToolbarAction('unblock', 'K2_UNBLOCK', array(
+			'data-state' => 'block',
+			'data-value' => '0',
+			'class' => 'appActionSetState',
+			'id' => 'appActionUnblock'
+		));
 		K2Response::addToolbarAction('remove', 'K2_DELETE', array('id' => 'appActionRemove'));
+	}
+
+	/**
+	 * Hook for children views to allow them set the menu for the list requests.
+	 * Children views usually will not need to override this method.
+	 *
+	 * @return void
+	 */
+	protected function setListActions()
+	{
+		K2Response::addAction('add', 'K2_ADD', array(
+			'class' => 'appAction',
+			'id' => 'appActionAdd'
+		));
 	}
 
 	/**
@@ -131,7 +168,10 @@ class K2ViewUsers extends K2View
 		$formPath = JPATH_ADMINISTRATOR.'/components/com_users/models/forms/user.xml';
 
 		// Convert JRegistry instances to plain object so JForm can bind them
-		$row->params = $row->params->toObject();
+		if($row->id)
+		{
+			$row->params = $row->params->toObject();
+		}
 
 		// Get the form instance
 		$form = JForm::getInstance($formName, $formPath);
@@ -159,7 +199,13 @@ class K2ViewUsers extends K2View
 
 		JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_users/models');
 		$model = JModelLegacy::getInstance('User', 'UsersModel');
-		$assignedGroups = $model->getAssignedGroups($row->id);
+		if($row->id)
+		{
+			$assignedGroups = $model->getAssignedGroups($row->id);
+		}
+		else {
+			$assignedGroups = null;
+		}
 		$_form->groups = JHtml::_('access.usergroups', 'groups', $assignedGroups, true);
 		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/html.php';
 		$_form->gender = K2HelperHTML::gender('gender', $row->gender);

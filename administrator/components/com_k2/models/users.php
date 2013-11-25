@@ -55,27 +55,30 @@ class K2ModelUsers extends K2Model
 		$data = $db->loadAssocList();
 
 		// Get user groups
-		$groups = $this->getGroups();
-		$userIds = array();
-		foreach ($data as $user)
+		if (count($data))
 		{
-			$userIds[] = $user['id'];
-		}
-		$query = $db->getQuery(true);
-		$query->select('*');
-		$query->from($db->quoteName('#__user_usergroup_map', 'map'));
-		$query->where($db->quoteName('map.user_id').' IN ('.implode(',', $userIds).')');
-		$db->setQuery($query);
-		$mappings = $db->loadObjectList();
-
-		foreach ($data as &$user)
-		{
-			$user['groups'] = array();
-			foreach ($mappings as $mapping)
+			$groups = $this->getGroups();
+			$userIds = array();
+			foreach ($data as $user)
 			{
-				if ($mapping->user_id == $user['id'])
+				$userIds[] = $user['id'];
+			}
+			$query = $db->getQuery(true);
+			$query->select('*');
+			$query->from($db->quoteName('#__user_usergroup_map', 'map'));
+			$query->where($db->quoteName('map.user_id').' IN ('.implode(',', $userIds).')');
+			$db->setQuery($query);
+			$mappings = $db->loadObjectList();
+
+			foreach ($data as &$user)
+			{
+				$user['groups'] = array();
+				foreach ($mappings as $mapping)
 				{
-					$user['groups'][] = $groups[$mapping->group_id]->title;
+					if ($mapping->user_id == $user['id'])
+					{
+						$user['groups'][] = $groups[$mapping->group_id]->title;
+					}
 				}
 			}
 		}
@@ -166,6 +169,26 @@ class K2ModelUsers extends K2Model
 					$ordering = 'user.name';
 					$direction = 'ASC';
 					break;
+				case 'username' :
+					$ordering = 'user.username';
+					$direction = 'ASC';
+					break;
+				case 'email' :
+					$ordering = 'user.email';
+					$direction = 'ASC';
+					break;
+				case 'lastvisitDate' :
+					$ordering = 'user.lastvisitDate';
+					$direction = 'DESC';
+					break;
+				case 'ip' :
+					$ordering = 'profile.ip';
+					$direction = 'ASC';
+					break;
+				case 'hostname' :
+					$ordering = 'profile.hostname';
+					$direction = 'ASC';
+					break;
 			}
 		}
 
@@ -188,12 +211,31 @@ class K2ModelUsers extends K2Model
 		$table = $this->getTable();
 		$data = $this->getState('data');
 
-		if (!$this->onBeforeSave($data, $table))
+		// Load core users language files
+		$language = JFactory::getLanguage();
+		$language->load('com_users');
+
+		// Get core users model
+		JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_users/models');
+		$model = JModelLegacy::getInstance('User', 'UsersModel');
+
+		// Prepare some data for the core model
+		if (isset($data['id']) && $data['id'] && !isset($data['block']))
 		{
-			return false;
+			$jUser = JFactory::getUser($data['id']);
+			$data['block'] = $jUser->block;
 		}
 
-		// If profile does not exists create the record before we save the data
+		// First try to save the Joomla! user data. The model also makes checks for permissions
+		if (!$model->save($data))
+		{
+			$this->setError($model->getError());
+			return false;
+		}
+		
+		$data['id'] = $model->getState('user.id');
+
+		// Continue with K2 user data. If profile does not exists create the record before we save the data
 		if (!$table->load($data['id']) && (int)$data['id'] > 0)
 		{
 			// Create record
@@ -203,20 +245,19 @@ class K2ModelUsers extends K2Model
 			$db->setQuery($query);
 			$db->execute();
 
-			// Try to load now the record
+			// Try to load again the record
 			if (!$table->load($data['id']))
 			{
 				$this->setError($table->getError());
 				return false;
 			}
-			if ($table->isCheckedOut(JFactory::getUser()->get('id')))
-			{
-				$this->setError(JText::_('K2_ROW_IS_CURRENTLY_BEING_EDITED_BY_ANOTHER_AUTHOR'));
-				return false;
-			}
-
 		}
 
+		// Continue the save process normally
+		if (!$this->onBeforeSave($data, $table))
+		{
+			return false;
+		}
 		if (!$table->save($data))
 		{
 			$this->setError($table->getError());
@@ -240,16 +281,6 @@ class K2ModelUsers extends K2Model
 	 */
 	protected function onBeforeSave(&$data, $table)
 	{
-		// First try to save the Joomla! user data. The model also makes checks for permissions
-		JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_users/models');
-		$model = JModelLegacy::getInstance('User', 'UsersModel');
-		$data = $this->getState('data');
-		if (!$model->save($data))
-		{
-			$this->setError($model->getError());
-			return false;
-		}
-		$this->setState('id', $model->getState('user.id'));
 
 		// Extra fields
 		if (isset($data['extra_fields']))
@@ -258,6 +289,56 @@ class K2ModelUsers extends K2Model
 		}
 		return true;
 
+	}
+
+	/**
+	 * Delete method.
+	 *
+	 * @return boolean	True on success false on failure.
+	 */
+
+	public function delete()
+	{
+		$table = $this->getTable();
+		$id = $this->getState('id');
+
+		// Load core users language files
+		$language = JFactory::getLanguage();
+		$language->load('com_users');
+
+		// Get core users model
+		JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_users/models');
+		$model = JModelLegacy::getInstance('User', 'UsersModel');
+
+		// Delete the core user entry first
+		$input = array($id);
+		if (!$model->delete($input))
+		{
+			$this->setError($model->getError());
+			return false;
+		}
+
+		// Delete the K2 user. If the profile does not exists return true there is nothing more to do
+		if (!$table->load($id))
+		{
+			return true;
+		}
+
+		if (!$this->onBeforeDelete($table))
+		{
+			return false;
+		}
+		if (!$table->delete())
+		{
+			$this->setError($table->getError());
+			return false;
+		}
+
+		if (!$this->onAfterDelete($table))
+		{
+			return false;
+		}
+		return true;
 	}
 
 	public function getGroups()
