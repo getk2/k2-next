@@ -116,4 +116,22 @@ class K2ModelStatistics extends K2Model
 
 	}
 
+	public function deleteItemEntry($itemId)
+	{
+		$db = $this->getDBO();
+		$query = $db->getQuery(true);
+		$query->delete($db->quoteName('#__k2_items_stats'))->where($db->quoteName('itemId').' = '.(int)$itemId);
+		$db->setQuery($query);
+		$db->execute();
+	}
+
+	public function deleteUserEntry($userId)
+	{
+		$db = $this->getDBO();
+		$query = $db->getQuery(true);
+		$query->delete($db->quoteName('#__k2_users_stats'))->where($db->quoteName('userId').' = '.(int)$userId);
+		$db->setQuery($query);
+		$db->execute();
+	}
+
 }

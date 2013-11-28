@@ -405,6 +405,25 @@ class K2ModelUsers extends K2Model
 		return true;
 	}
 
+
+	/**
+	 * onAfterDelete method. Hook for chidlren model.
+	 *
+	 * @param   JTable  $table     	The table object.
+	 *
+	 * @return boolean
+	 */
+
+	protected function onAfterDelete($table)
+	{
+		// Delete statistics entry
+		$statistics = K2Model::getInstance('Statistics', 'K2Model');
+		$statistics->deleteUserEntry($this->getState('id'));
+
+		// Return
+		return true;
+	}
+
 	public function getGroups()
 	{
 		if (!is_null($this->groups))

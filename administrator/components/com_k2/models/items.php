@@ -619,19 +619,19 @@ class K2ModelItems extends K2Model
 			}
 
 		}
-
+		
+		// Handle statistics
+		$statistics = K2Model::getInstance('Statistics', 'K2Model');
 		if ($this->getState('isNew'))
 		{
-			$statistics = K2Model::getInstance('Statistics', 'K2Model');
 			$statistics->increaseUserItemsCounter($table->created_by);
 		}
 		else
 		{
 			if ($this->getState('owner.changed'))
 			{
-				$statistics = K2Model::getInstance('Statistics', 'K2Model');
 				$statistics->decreaseUserItemsCounter($this->getState('owner'));
-				$statistics->decreaseUserItemsCounter($table->created_by);
+				$statistics->increaseUserItemsCounter($table->created_by);
 			}
 		}
 
@@ -717,16 +717,15 @@ class K2ModelItems extends K2Model
 			$attachmentsModel->setState('id', $attachment->id);
 			$attachmentsModel->delete();
 		}
+		
+		// Handle statistics
+		// First get statistics model
+		$statistics = K2Model::getInstance('Statistics', 'K2Model');
 
-		// Delete the statistics entry
-		$db = $this->getDBO();
-		$query = $db->getQuery(true);
-		$query->delete($db->quoteName('#__k2_items_stats'))->where($db->quoteName('itemId').' = '.(int)$table->id);
-		$db->setQuery($query);
-		$db->execute();
+		// Delete the item entry
+		$statistics->deleteItemEntry($table->id);
 
 		// Decrease users statistics
-		$statistics = K2Model::getInstance('Statistics', 'K2Model');
 		$statistics->decreaseUserItemsCounter($this->getState('userId'));
 
 		// Return
