@@ -1,0 +1,19 @@
+<div class="appBatchHeader">
+    <h3><%= l('K2_BATCH_OPERATIONS') %></h3>
+    <span>
+        <span><%= counter %></span>
+        <%= l('K2_SELECTED_ITEMS') %>
+    </span>
+</div>
+<div class="appBatchActions">
+    <% _(actions).each(function(action) { %>
+        <div id="<%= action.id %>">
+            <label><%= action.label %></label>
+            <%= action.input %>
+        </div>
+    <% }); %>
+</div>
+<div class="appBatchButtons">
+    <button id="appBatchApplyButton"><%= l('K2_APPLY') %></button>
+    <button id="appBatchCancelButton"><%= l('K2_CANCEL') %></button>
+</div>

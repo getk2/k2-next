@@ -51,6 +51,9 @@ class K2ViewItems extends K2View
 
 		// Set Actions
 		$this->setListActions();
+		
+		// Set Batch Actions
+		$this->setBatchActions();
 
 		// Render
 		parent::render();
@@ -104,7 +107,7 @@ class K2ViewItems extends K2View
 	{
 		// Categories filter
 		K2Response::addFilter('category', JText::_('K2_CATEGORY'), K2HelperHTML::categories('category', null, 'K2_ANY'), false, 'header');
-		
+
 		// Sorting filter
 		$sortingOptions = array(
 			'K2_ID' => 'id',
@@ -241,7 +244,7 @@ class K2ViewItems extends K2View
 
 	protected function setBatchActions()
 	{
-		//K2Response::addBatchAction('batch', 'K2_BATCH', array('id' => 'appActionBatch'));
+		K2Response::addBatchAction('language', 'K2_LANGUAGE', K2HelperHTML::language('language', '', 'K2_LEAVE_UNCHANGED'));
 	}
 
 }

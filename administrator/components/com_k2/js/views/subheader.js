@@ -1,4 +1,4 @@
-define(['marionette', 'text!layouts/subheader.html', 'dispatcher', 'widgets/widget'], function(Marionette, template, K2Dispatcher, K2Widget) {'use strict';
+define(['marionette', 'text!layouts/subheader.html', 'dispatcher', 'widgets/widget', 'views/batch'], function(Marionette, template, K2Dispatcher, K2Widget, K2ViewBatch) {'use strict';
 
 	var K2ViewSubheader = Marionette.ItemView.extend({
 
@@ -8,7 +8,8 @@ define(['marionette', 'text!layouts/subheader.html', 'dispatcher', 'widgets/widg
 			'change .appFilters select' : 'filter',
 			'click .appActionSetState' : 'setState',
 			'click #appActionRemove' : 'remove',
-			'click .appActionCloseToolbar' : 'closeToolbar'
+			'click .appActionCloseToolbar' : 'closeToolbar',
+			'click #appActionBatch' : 'batch'
 		},
 
 		modelEvents : {
@@ -23,7 +24,8 @@ define(['marionette', 'text!layouts/subheader.html', 'dispatcher', 'widgets/widg
 					'title' : response.title,
 					'filters' : response.filters.header,
 					'toolbar' : response.toolbar,
-					'states' : response.states
+					'states' : response.states,
+					'batchActions' : response.batch
 				});
 				this.hideToolbar();
 			}, this);
@@ -107,6 +109,18 @@ define(['marionette', 'text!layouts/subheader.html', 'dispatcher', 'widgets/widg
 			event.preventDefault();
 			K2Dispatcher.trigger('onToolbarClose');
 			this.hideToolbar();
+		},
+
+		batch : function() {
+			var counter = jQuery('input.appRowToggler:checked').length;
+			var actions = this.model.get('batchActions');
+			var model = new Backbone.Model;
+			model.set('counter', counter);
+			model.set('actions', actions);
+			var view = new K2ViewBatch({
+				model : model
+			});
+			K2Dispatcher.trigger('app:region:show', view, 'modal');
 		}
 	});
 
