@@ -622,14 +622,16 @@ class K2ModelItems extends K2Model
 
 		if ($this->getState('isNew'))
 		{
-			$this->increaseUserItemsCounter($table->created_by);
+			$statistics = K2Model::getInstance('Statistics', 'K2Model');
+			$statistics->increaseUserItemsCounter($table->created_by);
 		}
 		else
 		{
 			if ($this->getState('owner.changed'))
 			{
-				$this->decreaseUserItemsCounter($this->getState('owner'));
-				$this->decreaseUserItemsCounter($table->created_by);
+				$statistics = K2Model::getInstance('Statistics', 'K2Model');
+				$statistics->decreaseUserItemsCounter($this->getState('owner'));
+				$statistics->decreaseUserItemsCounter($table->created_by);
 			}
 		}
 
@@ -724,44 +726,11 @@ class K2ModelItems extends K2Model
 		$db->execute();
 
 		// Decrease users statistics
-		$this->decreaseUserItemsCounter($this->getState('userId'));
+		$statistics = K2Model::getInstance('Statistics', 'K2Model');
+		$statistics->decreaseUserItemsCounter($this->getState('userId'));
 
 		// Return
 		return true;
-
-	}
-
-	private function increaseUserItemsCounter($userId)
-	{
-		// Get database
-		$db = $this->getDBO();
-
-		// Get query
-		$query = $db->getQuery(true);
-
-		// Update
-		$query->update('#__k2_users_stats');
-		$query->set($db->quoteName('items').' = ('.$db->quoteName('items').' + 1)');
-		$query->where($db->quoteName('userId').' = '.(int)$userId);
-		$db->setQuery($query);
-		$db->execute();
-
-	}
-
-	private function decreaseUserItemsCounter($userId)
-	{
-		// Get database
-		$db = $this->getDBO();
-
-		// Get query
-		$query = $db->getQuery(true);
-
-		// Update
-		$query->update('#__k2_users_stats');
-		$query->set($db->quoteName('items').' = ('.$db->quoteName('items').' - 1)');
-		$query->where($db->quoteName('userId').' = '.(int)$userId);
-		$db->setQuery($query);
-		$db->execute();
 
 	}
 
