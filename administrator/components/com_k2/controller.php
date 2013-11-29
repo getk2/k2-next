@@ -361,7 +361,11 @@ class K2Controller extends JControllerLegacy
 			$data['id'] = $id;
 			foreach ($states as $state => $values)
 			{
-				$data[$state] = is_array($values) ? $values[$key] : $values;
+				$value = is_array($values) ? $values[$key] : $values;
+				if (!empty($value))
+				{
+					$data[$state] = $value;
+				}
 			}
 			$this->model->setState('data', $data);
 			$result = $this->model->save();

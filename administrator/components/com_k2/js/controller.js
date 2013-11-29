@@ -55,6 +55,11 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 			K2Dispatcher.on('app:controller:batchSetState', function(rows, value, state) {
 				this.batchSetState(rows,value, state);
 			}, this);
+			
+			// Listener for batch set multiple states event.
+			K2Dispatcher.on('app:controller:batchSetMultipleStates', function(rows, states) {
+				this.batchSetMultipleStates(rows,states);
+			}, this);
 
 			// Listener for save ordering
 			K2Dispatcher.on('app:controller:saveOrder', function(keys, values, column) {
@@ -330,6 +335,23 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 				values.push(value);
 			});
 			this.collection.batch(keys, values, state, {
+				success : _.bind(function(response) {
+					this.list();
+					K2Dispatcher.trigger('app:update:messages', response);
+				}, this),
+				error : _.bind(function(xhr) {
+					this.enqueueMessage('error', xhr.responseText);
+				}, this)
+			});
+		},
+		
+		// Batch function. Updates the collection states depending on the batch actions and renders the list again.
+		batchSetMultipleStates : function(rows, states) {
+			var keys = [];
+			_.each(rows, function(row) {
+				keys.push(row.value);
+			});
+			this.collection.multibatch(keys, states, {
 				success : _.bind(function(response) {
 					this.list();
 					K2Dispatcher.trigger('app:update:messages', response);

@@ -2,6 +2,7 @@ define(['marionette', 'dispatcher', 'text!layouts/batch.html'], function(Marione
 	var K2ViewBatch = Marionette.ItemView.extend({
 		template : _.template(template),
 		events : {
+			'click #appBatchApplyButton' : 'batch',
 			'click #appBatchCancelButton' : 'close'
 		},
 		onBeforeClose : function() {
@@ -18,6 +19,16 @@ define(['marionette', 'dispatcher', 'text!layouts/batch.html'], function(Marione
 					}
 				});
 			}, this));
+		},
+		batch : function(event) {
+			event.preventDefault();
+			var rows = jQuery('input.appRowToggler:checked').serializeArray();
+			var states = {};
+			this.$('select').each(function() {
+				states[jQuery(this).attr('name')] = jQuery(this).val();
+			});
+			K2Dispatcher.trigger('app:controller:batchSetMultipleStates', rows, states);
+			this.close();
 		}
 	});
 	return K2ViewBatch;
