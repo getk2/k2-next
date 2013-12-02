@@ -10,7 +10,7 @@ define(['marionette', 'text!layouts/filters.html', 'dispatcher', 'widgets/widget
 		},
 
 		modelEvents : {
-			'change' : 'render'
+			'change:filters' : 'render'
 		},
 
 		initialize : function() {
@@ -48,7 +48,6 @@ define(['marionette', 'text!layouts/filters.html', 'dispatcher', 'widgets/widget
 		},
 
 		onRender : function() {
-			
 			
 			_.each(this.model.get('states'), _.bind(function(value, state) {
 				var filter = this.$el.find('[name="' + state + '"]');
