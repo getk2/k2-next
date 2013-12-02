@@ -1,34 +1,7 @@
-<% if(title) { %> <h3 id="appTitle"><%= title %></h3>
-<% } %>
+<h3 id="appTitle"><%= title %></h3>
 
-<% if(!_.isEmpty(filters)) { %>
-<div class="appFilters">
-    <% _(filters).each(function(filter) { %>
-    <div class="appFilter">
-        <% if(filter.radio) { %>
-        <label><%= filter.label %></label>
-        <% } else { %>
-        <label for="<%- filter.id %>"><%= filter.label %></label>
-        <% } %>
-        <%= filter.input %>
-    </div>
-    <% }); %>
-</div>
-<% } %>
+<div id="appSubheaderFilters"></div>
 
-<% if(!_.isEmpty(toolbar)) { %>
-<div class="appToolbar">
-    <span id="appToolbarCounter"></span>
-    <span id="appToolbarTitle"><%= l('K2_SELECTED') %></span>
-    <ul id="appToolbarActions">
-        <% _(toolbar).each(function(button) { %>
-        <button <% _.each(button.attributes, function(value, name) { print(name + '="' + value + '" ');}) %>>
-            <%= button.name %>
-        </button>
-        <% }); %>
-    </ul>
-    <button class="appActionCloseToolbar"><%= l('K2_CANCEL') %></button>
-</div>
-<% } %>
+<div id="appSubheaderToolbar"></div>
 
 <div class="appClr"></div>

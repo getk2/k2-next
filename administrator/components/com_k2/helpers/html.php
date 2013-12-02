@@ -254,4 +254,24 @@ class K2HelperHTML
 		return JHtml::_('select.radiolist', $options, $name, $attributes, 'value', 'text', $value);
 	}
 
+	public static function author($name = 'author', $value = null, $none = false, $attributes = '')
+	{
+		$options = array();
+		if ($none)
+		{
+			$options[] = JHtml::_('select.option', '', JText::_($none));
+		}
+
+		$model = K2Model::getInstance('Users', 'K2Model');
+		$model->setState('limit', 1);
+		$model->setState('sorting', 'name');
+		$rows = $model->getRows();
+
+		foreach ($rows as $row)
+		{
+			$options[] = JHtml::_('select.option', $row->id, $row->name);
+		}
+		return JHtml::_('select.genericlist', $options, $name, $attributes, 'value', 'text', $value);
+	}
+
 }

@@ -98,16 +98,17 @@ class K2ViewItems extends K2View
 		$this->setUserState('state', '', 'cmd');
 		$this->setUserState('featured', '', 'cmd');
 		$this->setUserState('category', '', 'cmd');
-		$this->setUserState('user', 0, 'int');
+		$this->setUserState('author', 0, 'int');
 		$this->setUserState('language', '', 'string');
 		$this->setUserState('sorting', 'id', 'string');
+		if ($this->getUserState('author') > 0)
+		{
+			$this->setUserState('authorName', JFactory::getUser($this->getUserState('author'))->name, 'string', false);
+		}
 	}
 
 	protected function setFilters()
 	{
-		// Categories filter
-		K2Response::addFilter('category', JText::_('K2_CATEGORY'), K2HelperHTML::categories('category', null, 'K2_ANY'), false, 'header');
-
 		// Sorting filter
 		$sortingOptions = array(
 			'K2_ID' => 'id',
@@ -126,6 +127,12 @@ class K2ViewItems extends K2View
 			'K2_HITS' => 'hits'
 		);
 		K2Response::addFilter('sorting', JText::_('K2_SORT_BY'), K2HelperHTML::sorting($sortingOptions), false, 'header');
+
+		// Categories filter
+		K2Response::addFilter('category', JText::_('K2_CATEGORY'), K2HelperHTML::categories('category', null, 'K2_ANY'), false, 'header');
+
+		// Author filter
+		K2Response::addFilter('author', JText::_('K2_AUTHOR'), '<input data-widget="user" data-null="'.JText::_('K2_ANY').'" data-min="0" data-name="'.JText::_('K2_ANY').'" type="hidden" name="author" value="" />', false, 'header');
 
 		// Language filter
 		K2Response::addFilter('language', JText::_('K2_SELECT_LANGUAGE'), K2HelperHTML::language('language', '', 'K2_ANY'), false, 'header');

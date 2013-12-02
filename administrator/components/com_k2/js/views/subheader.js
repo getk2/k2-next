@@ -1,127 +1,47 @@
-define(['marionette', 'text!layouts/subheader.html', 'dispatcher', 'widgets/widget', 'views/batch'], function(Marionette, template, K2Dispatcher, K2Widget, K2ViewBatch) {'use strict';
+define(['marionette', 'text!layouts/subheader.html', 'dispatcher', 'widgets/widget', 'views/toolbar', 'views/filters'], function(Marionette, template, K2Dispatcher, K2Widget, K2ViewToolbar, K2ViewFilters) {'use strict';
 
-	var K2ViewSubheader = Marionette.ItemView.extend({
+	var K2ViewSubheader = Marionette.Layout.extend({
 
 		template : _.template(template),
 
-		events : {
-			'change .appFilters select' : 'filter',
-			'click .appActionSetState' : 'setState',
-			'click #appActionRemove' : 'remove',
-			'click .appActionCloseToolbar' : 'closeToolbar',
-			'click #appActionBatch' : 'batch'
+		regions : {
+			toolbarRegion : '#appSubheaderToolbar',
+			filtersRegion : '#appSubheaderFilters'
 		},
 
 		modelEvents : {
-			'change:toolbar' : 'render',
-			'change:title' : 'render',
-			'change:filters' : 'render'
+			'change:title' : 'updateTitle'
+		},
+
+		updateTitle : function() {
+			this.$('#appTitle').text(this.model.get('title'));
 		},
 
 		initialize : function() {
+
+			// Listener for updating subheader related data
 			K2Dispatcher.on('app:update:subheader', function(response) {
 				this.model.set({
-					'title' : response.title,
-					'filters' : response.filters.header,
-					'toolbar' : response.toolbar,
-					'states' : response.states,
-					'batchActions' : response.batch
+					'title' : response.title
 				});
-				this.hideToolbar();
 			}, this);
 
-			K2Dispatcher.on('app:view:toolbar', function(show) {
-				if (show) {
-					this.showToolbar();
-				} else {
-					this.hideToolbar();
-				}
-			}, this);
-
-			K2Dispatcher.on('app:subheader:resetFilters', function() {
-
-				// Apply select states
-				this.$el.find('.appFilters select').each(function() {
-					var el = jQuery(this);
-					var value = el.find('option:first').val();
-					el.select2('val', value);
-					K2Dispatcher.trigger('app:controller:setCollectionState', el.attr('name'), value);
-				});
-
-				// Always go to first page after reset
-				K2Dispatcher.trigger('app:controller:filter', 'page', 1);
-
-			}, this);
-
-			K2Dispatcher.on('app:subheader:sort', function(sorting) {
-				this.$el.find('select[name="sorting"]').select2('val', sorting);
-			}, this);
 		},
 
 		onDomRefresh : function() {
 			K2Widget.updateEvents(this.$el);
 		},
 
-		onRender : function() {
-			this.$el.find('.appToolbar').hide();
-			_.each(this.model.get('states'), _.bind(function(value, state) {
-				var filter = this.$el.find('[name="' + state + '"]');
-				filter.val(value);
-			}, this));
-			require(['widgets/select2/select2', 'css!widgets/select2/select2.css'], _.bind(function() {
-				this.$el.find('.appFilters select').select2();
-			}, this));
-		},
+		onShow : function() {
 
-		filter : function(event) {
-			event.preventDefault();
-			var el = jQuery(event.currentTarget);
-			var state = el.attr('name');
-			var value = el.val();
-			K2Dispatcher.trigger('app:controller:filter', state, value);
-		},
+			// Show toolbar
+			this.toolbarView = new K2ViewToolbar();
+			this.toolbarRegion.show(this.toolbarView);
 
-		remove : function(event) {
-			event.preventDefault();
-			var rows = jQuery('input.appRowToggler:checked').serializeArray();
-			K2Dispatcher.trigger('app:controller:batchDelete', rows);
+			// Show filters
+			this.filtersView = new K2ViewFilters();
+			this.filtersRegion.show(this.filtersView);
 		},
-
-		setState : function(event) {
-			event.preventDefault();
-			var rows = jQuery('input.appRowToggler:checked').serializeArray();
-			var el = jQuery(event.currentTarget);
-			var value = el.data('value');
-			var state = el.data('state');
-			K2Dispatcher.trigger('app:controller:batchSetState', rows, value, state);
-		},
-
-		showToolbar : function() {
-			this.$el.find('#appToolbarCounter').text(jQuery('input.appRowToggler:checked').length);
-			this.$el.find('.appToolbar').show();
-		},
-
-		hideToolbar : function() {
-			this.$el.find('.appToolbar').hide();
-		},
-
-		closeToolbar : function(event) {
-			event.preventDefault();
-			K2Dispatcher.trigger('onToolbarClose');
-			this.hideToolbar();
-		},
-
-		batch : function() {
-			var counter = jQuery('input.appRowToggler:checked').length;
-			var actions = this.model.get('batchActions');
-			var model = new Backbone.Model;
-			model.set('counter', counter);
-			model.set('actions', actions);
-			var view = new K2ViewBatch({
-				model : model
-			});
-			K2Dispatcher.trigger('app:region:show', view, 'modal');
-		}
 	});
 
 	return K2ViewSubheader;

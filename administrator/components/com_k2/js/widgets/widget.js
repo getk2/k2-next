@@ -69,6 +69,7 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 			require(['widgets/select2/select2', 'css!widgets/select2/select2.css'], function() {
 				var userId = element.val();
 				var userName = element.data('name');
+				var showNull = element.data('null');
 				element.select2({
 					minimumInputLength : element.data('min') || 0,
 					placeholder : element.data('placeholder') || l('K2_SELECT_AUTHOR'),
@@ -95,8 +96,13 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 						},
 						results : function(data, page) {
 							var users = [];
+							if (showNull) {
+								users.push({
+									id : 0,
+									text : showNull
+								});
+							}
 							jQuery.each(data.rows, function(index, row) {
-								var tag = {}
 								users.push({
 									id : row.id,
 									text : row.name
