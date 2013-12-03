@@ -51,6 +51,9 @@ class K2ViewCategories extends K2View
 
 		// Set Actions
 		$this->setListActions();
+		
+		// Set Batch Actions
+		$this->setBatchActions();
 
 		// Render
 		parent::render();
@@ -211,4 +214,10 @@ class K2ViewCategories extends K2View
 		}
 	}
 
+
+	protected function setBatchActions()
+	{
+		K2Response::addBatchAction('access', 'K2_ACCESS', JHtml::_('access.level', 'access', null, '', array(JHtml::_('select.option', '', JText::_('K2_LEAVE_UNCHANGED')))));
+		K2Response::addBatchAction('language', 'K2_LANGUAGE', K2HelperHTML::language('language', '', 'K2_LEAVE_UNCHANGED'));
+	}
 }

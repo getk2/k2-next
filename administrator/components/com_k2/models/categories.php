@@ -262,7 +262,7 @@ class K2ModelCategories extends K2Model
 			else
 			{
 				// Store the input states values in case we need them after
-				$state = $data['state'];
+				$state = isset($data['state']) ? $data['state'] : $table->state;
 
 				// User cannot edit the item. Reset the input
 				if (!$canEdit)
