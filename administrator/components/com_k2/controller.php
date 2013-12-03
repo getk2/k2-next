@@ -347,6 +347,7 @@ class K2Controller extends JControllerLegacy
 		$ids = $this->input->get('id', array(), 'array');
 		JArrayHelper::toInteger($ids);
 		$states = $this->input->get('states', array(), 'array');
+		$mode = $this->input->get('mode', 'apply', 'string');
 
 		// Ensure we have ids
 		$ids = array_filter($ids);
@@ -366,6 +367,12 @@ class K2Controller extends JControllerLegacy
 				{
 					$data[$state] = $value;
 				}
+			}
+			if ($mode == 'clone')
+			{
+				$sourceData = $this->model->getCopyData($id);
+				$data = array_merge($sourceData, $data);
+				$data['id'] = null;
 			}
 			$this->model->setState('data', $data);
 			$result = $this->model->save();

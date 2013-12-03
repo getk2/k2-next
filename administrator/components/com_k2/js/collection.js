@@ -78,7 +78,7 @@ define(['backbone', 'model', 'dispatcher'], function(Backbone, K2Model, K2Dispat
 			return xhr;
 		},
 		
-		multibatch : function(keys, states, options) {
+		multibatch : function(keys, states, mode, options) {
 			options || ( options = {});
 			options.data || (options.data = []);
 			_.each(keys, function(key) {
@@ -92,6 +92,10 @@ define(['backbone', 'model', 'dispatcher'], function(Backbone, K2Model, K2Dispat
 					'name' : 'states[' + state + ']',
 					'value' : value
 				});
+			});
+			options.data.push({
+				'name' : 'mode',
+				'value' : mode
 			});
 			var xhr = this.sync('patch', this, options);
 			return xhr;

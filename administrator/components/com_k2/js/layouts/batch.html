@@ -5,6 +5,16 @@
         <%= l('K2_SELECTED_ITEMS') %>
     </span>
 </div>
+<div class="appBatchMode">
+    <label>
+        <strong><%= l('K2_ASSIGN') %></strong>
+        <input type="radio" name="batchMode" value="apply" checked="checked" />
+    </label>
+    <label>
+        <strong><%= l('K2_CREATE_DUPLICATE') %></strong>
+        <input type="radio" name="batchMode" value="clone"  />
+    </label>
+</div>
 <div class="appBatchActions">
     <% _(actions).each(function(action) { %>
         <div id="<%= action.id %>">

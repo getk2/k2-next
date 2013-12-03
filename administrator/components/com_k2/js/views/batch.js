@@ -27,7 +27,8 @@ define(['marionette', 'dispatcher', 'text!layouts/batch.html'], function(Marione
 			this.$('select').each(function() {
 				states[jQuery(this).attr('name')] = jQuery(this).val();
 			});
-			K2Dispatcher.trigger('app:controller:batchSetMultipleStates', rows, states);
+			var mode = this.$('input[name="batchMode"]:checked').val();
+			K2Dispatcher.trigger('app:controller:batchSetMultipleStates', rows, states, mode);
 			this.close();
 		}
 	});

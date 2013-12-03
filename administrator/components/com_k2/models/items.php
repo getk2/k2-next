@@ -13,6 +13,7 @@ defined('_JEXEC') or die ;
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/model.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/images.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/media.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/galleries.php';
 
 class K2ModelItems extends K2Model
@@ -575,8 +576,24 @@ class K2ModelItems extends K2Model
 			$filesystem = K2FileSystem::getInstance();
 			$path = 'media/k2/galleries';
 			$source = $data['tmpId'];
-			$target = $table->id;
-			$filesystem->rename($path.'/'.$source, $path.'/'.$target);
+			if ($filesystem->has($path.'/'.$source))
+			{
+				$target = $table->id;
+				$filesystem->rename($path.'/'.$source, $path.'/'.$target);
+			}
+		}
+
+		// If we have a tmpId we need to rename the media directory
+		if (isset($data['media']) && $data['media'] && isset($data['tmpId']) && $data['tmpId'])
+		{
+			$filesystem = K2FileSystem::getInstance();
+			$path = 'media/k2/media';
+			$source = $data['tmpId'];
+			if ($filesystem->has($path.'/'.$source))
+			{
+				$target = $table->id;
+				$filesystem->rename($path.'/'.$source, $path.'/'.$target);
+			}
 		}
 
 		if (isset($data['attachments']))
@@ -619,7 +636,7 @@ class K2ModelItems extends K2Model
 			}
 
 		}
-		
+
 		// Handle statistics
 		$statistics = K2Model::getInstance('Statistics', 'K2Model');
 		if ($this->getState('isNew'))
@@ -696,11 +713,14 @@ class K2ModelItems extends K2Model
 
 		// Delete item media
 		$media = json_decode($this->getState('media'));
-		foreach ($media as $entry)
+		if (is_array($media))
 		{
-			if (isset($entry->upload) && $entry->upload)
+			foreach ($media as $entry)
 			{
-				K2HelperMedia::remove($entry->upload, $table->id);
+				if (isset($entry->upload) && $entry->upload)
+				{
+					K2HelperMedia::remove($entry->upload, $table->id);
+				}
 			}
 		}
 
@@ -717,7 +737,7 @@ class K2ModelItems extends K2Model
 			$attachmentsModel->setState('id', $attachment->id);
 			$attachmentsModel->delete();
 		}
-		
+
 		// Handle statistics
 		// First get statistics model
 		$statistics = K2Model::getInstance('Statistics', 'K2Model');
@@ -731,6 +751,109 @@ class K2ModelItems extends K2Model
 		// Return
 		return true;
 
+	}
+
+	public function getCopyData($id)
+	{
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/items.php';
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/images.php';
+		$source = K2Items::getInstance($id);
+		$data = get_object_vars($source);
+		$data['id'] = '';
+		$data['tmpId'] = uniqid();
+		$data['title'] = JText::_('K2_COPY_OF').' '.$data['title'];
+		$data['alias'] = uniqid();
+		unset($data['ordering']);
+		unset($data['featured_ordering']);
+
+		// Tags
+		$tags = array();
+		foreach ($data['tags'] as $tag)
+		{
+			$tags[] = $tag->name;
+		}
+		$data['tags'] = implode(',', $tags);
+
+		// Image
+		$imageId = isset($data['_image']->id) ? $data['_image']->id : false;
+		if ($imageId)
+		{
+			$path = 'media/k2/items/src/'.$imageId.'.jpg';
+			$image = K2HelperImages::addResourceImage('item', $data['tmpId'], null, $path);
+			$data['image'] = array(
+				'id' => $image->id,
+				'path' => ''
+			);
+		}
+		else
+		{
+			unset($data['image']);
+		}
+
+		// Media
+		$media = array(
+			'url' => array(),
+			'upload' => array(),
+			'provider' => array(),
+			'id' => array(),
+			'embed' => array(),
+			'caption' => array(),
+			'credits' => array()
+		);
+		if (is_array($data['media']))
+		{
+			foreach ($data['media'] as $entry)
+			{
+				if ($entry->upload)
+				{
+					$filesystem = K2FileSystem::getInstance();
+					if ($filesystem->has('media/k2/media/'.$id.'/'.$entry->upload))
+					{
+						$buffer = $filesystem->read('media/k2/media/'.$id.'/'.$entry->upload);
+						$filesystem->write('media/k2/media/'.$data['tmpId'].'/'.$entry->upload, $buffer, true);
+					}
+				}
+				$media['url'][] = $entry->url;
+				$media['upload'][] = $entry->upload;
+				$media['provider'][] = $entry->provider;
+				$media['id'][] = $entry->id;
+				$media['embed'][] = $entry->embed;
+				$media['caption'][] = $entry->caption;
+				$media['credits'][] = $entry->credits;
+			}
+		}
+		$data['media'] = $media;
+
+		// Galleries
+		$galleries = array(
+			'url' => array(),
+			'upload' => array()
+		);
+		foreach ($data['galleries'] as $entry)
+		{
+			if ($entry->upload)
+			{
+				$filesystem = K2FileSystem::getInstance();
+				if ($filesystem->has('media/k2/galleries/'.$id.'/'.$entry->upload))
+				{
+					$files = $filesystem->listKeys('media/k2/galleries/'.$id.'/'.$entry->upload);
+					foreach ($files['keys'] as $key)
+					{
+						if ($filesystem->has($key))
+						{
+							$buffer = $filesystem->read($key);
+							$filesystem->write('media/k2/galleries/'.$data['tmpId'].'/'.$entry->upload.'/'.basename($key), $buffer, true);
+						}
+					}
+				}
+			}
+			$galleries['url'][] = $entry->url;
+			$galleries['upload'][] = $entry->upload;
+		}
+		$data['galleries'] = $galleries;
+
+		unset($data['attachments']);
+		return $data;
 	}
 
 }
