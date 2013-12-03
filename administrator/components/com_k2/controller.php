@@ -362,7 +362,7 @@ class K2Controller extends JControllerLegacy
 			foreach ($states as $state => $values)
 			{
 				$value = is_array($values) ? $values[$key] : $values;
-				if (!empty($value))
+				if ($value != '')
 				{
 					$data[$state] = $value;
 				}
