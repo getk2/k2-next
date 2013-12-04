@@ -86,6 +86,7 @@ class K2Items extends K2Resource
 			'metadata',
 			'plugins',
 			'params',
+			'categoryParams',
 			'rules'
 		));
 
@@ -96,6 +97,9 @@ class K2Items extends K2Resource
 		$this->canEditFeaturedState = $user->authorise('k2.item.edit.state.featured', 'com_k2.item.'.$this->id);
 		$this->canDelete = $user->authorise('k2.item.delete', 'com_k2.item.'.$this->id);
 		$this->canSort = $user->authorise('k2.item.edit', 'com_k2');
+
+		// Category params
+		$this->categoryParams = new JRegistry($this->categoryParams);
 
 		// Media
 		$this->media = json_decode($this->media);

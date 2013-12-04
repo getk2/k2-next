@@ -36,6 +36,7 @@ class K2ModelItems extends K2Model
 		$query->select($db->quoteName('category.access', 'categoryAccess'));
 		$query->select($db->quoteName('category.level', 'categoryLevel'));
 		$query->select($db->quoteName('category.path', 'categoryPath'));
+		$query->select($db->quoteName('category.params', 'categoryParams'));
 		$query->leftJoin($db->quoteName('#__k2_categories', 'category').' ON '.$db->quoteName('category.id').' = '.$db->quoteName('item.catid'));
 
 		// Join over the language
