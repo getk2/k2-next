@@ -149,7 +149,12 @@ class K2TableItems extends K2TableLegacy
 
 		if (JString::trim($this->alias) == '')
 		{
+			$autoAlias = true;
 			$this->alias = $this->title;
+		}
+		else
+		{
+			$autoAlias = false;
 		}
 
 		if (JFactory::getConfig()->get('unicodeslugs') == 1)
@@ -177,8 +182,15 @@ class K2TableItems extends K2TableLegacy
 		$db->setQuery($query);
 		if ($db->loadResult())
 		{
-			$this->setError(JText::_('K2_DUPLICATE_ALIAS'));
-			return false;
+			if ($autoAlias)
+			{
+				$this->alias .= '_'.uniqid();
+			}
+			else
+			{
+				$this->setError(JText::_('K2_DUPLICATE_ALIAS'));
+				return false;
+			}
 		}
 
 		if ($this->catid < 2)

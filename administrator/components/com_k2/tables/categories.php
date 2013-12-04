@@ -173,7 +173,12 @@ class K2TableCategories extends K2TableNestedLegacy
 
 		if (JString::trim($this->alias) == '')
 		{
+			$autoAlias = true;
 			$this->alias = $this->title;
+		}
+		else
+		{
+			$autoAlias = false;
 		}
 
 		if (!$this->parent_id)
@@ -200,8 +205,15 @@ class K2TableCategories extends K2TableNestedLegacy
 		$db->setQuery($query);
 		if ($db->loadResult())
 		{
-			$this->setError(JText::_('K2_DUPLICATE_ALIAS'));
-			return false;
+			if ($autoAlias)
+			{
+				$this->alias .= '_'.uniqid();
+			}
+			else
+			{
+				$this->setError(JText::_('K2_DUPLICATE_ALIAS'));
+				return false;
+			}
 		}
 
 		return true;
