@@ -11,6 +11,8 @@
 defined('_JEXEC') or die ;
 
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/model.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/categories.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/images.php';
 
 class K2ModelCategories extends K2Model
 {
@@ -465,6 +467,46 @@ class K2ModelCategories extends K2Model
 		// Execute
 		$db->execute();
 
+	}
+
+	public function getCopyData($id)
+	{
+		// Get source item
+		$source = K2Categories::getInstance($id);
+
+		// Get source item properties as data array. This array will be the inout to the model.
+		$data = get_object_vars($source);
+
+		// It's a new item so reset some properties
+		$data['id'] = '';
+		$data['tmpId'] = uniqid();
+		$data['title'] = JText::_('K2_COPY_OF').' '.$data['title'];
+		$data['alias'] = '';
+		$data['extra_fields'] = json_decode($data['extra_fields']);
+		$data['metadata'] = $data['metadata']->toString();
+		$data['plugins'] = $data['plugins']->toString();
+		$data['params'] = $data['params']->toString();
+
+		// Handle image
+		$imageId = isset($data['_image']->id) ? $data['_image']->id : false;
+		if ($imageId)
+		{
+			$path = 'media/k2/categories/'.$imageId.'.jpg';
+			$image = K2HelperImages::addResourceImage('category', $data['tmpId'], null, $path);
+			$data['image'] = array(
+				'id' => $image->id,
+				'path' => '',
+				'caption' => $data['_image']->caption,
+				'credits' => $data['_image']->credits
+			);
+		}
+		else
+		{
+			unset($data['image']);
+		}
+
+		// Return the input data
+		return $data;
 	}
 
 }
