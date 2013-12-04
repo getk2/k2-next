@@ -12,6 +12,7 @@ defined('_JEXEC') or die ;
 
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/model.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/items.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/images.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/media.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/galleries.php';
@@ -737,6 +738,8 @@ class K2ModelItems extends K2Model
 			$attachmentsModel->setState('id', $attachment->id);
 			$attachmentsModel->delete();
 		}
+		
+		
 
 		// Handle statistics
 		// First get statistics model
@@ -755,18 +758,25 @@ class K2ModelItems extends K2Model
 
 	public function getCopyData($id)
 	{
-		require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/items.php';
-		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/images.php';
+		// Get source item
 		$source = K2Items::getInstance($id);
+
+		// Get source item properties as data array. This array will be the inout to the model.
 		$data = get_object_vars($source);
+		
+		// It's a new item so reset some properties
 		$data['id'] = '';
 		$data['tmpId'] = uniqid();
 		$data['title'] = JText::_('K2_COPY_OF').' '.$data['title'];
-		$data['alias'] = uniqid();
+		$data['alias'] = '';
+		$data['extra_fields'] = json_decode($data['extra_fields']);
+		$data['metadata'] = $data['metadata']->toString();
+		$data['plugins'] = $data['plugins']->toString();
+		$data['params'] = $data['params']->toString();
 		unset($data['ordering']);
 		unset($data['featured_ordering']);
 
-		// Tags
+		// Handle tags
 		$tags = array();
 		foreach ($data['tags'] as $tag)
 		{
@@ -774,7 +784,7 @@ class K2ModelItems extends K2Model
 		}
 		$data['tags'] = implode(',', $tags);
 
-		// Image
+		// Handle image
 		$imageId = isset($data['_image']->id) ? $data['_image']->id : false;
 		if ($imageId)
 		{
@@ -782,7 +792,9 @@ class K2ModelItems extends K2Model
 			$image = K2HelperImages::addResourceImage('item', $data['tmpId'], null, $path);
 			$data['image'] = array(
 				'id' => $image->id,
-				'path' => ''
+				'path' => '',
+				'caption' => $data['_image']->caption,
+				'credits' => $data['_image']->credits
 			);
 		}
 		else
@@ -790,7 +802,7 @@ class K2ModelItems extends K2Model
 			unset($data['image']);
 		}
 
-		// Media
+		// Handle media
 		$media = array(
 			'url' => array(),
 			'upload' => array(),
@@ -824,7 +836,7 @@ class K2ModelItems extends K2Model
 		}
 		$data['media'] = $media;
 
-		// Galleries
+		// Handle galleries
 		$galleries = array(
 			'url' => array(),
 			'upload' => array()
@@ -852,7 +864,47 @@ class K2ModelItems extends K2Model
 		}
 		$data['galleries'] = $galleries;
 
-		unset($data['attachments']);
+		// Handle attachments
+		$filesystem = K2FileSystem::getInstance();
+		$attachmentsModel = K2Model::getInstance('Attachments');
+		$input = array();
+		$attachments = array(
+			'id' => array(),
+			'name' => array(),
+			'title' => array(),
+			'file' => array()
+		);
+		foreach ($data['attachments'] as $attachment)
+		{
+			// Save the new attachment record
+			$input['id'] = null;
+			$input['itemId'] = 0;
+			$input['name'] = $attachment->name;
+			$input['title'] = $attachment->title;
+			$input['file'] = '';
+			if ($attachment->file)
+			{
+				if ($filesystem->has('media/k2/attachments/'.$id.'/'.$attachment->file))
+				{
+					$buffer = $filesystem->read('media/k2/attachments/'.$id.'/'.$attachment->file);
+					$filesystem->write('media/k2/attachments/'.$data['tmpId'].'/'.$attachment->file, $buffer, true);
+				}
+				$input['file'] = $data['tmpId'].'/'.$attachment->file;
+			}
+			$input['url'] = $attachment->url;
+			$input['downloads'] = 0;
+			$attachmentsModel->setState('data', $input);
+			$attachmentsModel->save();
+
+			// Prepare the data array
+			$attachments['id'][] = $attachmentsModel->getState('id');
+			$attachments['name'][] = $input['name'];
+			$attachments['title'][] = $input['title'];
+			$attachments['file'][] = $input['file'];
+		}
+		$data['attachments'] = $attachments;
+
+		// Return the input data
 		return $data;
 	}
 

@@ -181,7 +181,7 @@ class K2ModelAttachments extends K2Model
 		{
 			require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/items.php';
 			$item = K2Items::getInstance($table->itemId);
-			if (!$item->canEdit)
+			if ($item && !$item->canEdit)
 			{
 				$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
 				return false;

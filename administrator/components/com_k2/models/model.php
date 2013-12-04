@@ -79,6 +79,10 @@ class K2Model extends JModelLegacy
 			{
 				$row = (object)$rows[0];
 			}
+			else
+			{
+				$row = null;
+			}
 		}
 		else
 		{
@@ -182,7 +186,7 @@ class K2Model extends JModelLegacy
 			$this->setError($table->getError());
 			return false;
 		}
-		
+
 		if (!$this->onAfterDelete($table))
 		{
 			return false;

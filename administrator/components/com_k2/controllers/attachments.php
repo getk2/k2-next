@@ -11,10 +11,11 @@
 defined('_JEXEC') or die ;
 
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/controller.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/model.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
 
 /**
- * Attachments JSON controller.
+ * Attachments controller.
  */
 
 class K2ControllerAttachments extends K2Controller
