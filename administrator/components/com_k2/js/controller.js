@@ -36,6 +36,11 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 				this.close();
 			}, this);
 
+			// Listener for list event.
+			K2Dispatcher.on('app:controller:list', function(id) {
+				this.list();
+			}, this);
+
 			// Listener for toggle state event.
 			K2Dispatcher.on('app:controller:toggleState', function(id, state) {
 				this.toggleState(id, state);
