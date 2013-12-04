@@ -207,7 +207,7 @@ class K2TableCategories extends K2TableNestedLegacy
 		{
 			if ($autoAlias)
 			{
-				$this->alias .= '_'.uniqid();
+				$this->alias .= '-'.uniqid();
 			}
 			else
 			{

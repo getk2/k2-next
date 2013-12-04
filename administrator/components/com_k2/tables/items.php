@@ -184,7 +184,7 @@ class K2TableItems extends K2TableLegacy
 		{
 			if ($autoAlias)
 			{
-				$this->alias .= '_'.uniqid();
+				$this->alias .= '-'.uniqid();
 			}
 			else
 			{
