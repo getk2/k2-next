@@ -213,6 +213,7 @@ class K2HelperExtraFields
 				$field->value = json_encode((object)$activeValues);
 			}
 			$field->input = $field->getInput();
+			$field->output = $field->getOutput();
 		}
 
 		return $group;

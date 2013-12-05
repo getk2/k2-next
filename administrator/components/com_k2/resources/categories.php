@@ -70,8 +70,11 @@ class K2Categories extends K2Resource
 		// Prepare generic properties like dates and authors
 		parent::prepare($mode);
 
-		// link
+		// Edit link
 		$this->editLink = '#categories/edit/'.$this->id;
+		
+		// Link
+		$this->link = $this->getLink();
 
 		// Permisisons
 		$user = JFactory::getUser();
@@ -81,19 +84,14 @@ class K2Categories extends K2Resource
 		$this->canSort = $user->authorise('k2.category.edit', 'com_k2');
 		$this->canAddItem = $user->authorise('k2.item.create', 'com_k2.category.'.$this->id);
 
-		// Escape fpr HTML inputs
-		JFilterOutput::objectHTMLSafe($this, ENT_QUOTES, array(
-			'image',
-			'extra_fields',
-			'metadata',
-			'plugins',
-			'params',
-			'rules'
-		));
-
 		// Image
 		$this->image = $this->getImage();
 
+	}
+	
+	public function getLink()
+	{
+		return JRoute::_('index.php?option=com_k2&view=category&id='.$this->id);
 	}
 
 	public function getImage()

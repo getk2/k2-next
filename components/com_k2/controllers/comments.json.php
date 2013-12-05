@@ -10,7 +10,12 @@
 // no direct access
 defined('_JEXEC') or die ;
 
-// Bootstrap K2
-$controller = JControllerLegacy::getInstance('K2', array('originalTask' => JFactory::getApplication()->input->get('task')));
-$controller->execute(JFactory::getApplication()->input->get('task'));
-$controller->redirect();
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/controller.php';
+
+/**
+ * Comments JSON controller.
+ */
+
+class K2ControllerComments extends K2Controller
+{
+}

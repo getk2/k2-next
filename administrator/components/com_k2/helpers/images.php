@@ -282,8 +282,7 @@ class K2HelperImages
 				'XS' => 100
 			);
 			$id = md5('Image'.$item->id);
-			$modifiedDate = ((int)$item->modified > 0) ? $item->modified : $item->created;
-			$timestamp = JFactory::getDate($modifiedDate)->toUnix();
+			$timestamp = JFactory::getDate($item->modified)->toUnix();
 			foreach ($sizes as $size => $width)
 			{
 				$images[$size] = JURI::root(true).'/'.$savepath.'/cache/'.$id.'_'.$size.'.jpg?t='.$timestamp;
@@ -313,8 +312,7 @@ class K2HelperImages
 		if (isset($value->flag) && $value->flag)
 		{
 			$id = md5('Image'.$category->id);
-			$modifiedDate = ((int)$category->modified > 0) ? $category->modified : $category->created;
-			$timestamp = JFactory::getDate($modifiedDate)->toUnix();
+			$timestamp = JFactory::getDate($category->modified)->toUnix();
 			$image = JURI::root(true).'/'.$savepath.'/'.$id.'.jpg?t='.$timestamp;
 		}
 

@@ -76,21 +76,19 @@
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="catItemVideo" type="list" default="" label="K2_MEDIA" description="">
+			<field name="catItemMedia" type="list" default="" label="K2_MEDIA" description="">
 				<option value="">K2_INHERIT_FROM_CATEGORY</option>
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="catItemVideoWidth" type="text" default="" size="4" label="K2_VIDEO_WIDTH" description=""/>
-			<field name="catItemVideoHeight" type="text" default="" size="4" label="K2_VIDEO_HEIGHT" description=""/>
-			<field name="catItemAudioWidth" type="text" default="" size="4" label="K2_AUDIO_WIDTH" description=""/>
-			<field name="catItemAudioHeight" type="text" default="" size="4" label="K2_AUDIO_HEIGHT" description=""/>
-			<field name="catItemVideoAutoPlay" type="list" default="" label="K2_MEDIA_AUTOPLAY" description="">
+			<field name="catItemMediaWidth" type="text" default="" size="4" label="K2_MEDIA_WIDTH" description=""/>
+			<field name="catItemMediaHeight" type="text" default="" size="4" label="K2_MEDIA_HEIGHT" description=""/>
+			<field name="catItemMediaAutoPlay" type="list" default="" label="K2_MEDIA_AUTOPLAY" description="">
 				<option value="">K2_INHERIT_FROM_CATEGORY</option>
 				<option value="0">K2_NO</option>
 				<option value="1">K2_YES</option>
 			</field>
-			<field name="catItemImageGallery" type="list" default="" label="K2_IMAGE_GALLERY" description="">
+			<field name="catItemImageGalleries" type="list" default="" label="K2_IMAGE_GALLERIES" description="">
 				<option value="">K2_INHERIT_FROM_CATEGORY</option>
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
@@ -158,12 +156,12 @@
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemVideoAnchor" type="list" default="" label="K2_ANCHOR_LINK_TO_VIDEO" description="">
+			<field name="itemMediaAnchor" type="list" default="" label="K2_ANCHOR_LINK_TO_MEDIA" description="">
 				<option value="">K2_INHERIT_FROM_CATEGORY</option>
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemImageGalleryAnchor" type="list" default="" label="K2_ANCHOR_LINK_TO_IMAGE_GALLERY" description="">
+			<field name="itemImageGalleriesAnchor" type="list" default="" label="K2_ANCHOR_LINK_TO_IMAGE_GALLERIES" description="">
 				<option value="">K2_INHERIT_FROM_CATEGORY</option>
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
@@ -246,31 +244,29 @@
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemVideo" type="list" default="" label="K2_MEDIA" description="">
+			<field name="itemMedia" type="list" default="" label="K2_MEDIA" description="">
 				<option value="">K2_INHERIT_FROM_CATEGORY</option>
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemVideoWidth" type="text" default="" size="4" label="K2_VIDEO_WIDTH" description=""/>
-			<field name="itemVideoHeight" type="text" default="" size="4" label="K2_VIDEO_HEIGHT" description=""/>
-			<field name="itemAudioWidth" type="text" default="" size="4" label="K2_AUDIO_WIDTH" description=""/>
-			<field name="itemAudioHeight" type="text" default="" size="4" label="K2_AUDIO_HEIGHT" description=""/>
-			<field name="itemVideoAutoPlay" type="list" default="" label="K2_MEDIA_AUTOPLAY" description="">
+			<field name="itemMediaWidth" type="text" default="" size="4" label="K2_MEDIA_WIDTH" description=""/>
+			<field name="itemMediaHeight" type="text" default="" size="4" label="K2_MEDIA_HEIGHT" description=""/>
+			<field name="itemMediaAutoPlay" type="list" default="" label="K2_MEDIA_AUTOPLAY" description="">
 				<option value="">K2_INHERIT_FROM_CATEGORY</option>
 				<option value="0">K2_NO</option>
 				<option value="1">K2_YES</option>
 			</field>
-			<field name="itemVideoCaption" type="list" default="" label="K2_MEDIA_CAPTION" description="">
+			<field name="itemMediaCaption" type="list" default="" label="K2_MEDIA_CAPTION" description="">
 				<option value="">K2_INHERIT_FROM_CATEGORY</option>
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemVideoCredits" type="list" default="" label="K2_MEDIA_CREDITS" description="">
+			<field name="itemMediaCredits" type="list" default="" label="K2_MEDIA_CREDITS" description="">
 				<option value="">K2_INHERIT_FROM_CATEGORY</option>
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemImageGallery" type="list" default="" label="K2_IMAGE_GALLERY" description="">
+			<field name="itemImageGalleries" type="list" default="" label="K2_IMAGE_GALLERIES" description="">
 				<option value="">K2_INHERIT_FROM_CATEGORY</option>
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
@@ -379,7 +375,7 @@
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemRelatedImageGallery" type="list" default="" label="K2_RELATED_ITEMS_IMAGE_GALLERY" description="">
+			<field name="itemRelatedImageGalleries" type="list" default="" label="K2_RELATED_ITEMS_IMAGE_GALLERIES" description="">
 				<option value="">K2_INHERIT_FROM_CATEGORY</option>
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>

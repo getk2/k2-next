@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<menu>
+		<options var="view">
+			<option name="K2_ITEM" msg="K2_CREATE_A_MENU_ITEM_LINKING_DIRECTLY_TO_AN_ITEM_IN_K2" value="item" />
+			<option name="K2_ITEM_LISTINGS" msg="K2_CREATE_A_MENU_ITEM_LINKING_TO_A_GRID_PAGE_WITH_THE_LATEST_ITEMS_FROM_SPECIFIC_USERS_OR_CATEGORIES_IN_K2" value="itemlist" />
+		</options>
+	</menu>
+</metadata> 

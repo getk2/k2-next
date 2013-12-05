@@ -11,7 +11,9 @@
 defined('_JEXEC') or die ;
 
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/resource.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/categories.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/items.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/extrafields.php';
 
 /**
  * K2 item resource class.
@@ -76,19 +78,20 @@ class K2Items extends K2Resource
 		// Prepare generic properties like dates and authors
 		parent::prepare($mode);
 
-		// Prepare specific properties
+		// Edit link
 		$this->editLink = '#items/edit/'.$this->id;
-		JFilterOutput::objectHTMLSafe($this, ENT_QUOTES, array(
-			'image',
-			'media',
-			'galleries',
-			'extra_fields',
-			'metadata',
-			'plugins',
-			'params',
-			'categoryParams',
-			'rules'
-		));
+
+		// Link
+		$this->link = $this->getLink();
+
+		// URL (absolute link)
+		$this->url = $this->getUrl();
+
+		// PrintLink
+		$this->printLink = $this->getPrintLink();
+
+		// Email link
+		$this->emailLink = $this->getEmailLink();
 
 		// Permisisons
 		$user = JFactory::getUser();
@@ -102,10 +105,10 @@ class K2Items extends K2Resource
 		$this->categoryParams = new JRegistry($this->categoryParams);
 
 		// Media
-		$this->media = json_decode($this->media);
+		$this->media = $this->getMedia();
 
 		// Galleries
-		$this->galleries = json_decode($this->galleries);
+		$this->galleries = $this->getGalleries();
 
 		// Hits
 		$this->hits = (int)$this->hits;
@@ -139,6 +142,26 @@ class K2Items extends K2Resource
 
 		// Author
 		$this->author = $this->getAuthor();
+	}
+
+	public function getCategory()
+	{
+		$category = null;
+		if ($this->id)
+		{
+			$category = K2Categories::getInstance($this->catid);
+		}
+		return $category;
+	}
+
+	public function getExtraFields()
+	{
+		$extraFields = array();
+		if ($this->id)
+		{
+			$extraFields = K2HelperExtraFields::getItemExtraFields($this->catid, $this->extra_fields);
+		}
+		return $extraFields;
 	}
 
 	public function getTags()
@@ -177,10 +200,118 @@ class K2Items extends K2Resource
 		{
 			$images = $result->images;
 			$this->image = $images['S'];
+			$this->imageWidth = 180;
 			$this->_image->preview = $this->image;
 			$this->_image->id = $result->id;
 		}
 		return $images;
+	}
+
+	public function getGalleries()
+	{
+		// Initialize value
+		$galleries = array();
+
+		// Process only if value is set
+		if ($this->galleries)
+		{
+			// Decode the value
+			$galleries = json_decode($this->galleries);
+
+			// Get params
+			$params = JComponentHelper::getParams('com_k2');
+
+			// Get dispatcher
+			$dispatcher = JDispatcher::getInstance();
+
+			// Import content plugins
+			JPluginHelper::importPlugin('content');
+
+			foreach ($galleries as $gallery)
+			{
+				$tag = ($gallery->upload) ? $this->id.'/'.$gallery->upload : $gallery->url;
+				$gallery->text = '{gallery}'.$tag.'{/gallery}';
+
+				// Render the gallery
+				$dispatcher->trigger('onContentPrepare', array(
+					'com_k2',
+					&$gallery,
+					&$params,
+					0
+				));
+
+				// Restore
+				$gallery->output = $gallery->text;
+				unset($gallery->text);
+			}
+		}
+
+		return $galleries;
+	}
+
+	public function getMedia()
+	{
+		// Initialize value
+		$media = array();
+		
+		// Process only if value is set
+		if ($this->media)
+		{
+			// Decode value
+			$media = json_decode($this->media);
+
+			// Get params
+			$params = JComponentHelper::getParams('com_k2');
+
+			// Get dispatcher
+			$dispatcher = JDispatcher::getInstance();
+
+			// Import content plugins
+			JPluginHelper::importPlugin('content');
+
+			foreach ($media as $entry)
+			{
+				if ($entry->embed)
+				{
+					$entry->output = $entry->embed;
+				}
+				else
+				{
+					if ($entry->upload)
+					{
+						$parts = explode('.', $entry->upload);
+						$extension = strtolower(end($parts));
+						$tag = '{'.$extension.'}'.$entry->upload.'{'.$extension.'}';
+					}
+					else if ($entry->provider)
+					{
+						$tag = '{'.$entry->provider.'}'.$entry->id.'{'.$entry->provider.'}';
+					}
+					else if ($entry->url)
+					{
+						$parts = explode('.', $entry->url);
+						$extension = strtolower(end($parts));
+						$tag = '{'.$extension.'remote}'.$entry->url.'{'.$extension.'remote}';
+					}
+
+					$entry->text = $tag;
+
+					// Render media
+					$dispatcher->trigger('onContentPrepare', array(
+						'com_k2',
+						&$entry,
+						&$params,
+						0
+					));
+
+					// Restore
+					$entry->output = $entry->text;
+					unset($entry->text);
+				}
+			}
+		}
+
+		return $media;
 	}
 
 	public function getAttachments()
@@ -223,6 +354,19 @@ class K2Items extends K2Resource
 		$application = JFactory::getApplication();
 		$template = $application->getTemplate();
 		return JRoute::_('index.php?option=com_mailto&tmpl=component&template='.$template.'&link='.MailToHelper::addLink($this->url));
+	}
+
+	public function getNumOfComments()
+	{
+		$result = 0;
+		if ($this->id)
+		{
+			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
+			$model = K2Model::getInstance('Comments', 'K2Model');
+			$model->setState('itemId', $this->id);
+			$result = $model->countRows();
+		}
+		return $result;
 	}
 
 	public function triggerPlugins($view, &$params, $offset)

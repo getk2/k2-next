@@ -27,7 +27,7 @@ class K2ViewItem extends K2View
 		// Get input
 		$id = $application->input->get('id', 0, 'int');
 		$offset = $application->input->get('offset', 0, 'int');
-		$this->print = $application->input->get('id', 0, 'int');
+		$this->print = $application->input->getBool('print');
 
 		// Get item
 		$this->item = K2Items::getInstance($id);
@@ -36,7 +36,6 @@ class K2ViewItem extends K2View
 		$this->item->checkSiteAccess();
 
 		// Set params
-		$this->params = $application->getParams('com_k2');
 		$this->params->merge($this->item->categoryParams);
 		$this->params->merge($this->item->params);
 

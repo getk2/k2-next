@@ -73,6 +73,9 @@ class K2Users extends K2Resource
 		// Prepare specific properties
 		$this->editLink = '#users/edit/'.$this->id;
 		
+		// Link
+		$this->link = $this->getLink();
+		
 		if($this->id)
 		{
 			$this->enabled = (int)!$this->block;
@@ -84,6 +87,11 @@ class K2Users extends K2Resource
 		// Image
 		$this->image = $this->getImage();
 
+	}
+	
+	public function getLink()
+	{
+		return JRoute::_('index.php?option=com_k2&view=user&id='.$this->id);
 	}
 
 

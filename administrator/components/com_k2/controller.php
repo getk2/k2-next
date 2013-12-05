@@ -81,6 +81,7 @@ class K2Controller extends JControllerLegacy
 			}
 
 			// Add the model to the controller for quick access
+			$this->addModelPath(JPATH_ADMINISTRATOR.'/components/com_k2/models', 'K2Model');
 			$this->model = $this->getModel($this->resourceType);
 
 		}

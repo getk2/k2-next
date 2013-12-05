@@ -80,7 +80,7 @@
 
     <!-- Tags -->
     <h2><%= l('K2_TAGS') %></h2>
-    <input data-widget="tags" value="<%= row.tagsValue %>" type="hidden" name="tags" />
+    <input data-widget="tags" value="<%- row.tagsValue %>" type="hidden" name="tags" />
 
     <!-- Image -->
     <div id="appItemImage"></div>
@@ -97,8 +97,8 @@
     <!-- Extra Fields -->
     <div id="appItemExtraFields"></div>
 
-    <input type="hidden" name="tmpId" value="<%= row.tmpId %>" / >
-    <input type="hidden" name="id" value="<%= row.id %>" / >
+    <input type="hidden" name="tmpId" value="<%- row.tmpId %>" / >
+    <input type="hidden" name="id" value="<%- row.id %>" / >
 
     <% _(form.jform).each(function(field) { %>
     <%= field.label %>

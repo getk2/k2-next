@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+	<view title="K2_ITEM">
+		<message>
+			<![CDATA[K2_CREATE_A_MENU_ITEM_LINKING_DIRECTLY_TO_AN_ITEM_IN_K2]]>
+		</message>
+	</view>
+	<fields name="request">
+		<fieldset name="request" addfieldpath="/administrator/components/com_k2/fields">
+			<field name="id" type="k2item" default="" label="K2_SELECT_ITEM" description="K2_SELECT_AN_ITEM_TO_LINK_TO_DIRECTLY" required="true"/>
+		</fieldset>
+	</fields>
+</metadata>

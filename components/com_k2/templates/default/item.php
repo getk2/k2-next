@@ -20,7 +20,10 @@ defined('_JEXEC') or die ;
 
 <!-- Start K2 Item Layout -->
 
-<div id="k2Container" class="itemView<?php echo ($this->item->featured) ? ' itemIsFeatured' : ''; ?><?php if($this->params->get('pageclass_sfx')) echo ' '.$this->params->get('pageclass_sfx'); ?>">
+<div id="k2Container" class="itemView<?php echo ($this->item->featured) ? ' itemIsFeatured' : ''; ?><?php
+if ($this->params->get('pageclass_sfx'))
+	echo ' '.$this->params->get('pageclass_sfx');
+ ?>">
 
 	<!-- K2 Plugins: K2BeforeDisplay -->
 	<?php echo $this->item->events->K2BeforeDisplay; ?>
@@ -30,14 +33,14 @@ defined('_JEXEC') or die ;
 		<?php if($this->params->get('itemDateCreated')): ?>
 		<!-- Date created -->
 		<span class="itemDateCreated">
-			<?php echo JHtml::_('date', $this->item->created , JText::_('K2_DATE_FORMAT_LC2')); ?>
+			<?php echo JHtml::_('date', $this->item->created, JText::_('K2_DATE_FORMAT_LC2')); ?>
 		</span>
 		<?php endif; ?>
 
 	  <?php if($this->params->get('itemTitle')): ?>
 	  <!-- Item title -->
 	  <h2 class="itemTitle">
-			<?php if(isset($this->item->editLink)): ?>
+			<?php if($this->item->canEdit): ?>
 			<!-- Item edit link -->
 			<span class="itemEditLink">
 				<a href="<?php echo $this->item->editLink; ?>">
@@ -83,8 +86,8 @@ defined('_JEXEC') or die ;
 		$this->params->get('itemPrintButton') ||
 		$this->params->get('itemEmailButton') ||
 		$this->params->get('itemSocialButton') ||
-		$this->params->get('itemVideoAnchor') ||
-		$this->params->get('itemImageGalleryAnchor') ||
+		$this->params->get('itemMediaAnchor') ||
+		$this->params->get('itemImageGalleriesAnchor') ||
 		$this->params->get('itemCommentsAnchor')
 	): ?>
   <div class="itemToolbar">
@@ -114,17 +117,17 @@ defined('_JEXEC') or die ;
 			</li>
 			<?php endif; ?>
 
-			<?php if($this->params->get('itemVideoAnchor') && !empty($this->item->video)): ?>
-			<!-- Anchor link to item video below - if it exists -->
+			<?php if(count($this->item->media)): ?>
+			<!-- Anchor link to item media below - if it exists -->
 			<li>
-				<a class="itemVideoLink k2Anchor" href="<?php echo $this->item->link; ?>#itemVideoAnchor"><?php echo JText::_('K2_MEDIA'); ?></a>
+				<a class="itemMediaLink k2Anchor" href="<?php echo $this->item->link; ?>#itemMediaAnchor"><?php echo JText::_('K2_MEDIA'); ?></a>
 			</li>
 			<?php endif; ?>
 
-			<?php if($this->params->get('itemImageGalleryAnchor') && !empty($this->item->gallery)): ?>
+			<?php if(count($this->item->galleries)): ?>
 			<!-- Anchor link to item image gallery below - if it exists -->
 			<li>
-				<a class="itemImageGalleryLink k2Anchor" href="<?php echo $this->item->link; ?>#itemImageGalleryAnchor"><?php echo JText::_('K2_IMAGE_GALLERY'); ?></a>
+				<a class="itemImageGalleriesLink k2Anchor" href="<?php echo $this->item->link; ?>#itemImageGalleriesAnchor"><?php echo JText::_('K2_IMAGE_GALLERIES'); ?></a>
 			</li>
 			<?php endif; ?>
 
@@ -166,7 +169,12 @@ defined('_JEXEC') or die ;
 	  <div class="itemImageBlock">
 		  <span class="itemImage">
 		  	<a href="<?php echo $this->item->images['XL']; ?>" title="<?php echo JText::_('K2_CLICK_TO_PREVIEW_IMAGE'); ?>">
-		  		<img src="<?php echo $this->item->image; ?>" alt="<?php if(!empty($this->item->_image->caption)) echo $this->escape($this->item->_image->caption); else echo $this->escape($this->item->title); ?>" style="width:<?php echo $this->item->imageWidth; ?>px; height:auto;" />
+		  		<img src="<?php echo $this->item->image; ?>" alt="<?php
+				if (!empty($this->item->_image->caption))
+					echo $this->escape($this->item->_image->caption);
+				else
+					echo $this->escape($this->item->title);
+ ?>" style="width:<?php echo $this->item->imageWidth; ?>px; height:auto;" />
 		  	</a>
 		  </span>
 
@@ -206,24 +214,21 @@ defined('_JEXEC') or die ;
 
 		<div class="clr"></div>
 
-	  <?php if($this->params->get('itemExtraFields') && count($this->item->extra_fields)): ?>
+	  <?php if($this->params->get('itemExtraFields') && count($this->item->extraFields)): ?>
 	  <!-- Item extra fields -->
 	  <div class="itemExtraFields">
 	  	<h3><?php echo JText::_('K2_ADDITIONAL_INFO'); ?></h3>
+	  	<?php foreach ($this->item->extraFields as $extraFieldGroup): ?>
+	  	<h4><?php echo $extraFieldGroup->name; ?></h4>
 	  	<ul>
-			<?php foreach ($this->item->extra_fields as $key=>$extraField): ?>
-			<?php if($extraField->value != ''): ?>
+			<?php foreach ($extraFieldGroup->fields as $key=>$extraField): ?>
 			<li class="<?php echo ($key%2) ? "odd" : "even"; ?> type<?php echo ucfirst($extraField->type); ?> group<?php echo $extraField->group; ?>">
-				<?php if($extraField->type == 'header'): ?>
-				<h4 class="itemExtraFieldsHeader"><?php echo $extraField->name; ?></h4>
-				<?php else: ?>
 				<span class="itemExtraFieldsLabel"><?php echo $extraField->name; ?>:</span>
-				<span class="itemExtraFieldsValue"><?php echo $extraField->value; ?></span>
-				<?php endif; ?>
+				<span class="itemExtraFieldsValue"><?php echo $extraField->output; ?></span>
 			</li>
-			<?php endif; ?>
 			<?php endforeach; ?>
-			</ul>
+		</ul>
+		<?php endforeach; ?>
 	    <div class="clr"></div>
 	  </div>
 	  <?php endif; ?>
@@ -277,13 +282,15 @@ defined('_JEXEC') or die ;
 		<div class="itemFacebookButton">
 			<div id="fb-root"></div>
 			<script type="text/javascript">
-				(function(d, s, id) {
-				  var js, fjs = d.getElementsByTagName(s)[0];
-				  if (d.getElementById(id)) return;
-				  js = d.createElement(s); js.id = id;
-				  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
-				  fjs.parentNode.insertBefore(js, fjs);
-				}(document, 'script', 'facebook-jssdk'));
+				( function(d, s, id) {
+						var js, fjs = d.getElementsByTagName(s)[0];
+						if (d.getElementById(id))
+							return;
+						js = d.createElement(s);
+						js.id = id;
+						js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+						fjs.parentNode.insertBefore(js, fjs);
+					}(document, 'script', 'facebook-jssdk'));
 			</script>
 			<div class="fb-like" data-send="false" data-width="200" data-show-faces="true"></div>
 		</div>
@@ -294,12 +301,18 @@ defined('_JEXEC') or die ;
 		<div class="itemGooglePlusOneButton">
 			<g:plusone annotation="inline" width="120"></g:plusone>
 			<script type="text/javascript">
-			  (function() {
-			  	window.___gcfg = {lang: 'en'}; // Define button default language here
-			    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-			    po.src = 'https://apis.google.com/js/plusone.js';
-			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-			  })();
+				(function() {
+					window.___gcfg = {
+						lang : 'en'
+					};
+					// Define button default language here
+					var po = document.createElement('script');
+					po.type = 'text/javascript';
+					po.async = true;
+					po.src = 'https://apis.google.com/js/plusone.js';
+					var s = document.getElementsByTagName('script')[0];
+					s.parentNode.insertBefore(po, s);
+				})();
 			</script>
 		</div>
 		<?php endif; ?>
@@ -315,7 +328,7 @@ defined('_JEXEC') or die ;
 		<!-- Item category -->
 		<div class="itemCategory">
 			<span><?php echo JText::_('K2_PUBLISHED_IN'); ?></span>
-			<a href="<?php echo $this->item->category->link; ?>"><?php echo $this->item->category->name; ?></a>
+			<a href="<?php echo $this->item->category->link; ?>"><?php echo $this->item->category->title; ?></a>
 		</div>
 		<?php endif; ?>
 
@@ -339,9 +352,9 @@ defined('_JEXEC') or die ;
 		  <ul class="itemAttachments">
 		    <?php foreach ($this->item->attachments as $attachment): ?>
 		    <li>
-			    <a title="<?php echo $this->escape($attachment->titleAttribute); ?>" href="<?php echo $attachment->link; ?>"><?php echo $attachment->title; ?></a>
+			    <a title="<?php echo $this->escape($attachment->title); ?>" href="<?php echo $attachment->link; ?>"><?php echo $attachment->name; ?></a>
 			    <?php if($this->params->get('itemAttachmentsCounter')): ?>
-			    <span>(<?php echo $attachment->hits; ?> <?php echo ($attachment->hits==1) ? JText::_('K2_DOWNLOAD') : JText::_('K2_DOWNLOADS'); ?>)</span>
+			    <span>(<?php echo $attachment->downloads; ?> <?php echo ($attachment->downloads==1) ? JText::_('K2_DOWNLOAD') : JText::_('K2_DOWNLOADS'); ?>)</span>
 			    <?php endif; ?>
 		    </li>
 		    <?php endforeach; ?>
@@ -357,8 +370,8 @@ defined('_JEXEC') or die ;
   <!-- Author Block -->
   <div class="itemAuthorBlock">
 
-  	<?php if($this->params->get('itemAuthorImage') && !empty($this->item->author->avatar)): ?>
-  	<img class="itemAuthorAvatar" src="<?php echo $this->item->author->avatar; ?>" alt="<?php echo $this->escape($this->item->author->name); ?>" />
+  	<?php if($this->params->get('itemAuthorImage') && !empty($this->item->author->image)): ?>
+  	<img class="itemAuthorAvatar" src="<?php echo $this->item->author->image; ?>" alt="<?php echo $this->escape($this->item->author->name); ?>" />
   	<?php endif; ?>
 
     <div class="itemAuthorDetails">
@@ -371,7 +384,7 @@ defined('_JEXEC') or die ;
       <?php endif; ?>
 
       <?php if($this->params->get('itemAuthorURL') && !empty($this->item->author->url)): ?>
-      <span class="itemAuthorUrl"><?php echo JText::_('K2_WEBSITE'); ?> <a rel="me" href="<?php echo $this->item->author->url; ?>" target="_blank"><?php echo str_replace('http://','',$this->item->author->url); ?></a></span>
+      <span class="itemAuthorUrl"><?php echo JText::_('K2_WEBSITE'); ?> <a rel="me" href="<?php echo $this->item->author->url; ?>" target="_blank"><?php echo str_replace('http://', '', $this->item->author->url); ?></a></span>
       <?php endif; ?>
 
       <?php if($this->params->get('itemAuthorEmail')): ?>
@@ -405,14 +418,14 @@ defined('_JEXEC') or die ;
 
 	<?php
 	/*
-	Note regarding 'Related Items'!
-	If you add:
-	- the CSS rule 'overflow-x:scroll;' in the element div.itemRelated {…} in the k2.css
-	- the class 'k2Scroller' to the ul element below
-	- the classes 'k2ScrollerElement' and 'k2EqualHeights' to the li element inside the foreach loop below
-	- the style attribute 'style="width:<?php echo $item->imageWidth; ?>px;"' to the li element inside the foreach loop below
-	...then your Related Items will be transformed into a vertical-scrolling block, inside which, all items have the same height (equal column heights). This can be very useful if you want to show your related articles or products with title/author/category/image etc., which would take a significant amount of space in the classic list-style display.
-	*/
+	 Note regarding 'Related Items'!
+	 If you add:
+	 - the CSS rule 'overflow-x:scroll;' in the element div.itemRelated {…} in the k2.css
+	 - the class 'k2Scroller' to the ul element below
+	 - the classes 'k2ScrollerElement' and 'k2EqualHeights' to the li element inside the foreach loop below
+	 - the style attribute 'style="width:<?php echo $item->imageWidth; ?>px;"' to the li element inside the foreach loop below
+	 ...then your Related Items will be transformed into a vertical-scrolling block, inside which, all items have the same height (equal column heights). This can be very useful if you want to show your related articles or products with title/author/category/image etc., which would take a significant amount of space in the classic list-style display.
+	 */
 	?>
 
   <?php if($this->params->get('itemRelated') && isset($this->relatedItems)): ?>
@@ -468,40 +481,48 @@ defined('_JEXEC') or die ;
 
 	<div class="clr"></div>
 
-  <?php if($this->params->get('itemVideo') && !empty($this->item->video)): ?>
-  <!-- Item video -->
-  <a name="itemVideoAnchor" id="itemVideoAnchor"></a>
-
-  <div class="itemVideoBlock">
+  <?php if(!empty($this->item->media)): ?>
+  <!-- Item media -->
+  <a name="itemMediaAnchor" id="itemMediaAnchor"></a>
+  
+  <div class="itemMediaBlock">
   	<h3><?php echo JText::_('K2_MEDIA'); ?></h3>
+  	<?php foreach ($this->item->media as $entry) : ?>
+	<div class="itemMedia">
+  	
+	
+	<span class="itemMediaOutput"><?php echo $entry->output; ?></span>
 
-		<?php if($this->item->videoType=='embedded'): ?>
-		<div class="itemVideoEmbedded">
-			<?php echo $this->item->video; ?>
-		</div>
-		<?php else: ?>
-		<span class="itemVideo"><?php echo $this->item->video; ?></span>
-		<?php endif; ?>
+	<?php if(!empty($entry->caption)): ?>
+	<span class="itemMediaCaption"><?php echo $entry->caption; ?></span>
+	<?php endif; ?>
 
-	  <?php if($this->params->get('itemVideoCaption') && !empty($this->item->video_caption)): ?>
-	  <span class="itemVideoCaption"><?php echo $this->item->video_caption; ?></span>
-	  <?php endif; ?>
-
-	  <?php if($this->params->get('itemVideoCredits') && !empty($this->item->video_credits)): ?>
-	  <span class="itemVideoCredits"><?php echo $this->item->video_credits; ?></span>
-	  <?php endif; ?>
+	<?php if(!empty($entry->credits)): ?>
+	<span class="itemMediaCredits"><?php echo $entry->credits; ?></span>
+	<?php endif; ?>
 
 	  <div class="clr"></div>
+  </div> 
+	<?php endforeach; ?>
   </div>
+	
   <?php endif; ?>
 
-  <?php if($this->params->get('itemImageGallery') && !empty($this->item->gallery)): ?>
-  <!-- Item image gallery -->
-  <a name="itemImageGalleryAnchor" id="itemImageGalleryAnchor"></a>
-  <div class="itemImageGallery">
-	  <h3><?php echo JText::_('K2_IMAGE_GALLERY'); ?></h3>
-	  <?php echo $this->item->gallery; ?>
+  <?php if(count($this->item->galleries)): ?>
+  <!-- Item image galleries -->
+  <a name="itemImageGalleriesAnchor" id="itemImageGalleriesAnchor"></a>
+  
+  <div class="itemImageGalleries">
+  	<h3><?php echo JText::_('K2_IMAGE_GALLERIES'); ?></h3>
+  	<?php foreach ($this->item->galleries as $gallery): ?>
+  		<div class="itemImageGallery">
+  			<?php echo $gallery->output; ?>
+  		</div>
+  	<?php endforeach; ?>
   </div>
+  
+
+
   <?php endif; ?>
 
   <?php if($this->params->get('itemNavigation') && !JRequest::getCmd('print') && (isset($this->item->nextLink) || isset($this->item->previousLink))): ?>

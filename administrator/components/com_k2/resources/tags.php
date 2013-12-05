@@ -72,6 +72,14 @@ class K2Tags extends K2Resource
 
 		// Prepare specific properties
 		$this->editLink = '#tags/edit/'.$this->id;
+		
+		// Link
+		$this->link = $this->getLink();
 
+	}
+	
+	public function getLink()
+	{
+		return JRoute::_('index.php?option=com_k2&view=tag&id='.$this->id);
 	}
 }
