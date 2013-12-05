@@ -71,7 +71,7 @@ class K2Categories extends K2Resource
 		parent::prepare($mode);
 
 		// link
-		$this->link = '#categories/edit/'.$this->id;
+		$this->editLink = '#categories/edit/'.$this->id;
 
 		// Permisisons
 		$user = JFactory::getUser();

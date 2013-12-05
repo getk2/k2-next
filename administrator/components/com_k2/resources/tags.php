@@ -71,7 +71,7 @@ class K2Tags extends K2Resource
 		parent::prepare($mode);
 
 		// Prepare specific properties
-		$this->link = '#tags/edit/'.$this->id;
+		$this->editLink = '#tags/edit/'.$this->id;
 
 	}
 }

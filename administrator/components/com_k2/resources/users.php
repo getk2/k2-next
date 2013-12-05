@@ -71,7 +71,7 @@ class K2Users extends K2Resource
 		parent::prepare($mode);
 
 		// Prepare specific properties
-		$this->link = '#users/edit/'.$this->id;
+		$this->editLink = '#users/edit/'.$this->id;
 		
 		if($this->id)
 		{

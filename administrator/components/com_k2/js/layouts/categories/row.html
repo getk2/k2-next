@@ -5,7 +5,7 @@
 </span>
 <span>
     <% if(canEdit) { %>
-    <a class="appEditLink" href="<%= link %>"><%= title %></a>
+    <a class="appEditLink" href="<%= editLink %>"><%= title %></a>
     <% } else { %>
         <%= str_repeat('-', level) %><%= title %>
     <% } %>

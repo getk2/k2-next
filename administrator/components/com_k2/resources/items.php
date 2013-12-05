@@ -77,7 +77,7 @@ class K2Items extends K2Resource
 		parent::prepare($mode);
 
 		// Prepare specific properties
-		$this->link = '#items/edit/'.$this->id;
+		$this->editLink = '#items/edit/'.$this->id;
 		JFilterOutput::objectHTMLSafe($this, ENT_QUOTES, array(
 			'image',
 			'media',
@@ -136,6 +136,9 @@ class K2Items extends K2Resource
 
 		// Attachments
 		$this->attachments = $this->getAttachments();
+
+		// Author
+		$this->author = $this->getAuthor();
 	}
 
 	public function getTags()
@@ -149,6 +152,19 @@ class K2Items extends K2Resource
 			$tags = $model->getRows();
 		}
 		return $tags;
+	}
+
+	public function getAuthor()
+	{
+		$author = null;
+		if ($this->id)
+		{
+			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
+			$model = K2Model::getInstance('Users', 'K2Model');
+			$model->setState('id', $this->created_by);
+			$author = $model->getRow();
+		}
+		return $author;
 	}
 
 	public function getImages()
@@ -180,6 +196,130 @@ class K2Items extends K2Resource
 		return $attachments;
 	}
 
+	public function getLink()
+	{
+		return JRoute::_('index.php?option=com_k2&view=item&id='.$this->id);
+	}
+
+	public function getUrl()
+	{
+		$uri = JUri::getInstance();
+		$base = $uri->toString(array(
+			'scheme',
+			'host',
+			'port'
+		));
+		return $base.JRoute::_('index.php?option=com_k2&view=item&id='.$this->id, false);
+	}
+
+	public function getPrintLink()
+	{
+		return JRoute::_('index.php?option=com_k2&view=item&id='.$this->id.'&print=1');
+	}
+
+	public function getEmailLink()
+	{
+		require_once JPATH_SITE.'/components/com_mailto/helpers/mailto.php';
+		$application = JFactory::getApplication();
+		$template = $application->getTemplate();
+		return JRoute::_('index.php?option=com_mailto&tmpl=component&template='.$template.'&link='.MailToHelper::addLink($this->url));
+	}
+
+	public function triggerPlugins($view, &$params, $offset)
+	{
+		// Get dispatcher
+		$dispatcher = JDispatcher::getInstance();
+
+		// Import content plugins
+		JPluginHelper::importPlugin('content');
+
+		// Import K2 plugins
+		JPluginHelper::importPlugin('k2');
+
+		// Create the text variable
+		$this->text = $this->introtext.'{K2Splitter}'.$this->fulltext;
+
+		// Create the event object
+		$this->events = new stdClass;
+
+		// Content plugins
+		$dispatcher->trigger('onContentPrepare', array(
+			'com_k2.'.$view,
+			&$this,
+			&$params,
+			$offset
+		));
+		$results = $dispatcher->trigger('onContentAfterTitle', array(
+			'com_k2.'.$view,
+			&$this,
+			&$params,
+			$offset
+		));
+		$this->events->AfterDisplayTitle = trim(implode("\n", $results));
+		$results = $dispatcher->trigger('onContentBeforeDisplay', array(
+			'com_k2.'.$view,
+			&$this,
+			&$params,
+			$offset
+		));
+		$this->events->BeforeDisplayContent = trim(implode("\n", $results));
+		$results = $dispatcher->trigger('onContentAfterDisplay', array(
+			'com_k2.'.$view,
+			&$this,
+			&$params,
+			$offset
+		));
+		$this->events->AfterDisplayContent = trim(implode("\n", $results));
+
+		// K2 plugins
+		$results = $dispatcher->trigger('onK2BeforeDisplay', array(
+			&$this,
+			&$params,
+			$offset
+		));
+		$this->events->K2BeforeDisplay = trim(implode("\n", $results));
+
+		$results = $dispatcher->trigger('onK2AfterDisplay', array(
+			&$this,
+			&$params,
+			$offset
+		));
+		$this->events->K2AfterDisplay = trim(implode("\n", $results));
+
+		$results = $dispatcher->trigger('onK2AfterDisplayTitle', array(
+			&$this,
+			&$params,
+			$offset
+		));
+		$this->events->K2AfterDisplayTitle = trim(implode("\n", $results));
+
+		$results = $dispatcher->trigger('onK2BeforeDisplayContent', array(
+			&$this,
+			&$params,
+			$offset
+		));
+		$this->events->K2BeforeDisplayContent = trim(implode("\n", $results));
+
+		$results = $dispatcher->trigger('onK2AfterDisplayContent', array(
+			&$this,
+			&$params,
+			$offset
+		));
+		$this->events->K2AfterDisplayContent = trim(implode("\n", $results));
+
+		$dispatcher->trigger('onK2PrepareContent', array(
+			&$this,
+			&$params,
+			$offset
+		));
+
+		// Restore introtext and fulltext
+		list($this->introtext, $this->fulltext) = explode('{K2Splitter}', $this->text);
+
+		// Unset the text
+		unset($this->text);
+	}
+
 	public function checkSiteAccess()
 	{
 		// Get date
@@ -208,7 +348,7 @@ class K2Items extends K2Resource
 		$viewLevels = $user->getAuthorisedViewLevels();
 
 		// Access check
-		if (!in_array($item->access, $viewLevels) || !in_array($item->categoryAccess, $viewLevels))
+		if (!in_array($this->access, $viewLevels) || !in_array($this->categoryAccess, $viewLevels))
 		{
 			if ($user->guest)
 			{
@@ -226,7 +366,7 @@ class K2Items extends K2Resource
 					$url = 'index.php?option=com_users&view=login&return='.base64_encode($uri->toString()).'&Itemid='.UsersHelperRoute::getLoginRoute();
 					$application->redirect(JRoute::_($url, false), JText::_('K2_YOU_NEED_TO_LOGIN_FIRST'));
 				}
-				
+
 				// Return false
 				return false;
 			}

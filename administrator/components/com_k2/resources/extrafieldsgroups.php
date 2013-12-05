@@ -71,7 +71,7 @@ class K2ExtraFieldsGroups extends K2Resource
 		parent::prepare($mode);
 
 		// Prepare specific properties
-		$this->link = '#extrafieldsgroups/edit/'.$this->id;
+		$this->editLink = '#extrafieldsgroups/edit/'.$this->id;
 
 		// Assignments
 		$this->assignments = json_decode($this->assignments);

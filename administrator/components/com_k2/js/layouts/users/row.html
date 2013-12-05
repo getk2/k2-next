@@ -3,7 +3,7 @@
         <input class="appRowToggler" name="id[]" id="appCheckBox<%= id %>" value="<%= id %>" type="checkbox" />
     </label>
 </td>
-<td><a class="appEditLink" href="<%= link %>"><%= name %></a></td>
+<td><a class="appEditLink" href="<%= editLink %>"><%= name %></a></td>
 <td><%= username %></td>
 <td>
     <a class="appActionToggleState <%= enabled == 1 ? ' appStateActive' : '' %>" data-id="<%= id %>" data-state="block"><%= enabled %></a>

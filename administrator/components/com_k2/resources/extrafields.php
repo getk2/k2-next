@@ -72,7 +72,7 @@ class K2ExtraFields extends K2Resource
 		parent::prepare($mode);
 
 		// Prepare specific properties
-		$this->link = '#extrafields/edit/'.$this->id;
+		$this->editLink = '#extrafields/edit/'.$this->id;
 
 		// Set type label
 		$this->typeName = JText::_('K2_EXTRA_FIELD_TYPE_'.strtoupper($this->type));

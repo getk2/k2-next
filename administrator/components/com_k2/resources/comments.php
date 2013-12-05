@@ -71,7 +71,7 @@ class K2Comments extends K2Resource
 		parent::prepare($mode);
 
 		// Prepare specific properties
-		$this->link = '#comments/edit/'.$this->id;
+		$this->editLink = '#comments/edit/'.$this->id;
 		
 		$this->createdOn = JHtml::_('date', $this->date, JText::_('K2_DATE_FORMAT'));
 
