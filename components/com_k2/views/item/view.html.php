@@ -21,14 +21,32 @@ class K2ViewItem extends K2View
 {
 	public function display($tpl = null)
 	{
+		// Get application
 		$application = JFactory::getApplication();
+
+		// Get input
 		$id = $application->input->get('id', 0, 'int');
-		$this->item = K2Items::getInstance($id);
+		$offset = $application->input->get('offset', 0, 'int');
 		$this->print = $application->input->get('id', 0, 'int');
+
+		// Get item
+		$this->item = K2Items::getInstance($id);
+		
+		// Check access
+		$this->item->checkSiteAccess();
+
+		// Set params
 		$this->params = $application->getParams('com_k2');
 		$this->params->merge($this->item->categoryParams);
 		$this->params->merge($this->item->params);
+
+		// Trigger plugins
+		$this->item->triggerPlugins('item', $this->params, $offset);
+
+		// Set the layout
 		$this->setLayout('item');
+
+		// Display
 		parent::display($tpl);
 	}
 
