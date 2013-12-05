@@ -87,7 +87,7 @@ class K2Resource
 
 		if (property_exists($this, 'modified'))
 		{
-			if ((int)$this->modified > 0)
+			if ((int)$this->modified_by > 0)
 			{
 				$this->modifiedOn = JHtml::_('date', $this->modified, JText::_('K2_DATE_FORMAT'));
 			}
