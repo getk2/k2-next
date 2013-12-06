@@ -25,13 +25,34 @@ class K2ViewItemlist extends K2View
 		$application = JFactory::getApplication();
 
 		// Get input
+		$task = $application->input->get('task', '', 'cmd');
+		$id = $application->input->get('id', 0, 'int');
 		$offset = $application->input->get('offset', 0, 'int');
 		$limit = $application->input->get('limit', 10, 'int');
-		
+
 		// Get items
+		$date = JFactory::getDate()->toSql();
 		$model = K2Model::getInstance('Items');
-		$model->setState('limit', 100);
+		$model->setState('limit', $limit);
+		$model->setState('limitstart', $offset);
 		$model->setState('state', 1);
+		$model->setState('access', $this->user->getAuthorisedViewLevels());
+		$model->setState('publish_up', $date);
+		$model->setState('publish_down', $date);
+		$model->setState('category.state', 1);
+		$model->setState('category.access', $this->user->getAuthorisedViewLevels());
+		if ($task == 'category')
+		{
+			$model->setState('category', $id);
+		}
+		else if ($task == 'tag')
+		{
+			$model->setState('tag', $id);
+		}
+		else if ($task == 'user')
+		{
+			$model->setState('author', $id);
+		}
 		$this->items = $model->getRows();
 
 		// Plugins

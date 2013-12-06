@@ -124,6 +124,7 @@ class K2ModelItems extends K2Model
 		}
 		if ($this->getState('category'))
 		{
+			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
 			$model = K2Model::getInstance('Categories');
 			$root = $model->getTable();
 			$tree = $root->getTree((int)$this->getState('category'));
@@ -136,7 +137,17 @@ class K2ModelItems extends K2Model
 		}
 		if ($this->getState('access'))
 		{
-			$query->where($db->quoteName('item.access').' = '.(int)$this->getState('access'));
+			$access = $this->getState('access');
+			if (is_array($access))
+			{
+				$access = array_unique($access);
+				JArrayHelper::toInteger($access);
+				$query->where($db->quoteName('item.access').' IN ('.implode(',', $access).')');
+			}
+			else
+			{
+				$query->where($db->quoteName('item.access').' = '.(int)$access);
+			}
 		}
 		if ($this->getState('id'))
 		{
@@ -144,7 +155,7 @@ class K2ModelItems extends K2Model
 			if (is_array($id))
 			{
 				JArrayHelper::toInteger($id);
-				$query->where($db->quoteName('item.id').' IN '.$id);
+				$query->where($db->quoteName('item.id').' IN ('.implode(',', $id).')');
 			}
 			else
 			{
@@ -184,9 +195,19 @@ class K2ModelItems extends K2Model
 		{
 			$query->where($db->quoteName('category.state').' = '.(int)$this->getState('category.state'));
 		}
-		if (is_numeric($this->getState('category.access')))
+		if ($this->getState('category.access'))
 		{
-			$query->where($db->quoteName('category.access').' = '.(int)$this->getState('category.access'));
+			$access = $this->getState('category.access');
+			if (is_array($access))
+			{
+				$access = array_unique($access);
+				JArrayHelper::toInteger($access);
+				$query->where($db->quoteName('category.access').' IN ('.implode(',', $access).')');
+			}
+			else
+			{
+				$query->where($db->quoteName('category.access').' = '.(int)$access);
+			}
 		}
 	}
 

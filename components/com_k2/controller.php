@@ -16,4 +16,42 @@ defined('_JEXEC') or die ;
 
 class K2Controller extends JControllerLegacy
 {
+
+	/**
+	 * Method to display a view.
+	 *
+	 * @param   boolean			If true, the view output will be cached
+	 * @param   array  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 *
+	 * @return  JController		This object to support chaining.
+	 * @since   1.5
+	 */
+	public function display($cachable = false, $urlparams = false)
+	{
+
+		$user = JFactory::getUser();
+
+		if ($user->guest && $this->input->getMethod() == 'GET')
+		{
+			$cachable = true;
+		}
+
+		$urlparams = array();
+		$urlparams['limit'] = 'UINT';
+		$urlparams['limitstart'] = 'UINT';
+		$urlparams['id'] = 'INT';
+		$urlparams['tag'] = 'STRING';
+		$urlparams['searchword'] = 'STRING';
+		$urlparams['day'] = 'INT';
+		$urlparams['year'] = 'INT';
+		$urlparams['month'] = 'INT';
+		$urlparams['print'] = 'INT';
+		$urlparams['lang'] = 'CMD';
+		$urlparams['Itemid'] = 'INT';
+
+		parent::display($cachable, $urlparams);
+
+		return $this;
+	}
+
 }
