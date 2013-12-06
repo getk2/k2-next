@@ -23,12 +23,8 @@ class K2ModelTags extends K2Model
 		$query = $db->getQuery(true);
 
 		// Select rows
-		$query->select($db->quoteName('tag').'.*')->from($db->quoteName('#__k2_tags', 'tag'));
-
-		// Nested query for counting tagged items per tag
-		$nested = $db->getQuery(true);
-		$nested->select('COUNT(*)')->from($db->quoteName('#__k2_tags_xref', 'xref'))->where($db->quoteName('xref.tagId').' = '.$db->quoteName('tag.id'));
-		$query->select('('.(string)$nested.') AS '.$db->quoteName('items'));
+		$query->select($db->quoteName('tag').'.*');
+		$query->from($db->quoteName('#__k2_tags', 'tag'));
 
 		// Set query conditions
 		$this->setQueryConditions($query);
@@ -126,33 +122,27 @@ class K2ModelTags extends K2Model
 	private function setQuerySorting(&$query)
 	{
 		$sorting = $this->getState('sorting');
-		$ordering = null;
-		if ($sorting)
+		switch($sorting)
 		{
-			switch($sorting)
-			{
-				default :
-				case 'id' :
-					$ordering = 'id';
-					$direction = 'DESC';
-					break;
-				case 'name' :
-					$ordering = 'name';
-					$direction = 'ASC';
-					break;
-				case 'state' :
-					$ordering = 'state';
-					$direction = 'DESC';
-					break;
-			}
+			default :
+			case 'id' :
+				$ordering = 'id';
+				$direction = 'DESC';
+				break;
+			case 'name' :
+				$ordering = 'name';
+				$direction = 'ASC';
+				break;
+			case 'state' :
+				$ordering = 'state';
+				$direction = 'DESC';
+				break;
 		}
 
 		// Append sorting
-		if ($ordering)
-		{
-			$db = $this->getDbo();
-			$query->order($db->quoteName($ordering).' '.$direction);
-		}
+		$db = $this->getDbo();
+		$query->order($db->quoteName($ordering).' '.$direction);
+
 	}
 
 	/**
@@ -310,6 +300,54 @@ class K2ModelTags extends K2Model
 
 		// Return
 		return true;
+	}
+	
+	public function countTagItems($tagId)
+	{
+		// Get database
+		$db = $this->getDBO();
+
+		// Get query
+		$query = $db->getQuery(true);
+
+		// Select statement
+		$query->select('COUNT(*)')->from($db->quoteName('#__k2_tags_xref'));
+
+		// Set query conditions
+		$query->where($db->quoteName('tagId').' = '.(int)$tagId);
+		
+		// Set the query
+		$db->setQuery($query);
+
+		// Get the result
+		$result = $db->loadResult();
+
+		// Return the result
+		return (int)$result;
+	}
+	
+	public function getItemTags($itemId)
+	{
+		// Get database
+		$db = $this->getDBO();
+
+		// Get query
+		$query = $db->getQuery(true);
+
+		// Select statement
+		$query->select('tagId')->from($db->quoteName('#__k2_tags_xref'));
+
+		// Set query conditions
+		$query->where($db->quoteName('itemId').' = '.(int)$itemId);
+		
+		// Set the query
+		$db->setQuery($query);
+
+		// Get the result
+		$result = $db->loadColumn();
+
+		// Return the result
+		return $result;
 	}
 
 }

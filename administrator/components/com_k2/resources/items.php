@@ -10,9 +10,11 @@
 // no direct access
 defined('_JEXEC') or die ;
 
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/items.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/resource.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/categories.php';
-require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/items.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/users.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/tags.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/extrafields.php';
 
 /**
@@ -95,11 +97,22 @@ class K2Items extends K2Resource
 
 		// Permisisons
 		$user = JFactory::getUser();
-		$this->canEdit = $user->authorise('k2.item.edit', 'com_k2.item.'.$this->id) || ($user->id == $this->created_by && $user->authorise('k2.item.edit.own', 'com_k2.item.'.$this->id));
-		$this->canEditState = $user->authorise('k2.item.edit.state', 'com_k2.item.'.$this->id);
-		$this->canEditFeaturedState = $user->authorise('k2.item.edit.state.featured', 'com_k2.item.'.$this->id);
-		$this->canDelete = $user->authorise('k2.item.delete', 'com_k2.item.'.$this->id);
-		$this->canSort = $user->authorise('k2.item.edit', 'com_k2');
+		if ($user->guest)
+		{
+			$this->canEdit = false;
+			$this->canEditState = false;
+			$this->canEditFeaturedState = false;
+			$this->canDelete = false;
+			$this->canSort = false;
+		}
+		else
+		{
+			$this->canEdit = $user->authorise('k2.item.edit', 'com_k2.item.'.$this->id) || ($user->id == $this->created_by && $user->authorise('k2.item.edit.own', 'com_k2.item.'.$this->id));
+			$this->canEditState = $user->authorise('k2.item.edit.state', 'com_k2.item.'.$this->id);
+			$this->canEditFeaturedState = $user->authorise('k2.item.edit.state.featured', 'com_k2.item.'.$this->id);
+			$this->canDelete = $user->authorise('k2.item.delete', 'com_k2.item.'.$this->id);
+			$this->canSort = $user->authorise('k2.item.edit', 'com_k2');
+		}
 
 		// Category params
 		$this->categoryParams = new JRegistry($this->categoryParams);
@@ -171,8 +184,11 @@ class K2Items extends K2Resource
 		{
 			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
 			$model = K2Model::getInstance('Tags', 'K2Model');
-			$model->setState('itemId', $this->id);
-			$tags = $model->getRows();
+			$tagIds = $model->getItemTags($this->id);
+			foreach ($tagIds as $tagId)
+			{
+				$tags[] = K2Tags::getInstance($tagId);
+			}
 		}
 		return $tags;
 	}
@@ -182,10 +198,7 @@ class K2Items extends K2Resource
 		$author = null;
 		if ($this->id)
 		{
-			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
-			$model = K2Model::getInstance('Users', 'K2Model');
-			$model->setState('id', $this->created_by);
-			$author = $model->getRow();
+			$author = K2Users::getInstance($this->created_by);
 		}
 		return $author;
 	}
@@ -253,7 +266,7 @@ class K2Items extends K2Resource
 	{
 		// Initialize value
 		$media = array();
-		
+
 		// Process only if value is set
 		if ($this->media)
 		{
@@ -356,6 +369,20 @@ class K2Items extends K2Resource
 		return JRoute::_('index.php?option=com_mailto&tmpl=component&template='.$template.'&link='.MailToHelper::addLink($this->url));
 	}
 
+	public function getComments()
+	{
+		$comments = array();
+		if ($this->id)
+		{
+			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
+			$model = K2Model::getInstance('Comments', 'K2Model');
+			$model->setState('itemId', $this->id);
+			$model->setState('state', 1);
+			$comments = $model->getRows();
+		}
+		return $comments;
+	}
+
 	public function getNumOfComments()
 	{
 		$result = 0;
@@ -364,6 +391,7 @@ class K2Items extends K2Resource
 			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
 			$model = K2Model::getInstance('Comments', 'K2Model');
 			$model->setState('itemId', $this->id);
+			$model->setState('state', 1);
 			$result = $model->countRows();
 		}
 		return $result;

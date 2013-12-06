@@ -101,32 +101,26 @@ class K2ModelAttachments extends K2Model
 	private function setQuerySorting(&$query)
 	{
 		$sorting = $this->getState('sorting');
-		$ordering = null;
-		if ($sorting)
+		switch($sorting)
 		{
-			switch($sorting)
-			{
-				default :
-				case 'id' :
-					$ordering = 'id';
-					$direction = 'DESC';
-					break;
-				case 'name' :
-					$ordering = 'name';
-					$direction = 'ASC';
-					break;
-				case 'downloads' :
-					$ordering = 'downloads';
-					$direction = 'DESC';
-					break;
-			}
+			default :
+			case 'id' :
+				$ordering = 'id';
+				$direction = 'DESC';
+				break;
+			case 'name' :
+				$ordering = 'name';
+				$direction = 'ASC';
+				break;
+			case 'downloads' :
+				$ordering = 'downloads';
+				$direction = 'DESC';
+				break;
 		}
 		// Append sorting
-		if ($ordering)
-		{
-			$db = $this->getDbo();
-			$query->order($db->quoteName($ordering).' '.$direction);
-		}
+		$db = $this->getDbo();
+		$query->order($db->quoteName($ordering).' '.$direction);
+		
 	}
 
 	public function download()

@@ -50,7 +50,7 @@ class K2Users extends K2Resource
 		if (empty(self::$instances[$id]))
 		{
 			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
-			$model = K2Model::getInstance('Users', 'K2Model');
+			$model = K2Model::getInstance('Users');
 			$model->setState('id', $id);
 			$item = $model->getRow();
 			self::$instances[$id] = $item;
@@ -80,7 +80,10 @@ class K2Users extends K2Resource
 		{
 			$this->enabled = (int)!$this->block;
 			$this->activated = (int)!$this->activation;
-			$this->groupsValue = implode(', ', $this->groups);
+			if(isset($this->groups))
+			{
+				$this->groupsValue = implode(', ', $this->groups);
+			}
 		}
 
 		

@@ -72,23 +72,34 @@ class K2Categories extends K2Resource
 
 		// Edit link
 		$this->editLink = '#categories/edit/'.$this->id;
-		
+
 		// Link
 		$this->link = $this->getLink();
 
 		// Permisisons
 		$user = JFactory::getUser();
-		$this->canEdit = $user->authorise('k2.category.edit', 'com_k2.category.'.$this->id) || ($user->id == $this->created_by && $user->authorise('k2.category.edit.own', 'com_k2.category.'.$this->id));
-		$this->canEditState = $user->authorise('k2.category.edit.state', 'com_k2.category.'.$this->id);
-		$this->canDelete = $user->authorise('k2.category.delete', 'com_k2.category.'.$this->id);
-		$this->canSort = $user->authorise('k2.category.edit', 'com_k2');
-		$this->canAddItem = $user->authorise('k2.item.create', 'com_k2.category.'.$this->id);
+		if ($user->guest)
+		{
+			$this->canEdit = false;
+			$this->canEditState = false;
+			$this->canDelete = false;
+			$this->canSort = false;
+			$this->canAddItem = false;
+		}
+		else
+		{
+			$this->canEdit = $user->authorise('k2.category.edit', 'com_k2.category.'.$this->id) || ($user->id == $this->created_by && $user->authorise('k2.category.edit.own', 'com_k2.category.'.$this->id));
+			$this->canEditState = $user->authorise('k2.category.edit.state', 'com_k2.category.'.$this->id);
+			$this->canDelete = $user->authorise('k2.category.delete', 'com_k2.category.'.$this->id);
+			$this->canSort = $user->authorise('k2.category.edit', 'com_k2');
+			$this->canAddItem = $user->authorise('k2.item.create', 'com_k2.category.'.$this->id);
+		}
 
 		// Image
 		$this->image = $this->getImage();
 
 	}
-	
+
 	public function getLink()
 	{
 		return JRoute::_('index.php?option=com_k2&view=category&id='.$this->id);

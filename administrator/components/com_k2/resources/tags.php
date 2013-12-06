@@ -57,7 +57,7 @@ class K2Tags extends K2Resource
 		}
 		return self::$instances[$id];
 	}
-	
+
 	/**
 	 * Prepares the row for output
 	 *
@@ -72,14 +72,33 @@ class K2Tags extends K2Resource
 
 		// Prepare specific properties
 		$this->editLink = '#tags/edit/'.$this->id;
-		
+
 		// Link
 		$this->link = $this->getLink();
 
+		// Num of items per tag
+		$application = JFactory::getApplication();
+		if ($application->isAdmin())
+		{
+			$this->items = $this->getItems();
+		}
+
 	}
-	
+
+	public function getItems()
+	{
+		$items = 0;
+		if ($this->id)
+		{
+			$model = K2Model::getInstance('Tags', 'K2Model');
+			$items = $model->countTagItems($this->id);
+		}
+		return $items;
+	}
+
 	public function getLink()
 	{
 		return JRoute::_('index.php?option=com_k2&view=tag&id='.$this->id);
 	}
+
 }

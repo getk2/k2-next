@@ -114,53 +114,48 @@ class K2ModelComments extends K2Model
 	private function setQuerySorting(&$query)
 	{
 		$sorting = $this->getState('sorting');
-		$ordering = null;
-		if ($sorting)
+
+		switch($sorting)
 		{
-			switch($sorting)
-			{
-				default :
-				case 'id' :
-					$ordering = 'comment.id';
-					$direction = 'DESC';
-					break;
-				case 'name' :
-					$ordering = 'comment.name';
-					$direction = 'ASC';
-					break;
-				case 'email' :
-					$ordering = 'comment.email';
-					$direction = 'ASC';
-					break;
-				case 'url' :
-					$ordering = 'comment.url';
-					$direction = 'ASC';
-					break;
-				case 'ip' :
-					$ordering = 'comment.ip';
-					$direction = 'ASC';
-					break;
-				case 'hostname' :
-					$ordering = 'comment.hostname';
-					$direction = 'ASC';
-					break;
-				case 'date' :
-					$ordering = 'comment.date';
-					$direction = 'DESC';
-					break;
-				case 'state' :
-					$ordering = 'comment.state';
-					$direction = 'DESC';
-					break;
-			}
+			default :
+			case 'id' :
+				$ordering = 'comment.id';
+				$direction = 'DESC';
+				break;
+			case 'name' :
+				$ordering = 'comment.name';
+				$direction = 'ASC';
+				break;
+			case 'email' :
+				$ordering = 'comment.email';
+				$direction = 'ASC';
+				break;
+			case 'url' :
+				$ordering = 'comment.url';
+				$direction = 'ASC';
+				break;
+			case 'ip' :
+				$ordering = 'comment.ip';
+				$direction = 'ASC';
+				break;
+			case 'hostname' :
+				$ordering = 'comment.hostname';
+				$direction = 'ASC';
+				break;
+			case 'date' :
+				$ordering = 'comment.date';
+				$direction = 'DESC';
+				break;
+			case 'state' :
+				$ordering = 'comment.state';
+				$direction = 'DESC';
+				break;
 		}
 
 		// Append sorting
-		if ($ordering)
-		{
-			$db = $this->getDbo();
-			$query->order($db->quoteName($ordering).' '.$direction);
-		}
+		$db = $this->getDbo();
+		$query->order($db->quoteName($ordering).' '.$direction);
+
 	}
 
 	/**
@@ -307,7 +302,7 @@ class K2ModelComments extends K2Model
 				$statistics->increaseUserCommentsCounter($table->userId);
 			}
 		}
-		
+
 		return true;
 	}
 

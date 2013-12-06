@@ -27,6 +27,7 @@ class K2ViewItem extends K2View
 		// Get input
 		$id = $application->input->get('id', 0, 'int');
 		$offset = $application->input->get('offset', 0, 'int');
+		$limit = $application->input->get('limit', 10, 'int');
 		$this->print = $application->input->getBool('print');
 
 		// Get item
@@ -41,6 +42,10 @@ class K2ViewItem extends K2View
 
 		// Trigger plugins
 		$this->item->triggerPlugins('item', $this->params, $offset);
+		
+		// Comments pagination
+		jimport('joomla.html.pagination');
+		$this->pagination = new JPagination($this->item->numOfComments, $offset, $limit);
 
 		// Set the layout
 		$this->setLayout('item');

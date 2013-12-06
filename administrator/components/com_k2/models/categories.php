@@ -27,10 +27,6 @@ class K2ModelCategories extends K2Model
 		// Select rows
 		$query->select($db->quoteName('category').'.*')->from($db->quoteName('#__k2_categories', 'category'));
 
-		// Join over the language
-		$query->select($db->quoteName('lang.title', 'languageTitle'));
-		$query->leftJoin($db->quoteName('#__languages', 'lang').' ON '.$db->quoteName('lang.lang_code').' = '.$db->quoteName('category.language'));
-
 		// Join over the asset groups.
 		$query->select($db->quoteName('assetGroup.title', 'viewLevel'));
 		$query->leftJoin($db->quoteName('#__viewlevels', 'assetGroup').' ON '.$db->quoteName('assetGroup.id').' = '.$db->quoteName('category.access'));
@@ -149,64 +145,59 @@ class K2ModelCategories extends K2Model
 	private function setQuerySorting(&$query)
 	{
 		$sorting = $this->getState('sorting');
-		$ordering = null;
-		if ($sorting)
+		switch($sorting)
 		{
-			switch($sorting)
-			{
-				default :
-				case 'id' :
-					$ordering = 'category.id';
-					$direction = 'DESC';
-					break;
-				case 'title' :
-					$ordering = 'category.title';
-					$direction = 'ASC';
-					break;
-				case 'ordering' :
-					$ordering = 'category.lft';
-					$direction = 'ASC';
-					break;
-				case 'state' :
-					$ordering = 'category.state';
-					$direction = 'DESC';
-					break;
-				case 'author' :
-					$ordering = 'authorName';
-					$direction = 'ASC';
-					break;
-				case 'moderator' :
-					$ordering = 'moderatorName';
-					$direction = 'ASC';
-					break;
-				case 'access' :
-					$ordering = 'viewLevel';
-					$direction = 'ASC';
-					break;
-				case 'created' :
-					$ordering = 'category.created';
-					$direction = 'DESC';
-					break;
-				case 'modified' :
-					$order = 'category.modified';
-					$direction = 'DESC';
-					break;
-				case 'language' :
-					$ordering = 'languageTitle';
-					$direction = 'ASC';
-					break;
-				case 'image' :
-					$ordering = 'category.image';
-					$direction = 'DESC';
-					break;
-			}
+			default :
+			case 'id' :
+				$ordering = 'category.id';
+				$direction = 'DESC';
+				break;
+			case 'title' :
+				$ordering = 'category.title';
+				$direction = 'ASC';
+				break;
+			case 'ordering' :
+				$ordering = 'category.lft';
+				$direction = 'ASC';
+				break;
+			case 'state' :
+				$ordering = 'category.state';
+				$direction = 'DESC';
+				break;
+			case 'author' :
+				$ordering = 'authorName';
+				$direction = 'ASC';
+				break;
+			case 'moderator' :
+				$ordering = 'moderatorName';
+				$direction = 'ASC';
+				break;
+			case 'access' :
+				$ordering = 'viewLevel';
+				$direction = 'ASC';
+				break;
+			case 'created' :
+				$ordering = 'category.created';
+				$direction = 'DESC';
+				break;
+			case 'modified' :
+				$order = 'category.modified';
+				$direction = 'DESC';
+				break;
+			case 'language' :
+				$ordering = 'languageTitle';
+				$direction = 'ASC';
+				break;
+			case 'image' :
+				$ordering = 'category.image';
+				$direction = 'DESC';
+				break;
 		}
+
 		// Append sorting
-		if ($ordering)
-		{
-			$db = $this->getDbo();
-			$query->order($db->quoteName($ordering).' '.$direction);
-		}
+		$db = $this->getDbo();
+		$query->order($db->quoteName($ordering).' '.$direction);
+
 	}
 
 	/**

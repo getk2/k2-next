@@ -122,45 +122,39 @@ class K2ModelExtraFields extends K2Model
 	private function setQuerySorting(&$query)
 	{
 		$sorting = $this->getState('sorting');
-		$ordering = null;
-		if ($sorting)
+		switch($sorting)
 		{
-			switch($sorting)
-			{
-				default :
-				case 'id' :
-					$ordering = 'extraField.id';
-					$direction = 'DESC';
-					break;
-				case 'name' :
-					$ordering = 'extraField.name';
-					$direction = 'ASC';
-					break;
-				case 'group' :
-					$ordering = 'groupName';
-					$direction = 'ASC';
-					break;
-				case 'type' :
-					$ordering = 'type';
-					$direction = 'ASC';
-					break;
-				case 'state' :
-					$ordering = 'extraField.state';
-					$direction = 'DESC';
-					break;
-				case 'ordering' :
-					$ordering = 'extraField.ordering';
-					$direction = 'ASC';
-					break;
-			}
+			default :
+			case 'id' :
+				$ordering = 'extraField.id';
+				$direction = 'DESC';
+				break;
+			case 'name' :
+				$ordering = 'extraField.name';
+				$direction = 'ASC';
+				break;
+			case 'group' :
+				$ordering = 'groupName';
+				$direction = 'ASC';
+				break;
+			case 'type' :
+				$ordering = 'type';
+				$direction = 'ASC';
+				break;
+			case 'state' :
+				$ordering = 'extraField.state';
+				$direction = 'DESC';
+				break;
+			case 'ordering' :
+				$ordering = 'extraField.ordering';
+				$direction = 'ASC';
+				break;
 		}
 
 		// Append sorting
-		if ($ordering)
-		{
-			$db = $this->getDbo();
-			$query->order($db->quoteName($ordering).' '.$direction);
-		}
+		$db = $this->getDbo();
+		$query->order($db->quoteName($ordering).' '.$direction);
+
 	}
 
 	/**

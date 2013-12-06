@@ -55,29 +55,33 @@ class K2ModelUsers extends K2Model
 		$data = $db->loadAssocList();
 
 		// Get user groups
-		if (count($data))
+		$application = JFactory::getApplication();
+		if ($application->isAdmin())
 		{
-			$groups = $this->getGroups();
-			$userIds = array();
-			foreach ($data as $user)
+			if (count($data))
 			{
-				$userIds[] = $user['id'];
-			}
-			$query = $db->getQuery(true);
-			$query->select('*');
-			$query->from($db->quoteName('#__user_usergroup_map', 'map'));
-			$query->where($db->quoteName('map.user_id').' IN ('.implode(',', $userIds).')');
-			$db->setQuery($query);
-			$mappings = $db->loadObjectList();
-
-			foreach ($data as &$user)
-			{
-				$user['groups'] = array();
-				foreach ($mappings as $mapping)
+				$groups = $this->getGroups();
+				$userIds = array();
+				foreach ($data as $user)
 				{
-					if ($mapping->user_id == $user['id'])
+					$userIds[] = $user['id'];
+				}
+				$query = $db->getQuery(true);
+				$query->select('*');
+				$query->from($db->quoteName('#__user_usergroup_map', 'map'));
+				$query->where($db->quoteName('map.user_id').' IN ('.implode(',', $userIds).')');
+				$db->setQuery($query);
+				$mappings = $db->loadObjectList();
+
+				foreach ($data as &$user)
+				{
+					$user['groups'] = array();
+					foreach ($mappings as $mapping)
 					{
-						$user['groups'][] = $groups[$mapping->group_id]->title;
+						if ($mapping->user_id == $user['id'])
+						{
+							$user['groups'][] = $groups[$mapping->group_id]->title;
+						}
 					}
 				}
 			}
@@ -155,49 +159,43 @@ class K2ModelUsers extends K2Model
 	private function setQuerySorting(&$query)
 	{
 		$sorting = $this->getState('sorting');
-		$ordering = null;
-		if ($sorting)
+		switch($sorting)
 		{
-			switch($sorting)
-			{
-				default :
-				case 'id' :
-					$ordering = 'user.id';
-					$direction = 'DESC';
-					break;
-				case 'name' :
-					$ordering = 'user.name';
-					$direction = 'ASC';
-					break;
-				case 'username' :
-					$ordering = 'user.username';
-					$direction = 'ASC';
-					break;
-				case 'email' :
-					$ordering = 'user.email';
-					$direction = 'ASC';
-					break;
-				case 'lastvisitDate' :
-					$ordering = 'user.lastvisitDate';
-					$direction = 'DESC';
-					break;
-				case 'ip' :
-					$ordering = 'profile.ip';
-					$direction = 'ASC';
-					break;
-				case 'hostname' :
-					$ordering = 'profile.hostname';
-					$direction = 'ASC';
-					break;
-			}
+			default :
+			case 'id' :
+				$ordering = 'user.id';
+				$direction = 'DESC';
+				break;
+			case 'name' :
+				$ordering = 'user.name';
+				$direction = 'ASC';
+				break;
+			case 'username' :
+				$ordering = 'user.username';
+				$direction = 'ASC';
+				break;
+			case 'email' :
+				$ordering = 'user.email';
+				$direction = 'ASC';
+				break;
+			case 'lastvisitDate' :
+				$ordering = 'user.lastvisitDate';
+				$direction = 'DESC';
+				break;
+			case 'ip' :
+				$ordering = 'profile.ip';
+				$direction = 'ASC';
+				break;
+			case 'hostname' :
+				$ordering = 'profile.hostname';
+				$direction = 'ASC';
+				break;
 		}
 
 		// Append sorting
-		if ($ordering)
-		{
-			$db = $this->getDbo();
-			$query->order($db->quoteName($ordering).' '.$direction);
-		}
+		$db = $this->getDbo();
+		$query->order($db->quoteName($ordering).' '.$direction);
+
 	}
 
 	/**
@@ -404,7 +402,6 @@ class K2ModelUsers extends K2Model
 		}
 		return true;
 	}
-
 
 	/**
 	 * onAfterDelete method. Hook for chidlren model.

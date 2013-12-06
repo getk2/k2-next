@@ -39,10 +39,6 @@ class K2ModelItems extends K2Model
 		$query->select($db->quoteName('category.params', 'categoryParams'));
 		$query->leftJoin($db->quoteName('#__k2_categories', 'category').' ON '.$db->quoteName('category.id').' = '.$db->quoteName('item.catid'));
 
-		// Join over the language
-		$query->select($db->quoteName('lang.title', 'languageTitle'));
-		$query->leftJoin($db->quoteName('#__languages', 'lang').' ON '.$db->quoteName('lang.lang_code').' = '.$db->quoteName('item.language'));
-
 		// Join over the asset groups.
 		$query->select($db->quoteName('assetGroup.title', 'viewLevel'));
 		$query->leftJoin($db->quoteName('#__viewlevels', 'assetGroup').' ON '.$db->quoteName('assetGroup.id').' = '.$db->quoteName('item.access'));
@@ -197,92 +193,86 @@ class K2ModelItems extends K2Model
 	private function setQuerySorting(&$query)
 	{
 		$sorting = $this->getState('sorting');
-		$ordering = null;
-		if ($sorting)
+		switch($sorting)
 		{
-			switch($sorting)
-			{
-				default :
-				case 'id' :
-					$ordering = 'item.id';
-					$direction = 'DESC';
-					break;
-				case 'title' :
-					$ordering = 'item.title';
-					$direction = 'ASC';
-					break;
-				case 'ordering' :
-					$ordering = array(
-						'category.lft',
-						'item.ordering'
-					);
-					$direction = 'ASC';
-					break;
-				case 'featured_ordering' :
-					$ordering = 'item.featured_ordering';
-					$direction = 'ASC';
-					break;
-				case 'state' :
-					$ordering = 'item.state';
-					$direction = 'DESC';
-					break;
-				case 'featured' :
-					$ordering = 'item.featured';
-					$direction = 'DESC';
-					break;
-				case 'category' :
-					$ordering = 'categoryName';
-					$direction = 'ASC';
-					break;
-				case 'author' :
-					$ordering = 'authorName';
-					$direction = 'ASC';
-					break;
-				case 'moderator' :
-					$ordering = 'moderatorName';
-					$direction = 'ASC';
-					break;
-				case 'access' :
-					$ordering = 'viewLevel';
-					$direction = 'ASC';
-					break;
-				case 'created' :
-					$ordering = 'item.created';
-					$direction = 'DESC';
-					break;
-				case 'modified' :
-					$ordering = 'item.modified';
-					$direction = 'DESC';
-					break;
-				case 'hits' :
-					$ordering = 'hits';
-					$direction = 'DESC';
-					break;
-				case 'language' :
-					$ordering = 'languageTitle';
-					$direction = 'ASC';
-					break;
-			}
+			default :
+			case 'id' :
+				$ordering = 'item.id';
+				$direction = 'DESC';
+				break;
+			case 'title' :
+				$ordering = 'item.title';
+				$direction = 'ASC';
+				break;
+			case 'ordering' :
+				$ordering = array(
+					'category.lft',
+					'item.ordering'
+				);
+				$direction = 'ASC';
+				break;
+			case 'featured_ordering' :
+				$ordering = 'item.featured_ordering';
+				$direction = 'ASC';
+				break;
+			case 'state' :
+				$ordering = 'item.state';
+				$direction = 'DESC';
+				break;
+			case 'featured' :
+				$ordering = 'item.featured';
+				$direction = 'DESC';
+				break;
+			case 'category' :
+				$ordering = 'categoryName';
+				$direction = 'ASC';
+				break;
+			case 'author' :
+				$ordering = 'authorName';
+				$direction = 'ASC';
+				break;
+			case 'moderator' :
+				$ordering = 'moderatorName';
+				$direction = 'ASC';
+				break;
+			case 'access' :
+				$ordering = 'viewLevel';
+				$direction = 'ASC';
+				break;
+			case 'created' :
+				$ordering = 'item.created';
+				$direction = 'DESC';
+				break;
+			case 'modified' :
+				$ordering = 'item.modified';
+				$direction = 'DESC';
+				break;
+			case 'hits' :
+				$ordering = 'hits';
+				$direction = 'DESC';
+				break;
+			case 'language' :
+				$ordering = 'languageTitle';
+				$direction = 'ASC';
+				break;
 		}
 		// Append sorting
-		if ($ordering)
+		$db = $this->getDbo();
+		if (is_array($ordering))
 		{
-			$db = $this->getDbo();
-			if (is_array($ordering))
+			$conditions = array();
+			foreach ($ordering as $column)
 			{
-				$conditions = array();
-				foreach ($ordering as $column)
-				{
-					$conditions[] = $db->quoteName($column).' '.$direction;
-				}
-				$query->order(implode(', ', $conditions));
+				$conditions[] = $db->quoteName($column).' '.$direction;
 			}
-			else
-			{
-				$query->order($db->quoteName($ordering).' '.$direction);
-
-			}
+			$query->order(implode(', ', $conditions));
 		}
+		else
+		{
+			$query->order($db->quoteName($ordering).' '.$direction);
+
+		}
+
 	}
 
 	/**
@@ -739,8 +729,6 @@ class K2ModelItems extends K2Model
 			$attachmentsModel->setState('id', $attachment->id);
 			$attachmentsModel->delete();
 		}
-		
-		
 
 		// Handle statistics
 		// First get statistics model
@@ -764,7 +752,7 @@ class K2ModelItems extends K2Model
 
 		// Get source item properties as data array. This array will be the inout to the model.
 		$data = get_object_vars($source);
-		
+
 		// It's a new item so reset some properties
 		$data['id'] = '';
 		$data['tmpId'] = uniqid();
