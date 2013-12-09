@@ -31,16 +31,10 @@ class K2ViewItemlist extends K2View
 		$limit = $application->input->get('limit', 10, 'int');
 
 		// Get items
-		$date = JFactory::getDate()->toSql();
 		$model = K2Model::getInstance('Items');
+		$model->setState('site', true);
 		$model->setState('limit', $limit);
 		$model->setState('limitstart', $offset);
-		$model->setState('state', 1);
-		$model->setState('access', $this->user->getAuthorisedViewLevels());
-		$model->setState('publish_up', $date);
-		$model->setState('publish_down', $date);
-		$model->setState('category.state', 1);
-		$model->setState('category.access', $this->user->getAuthorisedViewLevels());
 		if ($task == 'category')
 		{
 			$model->setState('category', $id);
@@ -58,7 +52,7 @@ class K2ViewItemlist extends K2View
 		// Plugins
 		foreach ($this->items as $item)
 		{
-			$item->triggerPlugins('itemlist', $this->params, $offset);
+			$item->triggerPlugins('com_k2.itemlist', $this->params, $offset);
 		}
 
 		// Set the layout

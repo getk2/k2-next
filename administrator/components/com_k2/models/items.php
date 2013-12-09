@@ -19,6 +19,9 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/galleries.php';
 
 class K2ModelItems extends K2Model
 {
+
+	private $authorisedCategories = null;
+
 	public function getRows()
 	{
 		// Get database
@@ -110,6 +113,24 @@ class K2ModelItems extends K2Model
 	private function setQueryConditions(&$query)
 	{
 		$db = $this->getDBO();
+
+		if ($this->getState('site'))
+		{
+			// Get current datetime
+			$date = JFactory::getDate()->toSql();
+
+			// Get authorised view levels
+			$viewlevels = array_unique(JFactory::getUser()->getAuthorisedViewLevels());
+
+			// Published items only
+			$this->setState('state', 1);
+			$this->setState('publish_up', $date);
+			$this->setState('publish_down', $date);
+
+			// Set state for access
+			$this->setState('access', $viewlevels);
+		}
+
 		if ($this->getState('language'))
 		{
 			$query->where($db->quoteName('item.language').' = '.$db->quote($this->getState('language')));
@@ -124,16 +145,34 @@ class K2ModelItems extends K2Model
 		}
 		if ($this->getState('category'))
 		{
-			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
-			$model = K2Model::getInstance('Categories');
-			$root = $model->getTable();
-			$tree = $root->getTree((int)$this->getState('category'));
-			$categories = array();
-			foreach ($tree as $category)
+			if ($this->getState('recursive'))
 			{
-				$categories[] = $category->id;
+				K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
+				$model = K2Model::getInstance('Categories');
+				$root = $model->getTable();
+				$tree = $root->getTree((int)$this->getState('category'));
+				$categories = array();
+				foreach ($tree as $category)
+				{
+					$categories[] = $category->id;
+				}
+			}
+			else
+			{
+				$categories = array((int)$this->getState('category'));
+			}
+			if ($this->getState('site'))
+			{
+				$categories = array_intersect($categories, $this->getAuthorisedCategories());
 			}
 			$query->where($db->quoteName('item.catid').' IN ('.implode(',', $categories).')');
+		}
+		else
+		{
+			if ($this->getState('site'))
+			{
+				$query->where($db->quoteName('item.catid').' IN ('.implode(',', $this->getAuthorisedCategories()).')');
+			}
 		}
 		if ($this->getState('access'))
 		{
@@ -191,23 +230,14 @@ class K2ModelItems extends K2Model
 				OR LOWER('.$db->quoteName('item.fulltext').') LIKE '.$db->Quote('%'.$search.'%', false).')');
 			}
 		}
-		if (is_numeric($this->getState('category.state')))
+
+		if ($this->getState('month'))
 		{
-			$query->where($db->quoteName('category.state').' = '.(int)$this->getState('category.state'));
+			$query->where('MONTH('.$db->quoteName('item.created').') = '.(int)$this->getState('month'));
 		}
-		if ($this->getState('category.access'))
+		if ($this->getState('year'))
 		{
-			$access = $this->getState('category.access');
-			if (is_array($access))
-			{
-				$access = array_unique($access);
-				JArrayHelper::toInteger($access);
-				$query->where($db->quoteName('category.access').' IN ('.implode(',', $access).')');
-			}
-			else
-			{
-				$query->where($db->quoteName('category.access').' = '.(int)$access);
-			}
+			$query->where('YEAR('.$db->quoteName('item.created').') = '.(int)$this->getState('year'));
 		}
 	}
 
@@ -294,6 +324,38 @@ class K2ModelItems extends K2Model
 
 		}
 
+	}
+
+	/**
+	 * getAuthorisedCategories method.
+	 *
+	 * @return array
+	 */
+	private function getAuthorisedCategories()
+	{
+
+		if (is_null($this->authorisedCategories))
+		{
+			// Get database
+			$db = $this->getDBO();
+
+			// Get authorised view levels
+			$viewlevels = array_unique(JFactory::getUser()->getAuthorisedViewLevels());
+
+			// Get query
+			$query = $db->getQuery(true);
+
+			// Build query
+			$query->select($db->quoteName('id'))->from('#__k2_categories')->where($db->quoteName('state').' = 1')->where($db->quoteName('access').' IN ('.implode(',', $viewlevels).')');
+
+			// Set query
+			$db->setQuery($query);
+
+			// Load result
+			$this->authorisedCategories = $db->loadColumn();
+		}
+
+		return $this->authorisedCategories;
 	}
 
 	/**
@@ -514,6 +576,25 @@ class K2ModelItems extends K2Model
 			$data['galleries'] = json_encode($galleries);
 		}
 
+		if (isset($data['attachments']))
+		{
+			$data['_attachments'] = $data['attachments'];
+			$data['attachments'] = json_encode($data['attachments']['id']);
+		}
+
+		if (isset($data['tags']))
+		{
+			$model = K2Model::getInstance('Tags', 'K2Model');
+			$tags = explode(',', $data['tags']);
+			$tags = array_unique($tags);
+			$data['tags'] = array();
+			foreach ($tags as $tag)
+			{
+				$data['tags'][] = $model->addTag($tag);
+			}
+			$data['tags'] = json_encode($data['tags']);
+		}
+
 		// Extra fields
 		if (isset($data['extra_fields']))
 		{
@@ -533,17 +614,13 @@ class K2ModelItems extends K2Model
 	protected function onAfterSave(&$data, $table)
 	{
 		// Tags
-		if (isset($data['tags']) && JString::trim($data['tags']) != '')
+		if (isset($data['tags']) && is_array($data['tags']))
 		{
 			$model = K2Model::getInstance('Tags', 'K2Model');
 			$itemId = $this->getState('id');
 			$model->deleteItemTags($itemId);
-
-			$tags = explode(',', $data['tags']);
-			$tags = array_unique($tags);
-			foreach ($tags as $tag)
+			foreach ($tags as $tagId)
 			{
-				$tagId = $model->addTag($tag);
 				$model->tagItem($tagId, $itemId);
 			}
 		}
@@ -581,6 +658,7 @@ class K2ModelItems extends K2Model
 					$filesystem->rename($path.'/'.$source, $path.'/'.$target);
 				}
 			}
+
 		}
 
 		// If we have a tmpId we need to rename the gallery directory
@@ -609,7 +687,7 @@ class K2ModelItems extends K2Model
 			}
 		}
 
-		if (isset($data['attachments']))
+		if (isset($data['_attachments']))
 		{
 
 			$filesystem = K2FileSystem::getInstance();
@@ -617,10 +695,10 @@ class K2ModelItems extends K2Model
 			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
 			$model = K2Model::getInstance('Attachments', 'K2Model');
 
-			$ids = $data['attachments']['id'];
-			$names = $data['attachments']['name'];
-			$titles = $data['attachments']['title'];
-			$files = $data['attachments']['file'];
+			$ids = $data['_attachments']['id'];
+			$names = $data['_attachments']['name'];
+			$titles = $data['_attachments']['title'];
+			$files = $data['_attachments']['file'];
 			$path = 'media/k2/attachments';
 
 			foreach ($ids as $key => $value)
@@ -642,7 +720,6 @@ class K2ModelItems extends K2Model
 				$model->setState('data', $attachmentsData);
 				$model->save();
 			}
-
 			if ($data['tmpId'] && $filesystem->has($path.'/'.$data['tmpId']))
 			{
 				$filesystem->delete($path.'/'.$data['tmpId']);
@@ -916,6 +993,44 @@ class K2ModelItems extends K2Model
 
 		// Return the input data
 		return $data;
+	}
+
+	public function getArchive()
+	{
+		// Get database
+		$db = $this->getDBO();
+
+		// Get query
+		$query = $db->getQuery(true);
+
+		// Select rows
+		$query->select('DISTINCT MONTH('.$db->quoteName('item.created').') AS '.$db->quoteName('month'));
+		$query->select('YEAR('.$db->quoteName('item.created').') AS '.$db->quoteName('year'));
+		$query->from($db->quoteName('#__k2_items', 'item'));
+
+		// Join over the categories
+		$query->leftJoin($db->quoteName('#__k2_categories', 'category').' ON '.$db->quoteName('category.id').' = '.$db->quoteName('item.catid'));
+
+		// Set states for site
+		$this->setSiteStates();
+
+		// Set query conditions
+		$this->setQueryConditions($query);
+
+		// Set query sorting
+		$this->setQuerySorting($query);
+
+		// Hook for plugins
+		$this->onBeforeSetQuery($query, 'com_k2.archive');
+
+		// Set the query
+		$db->setQuery($query, 0, 12);
+
+		// Get rows
+		$rows = $db->loadObjectList();
+
+		// Return rows
+		return $rows;
 	}
 
 }

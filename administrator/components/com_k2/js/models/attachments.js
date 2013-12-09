@@ -1,6 +1,6 @@
-define(['backbone'], function(Backbone) {'use strict';
+define(['backbone', 'model'], function(Backbone, K2Model) {'use strict';
 
-	var K2ModelAttachments = Backbone.Model.extend({
+	var K2ModelAttachments = K2Model.extend({
 		initialize : function() {
 			this.set('cid', this.cid);
 		},

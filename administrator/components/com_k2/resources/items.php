@@ -15,6 +15,7 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/resource.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/categories.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/users.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/tags.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/attachments.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/extrafields.php';
 
 /**
@@ -180,11 +181,9 @@ class K2Items extends K2Resource
 	public function getTags()
 	{
 		$tags = array();
-		if ($this->id)
+		$tagIds = json_decode($this->tags);
+		if ($this->id && is_array($tagIds))
 		{
-			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
-			$model = K2Model::getInstance('Tags', 'K2Model');
-			$tagIds = $model->getItemTags($this->id);
 			foreach ($tagIds as $tagId)
 			{
 				$tags[] = K2Tags::getInstance($tagId);
@@ -330,12 +329,13 @@ class K2Items extends K2Resource
 	public function getAttachments()
 	{
 		$attachments = array();
-		if ($this->id)
+		$this->attachments = json_decode($this->attachments);
+		if (is_array($this->attachments))
 		{
-			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
-			$model = K2Model::getInstance('Attachments', 'K2Model');
-			$model->setState('itemId', $this->id);
-			$attachments = $model->getRows();
+			foreach ($this->attachments as $attachmentId)
+			{
+				$attachments[] = K2Attachments::getInstance($attachmentId);
+			}
 		}
 		return $attachments;
 	}
@@ -397,7 +397,7 @@ class K2Items extends K2Resource
 		return $result;
 	}
 
-	public function triggerPlugins($view, &$params, $offset)
+	public function triggerPlugins($context, &$params, $offset)
 	{
 		// Get dispatcher
 		$dispatcher = JDispatcher::getInstance();
@@ -416,27 +416,27 @@ class K2Items extends K2Resource
 
 		// Content plugins
 		$dispatcher->trigger('onContentPrepare', array(
-			'com_k2.'.$view,
+			$context,
 			&$this,
 			&$params,
 			$offset
 		));
 		$results = $dispatcher->trigger('onContentAfterTitle', array(
-			'com_k2.'.$view,
+			$context,
 			&$this,
 			&$params,
 			$offset
 		));
 		$this->events->AfterDisplayTitle = trim(implode("\n", $results));
 		$results = $dispatcher->trigger('onContentBeforeDisplay', array(
-			'com_k2.'.$view,
+			$context,
 			&$this,
 			&$params,
 			$offset
 		));
 		$this->events->BeforeDisplayContent = trim(implode("\n", $results));
 		$results = $dispatcher->trigger('onContentAfterDisplay', array(
-			'com_k2.'.$view,
+			$context,
 			&$this,
 			&$params,
 			$offset

@@ -41,7 +41,7 @@ class K2ViewItem extends K2View
 		$this->params->merge($this->item->params);
 
 		// Trigger plugins
-		$this->item->triggerPlugins('item', $this->params, $offset);
+		$this->item->triggerPlugins('com_k2.item', $this->params, $offset);
 		
 		// Comments pagination
 		jimport('joomla.html.pagination');

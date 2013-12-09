@@ -1,5 +1,5 @@
-define(['backbone', 'models/attachments'], function(K2Collection, K2ModelAttachments) {'use strict';
-	var K2CollectionAttachments = Backbone.Collection.extend({
+define(['backbone', 'collection', 'models/attachments'], function(Backbone, K2Collection, K2ModelAttachments) {'use strict';
+	var K2CollectionAttachments = K2Collection.extend({
 		initialize : function() {
 			this.states = new Backbone.Model();
 		},
