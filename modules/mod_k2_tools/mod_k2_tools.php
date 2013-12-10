@@ -12,9 +12,10 @@ defined('_JEXEC') or die ;
 
 require_once dirname(__FILE__).'/helper.php';
 require_once JPATH_SITE.'/components/com_k2/helpers/route.php';
+require_once JPATH_SITE.'/components/com_k2/helpers/utilities.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/items.php';
 
-switch ($params->get('usage', 'archive'))
+switch ($params->get('usage'))
 {
 	case 'archive' :
 		$months = ModK2ToolsHelper::getArchive($params);
@@ -27,33 +28,33 @@ switch ($params->get('usage', 'archive'))
 		break;
 
 	case 'calendar' :
-		$calendar = ModK2ToolsHelper::calendar($params);
+		$calendar = ModK2ToolsHelper::getCalendar($params);
 		require JModuleHelper::getLayoutPath('mod_k2_tools', 'calendar');
 		break;
 
 	case 'breadcrumbs' :
-		$breadcrumbs = ModK2ToolsHelper::breadcrumbs($params);
+		$breadcrumbs = ModK2ToolsHelper::getBreadcrumbs($params);
 		require JModuleHelper::getLayoutPath('mod_k2_tools', 'breadcrumbs');
 		break;
 
 	case 'categories' :
-		$output = ModK2ToolsHelper::treerecurse($params, 0, 0, true);
+		$categories = ModK2ToolsHelper::getCategories($params);
 		require JModuleHelper::getLayoutPath('mod_k2_tools', 'categories');
 		break;
 
 	case 'categoriesList' :
-		echo ModK2ToolsHelper::treeselectbox($params);
+		$categories = ModK2ToolsHelper::getCategories($params);
+		require JModuleHelper::getLayoutPath('mod_k2_tools', 'categories_select');
 		break;
 
 	case 'search' :
-		$categoryFilter = ModK2ToolsHelper::getSearchCategoryFilter($params);
-		$action = JRoute::_(K2HelperRoute::getSearchRoute());
+		$search = ModK2ToolsHelper::getSearch($params);
 		require JModuleHelper::getLayoutPath('mod_k2_tools', 'search');
 		break;
 
 	case 'tags' :
-		$tags = ModK2ToolsHelper::tagCloud($params);
-		require JModuleHelper::getLayoutPath('mod_k2_tools', 'tags');
+		$tags = ModK2ToolsHelper::getTagCloud($params);
+		//require JModuleHelper::getLayoutPath('mod_k2_tools', 'tags');
 		break;
 
 	case 'custom' :

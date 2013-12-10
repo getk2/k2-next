@@ -230,7 +230,10 @@ class K2ModelItems extends K2Model
 				OR LOWER('.$db->quoteName('item.fulltext').') LIKE '.$db->Quote('%'.$search.'%', false).')');
 			}
 		}
-
+		if ($this->getState('day'))
+		{
+			$query->where('DAY('.$db->quoteName('item.created').') = '.(int)$this->getState('day'));
+		}
 		if ($this->getState('month'))
 		{
 			$query->where('MONTH('.$db->quoteName('item.created').') = '.(int)$this->getState('month'));
@@ -1033,8 +1036,6 @@ class K2ModelItems extends K2Model
 		return $rows;
 	}
 
-
-
 	public function getAuthors()
 	{
 		// Get database
@@ -1071,4 +1072,5 @@ class K2ModelItems extends K2Model
 		// Return rows
 		return $rows;
 	}
+
 }

@@ -72,7 +72,7 @@ class K2Model extends JModelLegacy
 
 	public function getRow()
 	{
-		if (method_exists($this, 'getRows') && $this->getState('id'))
+		if (method_exists($this, 'getRows') && $this->getState('id') || $this->getState('alias'))
 		{
 			$rows = $this->getRows();
 			if (isset($rows[0]))

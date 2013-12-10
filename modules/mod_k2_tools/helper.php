@@ -65,171 +65,233 @@ class ModK2ToolsHelper
 		$model->setState('site', true);
 		$model->setState('category', $params->get('authors_module_category', 0));
 		$rows = $model->getAuthors();
-
 		$authors = array();
 		if (count($rows))
 		{
 			foreach ($rows as $row)
 			{
 				$author = K2Users::getInstance($row->created_by);
-				$model->setState('site', true);
-				$model->setState('author', $author->id);
-				$model->setState('limit', 1);
-				$model->setState('sorting', 'created');
-				$latest = $model->getRows();
-				$author->latest = $latest[0];
-				$author->items = $model->countRows();
+				if ($params->get('authorLatestItem'))
+				{
+					$model->setState('site', true);
+					$model->setState('author', $author->id);
+					$model->setState('limit', 1);
+					$model->setState('sorting', 'created');
+					$latest = $model->getRows();
+					$author->latest = $latest[0];
+				}
+				if ($params->get('authorItemsCounter'))
+				{
+					$model->setState('site', true);
+					$model->setState('author', $author->id);
+					$author->items = $model->countRows();
+				}
+
 				$authors[] = $author;
 			}
 		}
 		return $authors;
 	}
 
+	public static function getCalendar($params)
+	{
+		require_once dirname(__FILE__).'/includes/k2calendar.php';
+
+		$application = JFactory::getApplication();
+		$month = $application->input->get('month', 0, 'int');
+		$year = $application->input->get('year', 0, 'int');
+
+		$months = array(
+			JText::_('K2_JANUARY'),
+			JText::_('K2_FEBRUARY'),
+			JText::_('K2_MARCH'),
+			JText::_('K2_APRIL'),
+			JText::_('K2_MAY'),
+			JText::_('K2_JUNE'),
+			JText::_('K2_JULY'),
+			JText::_('K2_AUGUST'),
+			JText::_('K2_SEPTEMBER'),
+			JText::_('K2_OCTOBER'),
+			JText::_('K2_NOVEMBER'),
+			JText::_('K2_DECEMBER'),
+		);
+		$days = array(
+			JText::_('K2_SUN'),
+			JText::_('K2_MON'),
+			JText::_('K2_TUE'),
+			JText::_('K2_WED'),
+			JText::_('K2_THU'),
+			JText::_('K2_FRI'),
+			JText::_('K2_SAT'),
+		);
+
+		$calendar = new K2Calendar();
+		$calendar->category = $params->get('calendarCategory', 0);
+		$calendar->setStartDay(1);
+		$calendar->setMonthNames($months);
+		$calendar->setDayNames($days);
+
+		if (($month) && ($year))
+		{
+			return $calendar->getMonthView($month, $year);
+		}
+		else
+		{
+			return $calendar->getCurrentMonthView();
+		}
+	}
+
+	public static function getBreadcrumbs($params)
+	{
+		$application = JFactory::getApplication();
+		$option = $application->input->get('option', '', 'cmd');
+		$view = $application->input->get('view', '', 'cmd');
+		$task = $application->input->get('task', '', 'cmd');
+		$id = $application->input->get('id', 0, 'int');
+
+		$breadcrumbs = new stdClass;
+		$breadcrumbs->title = '';
+		$breadcrumbs->path = array();
+		$breadcrumbs->home = $params->get('home', JText::_('K2_HOME'));
+		$breadcrumbs->separator = $params->get('seperator', '&raquo;');
+
+		if ($option == 'com_k2' && $view == 'item' || ($view == 'itemlist' && $task == 'category'))
+		{
+
+			switch ($view)
+			{
+				case 'item' :
+					$item = K2Items::getInstance($id);
+					$breadcrumbs->title = $item->title;
+					$categories = explode('/', $item->category->path);
+					foreach ($categories as $alias)
+					{
+						$breadcrumbs->path[] = K2Categories::getInstance($alias);
+					}
+					break;
+
+				case 'itemlist' :
+					$category = K2Categories::getInstance($id);
+					$breadcrumbs->title = $category->title;
+					$categories = explode('/', $category->path);
+					foreach ($categories as $alias)
+					{
+						$breadcrumbs->path[] = K2Categories::getInstance($alias);
+					}
+					break;
+			}
+
+		}
+		else
+		{
+			$document = JFactory::getDocument();
+			$breadcrumbs->title = $document->getTitle();
+			$pathway = $application->getPathway();
+			$items = $pathway->getPathWay();
+			foreach ($items as $item)
+			{
+				$item->title = $item->name;
+				$breadcrumbs->path[] = $item;
+			}
+			array_pop($breadcrumbs->path);
+		}
+
+		return $breadcrumbs;
+	}
+
+	public static function getCategories($params)
+	{
+		$application = JFactory::getApplication();
+		$option = $application->input->get('option', '', 'cmd');
+		$view = $application->input->get('view', '', 'cmd');
+		$task = $application->input->get('task', '', 'cmd');
+		$id = $application->input->get('id', 0, 'int');
+		$endLevel = $params->get('end_level', NULL);
+
+		K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
+		$model = K2Model::getInstance('Categories');
+		$model->setState('site', true);
+		$model->setState('root', $params->get('root_id', 1));
+		$model->setState('sorting', 'ordering');
+		$categories = $model->getRows();
+		foreach ($categories as $category)
+		{
+			$category->active = ($option == 'com_k2' && $view == 'itemlist' && $task == 'category' && $id == $category->id);
+		}
+
+		return $categories;
+	}
+
+	public static function getSearch($params)
+	{
+		$application = JFactory::getApplication();
+		$search = new stdClass;
+		$search->action = JRoute::_(K2HelperRoute::getSearchRoute());
+		$search->text = $params->get('text', JText::_('K2_SEARCH'));
+		$search->width = intval($params->get('width', 20));
+		$search->maxLength = $search->width > 20 ? $search->width : 20;
+		$search->button = $params->get('button');
+		$search->buttonText = htmlspecialchars($params->get('button_text', JText::_('K2_SEARCH')));
+		$search->imageButton = $params->get('imagebutton');
+		$search->buttonPosition = $params->get('button_pos', 'left');
+		$search->sef = $application->getCfg('sef');
+		$search->filter = '';
+
+		if ($params->get('catfilter'))
+		{
+			$categoryId = $params->get('category_id', NULL);
+			if (!is_null($categoryId))
+			{
+				if (!is_array($categoryId))
+				{
+					$categories = array($categoryId);
+				}
+				else
+				{
+					$categories = $categoryId;
+				}
+				$model = K2Model::getInstance('Categories');
+				$model->setState('site', true);
+				$model->setState('id', $categories);
+				$filter = $model->getRows();
+				$search->filter = implode(',', $filter);
+			}
+		}
+
+		return $search;
+
+	}
+
+	public static function getTagCloud($params)
+	{
+
+
+		$db = JFactory::getDBo();
+		
+		$query = $db->getQuery(true);
+		$query->select($db->quoteName('tag').'.*');
+		$query->select('COUNT('.$db->quoteName('xref.itemId').') AS counter');
+		$query->from($db->quoteName('#__k2_tags', 'tag'));
+		$query->rightJoin($db->quoteName('#__k2_tags_xref', 'xref').' ON '.$db->quoteName('xref.tagId').' = '.$db->quoteName('tag.id'));
+		$query->where($db->quoteName('tag.state').' = 1');
+		$query->rightJoin($db->quoteName('#__k2_items', 'item').' ON '.$db->quoteName('item.id').' = '.$db->quoteName('xref.itemId'));
+		$query->where($db->quoteName('item.state').' = 1');
+		
+		$query->where($db->quoteName('item.catid').' IN (1,2,3,10,11,12,13,14,15)');
+		$query->where($db->quoteName('item.access').' IN (1,5)');
+
+		
+		$query->group($db->quoteName('tag.id'));
+		$db->setQuery($query);
+		$tags = $db->loadObjectList();
+		
+
+		var_dump($tags);
+		
+
+	}
+
 	/*
-	 public static function tagCloud(&$params)
-	 {
-
-	 $mainframe = JFactory::getApplication();
-	 $user = JFactory::getUser();
-	 $aid = (int)$user->get('aid');
-	 $db = JFactory::getDBO();
-
-	 $jnow = JFactory::getDate();
-	 $now = K2_JVERSION == '15' ? $jnow->toMySQL() : $jnow->toSql();
-
-	 $nullDate = $db->getNullDate();
-
-	 $query = "SELECT i.id FROM #__k2_items as i";
-	 $query .= " LEFT JOIN #__k2_categories c ON c.id = i.catid";
-	 $query .= " WHERE i.published=1 ";
-	 $query .= " AND ( i.publish_up = ".$db->Quote($nullDate)." OR i.publish_up <= ".$db->Quote($now)." ) ";
-	 $query .= " AND ( i.publish_down = ".$db->Quote($nullDate)." OR i.publish_down >= ".$db->Quote($now)." )";
-	 $query .= " AND i.trash=0 ";
-	 if (K2_JVERSION != '15')
-	 {
-	 $query .= " AND i.access IN(".implode(',', $user->getAuthorisedViewLevels()).") ";
-	 }
-	 else
-	 {
-	 $query .= " AND i.access <= {$aid} ";
-	 }
-	 $query .= " AND c.published=1 ";
-	 $query .= " AND c.trash=0 ";
-	 if (K2_JVERSION != '15')
-	 {
-	 $query .= " AND c.access IN(".implode(',', $user->getAuthorisedViewLevels()).") ";
-	 }
-	 else
-	 {
-	 $query .= " AND c.access <= {$aid} ";
-	 }
-
-	 $cloudCategory = $params->get('cloud_category');
-	 if (is_array($cloudCategory))
-	 {
-	 $cloudCategory = array_filter($cloudCategory);
-	 }
-	 if ($cloudCategory)
-	 {
-	 if (!is_array($cloudCategory))
-	 {
-	 $cloudCategory = (array)$cloudCategory;
-	 }
-	 foreach ($cloudCategory as $cloudCategoryID)
-	 {
-	 $categories[] = $cloudCategoryID;
-	 if ($params->get('cloud_category_recursive'))
-	 {
-	 $children = modK2ToolsHelper::getCategoryChildren($cloudCategoryID);
-	 $categories = @array_merge($categories, $children);
-	 }
-	 }
-	 $categories = @array_unique($categories);
-	 JArrayHelper::toInteger($categories);
-	 if (count($categories) == 1)
-	 {
-	 $query .= " AND i.catid={$categories[0]}";
-	 }
-	 else
-	 {
-	 $query .= " AND i.catid IN(".implode(',', $categories).")";
-	 }
-	 }
-
-	 if (K2_JVERSION != '15')
-	 {
-	 if ($mainframe->getLanguageFilter())
-	 {
-	 $languageTag = JFactory::getLanguage()->getTag();
-	 $query .= " AND c.language IN (".$db->Quote($languageTag).", ".$db->Quote('*').") AND i.language IN (".$db->Quote($languageTag).", ".$db->Quote('*').") ";
-	 }
-	 }
-
-	 $db->setQuery($query);
-	 $IDs = K2_JVERSION == '30' ? $db->loadColumn() : $db->loadResultArray();
-
-	 if (!is_array($IDs) || !count($IDs))
-	 {
-	 return array();
-	 }
-
-	 $query = "SELECT tag.name, tag.id
-	 FROM #__k2_tags as tag
-	 LEFT JOIN #__k2_tags_xref AS xref ON xref.tagID = tag.id
-	 WHERE xref.itemID IN (".implode(',', $IDs).")
-	 AND tag.published = 1";
-	 $db->setQuery($query);
-	 $rows = $db->loadObjectList();
-	 $cloud = array();
-	 if (count($rows))
-	 {
-
-	 foreach ($rows as $tag)
-	 {
-
-	 if (@array_key_exists($tag->name, $cloud))
-	 {
-	 $cloud[$tag->name]++;
-	 }
-	 else
-	 {
-	 $cloud[$tag->name] = 1;
-	 }
-	 }
-
-	 $max_size = $params->get('max_size');
-	 $min_size = $params->get('min_size');
-	 $max_qty = max(array_values($cloud));
-	 $min_qty = min(array_values($cloud));
-	 $spread = $max_qty - $min_qty;
-	 if (0 == $spread)
-	 {
-	 $spread = 1;
-	 }
-
-	 $step = ($max_size - $min_size) / ($spread);
-
-	 $counter = 0;
-	 arsort($cloud, SORT_NUMERIC);
-	 $cloud = @array_slice($cloud, 0, $params->get('cloud_limit'), true);
-	 uksort($cloud, "strnatcasecmp");
-
-	 foreach ($cloud as $key => $value)
-	 {
-	 $size = $min_size + (($value - $min_qty) * $step);
-	 $size = ceil($size);
-	 $tmp = new stdClass;
-	 $tmp->tag = $key;
-	 $tmp->count = $value;
-	 $tmp->size = $size;
-	 $tmp->link = urldecode(JRoute::_(K2HelperRoute::getTagRoute($key)));
-	 $tags[$counter] = $tmp;
-	 $counter++;
-	 }
-
-	 return $tags;
-	 }
-	 }
 
 	 public static function getSearchCategoryFilter(&$params)
 	 {

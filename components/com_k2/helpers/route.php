@@ -49,4 +49,9 @@ class K2HelperRoute
 		return $route;
 	}
 
+	public static function getSearchRoute()
+	{
+		return 'index.php?option=com_k2&view=itemlist&task=search';
+	}
+
 }

@@ -41,11 +41,11 @@ class K2Resource
 	}
 
 	/**
-	 * Prepares the row for output
+	 * Gets the row from cache.
 	 *
-	 * @param string $mode	The mode for preparing data. 'site' for fron-end data, 'admin' for administrator operations.
+	 * @param array $data
 	 *
-	 * @return void
+	 * @return K2Resource
 	 */
 	public static function get($data)
 	{

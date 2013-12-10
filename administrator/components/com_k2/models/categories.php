@@ -91,6 +91,17 @@ class K2ModelCategories extends K2Model
 	private function setQueryConditions(&$query)
 	{
 		$db = $this->getDBO();
+		if ($this->getState('site'))
+		{
+			// Get authorised view levels
+			$viewlevels = array_unique(JFactory::getUser()->getAuthorisedViewLevels());
+
+			// Published items only
+			$this->setState('state', 1);
+
+			// Set state for access
+			$this->setState('access', $viewlevels);
+		}
 		$query->where($db->quoteName('category.id').' != 1');
 		if ($this->getState('language'))
 		{

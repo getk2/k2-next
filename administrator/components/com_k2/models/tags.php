@@ -349,5 +349,35 @@ class K2ModelTags extends K2Model
 		// Return the result
 		return $result;
 	}
+	
+	
+	public function getTagCloud()
+	{
+		// Get database
+		$db = $this->getDBO();
+
+		// Get query
+		$query = $db->getQuery(true);
+
+		// Select statement
+		$query->select($db->quoteName('tagId'));
+		$query->select('COUNT('.$db->quoteName('itemId').')', 'counter');
+		$query->from($db->quoteName('#__k2_tags_xref', 'xref'));
+		
+		$query->leftJoin($db->quoteName('#__k2_tags', 'tag').' ON '.$db->quoteName('xref.tagId').' = '.$db->quoteName('tag.id'));
+		
+		$query->where($db->quoteName('tag.state').' = 1');
+		
+		$query->group($db->quoteName('tagId'));
+
+		// Set the query
+		$db->setQuery($query);
+
+		// Get the result
+		$result = $db->loadObjectList();
+
+		// Return the result
+		return $result;
+	}
 
 }
