@@ -258,7 +258,7 @@ class K2Model extends JModelLegacy
 			foreach ($data as $entry)
 			{
 				$className = 'K2'.ucfirst($this->getName());
-				$row = new $className($entry);
+				$row = $className::get($entry);
 				$rows[] = $row;
 			}
 			return $rows;

@@ -61,146 +61,31 @@ class ModK2ToolsHelper
 
 	public static function getAuthors($params)
 	{
+		$model = K2Model::getInstance('Items');
+		$model->setState('site', true);
+		$model->setState('category', $params->get('authors_module_category', 0));
+		$rows = $model->getAuthors();
+
+		$authors = array();
+		if (count($rows))
+		{
+			foreach ($rows as $row)
+			{
+				$author = K2Users::getInstance($row->created_by);
+				$model->setState('site', true);
+				$model->setState('author', $author->id);
+				$model->setState('limit', 1);
+				$model->setState('sorting', 'created');
+				$latest = $model->getRows();
+				$author->latest = $latest[0];
+				$author->items = $model->countRows();
+				$authors[] = $author;
+			}
+		}
+		return $authors;
 	}
 
 	/*
-	 public static function getAuthors(&$params)
-	 {
-	 $mainframe = JFactory::getApplication();
-	 $componentParams = JComponentHelper::getParams('com_k2');
-	 $where = '';
-	 $cid = $params->get('authors_module_category');
-	 if ($cid > 0)
-	 {
-	 $categories = modK2ToolsHelper::getCategoryChildren($cid);
-	 $categories[] = $cid;
-	 JArrayHelper::toInteger($categories);
-	 $where = " catid IN(".implode(',', $categories).") AND ";
-
-	 }
-
-	 $user = JFactory::getUser();
-	 $aid = (int)$user->get('aid');
-	 $db = JFactory::getDBO();
-
-	 $jnow = JFactory::getDate();
-	 $now = K2_JVERSION == '15' ? $jnow->toMySQL() : $jnow->toSql();
-	 $nullDate = $db->getNullDate();
-
-	 if (K2_JVERSION != '15')
-	 {
-	 $languageCheck = '';
-	 if ($mainframe->getLanguageFilter())
-	 {
-	 $languageTag = JFactory::getLanguage()->getTag();
-	 $languageCheck = "AND language IN (".$db->Quote($languageTag).", ".$db->Quote('*').")";
-	 }
-	 $query = "SELECT DISTINCT created_by FROM #__k2_items
-	 WHERE {$where} published=1
-	 AND ( publish_up = ".$db->Quote($nullDate)." OR publish_up <= ".$db->Quote($now)." )
-	 AND ( publish_down = ".$db->Quote($nullDate)." OR publish_down >= ".$db->Quote($now)." )
-	 AND trash=0
-	 AND access IN(".implode(',', $user->getAuthorisedViewLevels()).")
-	 AND created_by_alias=''
-	 {$languageCheck}
-	 AND EXISTS (SELECT * FROM #__k2_categories WHERE id= #__k2_items.catid AND published=1 AND trash=0 AND access IN(".implode(',', $user->getAuthorisedViewLevels()).") {$languageCheck})";
-	 }
-	 else
-	 {
-	 $query = "SELECT DISTINCT created_by FROM #__k2_items
-	 WHERE {$where} published=1
-	 AND ( publish_up = ".$db->Quote($nullDate)." OR publish_up <= ".$db->Quote($now)." )
-	 AND ( publish_down = ".$db->Quote($nullDate)." OR publish_down >= ".$db->Quote($now)." )
-	 AND trash=0
-	 AND access<={$aid}
-	 AND created_by_alias=''
-	 AND EXISTS (SELECT * FROM #__k2_categories WHERE id= #__k2_items.catid AND published=1 AND trash=0 AND access<={$aid} )";
-	 }
-
-	 $db->setQuery($query);
-	 $rows = $db->loadObjectList();
-
-	 $authors = array();
-	 if (count($rows))
-	 {
-	 foreach ($rows as $row)
-	 {
-	 $author = JFactory::getUser($row->created_by);
-	 $author->link = JRoute::_(K2HelperRoute::getUserRoute($author->id));
-
-	 $query = "SELECT id, gender, description, image, url, `group`, plugins FROM #__k2_users WHERE userID=".(int)$author->id;
-	 $db->setQuery($query);
-	 $author->profile = $db->loadObject();
-
-	 if ($params->get('authorAvatar'))
-	 {
-	 $author->avatar = K2HelperUtilities::getAvatar($author->id, $author->email, $componentParams->get('userImageWidth'));
-	 }
-
-	 if (K2_JVERSION != '15')
-	 {
-	 $languageCheck = '';
-	 if ($mainframe->getLanguageFilter())
-	 {
-	 $languageTag = JFactory::getLanguage()->getTag();
-	 $languageCheck = "AND i.language IN (".$db->Quote($languageTag).", ".$db->Quote('*').") AND c.language IN (".$db->Quote($languageTag).", ".$db->Quote('*').")";
-	 }
-	 $query = "SELECT i.*, c.alias as categoryalias FROM #__k2_items as i
-	 LEFT JOIN #__k2_categories c ON c.id = i.catid
-	 WHERE i.created_by = ".(int)$author->id."
-	 AND i.published = 1
-	 AND i.access IN(".implode(',', $user->getAuthorisedViewLevels()).")
-	 AND ( i.publish_up = ".$db->Quote($nullDate)." OR i.publish_up <= ".$db->Quote($now)." )
-	 AND ( i.publish_down = ".$db->Quote($nullDate)." OR i.publish_down >= ".$db->Quote($now)." )
-	 AND i.trash = 0 AND created_by_alias='' AND c.published = 1 AND c.access IN(".implode(',', $user->getAuthorisedViewLevels()).") AND c.trash = 0 {$languageCheck} ORDER BY created DESC";
-	 }
-	 else
-	 {
-	 $query = "SELECT i.*, c.alias as categoryalias FROM #__k2_items as i
-	 LEFT JOIN #__k2_categories c ON c.id = i.catid
-	 WHERE i.created_by = ".(int)$author->id."
-	 AND i.published = 1
-	 AND i.access <= {$aid}
-	 AND ( i.publish_up = ".$db->Quote($nullDate)." OR i.publish_up <= ".$db->Quote($now)." )
-	 AND ( i.publish_down = ".$db->Quote($nullDate)." OR i.publish_down >= ".$db->Quote($now)." )
-	 AND i.trash = 0 AND created_by_alias='' AND c.published = 1 AND c.access <= {$aid} AND c.trash = 0 ORDER BY created DESC";
-	 }
-
-	 $db->setQuery($query, 0, 1);
-	 $author->latest = $db->loadObject();
-	 $author->latest->id = (int)$author->latest->id;
-	 $author->latest->link = urldecode(JRoute::_(K2HelperRoute::getItemRoute($author->latest->id.':'.urlencode($author->latest->alias), $author->latest->catid.':'.urlencode($author->latest->categoryalias))));
-
-	 $query = "SELECT COUNT(*) FROM #__k2_comments WHERE published=1 AND itemID={$author->latest->id}";
-	 $db->setQuery($query);
-	 $author->latest->numOfComments = $db->loadResult();
-
-	 if ($params->get('authorItemsCounter'))
-	 {
-	 if (K2_JVERSION != '15')
-	 {
-	 $languageCheck = '';
-	 if ($mainframe->getLanguageFilter())
-	 {
-	 $languageTag = JFactory::getLanguage()->getTag();
-	 $languageCheck = "AND language IN (".$db->Quote($languageTag).", ".$db->Quote('*').")";
-	 }
-	 $query = "SELECT COUNT(*) FROM #__k2_items  WHERE {$where} published=1 AND ( publish_up = ".$db->Quote($nullDate)." OR publish_up <= ".$db->Quote($now)." ) AND ( publish_down = ".$db->Quote($nullDate)." OR publish_down >= ".$db->Quote($now)." ) AND trash=0 AND access IN(".implode(',', $user->getAuthorisedViewLevels()).") AND created_by_alias='' AND created_by={$row->created_by} {$languageCheck} AND EXISTS (SELECT * FROM #__k2_categories WHERE id= #__k2_items.catid AND published=1 AND trash=0 AND access IN(".implode(',', $user->getAuthorisedViewLevels()).") {$languageCheck} )";
-	 }
-	 else
-	 {
-	 $query = "SELECT COUNT(*) FROM #__k2_items  WHERE {$where} published=1 AND ( publish_up = ".$db->Quote($nullDate)." OR publish_up <= ".$db->Quote($now)." ) AND ( publish_down = ".$db->Quote($nullDate)." OR publish_down >= ".$db->Quote($now)." ) AND trash=0 AND access<={$aid} AND created_by_alias='' AND created_by={$row->created_by} AND EXISTS (SELECT * FROM #__k2_categories WHERE id= #__k2_items.catid AND published=1 AND trash=0 AND access<={$aid} )";
-	 }
-	 $db->setQuery($query);
-	 $numofitems = $db->loadResult();
-	 $author->items = $numofitems;
-	 }
-	 $authors[] = $author;
-	 }
-	 }
-	 return $authors;
-	 }
-
 	 public static function tagCloud(&$params)
 	 {
 

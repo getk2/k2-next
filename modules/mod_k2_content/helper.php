@@ -17,9 +17,8 @@ class ModK2ContentHelper
 		// Get items
 		$model = K2Model::getInstance('Items');
 		$model->setState('site', true);
-		$model->setState('limit', $limit);
+		$model->setState('limit', 2);
 		$model->setState('limitstart', 0);
-		$model->setState('category', $id);
 		$items = $model->getRows();
 
 		// Plugins

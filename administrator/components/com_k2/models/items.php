@@ -20,7 +20,7 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/galleries.php';
 class K2ModelItems extends K2Model
 {
 
-	private $authorisedCategories = null;
+	public static $authorisedCategories = null;
 
 	public function getRows()
 	{
@@ -334,7 +334,7 @@ class K2ModelItems extends K2Model
 	private function getAuthorisedCategories()
 	{
 
-		if (is_null($this->authorisedCategories))
+		if (is_null(self::$authorisedCategories))
 		{
 			// Get database
 			$db = $this->getDBO();
@@ -352,10 +352,10 @@ class K2ModelItems extends K2Model
 			$db->setQuery($query);
 
 			// Load result
-			$this->authorisedCategories = $db->loadColumn();
+			self::$authorisedCategories = $db->loadColumn();
 		}
 
-		return $this->authorisedCategories;
+		return self::$authorisedCategories;
 	}
 
 	/**
@@ -1011,8 +1011,8 @@ class K2ModelItems extends K2Model
 		// Join over the categories
 		$query->leftJoin($db->quoteName('#__k2_categories', 'category').' ON '.$db->quoteName('category.id').' = '.$db->quoteName('item.catid'));
 
-		// Set states for site
-		$this->setSiteStates();
+		// Set state for site
+		$this->setState('site', true);
 
 		// Set query conditions
 		$this->setQueryConditions($query);
@@ -1033,4 +1033,42 @@ class K2ModelItems extends K2Model
 		return $rows;
 	}
 
+
+
+	public function getAuthors()
+	{
+		// Get database
+		$db = $this->getDBO();
+
+		// Get query
+		$query = $db->getQuery(true);
+
+		// Select rows
+		$query->select('DISTINCT ('.$db->quoteName('item.created_by').')');
+		$query->from($db->quoteName('#__k2_items', 'item'));
+
+		// Join over the categories
+		$query->leftJoin($db->quoteName('#__k2_categories', 'category').' ON '.$db->quoteName('category.id').' = '.$db->quoteName('item.catid'));
+
+		// Set state for site
+		$this->setState('site', true);
+
+		// Set query conditions
+		$this->setQueryConditions($query);
+
+		// Set query sorting
+		$this->setQuerySorting($query);
+
+		// Hook for plugins
+		$this->onBeforeSetQuery($query, 'com_k2.authors');
+
+		// Set the query
+		$db->setQuery($query);
+
+		// Get rows
+		$rows = $db->loadObjectList();
+
+		// Return rows
+		return $rows;
+	}
 }

@@ -21,15 +21,12 @@ defined('_JEXEC') or die ; ?>
     <?php foreach ($items as $key=>$item):	?>
     <li class="<?php echo ($key%2) ? "odd" : "even"; if(count($items)==$key+1) echo ' lastItem'; ?>">
 
-      <!-- Plugins: BeforeDisplay -->
-      <?php echo $item->event->BeforeDisplay; ?>
-
       <!-- K2 Plugins: K2BeforeDisplay -->
-      <?php echo $item->event->K2BeforeDisplay; ?>
+      <?php echo $item->events->K2BeforeDisplay; ?>
 
       <?php if($params->get('itemAuthorAvatar')): ?>
-      <a class="k2Avatar moduleItemAuthorAvatar" rel="author" href="<?php echo $item->authorLink; ?>">
-				<img src="<?php echo $item->authorAvatar; ?>" alt="<?php echo K2HelperUtilities::cleanHtml($item->author); ?>" style="width:<?php echo $avatarWidth; ?>px;height:auto;" />
+      <a class="k2Avatar moduleItemAuthorAvatar" rel="author" href="<?php echo $item->author->link; ?>">
+				<img src="<?php echo $item->author->image; ?>" alt="<?php echo htmlspecialchars($item->author->name); ?>" style="width:<?php echo $avatarWidth; ?>px;height:auto;" />
 			</a>
       <?php endif; ?>
 
@@ -39,38 +36,38 @@ defined('_JEXEC') or die ; ?>
 
       <?php if($params->get('itemAuthor')): ?>
       <div class="moduleItemAuthor">
-	      <?php echo K2HelperUtilities::writtenBy($item->authorGender); ?>
+	      <?php echo K2HelperUtilities::writtenBy($item->author->gender); ?>
 	
-				<?php if(isset($item->authorLink)): ?>
-				<a rel="author" title="<?php echo K2HelperUtilities::cleanHtml($item->author); ?>" href="<?php echo $item->authorLink; ?>"><?php echo $item->author; ?></a>
+				<?php if(isset($item->author->link)): ?>
+				<a rel="author" title="<?php echo htmlspecialchars($item->author->name); ?>" href="<?php echo $item->author->link; ?>"><?php echo $item->author->name; ?></a>
 				<?php else: ?>
-				<?php echo $item->author; ?>
+				<?php echo $item->author->name; ?>
 				<?php endif; ?>
 				
 				<?php if($params->get('userDescription')): ?>
-				<?php echo $item->authorDescription; ?>
+				<?php echo $item->author->description; ?>
 				<?php endif; ?>
 				
 			</div>
 			<?php endif; ?>
 
       <!-- Plugins: AfterDisplayTitle -->
-      <?php echo $item->event->AfterDisplayTitle; ?>
+      <?php echo $item->events->AfterDisplayTitle; ?>
 
       <!-- K2 Plugins: K2AfterDisplayTitle -->
-      <?php echo $item->event->K2AfterDisplayTitle; ?>
+      <?php echo $item->events->K2AfterDisplayTitle; ?>
 
       <!-- Plugins: BeforeDisplayContent -->
-      <?php echo $item->event->BeforeDisplayContent; ?>
+      <?php echo $item->events->BeforeDisplayContent; ?>
 
       <!-- K2 Plugins: K2BeforeDisplayContent -->
-      <?php echo $item->event->K2BeforeDisplayContent; ?>
+      <?php echo $item->events->K2BeforeDisplayContent; ?>
 
       <?php if($params->get('itemImage') || $params->get('itemIntroText')): ?>
       <div class="moduleItemIntrotext">
 	      <?php if($params->get('itemImage') && isset($item->image)): ?>
-	      <a class="moduleItemImage" href="<?php echo $item->link; ?>" title="<?php echo JText::_('K2_CONTINUE_READING'); ?> &quot;<?php echo K2HelperUtilities::cleanHtml($item->title); ?>&quot;">
-	      	<img src="<?php echo $item->image; ?>" alt="<?php echo K2HelperUtilities::cleanHtml($item->title); ?>"/>
+	      <a class="moduleItemImage" href="<?php echo $item->link; ?>" title="<?php echo JText::_('K2_CONTINUE_READING'); ?> &quot;<?php echo htmlspecialchars($item->title); ?>&quot;">
+	      	<img src="<?php echo $item->image; ?>" alt="<?php echo htmlspecialchars($item->title); ?>"/>
 	      </a>
 	      <?php endif; ?>
 
@@ -103,28 +100,47 @@ defined('_JEXEC') or die ; ?>
 
       <div class="clr"></div>
 
-      <?php if($params->get('itemVideo')): ?>
-      <div class="moduleItemVideo">
-      	<?php echo $item->video ; ?>
-      	<span class="moduleItemVideoCaption"><?php echo $item->video_caption ; ?></span>
-      	<span class="moduleItemVideoCredits"><?php echo $item->video_credits ; ?></span>
-      </div>
-      <?php endif; ?>
+     <?php if(!empty($item->media)): ?>
+  <!-- Item media -->
+  <a name="itemMediaAnchor" id="itemMediaAnchor"></a>
+  
+  <div class="itemMediaBlock">
+  	<h3><?php echo JText::_('K2_MEDIA'); ?></h3>
+  	<?php foreach ($item->media as $entry) : ?>
+	<div class="itemMedia">
+  	
+	
+	<span class="itemMediaOutput"><?php echo $entry->output; ?></span>
+
+	<?php if(!empty($entry->caption)): ?>
+	<span class="itemMediaCaption"><?php echo $entry->caption; ?></span>
+	<?php endif; ?>
+
+	<?php if(!empty($entry->credits)): ?>
+	<span class="itemMediaCredits"><?php echo $entry->credits; ?></span>
+	<?php endif; ?>
+
+	  <div class="clr"></div>
+  </div> 
+	<?php endforeach; ?>
+  </div>
+	
+  <?php endif; ?>
 
       <div class="clr"></div>
 
       <!-- Plugins: AfterDisplayContent -->
-      <?php echo $item->event->AfterDisplayContent; ?>
+      <?php echo $item->events->AfterDisplayContent; ?>
 
       <!-- K2 Plugins: K2AfterDisplayContent -->
-      <?php echo $item->event->K2AfterDisplayContent; ?>
+      <?php echo $item->events->K2AfterDisplayContent; ?>
 
       <?php if($params->get('itemDateCreated')): ?>
       <span class="moduleItemDateCreated"><?php echo JText::_('K2_WRITTEN_ON') ; ?> <?php echo JHTML::_('date', $item->created, JText::_('K2_DATE_FORMAT_LC2')); ?></span>
       <?php endif; ?>
 
       <?php if($params->get('itemCategory')): ?>
-      <?php echo JText::_('K2_IN') ; ?> <a class="moduleItemCategory" href="<?php echo $item->categoryLink; ?>"><?php echo $item->categoryname; ?></a>
+      <?php echo JText::_('K2_IN') ; ?> <a class="moduleItemCategory" href="<?php echo $item->category->link; ?>"><?php echo $item->category->title; ?></a>
       <?php endif; ?>
 
       <?php if($params->get('itemTags') && count($item->tags)>0): ?>
@@ -139,15 +155,15 @@ defined('_JEXEC') or die ; ?>
       <?php if($params->get('itemAttachments') && count($item->attachments)): ?>
 			<div class="moduleAttachments">
 				<?php foreach ($item->attachments as $attachment): ?>
-				<a title="<?php echo K2HelperUtilities::cleanHtml($attachment->titleAttribute); ?>" href="<?php echo $attachment->link; ?>"><?php echo $attachment->title; ?></a>
+				<a title="<?php echo htmlspecialchars($attachment->title); ?>" href="<?php echo $attachment->link; ?>"><?php echo $attachment->title; ?></a>
 				<?php endforeach; ?>
 			</div>
       <?php endif; ?>
 
 			<?php if($params->get('itemCommentsCounter') && $componentParams->get('comments')): ?>		
-				<?php if(!empty($item->event->K2CommentsCounter)): ?>
+				<?php if(!empty($item->events->K2CommentsCounter)): ?>
 					<!-- K2 Plugins: K2CommentsCounter -->
-					<?php echo $item->event->K2CommentsCounter; ?>
+					<?php echo $item->events->K2CommentsCounter; ?>
 				<?php else: ?>
 					<?php if($item->numOfComments>0): ?>
 					<a class="moduleItemComments" href="<?php echo $item->link.'#itemCommentsAnchor'; ?>">
@@ -173,11 +189,8 @@ defined('_JEXEC') or die ; ?>
 			</a>
 			<?php endif; ?>
 
-      <!-- Plugins: AfterDisplay -->
-      <?php echo $item->event->AfterDisplay; ?>
-
       <!-- K2 Plugins: K2AfterDisplay -->
-      <?php echo $item->event->K2AfterDisplay; ?>
+      <?php echo $item->events->K2AfterDisplay; ?>
 
       <div class="clr"></div>
     </li>

@@ -78,6 +78,7 @@ class K2Items extends K2Resource
 	 */
 	public function prepare($mode = null)
 	{
+		
 		// Prepare generic properties like dates and authors
 		parent::prepare($mode);
 

@@ -18,6 +18,11 @@ class K2Resource
 {
 
 	/**
+	 * @var array	Items instances container.
+	 */
+	protected static $instances = array();
+
+	/**
 	 * Constructor.
 	 * It assigns the data to object properties.
 	 *
@@ -33,6 +38,28 @@ class K2Resource
 			$this->$key = $value;
 		}
 		$this->prepare();
+	}
+
+	/**
+	 * Prepares the row for output
+	 *
+	 * @param string $mode	The mode for preparing data. 'site' for fron-end data, 'admin' for administrator operations.
+	 *
+	 * @return void
+	 */
+	public static function get($data)
+	{
+		$class = get_called_class();
+		if (isset(self::$instances[$class][$data['id']]))
+		{
+			$row = self::$instances[$class][$data['id']];
+		}
+		else
+		{
+			$row = new $class($data);
+			self::$instances[$class][$data['id']] = $row;
+		}
+		return $row;
 	}
 
 	/**
@@ -58,7 +85,7 @@ class K2Resource
 		else
 		{
 			$application = JFactory::getApplication();
-			$application->enqueueMessage('Invalid property: '.$name, 'error');
+			$application->enqueueMessage('Invalid property: '.get_called_class().': '.$name, 'error');
 			return false;
 		}
 	}
