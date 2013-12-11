@@ -301,7 +301,7 @@ class K2ModelTags extends K2Model
 		// Return
 		return true;
 	}
-	
+
 	public function countTagItems($tagId)
 	{
 		// Get database
@@ -315,7 +315,7 @@ class K2ModelTags extends K2Model
 
 		// Set query conditions
 		$query->where($db->quoteName('tagId').' = '.(int)$tagId);
-		
+
 		// Set the query
 		$db->setQuery($query);
 
@@ -325,7 +325,7 @@ class K2ModelTags extends K2Model
 		// Return the result
 		return (int)$result;
 	}
-	
+
 	public function getItemTags($itemId)
 	{
 		// Get database
@@ -339,7 +339,7 @@ class K2ModelTags extends K2Model
 
 		// Set query conditions
 		$query->where($db->quoteName('itemId').' = '.(int)$itemId);
-		
+
 		// Set the query
 		$db->setQuery($query);
 
@@ -349,35 +349,31 @@ class K2ModelTags extends K2Model
 		// Return the result
 		return $result;
 	}
-	
-	
+
 	public function getTagCloud()
 	{
-		// Get database
-		$db = $this->getDBO();
-
-		// Get query
+		$db = $this->getDbo();
 		$query = $db->getQuery(true);
-
-		// Select statement
-		$query->select($db->quoteName('tagId'));
-		$query->select('COUNT('.$db->quoteName('itemId').')', 'counter');
-		$query->from($db->quoteName('#__k2_tags_xref', 'xref'));
-		
-		$query->leftJoin($db->quoteName('#__k2_tags', 'tag').' ON '.$db->quoteName('xref.tagId').' = '.$db->quoteName('tag.id'));
-		
+		$query->select($db->quoteName('tag').'.*');
+		$query->select('COUNT('.$db->quoteName('xref.itemId').') AS '.$db->quoteName('counter'));
+		$query->from($db->quoteName('#__k2_tags', 'tag'));
+		$query->rightJoin($db->quoteName('#__k2_tags_xref', 'xref').' ON '.$db->quoteName('xref.tagId').' = '.$db->quoteName('tag.id'));
 		$query->where($db->quoteName('tag.state').' = 1');
-		
-		$query->group($db->quoteName('tagId'));
-
-		// Set the query
+		$query->rightJoin($db->quoteName('#__k2_items', 'item').' ON '.$db->quoteName('item.id').' = '.$db->quoteName('xref.itemId'));
+		$query->where($db->quoteName('item.state').' > 0');
+		$query->where($db->quoteName('item.catid').' IN ('.implode(',', $this->getState('categories')).')');
+		$viewlevels = array_unique(JFactory::getUser()->getAuthorisedViewLevels());
+		$query->where($db->quoteName('item.access').' IN ('.implode(',', $viewlevels).')');
+		$date = JFactory::getDate()->toSql();
+		$query->where('('.$db->quoteName('item.publish_up').' = '.$db->Quote($db->getNullDate()).' OR '.$db->quoteName('item.publish_up').' <= '.$db->Quote($date).')');
+		$query->where('('.$db->quoteName('item.publish_down').' = '.$db->Quote($db->getNullDate()).' OR '.$db->quoteName('item.publish_down').' >= '.$db->Quote($date).')');
+		$query->group($db->quoteName('tag.id'));
 		$db->setQuery($query);
 
-		// Get the result
-		$result = $db->loadObjectList();
-
-		// Return the result
-		return $result;
+		// Get rows
+		$rows = $db->loadObjectList();
+		
+		return $rows;
 	}
 
 }

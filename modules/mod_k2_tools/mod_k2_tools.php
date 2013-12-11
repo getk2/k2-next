@@ -54,7 +54,7 @@ switch ($params->get('usage'))
 
 	case 'tags' :
 		$tags = ModK2ToolsHelper::getTagCloud($params);
-		//require JModuleHelper::getLayoutPath('mod_k2_tools', 'tags');
+		require JModuleHelper::getLayoutPath('mod_k2_tools', 'tags');
 		break;
 
 	case 'custom' :

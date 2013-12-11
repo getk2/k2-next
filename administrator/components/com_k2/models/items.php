@@ -11,6 +11,7 @@
 defined('_JEXEC') or die ;
 
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/model.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/categories.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/items.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/images.php';
@@ -19,9 +20,6 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/galleries.php';
 
 class K2ModelItems extends K2Model
 {
-
-	public static $authorisedCategories = null;
-
 	public function getRows()
 	{
 		// Get database
@@ -163,7 +161,7 @@ class K2ModelItems extends K2Model
 			}
 			if ($this->getState('site'))
 			{
-				$categories = array_intersect($categories, $this->getAuthorisedCategories());
+				$categories = array_intersect($categories, K2ModelCategories::getAuthorised());
 			}
 			$query->where($db->quoteName('item.catid').' IN ('.implode(',', $categories).')');
 		}
@@ -171,7 +169,7 @@ class K2ModelItems extends K2Model
 		{
 			if ($this->getState('site'))
 			{
-				$query->where($db->quoteName('item.catid').' IN ('.implode(',', $this->getAuthorisedCategories()).')');
+				$query->where($db->quoteName('item.catid').' IN ('.implode(',', K2ModelCategories::getAuthorised()).')');
 			}
 		}
 		if ($this->getState('access'))
@@ -327,38 +325,6 @@ class K2ModelItems extends K2Model
 
 		}
 
-	}
-
-	/**
-	 * getAuthorisedCategories method.
-	 *
-	 * @return array
-	 */
-	private function getAuthorisedCategories()
-	{
-
-		if (is_null(self::$authorisedCategories))
-		{
-			// Get database
-			$db = $this->getDBO();
-
-			// Get authorised view levels
-			$viewlevels = array_unique(JFactory::getUser()->getAuthorisedViewLevels());
-
-			// Get query
-			$query = $db->getQuery(true);
-
-			// Build query
-			$query->select($db->quoteName('id'))->from('#__k2_categories')->where($db->quoteName('state').' = 1')->where($db->quoteName('access').' IN ('.implode(',', $viewlevels).')');
-
-			// Set query
-			$db->setQuery($query);
-
-			// Load result
-			self::$authorisedCategories = $db->loadColumn();
-		}
-
-		return self::$authorisedCategories;
 	}
 
 	/**

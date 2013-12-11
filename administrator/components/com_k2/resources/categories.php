@@ -11,6 +11,7 @@
 defined('_JEXEC') or die ;
 
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/resource.php';
+require_once JPATH_SITE.'/components/com_k2/helpers/route.php';
 
 /**
  * K2 item resource class.
@@ -110,7 +111,7 @@ class K2Categories extends K2Resource
 
 	public function getLink()
 	{
-		return JRoute::_('index.php?option=com_k2&view=category&id='.$this->id);
+		return JRoute::_(K2HelperRoute::getCategoryRoute($this->id.':'.$this->alias));
 	}
 
 	public function getImage()

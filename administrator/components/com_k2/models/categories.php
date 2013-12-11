@@ -16,6 +16,9 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/images.php';
 
 class K2ModelCategories extends K2Model
 {
+	
+	private static $authorised = null;
+	
 	public function getRows()
 	{
 		// Get database
@@ -209,6 +212,38 @@ class K2ModelCategories extends K2Model
 		$db = $this->getDbo();
 		$query->order($db->quoteName($ordering).' '.$direction);
 
+	}
+
+	/**
+	 * getAuthorisedCategories method.
+	 *
+	 * @return array
+	 */
+	public static function getAuthorised()
+	{
+
+		if (is_null(self::$authorised))
+		{
+			// Get database
+			$db = JFactory::getDbo();
+
+			// Get authorised view levels
+			$viewlevels = array_unique(JFactory::getUser()->getAuthorisedViewLevels());
+
+			// Get query
+			$query = $db->getQuery(true);
+
+			// Build query
+			$query->select($db->quoteName('id'))->from('#__k2_categories')->where($db->quoteName('state').' > 0')->where($db->quoteName('access').' IN ('.implode(',', $viewlevels).')');
+
+			// Set query
+			$db->setQuery($query);
+
+			// Load result
+			self::$authorised = $db->loadColumn();
+		}
+
+		return self::$authorised;
 	}
 
 	/**

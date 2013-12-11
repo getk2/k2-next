@@ -17,6 +17,7 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/users.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/tags.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/attachments.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/extrafields.php';
+require_once JPATH_SITE.'/components/com_k2/helpers/route.php';
 
 /**
  * K2 item resource class.
@@ -78,7 +79,7 @@ class K2Items extends K2Resource
 	 */
 	public function prepare($mode = null)
 	{
-		
+
 		// Prepare generic properties like dates and authors
 		parent::prepare($mode);
 
@@ -343,7 +344,7 @@ class K2Items extends K2Resource
 
 	public function getLink()
 	{
-		return JRoute::_('index.php?option=com_k2&view=item&id='.$this->id);
+		return JRoute::_(K2HelperRoute::getItemRoute($this->id.':'.$this->alias));
 	}
 
 	public function getUrl()

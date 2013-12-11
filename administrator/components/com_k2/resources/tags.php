@@ -11,6 +11,7 @@
 defined('_JEXEC') or die ;
 
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/resource.php';
+require_once JPATH_SITE.'/components/com_k2/helpers/route.php';
 
 /**
  * K2 item resource class.
@@ -98,7 +99,7 @@ class K2Tags extends K2Resource
 
 	public function getLink()
 	{
-		return JRoute::_('index.php?option=com_k2&view=tag&id='.$this->id);
+		return JRoute::_(K2HelperRoute::getTagRoute($this->id.':'.$this->alias));
 	}
 
 }

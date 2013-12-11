@@ -11,9 +11,10 @@
 defined('_JEXEC') or die ;
 
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/resource.php';
+require_once JPATH_SITE.'/components/com_k2/helpers/route.php';
 
 /**
- * K2 user group resource class.
+ * K2 user resource class.
  */
 
 class K2Users extends K2Resource
@@ -72,31 +73,29 @@ class K2Users extends K2Resource
 
 		// Prepare specific properties
 		$this->editLink = '#users/edit/'.$this->id;
-		
+
 		// Link
 		$this->link = $this->getLink();
-		
-		if($this->id)
+
+		if ($this->id)
 		{
 			$this->enabled = (int)!$this->block;
 			$this->activated = (int)!$this->activation;
-			if(isset($this->groups))
+			if (isset($this->groups))
 			{
 				$this->groupsValue = implode(', ', $this->groups);
 			}
 		}
 
-		
 		// Image
 		$this->image = $this->getImage();
 
 	}
-	
+
 	public function getLink()
 	{
-		return JRoute::_('index.php?option=com_k2&view=user&id='.$this->id);
+		return JRoute::_(K2HelperRoute::getUserRoute($this->id));
 	}
-
 
 	public function getImage()
 	{
@@ -112,4 +111,5 @@ class K2Users extends K2Resource
 		}
 		return $image;
 	}
+
 }

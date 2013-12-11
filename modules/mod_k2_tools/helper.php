@@ -264,31 +264,76 @@ class ModK2ToolsHelper
 
 	public static function getTagCloud($params)
 	{
+		$categories = $params->get('cloud_category');
+		$categories = array_filter($categories);
+		if ($categories)
+		{
+			if ($params->get('cloud_category_recursive'))
+			{
+				$children = array();
+				$model = K2Model::getInstance('Categories');
+				foreach ($categories as $categoryId)
+				{
+					$model->setState('site', true);
+					$model->setState('id', $categories);
+					$rows = $model->getRows();
+					foreach ($rows as $row)
+					{
+						$children[] = $row->id;
+					}
+				}
+				$categories = array_merge($categories, $children);
+				$categories = array_unique($categories);
 
+			}
+			$filter = array_intersect($categories, K2ModelCategories::getAuthorised());
+		}
+		else
+		{
+			$filter = K2ModelCategories::getAuthorised();
+		}
 
-		$db = JFactory::getDBo();
-		
-		$query = $db->getQuery(true);
-		$query->select($db->quoteName('tag').'.*');
-		$query->select('COUNT('.$db->quoteName('xref.itemId').') AS counter');
-		$query->from($db->quoteName('#__k2_tags', 'tag'));
-		$query->rightJoin($db->quoteName('#__k2_tags_xref', 'xref').' ON '.$db->quoteName('xref.tagId').' = '.$db->quoteName('tag.id'));
-		$query->where($db->quoteName('tag.state').' = 1');
-		$query->rightJoin($db->quoteName('#__k2_items', 'item').' ON '.$db->quoteName('item.id').' = '.$db->quoteName('xref.itemId'));
-		$query->where($db->quoteName('item.state').' = 1');
-		
-		$query->where($db->quoteName('item.catid').' IN (1,2,3,10,11,12,13,14,15)');
-		$query->where($db->quoteName('item.access').' IN (1,5)');
+		if (empty($filter))
+		{
+			return array();
+		}
+		$model = K2Model::getInstance('Tags');
+		$model->setState('categories', $filter);
+		$tags = $model->getTagCloud();
 
-		
-		$query->group($db->quoteName('tag.id'));
-		$db->setQuery($query);
-		$tags = $db->loadObjectList();
-		
+		usort($tags, 'self::sortTags');
+		$limit = (int)$params->get('cloud_limit');
+		if ($limit)
+		{
+			$tags = array_slice($tags, 0, $params->get('cloud_limit'));
+		}
+		$maximumFontSize = $params->get('max_size');
+		$minimumFontSize = $params->get('min_size');
+		$maximumOccurencies = $tags[0]->counter;
+		$minimumOccurencies = $tags[count($tags) - 1]->counter;
+		$spread = $maximumOccurencies - $minimumOccurencies;
+		if ($spread == 0)
+		{
+			$spread = 1;
+		}
+		$step = ($maximumFontSize - $minimumFontSize) / ($spread);
 
-		var_dump($tags);
-		
+		foreach ($tags as $tag)
+		{
+			$tag->link = K2HelperRoute::getTagRoute($tag->id.':'.$tag->alias);
+			$size = $minimumFontSize + (($tag->counter - $minimumOccurencies) * $step);
+			$tag->size = ceil($size);
+		}
+		return $tags;
+	}
 
+	private static function sortTags($a, $b)
+	{
+		if ((int)$a->counter == (int)$b->counter)
+		{
+			return 0;
+		}
+		return ((int)$a->counter > (int)$b->counter) ? -1 : 1;
 	}
 
 	/*
