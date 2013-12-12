@@ -234,7 +234,7 @@ class K2ModelCategories extends K2Model
 			$query = $db->getQuery(true);
 
 			// Build query
-			$query->select($db->quoteName('id'))->from('#__k2_categories')->where($db->quoteName('state').' > 0')->where($db->quoteName('access').' IN ('.implode(',', $viewlevels).')');
+			$query->select($db->quoteName('id'))->from('#__k2_categories')->where($db->quoteName('state').' = 1')->where($db->quoteName('access').' IN ('.implode(',', $viewlevels).')');
 
 			// Set query
 			$db->setQuery($query);

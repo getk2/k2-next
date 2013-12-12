@@ -214,6 +214,9 @@ class K2Items extends K2Resource
 		{
 			$images = $result->images;
 			$this->image = $images['S'];
+			$this->image_caption = $this->_image->caption;
+			$this->image_credits = $this->_image->credits;
+			$this->image_alt = $this->_image->caption ? $this->_image->caption : $this->title;
 			$this->imageWidth = 180;
 			$this->_image->preview = $this->image;
 			$this->_image->id = $result->id;

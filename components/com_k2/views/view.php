@@ -18,6 +18,7 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/items.php';
 
 class K2View extends JViewLegacy
 {
+	protected $isActive = true;
 
 	public function __construct($config = array())
 	{
@@ -26,6 +27,9 @@ class K2View extends JViewLegacy
 
 		// Get application
 		$application = JFactory::getApplication();
+		
+		// Set print variable
+		$this->print = $application->input->getBool('print');
 
 		// Load helpers
 		$this->loadHelper('utilities');
@@ -56,6 +60,50 @@ class K2View extends JViewLegacy
 		$template = $application->getTemplate();
 		$this->addTemplatePath(JPATH_SITE.'/components/com_k2/templates/default');
 		$this->addTemplatePath(JPATH_SITE.'/templates/'.$template.'/html/com_k2/templates/default');
+
+		// Set active (determine if the current menu Itemid is the same of the current view)
+		$this->setActive();
+	}
+
+	private function setActive()
+	{
+		$application = JFactory::getApplication();
+		$menu = $application->getMenu();
+		$active = $menu->getActive();
+		if ($active)
+		{
+			foreach ($active->query as $key => $value)
+			{
+				if ($application->input->get($key) != $value)
+				{
+					$this->isActive = false;
+					break;
+				}
+			}
+		}
+		else
+		{
+			$this->isActive = false;
+		}
+	}
+
+	protected function setTitle($title)
+	{
+		$application = JFactory::getApplication();
+		$document = JFactory::getDocument();
+		if (empty($title))
+		{
+			$title = $application->getCfg('sitename');
+		}
+		elseif ($application->getCfg('sitename_pagetitles', 0) == 1)
+		{
+			$title = JText::sprintf('JPAGETITLE', $application->getCfg('sitename'), $title);
+		}
+		elseif ($application->getCfg('sitename_pagetitles', 0) == 2)
+		{
+			$title = JText::sprintf('JPAGETITLE', $title, $application->getCfg('sitename'));
+		}
+		$document->setTitle($title);
 	}
 
 }

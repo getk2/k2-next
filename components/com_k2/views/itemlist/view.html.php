@@ -13,7 +13,7 @@ defined('_JEXEC') or die ;
 require_once JPATH_SITE.'/components/com_k2/views/view.php';
 
 /**
- * K2 item view class
+ * K2 itemlist view class
  */
 
 class K2ViewItemlist extends K2View
@@ -25,40 +25,187 @@ class K2ViewItemlist extends K2View
 
 		// Get input
 		$task = $application->input->get('task', '', 'cmd');
-		$id = $application->input->get('id', 0, 'int');
 		$offset = $application->input->get('offset', 0, 'int');
 		$limit = $application->input->get('limit', 10, 'int');
 
-		// Get items
-		$model = K2Model::getInstance('Items');
-		$model->setState('site', true);
-		$model->setState('limit', $limit);
-		$model->setState('limitstart', $offset);
-		if ($task == 'category')
+		// Trigger the corresponding subview
+		if (method_exists($this, $task))
 		{
-			$model->setState('category', $id);
+			call_user_func(array(
+				$this,
+				$task
+			));
 		}
-		else if ($task == 'tag')
+		else
 		{
-			$model->setState('tag', $id);
+			return JError::raiseError(404, JText::_('K2_NOT_FOUND'));
 		}
-		else if ($task == 'user')
-		{
-			$model->setState('author', $id);
-		}
-		$this->items = $model->getRows();
 
 		// Plugins
 		foreach ($this->items as $item)
 		{
-			$item->triggerPlugins('com_k2.itemlist', $this->params, $offset);
+			$item->triggerPlugins('com_k2.itemlist.'.$task, $this->params, $offset);
 		}
+
+		// Pagination
+		jimport('joomla.html.pagination');
+		$this->pagination = new JPagination($this->total, $offset, $limit);
 
 		// Set the layout
 		$this->setLayout('itemlist');
 
 		// Display
 		parent::display($tpl);
+	}
+
+	private function category()
+	{
+		// Get application
+		$application = JFactory::getApplication();
+
+		// Get input
+		$id = $application->input->get('id', 0, 'int');
+		$offset = $application->input->get('offset', 0, 'int');
+		$limit = $application->input->get('limit', 10, 'int');
+
+		// Get category
+		$this->category = K2Categories::getInstance($id);
+
+		// Get items
+		$model = K2Model::getInstance('Items');
+		$model->setState('site', true);
+		$model->setState('category', $id);
+		$model->setState('limit', $limit);
+		$model->setState('limitstart', $offset);
+		$this->items = $model->getRows();
+
+		// Count items
+		$this->total = $model->countRows();
+
+		// Set title, metadata and pathway if the current menu is different from our page
+		if (!$this->isActive)
+		{
+			$this->setTitle($this->category->title);
+			$this->params->set('page_heading', $this->category->title);
+			if ($this->category->metadata->get('description'))
+			{
+				$this->document->setDescription($this->category->metadata->get('description'));
+			}
+			if ($this->category->metadata->get('kewords'))
+			{
+				$this->document->setMetadata('keywords', $this->category->metadata->get('kewords'));
+			}
+			if ($this->category->metadata->get('robots'))
+			{
+				$this->document->setMetadata('robots', $this->category->metadata->get('robots'));
+			}
+			if ($this->category->metadata->get('author'))
+			{
+				$this->document->setMetadata('author', $this->category->metadata->get('author'));
+			}
+			$pathway = $application->getPathWay();
+			$pathway->addItem($this->category->title, '');
+		}
+	}
+
+	private function user()
+	{
+		// Get application
+		$application = JFactory::getApplication();
+
+		// Get input
+		$id = $application->input->get('id', 0, 'int');
+		$offset = $application->input->get('offset', 0, 'int');
+		$limit = $application->input->get('limit', 10, 'int');
+
+		// Get user
+		$this->user = K2Users::getInstance($id);
+
+		// Get items
+		$model = K2Model::getInstance('Items');
+		$model->setState('site', true);
+		$model->setState('author', $id);
+		$model->setState('limit', $limit);
+		$model->setState('limitstart', $offset);
+		$this->items = $model->getRows();
+
+		// Count items
+		$this->total = $model->countRows();
+
+	}
+
+	private function tag()
+	{
+		// Get application
+		$application = JFactory::getApplication();
+
+		// Get input
+		$id = $application->input->get('id', 0, 'int');
+		$offset = $application->input->get('offset', 0, 'int');
+		$limit = $application->input->get('limit', 10, 'int');
+
+		// Get tag
+		$this->tag = K2Tags::getInstance($id);
+
+		// Get items
+		$model = K2Model::getInstance('Items');
+		$model->setState('site', true);
+		$model->setState('tag', $id);
+		$model->setState('limit', $limit);
+		$model->setState('limitstart', $offset);
+		$this->items = $model->getRows();
+
+		// Count items
+		$this->total = $model->countRows();
+
+		if (!$this->isActive)
+		{
+			$this->setTitle(JText::_('K2_DISPLAYING_ITEMS_BY_TAG').' '.$this->tag->name);
+		}
+	}
+
+	private function date()
+	{
+		// Get application
+		$application = JFactory::getApplication();
+
+		// Get input
+		$year = $application->input->get('year', 0, 'int');
+		$month = $application->input->get('month', 0, 'int');
+		$day = $application->input->get('day', 0, 'int');
+		$category = $application->input->get('category', 0, 'int');
+		$offset = $application->input->get('offset', 0, 'int');
+		$limit = $application->input->get('limit', 10, 'int');
+
+		// Get items
+		$model = K2Model::getInstance('Items');
+		$model->setState('site', true);
+		$model->setState('year', $year);
+		$model->setState('month', $month);
+		$model->setState('day', $day);
+		$model->setState('category', $category);
+		$model->setState('limit', $limit);
+		$model->setState('limitstart', $offset);
+		$this->items = $model->getRows();
+	}
+
+	private function search()
+	{
+		// Get application
+		$application = JFactory::getApplication();
+
+		// Get input
+		$search = $application->input->get('searchword', '', 'string');
+		$offset = $application->input->get('offset', 0, 'int');
+		$limit = $application->input->get('limit', 10, 'int');
+
+		// Get items
+		$model = K2Model::getInstance('Items');
+		$model->setState('site', true);
+		$model->setState('search', $search);
+		$model->setState('limit', $limit);
+		$model->setState('limitstart', $offset);
+		$this->items = $model->getRows();
 	}
 
 }

@@ -28,7 +28,6 @@ class K2ViewItem extends K2View
 		$id = $application->input->get('id', 0, 'int');
 		$offset = $application->input->get('offset', 0, 'int');
 		$limit = $application->input->get('limit', 10, 'int');
-		$this->print = $application->input->getBool('print');
 
 		// Get item
 		$this->item = K2Items::getInstance($id);
@@ -42,6 +41,9 @@ class K2ViewItem extends K2View
 
 		// Trigger plugins
 		$this->item->triggerPlugins('com_k2.item', $this->params, $offset);
+		
+		// @TODO Trigger comments events
+		$this->item->events->K2CommentsBlock = '';
 		
 		// Comments pagination
 		jimport('joomla.html.pagination');

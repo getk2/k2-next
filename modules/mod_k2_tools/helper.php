@@ -214,6 +214,7 @@ class ModK2ToolsHelper
 		$model->setState('root', $params->get('root_id', 1));
 		$model->setState('sorting', 'ordering');
 		$categories = $model->getRows();
+		$model = K2Model::getInstance('Items');
 		foreach ($categories as $category)
 		{
 			$category->active = ($option == 'com_k2' && $view == 'itemlist' && $task == 'category' && $id == $category->id);
@@ -286,14 +287,23 @@ class ModK2ToolsHelper
 			$spread = 1;
 		}
 		$step = ($maximumFontSize - $minimumFontSize) / ($spread);
-		$cloud = array();
-		foreach ($tags as $tag)
+		
+		$rows = array();
+		foreach($tags as $tag)
 		{
-			$row = K2Tags::get((array)$tag);
-			$row->counter = $tag->counter;
-			$size = $minimumFontSize + (($row->counter - $minimumOccurencies) * $step);
-			$row->size = ceil($size);
-			$cloud[] = $row;
+			$rows[$tag->id] = $tag->counter;
+		}		
+		
+		$model = K2Model::getInstance('Tags');
+		$model->setState('site', true);
+		$model->setState('id', array_keys($rows));
+		$cloud = $model->getRows();
+		
+		foreach ($cloud as $entry)
+		{
+			$entry->counter = $rows[$entry->id];
+			$size = $minimumFontSize + (($entry->counter - $minimumOccurencies) * $step);
+			$entry->size = ceil($size);
 		}
 		return $cloud;
 	}

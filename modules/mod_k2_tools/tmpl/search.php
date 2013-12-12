@@ -25,19 +25,15 @@ If you wish to use the live search option, it's important that you maintain the 
 		<?php if($search->button): ?>
 			
 		<?php if($search->imageButton): ?>
-		<input type="image" value="<?php echo $search->buttonText; ?>" class="button" onclick="this.form.searchword.focus();" src="<?php echo JURI::base(true); ?>/components/com_k2/images/fugue/search.png" />
+		<input type="image" value="<?php echo $search->buttonText; ?>" class="button" src="<?php echo JURI::base(true); ?>/components/com_k2/images/fugue/search.png" />
 		<?php else: ?>
-		<input type="submit" value="<?php echo $search->buttonText; ?>" class="button" onclick="this.form.searchword.focus();" />
+		<input type="submit" value="<?php echo $search->buttonText; ?>" class="button" />
 		<?php endif; ?>
 		
 		<?php endif; ?>
 
 		<input type="hidden" name="categories" value="<?php echo $search->filter; ?>" />
-		<?php if(!$search->sef): ?>
-		<input type="hidden" name="option" value="com_k2" />
-		<input type="hidden" name="view" value="itemlist" />
-		<input type="hidden" name="task" value="search" />
-		<?php endif; ?>
+		
 		<?php if($params->get('liveSearch')): ?>
 		<input type="hidden" name="format" value="html" />
 		<input type="hidden" name="t" value="" />

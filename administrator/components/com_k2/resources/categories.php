@@ -129,4 +129,14 @@ class K2Categories extends K2Resource
 		return $image;
 	}
 
+	public function getNumOfItems()
+	{
+		$numOfItems = 0;
+		$model = K2Model::getInstance('Items');
+		$model->setState('site', true);
+		$model->setState('category', $this->id);
+		$numOfItems = $model->countRows();
+		return $numOfItems;
+	}
+
 }

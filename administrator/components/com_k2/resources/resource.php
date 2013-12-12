@@ -50,7 +50,11 @@ class K2Resource
 	public static function get($data)
 	{
 		$class = get_called_class();
-		if (isset(self::$instances[$class][$data['id']]))
+		if (is_object($data))
+		{
+			$data = get_object_vars($data);
+		}
+		if ($data['id'] && isset(self::$instances[$class][$data['id']]))
 		{
 			$row = self::$instances[$class][$data['id']];
 		}

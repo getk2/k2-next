@@ -94,7 +94,7 @@ class K2ModelTags extends K2Model
 			if (is_array($id))
 			{
 				JArrayHelper::toInteger($id);
-				$query->where($db->quoteName('tag.id').' IN '.$id);
+				$query->where($db->quoteName('tag.id').' IN ('.implode(',', $id).')');
 			}
 			else
 			{
@@ -358,8 +358,8 @@ class K2ModelTags extends K2Model
 		// Get query
 		$query = $db->getQuery(true);
 
-		// Select tag data
-		$query->select($db->quoteName('tag').'.*');
+		// Select tag id
+		$query->select($db->quoteName('tag.id'));
 
 		// counter
 		$query->select('COUNT('.$db->quoteName('xref.itemId').') AS '.$db->quoteName('counter'));
@@ -378,16 +378,7 @@ class K2ModelTags extends K2Model
 
 		// Items should be published
 		$query->where($db->quoteName('item.state').' > 0');
-
-		// Check publish up/down
-		$date = JFactory::getDate()->toSql();
-		$query->where('('.$db->quoteName('item.publish_up').' = '.$db->Quote($db->getNullDate()).' OR '.$db->quoteName('item.publish_up').' <= '.$db->Quote($date).')');
-		$query->where('('.$db->quoteName('item.publish_down').' = '.$db->Quote($db->getNullDate()).' OR '.$db->quoteName('item.publish_down').' >= '.$db->Quote($date).')');
-
-		// Check access level
-		$viewlevels = array_unique(JFactory::getUser()->getAuthorisedViewLevels());
-		$query->where($db->quoteName('item.access').' IN ('.implode(',', $viewlevels).')');
-
+		
 		// Handle categories
 		$categories = $this->getState('categories');
 		$categories = array_filter($categories);
@@ -425,6 +416,15 @@ class K2ModelTags extends K2Model
 
 		// Apply the filter to the query
 		$query->where($db->quoteName('item.catid').' IN ('.implode(',', $filter).')');
+		
+		// Check access level
+		$viewlevels = array_unique(JFactory::getUser()->getAuthorisedViewLevels());
+		$query->where($db->quoteName('item.access').' IN ('.implode(',', $viewlevels).')');
+
+		// Check publish up/down
+		$date = JFactory::getDate()->toSql();
+		$query->where('('.$db->quoteName('item.publish_up').' = '.$db->Quote($db->getNullDate()).' OR '.$db->quoteName('item.publish_up').' <= '.$db->Quote($date).')');
+		$query->where('('.$db->quoteName('item.publish_down').' = '.$db->Quote($db->getNullDate()).' OR '.$db->quoteName('item.publish_down').' >= '.$db->Quote($date).')');
 
 		// Group by tag Id
 		$query->group($db->quoteName('tag.id'));

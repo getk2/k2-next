@@ -20,10 +20,7 @@ defined('_JEXEC') or die ;
 
 <!-- Start K2 Item Layout -->
 
-<div id="k2Container" class="itemView<?php echo ($this->item->featured) ? ' itemIsFeatured' : ''; ?><?php
-if ($this->params->get('pageclass_sfx'))
-	echo ' '.$this->params->get('pageclass_sfx');
- ?>">
+<div id="k2Container" class="itemView<?php echo ($this->item->featured) ? ' itemIsFeatured' : ''; ?><?php if ($this->params->get('pageclass_sfx'))echo ' '.$this->params->get('pageclass_sfx');?>">
 
 	<!-- K2 Plugins: K2BeforeDisplay -->
 	<?php echo $this->item->events->K2BeforeDisplay; ?>
@@ -169,12 +166,7 @@ if ($this->params->get('pageclass_sfx'))
 	  <div class="itemImageBlock">
 		  <span class="itemImage">
 		  	<a href="<?php echo $this->item->images['XL']; ?>" title="<?php echo JText::_('K2_CLICK_TO_PREVIEW_IMAGE'); ?>">
-		  		<img src="<?php echo $this->item->image; ?>" alt="<?php
-				if (!empty($this->item->_image->caption))
-					echo $this->escape($this->item->_image->caption);
-				else
-					echo $this->escape($this->item->title);
- ?>" style="width:<?php echo $this->item->imageWidth; ?>px; height:auto;" />
+		  		<img src="<?php echo $this->item->image; ?>" alt="<?php echo $this->escape($this->item->image_alt); ?>" style="width:<?php echo $this->item->imageWidth; ?>px; height:auto;" />
 		  	</a>
 		  </span>
 
@@ -394,7 +386,7 @@ if ($this->params->get('pageclass_sfx'))
 			<div class="clr"></div>
 
 			<!-- K2 Plugins: K2UserDisplay -->
-			<?php echo $this->item->events->K2UserDisplay; ?>
+			<?php echo $this->item->author->events->K2UserDisplay; ?>
 
     </div>
     <div class="clr"></div>
@@ -411,69 +403,6 @@ if ($this->params->get('pageclass_sfx'))
 				<a href="<?php echo $item->link ?>"><?php echo $item->title; ?></a>
 			</li>
 			<?php endforeach; ?>
-		</ul>
-		<div class="clr"></div>
-	</div>
-	<?php endif; ?>
-
-	<?php
-	/*
-	 Note regarding 'Related Items'!
-	 If you add:
-	 - the CSS rule 'overflow-x:scroll;' in the element div.itemRelated {…} in the k2.css
-	 - the class 'k2Scroller' to the ul element below
-	 - the classes 'k2ScrollerElement' and 'k2EqualHeights' to the li element inside the foreach loop below
-	 - the style attribute 'style="width:<?php echo $item->imageWidth; ?>px;"' to the li element inside the foreach loop below
-	 ...then your Related Items will be transformed into a vertical-scrolling block, inside which, all items have the same height (equal column heights). This can be very useful if you want to show your related articles or products with title/author/category/image etc., which would take a significant amount of space in the classic list-style display.
-	 */
-	?>
-
-  <?php if($this->params->get('itemRelated') && isset($this->relatedItems)): ?>
-  <!-- Related items by tag -->
-	<div class="itemRelated">
-		<h3><?php echo JText::_("K2_RELATED_ITEMS_BY_TAG"); ?></h3>
-		<ul>
-			<?php foreach($this->relatedItems as $key=>$item): ?>
-			<li class="<?php echo ($key%2) ? "odd" : "even"; ?>">
-
-				<?php if($this->params->get('itemRelatedTitle', 1)): ?>
-				<a class="itemRelTitle" href="<?php echo $item->link ?>"><?php echo $item->title; ?></a>
-				<?php endif; ?>
-
-				<?php if($this->params->get('itemRelatedCategory')): ?>
-				<div class="itemRelCat"><?php echo JText::_("K2_IN"); ?> <a href="<?php echo $item->category->link ?>"><?php echo $item->category->name; ?></a></div>
-				<?php endif; ?>
-
-				<?php if($this->params->get('itemRelatedAuthor')): ?>
-				<div class="itemRelAuthor"><?php echo JText::_("K2_BY"); ?> <a rel="author" href="<?php echo $item->author->link; ?>"><?php echo $item->author->name; ?></a></div>
-				<?php endif; ?>
-
-				<?php if($this->params->get('itemRelatedImageSize')): ?>
-				<img style="width:<?php echo $item->imageWidth; ?>px;height:auto;" class="itemRelImg" src="<?php echo $item->image; ?>" alt="<?php $this->escape($item->title); ?>" />
-				<?php endif; ?>
-
-				<?php if($this->params->get('itemRelatedIntrotext')): ?>
-				<div class="itemRelIntrotext"><?php echo $item->introtext; ?></div>
-				<?php endif; ?>
-
-				<?php if($this->params->get('itemRelatedFulltext')): ?>
-				<div class="itemRelFulltext"><?php echo $item->fulltext; ?></div>
-				<?php endif; ?>
-
-				<?php if($this->params->get('itemRelatedMedia')): ?>
-				<?php if($item->videoType=='embedded'): ?>
-				<div class="itemRelMediaEmbedded"><?php echo $item->video; ?></div>
-				<?php else: ?>
-				<div class="itemRelMedia"><?php echo $item->video; ?></div>
-				<?php endif; ?>
-				<?php endif; ?>
-
-				<?php if($this->params->get('itemRelatedImageGallery')): ?>
-				<div class="itemRelImageGallery"><?php echo $item->gallery; ?></div>
-				<?php endif; ?>
-			</li>
-			<?php endforeach; ?>
-			<li class="clr"></li>
 		</ul>
 		<div class="clr"></div>
 	</div>
@@ -559,7 +488,7 @@ if ($this->params->get('pageclass_sfx'))
 
   <div class="itemComments">
 
-	  <?php if($this->params->get('commentsFormPosition')=='above' && $this->params->get('itemComments') && !JRequest::getInt('print') && ($this->params->get('comments') == '1' || ($this->params->get('comments') == '2' && K2HelperPermissions::canAddComment($this->item->catid)))): ?>
+	  <?php if($this->params->get('commentsFormPosition')=='above' && $this->params->get('itemComments') && !$this->print && ($this->params->get('comments') == '1' || ($this->params->get('comments') == '2' && K2HelperPermissions::canAddComment($this->item->catid)))): ?>
 	  <!-- Item comments form -->
 	  <div class="itemCommentsForm">
 	  	<?php echo $this->loadTemplate('comments_form'); ?>
@@ -636,14 +565,14 @@ if ($this->params->get('pageclass_sfx'))
 	  </div>
 		<?php endif; ?>
 
-		<?php if($this->params->get('commentsFormPosition')=='below' && $this->params->get('itemComments') && !JRequest::getInt('print') && ($this->params->get('comments') == '1' || ($this->params->get('comments') == '2' && K2HelperPermissions::canAddComment($this->item->catid)))): ?>
+		<?php if($this->params->get('commentsFormPosition')=='below' && $this->params->get('itemComments') && !$this->print && ($this->params->get('comments') == '1' || ($this->params->get('comments') == '2' && K2HelperPermissions::canAddComment($this->item->catid)))): ?>
 	  <!-- Item comments form -->
 	  <div class="itemCommentsForm">
 	  	<?php echo $this->loadTemplate('comments_form'); ?>
 	  </div>
 	  <?php endif; ?>
 
-	  <?php $user = JFactory::getUser(); if ($this->params->get('comments') == '2' && $user->guest): ?>
+	  <?php if ($this->params->get('comments') == '2' && $this->user->guest): ?>
 	  		<div><?php echo JText::_('K2_LOGIN_TO_POST_COMMENTS'); ?></div>
 	  <?php endif; ?>
 

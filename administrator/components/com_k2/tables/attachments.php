@@ -27,6 +27,18 @@ class K2TableAttachments extends K2Table
 			return false;
 		}
 
+		$file = $this->file ? $this->file : basename($this->url);
+
+		if (JString::trim($this->name) == '')
+		{
+			$this->name = $file;
+		}
+
+		if (JString::trim($this->title) == '')
+		{
+			$this->title = $file;
+		}
+
 		return true;
 	}
 

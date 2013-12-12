@@ -94,7 +94,15 @@ class K2Users extends K2Resource
 
 	public function getLink()
 	{
-		return JRoute::_(K2HelperRoute::getUserRoute($this->id));
+		if (JFactory::getConfig()->get('unicodeslugs') == 1)
+		{
+			$this->alias = JFilterOutput::stringURLUnicodeSlug($this->name);
+		}
+		else
+		{
+			$this->alias = JFilterOutput::stringURLSafe($this->name);
+		}
+		return JRoute::_(K2HelperRoute::getUserRoute($this->id.':'.$this->alias));
 	}
 
 	public function getImage()
@@ -110,6 +118,20 @@ class K2Users extends K2Resource
 			$this->_image->id = $result->id;
 		}
 		return $image;
+	}
+
+	public function getEvents()
+	{
+		$events = new stdClass;
+		$dispatcher = JDispatcher::getInstance();
+		JPluginHelper::importPlugin('k2');
+		$results = $dispatcher->trigger('onK2UserDisplay', array(
+			&$this,
+			&$params,
+			0
+		));
+		$events->K2UserDisplay = trim(implode("\n", $results));
+		return $events;
 	}
 
 }
