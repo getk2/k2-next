@@ -58,7 +58,7 @@ switch ($params->get('usage'))
 		break;
 
 	case 'custom' :
-		$customcode = ModK2ToolsHelper::renderCustomCode($params);
+		$customcode = ModK2ToolsHelper::getCustomCode($params);
 		require JModuleHelper::getLayoutPath('mod_k2_tools', 'customcode');
 		break;
 }

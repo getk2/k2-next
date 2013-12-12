@@ -352,27 +352,90 @@ class K2ModelTags extends K2Model
 
 	public function getTagCloud()
 	{
+		// Get database
 		$db = $this->getDbo();
+
+		// Get query
 		$query = $db->getQuery(true);
+
+		// Select tag data
 		$query->select($db->quoteName('tag').'.*');
+
+		// counter
 		$query->select('COUNT('.$db->quoteName('xref.itemId').') AS '.$db->quoteName('counter'));
+
+		// From statement
 		$query->from($db->quoteName('#__k2_tags', 'tag'));
+
+		// Join over the reference table
 		$query->rightJoin($db->quoteName('#__k2_tags_xref', 'xref').' ON '.$db->quoteName('xref.tagId').' = '.$db->quoteName('tag.id'));
-		$query->where($db->quoteName('tag.state').' = 1');
+
+		// Join over the items table
 		$query->rightJoin($db->quoteName('#__k2_items', 'item').' ON '.$db->quoteName('item.id').' = '.$db->quoteName('xref.itemId'));
+
+		// Tags should be published
+		$query->where($db->quoteName('tag.state').' = 1');
+
+		// Items should be published
 		$query->where($db->quoteName('item.state').' > 0');
-		$query->where($db->quoteName('item.catid').' IN ('.implode(',', $this->getState('categories')).')');
-		$viewlevels = array_unique(JFactory::getUser()->getAuthorisedViewLevels());
-		$query->where($db->quoteName('item.access').' IN ('.implode(',', $viewlevels).')');
+
+		// Check publish up/down
 		$date = JFactory::getDate()->toSql();
 		$query->where('('.$db->quoteName('item.publish_up').' = '.$db->Quote($db->getNullDate()).' OR '.$db->quoteName('item.publish_up').' <= '.$db->Quote($date).')');
 		$query->where('('.$db->quoteName('item.publish_down').' = '.$db->Quote($db->getNullDate()).' OR '.$db->quoteName('item.publish_down').' >= '.$db->Quote($date).')');
+
+		// Check access level
+		$viewlevels = array_unique(JFactory::getUser()->getAuthorisedViewLevels());
+		$query->where($db->quoteName('item.access').' IN ('.implode(',', $viewlevels).')');
+
+		// Handle categories
+		$categories = $this->getState('categories');
+		$categories = array_filter($categories);
+		if ($categories)
+		{
+			if ($this->getState('recursive'))
+			{
+				$children = array();
+				$model = K2Model::getInstance('Categories');
+				foreach ($categories as $categoryId)
+				{
+					$model->setState('site', true);
+					$model->setState('id', $categories);
+					$rows = $model->getRows();
+					foreach ($rows as $row)
+					{
+						$children[] = $row->id;
+					}
+				}
+				$categories = array_merge($categories, $children);
+				$categories = array_unique($categories);
+			}
+			$filter = array_intersect($categories, K2ModelCategories::getAuthorised());
+		}
+		else
+		{
+			$filter = K2ModelCategories::getAuthorised();
+		}
+
+		// user cannot see any category return empty data
+		if (empty($filter))
+		{
+			return array();
+		}
+
+		// Apply the filter to the query
+		$query->where($db->quoteName('item.catid').' IN ('.implode(',', $filter).')');
+
+		// Group by tag Id
 		$query->group($db->quoteName('tag.id'));
+
+		// Set query
 		$db->setQuery($query);
 
 		// Get rows
 		$rows = $db->loadObjectList();
-		
+
+		// Return
 		return $rows;
 	}
 
