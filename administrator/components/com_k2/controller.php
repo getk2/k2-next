@@ -186,6 +186,7 @@ class K2Controller extends JControllerLegacy
 		$document = JFactory::getDocument();
 
 		// Get the view
+		$this->addViewPath(JPATH_ADMINISTRATOR.'/components/com_k2/views');
 		$view = $this->getView($this->resourceType, $document->getType());
 
 		// Get the model

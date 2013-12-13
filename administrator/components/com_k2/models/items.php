@@ -240,6 +240,10 @@ class K2ModelItems extends K2Model
 		{
 			$query->where('YEAR('.$db->quoteName('item.created').') = '.(int)$this->getState('year'));
 		}
+		if ($this->getState('ordering.value'))
+		{
+			$query->where($db->quoteName('item.ordering').' '.$this->getState('ordering.operator').' '.(int)$this->getState('ordering.value'));
+		}
 	}
 
 	private function setQuerySorting(&$query)
@@ -306,6 +310,10 @@ class K2ModelItems extends K2Model
 			case 'language' :
 				$ordering = 'languageTitle';
 				$direction = 'ASC';
+				break;
+			case 'custom' :
+				$ordering = $this->getState('sorting.custom.value');
+				$direction = $this->getState('sorting.custom.direction');
 				break;
 		}
 		// Append sorting

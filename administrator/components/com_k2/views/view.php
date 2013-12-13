@@ -36,7 +36,7 @@ class K2View extends JViewLegacy
 		parent::__construct($config);
 
 		// Load the helpers
-		$this->loadHelper('html');
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/html.php';
 	}
 
 	/**
@@ -147,6 +147,10 @@ class K2View extends JViewLegacy
 		// Get the row
 		$model->setState('id', $id);
 		$row = $model->getRow();
+		if (is_null($row))
+		{
+			$row = $model->getTable();
+		}
 
 		// Attach a temporary id for new rows to work with file uploads
 		if (!$id)

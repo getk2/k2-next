@@ -38,6 +38,20 @@ class K2ViewItem extends K2View
 		// Set params
 		$this->params->merge($this->item->categoryParams);
 		$this->params->merge($this->item->params);
+		
+		// Get comments
+		if($this->params->get('itemComments') && $this->params->get('comments'))
+		{
+			// Check if user can comment
+			$this->user->canComment = $this->user->authorise('k2.comment.create', 'com_k2');
+			
+			// Load comments requirements
+			$document = JFactory::getDocument();
+			$document->addScript(JURI::root(true).'/administrator/components/com_k2/js/lib/underscore-min.js');
+			$document->addScript(JURI::root(true).'/administrator/components/com_k2/js/lib/backbone-min.js');
+			$document->addScript(JURI::root(true).'/administrator/components/com_k2/js/lib/backbone.marionette.min.js');
+		}
+		
 
 		// Trigger plugins
 		$this->item->triggerPlugins('com_k2.item', $this->params, $offset);

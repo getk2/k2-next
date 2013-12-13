@@ -10,6 +10,9 @@
 // no direct access
 defined('_JEXEC') or die ;
 
+// Load dependencies
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/model.php';
+
 // Bootstrap K2
 $controller = JControllerLegacy::getInstance('K2', array('originalTask' => JFactory::getApplication()->input->get('task')));
 $controller->execute(JFactory::getApplication()->input->get('task'));

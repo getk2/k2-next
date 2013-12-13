@@ -130,7 +130,7 @@ class K2ModelUsers extends K2Model
 			if (is_array($id))
 			{
 				JArrayHelper::toInteger($id);
-				$query->where($db->quoteName('user.id').' IN '.$id);
+				$query->where($db->quoteName('user.id').' IN ('.implode(',', $id).')');
 			}
 			else
 			{

@@ -89,7 +89,7 @@ class K2ModelAttachments extends K2Model
 			if (is_array($id))
 			{
 				JArrayHelper::toInteger($id);
-				$query->where($db->quoteName('id').' IN '.$id);
+				$query->where($db->quoteName('id').' IN ('.implode(',', $id).')');
 			}
 			else
 			{

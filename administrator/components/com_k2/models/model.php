@@ -61,6 +61,8 @@ class K2Model extends JModelLegacy
 	 */
 	public function getTable($name = '', $prefix = 'K2Table', $options = array())
 	{
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/tables/table.php';
+		K2Table::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/tables');
 		return parent::getTable($name, $prefix, $options);
 	}
 
@@ -72,7 +74,7 @@ class K2Model extends JModelLegacy
 
 	public function getRow()
 	{
-		if (method_exists($this, 'getRows') && $this->getState('id') || $this->getState('alias'))
+		if (method_exists($this, 'getRows'))
 		{
 			$rows = $this->getRows();
 			if (isset($rows[0]))
@@ -83,12 +85,6 @@ class K2Model extends JModelLegacy
 			{
 				$row = null;
 			}
-		}
-		else
-		{
-			$data = array($this->getTable());
-			$rows = $this->getResources($data, $this->getName());
-			$row = (object)$rows[0];
 		}
 		return $row;
 	}

@@ -11,6 +11,7 @@
 defined('_JEXEC') or die ;
 
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/model.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/tables/table.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/categories.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/images.php';
 
@@ -21,11 +22,14 @@ class K2ModelCategories extends K2Model
 	
 	public function getRows()
 	{
+		
 		// Get database
 		$db = $this->getDBO();
 
 		// Get query
 		$query = $db->getQuery(true);
+		
+		
 
 		// Select rows
 		$query->select($db->quoteName('category').'.*')->from($db->quoteName('#__k2_categories', 'category'));
@@ -41,7 +45,7 @@ class K2ModelCategories extends K2Model
 		// Join over the user
 		$query->select($db->quoteName('moderator.name', 'moderatorName'));
 		$query->leftJoin($db->quoteName('#__users', 'moderator').' ON '.$db->quoteName('moderator.id').' = '.$db->quoteName('category.modified_by'));
-
+				
 		// Set query conditions
 		$this->setQueryConditions($query);
 
@@ -53,6 +57,8 @@ class K2ModelCategories extends K2Model
 
 		// Set the query
 		$db->setQuery($query, (int)$this->getState('limitstart'), (int)$this->getState('limit'));
+		
+		
 
 		// Get rows
 		$data = $db->loadAssocList();

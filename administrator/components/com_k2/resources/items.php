@@ -186,10 +186,14 @@ class K2Items extends K2Resource
 		$tagIds = json_decode($this->tags);
 		if ($this->id && is_array($tagIds))
 		{
-			foreach ($tagIds as $tagId)
+			$application = JFactory::getApplication();
+			$model = K2Model::getInstance('Tags');
+			if ($application->isSite())
 			{
-				$tags[] = K2Tags::getInstance($tagId);
+				$model->setState('state', 1);
 			}
+			$model->setState('id', $tagIds);
+			$tags = $model->getRows();
 		}
 		return $tags;
 	}
@@ -207,19 +211,28 @@ class K2Items extends K2Resource
 	public function getImages()
 	{
 		$images = array();
-		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/images.php';
-		$result = K2HelperImages::getResourceImages('item', $this);
-		$this->_image = json_decode($this->image);
-		if (count($result->images))
+		if ($this->id)
 		{
-			$images = $result->images;
-			$this->image = $images['S'];
-			$this->image_caption = $this->_image->caption;
-			$this->image_credits = $this->_image->credits;
-			$this->image_alt = $this->_image->caption ? $this->_image->caption : $this->title;
-			$this->imageWidth = 180;
-			$this->_image->preview = $this->image;
-			$this->_image->id = $result->id;
+			require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/images.php';
+			$result = K2HelperImages::getResourceImages('item', $this);
+			$this->_image = json_decode($this->image);
+			if (count($result->images))
+			{
+				$images = $result->images;
+				$this->image = $images['S'];
+				$this->image_caption = $this->_image->caption;
+				$this->image_credits = $this->_image->credits;
+				$this->image_alt = $this->_image->caption ? $this->_image->caption : $this->title;
+				$this->imageWidth = 180;
+				$this->_image->preview = $this->image;
+				$this->_image->id = $result->id;
+			}
+			else
+			{
+				$this->image = false;
+				$this->image_caption = '';
+				$this->image_credits = '';
+			}
 		}
 		return $images;
 	}
@@ -337,10 +350,11 @@ class K2Items extends K2Resource
 		$this->attachments = json_decode($this->attachments);
 		if (is_array($this->attachments))
 		{
-			foreach ($this->attachments as $attachmentId)
-			{
-				$attachments[] = K2Attachments::getInstance($attachmentId);
-			}
+
+			$application = JFactory::getApplication();
+			$model = K2Model::getInstance('Attachments');
+			$model->setState('id', $this->attachments);
+			$attachments = $model->getRows();
 		}
 		return $attachments;
 	}
@@ -376,14 +390,50 @@ class K2Items extends K2Resource
 
 	public function getComments()
 	{
+		$user = JFactory::getUser();
+		$params = JComponentHelper::getParams('com_k2');
 		$comments = array();
 		if ($this->id)
 		{
-			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
-			$model = K2Model::getInstance('Comments', 'K2Model');
+			$model = K2Model::getInstance('Comments');
 			$model->setState('itemId', $this->id);
-			$model->setState('state', 1);
+			//$model->setState('state', 1);
 			$comments = $model->getRows();
+			$userIds = array();
+			$canReportUser = $user->authorise('core.admin', 'com_k2');
+			$canReport = $params->get('commentsReporting') == '1' || ($params->get('commentsReporting') == '2' && !$user->guest);
+			foreach ($comments as $comment)
+			{
+				$comment->canReport = $canReport && $user->id != $comment->userId;
+				$comment->canReportUser = false;
+				$comment->canEdit = $user->authorise('k2.comment.edit', 'com_k2') || ($user->authorise('k2.comment.edit.own', 'com_k2') && $user->id == $comment->userid);
+				$comment->isAuthorResponse = !$this->created_by_alias && $comment->userId == $this->created_by;
+				$comment->date = JHtml::_('date', $comment->date, JText::_('K2_DATE_FORMAT_LC2'));
+				if ($comment->userId)
+				{
+					$comment->canReportUser = $canReport && $user->id != $comment->userId;
+				}
+			}
+
+			// Load the comments users in one query
+			$userIds = array_unique($userIds);
+			if (count($userIds))
+			{
+				$model = K2Model::getInstance('Users');
+				$model->setState('id', $userIds);
+				$users = $model->getRows();
+			}
+
+			// Assign the user data to comments
+			foreach ($comments as $comment)
+			{
+				if ($comment->userId)
+				{
+					$comment->user = K2Users::getInstance($comment->userId);
+					$comment->user->image = substr($comment->user->image, strlen(JURI::root(true)) - 1);
+				}
+			}
+
 		}
 		return $comments;
 	}
@@ -393,13 +443,45 @@ class K2Items extends K2Resource
 		$result = 0;
 		if ($this->id)
 		{
-			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
-			$model = K2Model::getInstance('Comments', 'K2Model');
+			$model = K2Model::getInstance('Comments');
 			$model->setState('itemId', $this->id);
 			$model->setState('state', 1);
+			$model->setState('sorting', 'id');
 			$result = $model->countRows();
 		}
 		return $result;
+	}
+
+	public function getPrevious()
+	{
+		if ($this->ordering == 1)
+		{
+			return false;
+		}
+		$model = K2Model::getInstance('Items');
+		$model->setState('site', 1);
+		$model->setState('category', $this->catid);
+		$model->setState('sorting', 'custom');
+		$model->setState('sorting.custom.value', 'item.ordering');
+		$model->setState('sorting.custom.direction', 'ASC');
+		$model->setState('ordering.value', $this->ordering - 1);
+		$model->setState('ordering.operator', '=');
+		$previous = $model->getRow();
+		return $previous;
+	}
+
+	public function getNext()
+	{
+		$model = K2Model::getInstance('Items');
+		$model->setState('site', 1);
+		$model->setState('category', $this->catid);
+		$model->setState('sorting', 'custom');
+		$model->setState('sorting.custom.value', 'item.ordering');
+		$model->setState('sorting.custom.direction', 'ASC');
+		$model->setState('ordering.value', $this->ordering + 1);
+		$model->setState('ordering.operator', '=');
+		$next = $model->getRow();
+		return $next;
 	}
 
 	public function triggerPlugins($context, &$params, $offset)
