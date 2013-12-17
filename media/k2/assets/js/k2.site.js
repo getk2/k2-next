@@ -1,5 +1,42 @@
-// Comments
 jQuery(document).ready(function() {
+
+	jQuery('.k2CalendarBlock').on('click', '.calendarNavLink', function(event) {
+		event.preventDefault();
+		var parentElement = jQuery(this).parent().parent().parent().parent();
+		var url = jQuery(this).attr('href');
+		parentElement.empty().addClass('k2CalendarLoader');
+		jQuery.ajax({
+			url : url,
+			type : 'get',
+			success : function(response) {
+				parentElement.html(response);
+				parentElement.removeClass('k2CalendarLoader');
+			}
+		});
+	});
+
+	jQuery('div.k2LiveSearchBlock form input[name=searchword]').keyup(function(event) {
+		var parentElement = jQuery(this).parent().parent();
+		if (jQuery(this).val().length > 3 && event.key != 'enter') {
+			jQuery(this).addClass('k2SearchLoading');
+			parentElement.find('.k2LiveSearchResults').css('display', 'none').empty();
+			parentElement.find('input[name=t]').val(jQuery.now());
+			parentElement.find('input[name=format]').val('raw');
+			var url = 'index.php?option=com_k2&view=itemlist&task=search&' + parentElement.find('form').serialize();
+			parentElement.find('input[name=format]').val('html');
+			jQuery.ajax({
+				url : url,
+				type : 'get',
+				success : function(response) {
+					parentElement.find('.k2LiveSearchResults').html(response);
+					parentElement.find('input[name=searchword]').removeClass('k2SearchLoading');
+					parentElement.find('.k2LiveSearchResults').css('display', 'block');
+				}
+			});
+		} else {
+			parentElement.find('.k2LiveSearchResults').css('display', 'none').empty();
+		}
+	});
 
 	// Backbone.sync
 	// -------------
@@ -85,6 +122,9 @@ jQuery(document).ready(function() {
 		var K2ViewComment = Marionette.ItemView.extend({
 			tagName : 'li',
 			template : _.template(jQuery('#k2CommentTemplate').html()),
+			modelEvents : {
+				'change' : 'render'
+			},
 			events : {
 				'click [data-action="publish"]' : 'publish',
 				'click [data-action="delete"]' : 'destroy',
@@ -93,7 +133,15 @@ jQuery(document).ready(function() {
 			},
 			publish : function(event) {
 				event.preventDefault();
-				this.model.save({state : 1}, {wait:true, patch:true});
+				this.model.save({
+					state : 1
+				}, {
+					wait : true,
+					patch : true,
+					success : function(model) {
+						model.set('state', 1);
+					}
+				});
 			},
 			destroy : function(event) {
 				event.preventDefault();

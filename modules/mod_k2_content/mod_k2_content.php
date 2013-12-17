@@ -13,4 +13,4 @@ defined('_JEXEC') or die ;
 require_once dirname(__FILE__).'/helper.php';
 $items = ModK2ContentHelper::getItems($params);
 $componentParams = JComponentHelper::getParams('com_k2');
-require (JModuleHelper::getLayoutPath('mod_k2_content', $params->get('getTemplate', 'Default').'/default'));
+require JModuleHelper::getLayoutPath('mod_k2_content', $params->get('getTemplate', 'Default').'/default');

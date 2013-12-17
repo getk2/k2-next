@@ -36,7 +36,7 @@ defined('_JEXEC') or die ; ?>
 			</a>
 			<?php endif; ?>
 
-			<?php if($params->get('commenterLatestComment')): ?>
+			<?php if($params->get('commenterLatestComment') && $commenter->comment): ?>
 			<a class="tcLatestComment" href="<?php echo $commenter->comment->link; ?>">
 				<?php echo $commenter->comment->text; ?>
 			</a>

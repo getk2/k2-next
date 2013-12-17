@@ -10,6 +10,9 @@
 // no direct access
 defined('_JEXEC') or die ;
 
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/model.php';
+K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
+
 /**
  * K2 HTML helper class.
  */

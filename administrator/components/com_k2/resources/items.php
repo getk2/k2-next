@@ -511,8 +511,9 @@ class K2Items extends K2Resource
 		$model->setState('sorting', 'custom');
 		$model->setState('sorting.custom.value', 'item.ordering');
 		$model->setState('sorting.custom.direction', 'ASC');
-		$model->setState('ordering.value', $this->ordering - 1);
-		$model->setState('ordering.operator', '=');
+		$model->setState('ordering.value', $this->ordering);
+		$model->setState('ordering.operator', '<');
+		$model->setState('limit', 1);
 		$previous = $model->getRow();
 		return $previous;
 	}
@@ -525,8 +526,9 @@ class K2Items extends K2Resource
 		$model->setState('sorting', 'custom');
 		$model->setState('sorting.custom.value', 'item.ordering');
 		$model->setState('sorting.custom.direction', 'ASC');
-		$model->setState('ordering.value', $this->ordering + 1);
-		$model->setState('ordering.operator', '=');
+		$model->setState('ordering.value', $this->ordering);
+		$model->setState('ordering.operator', '>');
+		$model->setState('limit', 1);
 		$next = $model->getRow();
 		return $next;
 	}

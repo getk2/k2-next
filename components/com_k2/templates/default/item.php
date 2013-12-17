@@ -496,7 +496,7 @@ defined('_JEXEC') or die ;
 	  </div>
 	  <?php endif; ?>
 
-	  <?php if($this->item->numOfComments > 0 && $this->params->get('itemComments') && $this->params->get('comments')): ?>
+	  <?php if($this->params->get('itemComments') && $this->params->get('comments')): ?>
 	  <!-- Item user comments -->
 	  <h3 class="itemCommentsCounter">
 	  	<span><?php echo $this->item->numOfComments; ?></span> <?php echo ($this->item->numOfComments > 1) ? JText::_('K2_COMMENTS') : JText::_('K2_COMMENT'); ?>

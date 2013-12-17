@@ -82,8 +82,8 @@ class ModK2ToolsHelper
 					$model->setState('author', $author->id);
 					$model->setState('limit', 1);
 					$model->setState('sorting', 'created');
-					$latest = $model->getRows();
-					$author->latest = $latest[0];
+					$latest = $model->getRow();
+					$author->latest = $latest;
 				}
 				if ($params->get('authorItemsCounter'))
 				{
