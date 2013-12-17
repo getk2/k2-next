@@ -25,6 +25,19 @@ class K2ModelComments extends K2Model
 		// Select rows
 		$query->select($db->quoteName('comment').'.*')->from($db->quoteName('#__k2_comments', 'comment'));
 
+		// Join with items
+		$query->select($db->quoteName('item.title', 'itemTitle'));
+		$query->select($db->quoteName('item.alias', 'itemAlias'));
+		$query->select($db->quoteName('item.created_by', 'itemCreatedBy'));
+		$query->select($db->quoteName('item.created_by_alias', 'itemCreatedByAlias'));
+		$query->leftJoin($db->quoteName('#__k2_items', 'item').' ON '.$db->quoteName('comment.itemId').' = '.$db->quoteName('item.id'));
+
+		// Join with categories
+		$query->select($db->quoteName('category.id', 'categoryId'));
+		$query->select($db->quoteName('category.title', 'categoryTitle'));
+		$query->select($db->quoteName('category.alias', 'categoryAlias'));
+		$query->leftJoin($db->quoteName('#__k2_categories', 'category').' ON '.$db->quoteName('category.id').' = '.$db->quoteName('item.catid'));
+
 		// Set query conditions
 		$this->setQueryConditions($query);
 
@@ -57,6 +70,12 @@ class K2ModelComments extends K2Model
 
 		// Select statement
 		$query->select('COUNT(*)')->from($db->quoteName('#__k2_comments', 'comment'));
+
+		// Join with items
+		$query->leftJoin($db->quoteName('#__k2_items', 'item').' ON '.$db->quoteName('comment.itemId').' = '.$db->quoteName('item.id'));
+
+		// Join with categories
+		$query->leftJoin($db->quoteName('#__k2_categories', 'category').' ON '.$db->quoteName('category.id').' = '.$db->quoteName('item.catid'));
 
 		// Set query conditions
 		$this->setQueryConditions($query);
@@ -109,6 +128,30 @@ class K2ModelComments extends K2Model
 				$query->where($db->quoteName('comment.text').' LIKE '.$db->Quote('%'.$search.'%', false));
 			}
 		}
+		
+		if ($this->getState('userId'))
+		{
+			$query->where($db->quoteName('comment.userId').' = '.(int)$this->getState('userId'));
+		}
+
+		if ($this->getState('filter.items'))
+		{
+			// Items should be published
+			$query->where($db->quoteName('item.state').' = 1');
+
+			// Check categories access level
+			$filter = K2ModelCategories::getCategoryFilter($this->getState('category'));
+			$query->where($db->quoteName('item.catid').' IN ('.implode(',', $filter).')');
+
+			// Check item access level
+			$viewlevels = array_unique(JFactory::getUser()->getAuthorisedViewLevels());
+			$query->where($db->quoteName('item.access').' IN ('.implode(',', $viewlevels).')');
+
+			// Check publish up/down
+			$date = JFactory::getDate()->toSql();
+			$query->where('('.$db->quoteName('item.publish_up').' = '.$db->Quote($db->getNullDate()).' OR '.$db->quoteName('item.publish_up').' <= '.$db->Quote($date).')');
+			$query->where('('.$db->quoteName('item.publish_down').' = '.$db->Quote($db->getNullDate()).' OR '.$db->quoteName('item.publish_down').' >= '.$db->Quote($date).')');
+		}
 	}
 
 	private function setQuerySorting(&$query)
@@ -121,6 +164,10 @@ class K2ModelComments extends K2Model
 			case 'id' :
 				$ordering = 'comment.id';
 				$direction = 'DESC';
+				break;
+			case 'id.asc' :
+				$ordering = 'comment.id';
+				$direction = 'ASC';
 				break;
 			case 'name' :
 				$ordering = 'comment.name';

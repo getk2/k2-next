@@ -38,7 +38,7 @@ class K2ModelUsers extends K2Model
 		$query->select($db->quoteName('profile.hostname'));
 		$query->select($db->quoteName('profile.plugins'));
 		$query->leftJoin($db->quoteName('#__k2_users', 'profile').' ON '.$db->quoteName('user.id').' = '.$db->quoteName('profile.id'));
-
+				
 		// Set query conditions
 		$this->setQueryConditions($query);
 
@@ -140,6 +140,10 @@ class K2ModelUsers extends K2Model
 		if ($this->getState('email'))
 		{
 			$query->where($db->quoteName('user.email').' = '.$db->quote($this->getState('email')));
+		}
+		if (is_numeric($this->getState('block')))
+		{
+			$query->where($db->quoteName('user.block').' = '.(int)$this->getState('block'));
 		}
 		if ($this->getState('search'))
 		{
@@ -473,5 +477,36 @@ class K2ModelUsers extends K2Model
 		// Return the result
 		return (int)$total;
 	}
+
+	public function getTopCommenters()
+	{
+		// Get database
+		$db = $this->getDBO();
+
+		// Get query
+		$query = $db->getQuery(true);
+	
+		// Select statement
+		$query->select($db->quoteName('stats.userId'));
+		$query->select($db->quoteName('stats.comments'));
+		$query->from($db->quoteName('#__k2_users_stats', 'stats'));
+		
+		// Join with users
+		$query->leftJoin($db->quoteName('#__users', 'user').' ON '.$db->quoteName('user.id').' = '.$db->quoteName('stats.userId'));
+		$query->where($db->quoteName('user.block').' = 0');
+		
+		// Sorting
+		$query->order($db->quoteName('stats.comments').' DESC');
+
+		// Set the query
+		$db->setQuery($query, 0, (int)$this->getState('limit'));
+
+		// Get the result
+		$rows = $db->loadObjectList();
+
+		// Return the result
+		return $rows;
+	}
+
 
 }

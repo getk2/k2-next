@@ -32,4 +32,35 @@ class K2HelperUtilities
 		}
 	}
 
+	public static function wordLimit($string, $length = 100, $endCharacter = '&#8230;')
+	{
+		// If the string is empty return
+		if (trim($string) == '')
+		{
+			return $string;
+		}
+
+		// Strip HTML tags
+		$string = strip_tags($string);
+
+		// Get words
+		$words = str_word_count($string, 1);
+
+		// Truncate
+		if (count($words) > $length)
+		{
+			$words = array_slice($words, $length);
+			$string = implode(' ', $words);
+
+			// Append end character
+			if ($endCharacter)
+			{
+				$string .= ' '.$endCharacter;
+			}
+		}
+
+		// Return
+		return $string;
+	}
+
 }

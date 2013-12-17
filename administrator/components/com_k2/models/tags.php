@@ -380,42 +380,16 @@ class K2ModelTags extends K2Model
 		$query->where($db->quoteName('item.state').' > 0');
 		
 		// Handle categories
-		$categories = $this->getState('categories');
-		$categories = array_filter($categories);
-		if ($categories)
-		{
-			if ($this->getState('recursive'))
-			{
-				$children = array();
-				$model = K2Model::getInstance('Categories');
-				foreach ($categories as $categoryId)
-				{
-					$model->setState('site', true);
-					$model->setState('id', $categories);
-					$rows = $model->getRows();
-					foreach ($rows as $row)
-					{
-						$children[] = $row->id;
-					}
-				}
-				$categories = array_merge($categories, $children);
-				$categories = array_unique($categories);
-			}
-			$filter = array_intersect($categories, K2ModelCategories::getAuthorised());
-		}
-		else
-		{
-			$filter = K2ModelCategories::getAuthorised();
-		}
-
+		$categories = K2ModelCategories::getCategoryFilter($this->getState('categories'), $this->getState('recursive'));
+		
 		// user cannot see any category return empty data
-		if (empty($filter))
+		if (empty($categories))
 		{
 			return array();
 		}
 
 		// Apply the filter to the query
-		$query->where($db->quoteName('item.catid').' IN ('.implode(',', $filter).')');
+		$query->where($db->quoteName('item.catid').' IN ('.implode(',', $categories).')');
 		
 		// Check access level
 		$viewlevels = array_unique(JFactory::getUser()->getAuthorisedViewLevels());
@@ -431,7 +405,7 @@ class K2ModelTags extends K2Model
 
 		// Set query
 		$db->setQuery($query);
-
+		
 		// Get rows
 		$rows = $db->loadObjectList();
 

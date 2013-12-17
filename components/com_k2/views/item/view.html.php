@@ -26,8 +26,6 @@ class K2ViewItem extends K2View
 
 		// Get input
 		$id = $application->input->get('id', 0, 'int');
-		$offset = $application->input->get('offset', 0, 'int');
-		$limit = $application->input->get('limit', 10, 'int');
 
 		// Get item
 		$this->item = K2Items::getInstance($id);
@@ -47,22 +45,18 @@ class K2ViewItem extends K2View
 			
 			// Load comments requirements
 			$document = JFactory::getDocument();
+			$document->addScriptDeclaration('var K2SessionToken = "'.JSession::getFormToken().'";');
 			$document->addScript(JURI::root(true).'/administrator/components/com_k2/js/lib/underscore-min.js');
 			$document->addScript(JURI::root(true).'/administrator/components/com_k2/js/lib/backbone-min.js');
 			$document->addScript(JURI::root(true).'/administrator/components/com_k2/js/lib/backbone.marionette.min.js');
 		}
 		
-
 		// Trigger plugins
-		$this->item->triggerPlugins('com_k2.item', $this->params, $offset);
+		$this->item->triggerPlugins('com_k2.item', $this->params, 0);
 		
 		// @TODO Trigger comments events
 		$this->item->events->K2CommentsBlock = '';
 		
-		// Comments pagination
-		jimport('joomla.html.pagination');
-		$this->pagination = new JPagination($this->item->numOfComments, $offset, $limit);
-
 		// Set the layout
 		$this->setLayout('item');
 

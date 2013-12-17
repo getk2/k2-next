@@ -487,7 +487,7 @@ defined('_JEXEC') or die ;
   <a name="itemCommentsAnchor" id="itemCommentsAnchor"></a>
   
   
-  <div id="k2Comments" data-item-id="<?php echo $this->item->id; ?>" data-site="<?php echo JURI::root(true); ?>" class="itemComments">
+  <div class="itemComments">
 
 	  <?php if($this->params->get('commentsFormPosition')=='above' && $this->params->get('itemComments') && !$this->print && $this->params->get('comments') && $this->user->canComment): ?>
 	  <!-- Item comments form -->
@@ -501,14 +501,12 @@ defined('_JEXEC') or die ;
 	  <h3 class="itemCommentsCounter">
 	  	<span><?php echo $this->item->numOfComments; ?></span> <?php echo ($this->item->numOfComments > 1) ? JText::_('K2_COMMENTS') : JText::_('K2_COMMENT'); ?>
 	  </h3>
-
-	  <ul class="itemCommentsList"></ul>
-
-	  <div class="itemCommentsPagination">
-	  	<?php echo $this->pagination->getPagesLinks(); ?>
-	  	<div class="clr"></div>
-	  </div>
-		<?php endif; ?>
+	
+	<div id="k2Comments" data-item-id="<?php echo $this->item->id; ?>" data-site="<?php echo JURI::root(true); ?>"></div>
+	
+	<div id="k2CommentsPagination"></div>
+	  
+	<?php endif; ?>
 
 	  <?php if($this->params->get('commentsFormPosition')=='below' && $this->params->get('itemComments') && !$this->print && $this->params->get('comments') && $this->user->canComment): ?>
 	  <!-- Item comments form -->
@@ -537,20 +535,20 @@ defined('_JEXEC') or die ;
 		    	</a>
 		    </span>
 
-			<% if(user && user.image) { %>
-			<img src="<%= user.image %>" alt="<%- name %>" width="<?php echo $this->params->get('commenterImgWidth'); ?>" />
+			<% if(user.image) { %>
+			<img src="<%= user.image %>" alt="<%- user.name %>" width="<?php echo $this->params->get('commenterImgWidth'); ?>" />
 			<% } %>
 
 			<span class="commentDate"><%- date %></span>
 
 		    <span class="commentAuthorName">
 			    <?php echo JText::_('K2_POSTED_BY'); ?>
-			   <% if(user) { %>
-			    <a href="<%= user.link %>" title="<%- name %>" target="_blank" rel="nofollow">
-			    	<%= name %>
+			   <% if(user.link) { %>
+			    <a href="<%= user.link %>" title="<%- user.name %>" target="_blank" rel="nofollow">
+			    	<%= user.name %>
 			    </a>
 			    <% } else { %>
-			    <%= name %>
+			    <%= user.name %>
 			    <% } %>
 		    </span>
 
@@ -585,5 +583,33 @@ defined('_JEXEC') or die ;
 	    </li>
 		
 	</script>
+	
+	
+	<script type="text/template" id="k2CommentsPaginationTemplate">
+		 <ul>
+            <li>
+                <a data-page="1" href="#" class="k2CommentsPaginationStart"><?php echo JText::_('K2_START'); ?></a>
+            </li>
+            <% if((pagesCurrent - 1) > 0) { %>
+            <li>
+                <a data-page="previous" href="#" class="k2CommentsPaginationPrevious"><?php echo JText::_('K2_PREVIOUS'); ?></a>
+            </li>
+            <% } %>
+            <% for(i=pagesStart; i <= pagesStop; i++) { %>
+            <li <% if(pagesCurrent == i) { %> class="active" <% } %>>
+                <a data-page="<%= i %>" href="#"><%= i %></a>
+            </li>
+            <% } %>
+            <% if((pagesCurrent + 1) <= pagesTotal) { %>
+            <li>
+                <a data-page="next" href="#" class="k2CommentsPaginationNext"><?php echo JText::_('K2_NEXT'); ?></a>
+            </li>
+            <% } %>
+            <li>
+                <a data-page="<%= pagesTotal %>" href="#" class="k2CommentsPaginationEnd"><?php echo JText::_('K2_END'); ?></a>
+            </li>
+        </ul>
+	</script>
+	
 </div>
 <!-- End K2 Item Layout -->

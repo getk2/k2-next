@@ -17,19 +17,17 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/images.php';
 
 class K2ModelCategories extends K2Model
 {
-	
+
 	private static $authorised = null;
-	
+
 	public function getRows()
 	{
-		
+
 		// Get database
 		$db = $this->getDBO();
 
 		// Get query
 		$query = $db->getQuery(true);
-		
-		
 
 		// Select rows
 		$query->select($db->quoteName('category').'.*')->from($db->quoteName('#__k2_categories', 'category'));
@@ -45,7 +43,7 @@ class K2ModelCategories extends K2Model
 		// Join over the user
 		$query->select($db->quoteName('moderator.name', 'moderatorName'));
 		$query->leftJoin($db->quoteName('#__users', 'moderator').' ON '.$db->quoteName('moderator.id').' = '.$db->quoteName('category.modified_by'));
-				
+
 		// Set query conditions
 		$this->setQueryConditions($query);
 
@@ -57,8 +55,6 @@ class K2ModelCategories extends K2Model
 
 		// Set the query
 		$db->setQuery($query, (int)$this->getState('limitstart'), (int)$this->getState('limit'));
-		
-		
 
 		// Get rows
 		$data = $db->loadAssocList();
@@ -250,6 +246,48 @@ class K2ModelCategories extends K2Model
 		}
 
 		return self::$authorised;
+	}
+
+	/**
+	 * getCategoryFilter method.
+	 *
+	 * @return array
+	 */
+	public static function getCategoryFilter($categories = null, $recursive = false)
+	{
+
+		$filter = K2ModelCategories::getAuthorised();
+
+		if ($categories)
+		{
+			if (!is_array($categories))
+			{
+				$categories = (array)$categories;
+			}
+			$categories = array_filter($categories);
+			if (count($categories))
+			{
+				if ($recursive)
+				{
+					$children = array();
+					$model = K2Model::getInstance('Categories');
+					foreach ($categories as $categoryId)
+					{
+						$model->setState('site', true);
+						$model->setState('id', $categories);
+						$rows = $model->getRows();
+						foreach ($rows as $row)
+						{
+							$children[] = $row->id;
+						}
+					}
+					$categories = array_merge($categories, $children);
+					$categories = array_unique($categories);
+				}
+				$filter = array_intersect($categories, K2ModelCategories::getAuthorised());
+			}
+		}
+		return array_unique($filter);
 	}
 
 	/**

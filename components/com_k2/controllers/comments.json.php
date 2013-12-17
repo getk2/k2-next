@@ -16,17 +16,18 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/controller.php';
  * Comments JSON controller.
  */
 
-class K2ControllerComments extends JControllerLegacy
+class K2ControllerComments extends K2Controller
 {
 
-	public function read()
+	public function read($mode = 'row', $id = null)
 	{
 		// Get application
 		$application = JFactory::getApplication();
 
 		// Get input
 		$itemId = $application->input->get('itemId', 0, 'int');
-
+		$offset = $application->input->get('limitstart', 0, 'int');
+		
 		if ($itemId)
 		{
 			// Get Item
@@ -37,11 +38,14 @@ class K2ControllerComments extends JControllerLegacy
 			$item->checkSiteAccess();
 
 			// Get rows
-			$comments = $item->getComments();
+			$comments = $item->getComments($offset);
 
 			// Response
-			echo json_encode($comments);
+			K2Response::setRows($comments->rows);			
+			K2Response::setPagination($comments->pagination);
 		}
+
+		echo K2Response::render();
 
 		// Return
 		return $this;

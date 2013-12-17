@@ -18,7 +18,6 @@
 		<action name="k2.item.delete" title="K2_DELETE_ITEMS" description="K2_DELETE_ITEMS_DESC"  />
 		<action name="k2.comment.create" title="K2_ADD_COMMENTS" description="K2_ADD_COMMENTS_DESC"  />
 		<action name="k2.comment.edit" title="K2_EDIT_ANY_COMMENT" description="K2_EDIT_ANY_COMMENT_DESC"  />
-		<action name="k2.comment.edit.own" title="K2_EDIT_OWN_COMMENTS" description="K2_EDIT_OWN_COMMENTS_DESC"  />
 	</section>
 	<section name="category">
 		<action name="k2.category.create" title="K2_ADD_CATEGORIES_UNDER_THIS_CATEGORY" description="K2_ADD_CATEGORIES_UNDER_THIS_CATEGORY_DESC" />
