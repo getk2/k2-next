@@ -253,11 +253,9 @@ class K2ModelCategories extends K2Model
 	 *
 	 * @return array
 	 */
-	public static function getCategoryFilter($categories = null, $recursive = false)
+	public static function getCategoryFilter($categories = null, $recursive = false, $access = false)
 	{
-
-		$filter = K2ModelCategories::getAuthorised();
-
+		$filter = array();
 		if ($categories)
 		{
 			if (!is_array($categories))
@@ -273,8 +271,8 @@ class K2ModelCategories extends K2Model
 					$model = K2Model::getInstance('Categories');
 					foreach ($categories as $categoryId)
 					{
-						$model->setState('site', true);
-						$model->setState('id', $categories);
+						$model->setState('site', $access);
+						$model->setState('root', $categoryId);
 						$rows = $model->getRows();
 						foreach ($rows as $row)
 						{
@@ -284,7 +282,14 @@ class K2ModelCategories extends K2Model
 					$categories = array_merge($categories, $children);
 					$categories = array_unique($categories);
 				}
-				$filter = array_intersect($categories, K2ModelCategories::getAuthorised());
+				if ($access)
+				{
+					$filter = array_intersect($categories, K2ModelCategories::getAuthorised());
+				}
+				else
+				{
+					$filter = $categories;
+				}
 			}
 		}
 		return array_unique($filter);

@@ -460,7 +460,7 @@ class K2Items extends K2Resource
 					$comment->user->name = $commentUser->name;
 					$comment->user->link = $commentUser->link;
 					$comment->user->image = $commentUser->image;
-					if($comment->user->image)
+					if ($comment->user->image)
 					{
 						$comment->user->image = substr($comment->user->image, strlen(JURI::root(true)));
 					}
@@ -533,93 +533,108 @@ class K2Items extends K2Resource
 		return $next;
 	}
 
-	public function triggerPlugins($context, &$params, $offset)
+	public function triggerPlugins($context, &$params, $offset, $k2Plugins = true, $jPlugins = true)
 	{
 		// Get dispatcher
 		$dispatcher = JDispatcher::getInstance();
 
-		// Import content plugins
-		JPluginHelper::importPlugin('content');
-
-		// Import K2 plugins
-		JPluginHelper::importPlugin('k2');
-
 		// Create the text variable
 		$this->text = $this->introtext.'{K2Splitter}'.$this->fulltext;
 
-		// Create the event object
+		// Create the event object with null values
 		$this->events = new stdClass;
+		$this->events->AfterDisplayTitle = '';
+		$this->events->BeforeDisplayContent = '';
+		$this->events->AfterDisplayContent = '';
+		$this->events->K2BeforeDisplay = '';
+		$this->events->K2AfterDisplay = '';
+		$this->events->K2AfterDisplayTitle = '';
+		$this->events->K2BeforeDisplayContent = '';
+		$this->events->K2AfterDisplayContent = '';
 
 		// Content plugins
-		$dispatcher->trigger('onContentPrepare', array(
-			$context,
-			&$this,
-			&$params,
-			$offset
-		));
-		$results = $dispatcher->trigger('onContentAfterTitle', array(
-			$context,
-			&$this,
-			&$params,
-			$offset
-		));
-		$this->events->AfterDisplayTitle = trim(implode("\n", $results));
-		$results = $dispatcher->trigger('onContentBeforeDisplay', array(
-			$context,
-			&$this,
-			&$params,
-			$offset
-		));
-		$this->events->BeforeDisplayContent = trim(implode("\n", $results));
-		$results = $dispatcher->trigger('onContentAfterDisplay', array(
-			$context,
-			&$this,
-			&$params,
-			$offset
-		));
-		$this->events->AfterDisplayContent = trim(implode("\n", $results));
+		if ($jPlugins)
+		{
+			// Import content plugins
+			JPluginHelper::importPlugin('content');
+			
+			$dispatcher->trigger('onContentPrepare', array(
+				$context,
+				&$this,
+				&$params,
+				$offset
+			));
+			$results = $dispatcher->trigger('onContentAfterTitle', array(
+				$context,
+				&$this,
+				&$params,
+				$offset
+			));
+			$this->events->AfterDisplayTitle = trim(implode("\n", $results));
+			$results = $dispatcher->trigger('onContentBeforeDisplay', array(
+				$context,
+				&$this,
+				&$params,
+				$offset
+			));
+			$this->events->BeforeDisplayContent = trim(implode("\n", $results));
+			$results = $dispatcher->trigger('onContentAfterDisplay', array(
+				$context,
+				&$this,
+				&$params,
+				$offset
+			));
+			$this->events->AfterDisplayContent = trim(implode("\n", $results));
+
+		}
 
 		// K2 plugins
-		$results = $dispatcher->trigger('onK2BeforeDisplay', array(
-			&$this,
-			&$params,
-			$offset
-		));
-		$this->events->K2BeforeDisplay = trim(implode("\n", $results));
+		if ($k2Plugins)
+		{
+			// Import K2 plugins
+			JPluginHelper::importPlugin('k2');
+			
+			$results = $dispatcher->trigger('onK2BeforeDisplay', array(
+				&$this,
+				&$params,
+				$offset
+			));
+			$this->events->K2BeforeDisplay = trim(implode("\n", $results));
 
-		$results = $dispatcher->trigger('onK2AfterDisplay', array(
-			&$this,
-			&$params,
-			$offset
-		));
-		$this->events->K2AfterDisplay = trim(implode("\n", $results));
+			$results = $dispatcher->trigger('onK2AfterDisplay', array(
+				&$this,
+				&$params,
+				$offset
+			));
+			$this->events->K2AfterDisplay = trim(implode("\n", $results));
 
-		$results = $dispatcher->trigger('onK2AfterDisplayTitle', array(
-			&$this,
-			&$params,
-			$offset
-		));
-		$this->events->K2AfterDisplayTitle = trim(implode("\n", $results));
+			$results = $dispatcher->trigger('onK2AfterDisplayTitle', array(
+				&$this,
+				&$params,
+				$offset
+			));
+			$this->events->K2AfterDisplayTitle = trim(implode("\n", $results));
 
-		$results = $dispatcher->trigger('onK2BeforeDisplayContent', array(
-			&$this,
-			&$params,
-			$offset
-		));
-		$this->events->K2BeforeDisplayContent = trim(implode("\n", $results));
+			$results = $dispatcher->trigger('onK2BeforeDisplayContent', array(
+				&$this,
+				&$params,
+				$offset
+			));
+			$this->events->K2BeforeDisplayContent = trim(implode("\n", $results));
 
-		$results = $dispatcher->trigger('onK2AfterDisplayContent', array(
-			&$this,
-			&$params,
-			$offset
-		));
-		$this->events->K2AfterDisplayContent = trim(implode("\n", $results));
+			$results = $dispatcher->trigger('onK2AfterDisplayContent', array(
+				&$this,
+				&$params,
+				$offset
+			));
+			$this->events->K2AfterDisplayContent = trim(implode("\n", $results));
 
-		$dispatcher->trigger('onK2PrepareContent', array(
-			&$this,
-			&$params,
-			$offset
-		));
+			$dispatcher->trigger('onK2PrepareContent', array(
+				&$this,
+				&$params,
+				$offset
+			));
+		}
 
 		// Restore introtext and fulltext
 		list($this->introtext, $this->fulltext) = explode('{K2Splitter}', $this->text);

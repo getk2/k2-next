@@ -19,9 +19,29 @@ class JFormFieldK2Categories extends JFormField
 
 	public function getInput()
 	{
-		$this->recursive = $this->element['recursive'];
-		$this->multiple = true;
-		$this->size = (int)$this->element['size'];
+		// Load javascript
+		$document = JFactory::getDocument();
+		$document->addScript(JURI::root(true).'/media/k2/assets/js/k2.fields.js');
+
+		// Set values if are not set
+		if (!isset($this->value['enabled']))
+		{
+			$this->value['enabled'] = '0';
+		}
+		if (!isset($this->value['categories']))
+		{
+			$this->value['categories'] = '';
+		}
+		if (!isset($this->value['recursive']))
+		{
+			$this->value['recursive'] = '';
+		}
+
+		// Get some variables from XML markup
+		$this->multiple = $this->element['k2-multiple'];
+		$this->size = (int)$this->element['k2-size'];
+
+		// Build attributes string
 		$attributes = '';
 		if ($this->multiple)
 		{
@@ -31,29 +51,20 @@ class JFormFieldK2Categories extends JFormField
 		{
 			$attributes .= ' size="'.$this->size.'"';
 		}
-		
-		$document = JFactory::getDocument();
-		$js = '
-		jQuery(document).ready(function() {
-			jQuery(".k2FieldCategoriesFilter").change(function() {
-				console.info(jQuery(this).val());
-				if(jQuery(this).val() == "all") {
-					var value = jQuery(this).closest("select").find("option").prop("selected", "selected");
-					//jQuery(this).next().val(value);
-				}
-				else {
-					jQuery(this).closest("select").val("");
-				}
-			});
-		});
-		';
-		$document->addScriptDeclaration($js);
-		
+
+		// First show the category filter switch
 		$options = array();
-		$options[] = JHtml::_('select.option', 'all', JText::_('K2_ALL'));
-		$options[] = JHtml::_('select.option', 'specific', JText::_('K2_SELECT'));
-		$output = JHtml::_('select.radiolist', $options, $this->name.'[filter]', 'class="k2FieldCategoriesFilter"', 'value', 'text', $this->value['filter']);
+		$options[] = JHtml::_('select.option', '0', JText::_('K2_ALL'));
+		$options[] = JHtml::_('select.option', '1', JText::_('K2_SELECT'));
+		$output = JHtml::_('select.radiolist', $options, $this->name.'[enabled]', 'class="k2FieldCategoriesFilterEnabled" data-categories="'.$this->name.'[categories][]"', 'value', 'text', $this->value['enabled'], $this->id);
+
+		// Then the categories list
 		$output .= K2HelperHTML::categories($this->name.'[categories][]', $this->value['categories'], false, null, $attributes);
+
+		// And finally the recursive switch
+		$output .= '<label>'.JText::_('K2_APPLY_RECUSRIVELY').'</label>'.JHtml::_('select.booleanlist', $this->name.'[recursive]', null, $this->value['recursive']);
+
+		// Return
 		return $output;
 	}
 

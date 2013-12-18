@@ -4,6 +4,7 @@ define(['marionette'], function(Marionette) {'use strict';
 			'settings' : 'settings',
 			'media' : 'media',
 			'information': 'information',
+			'modal/[url]' : 'execute',
 			'*any' : 'execute'
 		}
 	});

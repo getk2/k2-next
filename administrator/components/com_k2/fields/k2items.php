@@ -12,9 +12,9 @@ defined('_JEXEC') or die ;
 
 jimport('joomla.form.formfield');
 
-class JFormFieldK2Item extends JFormField
+class JFormFieldK2Items extends JFormField
 {
-	var $type = 'K2Item';
+	var $type = 'K2Items';
 
 	public function getInput()
 	{
@@ -33,17 +33,12 @@ class JFormFieldK2Item extends JFormField
 		function jSelectItem(id, title, object) {
 			document.getElementById('".$this->name."' + '_id').value = id;
 			document.getElementById('".$this->name."' + '_name').value = title;
-			if(typeof(window.parent.SqueezeBox.close=='function')){
-				window.parent.SqueezeBox.close();
-			}
-			else {
-				document.getElementById('sbox-window').close();
-			}
+			SqueezeBox.close();
 		}
 		";
 		$document = JFactory::getDocument();
 		$document->addScriptDeclaration($js);
-		$link = 'index.php?option=com_k2&tmpl=component#items';
+		$link = 'index.php?option=com_k2&tmpl=component#modal/items';
 		JHtml::_('behavior.modal', 'a.k2Modal');
 
 		$html = '<span class="input-append">

@@ -23,7 +23,12 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 
 			// Listener for edit event.
 			K2Dispatcher.on('app:controller:edit', function(id) {
-				this.edit(id);
+				if(this.isModal) {
+					this.selectRow(id);
+				}
+				else {
+					this.edit(id);
+				}
 			}, this);
 
 			// Listener for save events.
@@ -89,6 +94,13 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 				this.list(1);
 			} else {
 				var parts = url.split('/');
+				var first = _.first(parts);
+				if(first == 'modal') {
+					jQuery('#appPrimaryMenu').hide();
+					jQuery('#appActions').hide();
+					this.isModal = true;
+					parts = _.rest(parts);
+				}
 				this.resource = _.first(parts);
 				if (_.indexOf(this.resources, this.resource) === -1) {
 					this.enqueueMessage('error', l('K2_NOT_FOUND'));
@@ -148,7 +160,8 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 
 						// Create view
 						var view = new View({
-							collection : this.collection
+							collection : this.collection,
+							isModal : this.isModal
 						});
 
 						// Get the pagination model
@@ -437,6 +450,11 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 				var view = new K2ViewMediaManager(options);
 				K2Dispatcher.trigger('app:region:show', view, 'modal');
 			}, this));
+		},
+		
+		selectRow : function(id) {
+			var row = this.collection.get(id);
+			console.info(row.get('title'));
 		}
 	});
 

@@ -6,6 +6,9 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 		regions : {
 			content : '#appItemsInnerGrid',
 		},
+		initialize : function(options) {
+			this.isModal = options.isModal || false;
+		},
 		collectionEvents : {
 			'reset' : 'setup'
 		},
@@ -14,7 +17,7 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 		},
 		setup : function() {
 			
-			if (this.collection.getState('sorting') === 'ordering') {
+			if (this.collection.getState('sorting') === 'ordering' && this.isModal === false) {
 
 				// Items collection
 				var itemsCollection = this.collection;

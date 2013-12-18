@@ -143,35 +143,15 @@ class K2ModelItems extends K2Model
 		}
 		if ($this->getState('category'))
 		{
-			if ($this->getState('recursive'))
-			{
-				K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
-				$model = K2Model::getInstance('Categories');
-				$root = $model->getTable();
-				$tree = $root->getTree((int)$this->getState('category'));
-				$categories = array();
-				foreach ($tree as $category)
-				{
-					$categories[] = $category->id;
-				}
-			}
-			else
-			{
-				$categories = array((int)$this->getState('category'));
-			}
-			if ($this->getState('site'))
-			{
-				$categories = array_intersect($categories, K2ModelCategories::getAuthorised());
-			}
-			$query->where($db->quoteName('item.catid').' IN ('.implode(',', $categories).')');
+			$categories = (array)$this->getState('category');
+			$filter = K2ModelCategories::getCategoryFilter($categories, $this->getState('recursive'), $this->getState('site'));
+			$query->where($db->quoteName('item.catid').' IN ('.implode(',', $filter).')');
 		}
-		else
+		else if ($this->getState('site'))
 		{
-			if ($this->getState('site'))
-			{
-				$query->where($db->quoteName('item.catid').' IN ('.implode(',', K2ModelCategories::getAuthorised()).')');
-			}
+			$query->where($db->quoteName('item.catid').' IN ('.implode(',', K2ModelCategories::getAuthorised()).')');
 		}
+
 		if ($this->getState('access'))
 		{
 			$access = $this->getState('access');
@@ -240,6 +220,15 @@ class K2ModelItems extends K2Model
 		{
 			$query->where('YEAR('.$db->quoteName('item.created').') = '.(int)$this->getState('year'));
 		}
+		if ($this->getState('media'))
+		{
+			$query->where($db->quoteName('item.media').' != '.$db->quote('[]'));
+			$query->where($db->quoteName('item.media').' != '.$db->quote(''));
+		}
+		if ($this->getState('created.value'))
+		{
+			$query->where($db->quoteName('item.created').' '.$this->getState('created.operator').' '.$db->quote($this->getState('created.value')));
+		}
 		if ($this->getState('ordering.value'))
 		{
 			$query->where($db->quoteName('item.ordering').' '.$this->getState('ordering.operator').' '.(int)$this->getState('ordering.value'));
@@ -260,12 +249,23 @@ class K2ModelItems extends K2Model
 				$ordering = 'item.title';
 				$direction = 'ASC';
 				break;
+			case 'title.reverse' :
+				$ordering = 'item.title';
+				$direction = 'DESC';
+				break;
 			case 'ordering' :
 				$ordering = array(
 					'category.lft',
 					'item.ordering'
 				);
 				$direction = 'ASC';
+				break;
+			case 'ordering.reverse' :
+				$ordering = array(
+					'category.lft',
+					'item.ordering'
+				);
+				$direction = 'DESC';
 				break;
 			case 'featured_ordering' :
 				$ordering = 'item.featured_ordering';
@@ -299,17 +299,29 @@ class K2ModelItems extends K2Model
 				$ordering = 'item.created';
 				$direction = 'DESC';
 				break;
+			case 'created.reverse' :
+				$ordering = 'item.created';
+				$direction = 'ASC';
+				break;
 			case 'modified' :
 				$ordering = 'item.modified';
 				$direction = 'DESC';
 				break;
 			case 'hits' :
-				$ordering = 'hits';
+				$ordering = 'stats.hits';
+				$direction = 'DESC';
+				break;
+			case 'comments' :
+				$ordering = 'stats.comments';
 				$direction = 'DESC';
 				break;
 			case 'language' :
 				$ordering = 'languageTitle';
 				$direction = 'ASC';
+				break;
+			case 'publishUp' :
+				$ordering = 'item.publish_up';
+				$direction = 'DESC';
 				break;
 			case 'custom' :
 				$ordering = $this->getState('sorting.custom.value');
@@ -329,8 +341,14 @@ class K2ModelItems extends K2Model
 		}
 		else
 		{
-			$query->order($db->quoteName($ordering).' '.$direction);
-
+			if ($sorting == 'random')
+			{
+				$query->order('RAND()');
+			}
+			else
+			{
+				$query->order($db->quoteName($ordering).' '.$direction);
+			}
 		}
 
 	}

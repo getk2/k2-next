@@ -49,7 +49,7 @@ class K2HelperUtilities
 		// Truncate
 		if (count($words) > $length)
 		{
-			$words = array_slice($words, $length);
+			$words = array_slice($words, 0, $length);
 			$string = implode(' ', $words);
 
 			// Append end character
@@ -61,6 +61,28 @@ class K2HelperUtilities
 
 		// Return
 		return $string;
+	}
+
+	public static function getModule($id)
+	{
+		// Get module
+		$module = JTable::getInstance('Module');
+		$module->load($id);
+
+		// Check access and state
+		$date = JFactory::getDate()->toSql();
+		$viewlevels = JFactory::getUser()->getAuthorisedViewLevels();
+
+		if ($module->published && in_array($module->access, $viewlevels) && ((int)$module->publish_up == 0 || $module->publish_up >= $date) && ((int)$module->publish_down == 0 || $module->publish_down < $date))
+		{
+			$module->params = new JRegistry($module->params);
+			return $module;
+		}
+		else
+		{
+			return false;
+		}
+
 	}
 
 }
