@@ -574,7 +574,7 @@ class K2ModelCategories extends K2Model
 		$data['params'] = $data['params']->toString();
 
 		// Handle image
-		$imageId = isset($data['_image']->id) ? $data['_image']->id : false;
+		$imageId = isset($data['image']->id) ? $data['image']->id : false;
 		if ($imageId)
 		{
 			$path = 'media/k2/categories/'.$imageId.'.jpg';
@@ -582,8 +582,8 @@ class K2ModelCategories extends K2Model
 			$data['image'] = array(
 				'id' => $image->id,
 				'path' => '',
-				'caption' => $data['_image']->caption,
-				'credits' => $data['_image']->credits
+				'caption' => $data['image']->caption,
+				'credits' => $data['image']->credits
 			);
 		}
 		else

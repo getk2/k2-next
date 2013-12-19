@@ -177,7 +177,7 @@ class K2HelperImages
 		// Return
 		return JURI::root(true).'/'.$savepath.'/'.$baseFileName.'.jpg?t='.time();
 	}
-	
+
 	private static function _generateUserImage($baseFileName, $imageResource)
 	{
 		// Filesystem
@@ -242,7 +242,7 @@ class K2HelperImages
 			$filesystem->delete($key);
 		}
 	}
-	
+
 	private static function _deleteUserImage($id)
 	{
 		// Save path
@@ -250,7 +250,7 @@ class K2HelperImages
 
 		// File to delete
 		$key = $savepath.'/'.$id.'.jpg';
-		
+
 		// Delete the file
 		$filesystem = K2FileSystem::getInstance();
 		if ($filesystem->has($key))
@@ -266,7 +266,6 @@ class K2HelperImages
 
 		// Images
 		$images = array();
-		$id = null;
 
 		// Value
 		$value = json_decode($item->image);
@@ -285,67 +284,62 @@ class K2HelperImages
 			$timestamp = JFactory::getDate($item->modified)->toUnix();
 			foreach ($sizes as $size => $width)
 			{
-				$images[$size] = JURI::root(true).'/'.$savepath.'/cache/'.$id.'_'.$size.'.jpg?t='.$timestamp;
+				$image = new stdClass;
+				$image->id = $id;
+				$image->src = JURI::root(true).'/'.$savepath.'/cache/'.$id.'_'.$size.'.jpg?t='.$timestamp;
+				$image->url = JURI::root(false).$savepath.'/cache/'.$id.'_'.$size.'.jpg?t='.$timestamp;
+				$image->alt = $value->caption ? $value->caption : $item->title;
+				$image->caption = $value->caption;
+				$image->credits = $value->credits;
+				$images[$size] = $image;
 			}
 		}
-
 		// Return
-		$result = new stdClass;
-		$result->images = $images;
-		$result->id = $id;
-
-		return $result;
+		return $images;
 	}
 
 	private static function _getCategoryImage($category)
 	{
+		// Initialize value
+		$image = null;
+
 		// Save path
 		$savepath = 'media/k2/categories';
-
-		// Images
-		$image = null;
-		$id = null;
 
 		// Value
 		$value = json_decode($category->image);
 
 		if (isset($value->flag) && $value->flag)
 		{
-			$id = md5('Image'.$category->id);
+			$image = new stdClass;
+			$image->id = md5('Image'.$category->id);
 			$timestamp = JFactory::getDate($category->modified)->toUnix();
-			$image = JURI::root(true).'/'.$savepath.'/'.$id.'.jpg?t='.$timestamp;
+			$image->src = JURI::root(true).'/'.$savepath.'/'.$image->id.'.jpg?t='.$timestamp;
+			$image->url = JURI::root(false).$savepath.'/'.$image->id.'.jpg?t='.$timestamp;
+			$image->alt = $value->caption ? $value->caption : $category->title;
+			$image->caption = $value->caption;
+			$image->credits = $value->credits;
 		}
-
-		// Return
-		$result = new stdClass;
-		$result->image = $image;
-		$result->id = $id;
-
-		return $result;
+		return $image;
 	}
-	
+
 	private static function _getUserImage($user)
 	{
+		// Initialize value
+		$image = null;
+
 		// Save path
 		$savepath = 'media/k2/users';
 
-		// Images
-		$image = null;
-		$id = null;
-
-		// Value
 		if ($user->image)
 		{
-			$id = md5('Image'.$user->id);
-			$image = JURI::root(true).'/'.$savepath.'/'.$id.'.jpg';
+			$image = new stdClass;
+			$image->id = md5('Image'.$user->id);
+			$image->src = JURI::root(true).'/'.$savepath.'/'.$image->id.'.jpg';
+			$image->url = JURI::root(false).$savepath.'/'.$image->id.'.jpg';
+			$image->alt = $user->name;
 		}
-
-		// Return
-		$result = new stdClass;
-		$result->image = $image;
-		$result->id = $id;
-
-		return $result;
+		return $image;
 	}
 
 }

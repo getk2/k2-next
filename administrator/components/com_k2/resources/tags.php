@@ -76,6 +76,9 @@ class K2Tags extends K2Resource
 
 		// Link
 		$this->link = $this->getLink();
+		
+		// URL
+		$this->url = $this->getUrl();
 
 		// Num of items per tag
 		$application = JFactory::getApplication();
@@ -100,6 +103,11 @@ class K2Tags extends K2Resource
 	public function getLink()
 	{
 		return JRoute::_(K2HelperRoute::getTagRoute($this->id.':'.$this->alias));
+	}
+	
+	public function getUrl()
+	{
+		return JRoute::_(K2HelperRoute::getTagRoute($this->id.':'.$this->alias), true, -1);
 	}
 
 }

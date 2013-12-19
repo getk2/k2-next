@@ -64,63 +64,6 @@ defined('_JEXEC') or die ;
   <?php echo $this->item->events->K2AfterDisplayTitle; ?>
 
 
-  <div class="itemToolbar">
-		<ul>
-			<?php if(!$this->print): ?>
-			<!-- Print Button -->
-			<li>
-				<a class="itemPrintLink" rel="nofollow" href="<?php echo $this->item->printLink; ?>" onclick="window.open(this.href,'printWindow','width=900,height=600,location=no,menubar=no,resizable=yes,scrollbars=yes'); return false;">
-					<span><?php echo JText::_('K2_PRINT'); ?></span>
-				</a>
-			</li>
-			<?php endif; ?>
-
-			<?php if(!$this->print): ?>
-			<!-- Email Button -->
-			<li>
-				<a class="itemEmailLink" rel="nofollow" href="<?php echo $this->item->emailLink; ?>" onclick="window.open(this.href,'emailWindow','width=400,height=350,location=no,menubar=no,resizable=no,scrollbars=no'); return false;">
-					<span><?php echo JText::_('K2_EMAIL'); ?></span>
-				</a>
-			</li>
-			<?php endif; ?>
-
-
-			<?php if(count($this->item->media)): ?>
-			<!-- Anchor link to item media below - if it exists -->
-			<li>
-				<a class="itemMediaLink k2Anchor" href="<?php echo $this->item->link; ?>#itemMediaAnchor"><?php echo JText::_('K2_MEDIA'); ?></a>
-			</li>
-			<?php endif; ?>
-
-			<?php if(count($this->item->galleries)): ?>
-			<!-- Anchor link to item image gallery below - if it exists -->
-			<li>
-				<a class="itemImageGalleriesLink k2Anchor" href="<?php echo $this->item->link; ?>#itemImageGalleriesAnchor"><?php echo JText::_('K2_IMAGE_GALLERIES'); ?></a>
-			</li>
-			<?php endif; ?>
-
-			<!-- Anchor link to comments below - if enabled -->
-			<li>
-				<?php if(!empty($this->item->events->K2CommentsCounter)): ?>
-					<!-- K2 Plugins: K2CommentsCounter -->
-					<?php echo $this->item->events->K2CommentsCounter; ?>
-				<?php else: ?>
-					<?php if($this->item->numOfComments > 0): ?>
-					<a class="itemCommentsLink k2Anchor" href="<?php echo $this->item->link; ?>#itemCommentsAnchor">
-						<span><?php echo $this->item->numOfComments; ?></span> <?php echo ($this->item->numOfComments>1) ? JText::_('K2_COMMENTS') : JText::_('K2_COMMENT'); ?>
-					</a>
-					<?php else: ?>
-					<a class="itemCommentsLink k2Anchor" href="<?php echo $this->item->link; ?>#itemCommentsAnchor">
-						<?php echo JText::_('K2_BE_THE_FIRST_TO_COMMENT'); ?>
-					</a>
-					<?php endif; ?>
-				<?php endif; ?>
-			</li>
-		</ul>
-		<div class="clr"></div>
-  </div>
-
-
   <div class="itemBody">
 
 	  <!-- Plugins: BeforeDisplayContent -->
@@ -133,24 +76,19 @@ defined('_JEXEC') or die ;
 	  <!-- Item Image -->
 	  <div class="itemImageBlock">
 		  <span class="itemImage">
-		  	<a href="<?php echo $this->item->images['XL']; ?>" title="<?php echo JText::_('K2_CLICK_TO_PREVIEW_IMAGE'); ?>">
-		  		<img src="<?php echo $this->item->image; ?>" alt="<?php
-				if (!empty($this->item->_image->caption))
-					echo $this->escape($this->item->_image->caption);
-				else
-					echo $this->escape($this->item->title);
- ?>" style="width:<?php echo $this->item->imageWidth; ?>px; height:auto;" />
+		  	<a href="<?php echo $this->item->images['XL']->src; ?>" title="<?php echo JText::_('K2_CLICK_TO_PREVIEW_IMAGE'); ?>">
+		  		<img src="<?php echo $this->item->image->src; ?>" alt="<?php echo $this->item->image->alt; ?>" style="width:<?php echo $this->item->imageWidth; ?>px; height:auto;" />
 		  	</a>
 		  </span>
 
-		  <?php if($this->item->image_caption): ?>
+		  <?php if($this->item->image->caption): ?>
 		  <!-- Image caption -->
-		  <span class="itemImageCaption"><?php echo $this->item->image_caption; ?></span>
+		  <span class="itemImageCaption"><?php echo $this->item->image->caption; ?></span>
 		  <?php endif; ?>
 
-		  <?php if($this->item->image_credits): ?>
+		  <?php if($this->item->image->credits): ?>
 		  <!-- Image credits -->
-		  <span class="itemImageCredits"><?php echo $this->item->image_credits; ?></span>
+		  <span class="itemImageCredits"><?php echo $this->item->image->credits; ?></span>
 		  <?php endif; ?>
 
 		  <div class="clr"></div>
@@ -264,7 +202,7 @@ defined('_JEXEC') or die ;
   <div class="itemAuthorBlock">
 
   	<?php if($this->item->author->image): ?>
-  	<img class="itemAuthorAvatar" src="<?php echo $this->item->author->image; ?>" alt="<?php echo $this->escape($this->item->author->name); ?>" />
+  	<img class="itemAuthorAvatar" src="<?php echo $this->item->author->image->src; ?>" alt="<?php echo $this->escape($this->item->author->image->alt); ?>" />
   	<?php endif; ?>
 
     <div class="itemAuthorDetails">
@@ -276,8 +214,8 @@ defined('_JEXEC') or die ;
       <p><?php echo $this->item->author->description; ?></p>
       <?php endif; ?>
 
-      <?php if($this->item->author->url): ?>
-      <span class="itemAuthorUrl"><?php echo JText::_('K2_WEBSITE'); ?> <a rel="me" href="<?php echo $this->item->author->url; ?>" target="_blank"><?php echo str_replace('http://', '', $this->item->author->url); ?></a></span>
+      <?php if($this->item->author->site): ?>
+      <span class="itemAuthorUrl"><?php echo JText::_('K2_WEBSITE'); ?> <a rel="me" href="<?php echo $this->item->author->site; ?>" target="_blank"><?php echo str_replace('http://', '', $this->item->author->site); ?></a></span>
       <?php endif; ?>
 
       <span class="itemAuthorEmail"><?php echo JText::_('K2_EMAIL'); ?> <?php echo JHTML::_('Email.cloak', $this->item->author->email); ?></span>

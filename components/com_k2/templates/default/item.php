@@ -88,23 +88,24 @@ defined('_JEXEC') or die ;
 	  <!-- K2 Plugins: K2BeforeDisplayContent -->
 	  <?php echo $this->item->events->K2BeforeDisplayContent; ?>
 
-	  <?php if($this->params->get('itemImage') && !empty($this->item->image)): ?>
+	  <?php if($this->params->get('itemImage') && $this->item->image): ?>
+	  		  	
 	  <!-- Item Image -->
 	  <div class="itemImageBlock">
 		  <span class="itemImage">
-		  	<a href="<?php echo $this->item->images['XL']; ?>" title="<?php echo JText::_('K2_CLICK_TO_PREVIEW_IMAGE'); ?>">
-		  		<img src="<?php echo $this->item->image; ?>" alt="<?php echo $this->escape($this->item->image_alt); ?>" style="width:<?php echo $this->item->imageWidth; ?>px; height:auto;" />
+		  	<a href="<?php echo $this->item->images['XL']->src; ?>" title="<?php echo JText::_('K2_CLICK_TO_PREVIEW_IMAGE'); ?>">
+		  		<img src="<?php echo $this->item->image->src; ?>" alt="<?php echo $this->escape($this->item->image->alt); ?>" style="width:<?php echo $this->item->imageWidth; ?>px; height:auto;" />
 		  	</a>
 		  </span>
 
-		  <?php if($this->params->get('itemImageMainCaption') && !empty($this->item->image_caption)): ?>
+		  <?php if($this->params->get('itemImageMainCaption') && $this->item->image->caption): ?>
 		  <!-- Image caption -->
-		  <span class="itemImageCaption"><?php echo $this->item->image_caption; ?></span>
+		  <span class="itemImageCaption"><?php echo $this->item->image->caption; ?></span>
 		  <?php endif; ?>
 
-		  <?php if($this->params->get('itemImageMainCredits') && !empty($this->item->image_credits)): ?>
+		  <?php if($this->params->get('itemImageMainCredits') && $this->item->image->credits): ?>
 		  <!-- Image credits -->
-		  <span class="itemImageCredits"><?php echo $this->item->image_credits; ?></span>
+		  <span class="itemImageCredits"><?php echo $this->item->image->credits; ?></span>
 		  <?php endif; ?>
 
 		  <div class="clr"></div>
@@ -289,8 +290,8 @@ defined('_JEXEC') or die ;
   <!-- Author Block -->
   <div class="itemAuthorBlock">
 
-  	<?php if($this->params->get('itemAuthorImage') && !empty($this->item->author->image)): ?>
-  	<img class="itemAuthorAvatar" src="<?php echo $this->item->author->image; ?>" alt="<?php echo $this->escape($this->item->author->name); ?>" />
+  	<?php if($this->params->get('itemAuthorImage') && $this->item->author->image): ?>
+  	<img class="itemAuthorAvatar" src="<?php echo $this->item->author->image->src; ?>" alt="<?php echo $this->item->author->image->alt; ?>" />
   	<?php endif; ?>
 
     <div class="itemAuthorDetails">
@@ -302,8 +303,8 @@ defined('_JEXEC') or die ;
       <p><?php echo $this->item->author->description; ?></p>
       <?php endif; ?>
 
-      <?php if($this->params->get('itemAuthorURL') && !empty($this->item->author->url)): ?>
-      <span class="itemAuthorUrl"><?php echo JText::_('K2_WEBSITE'); ?> <a rel="me" href="<?php echo $this->item->author->url; ?>" target="_blank"><?php echo str_replace('http://', '', $this->item->author->url); ?></a></span>
+      <?php if($this->params->get('itemAuthorURL') && !empty($this->item->author->site)): ?>
+      <span class="itemAuthorUrl"><?php echo JText::_('K2_WEBSITE'); ?> <a rel="me" href="<?php echo $this->item->author->site; ?>" target="_blank"><?php echo str_replace('http://', '', $this->item->author->site); ?></a></span>
       <?php endif; ?>
 
       <?php if($this->params->get('itemAuthorEmail')): ?>
@@ -463,7 +464,7 @@ defined('_JEXEC') or die ;
 		    </span>
 
 			<% if(user.image) { %>
-			<img src="<%= user.image %>" alt="<%- user.name %>" width="<?php echo $this->params->get('commenterImgWidth'); ?>" />
+			<img src="<%= user.image.src %>" alt="<%- user.image.alt %>" width="<?php echo $this->params->get('commenterImgWidth'); ?>" />
 			<% } %>
 
 			<span class="commentDate"><%- date %></span>

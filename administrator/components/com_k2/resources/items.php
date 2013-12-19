@@ -17,6 +17,7 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/users.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/tags.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/attachments.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/extrafields.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/images.php';
 require_once JPATH_SITE.'/components/com_k2/helpers/route.php';
 
 /**
@@ -152,6 +153,7 @@ class K2Items extends K2Resource
 
 		// Images
 		$this->images = $this->getImages();
+		$this->image = $this->getImage();
 
 		// Attachments
 		$this->attachments = $this->getAttachments();
@@ -213,28 +215,19 @@ class K2Items extends K2Resource
 		$images = array();
 		if ($this->id)
 		{
-			require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/images.php';
-			$result = K2HelperImages::getResourceImages('item', $this);
-			$this->_image = json_decode($this->image);
-			if (count($result->images))
-			{
-				$images = $result->images;
-				$this->image = $images['S'];
-				$this->image_caption = $this->_image->caption;
-				$this->image_credits = $this->_image->credits;
-				$this->image_alt = $this->_image->caption ? $this->_image->caption : $this->title;
-				$this->imageWidth = 180;
-				$this->_image->preview = $this->image;
-				$this->_image->id = $result->id;
-			}
-			else
-			{
-				$this->image = false;
-				$this->image_caption = '';
-				$this->image_credits = '';
-			}
+			$images = K2HelperImages::getResourceImages('item', $this);
 		}
 		return $images;
+	}
+
+	public function getImage()
+	{
+		if (!isset($this->images))
+		{
+			$this->images = $this->getImages();
+		}
+		$image = (isset($this->images['M'])) ? $this->images['M'] : null;
+		return $image;
 	}
 
 	public function getGalleries()
@@ -366,13 +359,7 @@ class K2Items extends K2Resource
 
 	public function getUrl()
 	{
-		$uri = JUri::getInstance();
-		$base = $uri->toString(array(
-			'scheme',
-			'host',
-			'port'
-		));
-		return $base.JRoute::_('index.php?option=com_k2&view=item&id='.$this->id, false);
+		return JRoute::_(K2HelperRoute::getItemRoute($this->id.':'.$this->alias), true, -1);
 	}
 
 	public function getPrintLink()
@@ -557,7 +544,7 @@ class K2Items extends K2Resource
 		{
 			// Import content plugins
 			JPluginHelper::importPlugin('content');
-			
+
 			$dispatcher->trigger('onContentPrepare', array(
 				$context,
 				&$this,
@@ -593,7 +580,7 @@ class K2Items extends K2Resource
 		{
 			// Import K2 plugins
 			JPluginHelper::importPlugin('k2');
-			
+
 			$results = $dispatcher->trigger('onK2BeforeDisplay', array(
 				&$this,
 				&$params,

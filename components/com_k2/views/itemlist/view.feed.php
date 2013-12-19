@@ -255,7 +255,7 @@ class K2ViewItemlist extends K2View
 		// Image
 		if ($params->get('feedItemImage') && $item->image)
 		{
-			$entry->description .= '<div class="K2FeedImage"><img src="'.$item->image.'" alt="'.$item->image_caption.'" /></div>';
+			$entry->description .= '<div class="K2FeedImage"><img src="'.$item->imageUrl.'" alt="'.$item->image_caption.'" /></div>';
 		}
 
 		// Introtext
@@ -281,7 +281,7 @@ class K2ViewItemlist extends K2View
 			$entry->description .= '<div class="K2FeedTags"><ul>';
 			foreach ($item->tags as $tag)
 			{
-				$entry->description .= '<li>'.$tag->name.'</li>';
+				$entry->description .= '<li><a href="'.$tag->url.'">'.$tag->name.'</a></li>';
 			}
 			$entry->description .= '<ul></div>';
 		}
@@ -309,7 +309,7 @@ class K2ViewItemlist extends K2View
 			$entry->description .= '<div class="K2FeedAttachments"><ul>';
 			foreach ($item->attachments as $attachment)
 			{
-				$entry->description .= '<li><a title="'.htmlspecialchars($attachment->title).'" href="'.$attachment->link.'">'.$attachment->name.'</a></li>';
+				$entry->description .= '<li><a title="'.htmlspecialchars($attachment->title).'" href="'.$attachment->url.'">'.$attachment->name.'</a></li>';
 			}
 			$entry->description .= '<ul></div>';
 		}
@@ -338,8 +338,7 @@ class K2ViewItemlist extends K2View
 			}
 		}
 
-	
-
+		// Return feed item
 		return $entry;
 	}
 

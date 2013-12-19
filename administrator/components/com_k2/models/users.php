@@ -30,7 +30,7 @@ class K2ModelUsers extends K2Model
 		// Join over the K2 users
 		$query->select($db->quoteName('profile.description'));
 		$query->select($db->quoteName('profile.image'));
-		$query->select($db->quoteName('profile.url'));
+		$query->select($db->quoteName('profile.site'));
 		$query->select($db->quoteName('profile.gender'));
 		$query->select($db->quoteName('profile.notes'));
 		$query->select($db->quoteName('profile.extra_fields'));

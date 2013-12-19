@@ -74,17 +74,23 @@ class K2Model extends JModelLegacy
 
 	public function getRow()
 	{
+		$row = null;
 		if (method_exists($this, 'getRows'))
 		{
-			$rows = $this->getRows();
-			if (isset($rows[0]))
+			if ($this->getState('id') || $this->getState('alias'))
 			{
-				$row = (object)$rows[0];
+				$rows = $this->getRows();
+				if (isset($rows[0]))
+				{
+					$row = (object)$rows[0];
+				}
 			}
-			else
-			{
-				$row = null;
-			}
+		}
+		if (is_null($row))
+		{
+			$data = array($this->getTable());
+			$rows = $this->getResources($data, $this->getName());
+			$row = (object)$rows[0];
 		}
 		return $row;
 	}

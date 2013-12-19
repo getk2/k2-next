@@ -12,9 +12,10 @@ defined('_JEXEC') or die ;
 
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/resource.php';
 require_once JPATH_SITE.'/components/com_k2/helpers/route.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/images.php';
 
 /**
- * K2 item resource class.
+ * K2 category resource class.
  */
 
 class K2Categories extends K2Resource
@@ -116,17 +117,7 @@ class K2Categories extends K2Resource
 
 	public function getImage()
 	{
-		$image = null;
-		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/images.php';
-		$result = K2HelperImages::getResourceImages('category', $this);
-		$this->_image = json_decode($this->image);
-		if ($result->image)
-		{
-			$image = $result->image;
-			$this->_image->preview = $result->image;
-			$this->_image->id = $result->id;
-		}
-		return $image;
+		return K2HelperImages::getResourceImages('category', $this);
 	}
 
 	public function getNumOfItems()

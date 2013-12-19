@@ -7,9 +7,9 @@
 <% if(type !== 'user') { %>
 <input type="text" name="image[path]" data-widget="browser" data-callback="image:select:<%- cid %>" />
 <% } %>
-<% if(preview) { %>
+<% if(src) { %>
 <div>
-    <img alt="<%- l('K2_PREVIEW') %>" src="<%- preview %>" />
+    <img alt="<%- l('K2_PREVIEW') %>" src="<%- src %>" />
     <button id="appRemoveImage">
         <%= l('K2_REMOVE_IMAGE') %>
     </button>
