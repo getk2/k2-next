@@ -119,7 +119,7 @@ class K2Items extends K2Resource
 		}
 
 		// Category params
-		$this->categoryParams = new JRegistry($this->categoryParams);
+		$this->categoryParams = $this->getCategoryParams();
 
 		// Media
 		$this->media = $this->getMedia();
@@ -170,6 +170,11 @@ class K2Items extends K2Resource
 			$category = K2Categories::getInstance($this->catid);
 		}
 		return $category;
+	}
+
+	public function getCategoryParams()
+	{
+		$categoryParams = isset($this->categoryParams) ? new JRegistry($this->categoryParams) : new JRegistry();
 	}
 
 	public function getExtraFields()
@@ -382,94 +387,21 @@ class K2Items extends K2Resource
 		$comments = array();
 		if ($this->id)
 		{
-			// Set permissions to variables
-			$canReport = $params->get('commentsReporting') == '1' || ($params->get('commentsReporting') == '2' && !$user->guest);
-			$canReportUser = $user->authorise('core.admin', 'com_k2');
-			$canEditComments = $user->authorise('k2.comment.edit', 'com_k2');
-
 			// Get comments model
 			$model = K2Model::getInstance('Comments');
 			$model->setState('itemId', $this->id);
 			$model->setState('limit', (int)$params->get('commentsLimit', 10));
 			$model->setState('limitstart', $offset);
 			$model->setState('sorting', 'id');
+			$model->setState('state', 1);
 			if ($params->get('commentsOrdering') == 'ASC')
 			{
 				$model->setState('sorting', 'id.asc');
 			}
-
-			// User cannot edit any comments. Load only the published comments
-			if (!$canEditComments)
-			{
-				$model->setState('state', 1);
-			}
-
 			// Load comments
 			$comments = $model->getRows();
-
-			// Comments pagination
-			jimport('joomla.html.pagination');
-			$pagination = new JPagination($model->countRows(), $offset, (int)$params->get('commentsLimit', 10));
-
-			// User ids array
-			$userIds = array();
-
-			// Prepare comments
-			foreach ($comments as $comment)
-			{
-				$comment->canReport = $canReport && $user->id != $comment->userId;
-				$comment->canReportUser = false;
-				$comment->canEdit = $canEditComments;
-				$comment->isAuthorResponse = !$this->created_by_alias && $comment->userId == $this->created_by;
-				$comment->date = JHtml::_('date', $comment->date, JText::_('K2_DATE_FORMAT_LC2'));
-				if ($comment->userId)
-				{
-					$comment->canReportUser = $canReport && $user->id != $comment->userId;
-				}
-			}
-
-			// Load the comments users in one query
-			$userIds = array_unique($userIds);
-			if (count($userIds))
-			{
-				$model = K2Model::getInstance('Users');
-				$model->setState('id', $userIds);
-				$users = $model->getRows();
-			}
-
-			// Assign the user data to comments
-			foreach ($comments as $comment)
-			{
-				$comment->user = new stdClass;
-				if ($comment->userId)
-				{
-					$commentUser = K2Users::getInstance($comment->userId);
-					$comment->user->name = $commentUser->name;
-					$comment->user->link = $commentUser->link;
-					$comment->user->image = $commentUser->image;
-					if ($comment->user->image)
-					{
-						$comment->user->image = substr($comment->user->image, strlen(JURI::root(true)));
-					}
-				}
-				else
-				{
-					$comment->user->name = $comment->name;
-					$comment->user->link = false;
-					$comment->user->image = false;
-				}
-				unset($comment->email);
-				unset($comment->ip);
-				unset($comment->hostname);
-			}
-
 		}
-
-		$response = new stdClass;
-		$response->rows = $comments;
-		$response->pagination = $pagination;
-
-		return $response;
+		return $comments;
 	}
 
 	public function getNumOfComments()
@@ -502,7 +434,7 @@ class K2Items extends K2Resource
 		$model->setState('ordering.operator', '<');
 		$model->setState('limit', 1);
 		$previous = $model->getRow();
-		return $previous;
+		return $previous->id ? $previous : false;
 	}
 
 	public function getNext()
@@ -517,7 +449,7 @@ class K2Items extends K2Resource
 		$model->setState('ordering.operator', '>');
 		$model->setState('limit', 1);
 		$next = $model->getRow();
-		return $next;
+		return $next->id ? $next : false;
 	}
 
 	public function triggerPlugins($context, &$params, $offset, $k2Plugins = true, $jPlugins = true)

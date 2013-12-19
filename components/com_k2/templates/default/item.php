@@ -291,7 +291,7 @@ defined('_JEXEC') or die ;
   <div class="itemAuthorBlock">
 
   	<?php if($this->params->get('itemAuthorImage') && $this->item->author->image): ?>
-  	<img class="itemAuthorAvatar" src="<?php echo $this->item->author->image->src; ?>" alt="<?php echo $this->item->author->image->alt; ?>" />
+  	<img class="itemAuthorAvatar" src="<?php echo $this->item->author->image->src; ?>" alt="<?php echo $this->item->author->name; ?>" />
   	<?php endif; ?>
 
     <div class="itemAuthorDetails">
@@ -404,140 +404,128 @@ defined('_JEXEC') or die ;
 
   <!-- K2 Plugins: K2AfterDisplay -->
   <?php echo $this->item->events->K2AfterDisplay; ?>
-
-  <?php if($this->params->get('itemComments') && ( ($this->params->get('comments') == '2' && !$this->user->guest) || ($this->params->get('comments') == '1'))): ?>
-  <!-- K2 Plugins: K2CommentsBlock -->
-  <?php echo $this->item->events->K2CommentsBlock; ?>
-  <?php endif; ?>
-
- <?php if($this->params->get('itemComments') && ($this->params->get('comments') == '1' || ($this->params->get('comments') == '2')) && empty($this->item->events->K2CommentsBlock)): ?>
-  <!-- Item comments -->
+  
+  
+  
+  <?php if($this->params->get('itemComments') && $this->params->get('comments')): ?>
   <a name="itemCommentsAnchor" id="itemCommentsAnchor"></a>
+  <div data-widget="k2comments" data-itemid="<?php echo $this->item->id; ?>" data-site="<?php echo JURI::root(true); ?>"></div>
   
-  
-  <div class="itemComments">
+	<script type="text/template" id="k2CommentsTemplate">
+		<div class="itemComments">
 
-	  <?php if($this->params->get('commentsFormPosition')=='above' && $this->params->get('itemComments') && !$this->print && $this->params->get('comments') && $this->user->canComment): ?>
-	  <!-- Item comments form -->
-	  <div class="itemCommentsForm">
-	  	<?php echo $this->loadTemplate('comments_form'); ?>
-	  </div>
-	  <?php endif; ?>
-
-	  <?php if($this->params->get('itemComments') && $this->params->get('comments')): ?>
-	  <!-- Item user comments -->
-	  <h3 class="itemCommentsCounter">
-	  	<span><?php echo $this->item->numOfComments; ?></span> <?php echo ($this->item->numOfComments > 1) ? JText::_('K2_COMMENTS') : JText::_('K2_COMMENT'); ?>
-	  </h3>
+			<?php if($this->params->get('commentsFormPosition')=='above' && !$this->print && $this->user->canComment): ?>
+			<!-- Item comments form -->
+			<div class="itemCommentsForm"><?php echo $this->loadTemplate('comments_form'); ?></div>
+			<?php endif; ?>
 	
-	<div id="k2Comments" data-item-id="<?php echo $this->item->id; ?>" data-site="<?php echo JURI::root(true); ?>"></div>
-	
-	<div id="k2CommentsPagination"></div>
-	  
-	<?php endif; ?>
-
-	  <?php if($this->params->get('commentsFormPosition')=='below' && $this->params->get('itemComments') && !$this->print && $this->params->get('comments') && $this->user->canComment): ?>
-	  <!-- Item comments form -->
-	  <div class="itemCommentsForm">
-	  	<?php echo $this->loadTemplate('comments_form'); ?>
-	  </div>
-	  <?php endif; ?>
-
-	  <?php if (!$this->user->canComment && $this->user->guest): ?>
-	  	<div><?php echo JText::_('K2_LOGIN_TO_POST_COMMENTS'); ?></div>
-	  <?php endif; ?>
-
-  </div>
-  <?php endif; ?>
-
-
-	<div class="clr"></div>
-	
-	
-	<script type="text/template" id="k2CommentTemplate">
-		<li class="<% if(isAuthorResponse) print('authorResponse'); if(state == 0) print(' unpublishedComment'); %>">
-
-	    	<span class="commentLink">
-		    	<a href="<?php echo $this->item->link; ?>#comment<%- id %>" name="comment<%- id %>" id="comment<%- id %>">
-		    		<?php echo JText::_('K2_COMMENT_LINK'); ?>
-		    	</a>
-		    </span>
-
-			<% if(user.image) { %>
-			<img src="<%= user.image.src %>" alt="<%- user.image.alt %>" width="<?php echo $this->params->get('commenterImgWidth'); ?>" />
+			<!-- Item comments -->
+			<% if(comments.length) { %>
+			<h3 class="itemCommentsCounter">
+			<span><%= pagination.total %></span> 
+			<% if(pagination.total > 1) { %>
+			<?php echo JText::_('K2_COMMENTS'); ?>
+			<% } else { %>
+			<?php echo JText::_('K2_COMMENT'); ?>
 			<% } %>
-
-			<span class="commentDate"><%- date %></span>
-
-		    <span class="commentAuthorName">
-			    <?php echo JText::_('K2_POSTED_BY'); ?>
-			   <% if(user.link) { %>
-			    <a href="<%= user.link %>" title="<%- user.name %>" target="_blank" rel="nofollow">
-			    	<%= user.name %>
-			    </a>
-			    <% } else { %>
-			    <%= user.name %>
-			    <% } %>
-		    </span>
-
-		    <p><%= text %></p>
-		    
-		    <% if(canEdit || canReport) { %>
-			<span class="commentToolbar">
-				
-				<% if(canEdit) { %>
-					
-				<% if(state < 1) { %>
-				<button data-action="publish" class="commentApproveLink"><?php echo JText::_('K2_APPROVE')?></button>
-				<% } %>
-
-				<button data-action="delete" class="commentRemoveLink"><?php echo JText::_('K2_REMOVE')?></button>
-
-				<% } %>
-				
-				<% if(state > 0 && canReport) { %>
-				<button data-action="report"><?php echo JText::_('K2_REPORT')?></button>
-				<% } %>
-				
-				<% if(canReportUser) { %>
-				<button data-action="report.user" class="k2ReportUserButton"><?php echo JText::_('K2_FLAG_AS_SPAMMER'); ?></button>
-				<% } %>
-
-			</span>
-			<% } %>
-		    
-
-			<div class="clr"></div>
-	    </li>
+			</h3>
+			
+			<ul class="itemCommentsList">
+				<% _(comments).each(function(comment) { %>
+				<li class="<% if(comment.isAuthorResponse) print('authorResponse'); if(comment.state == 0) print(' unpublishedComment'); %>">
 		
-	</script>
+			    	<span class="commentLink">
+				    	<a href="<?php echo $this->item->link; ?>#comment/<%- comment.id %>" name="comment<%- comment.id %>" id="comment<%- comment.id %>">
+				    		<?php echo JText::_('K2_COMMENT_LINK'); ?>
+				    	</a>
+				    </span>
+		
+					<% if(comment.user.image) { %>
+					<img data-image-url="<%= comment.user.image.src %>" alt="<%- comment.user.name %>" width="<?php echo $this->params->get('commenterImgWidth'); ?>" />
+					<% } %>
+		
+					<span class="commentDate"><%- comment.date %></span>
+		
+				    <span class="commentAuthorName">
+					    <?php echo JText::_('K2_POSTED_BY'); ?>
+					   <% if(comment.user.link) { %>
+					    <a data-user-link="<%= comment.user.link %>" title="<%- comment.user.name %>" target="_blank" rel="nofollow">
+					    	<%= comment.user.name %>
+					    </a>
+					    <% } else { %>
+					    <%= comment.user.name %>
+					    <% } %>
+				    </span>
+		
+				    <p><%= comment.text %></p>
+				    
+				    <% if(comment.canEdit || comment.canReport) { %>
+					<span class="commentToolbar">
+						
+						<% if(comment.canEdit) { %>
+							
+						<% if(comment.state < 1) { %>
+						<button data-action="publish" data-id="<%- comment.id %>" class="commentApproveLink"><?php echo JText::_('K2_APPROVE')?></button>
+						<% } %>
+		
+						<button data-action="delete" data-id="<%- comment.id %>" class="commentRemoveLink"><?php echo JText::_('K2_REMOVE')?></button>
+		
+						<% } %>
+						
+						<% if(comment.state == 1 && comment.canReport) { %>
+						<button data-action="report" data-id="<%- comment.id %>"><?php echo JText::_('K2_REPORT')?></button>
+						<% } %>
+						
+						<% if(comment.canReportUser) { %>
+						<button data-action="report.user" data-id="<%- comment.userId %>" class="k2ReportUserButton"><?php echo JText::_('K2_FLAG_AS_SPAMMER'); ?></button>
+						<% } %>
+		
+					</span>
+					<% } %>
+				    
+		
+					<div class="clr"></div>
+			    </li>					
+				<% }); %>
+			</ul>
+			
+			<% if(pagination.total > pagination.limit) { %>
+			<div class="itemCommentsPagination" data-role="pagination">
+				<ul>
+					<li><a data-page="1" href="#" class="k2CommentsPaginationStart"><?php echo JText::_('K2_START'); ?></a></li>
+					<% if((pagination.pagesCurrent - 1) > 0) { %>
+					<li><a data-page="previous" href="#" class="k2CommentsPaginationPrevious"><?php echo JText::_('K2_PREVIOUS'); ?></a></li>
+					<% } %>
+					<% for(i = pagination.pagesStart; i <= pagination.pagesStop; i++) { %>
+					<li <% if(pagination.pagesCurrent == i) { %> class="active" <% } %>><a data-page="<%= i %>" href="#"><%= i %></a></li>
+					<% } %>
+					<% if((pagination.pagesCurrent + 1) <= pagination.pagesTotal) { %>
+					<li><a data-page="next" href="#" class="k2CommentsPaginationNext"><?php echo JText::_('K2_NEXT'); ?></a></li>
+					<% } %>
+					<li><a data-page="<%= pagination.pagesTotal %>" href="#" class="k2CommentsPaginationEnd"><?php echo JText::_('K2_END'); ?></a></li>
+				</ul>
+				<div class="clr"></div>
+			</div>
+			<% } %>
+
+			<% } %>
+			
+			<?php if($this->params->get('commentsFormPosition')=='below' && !$this->print && $this->user->canComment): ?>
+			<!-- Item comments form -->
+			<div class="itemCommentsForm"><?php echo $this->loadTemplate('comments_form'); ?></div>
+			<?php endif; ?>
 	
-	
-	<script type="text/template" id="k2CommentsPaginationTemplate">
-		 <ul>
-            <li>
-                <a data-page="1" href="#" class="k2CommentsPaginationStart"><?php echo JText::_('K2_START'); ?></a>
-            </li>
-            <% if((pagesCurrent - 1) > 0) { %>
-            <li>
-                <a data-page="previous" href="#" class="k2CommentsPaginationPrevious"><?php echo JText::_('K2_PREVIOUS'); ?></a>
-            </li>
-            <% } %>
-            <% for(i=pagesStart; i <= pagesStop; i++) { %>
-            <li <% if(pagesCurrent == i) { %> class="active" <% } %>>
-                <a data-page="<%= i %>" href="#"><%= i %></a>
-            </li>
-            <% } %>
-            <% if((pagesCurrent + 1) <= pagesTotal) { %>
-            <li>
-                <a data-page="next" href="#" class="k2CommentsPaginationNext"><?php echo JText::_('K2_NEXT'); ?></a>
-            </li>
-            <% } %>
-            <li>
-                <a data-page="<%= pagesTotal %>" href="#" class="k2CommentsPaginationEnd"><?php echo JText::_('K2_END'); ?></a>
-            </li>
-        </ul>
-	</script>
-	
+			<?php if (!$this->user->canComment && $this->user->guest): ?>
+		  	<div><?php echo JText::_('K2_LOGIN_TO_POST_COMMENTS'); ?></div>
+		  	<?php endif; ?>
+
+		</div>
+  	
+  </script>
+  <?php endif; ?>
+  
+
+<div class="clr"></div>
+
 </div>
 <!-- End K2 Item Layout -->

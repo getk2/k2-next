@@ -202,7 +202,7 @@ defined('_JEXEC') or die ;
   <div class="itemAuthorBlock">
 
   	<?php if($this->item->author->image): ?>
-  	<img class="itemAuthorAvatar" src="<?php echo $this->item->author->image->src; ?>" alt="<?php echo $this->escape($this->item->author->image->alt); ?>" />
+  	<img class="itemAuthorAvatar" src="<?php echo $this->item->author->image->src; ?>" alt="<?php echo $this->escape($this->item->author->name); ?>" />
   	<?php endif; ?>
 
     <div class="itemAuthorDetails">

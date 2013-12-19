@@ -26,7 +26,7 @@ defined('_JEXEC') or die ; ?>
 
       <?php if($params->get('itemAuthorAvatar')): ?>
       <a class="k2Avatar moduleItemAuthorAvatar" rel="author" href="<?php echo $item->author->link; ?>">
-				<img src="<?php echo $item->author->image->src; ?>" alt="<?php echo htmlspecialchars($item->author->image->alt); ?>" style="width:<?php echo $params->get('itemAuthorAvatarWidth'); ?>px; height:auto;" />
+				<img src="<?php echo $item->author->image->src; ?>" alt="<?php echo htmlspecialchars($item->author->name); ?>" style="width:<?php echo $params->get('itemAuthorAvatarWidth'); ?>px; height:auto;" />
 			</a>
       <?php endif; ?>
 

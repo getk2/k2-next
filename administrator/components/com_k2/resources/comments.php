@@ -11,6 +11,7 @@
 defined('_JEXEC') or die ;
 
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/resource.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/images.php';
 
 /**
  * K2 comment resource class.
@@ -102,6 +103,10 @@ class K2Comments extends K2Resource
 		// Front-end only
 		if ($application->isSite())
 		{
+			
+			// Get user
+			$this->user = $this->getUser();
+			
 			// Edit permission
 			$this->canEdit = K2Comments::getPermissions()->canEdit;
 
@@ -137,7 +142,7 @@ class K2Comments extends K2Resource
 
 			// Is Author response?
 			$this->isAuthorResponse = $this->getIsAuthorResponse();
-			
+
 			// Unset sensitive data
 			unset($this->email);
 			unset($this->ip);
@@ -188,6 +193,18 @@ class K2Comments extends K2Resource
 			$user->username = $this->name;
 			$user->link = false;
 			$user->image = false;
+		}
+
+		$params = JComponentHelper::getParams('com_k2');
+		if (!$user->image && $params->get('gravatar'))
+		{
+			$user->image = new stdClass;
+			$user->image->src = '//www.gravatar.com/avatar/'.md5($this->email).'?s='.$params->get('commenterImgWidth', 48);
+			if ($params->get('userImageDefault'))
+			{
+				$user->image->src .= '&amp;default='.K2HelperImages::getPlaceholder('image');
+			}
+			$user->image->url = $user->image->src;
 		}
 		return $user;
 	}

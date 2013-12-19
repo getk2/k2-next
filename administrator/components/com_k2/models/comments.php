@@ -218,6 +218,9 @@ class K2ModelComments extends K2Model
 	{
 		// Get application
 		$application = JFactory::getApplication();
+		
+		// Params
+		$params = JComponentHelper::getParams('com_k2');
 
 		// Get user
 		$user = JFactory::getUser();
@@ -250,12 +253,19 @@ class K2ModelComments extends K2Model
 				$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
 				return false;
 			}
+			
+			// Text is required for both guests and authenticated users
+			if (trim($data['text']) == '')
+			{
+				$this->setError(JText::_('K2_YOU_NEED_TO_FILL_IN_ALL_REQUIRED_FIELDS'));
+				return false;
+			}
 
 			// Validate user data for guests
 			if ($user->guest)
 			{
 				// Check that the required fields have been set
-				if (trim($data['name']) == '' || trim($data['text']) == '' || trim($data['email']) == '')
+				if (trim($data['name']) == '' || trim($data['email']) == '')
 				{
 					$this->setError(JText::_('K2_YOU_NEED_TO_FILL_IN_ALL_REQUIRED_FIELDS'));
 					return false;
@@ -295,6 +305,7 @@ class K2ModelComments extends K2Model
 			$data['ip'] = $_SERVER['REMOTE_ADDR'];
 			$data['hostname'] = gethostbyaddr($_SERVER['REMOTE_ADDR']);
 			$data['date'] = JFactory::getDate()->toSql();
+			$data['state'] = $params->get('commentsPublishing') ? 1 : 0;
 
 			// Set a variable to indicate that this was a new comment
 			$this->setState('isNew', true);
@@ -305,8 +316,7 @@ class K2ModelComments extends K2Model
 		{
 			// Check permissions
 			$canEditAnyComment = $user->authorise('k2.comment.edit', 'com_k2');
-			$canEditOwnComment = $user->authorise('k2.comment.edit.own', 'com_k2') && $table->userId > 0 && $table->userId == $user->id;
-			if (!$canEditAnyComment && !$canEditOwnComment)
+			if (!$canEditAnyComment)
 			{
 				$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
 				return false;
@@ -349,6 +359,13 @@ class K2ModelComments extends K2Model
 			{
 				$statistics->increaseUserCommentsCounter($table->userId);
 			}
+			
+			// Throw error if auto-publishing is disabled
+			if(!$table->state)
+			{
+				$this->setError(JText::_('K2_COMMENT_ADDED_AND_WAITING_FOR_APPROVAL'));
+				return false;
+			}
 		}
 
 		return true;
@@ -369,8 +386,7 @@ class K2ModelComments extends K2Model
 
 		// Permissions check
 		$canEditAnyComment = $user->authorise('k2.comment.edit', 'com_k2');
-		$canEditOwnComment = $user->authorise('k2.comment.edit.own', 'com_k2') && $table->userId > 0 && $table->userId == $user->id;
-		if (!$canEditAnyComment && !$canEditOwnComment)
+		if (!$canEditAnyComment)
 		{
 			$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
 			return false;

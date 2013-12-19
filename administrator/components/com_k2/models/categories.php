@@ -255,7 +255,7 @@ class K2ModelCategories extends K2Model
 	 */
 	public static function getCategoryFilter($categories = null, $recursive = false, $access = false)
 	{
-		$filter = array();
+		$filter = K2ModelCategories::getAuthorised();
 		if ($categories)
 		{
 			if (!is_array($categories))

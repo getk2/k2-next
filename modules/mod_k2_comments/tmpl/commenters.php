@@ -18,7 +18,7 @@ defined('_JEXEC') or die ; ?>
 
 			<?php if($commenter->image): ?>
 			<a class="k2Avatar tcAvatar" rel="author" href="<?php echo $commenter->link; ?>">
-				<img src="<?php echo $commenter->image; ?>" alt="<?php echo htmlspecialchars($commenter->name); ?>" style="width:<?php echo $tcAvatarWidth; ?>px;height:auto;" />
+				<img src="<?php echo $commenter->image->src; ?>" alt="<?php echo htmlspecialchars($commenter->displayName); ?>" style="width:<?php echo $tcAvatarWidth; ?>px;height:auto;" />
 			</a>
 			<?php endif; ?>
 

@@ -247,7 +247,7 @@ class K2ViewItemlist extends K2View
 		$entry->title = $this->escape($item->title);
 
 		// Link
-		$entry->link = $item->link;
+		$entry->link = $item->url;
 
 		// Build description
 		$entry->description = '';
@@ -255,7 +255,7 @@ class K2ViewItemlist extends K2View
 		// Image
 		if ($params->get('feedItemImage') && $item->image)
 		{
-			$entry->description .= '<div class="K2FeedImage"><img src="'.$item->imageUrl.'" alt="'.$item->image_caption.'" /></div>';
+			$entry->description .= '<div class="K2FeedImage"><img src="'.$item->image->url.'" alt="'.$item->image->alt.'" /></div>';
 		}
 
 		// Introtext

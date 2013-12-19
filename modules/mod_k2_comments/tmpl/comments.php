@@ -18,7 +18,7 @@ defined('_JEXEC') or die ; ?>
 		<li class="<?php echo ($key%2) ? "odd" : "even"; if(count($comments)==$key+1) echo ' lastItem'; ?>">
 			<?php if($comment->user->image): ?>
 			<a class="k2Avatar lcAvatar" href="<?php echo $comment->link; ?>">
-				<img src="<?php echo $comment->user->image; ?>" alt="<?php echo htmlspecialchars($comment->user->displayName); ?>" style="width:<?php echo $lcAvatarWidth; ?>px;height:auto;" />
+				<img src="<?php echo $comment->user->image->src; ?>" alt="<?php echo htmlspecialchars($comment->user->displayName); ?>" style="width:<?php echo $lcAvatarWidth; ?>px;height:auto;" />
 			</a>
 			<?php endif; ?>
 

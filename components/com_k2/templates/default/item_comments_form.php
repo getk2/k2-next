@@ -22,16 +22,26 @@ defined('_JEXEC') or die ; ?>
 </p>
 <?php endif; ?>
 
-<form action="<?php echo JRoute::_('index.php'); ?>" method="post" id="k2CommentsForm">
+<form action="<?php echo JRoute::_('index.php'); ?>" method="post">
 	<label for="k2CommentText"><?php echo JText::_('K2_MESSAGE'); ?> *</label>
 	<textarea rows="10" cols="20" placeholder="<?php echo JText::_('K2_ENTER_YOUR_MESSAGE_HERE'); ?>" name="text" id="k2CommentText"></textarea>
-
+	
 	<label for="k2CommentName"><?php echo JText::_('K2_NAME'); ?> *</label>
+	
+	<?php if($this->user->guest): ?>
 	<input type="text" name="name" id="k2CommentName" placeholder="<?php echo JText::_('K2_ENTER_YOUR_NAME'); ?>" />
-
+	<?php else : ?>
+	<input type="text" name="name" id="k2CommentName" value="<?php echo htmlspecialchars($this->user->name); ?>" readonly="readonly" />
+	<?php endif; ?>
+	
 	<label for="k2CommentEmail"><?php echo JText::_('K2_EMAIL'); ?> *</label>
+	
+	<?php if($this->user->guest): ?>
 	<input type="email" name="email" id="k2CommentEmail" placeholder="<?php echo JText::_('K2_ENTER_YOUR_EMAIL_ADDRESS'); ?>"  />
-
+	<?php else : ?>
+	<input type="email" name="email" id="k2CommentEmail" value="<?php echo htmlspecialchars($this->user->email); ?>" readonly="readonly" />
+	<?php endif; ?>
+	
 	<label for="k2CommentUrl"><?php echo JText::_('K2_WEBSITE_URL'); ?></label>
 	<input type="text" name="url" id="k2CommentUrl" placeholder="<?php echo JText::_('K2_ENTER_YOUR_SITE_URL'); ?>" />
 
@@ -40,14 +50,10 @@ defined('_JEXEC') or die ; ?>
 	<div id="k2Recaptcha"></div>
 	<?php endif; ?>
 
-	<button type="submit"><?php echo JText::_('K2_SUBMIT_COMMENT'); ?></button>
-
-	<span id="k2CommentsFormLog"></span>
-
-	<input type="hidden" name="option" value="com_k2" />
-	<input type="hidden" name="task" value="comments.sync" />
-	<input type="hidden" name="format" value="json" />
-	<input type="hidden" name="_method" value="POST" />
+	<button type="submit" data-action="create"><?php echo JText::_('K2_SUBMIT_COMMENT'); ?></button>
+	
 	<input type="hidden" name="itemId" value="<?php echo $this->item->id; ?>" />
-	<?php echo JHtml::_('form.token'); ?>
+	
+	<span data-role="log"></span>
+	
 </form>

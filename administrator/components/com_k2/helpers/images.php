@@ -26,9 +26,31 @@ class K2HelperImages
 		'user'
 	);
 
+	private static $placeholders = array();
+
 	private static function getTypes()
 	{
 		return self::$types;
+	}
+
+	public static function getPlaceholder($type)
+	{
+		if (!isset(self::$placeholders[$type]))
+		{
+			jimport('joomla.filesystem.file');
+			$application = JFactory::getApplication();
+			$template = $application->getTemplate();
+
+			if (JFile::exists(JPATH_SITE.'/templates/'.$template.'/images/placeholder/'.$type.'.png'))
+			{
+				self::$placeholders[$type] = 'templates/'.$mainframe->getTemplate().'/images/placeholder/'.$type.'.png';
+			}
+			else
+			{
+				self::$placeholders[$type] = 'components/com_k2/images/placeholder/'.$type.'.png';
+			}
+		}
+		return self::$placeholders[$type];
 	}
 
 	public static function addResourceImage($type, $id, $file, $path)
@@ -300,6 +322,9 @@ class K2HelperImages
 
 	private static function _getCategoryImage($category)
 	{
+		// Params
+		$params = JComponentHelper::getParams('com_k2');
+		
 		// Initialize value
 		$image = null;
 
@@ -320,11 +345,24 @@ class K2HelperImages
 			$image->caption = $value->caption;
 			$image->credits = $value->credits;
 		}
+		else if ($params->get('catImageDefault'))
+		{
+			$placeholder = self::getPlaceholder('category');
+			$image = new stdClass;
+			$image->src = JURI::root(true).'/'.$placeholder;
+			$image->url = JURI::root(false).$placeholder;
+			$image->alt = $category->title;
+			$image->caption = '';
+			$image->credits = '';
+		}
 		return $image;
 	}
 
 	private static function _getUserImage($user)
 	{
+		// Params
+		$params = JComponentHelper::getParams('com_k2');
+
 		// Initialize value
 		$image = null;
 
@@ -337,7 +375,13 @@ class K2HelperImages
 			$image->id = md5('Image'.$user->id);
 			$image->src = JURI::root(true).'/'.$savepath.'/'.$image->id.'.jpg';
 			$image->url = JURI::root(false).$savepath.'/'.$image->id.'.jpg';
-			$image->alt = $user->name;
+		}
+		else if ($params->get('userImageDefault'))
+		{
+			$placeholder = self::getPlaceholder('user');
+			$image = new stdClass;
+			$image->src = JURI::root(true).'/'.$placeholder;
+			$image->url = JURI::root(false).$placeholder;
 		}
 		return $image;
 	}

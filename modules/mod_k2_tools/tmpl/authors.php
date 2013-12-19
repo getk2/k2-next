@@ -18,7 +18,7 @@ defined('_JEXEC') or die ;
     <li>
       <?php if ($params->get('authorAvatar')): ?>
       <a class="k2Avatar abAuthorAvatar" rel="author" href="<?php echo $author->link; ?>" title="<?php echo htmlspecialchars($author->name); ?>">
-      	<img src="<?php echo $author->image; ?>" alt="<?php echo htmlspecialchars($author->name); ?>" style="width:<?php echo $avatarWidth; ?>px;height:auto;" />
+      	<img src="<?php echo $author->image->src; ?>" alt="<?php echo htmlspecialchars($author->name); ?>" style="width:<?php echo $avatarWidth; ?>px;height:auto;" />
       </a>
       <?php endif; ?>
 
