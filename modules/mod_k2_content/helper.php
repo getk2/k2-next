@@ -122,11 +122,15 @@ class ModK2ContentHelper
 			$application = JFactory::getApplication();
 			$menu = $application->getMenu();
 			$menuLink = $menu->getItem($params->get('itemCustomLinkMenuItem'));
-			if (!$params->get('itemCustomLinkTitle'))
+			if ($menuLink)
 			{
-				$params->set('itemCustomLinkTitle', $menuLink->title);
+				if (!$params->get('itemCustomLinkTitle'))
+				{
+					$params->set('itemCustomLinkTitle', $menuLink->title);
+				}
+				$params->set('itemCustomLinkURL', JRoute::_('index.php?&Itemid='.$menuLink->id));
 			}
-			$params->set('itemCustomLinkURL', JRoute::_('index.php?&Itemid='.$menuLink->id));
+
 		}
 
 		// Return

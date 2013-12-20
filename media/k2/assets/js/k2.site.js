@@ -289,6 +289,7 @@ jQuery(document).ready(function() {
 		var K2RouterComments = Marionette.AppRouter.extend({
 			appRoutes : {
 				'' : 'list',
+				'itemCommentsAnchor' : 'list',
 				'comment:id' : 'comment',
 			}
 		});

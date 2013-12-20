@@ -16,7 +16,7 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/controller.php';
  * Users JSON controller.
  */
 
-class K2ControllerUsers extends K2Controller
+class K2ControllerUsers extends JControllerLegacy
 {
 	// Disable front-end access to read function
 	public function read($mode = 'row', $id = null)

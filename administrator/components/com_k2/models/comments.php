@@ -50,7 +50,7 @@ class K2ModelComments extends K2Model
 
 		// Set the query
 		$db->setQuery($query, (int)$this->getState('limitstart'), (int)$this->getState('limit'));
-
+		
 		// Get rows
 		$data = $db->loadAssocList();
 

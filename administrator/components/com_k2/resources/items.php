@@ -359,12 +359,12 @@ class K2Items extends K2Resource
 
 	public function getLink()
 	{
-		return JRoute::_(K2HelperRoute::getItemRoute($this->id.':'.$this->alias));
+		return JRoute::_(K2HelperRoute::getItemRoute($this->id.':'.$this->alias, $this->catid));
 	}
 
 	public function getUrl()
 	{
-		return JRoute::_(K2HelperRoute::getItemRoute($this->id.':'.$this->alias), true, -1);
+		return JRoute::_(K2HelperRoute::getItemRoute($this->id.':'.$this->alias, $this->catid), true, -1);
 	}
 
 	public function getPrintLink()

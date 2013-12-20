@@ -155,7 +155,7 @@ class K2Comments extends K2Resource
 
 	public function getItemLink()
 	{
-		return JRoute::_(K2HelperRoute::getItemRoute($this->itemId.':'.$this->itemAlias));
+		return JRoute::_(K2HelperRoute::getItemRoute($this->itemId.':'.$this->itemAlias, $this->categoryId));
 	}
 
 	public function getCategoryLink()

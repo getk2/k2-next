@@ -10,16 +10,16 @@
 // no direct access
 defined('_JEXEC') or die ;
 
-require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/model.php';
-require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
+require_once JPATH_SITE.'/components/com_k2/views/view.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/items.php';
 
 /**
- * Attachments controller.
+ * K2 attachment view class
  */
 
-class K2ControllerAttachments extends JControllerLegacy
+class K2ViewAttachments extends K2View
 {
-	public function download()
+	public function display($tpl = null)
 	{
 		// Get application
 		$application = JFactory::getApplication();
@@ -114,7 +114,6 @@ class K2ControllerAttachments extends JControllerLegacy
 		JResponse::sendHeaders();
 		echo $content;
 		$application->close();
-
 	}
 
 }

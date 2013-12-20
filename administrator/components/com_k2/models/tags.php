@@ -11,6 +11,7 @@
 defined('_JEXEC') or die ;
 
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/model.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/categories.php';
 
 class K2ModelTags extends K2Model
 {

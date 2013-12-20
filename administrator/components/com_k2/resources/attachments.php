@@ -83,7 +83,7 @@ class K2Attachments extends K2Resource
 	{
 		$application = JFactory::getApplication();
 		$hash = JApplication::getHash($this->id);
-		$link = JRoute::_(JURI::root().'/index.php?option=com_k2&task=attachments.download&id='.$this->id.'&hash='.$hash);
+		$link = JRoute::_('index.php?option=com_k2&view=attachments&task=download&id='.$this->id.'&hash='.$hash);
 		if ($application->isAdmin())
 		{
 			$link = str_replace(JURI::base(true), JURI::root(true), $link);
@@ -95,7 +95,7 @@ class K2Attachments extends K2Resource
 	{
 		$application = JFactory::getApplication();
 		$hash = JApplication::getHash($this->id);
-		$url = JRoute::_('index.php?option=com_k2&task=attachments.download&id='.$this->id.'&hash='.$hash, true, -1);
+		$url = JRoute::_('index.php?option=com_k2&view=attachments&task=download&id='.$this->id.'&hash='.$hash, true, -1);
 		return $url;
 	}
 
