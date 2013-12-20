@@ -22,7 +22,7 @@ defined('_JEXEC') or die ; ?>
 </p>
 <?php endif; ?>
 
-<form action="<?php echo JRoute::_('index.php'); ?>" method="post">
+<form action="<?php echo JRoute::_('index.php'); ?>" method="post" data-form="comments">
 	<label for="k2CommentText"><?php echo JText::_('K2_MESSAGE'); ?> *</label>
 	<textarea rows="10" cols="20" placeholder="<?php echo JText::_('K2_ENTER_YOUR_MESSAGE_HERE'); ?>" name="text" id="k2CommentText"></textarea>
 	

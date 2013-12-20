@@ -11,6 +11,7 @@
 defined('_JEXEC') or die ;
 
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/resource.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/users.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/images.php';
 
 /**

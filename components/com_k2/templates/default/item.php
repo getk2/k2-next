@@ -435,7 +435,7 @@ defined('_JEXEC') or die ;
 				<li class="<% if(comment.isAuthorResponse) print('authorResponse'); if(comment.state == 0) print(' unpublishedComment'); %>">
 		
 			    	<span class="commentLink">
-				    	<a href="<?php echo $this->item->link; ?>#comment/<%- comment.id %>" name="comment<%- comment.id %>" id="comment<%- comment.id %>">
+				    	<a href="<?php echo $this->item->link; ?>#comment<%- comment.id %>" name="comment<%- comment.id %>" id="comment<%- comment.id %>">
 				    		<?php echo JText::_('K2_COMMENT_LINK'); ?>
 				    	</a>
 				    </span>
@@ -520,6 +520,27 @@ defined('_JEXEC') or die ;
 		  	<?php endif; ?>
 
 		</div>
+		
+
+		<form action="<?php echo JRoute::_('index.php'); ?>" method="post" data-form="report">
+			<label for="reportName"><?php echo JText::_('K2_YOUR_NAME'); ?></label>
+			<input type="text" id="reportName" name="reportName" value="" />
+
+			<label for="reportReason"><?php echo JText::_('K2_REPORT_REASON'); ?></label>
+			<textarea name="reportReason" id="reportReason" cols="60" rows="10"></textarea>
+
+			<?php if($this->params->get('recaptcha') && $this->user->guest): ?>
+			<label class="formRecaptcha"><?php echo JText::_('K2_ENTER_THE_TWO_WORDS_YOU_SEE_BELOW'); ?></label>
+			<div id="recaptcha"></div>
+			<?php endif; ?>
+			
+			<button data-action="report.send"><?php echo JText::_('K2_SEND_REPORT'); ?></button>
+			<span data-role="log"></span>
+			<input type="hidden" name="id" value="" />
+			<input type="hidden" name="task" value="comments.report" />
+			<input type="hidden" name="format" value="json" />
+			<?php echo JHTML::_('form.token'); ?>
+		</form>
   	
   </script>
   <?php endif; ?>

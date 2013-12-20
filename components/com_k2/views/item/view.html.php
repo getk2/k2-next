@@ -49,6 +49,7 @@ class K2ViewItem extends K2View
 			$document->addScript(JURI::root(true).'/administrator/components/com_k2/js/lib/underscore-min.js');
 			$document->addScript(JURI::root(true).'/administrator/components/com_k2/js/lib/backbone-min.js');
 			$document->addScript(JURI::root(true).'/administrator/components/com_k2/js/lib/backbone.marionette.min.js');
+			$document->addScript(JURI::root(true).'/administrator/components/com_k2/js/sync.js');
 		}
 		
 		// Trigger plugins

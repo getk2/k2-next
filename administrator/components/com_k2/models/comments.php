@@ -109,15 +109,16 @@ class K2ModelComments extends K2Model
 		if ($this->getState('id'))
 		{
 			$id = $this->getState('id');
-			if (is_array($id))
+			if ($this->getState('id.operator'))
 			{
-				JArrayHelper::toInteger($id);
-				$query->where($db->quoteName('comment.id').' IN '.$id);
+				$operator = $this->getState('id.operator');
 			}
 			else
 			{
-				$query->where($db->quoteName('comment.id').' = '.(int)$id);
+				$operator = '=';
 			}
+			$query->where($db->quoteName('comment.id').' '.$operator.' '.(int)$id);
+
 		}
 		if ($this->getState('search'))
 		{
@@ -129,7 +130,7 @@ class K2ModelComments extends K2Model
 				$query->where($db->quoteName('comment.text').' LIKE '.$db->Quote('%'.$search.'%', false));
 			}
 		}
-		
+
 		if ($this->getState('userId'))
 		{
 			$query->where($db->quoteName('comment.userId').' = '.(int)$this->getState('userId'));
@@ -218,7 +219,7 @@ class K2ModelComments extends K2Model
 	{
 		// Get application
 		$application = JFactory::getApplication();
-		
+
 		// Params
 		$params = JComponentHelper::getParams('com_k2');
 
@@ -253,7 +254,7 @@ class K2ModelComments extends K2Model
 				$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
 				return false;
 			}
-			
+
 			// Text is required for both guests and authenticated users
 			if (trim($data['text']) == '')
 			{
@@ -359,9 +360,9 @@ class K2ModelComments extends K2Model
 			{
 				$statistics->increaseUserCommentsCounter($table->userId);
 			}
-			
+
 			// Throw error if auto-publishing is disabled
-			if(!$table->state)
+			if (!$table->state)
 			{
 				$this->setError(JText::_('K2_COMMENT_ADDED_AND_WAITING_FOR_APPROVAL'));
 				return false;
