@@ -118,7 +118,6 @@ function K2BuildRoute(&$query)
 		$segments[] = $hash;
 		unset($query['hash']);
 	}
-
 	$params = JComponentHelper::getParams('com_k2');
 	if ($params->get('k2Sef') && count($segments))
 	{
@@ -214,6 +213,7 @@ function K2AdvancedSEFBuild(&$segments)
 		switch($task)
 		{
 			case 'category' :
+
 				// Replace itemlist with the categories prefix
 				$segments[0] = $params->get('k2SefLabelCat', 'content');
 
@@ -351,8 +351,9 @@ function K2AdvancedSEFParse(&$vars, $segments)
 			}
 			else
 			{
-				$category = K2Categories::getInstance($segments[1]);
-				$vars['id'] = $category->id;
+				$alias = str_replace(':', '-', $segments[1]);
+				$category = K2Categories::getInstance($alias);
+				$vars['id'] = $category->id.':'.$alias;
 			}
 		}
 		// Tag view
