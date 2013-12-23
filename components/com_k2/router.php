@@ -197,6 +197,13 @@ function K2ParseRoute($segments)
 	return $vars;
 }
 
+/**
+ * Build the route for the K2 component using the advanced SEF options
+ *
+ * @param  array  An array of URL arguments
+ * @return  void
+ */
+
 function K2AdvancedSEFBuild(&$segments)
 {
 	$params = JComponentHelper::getParams('com_k2');
@@ -236,7 +243,7 @@ function K2AdvancedSEFBuild(&$segments)
 				{
 					// Try to split the slug
 					list($id, $alias) = explode(':', $segments[2]);
-					
+
 					// Use only alias
 					$segments[2] = $alias;
 				}
@@ -314,6 +321,14 @@ function K2AdvancedSEFBuild(&$segments)
 
 }
 
+/**
+ * Parse the route for the K2 component using the advanced SEF options
+ *
+ * @param  array  An array of already parsed vars
+ * @param  array  An array of URL arguments
+ *
+ * @return  void
+ */
 function K2AdvancedSEFParse(&$vars, $segments)
 {
 	$params = JComponentHelper::getParams('com_k2');
