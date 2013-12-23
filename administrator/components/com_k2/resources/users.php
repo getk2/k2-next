@@ -108,6 +108,19 @@ class K2Users extends K2Resource
 		}
 		return JRoute::_(K2HelperRoute::getUserRoute($this->id.':'.$this->alias));
 	}
+	
+	public function getFeedLink()
+	{
+		if (JFactory::getConfig()->get('unicodeslugs') == 1)
+		{
+			$this->alias = JFilterOutput::stringURLUnicodeSlug($this->name);
+		}
+		else
+		{
+			$this->alias = JFilterOutput::stringURLSafe($this->name);
+		}
+		return JRoute::_(K2HelperRoute::getUserRoute($this->id.':'.$this->alias).'&format=feed');
+	}
 
 	public function getUrl()
 	{

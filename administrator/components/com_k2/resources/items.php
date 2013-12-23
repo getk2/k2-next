@@ -377,7 +377,7 @@ class K2Items extends K2Resource
 
 	public function getPrintLink()
 	{
-		return JRoute::_('index.php?option=com_k2&view=item&id='.$this->id.'&print=1');
+		JRoute::_(K2HelperRoute::getItemRoute($this->id.':'.$this->alias, $this->catid).'&print=1');
 	}
 
 	public function getEmailLink()

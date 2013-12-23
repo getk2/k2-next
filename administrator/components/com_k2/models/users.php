@@ -507,6 +507,36 @@ class K2ModelUsers extends K2Model
 		// Return the result
 		return $rows;
 	}
+	
+	public function getTopAuthors()
+	{
+		// Get database
+		$db = $this->getDBO();
+
+		// Get query
+		$query = $db->getQuery(true);
+
+		// Select statement
+		$query->select($db->quoteName('stats.userId'));
+		$query->select($db->quoteName('stats.items'));
+		$query->from($db->quoteName('#__k2_users_stats', 'stats'));
+
+		// Join with users
+		$query->leftJoin($db->quoteName('#__users', 'user').' ON '.$db->quoteName('user.id').' = '.$db->quoteName('stats.userId'));
+		$query->where($db->quoteName('user.block').' = 0');
+
+		// Sorting
+		$query->order($db->quoteName('stats.items').' DESC');
+
+		// Set the query
+		$db->setQuery($query, 0, (int)$this->getState('limit'));
+
+		// Get the result
+		$rows = $db->loadObjectList();
+
+		// Return the result
+		return $rows;
+	}
 
 	public function report()
 	{

@@ -186,6 +186,10 @@ class K2ModelItems extends K2Model
 		if ($this->getState('author'))
 		{
 			$query->where($db->quoteName('item.created_by').' = '.(int)$this->getState('author'));
+			if ($this->getState('site'))
+			{
+				$query->where($db->quoteName('item.created_by_alias').' = '.$db->quote(''));
+			}
 		}
 		if ($this->getState('publish_up'))
 		{

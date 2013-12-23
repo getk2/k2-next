@@ -23,6 +23,7 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/categories.php';
 
 function K2BuildRoute(&$query)
 {
+		
 	// Initialize segments
 	$segments = array();
 
