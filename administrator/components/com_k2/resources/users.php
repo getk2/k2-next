@@ -140,6 +140,16 @@ class K2Users extends K2Resource
 		return K2HelperImages::getResourceImages('user', $this);
 	}
 
+	public function getNumOfComments()
+	{
+		K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
+		$model = K2Model::getInstance('Comments');
+		$model->setState('userId', $this->id);
+		$model->setState('state', 1);
+		$numOfComments = $model->countRows();
+		return $numOfComments;
+	}
+
 	public function getEvents()
 	{
 		$events = new stdClass;
