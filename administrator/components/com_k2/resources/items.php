@@ -63,10 +63,18 @@ class K2Items extends K2Resource
 		if (empty(self::$instances[$id]))
 		{
 			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
-			$model = K2Model::getInstance('Items');
-			$model->setState('id', $id);
+			$model = K2Model::getInstance('Items', 'K2Model');
+			if (is_numeric($id))
+			{
+				$model->setState('id', $id);
+			}
+			else
+			{
+				$model->setState('alias', $id);
+			}
 			$item = $model->getRow();
-			self::$instances[$id] = $item;
+			self::$instances[$item->id] = $item;
+			self::$instances[$item->alias] = $item;
 		}
 		return self::$instances[$id];
 	}

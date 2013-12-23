@@ -10,6 +10,9 @@
 // no direct access
 defined('_JEXEC') or die ;
 
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/items.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/categories.php';
+
 /**
  * Build the route for the K2 component
  *
@@ -71,7 +74,6 @@ function K2BuildRoute(&$query)
 			}
 		}
 	}
-		
 
 	if (isset($query['view']))
 	{
@@ -115,6 +117,12 @@ function K2BuildRoute(&$query)
 		$hash = $query['hash'];
 		$segments[] = $hash;
 		unset($query['hash']);
+	}
+
+	$params = JComponentHelper::getParams('com_k2');
+	if ($params->get('k2Sef') && count($segments))
+	{
+		K2AdvancedSEFBuild($segments);
 	}
 
 	return $segments;
@@ -180,5 +188,200 @@ function K2ParseRoute($segments)
 		$vars['hash'] = $segments[3];
 	}
 
+	$params = JComponentHelper::getParams('com_k2');
+	if ($params->get('k2Sef') && count($vars))
+	{
+		K2AdvancedSEFParse($vars, $segments);
+	}
+
 	return $vars;
+}
+
+function K2AdvancedSEFBuild(&$segments)
+{
+	$params = JComponentHelper::getParams('com_k2');
+	$view = $segments[0];
+	if ($view == 'itemlist')
+	{
+		$task = $segments[1];
+		switch($task)
+		{
+			case 'category' :
+				// Replace itemlist with the categories prefix
+				$segments[0] = $params->get('k2SefLabelCat', 'content');
+
+				// Remove the task completely
+				unset($segments[1]);
+
+				// Are we using the id in the URL?
+				if ($params->get('k2SefInsertCatId'))
+				{
+					// If category alias is used in the URL. Check the desired separator
+					if ($params->get('k2SefUseCatTitleAlias'))
+					{
+						// If the desired separator is slash, then apply it
+						if ($params->get('k2SefCatIdTitleAliasSep') == 'slash')
+						{
+							$segments[2] = str_replace(':', '/', $segments[2]);
+						}
+					}
+					// Category alias is not used in the URL. Keep only the numeric Id
+					else
+					{
+						$segments[2] = (int)$segments[2];
+					}
+				}
+				// Id will not be used in URL
+				else
+				{
+					// Try to split the slug
+					list($id, $alias) = explode(':', $segments[2]);
+					
+					// Use only alias
+					$segments[2] = $alias;
+				}
+
+				break;
+			case 'tag' :
+				unset($segments[1]);
+				$segments[0] = $params->get('k2SefLabelTag', 'tag');
+				break;
+			case 'user' :
+				$segments[0] = $params->get('k2SefLabelUser', 'author');
+				unset($segments[1]);
+				break;
+			case 'date' :
+				$segments[0] = $params->get('k2SefLabelDate', 'date');
+				unset($segments[1]);
+				break;
+			case 'search' :
+				$segments[0] = $params->get('k2SefLabelSearch', 'search');
+				unset($segments[1]);
+				break;
+		}
+	}
+	else if ($view == 'item')
+	{
+		// Items category prefix
+		if ($params->get('k2SefLabelItem'))
+		{
+			// Replace the item with the category slug
+			if ($params->get('k2SefLabelItem') == '1')
+			{
+				$item = K2Items::getInstance($segments[1]);
+				$segments[0] = $item->category->alias;
+			}
+			else
+			{
+				$segments[0] = $params->get('k2SefLabelItemCustomPrefix');
+			}
+		}
+		// Remove "item" from the URL
+		else
+		{
+			unset($segments[0]);
+		}
+
+		// Handle item id and alias
+		if ($params->get('k2SefInsertItemId'))
+		{
+			if ($params->get('k2SefUseItemTitleAlias'))
+			{
+				if ($params->get('k2SefItemIdTitleAliasSep') == 'slash')
+				{
+					$segments[1] = str_replace(':', '/', $segments[1]);
+				}
+			}
+			else
+			{
+				$segments[1] = (int)$segments[1];
+			}
+		}
+		// Id will not be used in URL
+		else
+		{
+			// Try to split the slug
+			list($id, $alias) = explode(':', $segments[1]);
+
+			// Use only alias
+			$segments[1] = $alias;
+		}
+
+	}
+
+	// Reorder segments array
+	$segments = array_values($segments);
+
+}
+
+function K2AdvancedSEFParse(&$vars, $segments)
+{
+	$params = JComponentHelper::getParams('com_k2');
+	$reservedViews = array(
+		'item',
+		'itemlist'
+	);
+
+	if (!in_array($segments[0], $reservedViews))
+	{
+		// Category view
+		if ($segments[0] == $params->get('k2SefLabelCat', 'content'))
+		{
+			$vars['view'] = 'itemlist';
+			$vars['task'] = 'category';
+			// Detect category id
+			if ($params->get('k2SefInsertCatId'))
+			{
+				$vars['id'] = (int)$segments[1];
+			}
+			else
+			{
+				$category = K2Categories::getInstance($segments[1]);
+				$vars['id'] = $category->id;
+			}
+		}
+		// Tag view
+		elseif ($segments[0] == $params->get('k2SefLabelTag', 'tag'))
+		{
+			$vars['view'] = 'itemlist';
+			$vars['task'] = 'tag';
+			$vars['id'] = $segments[2];
+		}
+		// User view
+		elseif ($segments[0] == $params->get('k2SefLabelUser', 'author'))
+		{
+			$vars['view'] = 'itemlist';
+			$vars['task'] = 'user';
+			$vars['id'] = $segments[2];
+		}
+		// Date view
+		elseif ($segments[0] == $params->get('k2SefLabelDate', 'date'))
+		{
+			$vars['view'] = 'itemlist';
+			$vars['task'] = 'date';
+		}
+		// Search view
+		elseif ($segments[0] == $params->get('k2SefLabelSearch', 'search'))
+		{
+			$vars['view'] = 'itemlist';
+			$vars['task'] = 'search';
+		}
+		// Item view
+		else
+		{
+			$vars['view'] = 'item';
+
+			// Reinsert item id to the item alias
+			if (!$params->get('k2SefInsertItemId'))
+			{
+				$alias = str_replace(':', '-', $segments[1]);
+				$item = K2Items::getInstance($alias);
+				$vars['id'] = $item->id.':'.$alias;
+			}
+			else
+			{
+				$vars['id'] = $segments[1];
+			}
+		}
+	}
 }
