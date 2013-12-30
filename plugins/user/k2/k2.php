@@ -141,42 +141,38 @@ class PlgUserK2 extends JPlugin
 
 	}
 
+	/**
+	 * This method should handle any login logic and report back to the subject
+	 *
+	 * @param   array  $user     Holds the user data
+	 * @param   array  $options  Array holding options (remember, autoregister, group)
+	 *
+	 * @return  boolean  True on success
+	 *
+	 * @since   1.5
+	 */
 	function onUserLogin($user, $options)
 	{
 		$params = JComponentHelper::getParams('com_k2');
-		$mainframe = JFactory::getApplication();
-		if ($mainframe->isSite())
+		$application = JFactory::getApplication();
+		if ($application->isSite())
 		{
 			// Get the user id
-			$db = JFactory::getDBO();
-			$db->setQuery("SELECT id FROM #__users WHERE username = ".$db->Quote($user['username']));
-			$id = $db->loadResult();
+			$id = JUserHelper::getUserId($user['username']);
 
 			// If K2 profiles are enabled assign non-existing K2 users to the default K2 group. Update user info for existing K2 users.
 			if ($params->get('K2UserProfile') && $id)
 			{
-				$k2id = $this->getK2UserID($id);
-				JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_k2'.DS.'tables');
-				$row = JTable::getInstance('K2User', 'Table');
-				if ($k2id)
-				{
-					$row->load($k2id);
-				}
-				else
-				{
-					$row->set('userID', $id);
-					$row->set('userName', $user['fullname']);
-					$row->set('group', $params->get('K2UserGroup', 1));
-				}
-				$row->ip = $_SERVER['REMOTE_ADDR'];
-				$row->hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
-				$row->store();
+				$k2User = K2Users::getInstance($id);
+				$k2User->ip = $_SERVER['REMOTE_ADDR'];
+				$k2User->hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+				$k2User->save();
 			}
 
 			// Set the Cookie domain for user based on K2 parameters
 			if ($params->get('cookieDomain') && $id)
 			{
-				setcookie("userID", $id, 0, '/', $params->get('cookieDomain'), 0);
+				setcookie('userID', $id, 0, '/', $params->get('cookieDomain'), 0);
 			}
 		}
 		return true;
@@ -203,11 +199,6 @@ class PlgUserK2 extends JPlugin
 	}
 
 	function onUserBeforeSave($user, $isNew)
-	{
-		return $this->onBeforeStoreUser($user, $isNew);
-	}
-
-	function onAfterStoreUser($user, $isnew, $success, $msg)
 	{
 		$mainframe = JFactory::getApplication();
 		$params = JComponentHelper::getParams('com_k2');
