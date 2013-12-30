@@ -197,10 +197,14 @@ class K2Items extends K2Resource
 
 	public function getTags()
 	{
-		$tags = array();
-		$tagIds = json_decode($this->tags);
-		if ($this->id && is_array($tagIds))
+		$tags = json_decode($this->tags);
+		if ($this->id && is_array($tags) && count($tags))
 		{
+			$tagIds = array();
+			foreach ($tags as $tag)
+			{
+				$tagIds[] = (int)$tag->id;
+			}
 			$application = JFactory::getApplication();
 			$model = K2Model::getInstance('Tags');
 			if ($application->isSite())

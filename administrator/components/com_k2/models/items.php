@@ -201,15 +201,52 @@ class K2ModelItems extends K2Model
 		}
 		if ($this->getState('search'))
 		{
-			$search = JString::trim($this->getState('search'));
-			$search = JString::strtolower($search);
+			$search = trim($this->getState('search'));
 			if ($search)
 			{
-				$search = $db->escape($search, true);
-				$query->where('( LOWER('.$db->quoteName('item.title').') LIKE '.$db->Quote('%'.$search.'%', false).' 
-				OR '.$db->quoteName('item.id').' = '.(int)$search.'
-				OR LOWER('.$db->quoteName('item.introtext').') LIKE '.$db->Quote('%'.$search.'%', false).'
-				OR LOWER('.$db->quoteName('item.fulltext').') LIKE '.$db->Quote('%'.$search.'%', false).')');
+				// Site search
+				if ($this->getState('site'))
+				{
+					$mode = $this->getState('search.mode');
+					switch ($mode)
+					{
+						case 'exact' :
+							$text = $db->quote('%'.$db->escape($search, true).'%', false);
+							$where = $db->quoteName('item.title').' LIKE '.$text.' OR '.$db->quoteName('item.introtext').' LIKE '.$text.' OR '.$db->quoteName('item.fulltext').' LIKE '.$text.' OR '.$db->quoteName('item.extra_fields').' LIKE '.$text.' OR '.$db->quoteName('item.tags').' LIKE '.$text;
+							break;
+
+						case 'all' :
+						case 'any' :
+						default :
+							$words = explode(' ', $search);
+							$searchConditions = array();
+							foreach ($words as $word)
+							{
+								$word = $db->quote('%'.$db->escape($word, true).'%', false);
+								$wordConditions = array();
+								$wordConditions[] = $db->quoteName('item.title').' LIKE '.$word;
+								$wordConditions[] = $db->quoteName('item.introtext').' LIKE '.$word;
+								$wordConditions[] = $db->quoteName('item.fulltext').' LIKE '.$word;
+								$wordConditions[] = $db->quoteName('item.extra_fields').' LIKE '.$word;
+								$wordConditions[] = $db->quoteName('item.tags').' LIKE '.$word;
+								$searchConditions[] = implode(' OR ', $wordConditions);
+							}
+							$where = '('.implode(($mode == 'all' ? ') AND (' : ') OR ('), $searchConditions).')';
+							break;
+					}
+					$query->where('('.$where.')');
+
+				}
+				// Admin search
+				else
+				{
+					$search = $db->escape($search, true);
+					$query->where('('.$db->quoteName('item.title').' LIKE '.$db->Quote('%'.$search.'%', false).' 
+					OR '.$db->quoteName('item.id').' = '.(int)$search.'
+					OR '.$db->quoteName('item.introtext').' LIKE '.$db->Quote('%'.$search.'%', false).'
+					OR '.$db->quoteName('item.fulltext').' LIKE '.$db->Quote('%'.$search.'%', false).')');
+				}
+
 			}
 		}
 		if ($this->getState('day'))
@@ -284,7 +321,10 @@ class K2ModelItems extends K2Model
 				$direction = 'DESC';
 				break;
 			case 'category' :
-				$ordering = 'categoryName';
+				$ordering = array(
+					'categoryName',
+					'item.title'
+				);
 				$direction = 'ASC';
 				break;
 			case 'author' :
@@ -589,7 +629,10 @@ class K2ModelItems extends K2Model
 			$data['tags'] = array();
 			foreach ($tags as $tag)
 			{
-				$data['tags'][] = $model->addTag($tag);
+				$entry = new stdClass;
+				$entry->name = $tag;
+				$entry->id = $model->addTag($tag);
+				$data['tags'][] = $entry;
 			}
 			$data['tags'] = json_encode($data['tags']);
 		}
@@ -618,9 +661,9 @@ class K2ModelItems extends K2Model
 			$model = K2Model::getInstance('Tags', 'K2Model');
 			$itemId = $this->getState('id');
 			$model->deleteItemTags($itemId);
-			foreach ($tags as $tagId)
+			foreach ($tags as $tag)
 			{
-				$model->tagItem($tagId, $itemId);
+				$model->tagItem($tag->id, $itemId);
 			}
 		}
 
