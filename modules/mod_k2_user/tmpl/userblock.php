@@ -73,7 +73,7 @@ defined('_JEXEC') or die ;
 		<?php endforeach; ?>
   </ul>
 
-  <form action="<?php echo JURI::root(true); ?>" method="post">
+  <form action="<?php echo JRoute::_('index.php', true, $params->get('usesecure')); ?>" method="post">
     <input type="submit" name="Submit" class="button ubLogout" value="<?php echo JText::_('K2_LOGOUT'); ?>" />
     <input type="hidden" name="option" value="<?php echo $logout->option; ?>" />
     <input type="hidden" name="task" value="<?php echo $logout->task; ?>" />
