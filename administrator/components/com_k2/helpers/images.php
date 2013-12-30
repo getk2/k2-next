@@ -389,10 +389,10 @@ class K2HelperImages
 			{
 				$image = new stdClass;
 			}
-			$image->src = '//www.gravatar.com/avatar/'.md5($user->email).'?s='.$params->get('commenterImgWidth', 48);
+			$image->src = '//www.gravatar.com/avatar/'.md5($user->email);
 			if (isset($image->url))
 			{
-				$image->src .= '&d='.urlencode($image->url);
+				$image->src .= '?d='.urlencode($image->url);
 			}
 			$image->url = $image->src;
 		}
