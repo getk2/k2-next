@@ -104,10 +104,10 @@ class K2Comments extends K2Resource
 		// Front-end only
 		if ($application->isSite())
 		{
-			
+
 			// Get user
 			$this->user = $this->getUser();
-			
+
 			// Edit permission
 			$this->canEdit = K2Comments::getPermissions()->canEdit;
 
@@ -194,18 +194,18 @@ class K2Comments extends K2Resource
 			$user->username = $this->name;
 			$user->link = false;
 			$user->image = false;
-		}
 
-		$params = JComponentHelper::getParams('com_k2');
-		if (!$user->image && $params->get('gravatar'))
-		{
-			$user->image = new stdClass;
-			$user->image->src = '//www.gravatar.com/avatar/'.md5($this->email).'?s='.$params->get('commenterImgWidth', 48);
-			if ($params->get('userImageDefault'))
+			$params = JComponentHelper::getParams('com_k2');
+			if (!$user->image && $params->get('gravatar'))
 			{
-				$user->image->src .= '&amp;default='.K2HelperImages::getPlaceholder('image');
+				$user->image = new stdClass;
+				$user->image->src = '//www.gravatar.com/avatar/'.md5($this->email).'?s='.$params->get('commenterImgWidth', 48);
+				if ($params->get('userImageDefault'))
+				{
+					$user->image->src .= '&d='.urlencode(K2HelperImages::getPlaceholder('image'));
+				}
+				$user->image->url = $user->image->src;
 			}
-			$user->image->url = $user->image->src;
 		}
 		return $user;
 	}

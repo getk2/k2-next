@@ -324,7 +324,7 @@ class K2HelperImages
 	{
 		// Params
 		$params = JComponentHelper::getParams('com_k2');
-		
+
 		// Initialize value
 		$image = null;
 
@@ -382,6 +382,19 @@ class K2HelperImages
 			$image = new stdClass;
 			$image->src = JURI::root(true).'/'.$placeholder;
 			$image->url = JURI::root(false).$placeholder;
+		}
+		if ($params->get('gravatar'))
+		{
+			if (is_null($image))
+			{
+				$image = new stdClass;
+			}
+			$image->src = '//www.gravatar.com/avatar/'.md5($user->email).'?s='.$params->get('commenterImgWidth', 48);
+			if (isset($image->url))
+			{
+				$image->src .= '&d='.urlencode($image->url);
+			}
+			$image->url = $image->src;
 		}
 		return $image;
 	}
