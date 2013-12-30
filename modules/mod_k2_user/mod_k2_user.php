@@ -22,7 +22,7 @@ if ($user->guest)
 else
 {
 	$user = K2Users::getInstance($user->id);
-	$user->numOfComments = $user->getNumOfComments;
+	$user->numOfComments = $user->getNumOfComments();
 	$logout = ModK2UserHelper::getLogout($params);
 	require JModuleHelper::getLayoutPath('mod_k2_user', 'userblock');
 }

@@ -78,6 +78,6 @@ defined('_JEXEC') or die ;
     <input type="hidden" name="option" value="<?php echo $logout->option; ?>" />
     <input type="hidden" name="task" value="<?php echo $logout->task; ?>" />
     <input type="hidden" name="return" value="<?php echo $logout->return; ?>" />
-    <?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHtml::_('form.token'); ?>
   </form>
 </div>
