@@ -61,7 +61,7 @@ class K2HelperRoute
 			{
 				foreach ($items as $item)
 				{
-					if ($item->query['view'] == 'itemlist' && $item->query['task'] == 'category' && $item->query['id'] == $category)
+					if ($item->query['view'] == 'itemlist' && isset($item->query['task']) && $item->query['task'] == 'category' && $item->query['id'] == $category)
 					{
 						$match = $item;
 						break;
