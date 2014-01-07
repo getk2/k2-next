@@ -148,12 +148,12 @@ jQuery(document).ready(function() {
 			create : function(event) {
 				event.preventDefault();
 				var model = new K2ModelComments;
-				var input = this.$('form[data-form="comment"]').serializeArray();
+				var input = this.$('form[data-form="comments"]').serializeArray();
 				model.save(null, {
 					data : input,
 					success : _.bind(function(model) {
 						this.controller.comment(model.get('id'));
-						this.scrollTo('[data-widget="k2comments"]');
+						this.scrollTo('div[data-widget="k2comments"]');
 					}, this),
 					error : _.bind(function(model, xhr, options) {
 						this.message(xhr.responseText);
@@ -242,7 +242,7 @@ jQuery(document).ready(function() {
 				this.controller.list();
 			},
 			message : function(message) {
-				this.$('form[data-form="comment"] [data-role="log"]').html(message);
+				this.$('form[data-form="comments"] [data-role="log"]').html(message);
 			},
 			scrollTo : function(selector)
 			{

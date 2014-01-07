@@ -187,6 +187,10 @@ class K2ViewItemlist extends K2View
 		$model->setState('limit', $limit);
 		$model->setState('limitstart', $offset);
 		$this->items = $model->getRows();
+		
+		// Count items
+		$this->total = $model->countRows();
+		
 	}
 
 	private function search()

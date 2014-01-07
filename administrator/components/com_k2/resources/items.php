@@ -202,24 +202,37 @@ class K2Items extends K2Resource
 
 	public function getTags()
 	{
+		$instances = array();
 		$tags = json_decode($this->tags);
 		if ($this->id && is_array($tags) && count($tags))
 		{
-			$tagIds = array();
+
 			foreach ($tags as $tag)
 			{
-				$tagIds[] = (int)$tag->id;
+				$instance = K2Tags::getInstance($tag->id);
+				if ($instance->state)
+				{
+					$instances[] = $instance;
+				}
 			}
-			$application = JFactory::getApplication();
-			$model = K2Model::getInstance('Tags');
-			if ($application->isSite())
-			{
-				$model->setState('state', 1);
-			}
-			$model->setState('id', $tagIds);
-			$tags = $model->getRows();
+
+			/*
+			 $tagIds = array();
+			 foreach ($tags as $tag)
+			 {
+			 $tagIds[] = (int)$tag->id;
+			 }
+			 $application = JFactory::getApplication();
+			 $model = K2Model::getInstance('Tags');
+			 if ($application->isSite())
+			 {
+			 $model->setState('state', 1);
+			 }
+			 $model->setState('id', $tagIds);
+			 $tags = $model->getRows();
+			 */
 		}
-		return $tags;
+		return $instances;
 	}
 
 	public function getAuthor()

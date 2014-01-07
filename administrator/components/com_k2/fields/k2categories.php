@@ -24,6 +24,10 @@ class JFormFieldK2Categories extends JFormField
 		$document->addScript(JURI::root(true).'/media/k2/assets/js/k2.fields.js');
 
 		// Set values if are not set
+		if (!is_array($this->value))
+		{
+			$this->value = array();
+		}
 		if (!isset($this->value['enabled']))
 		{
 			$this->value['enabled'] = '0';
@@ -40,6 +44,7 @@ class JFormFieldK2Categories extends JFormField
 		// Get some variables from XML markup
 		$this->multiple = $this->element['k2-multiple'];
 		$this->size = (int)$this->element['k2-size'];
+		$this->default = (string)$this->element['default'];
 
 		// Build attributes string
 		$attributes = '';
@@ -52,17 +57,24 @@ class JFormFieldK2Categories extends JFormField
 			$attributes .= ' size="'.$this->size.'"';
 		}
 
-		// First show the category filter switch
-		$options = array();
-		$options[] = JHtml::_('select.option', '0', JText::_('K2_ALL'));
-		$options[] = JHtml::_('select.option', '1', JText::_('K2_SELECT'));
-		$output = JHtml::_('select.radiolist', $options, $this->name.'[enabled]', 'class="k2FieldCategoriesFilterEnabled" data-categories="'.$this->name.'[categories][]"', 'value', 'text', $this->value['enabled'], $this->id);
+		// Init output
+		$output = '';
+
+		// First show the category filter switch for multiple instances
+		if ($this->multiple)
+		{
+			$options = array();
+			$options[] = JHtml::_('select.option', '0', JText::_('K2_ALL'));
+			$options[] = JHtml::_('select.option', '1', JText::_('K2_SELECT'));
+			$output .= JHtml::_('select.radiolist', $options, $this->name.'[enabled]', 'class="k2FieldCategoriesFilterEnabled" data-categories="'.$this->name.'[categories][]"', 'value', 'text', $this->value['enabled'], $this->id);
+		}
 
 		// Then the categories list
-		$output .= K2HelperHTML::categories($this->name.'[categories][]', $this->value['categories'], false, null, $attributes);
+		$output .= K2HelperHTML::categories($this->name.'[categories][]', $this->value['categories'], $this->default, null, $attributes);
 
 		// And finally the recursive switch
 		$output .= '<label>'.JText::_('K2_APPLY_RECUSRIVELY').'</label>'.JHtml::_('select.booleanlist', $this->name.'[recursive]', null, $this->value['recursive']);
+		
 
 		// Return
 		return $output;

@@ -23,7 +23,7 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/categories.php';
 
 function K2BuildRoute(&$query)
 {
-		
+
 	// Initialize segments
 	$segments = array();
 
@@ -187,7 +187,11 @@ function K2ParseRoute($segments)
 		$vars['id'] = $segments[2];
 		$vars['hash'] = $segments[3];
 	}
-
+	else if ($vars['view'] == 'calendar')
+	{
+		$vars['year'] = $segments[1];
+		$vars['month'] = $segments[2];
+	}
 	$params = JComponentHelper::getParams('com_k2');
 	if ($params->get('k2Sef') && count($vars))
 	{
