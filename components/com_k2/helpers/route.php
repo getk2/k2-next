@@ -106,7 +106,7 @@ class K2HelperRoute
 			// If we do not have menu link to the item search for a menu link to it's category
 			foreach ($items as $item)
 			{
-				if ($item->query['view'] == 'itemlist' && $item->query['task'] == 'category' && $item->query['id'] == $id)
+				if ($item->query['view'] == 'itemlist' && isset($item->query['task']) && $item->query['task'] == 'category' && $item->query['id'] == $id)
 				{
 					$match = $item;
 					break;
