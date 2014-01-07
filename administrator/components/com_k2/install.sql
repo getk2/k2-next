@@ -233,7 +233,7 @@ CREATE TABLE IF NOT EXISTS `#__k2_users` (
   `id` int(10) unsigned NOT NULL,
   `description` text NOT NULL,
   `image` varchar(255) NOT NULL,
-  `url` varchar(255) NOT NULL,
+  `site` varchar(255) NOT NULL,
   `gender` varchar(255) NOT NULL,
   `notes` text NOT NULL,
   `extra_fields` longtext NOT NULL,
