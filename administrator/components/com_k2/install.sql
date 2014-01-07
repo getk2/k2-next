@@ -144,6 +144,8 @@ CREATE TABLE IF NOT EXISTS `#__k2_items` (
   `fulltext` mediumtext NOT NULL,
   `image` text NOT NULL,
   `media` text NOT NULL,
+  `tags` text NOT NULL,
+  `attachments` text NOT NULL,
   `galleries` text NOT NULL,
   `extra_fields` longtext NOT NULL,
   `ordering` int(11) NOT NULL,
