@@ -26,7 +26,7 @@ defined('_JEXEC') or die ; ?>
 
       <?php if($params->get('itemAuthorAvatar')): ?>
       <a class="k2Avatar moduleItemAuthorAvatar" rel="author" href="<?php echo $item->author->link; ?>">
-				<img src="<?php echo $item->author->image; ?>" alt="<?php echo htmlspecialchars($item->author->name); ?>" style="width:<?php echo $avatarWidth; ?>px;height:auto;" />
+				<img src="<?php echo $item->author->image->src; ?>" alt="<?php echo htmlspecialchars($item->author->name); ?>" style="width:<?php echo $params->get('itemAuthorAvatarWidth'); ?>px; height:auto;" />
 			</a>
       <?php endif; ?>
 
@@ -65,9 +65,9 @@ defined('_JEXEC') or die ; ?>
 
       <?php if($params->get('itemImage') || $params->get('itemIntroText')): ?>
       <div class="moduleItemIntrotext">
-	      <?php if($params->get('itemImage') && isset($item->image)): ?>
+	      <?php if($params->get('itemImage') && $item->image): ?>
 	      <a class="moduleItemImage" href="<?php echo $item->link; ?>" title="<?php echo JText::_('K2_CONTINUE_READING'); ?> &quot;<?php echo htmlspecialchars($item->title); ?>&quot;">
-	      	<img src="<?php echo $item->image; ?>" alt="<?php echo htmlspecialchars($item->title); ?>"/>
+	      	<img src="<?php echo $item->image->src; ?>" alt="<?php echo htmlspecialchars($item->image->alt); ?>"/>
 	      </a>
 	      <?php endif; ?>
 
@@ -77,24 +77,23 @@ defined('_JEXEC') or die ; ?>
       </div>
       <?php endif; ?>
 
-      <?php if($params->get('itemExtraFields') && count($item->extra_fields)): ?>
+      <?php if($params->get('itemExtraFields') && count($item->extraFields)): ?>
       <div class="moduleItemExtraFields">
 	      <b><?php echo JText::_('K2_ADDITIONAL_INFO'); ?></b>
-	      <ul>
-	        <?php foreach ($item->extra_fields as $extraField): ?>
-					<?php if($extraField->value != ''): ?>
-					<li class="type<?php echo ucfirst($extraField->type); ?> group<?php echo $extraField->group; ?>">
-						<?php if($extraField->type == 'header'): ?>
-						<h4 class="moduleItemExtraFieldsHeader"><?php echo $extraField->name; ?></h4>
-						<?php else: ?>
-						<span class="moduleItemExtraFieldsLabel"><?php echo $extraField->name; ?></span>
-						<span class="moduleItemExtraFieldsValue"><?php echo $extraField->value; ?></span>
-						<?php endif; ?>
-						<div class="clr"></div>
-					</li>
-					<?php endif; ?>
-	        <?php endforeach; ?>
-	      </ul>
+	      
+		  <?php foreach ($item->extraFields as $extraFieldGroup): ?>
+		  <h4><?php echo $extraFieldGroup->name; ?></h4>
+		  <ul>
+			<?php foreach ($extraFieldGroup->fields as $key=>$extraField): ?>
+			<li class="<?php echo ($key%2) ? "odd" : "even"; ?> type<?php echo ucfirst($extraField->type); ?> group<?php echo $extraField->group; ?>">
+				<span class="moduleItemExtraFieldsLabel"><?php echo $extraField->name; ?>:</span>
+				<span class="moduleItemExtraFieldsValue"><?php echo $extraField->output; ?></span>
+				<div class="clr"></div>
+			</li>
+			<?php endforeach; ?>
+		</ul>
+		<?php endforeach; ?>
+		<div class="clr"></div>
       </div>
       <?php endif; ?>
 
@@ -136,7 +135,7 @@ defined('_JEXEC') or die ; ?>
       <?php echo $item->events->K2AfterDisplayContent; ?>
 
       <?php if($params->get('itemDateCreated')): ?>
-      <span class="moduleItemDateCreated"><?php echo JText::_('K2_WRITTEN_ON') ; ?> <?php echo JHTML::_('date', $item->created, JText::_('K2_DATE_FORMAT_LC2')); ?></span>
+      <span class="moduleItemDateCreated"><?php echo JText::_('K2_WRITTEN_ON') ; ?> <?php echo JHtml::_('date', $item->created, JText::_('K2_DATE_FORMAT_LC2')); ?></span>
       <?php endif; ?>
 
       <?php if($params->get('itemCategory')): ?>
@@ -200,12 +199,12 @@ defined('_JEXEC') or die ; ?>
   <?php endif; ?>
 
 	<?php if($params->get('itemCustomLink')): ?>
-	<a class="moduleCustomLink" href="<?php echo $params->get('itemCustomLinkURL'); ?>" title="<?php echo K2HelperUtilities::cleanHtml($itemCustomLinkTitle); ?>"><?php echo $itemCustomLinkTitle; ?></a>
+	<a class="moduleCustomLink" href="<?php echo $params->get('itemCustomLinkURL'); ?>" title="<?php echo htmlspecialchars($params->get('itemCustomLinkTitle')); ?>"><?php echo $params->get('itemCustomLinkTitle'); ?></a>
 	<?php endif; ?>
 
 	<?php if($params->get('feed')): ?>
 	<div class="k2FeedIcon">
-		<a href="<?php echo JRoute::_('index.php?option=com_k2&view=itemlist&format=feed&moduleID='.$module->id); ?>" title="<?php echo JText::_('K2_SUBSCRIBE_TO_THIS_RSS_FEED'); ?>">
+		<a href="<?php echo JRoute::_('index.php?option=com_k2&view=itemlist&task=module&id='.$module->id.'&format=feed'); ?>" title="<?php echo JText::_('K2_SUBSCRIBE_TO_THIS_RSS_FEED'); ?>">
 			<span><?php echo JText::_('K2_SUBSCRIBE_TO_THIS_RSS_FEED'); ?></span>
 		</a>
 		<div class="clr"></div>

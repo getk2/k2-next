@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="search" method="upgrade">
+	<name>Search - K2</name>
+	<author>JoomlaWorks</author>
+	<creationDate>August 13th, 2013</creationDate>
+	<copyright>Copyright (c) 2006 - 2013 JoomlaWorks Ltd. All rights reserved.</copyright>
+	<authorEmail>please-use-the-contact-form@joomlaworks.net</authorEmail>
+	<authorUrl>www.joomlaworks.net</authorUrl>
+	<version>3.0.0</version>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<description>K2_THIS_PLUGIN_EXTENDS_THE_DEFAULT_JOOMLA_SEARCH_FUNCTIONALITY_TO_K2_CONTENT</description>
+	<files>
+		<filename plugin="k2">k2.php</filename>
+	</files>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="search_limit" type="text" size="5" default="50" label="K2_SEARCH_LIMIT" description="K2_THE_NUMBER_OF_ITEMS_TO_RETURN_WHEN_PERFORMING_A_SEARCH"/>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

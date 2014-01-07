@@ -10,6 +10,11 @@
 // no direct access
 defined('_JEXEC') or die ;
 
+require_once JPATH_SITE.'/components/com_k2/helpers/route.php';
+require_once JPATH_SITE.'/components/com_k2/helpers/utilities.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/model.php';
+K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
+
 class ModK2ToolsHelper
 {
 	public static function getArchive($params)
@@ -77,8 +82,8 @@ class ModK2ToolsHelper
 					$model->setState('author', $author->id);
 					$model->setState('limit', 1);
 					$model->setState('sorting', 'created');
-					$latest = $model->getRows();
-					$author->latest = $latest[0];
+					$latest = $model->getRow();
+					$author->latest = $latest;
 				}
 				if ($params->get('authorItemsCounter'))
 				{
@@ -208,11 +213,11 @@ class ModK2ToolsHelper
 		$id = $application->input->get('id', 0, 'int');
 		$endLevel = $params->get('end_level', NULL);
 
-		K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
 		$model = K2Model::getInstance('Categories');
 		$model->setState('site', true);
 		$model->setState('root', $params->get('root_id', 1));
 		$model->setState('sorting', 'ordering');
+		
 		$categories = $model->getRows();
 		$model = K2Model::getInstance('Items');
 		foreach ($categories as $category)

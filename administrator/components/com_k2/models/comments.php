@@ -11,6 +11,7 @@
 defined('_JEXEC') or die ;
 
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/model.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/categories.php';
 
 class K2ModelComments extends K2Model
 {
@@ -25,6 +26,19 @@ class K2ModelComments extends K2Model
 		// Select rows
 		$query->select($db->quoteName('comment').'.*')->from($db->quoteName('#__k2_comments', 'comment'));
 
+		// Join with items
+		$query->select($db->quoteName('item.title', 'itemTitle'));
+		$query->select($db->quoteName('item.alias', 'itemAlias'));
+		$query->select($db->quoteName('item.created_by', 'itemCreatedBy'));
+		$query->select($db->quoteName('item.created_by_alias', 'itemCreatedByAlias'));
+		$query->leftJoin($db->quoteName('#__k2_items', 'item').' ON '.$db->quoteName('comment.itemId').' = '.$db->quoteName('item.id'));
+
+		// Join with categories
+		$query->select($db->quoteName('category.id', 'categoryId'));
+		$query->select($db->quoteName('category.title', 'categoryTitle'));
+		$query->select($db->quoteName('category.alias', 'categoryAlias'));
+		$query->leftJoin($db->quoteName('#__k2_categories', 'category').' ON '.$db->quoteName('category.id').' = '.$db->quoteName('item.catid'));
+
 		// Set query conditions
 		$this->setQueryConditions($query);
 
@@ -36,7 +50,7 @@ class K2ModelComments extends K2Model
 
 		// Set the query
 		$db->setQuery($query, (int)$this->getState('limitstart'), (int)$this->getState('limit'));
-
+		
 		// Get rows
 		$data = $db->loadAssocList();
 
@@ -57,6 +71,12 @@ class K2ModelComments extends K2Model
 
 		// Select statement
 		$query->select('COUNT(*)')->from($db->quoteName('#__k2_comments', 'comment'));
+
+		// Join with items
+		$query->leftJoin($db->quoteName('#__k2_items', 'item').' ON '.$db->quoteName('comment.itemId').' = '.$db->quoteName('item.id'));
+
+		// Join with categories
+		$query->leftJoin($db->quoteName('#__k2_categories', 'category').' ON '.$db->quoteName('category.id').' = '.$db->quoteName('item.catid'));
 
 		// Set query conditions
 		$this->setQueryConditions($query);
@@ -89,15 +109,16 @@ class K2ModelComments extends K2Model
 		if ($this->getState('id'))
 		{
 			$id = $this->getState('id');
-			if (is_array($id))
+			if ($this->getState('id.operator'))
 			{
-				JArrayHelper::toInteger($id);
-				$query->where($db->quoteName('comment.id').' IN '.$id);
+				$operator = $this->getState('id.operator');
 			}
 			else
 			{
-				$query->where($db->quoteName('comment.id').' = '.(int)$id);
+				$operator = '=';
 			}
+			$query->where($db->quoteName('comment.id').' '.$operator.' '.(int)$id);
+
 		}
 		if ($this->getState('search'))
 		{
@@ -108,6 +129,30 @@ class K2ModelComments extends K2Model
 				$search = $db->escape($search, true);
 				$query->where($db->quoteName('comment.text').' LIKE '.$db->Quote('%'.$search.'%', false));
 			}
+		}
+
+		if ($this->getState('userId'))
+		{
+			$query->where($db->quoteName('comment.userId').' = '.(int)$this->getState('userId'));
+		}
+
+		if ($this->getState('filter.items'))
+		{
+			// Items should be published
+			$query->where($db->quoteName('item.state').' = 1');
+
+			// Check categories access level
+			$filter = K2ModelCategories::getCategoryFilter($this->getState('category'));
+			$query->where($db->quoteName('item.catid').' IN ('.implode(',', $filter).')');
+
+			// Check item access level
+			$viewlevels = array_unique(JFactory::getUser()->getAuthorisedViewLevels());
+			$query->where($db->quoteName('item.access').' IN ('.implode(',', $viewlevels).')');
+
+			// Check publish up/down
+			$date = JFactory::getDate()->toSql();
+			$query->where('('.$db->quoteName('item.publish_up').' = '.$db->Quote($db->getNullDate()).' OR '.$db->quoteName('item.publish_up').' <= '.$db->Quote($date).')');
+			$query->where('('.$db->quoteName('item.publish_down').' = '.$db->Quote($db->getNullDate()).' OR '.$db->quoteName('item.publish_down').' >= '.$db->Quote($date).')');
 		}
 	}
 
@@ -121,6 +166,10 @@ class K2ModelComments extends K2Model
 			case 'id' :
 				$ordering = 'comment.id';
 				$direction = 'DESC';
+				break;
+			case 'id.asc' :
+				$ordering = 'comment.id';
+				$direction = 'ASC';
 				break;
 			case 'name' :
 				$ordering = 'comment.name';
@@ -171,6 +220,9 @@ class K2ModelComments extends K2Model
 		// Get application
 		$application = JFactory::getApplication();
 
+		// Params
+		$params = JComponentHelper::getParams('com_k2');
+
 		// Get user
 		$user = JFactory::getUser();
 
@@ -203,11 +255,18 @@ class K2ModelComments extends K2Model
 				return false;
 			}
 
+			// Text is required for both guests and authenticated users
+			if (trim($data['text']) == '')
+			{
+				$this->setError(JText::_('K2_YOU_NEED_TO_FILL_IN_ALL_REQUIRED_FIELDS'));
+				return false;
+			}
+
 			// Validate user data for guests
 			if ($user->guest)
 			{
 				// Check that the required fields have been set
-				if (trim($data['name']) == '' || trim($data['text']) == '' || trim($data['email']) == '')
+				if (trim($data['name']) == '' || trim($data['email']) == '')
 				{
 					$this->setError(JText::_('K2_YOU_NEED_TO_FILL_IN_ALL_REQUIRED_FIELDS'));
 					return false;
@@ -247,6 +306,7 @@ class K2ModelComments extends K2Model
 			$data['ip'] = $_SERVER['REMOTE_ADDR'];
 			$data['hostname'] = gethostbyaddr($_SERVER['REMOTE_ADDR']);
 			$data['date'] = JFactory::getDate()->toSql();
+			$data['state'] = $params->get('commentsPublishing') ? 1 : 0;
 
 			// Set a variable to indicate that this was a new comment
 			$this->setState('isNew', true);
@@ -257,8 +317,7 @@ class K2ModelComments extends K2Model
 		{
 			// Check permissions
 			$canEditAnyComment = $user->authorise('k2.comment.edit', 'com_k2');
-			$canEditOwnComment = $user->authorise('k2.comment.edit.own', 'com_k2') && $table->userId > 0 && $table->userId == $user->id;
-			if (!$canEditAnyComment && !$canEditOwnComment)
+			if (!$canEditAnyComment)
 			{
 				$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
 				return false;
@@ -301,6 +360,13 @@ class K2ModelComments extends K2Model
 			{
 				$statistics->increaseUserCommentsCounter($table->userId);
 			}
+
+			// Throw error if auto-publishing is disabled
+			if (!$table->state)
+			{
+				$this->setError(JText::_('K2_COMMENT_ADDED_AND_WAITING_FOR_APPROVAL'));
+				return false;
+			}
 		}
 
 		return true;
@@ -321,8 +387,7 @@ class K2ModelComments extends K2Model
 
 		// Permissions check
 		$canEditAnyComment = $user->authorise('k2.comment.edit', 'com_k2');
-		$canEditOwnComment = $user->authorise('k2.comment.edit.own', 'com_k2') && $table->userId > 0 && $table->userId == $user->id;
-		if (!$canEditAnyComment && !$canEditOwnComment)
+		if (!$canEditAnyComment)
 		{
 			$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
 			return false;

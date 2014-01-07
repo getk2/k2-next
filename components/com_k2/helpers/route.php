@@ -15,14 +15,115 @@ defined('_JEXEC') or die ;
  */
 class K2HelperRoute
 {
-	public static function getItemRoute($id, $category = 0)
+
+	private static $cache = array(
+		'item' => array(),
+		'category' => array(),
+		'user' => array(),
+		'tag' => array()
+	);
+
+	public static function getItemRoute($id, $category)
 	{
-		return 'index.php?option=com_k2&view=item&id='.$id;
+		// Get application
+		$application = JFactory::getApplication();
+
+		// Get component menu links
+		$component = JComponentHelper::getComponent('com_k2');
+		$menu = $application->getMenu('site');
+		$items = $menu->getItems('component_id', $component->id);
+
+		// Initialze route
+		$route = 'index.php?option=com_k2&view=item&id='.$id;
+
+		// Cast variables
+		$id = (int)$id;
+		$category = (int)$category;
+
+		// Search only if we have not the item in our cache
+		if (!isset(self::$cache['item'][$id]))
+		{
+			// Initialize match
+			$match = null;
+
+			// Search the menu
+			foreach ($items as $item)
+			{
+				if ($item->query['view'] == 'item' && $item->query['id'] == $id)
+				{
+					$match = $item;
+					break;
+				}
+			}
+
+			// If we do not have menu link to the item search for a menu link to it's category
+			if (!$match)
+			{
+				foreach ($items as $item)
+				{
+					if ($item->query['view'] == 'itemlist' && $item->query['task'] == 'category' && $item->query['id'] == $category)
+					{
+						$match = $item;
+						break;
+					}
+				}
+			}
+
+			// Add what we found to cache
+			self::$cache['item'][$id] = $match;
+		}
+
+		// If a menu is found append it's id to the route
+		if (self::$cache['item'][$id])
+		{
+			$route .= '&Itemid='.self::$cache['item'][$id]->id;
+		}
+		return $route;
 	}
 
 	public static function getCategoryRoute($id)
 	{
-		return 'index.php?option=com_k2&view=itemlist&task=category&id='.$id;
+		// Get application
+		$application = JFactory::getApplication();
+
+		// Get component menu links
+		$component = JComponentHelper::getComponent('com_k2');
+		$menu = $application->getMenu('site');
+		$items = $menu->getItems('component_id', $component->id);
+
+		// Initialze route
+		$route = 'index.php?option=com_k2&view=itemlist&task=category&id='.$id;
+
+		// Cast variables
+		$id = (int)$id;
+
+		// Search only if we have not the item in our cache
+		if (!isset(self::$cache['category'][$id]))
+		{
+			// Initialize match
+			$match = null;
+
+			// If we do not have menu link to the item search for a menu link to it's category
+			foreach ($items as $item)
+			{
+				if ($item->query['view'] == 'itemlist' && $item->query['task'] == 'category' && $item->query['id'] == $id)
+				{
+					$match = $item;
+					break;
+				}
+			}
+
+			// Add what we found to cache
+			self::$cache['category'][$id] = $match;
+		}
+
+		// If a menu is found append it's id to the route
+		if (self::$cache['category'][$id])
+		{
+			$route .= '&Itemid='.self::$cache['category'][$id]->id;
+		}
+		return $route;
+
 	}
 
 	public static function getUserRoute($id)

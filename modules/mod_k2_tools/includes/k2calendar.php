@@ -42,15 +42,7 @@ class K2Calendar extends Calendar
 	function getCalendarLink($month, $year)
 	{
 		$application = JFactory::getApplication();
-		$itemId = $application->input->get('itemId', 0, 'int');
-		if ($this->category)
-		{
-			return JURI::root(true)."/index.php?option=com_k2&amp;view=itemlist&amp;task=calendar&amp;month={$month}&amp;year={$year}&amp;catid={$this->category}&amp;Itemid={$itemId}";
-		}
-		else
-		{
-			return JURI::root(true)."/index.php?option=com_k2&amp;view=itemlist&amp;task=calendar&amp;month=$month&amp;year=$year&amp;Itemid={$itemId}";
-		}
+		return JRoute::_('index.php?option=com_k2&view=calendar&month='.$month.'&year='.$year.'&category='.$this->category.'&format=raw');
 	}
 
 }

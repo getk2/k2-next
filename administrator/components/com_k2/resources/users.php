@@ -12,6 +12,7 @@ defined('_JEXEC') or die ;
 
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/resource.php';
 require_once JPATH_SITE.'/components/com_k2/helpers/route.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/images.php';
 
 /**
  * K2 user resource class.
@@ -76,6 +77,9 @@ class K2Users extends K2Resource
 
 		// Link
 		$this->link = $this->getLink();
+		
+		// URL
+		$this->url = $this->getUrl();
 
 		if ($this->id)
 		{
@@ -104,20 +108,46 @@ class K2Users extends K2Resource
 		}
 		return JRoute::_(K2HelperRoute::getUserRoute($this->id.':'.$this->alias));
 	}
+	
+	public function getFeedLink()
+	{
+		if (JFactory::getConfig()->get('unicodeslugs') == 1)
+		{
+			$this->alias = JFilterOutput::stringURLUnicodeSlug($this->name);
+		}
+		else
+		{
+			$this->alias = JFilterOutput::stringURLSafe($this->name);
+		}
+		return JRoute::_(K2HelperRoute::getUserRoute($this->id.':'.$this->alias).'&format=feed');
+	}
+
+	public function getUrl()
+	{
+		if (JFactory::getConfig()->get('unicodeslugs') == 1)
+		{
+			$this->alias = JFilterOutput::stringURLUnicodeSlug($this->name);
+		}
+		else
+		{
+			$this->alias = JFilterOutput::stringURLSafe($this->name);
+		}
+		return JRoute::_(K2HelperRoute::getUserRoute($this->id.':'.$this->alias), true, -1);
+	}
 
 	public function getImage()
 	{
-		$image = null;
-		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/images.php';
-		$result = K2HelperImages::getResourceImages('user', $this);
-		$this->_image = new stdClass;
-		if ($result->image)
-		{
-			$image = $result->image;
-			$this->_image->preview = $result->image;
-			$this->_image->id = $result->id;
-		}
-		return $image;
+		return K2HelperImages::getResourceImages('user', $this);
+	}
+
+	public function getNumOfComments()
+	{
+		K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
+		$model = K2Model::getInstance('Comments');
+		$model->setState('userId', $this->id);
+		$model->setState('state', 1);
+		$numOfComments = $model->countRows();
+		return $numOfComments;
 	}
 
 	public function getEvents()

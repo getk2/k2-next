@@ -36,7 +36,7 @@ class K2View extends JViewLegacy
 		parent::__construct($config);
 
 		// Load the helpers
-		$this->loadHelper('html');
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/html.php';
 	}
 
 	/**
@@ -147,7 +147,7 @@ class K2View extends JViewLegacy
 		// Get the row
 		$model->setState('id', $id);
 		$row = $model->getRow();
-
+		
 		// Attach a temporary id for new rows to work with file uploads
 		if (!$id)
 		{
@@ -480,7 +480,7 @@ class K2View extends JViewLegacy
 				), 'primary');
 			}
 
-			if ($user->authorise('k2.comment.edit', 'com_k2') || $user->authorise('k2.comment.edit.own', 'com_k2'))
+			if ($user->authorise('k2.comment.edit', 'com_k2'))
 			{
 				K2Response::addMenuLink('comments', 'K2_COMMENTS', array(
 					'href' => '#comments',

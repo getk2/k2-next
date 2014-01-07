@@ -26,9 +26,31 @@ class K2HelperImages
 		'user'
 	);
 
+	private static $placeholders = array();
+
 	private static function getTypes()
 	{
 		return self::$types;
+	}
+
+	public static function getPlaceholder($type)
+	{
+		if (!isset(self::$placeholders[$type]))
+		{
+			jimport('joomla.filesystem.file');
+			$application = JFactory::getApplication();
+			$template = $application->getTemplate();
+
+			if (JFile::exists(JPATH_SITE.'/templates/'.$template.'/images/placeholder/'.$type.'.png'))
+			{
+				self::$placeholders[$type] = 'templates/'.$mainframe->getTemplate().'/images/placeholder/'.$type.'.png';
+			}
+			else
+			{
+				self::$placeholders[$type] = 'components/com_k2/images/placeholder/'.$type.'.png';
+			}
+		}
+		return self::$placeholders[$type];
 	}
 
 	public static function addResourceImage($type, $id, $file, $path)
@@ -177,7 +199,7 @@ class K2HelperImages
 		// Return
 		return JURI::root(true).'/'.$savepath.'/'.$baseFileName.'.jpg?t='.time();
 	}
-	
+
 	private static function _generateUserImage($baseFileName, $imageResource)
 	{
 		// Filesystem
@@ -242,7 +264,7 @@ class K2HelperImages
 			$filesystem->delete($key);
 		}
 	}
-	
+
 	private static function _deleteUserImage($id)
 	{
 		// Save path
@@ -250,7 +272,7 @@ class K2HelperImages
 
 		// File to delete
 		$key = $savepath.'/'.$id.'.jpg';
-		
+
 		// Delete the file
 		$filesystem = K2FileSystem::getInstance();
 		if ($filesystem->has($key))
@@ -266,7 +288,6 @@ class K2HelperImages
 
 		// Images
 		$images = array();
-		$id = null;
 
 		// Value
 		$value = json_decode($item->image);
@@ -285,67 +306,97 @@ class K2HelperImages
 			$timestamp = JFactory::getDate($item->modified)->toUnix();
 			foreach ($sizes as $size => $width)
 			{
-				$images[$size] = JURI::root(true).'/'.$savepath.'/cache/'.$id.'_'.$size.'.jpg?t='.$timestamp;
+				$image = new stdClass;
+				$image->id = $id;
+				$image->src = JURI::root(true).'/'.$savepath.'/cache/'.$id.'_'.$size.'.jpg?t='.$timestamp;
+				$image->url = JURI::root(false).$savepath.'/cache/'.$id.'_'.$size.'.jpg?t='.$timestamp;
+				$image->alt = $value->caption ? $value->caption : $item->title;
+				$image->caption = $value->caption;
+				$image->credits = $value->credits;
+				$images[$size] = $image;
 			}
 		}
-
 		// Return
-		$result = new stdClass;
-		$result->images = $images;
-		$result->id = $id;
-
-		return $result;
+		return $images;
 	}
 
 	private static function _getCategoryImage($category)
 	{
+		// Params
+		$params = JComponentHelper::getParams('com_k2');
+
+		// Initialize value
+		$image = null;
+
 		// Save path
 		$savepath = 'media/k2/categories';
-
-		// Images
-		$image = null;
-		$id = null;
 
 		// Value
 		$value = json_decode($category->image);
 
 		if (isset($value->flag) && $value->flag)
 		{
-			$id = md5('Image'.$category->id);
+			$image = new stdClass;
+			$image->id = md5('Image'.$category->id);
 			$timestamp = JFactory::getDate($category->modified)->toUnix();
-			$image = JURI::root(true).'/'.$savepath.'/'.$id.'.jpg?t='.$timestamp;
+			$image->src = JURI::root(true).'/'.$savepath.'/'.$image->id.'.jpg?t='.$timestamp;
+			$image->url = JURI::root(false).$savepath.'/'.$image->id.'.jpg?t='.$timestamp;
+			$image->alt = $value->caption ? $value->caption : $category->title;
+			$image->caption = $value->caption;
+			$image->credits = $value->credits;
 		}
-
-		// Return
-		$result = new stdClass;
-		$result->image = $image;
-		$result->id = $id;
-
-		return $result;
+		else if ($params->get('catImageDefault'))
+		{
+			$placeholder = self::getPlaceholder('category');
+			$image = new stdClass;
+			$image->src = JURI::root(true).'/'.$placeholder;
+			$image->url = JURI::root(false).$placeholder;
+			$image->alt = $category->title;
+			$image->caption = '';
+			$image->credits = '';
+		}
+		return $image;
 	}
-	
+
 	private static function _getUserImage($user)
 	{
+		// Params
+		$params = JComponentHelper::getParams('com_k2');
+
+		// Initialize value
+		$image = null;
+
 		// Save path
 		$savepath = 'media/k2/users';
 
-		// Images
-		$image = null;
-		$id = null;
-
-		// Value
 		if ($user->image)
 		{
-			$id = md5('Image'.$user->id);
-			$image = JURI::root(true).'/'.$savepath.'/'.$id.'.jpg';
+			$image = new stdClass;
+			$image->id = md5('Image'.$user->id);
+			$image->src = JURI::root(true).'/'.$savepath.'/'.$image->id.'.jpg';
+			$image->url = JURI::root(false).$savepath.'/'.$image->id.'.jpg';
 		}
-
-		// Return
-		$result = new stdClass;
-		$result->image = $image;
-		$result->id = $id;
-
-		return $result;
+		else if ($params->get('userImageDefault'))
+		{
+			$placeholder = self::getPlaceholder('user');
+			$image = new stdClass;
+			$image->src = JURI::root(true).'/'.$placeholder;
+			$image->url = JURI::root(false).$placeholder;
+		}
+		if ($params->get('gravatar'))
+		{
+			if (is_null($image))
+			{
+				$image = new stdClass;
+			}
+			$image->src = '//www.gravatar.com/avatar/'.md5($user->email);
+			if (isset($image->url))
+			{
+				$image->src .= '?d='.urlencode($image->url);
+			}
+			$image->url = $image->src;
+		}
+		return $image;
 	}
 
 }

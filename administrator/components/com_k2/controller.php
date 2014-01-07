@@ -229,10 +229,10 @@ class K2Controller extends JControllerLegacy
 
 		// Pass data to the model
 		$this->model->setState('data', $data);
-
+		
 		// Save
 		$result = $this->model->save();
-
+		
 		// Handle save result
 		if ($result)
 		{

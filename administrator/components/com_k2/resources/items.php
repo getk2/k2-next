@@ -17,6 +17,7 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/users.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/tags.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/attachments.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/extrafields.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/images.php';
 require_once JPATH_SITE.'/components/com_k2/helpers/route.php';
 
 /**
@@ -67,10 +68,18 @@ class K2Items extends K2Resource
 		if (empty(self::$instances[$id]))
 		{
 			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
-			$model = K2Model::getInstance('Items');
-			$model->setState('id', $id);
+			$model = K2Model::getInstance('Items', 'K2Model');
+			if (is_numeric($id))
+			{
+				$model->setState('id', $id);
+			}
+			else
+			{
+				$model->setState('alias', $id);
+			}
 			$item = $model->getRow();
-			self::$instances[$id] = $item;
+			self::$instances[$item->id] = $item;
+			self::$instances[$item->alias] = $item;
 		}
 		return self::$instances[$id];
 	}
@@ -123,7 +132,7 @@ class K2Items extends K2Resource
 		}
 
 		// Category params
-		$this->categoryParams = new JRegistry($this->categoryParams);
+		$this->categoryParams = $this->getCategoryParams();
 
 		// Media
 		$this->media = $this->getMedia();
@@ -157,6 +166,7 @@ class K2Items extends K2Resource
 
 		// Images
 		$this->images = $this->getImages();
+		$this->image = $this->getImage();
 
 		// Attachments
 		$this->attachments = $this->getAttachments();
@@ -175,6 +185,11 @@ class K2Items extends K2Resource
 		return $category;
 	}
 
+	public function getCategoryParams()
+	{
+		$categoryParams = isset($this->categoryParams) ? new JRegistry($this->categoryParams) : new JRegistry();
+	}
+
 	public function getExtraFields()
 	{
 		$extraFields = array();
@@ -187,14 +202,22 @@ class K2Items extends K2Resource
 
 	public function getTags()
 	{
-		$tags = array();
-		$tagIds = json_decode($this->tags);
-		if ($this->id && is_array($tagIds))
+		$tags = json_decode($this->tags);
+		if ($this->id && is_array($tags) && count($tags))
 		{
-			foreach ($tagIds as $tagId)
+			$tagIds = array();
+			foreach ($tags as $tag)
 			{
-				$tags[] = K2Tags::getInstance($tagId);
+				$tagIds[] = (int)$tag->id;
 			}
+			$application = JFactory::getApplication();
+			$model = K2Model::getInstance('Tags');
+			if ($application->isSite())
+			{
+				$model->setState('state', 1);
+			}
+			$model->setState('id', $tagIds);
+			$tags = $model->getRows();
 		}
 		return $tags;
 	}
@@ -212,21 +235,21 @@ class K2Items extends K2Resource
 	public function getImages()
 	{
 		$images = array();
-		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/images.php';
-		$result = K2HelperImages::getResourceImages('item', $this);
-		$this->_image = json_decode($this->image);
-		if (count($result->images))
+		if ($this->id)
 		{
-			$images = $result->images;
-			$this->image = $images['S'];
-			$this->image_caption = $this->_image->caption;
-			$this->image_credits = $this->_image->credits;
-			$this->image_alt = $this->_image->caption ? $this->_image->caption : $this->title;
-			$this->imageWidth = 180;
-			$this->_image->preview = $this->image;
-			$this->_image->id = $result->id;
+			$images = K2HelperImages::getResourceImages('item', $this);
 		}
 		return $images;
+	}
+
+	public function getImage()
+	{
+		if (!isset($this->images))
+		{
+			$this->images = $this->getImages();
+		}
+		$image = (isset($this->images['M'])) ? $this->images['M'] : null;
+		return $image;
 	}
 
 	public function getGalleries()
@@ -342,33 +365,28 @@ class K2Items extends K2Resource
 		$this->attachments = json_decode($this->attachments);
 		if (is_array($this->attachments))
 		{
-			foreach ($this->attachments as $attachmentId)
-			{
-				$attachments[] = K2Attachments::getInstance($attachmentId);
-			}
+
+			$application = JFactory::getApplication();
+			$model = K2Model::getInstance('Attachments');
+			$model->setState('id', $this->attachments);
+			$attachments = $model->getRows();
 		}
 		return $attachments;
 	}
 
 	public function getLink()
 	{
-		return JRoute::_(K2HelperRoute::getItemRoute($this->id.':'.$this->alias));
+		return JRoute::_(K2HelperRoute::getItemRoute($this->id.':'.$this->alias, $this->catid));
 	}
 
 	public function getUrl()
 	{
-		$uri = JUri::getInstance();
-		$base = $uri->toString(array(
-			'scheme',
-			'host',
-			'port'
-		));
-		return $base.JRoute::_('index.php?option=com_k2&view=item&id='.$this->id, false);
+		return JRoute::_(K2HelperRoute::getItemRoute($this->id.':'.$this->alias, $this->catid), true, -1);
 	}
 
 	public function getPrintLink()
 	{
-		return JRoute::_('index.php?option=com_k2&view=item&id='.$this->id.'&print=1');
+		JRoute::_(K2HelperRoute::getItemRoute($this->id.':'.$this->alias, $this->catid).'&print=1');
 	}
 
 	public function getEmailLink()
@@ -379,15 +397,25 @@ class K2Items extends K2Resource
 		return JRoute::_('index.php?option=com_mailto&tmpl=component&template='.$template.'&link='.MailToHelper::addLink($this->url));
 	}
 
-	public function getComments()
+	public function getComments($offset = 0)
 	{
+		$user = JFactory::getUser();
+		$params = JComponentHelper::getParams('com_k2');
 		$comments = array();
 		if ($this->id)
 		{
-			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
-			$model = K2Model::getInstance('Comments', 'K2Model');
+			// Get comments model
+			$model = K2Model::getInstance('Comments');
 			$model->setState('itemId', $this->id);
+			$model->setState('limit', (int)$params->get('commentsLimit', 10));
+			$model->setState('limitstart', $offset);
+			$model->setState('sorting', 'id');
 			$model->setState('state', 1);
+			if ($params->get('commentsOrdering') == 'ASC')
+			{
+				$model->setState('sorting', 'id.asc');
+			}
+			// Load comments
 			$comments = $model->getRows();
 		}
 		return $comments;
@@ -398,102 +426,151 @@ class K2Items extends K2Resource
 		$result = 0;
 		if ($this->id)
 		{
-			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
-			$model = K2Model::getInstance('Comments', 'K2Model');
+			$model = K2Model::getInstance('Comments');
 			$model->setState('itemId', $this->id);
 			$model->setState('state', 1);
+			$model->setState('sorting', 'id');
 			$result = $model->countRows();
 		}
 		return $result;
 	}
 
-	public function triggerPlugins($context, &$params, $offset)
+	public function getPrevious()
+	{
+		if ($this->ordering == 1)
+		{
+			return false;
+		}
+		$model = K2Model::getInstance('Items');
+		$model->setState('site', 1);
+		$model->setState('category', $this->catid);
+		$model->setState('sorting', 'custom');
+		$model->setState('sorting.custom.value', 'item.ordering');
+		$model->setState('sorting.custom.direction', 'ASC');
+		$model->setState('ordering.value', $this->ordering);
+		$model->setState('ordering.operator', '<');
+		$model->setState('limit', 1);
+		$previous = $model->getRow();
+		return $previous->id ? $previous : false;
+	}
+
+	public function getNext()
+	{
+		$model = K2Model::getInstance('Items');
+		$model->setState('site', 1);
+		$model->setState('category', $this->catid);
+		$model->setState('sorting', 'custom');
+		$model->setState('sorting.custom.value', 'item.ordering');
+		$model->setState('sorting.custom.direction', 'ASC');
+		$model->setState('ordering.value', $this->ordering);
+		$model->setState('ordering.operator', '>');
+		$model->setState('limit', 1);
+		$next = $model->getRow();
+		return $next->id ? $next : false;
+	}
+
+	public function triggerPlugins($context, &$params, $offset, $k2Plugins = true, $jPlugins = true)
 	{
 		// Get dispatcher
 		$dispatcher = JDispatcher::getInstance();
 
-		// Import content plugins
-		JPluginHelper::importPlugin('content');
-
-		// Import K2 plugins
-		JPluginHelper::importPlugin('k2');
-
 		// Create the text variable
 		$this->text = $this->introtext.'{K2Splitter}'.$this->fulltext;
 
-		// Create the event object
+		// Create the event object with null values
 		$this->events = new stdClass;
+		$this->events->AfterDisplayTitle = '';
+		$this->events->BeforeDisplayContent = '';
+		$this->events->AfterDisplayContent = '';
+		$this->events->K2BeforeDisplay = '';
+		$this->events->K2AfterDisplay = '';
+		$this->events->K2AfterDisplayTitle = '';
+		$this->events->K2BeforeDisplayContent = '';
+		$this->events->K2AfterDisplayContent = '';
 
 		// Content plugins
-		$dispatcher->trigger('onContentPrepare', array(
-			$context,
-			&$this,
-			&$params,
-			$offset
-		));
-		$results = $dispatcher->trigger('onContentAfterTitle', array(
-			$context,
-			&$this,
-			&$params,
-			$offset
-		));
-		$this->events->AfterDisplayTitle = trim(implode("\n", $results));
-		$results = $dispatcher->trigger('onContentBeforeDisplay', array(
-			$context,
-			&$this,
-			&$params,
-			$offset
-		));
-		$this->events->BeforeDisplayContent = trim(implode("\n", $results));
-		$results = $dispatcher->trigger('onContentAfterDisplay', array(
-			$context,
-			&$this,
-			&$params,
-			$offset
-		));
-		$this->events->AfterDisplayContent = trim(implode("\n", $results));
+		if ($jPlugins)
+		{
+			// Import content plugins
+			JPluginHelper::importPlugin('content');
+
+			$dispatcher->trigger('onContentPrepare', array(
+				$context,
+				&$this,
+				&$params,
+				$offset
+			));
+			$results = $dispatcher->trigger('onContentAfterTitle', array(
+				$context,
+				&$this,
+				&$params,
+				$offset
+			));
+			$this->events->AfterDisplayTitle = trim(implode("\n", $results));
+			$results = $dispatcher->trigger('onContentBeforeDisplay', array(
+				$context,
+				&$this,
+				&$params,
+				$offset
+			));
+			$this->events->BeforeDisplayContent = trim(implode("\n", $results));
+			$results = $dispatcher->trigger('onContentAfterDisplay', array(
+				$context,
+				&$this,
+				&$params,
+				$offset
+			));
+			$this->events->AfterDisplayContent = trim(implode("\n", $results));
+
+		}
 
 		// K2 plugins
-		$results = $dispatcher->trigger('onK2BeforeDisplay', array(
-			&$this,
-			&$params,
-			$offset
-		));
-		$this->events->K2BeforeDisplay = trim(implode("\n", $results));
+		if ($k2Plugins)
+		{
+			// Import K2 plugins
+			JPluginHelper::importPlugin('k2');
 
-		$results = $dispatcher->trigger('onK2AfterDisplay', array(
-			&$this,
-			&$params,
-			$offset
-		));
-		$this->events->K2AfterDisplay = trim(implode("\n", $results));
+			$results = $dispatcher->trigger('onK2BeforeDisplay', array(
+				&$this,
+				&$params,
+				$offset
+			));
+			$this->events->K2BeforeDisplay = trim(implode("\n", $results));
 
-		$results = $dispatcher->trigger('onK2AfterDisplayTitle', array(
-			&$this,
-			&$params,
-			$offset
-		));
-		$this->events->K2AfterDisplayTitle = trim(implode("\n", $results));
+			$results = $dispatcher->trigger('onK2AfterDisplay', array(
+				&$this,
+				&$params,
+				$offset
+			));
+			$this->events->K2AfterDisplay = trim(implode("\n", $results));
 
-		$results = $dispatcher->trigger('onK2BeforeDisplayContent', array(
-			&$this,
-			&$params,
-			$offset
-		));
-		$this->events->K2BeforeDisplayContent = trim(implode("\n", $results));
+			$results = $dispatcher->trigger('onK2AfterDisplayTitle', array(
+				&$this,
+				&$params,
+				$offset
+			));
+			$this->events->K2AfterDisplayTitle = trim(implode("\n", $results));
 
-		$results = $dispatcher->trigger('onK2AfterDisplayContent', array(
-			&$this,
-			&$params,
-			$offset
-		));
-		$this->events->K2AfterDisplayContent = trim(implode("\n", $results));
+			$results = $dispatcher->trigger('onK2BeforeDisplayContent', array(
+				&$this,
+				&$params,
+				$offset
+			));
+			$this->events->K2BeforeDisplayContent = trim(implode("\n", $results));
 
-		$dispatcher->trigger('onK2PrepareContent', array(
-			&$this,
-			&$params,
-			$offset
-		));
+			$results = $dispatcher->trigger('onK2AfterDisplayContent', array(
+				&$this,
+				&$params,
+				$offset
+			));
+			$this->events->K2AfterDisplayContent = trim(implode("\n", $results));
+
+			$dispatcher->trigger('onK2PrepareContent', array(
+				&$this,
+				&$params,
+				$offset
+			));
+		}
 
 		// Restore introtext and fulltext
 		list($this->introtext, $this->fulltext) = explode('{K2Splitter}', $this->text);

@@ -11,16 +11,18 @@
 defined('_JEXEC') or die ;
 
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/model.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/tables/table.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/categories.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/images.php';
 
 class K2ModelCategories extends K2Model
 {
-	
+
 	private static $authorised = null;
-	
+
 	public function getRows()
 	{
+
 		// Get database
 		$db = $this->getDBO();
 
@@ -244,6 +246,53 @@ class K2ModelCategories extends K2Model
 		}
 
 		return self::$authorised;
+	}
+
+	/**
+	 * getCategoryFilter method.
+	 *
+	 * @return array
+	 */
+	public static function getCategoryFilter($categories = null, $recursive = false, $access = false)
+	{
+		$filter = K2ModelCategories::getAuthorised();
+		if ($categories)
+		{
+			if (!is_array($categories))
+			{
+				$categories = (array)$categories;
+			}
+			$categories = array_filter($categories);
+			if (count($categories))
+			{
+				if ($recursive)
+				{
+					$children = array();
+					$model = K2Model::getInstance('Categories');
+					foreach ($categories as $categoryId)
+					{
+						$model->setState('site', $access);
+						$model->setState('root', $categoryId);
+						$rows = $model->getRows();
+						foreach ($rows as $row)
+						{
+							$children[] = $row->id;
+						}
+					}
+					$categories = array_merge($categories, $children);
+					$categories = array_unique($categories);
+				}
+				if ($access)
+				{
+					$filter = array_intersect($categories, K2ModelCategories::getAuthorised());
+				}
+				else
+				{
+					$filter = $categories;
+				}
+			}
+		}
+		return array_unique($filter);
 	}
 
 	/**
@@ -525,7 +574,7 @@ class K2ModelCategories extends K2Model
 		$data['params'] = $data['params']->toString();
 
 		// Handle image
-		$imageId = isset($data['_image']->id) ? $data['_image']->id : false;
+		$imageId = isset($data['image']->id) ? $data['image']->id : false;
 		if ($imageId)
 		{
 			$path = 'media/k2/categories/'.$imageId.'.jpg';
@@ -533,8 +582,8 @@ class K2ModelCategories extends K2Model
 			$data['image'] = array(
 				'id' => $image->id,
 				'path' => '',
-				'caption' => $data['_image']->caption,
-				'credits' => $data['_image']->credits
+				'caption' => $data['image']->caption,
+				'credits' => $data['image']->credits
 			);
 		}
 		else

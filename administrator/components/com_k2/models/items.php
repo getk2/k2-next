@@ -143,35 +143,15 @@ class K2ModelItems extends K2Model
 		}
 		if ($this->getState('category'))
 		{
-			if ($this->getState('recursive'))
-			{
-				K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
-				$model = K2Model::getInstance('Categories');
-				$root = $model->getTable();
-				$tree = $root->getTree((int)$this->getState('category'));
-				$categories = array();
-				foreach ($tree as $category)
-				{
-					$categories[] = $category->id;
-				}
-			}
-			else
-			{
-				$categories = array((int)$this->getState('category'));
-			}
-			if ($this->getState('site'))
-			{
-				$categories = array_intersect($categories, K2ModelCategories::getAuthorised());
-			}
-			$query->where($db->quoteName('item.catid').' IN ('.implode(',', $categories).')');
+			$categories = (array)$this->getState('category');
+			$filter = K2ModelCategories::getCategoryFilter($categories, $this->getState('recursive'), $this->getState('site'));
+			$query->where($db->quoteName('item.catid').' IN ('.implode(',', $filter).')');
 		}
-		else
+		else if ($this->getState('site'))
 		{
-			if ($this->getState('site'))
-			{
-				$query->where($db->quoteName('item.catid').' IN ('.implode(',', K2ModelCategories::getAuthorised()).')');
-			}
+			$query->where($db->quoteName('item.catid').' IN ('.implode(',', K2ModelCategories::getAuthorised()).')');
 		}
+
 		if ($this->getState('access'))
 		{
 			$access = $this->getState('access');
@@ -206,6 +186,10 @@ class K2ModelItems extends K2Model
 		if ($this->getState('author'))
 		{
 			$query->where($db->quoteName('item.created_by').' = '.(int)$this->getState('author'));
+			if ($this->getState('site'))
+			{
+				$query->where($db->quoteName('item.created_by_alias').' = '.$db->quote(''));
+			}
 		}
 		if ($this->getState('publish_up'))
 		{
@@ -217,15 +201,52 @@ class K2ModelItems extends K2Model
 		}
 		if ($this->getState('search'))
 		{
-			$search = JString::trim($this->getState('search'));
-			$search = JString::strtolower($search);
+			$search = trim($this->getState('search'));
 			if ($search)
 			{
-				$search = $db->escape($search, true);
-				$query->where('( LOWER('.$db->quoteName('item.title').') LIKE '.$db->Quote('%'.$search.'%', false).' 
-				OR '.$db->quoteName('item.id').' = '.(int)$search.'
-				OR LOWER('.$db->quoteName('item.introtext').') LIKE '.$db->Quote('%'.$search.'%', false).'
-				OR LOWER('.$db->quoteName('item.fulltext').') LIKE '.$db->Quote('%'.$search.'%', false).')');
+				// Site search
+				if ($this->getState('site'))
+				{
+					$mode = $this->getState('search.mode');
+					switch ($mode)
+					{
+						case 'exact' :
+							$text = $db->quote('%'.$db->escape($search, true).'%', false);
+							$where = $db->quoteName('item.title').' LIKE '.$text.' OR '.$db->quoteName('item.introtext').' LIKE '.$text.' OR '.$db->quoteName('item.fulltext').' LIKE '.$text.' OR '.$db->quoteName('item.extra_fields').' LIKE '.$text.' OR '.$db->quoteName('item.tags').' LIKE '.$text;
+							break;
+
+						case 'all' :
+						case 'any' :
+						default :
+							$words = explode(' ', $search);
+							$searchConditions = array();
+							foreach ($words as $word)
+							{
+								$word = $db->quote('%'.$db->escape($word, true).'%', false);
+								$wordConditions = array();
+								$wordConditions[] = $db->quoteName('item.title').' LIKE '.$word;
+								$wordConditions[] = $db->quoteName('item.introtext').' LIKE '.$word;
+								$wordConditions[] = $db->quoteName('item.fulltext').' LIKE '.$word;
+								$wordConditions[] = $db->quoteName('item.extra_fields').' LIKE '.$word;
+								$wordConditions[] = $db->quoteName('item.tags').' LIKE '.$word;
+								$searchConditions[] = implode(' OR ', $wordConditions);
+							}
+							$where = '('.implode(($mode == 'all' ? ') AND (' : ') OR ('), $searchConditions).')';
+							break;
+					}
+					$query->where('('.$where.')');
+
+				}
+				// Admin search
+				else
+				{
+					$search = $db->escape($search, true);
+					$query->where('('.$db->quoteName('item.title').' LIKE '.$db->Quote('%'.$search.'%', false).' 
+					OR '.$db->quoteName('item.id').' = '.(int)$search.'
+					OR '.$db->quoteName('item.introtext').' LIKE '.$db->Quote('%'.$search.'%', false).'
+					OR '.$db->quoteName('item.fulltext').' LIKE '.$db->Quote('%'.$search.'%', false).')');
+				}
+
 			}
 		}
 		if ($this->getState('day'))
@@ -239,6 +260,19 @@ class K2ModelItems extends K2Model
 		if ($this->getState('year'))
 		{
 			$query->where('YEAR('.$db->quoteName('item.created').') = '.(int)$this->getState('year'));
+		}
+		if ($this->getState('media'))
+		{
+			$query->where($db->quoteName('item.media').' != '.$db->quote('[]'));
+			$query->where($db->quoteName('item.media').' != '.$db->quote(''));
+		}
+		if ($this->getState('created.value'))
+		{
+			$query->where($db->quoteName('item.created').' '.$this->getState('created.operator').' '.$db->quote($this->getState('created.value')));
+		}
+		if ($this->getState('ordering.value'))
+		{
+			$query->where($db->quoteName('item.ordering').' '.$this->getState('ordering.operator').' '.(int)$this->getState('ordering.value'));
 		}
 	}
 
@@ -256,12 +290,23 @@ class K2ModelItems extends K2Model
 				$ordering = 'item.title';
 				$direction = 'ASC';
 				break;
+			case 'title.reverse' :
+				$ordering = 'item.title';
+				$direction = 'DESC';
+				break;
 			case 'ordering' :
 				$ordering = array(
 					'category.lft',
 					'item.ordering'
 				);
 				$direction = 'ASC';
+				break;
+			case 'ordering.reverse' :
+				$ordering = array(
+					'category.lft',
+					'item.ordering'
+				);
+				$direction = 'DESC';
 				break;
 			case 'featured_ordering' :
 				$ordering = 'item.featured_ordering';
@@ -276,7 +321,10 @@ class K2ModelItems extends K2Model
 				$direction = 'DESC';
 				break;
 			case 'category' :
-				$ordering = 'categoryName';
+				$ordering = array(
+					'categoryName',
+					'item.title'
+				);
 				$direction = 'ASC';
 				break;
 			case 'author' :
@@ -295,17 +343,33 @@ class K2ModelItems extends K2Model
 				$ordering = 'item.created';
 				$direction = 'DESC';
 				break;
+			case 'created.reverse' :
+				$ordering = 'item.created';
+				$direction = 'ASC';
+				break;
 			case 'modified' :
 				$ordering = 'item.modified';
 				$direction = 'DESC';
 				break;
 			case 'hits' :
-				$ordering = 'hits';
+				$ordering = 'stats.hits';
+				$direction = 'DESC';
+				break;
+			case 'comments' :
+				$ordering = 'stats.comments';
 				$direction = 'DESC';
 				break;
 			case 'language' :
 				$ordering = 'languageTitle';
 				$direction = 'ASC';
+				break;
+			case 'publishUp' :
+				$ordering = 'item.publish_up';
+				$direction = 'DESC';
+				break;
+			case 'custom' :
+				$ordering = $this->getState('sorting.custom.value');
+				$direction = $this->getState('sorting.custom.direction');
 				break;
 		}
 		// Append sorting
@@ -321,8 +385,14 @@ class K2ModelItems extends K2Model
 		}
 		else
 		{
-			$query->order($db->quoteName($ordering).' '.$direction);
-
+			if ($sorting == 'random')
+			{
+				$query->order('RAND()');
+			}
+			else
+			{
+				$query->order($db->quoteName($ordering).' '.$direction);
+			}
 		}
 
 	}
@@ -559,7 +629,10 @@ class K2ModelItems extends K2Model
 			$data['tags'] = array();
 			foreach ($tags as $tag)
 			{
-				$data['tags'][] = $model->addTag($tag);
+				$entry = new stdClass;
+				$entry->name = $tag;
+				$entry->id = $model->addTag($tag);
+				$data['tags'][] = $entry;
 			}
 			$data['tags'] = json_encode($data['tags']);
 		}
@@ -588,9 +661,9 @@ class K2ModelItems extends K2Model
 			$model = K2Model::getInstance('Tags', 'K2Model');
 			$itemId = $this->getState('id');
 			$model->deleteItemTags($itemId);
-			foreach ($tags as $tagId)
+			foreach ($tags as $tag)
 			{
-				$model->tagItem($tagId, $itemId);
+				$model->tagItem($tag->id, $itemId);
 			}
 		}
 

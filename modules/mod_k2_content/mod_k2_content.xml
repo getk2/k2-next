@@ -18,43 +18,34 @@
 		<fields name="params">
 			<fieldset name="basic" addfieldpath="/administrator/components/com_k2/fields/">
 				<field name="moduleclass_sfx" type="text" default="" label="K2_MODULE_CLASS_SUFFIX" description="K2_MODULE_CLASS_SUFFIX_DESCRIPTION"/>
-				<field name="getTemplate" type="moduletemplate" modulename="mod_k2_content" default="Default" label="K2_SELECT_SUBTEMPLATE" description="K2_THIS_MODULE_UTILIZES_ONTHEFLY_MVC_TEMPLATE_OVERRIDES_WHAT_THIS_MEANS_IS_THAT_YOU_CAN_CREATE_A_NEW_SUBTEMPLATE_FOLDER_FOR_THIS_MODULE_WITHIN_YOUR_JOOMLA_TEMPLATES_HTMLMOD_K2_CONTENT_FOLDER_THE_MODULE_WILL_THEN_PICKUP_THE_NEW_SUBTEMPLATE_AUTOMAGICALLY_WITHOUT_YOU_EDITING_ANY_XML_FILE_OR_DOING_ANY_OTHER_NONDESIGNER_WORK"/>
+				<field name="template" type="k2template" extension="mod_k2_content" default="Default" label="K2_SELECT_SUBTEMPLATE" description="K2_THIS_MODULE_UTILIZES_ONTHEFLY_MVC_TEMPLATE_OVERRIDES_WHAT_THIS_MEANS_IS_THAT_YOU_CAN_CREATE_A_NEW_SUBTEMPLATE_FOLDER_FOR_THIS_MODULE_WITHIN_YOUR_JOOMLA_TEMPLATES_HTMLMOD_K2_CONTENT_FOLDER_THE_MODULE_WILL_THEN_PICKUP_THE_NEW_SUBTEMPLATE_AUTOMAGICALLY_WITHOUT_YOU_EDITING_ANY_XML_FILE_OR_DOING_ANY_OTHER_NONDESIGNER_WORK"/>
 				<field name="source" type="list" default="filter" label="K2_SOURCE" description="">
 					<option value="filter">K2_RETRIEVE_ITEMS_FROM_CATEGORIES</option>
 					<option value="specific">K2_SELECT_SPECIFIC_ITEMS</option>
 				</field>
-				<field name="" type="header" default="K2_RETRIEVE_ITEMS_FROM_CATEGORIES" label="" description=""/>
-				<field name="catfilter" type="radio" default="0" label="K2_CATEGORY_FILTER" description="">
-					<option value="0">K2_ALL</option>
-					<option value="1">K2_SELECT</option>
-				</field>
-				<field name="category_id" type="categoriesmultiple" default="" label="K2_SELECT_ONE_OR_MORE_CATEGORIES" description="K2_SELECT_ONE_ORE_MORE_CATEGORIES_FOR_WHICH_YOU_WANT_TO_FILTER_AN_ITEMS_LIST_SELECT_NONE_TO_FETCH_ITEMS_FROM_ALL_CATEGORIES"/>
-				<field name="getChildren" type="radio" default="0" label="K2_FETCH_ITEMS_FROM_CHILDREN_CATEGORIES" description="">
-					<option value="0">K2_NO</option>
-					<option value="1">K2_YES</option>
-				</field>
-				<field name="itemCount" type="text" size="4" default="5" label="K2_ITEM_COUNT" description=""/>
-				<field name="itemsOrdering" type="list" default="" label="K2_ITEM_ORDERING" description="">
-					<option value="">K2_DEFAULT</option>
-					<option value="date">K2_OLDEST_FIRST</option>
-					<option value="rdate">K2_MOST_RECENT_FIRST</option>
+				<field name="" type="k2header" default="K2_RETRIEVE_ITEMS_FROM_CATEGORIES" label="" description=""/>
+				<field name="filter" k2-multiple="1" type="k2categories" default="" label="K2_SELECT_ONE_OR_MORE_CATEGORIES" description="K2_SELECT_ONE_ORE_MORE_CATEGORIES_FOR_WHICH_YOU_WANT_TO_FILTER_AN_ITEMS_LIST_SELECT_NONE_TO_FETCH_ITEMS_FROM_ALL_CATEGORIES" />
+				<field name="limit" type="text" size="4" default="5" label="K2_ITEM_COUNT" description=""/>
+				<field name="sorting" type="list" default="" label="K2_ITEM_ORDERING" description="">
+					<option value="id">K2_DEFAULT</option>
+					<option value="created.reverse">K2_OLDEST_FIRST</option>
+					<option value="created">K2_MOST_RECENT_FIRST</option>
 					<option value="publishUp">K2_RECENTLY_PUBLISHED</option>
-					<option value="alpha">K2_TITLE_ALPHABETICAL</option>
-					<option value="ralpha">K2_TITLE_REVERSEALPHABETICAL</option>
-					<option value="order">K2_ORDERING</option>
-					<option value="rorder">K2_ORDERING_REVERSE</option>
+					<option value="title">K2_TITLE_ALPHABETICAL</option>
+					<option value="title.reverse">K2_TITLE_REVERSEALPHABETICAL</option>
+					<option value="ordering">K2_ORDERING</option>
+					<option value="ordering.reverse">K2_ORDERING_REVERSE</option>
 					<option value="hits">K2_MOST_POPULAR</option>
-					<option value="best">K2_HIGHEST_RATED</option>
 					<option value="comments">K2_MOST_COMMENTED</option>
 					<option value="modified">K2_LATEST_MODIFIED</option>
-					<option value="rand">K2_RANDOM_ORDERING</option>
+					<option value="random">K2_RANDOM_ORDERING</option>
 				</field>
-				<field name="FeaturedItems" type="list" default="1" label="K2_FEATURED_ITEMS" description="">
+				<field name="featured" type="list" default="1" label="K2_FEATURED_ITEMS" description="">
 					<option value="0">K2_HIDE</option>
 					<option value="1">K2_SHOW</option>
 					<option value="2">K2_SHOW_ONLY_FEATURED_ITEMS</option>
 				</field>
-				<field name="popularityRange" type="list" default="" label="K2_TIME_RANGE_IF_ORDERING_IS_SET_TO_MOST_POPULAR_OR_MOST_COMMENTED" description="">
+				<field name="timeRange" type="list" default="" label="K2_TIME_RANGE_IF_ORDERING_IS_SET_TO_MOST_POPULAR_OR_MOST_COMMENTED" description="">
 					<option value="">K2_ALL_TIME</option>
 					<option value="1">K2_1_DAY</option>
 					<option value="3">K2_3_DAYS</option>
@@ -64,14 +55,13 @@
 					<option value="90">K2_3_MONTHS</option>
 					<option value="180">K2_6_MONTHS</option>
 				</field>
-				<field name="videosOnly" type="radio" default="0" label="K2_FETCH_ONLY_ITEMS_WITH_VIDEOS" description="">
+				<field name="media" type="radio" default="0" label="K2_FETCH_ONLY_ITEMS_WITH_VIDEOS" description="">
 					<option value="0">K2_NO</option>
 					<option value="1">K2_YES</option>
 				</field>
-				<field name="" type="header" default="K2_SELECT_SPECIFIC_ITEMS" label="" description=""/>
-				<field name="item" type="item" default="" label="K2_ADD_ITEMS" description="K2_USE_THIS_TO_ADD_ITEMS_TO_THE_LIST_BELOW"/>
-				<field name="items" type="items" default="" label="K2_DRAG_AND_DROP_TO_REORDER_ITEMS" description="K2_DRAG_AND_DROP_TO_REORDER_ITEMS_CLICK_THE_REMOVE_ICON_TO_REMOVE_AN_ITEM_FROM_THE_LIST"/>
-				<field name="" type="header" default="K2_ITEM_VIEW_OPTIONS_COMMON_FOR_EITHER_SOURCE" label="" description=""/>
+				<field name="" type="k2header" default="K2_SELECT_SPECIFIC_ITEMS" label="" description=""/>
+				<field name="items" type="k2items" default="" label="K2_ADD_ITEMS" description="K2_USE_THIS_TO_ADD_ITEMS_TO_THE_LIST_BELOW"/>
+				<field name="" type="k2header" default="K2_ITEM_VIEW_OPTIONS_COMMON_FOR_EITHER_SOURCE" label="" description=""/>
 				<field name="itemTitle" type="radio" default="1" label="K2_TITLE" description="">
 					<option value="0">K2_HIDE</option>
 					<option value="1">K2_SHOW</option>
@@ -153,7 +143,7 @@
 					<option value="0">K2_HIDE</option>
 					<option value="1">K2_SHOW</option>
 				</field>
-				<field name="" type="header" default="K2_OTHER_OPTIONS" label="" description=""/>
+				<field name="" type="k2header" default="K2_OTHER_OPTIONS" label="" description=""/>
 				<field name="feed" type="radio" default="1" label="K2_AUTOGENERATED_RSS_FEED_ICON" description="">
 					<option value="0">K2_HIDE</option>
 					<option value="1">K2_SHOW</option>
@@ -168,11 +158,11 @@
 				<field name="itemCustomLinkMenuItem" type="menuitem" default="" label="K2_OR_SELECT_A_MENU_ITEM" description=""/>
 			</fieldset>
 			<fieldset name="advanced">
-				<field name="K2Plugins" type="radio" default="1" label="K2_ENABLE_K2_PLUGINS" description="">
+				<field name="k2Plugins" type="radio" default="1" label="K2_ENABLE_K2_PLUGINS" description="">
 					<option value="0">K2_NO</option>
 					<option value="1">K2_YES</option>
 				</field>
-				<field name="JPlugins" type="radio" default="1" label="K2_ENABLE_JOOMLA_CONTENT_PLUGINS" description="">
+				<field name="jPlugins" type="radio" default="1" label="K2_ENABLE_JOOMLA_CONTENT_PLUGINS" description="">
 					<option value="0">K2_NO</option>
 					<option value="1">K2_YES</option>
 				</field>

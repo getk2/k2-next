@@ -10,7 +10,8 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 			tmpId : null,
 			itemId : null,
 			type : null,
-			preview : null,
+			src : null,
+			alt : null,
 			caption : null,
 			credits : null
 		},
@@ -46,11 +47,11 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 			'input input[name="image[credits]"]' : 'updateCredits'
 		},
 		modelEvents : {
-			'change:preview' : 'render'
+			'change:src' : 'render'
 		},
 		initialize : function(options) {
 
-			this.model = new ImageModel(options.row.get('_image'));
+			this.model = new ImageModel(options.row.get('image'));
 			this.model.set('tmpId', options.row.get('tmpId'));
 			this.model.set('itemId', options.row.get('id'));
 			this.model.set('type', options.type);
@@ -61,7 +62,7 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 
 			K2Dispatcher.on('image:upload:' + this.model.cid, function(e, data) {
 				this.model.set('id', data.result.id);
-				this.model.set('preview', data.result.preview);
+				this.model.set('src', data.result.preview);
 			}, this);
 
 			this.on('delete', function() {
@@ -78,7 +79,7 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 			this.model.set('id', null);
 			this.model.set('caption', '');
 			this.model.set('credits', '');
-			this.model.set('preview', '');
+			this.model.set('src', '');
 
 		},
 		setImageFromServer : function(path) {
@@ -96,7 +97,7 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 				data : data
 			}).done(function(data, status, xhr) {
 				self.model.set('id', data.id);
-				self.model.set('preview', data.preview);
+				self.model.set('src', data.preview);
 			}).fail(function(xhr, status, error) {
 				K2Dispatcher.trigger('app:message', 'error', xhr.responseText);
 			});

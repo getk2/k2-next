@@ -10,23 +10,130 @@
 // no direct access
 defined('_JEXEC') or die ;
 
+require_once JPATH_SITE.'/components/com_k2/helpers/route.php';
+require_once JPATH_SITE.'/components/com_k2/helpers/utilities.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/model.php';
+K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
+
 class ModK2ContentHelper
 {
 	public static function getItems($params)
 	{
-		// Get items
+		// Get model
 		$model = K2Model::getInstance('Items');
-		$model->setState('site', true);
-		$model->setState('limit', 2);
-		$model->setState('limitstart', 0);
-		$items = $model->getRows();
 
-		// Plugins
-		foreach ($items as $item)
+		// Set site state
+		$model->setState('site', true);
+
+		// Set states depending on source
+		if ($params->get('source') == 'specific')
 		{
-			$item->triggerPlugins('mod_k2_content', $params, 0);
+			// Fetch specific items
+			$model->setState('site', $params->get('items'));
+		}
+		else
+		{
+			// Category filter
+			$filter = $params->get('filter');
+			if ($filter && isset($filter->enabled) && $filter->enabled)
+			{
+				$model->setState('category', $filter->categories);
+				$model->setState('recursive', $filter->recursive);
+			}
+
+			// Featured
+			if ($params->get('featured') == 2)
+			{
+				$model->setState('featured', 1);
+			}
+			else if ($params->get('featured') == 0)
+			{
+				$model->setState('featured', 0);
+			}
+
+			// Set time range if sorting is comments or hits
+			if ($params->get('timeRange') && ($params->get('sorting') == 'comments' || $params->get('sorting') == 'hits'))
+			{
+				$now = JFactory::getDate();
+				switch ($params->get('timeRange'))
+				{
+					case '1' :
+						$interval = 'P1D';
+						break;
+					case '3' :
+						$interval = 'P3D';
+						break;
+					case '7' :
+						$interval = 'P1W';
+						break;
+					case '15' :
+						$interval = 'P2W';
+						break;
+					case '30' :
+						$interval = 'P1M';
+						break;
+					case '90' :
+						$interval = 'P3M';
+						break;
+					case '180' :
+						$interval = 'P6M';
+						break;
+				}
+				$date = $now->sub(new DateInterval($interval));
+				$model->setState('created.value', $date->toSql());
+				$model->setState('created.operator', '>');
+			}
+
+			// Fetch only items with media ?
+			$model->setState('media', true);
+			// Set limit
+			$model->setState('limit', $params->get('limit'));
+
+			// Set sorting
+			$model->setState('sorting', $params->get('sorting'));
 		}
 
+		// Get items
+		$items = $model->getRows();
+
+		// Prepare data
+		foreach ($items as $item)
+		{
+			// Plugins
+			$item->triggerPlugins('mod_k2_content', $params, 0, $params->get('k2Plugins'), $params->get('jPlugins'));
+
+			// Introtext word limit
+			if ($params->get('itemIntroTextWordLimit'))
+			{
+				$item->introtext = K2HelperUtilities::wordLimit($item->introtext, $params->get('itemIntroTextWordLimit'));
+			}
+		}
+
+		// Set the avatar width if it's inherited from component settings
+		if ($params->get('itemAuthorAvatarWidthSelect') == 'custom')
+		{
+			$componentParams = JComponentHelper::getParams('com_k2');
+			$params->set('itemAuthorAvatarWidth', $componentParams->get('userImageWidth'));
+		}
+
+		// Set the custom link url if user has selected a menu link item
+		if ($params->get('itemCustomLinkMenuItem') && $params->get('itemCustomLink'))
+		{
+			$application = JFactory::getApplication();
+			$menu = $application->getMenu();
+			$menuLink = $menu->getItem($params->get('itemCustomLinkMenuItem'));
+			if ($menuLink)
+			{
+				if (!$params->get('itemCustomLinkTitle'))
+				{
+					$params->set('itemCustomLinkTitle', $menuLink->title);
+				}
+				$params->set('itemCustomLinkURL', JRoute::_('index.php?&Itemid='.$menuLink->id));
+			}
+
+		}
+
+		// Return
 		return $items;
 	}
 
