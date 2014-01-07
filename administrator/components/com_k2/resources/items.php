@@ -37,6 +37,11 @@ class K2Items extends K2Resource
 	public $hits = 0;
 
 	/**
+	 * @var string	Params.
+	 */
+	public $categoryParams = '';
+
+	/**
 	 * Constructor.
 	 *
 	 * @param object $data
