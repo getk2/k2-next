@@ -16,6 +16,12 @@ class K2ModelStatistics extends K2Model
 {
 	public function increaseUserItemsCounter($userId)
 	{
+		// If the entry does not exist, create it
+		if (!$this->userEntryExists($userId))
+		{
+			$this->createUserEntry($userId);
+		}
+
 		// Get database
 		$db = $this->getDBO();
 
@@ -50,6 +56,12 @@ class K2ModelStatistics extends K2Model
 
 	public function increaseItemCommentsCounter($itemId)
 	{
+		// If the entry does not exist, create it
+		if (!$this->itemEntryExists($itemId))
+		{
+			$this->createItemEntry($itemId);
+		}
+
 		// Get database
 		$db = $this->getDBO();
 
@@ -84,13 +96,20 @@ class K2ModelStatistics extends K2Model
 
 	public function increaseUserCommentsCounter($userId)
 	{
+		// If the entry does not exist, create it
+		if (!$this->userEntryExists($userId))
+		{
+			$this->createUserEntry($userId);
+		}
+
 		// Get database
 		$db = $this->getDBO();
 
 		// Get query
 		$query = $db->getQuery(true);
 
-		// Update
+		// Update entry counter
+		$query = $db->getQuery(true);
 		$query->update('#__k2_users_stats');
 		$query->set($db->quoteName('comments').' = ('.$db->quoteName('comments').' + 1)');
 		$query->where($db->quoteName('userId').' = '.(int)$userId);
@@ -116,6 +135,64 @@ class K2ModelStatistics extends K2Model
 
 	}
 
+	public function increaseItemHitsCounter($itemId)
+	{
+		// If the entry does not exist, create it
+		if (!$this->itemEntryExists($itemId))
+		{
+			$this->createItemEntry($itemId);
+		}
+
+		// Get database
+		$db = $this->getDBO();
+
+		// Get query
+		$query = $db->getQuery(true);
+
+		// Update
+		$query->update('#__k2_items_stats');
+		$query->set($db->quoteName('hits').' = ('.$db->quoteName('hits').' + 1)');
+		$query->where($db->quoteName('itemId').' = '.(int)$itemId);
+		$db->setQuery($query);
+		$db->execute();
+
+	}
+
+	public function decreaseItemHitsCounter($itemId)
+	{
+		// Get database
+		$db = $this->getDBO();
+
+		// Get query
+		$query = $db->getQuery(true);
+
+		// Update
+		$query->update('#__k2_items_stats');
+		$query->set($db->quoteName('hits').' = ('.$db->quoteName('hits').' - 1)');
+		$query->where($db->quoteName('itemId').' = '.(int)$itemId);
+		$db->setQuery($query);
+		$db->execute();
+
+	}
+
+	public function createItemEntry($itemId)
+	{
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
+		$query->insert($db->quoteName('#__k2_items_stats'))->set($db->quoteName('itemId').' = '.(int)$itemId);
+		$db->setQuery($query);
+		$db->execute();
+	}
+
+	public function createUserEntry($userId)
+	{
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
+		$query->insert($db->quoteName('#__k2_users_stats'))->set($db->quoteName('userId').' = '.(int)$userId);
+		$db->setQuery($query);
+		$db->execute();
+	}
+
 	public function deleteItemEntry($itemId)
 	{
 		$db = $this->getDBO();
@@ -132,6 +209,30 @@ class K2ModelStatistics extends K2Model
 		$query->delete($db->quoteName('#__k2_users_stats'))->where($db->quoteName('userId').' = '.(int)$userId);
 		$db->setQuery($query);
 		$db->execute();
+	}
+
+	public function itemEntryExists($itemId)
+	{
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
+		$query->select($db->quoteName('itemId'));
+		$query->from($db->quoteName('#__k2_items_stats'));
+		$query->where($db->quoteName('itemId').' = '.(int)$itemId);
+		$db->setQuery($query);
+		$exists = $db->loadColumn();
+		return $exists;
+	}
+
+	public function userEntryExists($userId)
+	{
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
+		$query->select($db->quoteName('userId'));
+		$query->from($db->quoteName('#__k2_users_stats'));
+		$query->where($db->quoteName('userId').' = '.(int)$userId);
+		$db->setQuery($query);
+		$exists = $db->loadColumn();
+		return $exists;
 	}
 
 }

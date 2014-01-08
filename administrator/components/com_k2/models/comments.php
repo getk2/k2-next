@@ -414,8 +414,8 @@ class K2ModelComments extends K2Model
 		$statistics = K2Model::getInstance('Statistics', 'K2Model');
 		$statistics->decreaseItemCommentsCounter($this->getState('itemId'));
 
-		// Increase user comments counter for new comments
-		if ($this->getState('isNew') && $this->getState('userId') > 0)
+		// Decrease user comments counter
+		if ($this->getState('userId') > 0)
 		{
 			$statistics->decreaseUserCommentsCounter($this->getState('userId'));
 		}
