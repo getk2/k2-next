@@ -24,11 +24,7 @@
 				</field>
 				<!-- Latest Comments -->
 				<field name="" type="header" default="K2_LATEST_COMMENTS" label="" description=""/>
-				<field name="catfilter" type="radio" default="0" label="K2_CATEGORY_FILTER">
-					<option value="0">K2_ALL</option>
-					<option value="1">K2_SELECT</option>
-				</field>
-				<field name="category_id" type="categoriesmultiple" default="" label="K2_FILTER_COMMENTS_BY_SELECTED_CATEGORIES" description="K2_SELECT_ONE_ORE_MORE_CATEGORIES_FROM_WHICH_YOU_WANT_TO_FILTER_THEIR_COMMENTS_SELECT_NONE_TO_FETCH_COMMENTS_FROM_ALL_CATEGORIES"/>
+				<field name="category_id" type="k2categories" k2multiple="1" label="K2_FILTER_COMMENTS_BY_SELECTED_CATEGORIES" description="K2_SELECT_ONE_ORE_MORE_CATEGORIES_FROM_WHICH_YOU_WANT_TO_FILTER_THEIR_COMMENTS_SELECT_NONE_TO_FETCH_COMMENTS_FROM_ALL_CATEGORIES"/>
 				<field name="comments_limit" type="text" size="4" default="5" label="K2_COMMENTS_LIST_LIMIT" description=""/>
 				<field name="comments_word_limit" type="text" size="4" default="10" label="K2_COMMENT_WORD_LIMIT" description="K2_IF_WORD_LIMIT_IS_ENABLED_ANY_HTML_TAGS_WILL_BE_STRIPPED_OFF_TO_PREVENT_THE_PAGE_MARKUP_FROM_BREAKING"/>
 				<field name="commenterName" type="list" default="1" label="K2_COMMENTER_IDENTIFIER" description="">

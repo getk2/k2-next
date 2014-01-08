@@ -667,8 +667,9 @@ class K2ModelItems extends K2Model
 	protected function onAfterSave(&$data, $table)
 	{
 		// Tags
-		if (isset($data['tags']) && is_array($data['tags']))
+		if (isset($data['tags']))
 		{
+			$tags = json_decode($data['tags']);
 			$model = K2Model::getInstance('Tags', 'K2Model');
 			$itemId = $this->getState('id');
 			$model->deleteItemTags($itemId);

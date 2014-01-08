@@ -142,7 +142,7 @@ class K2ModelComments extends K2Model
 			$query->where($db->quoteName('item.state').' = 1');
 
 			// Check categories access level
-			$filter = K2ModelCategories::getCategoryFilter($this->getState('category'));
+			$filter = K2ModelCategories::getCategoryFilter($this->getState('category'), false, true);
 			$query->where($db->quoteName('item.catid').' IN ('.implode(',', $filter).')');
 
 			// Check item access level

@@ -275,13 +275,19 @@ class ModK2ToolsHelper
 			$model->setState('recursive', $filter->recursive);
 		}
 		$tags = $model->getTagCloud();
-
+		
+		if(!count($tags))
+		{
+			return $tags;
+		}
+		
 		usort($tags, 'self::sortTags');
 		$limit = (int)$params->get('cloud_limit');
 		if ($limit)
 		{
 			$tags = array_slice($tags, 0, $params->get('cloud_limit'));
 		}
+
 		$maximumFontSize = $params->get('max_size');
 		$minimumFontSize = $params->get('min_size');
 		$maximumOccurencies = $tags[0]->counter;

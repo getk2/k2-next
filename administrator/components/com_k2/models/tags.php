@@ -379,10 +379,10 @@ class K2ModelTags extends K2Model
 
 		// Items should be published
 		$query->where($db->quoteName('item.state').' > 0');
-		
+
 		// Handle categories
 		$categories = K2ModelCategories::getCategoryFilter($this->getState('categories'), $this->getState('recursive'), true);
-		
+
 		// user cannot see any category return empty data
 		if (empty($categories))
 		{
@@ -391,7 +391,7 @@ class K2ModelTags extends K2Model
 
 		// Apply the filter to the query
 		$query->where($db->quoteName('item.catid').' IN ('.implode(',', $categories).')');
-		
+
 		// Check access level
 		$viewlevels = array_unique(JFactory::getUser()->getAuthorisedViewLevels());
 		$query->where($db->quoteName('item.access').' IN ('.implode(',', $viewlevels).')');
@@ -406,7 +406,7 @@ class K2ModelTags extends K2Model
 
 		// Set query
 		$db->setQuery($query);
-		
+
 		// Get rows
 		$rows = $db->loadObjectList();
 

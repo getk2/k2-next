@@ -23,9 +23,10 @@ class ModK2CommentsHelper
 		$model = K2Model::getInstance('Comments');
 		$model->setState('filter.items', true);
 		$model->setState('state', 1);
-		if ($params->get('catfilter'))
+		$filter = $params->get('category_id');
+		if ($filter && isset($filter->enabled) && $filter->enabled)
 		{
-			$model->setState('category', $params->get('category_id'));
+			$model->setState('category', $filter->categories);
 		}
 		$model->setState('limit', (int)$params->get('comments_limit', '5'));
 		$model->setState('sorting', 'id');
