@@ -42,9 +42,9 @@ class JFormFieldK2Categories extends JFormField
 		}
 
 		// Get some variables from XML markup
-		$this->multiple = $this->element['k2-multiple'];
-		$this->size = (int)$this->element['k2-size'];
-		$this->default = (string)$this->element['default'];
+		$this->multiple = (bool)$this->element['k2multiple'];
+		$this->recursive = (string)$this->element['k2recursive'];
+		$this->size = (int)$this->element['size'];
 
 		// Build attributes string
 		$attributes = '';
@@ -67,14 +67,26 @@ class JFormFieldK2Categories extends JFormField
 			$options[] = JHtml::_('select.option', '0', JText::_('K2_ALL'));
 			$options[] = JHtml::_('select.option', '1', JText::_('K2_SELECT'));
 			$output .= JHtml::_('select.radiolist', $options, $this->name.'[enabled]', 'class="k2FieldCategoriesFilterEnabled" data-categories="'.$this->name.'[categories][]"', 'value', 'text', $this->value['enabled'], $this->id);
+			$placeholder = null;
+		}
+		else
+		{
+			$output .= '<input type="hidden" name="'.$this->name.'[enabled]" value="1" />';
+			$placeholder = 'K2_NONE_ONSELECTLISTS';
 		}
 
 		// Then the categories list
-		$output .= K2HelperHTML::categories($this->name.'[categories][]', $this->value['categories'], $this->default, null, $attributes);
+		$output .= K2HelperHTML::categories($this->name.'[categories][]', $this->value['categories'], $placeholder, null, $attributes);
 
 		// And finally the recursive switch
-		$output .= '<label>'.JText::_('K2_APPLY_RECUSRIVELY').'</label>'.JHtml::_('select.booleanlist', $this->name.'[recursive]', null, $this->value['recursive']);
-		
+		if ($this->recursive == 'select')
+		{
+			$output .= '<label>'.JText::_('K2_APPLY_RECUSRIVELY').'</label>'.JHtml::_('select.booleanlist', $this->name.'[recursive]', null, $this->value['recursive']);
+		}
+		else
+		{
+			$output .= '<input type="hidden" name="'.$this->name.'[recursive]" value="'.$this->recursive.'" />';
+		}
 
 		// Return
 		return $output;

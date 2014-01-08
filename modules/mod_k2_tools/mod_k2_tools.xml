@@ -36,10 +36,10 @@
 					<option value="0">K2_HIDE</option>
 					<option value="1">K2_SHOW</option>
 				</field>
-				<field name="archiveCategory" type="k2categories" label="K2_CATEGORY_FILTER" description="" default="K2_NONE_ONSELECTLISTS" />
+				<field name="archiveCategory" type="k2categories" label="K2_CATEGORY_FILTER" />
 				<!-- Authors List Settings -->
 				<field name="" type="k2header" default="K2_AUTHORS_LIST_SETTINGS" label="" description=""/>
-				<field name="authors_module_category" type="k2categories" default="K2_NONE_ONSELECTLISTS" label="K2_FILTER_AUTHORS_BY_ROOT_CATEGORY" description="K2_SELECT_THE_ROOT_CATEGORY_FOR_WHICH_YOU_WANT_TO_FILTER_AN_AUTHOR_LIST_SELECT_NONE_TO_FETCH_AUTHORS_FROM_ALL_CATEGORIES"/>
+				<field name="authors_module_category" type="k2categories" k2recursive="1" label="K2_FILTER_AUTHORS_BY_ROOT_CATEGORY" description="K2_SELECT_THE_ROOT_CATEGORY_FOR_WHICH_YOU_WANT_TO_FILTER_AN_AUTHOR_LIST_SELECT_NONE_TO_FETCH_AUTHORS_FROM_ALL_CATEGORIES"/>
 				<field name="authorItemsCounter" type="radio" default="1" label="K2_ITEMS_COUNTER" description="">
 					<option value="0">K2_HIDE</option>
 					<option value="1">K2_SHOW</option>
@@ -59,14 +59,14 @@
 				</field>
 				<!-- Calendar Settings -->
 				<field name="" type="k2header" default="K2_CALENDAR_SETTINGS" label="" description=""/>
-				<field name="calendarCategory" type="k2categories" label="K2_CATEGORY_FILTER" description="" default="K2_NONE_ONSELECTLISTS"/>
+				<field name="calendarCategory" type="k2categories" label="K2_CATEGORY_FILTER" k2recursive="0" />
 				<!-- Breadcrumbs Settings -->
 				<field name="" type="k2header" default="K2_BREADCRUMBS_SETTINGS" label="" description=""/>
 				<field name="home" type="text" default="" label="K2_ROOT_LABEL_EG_HOME" description="K2_THE_LABEL_FOR_THE_HOME_LINK_LEAVE_THIS_BLANK_IF_YOU_DONT_WISH_TO_INCLUDE_A_HOME_LINK_IN_YOUR_PATH"/>
 				<field name="seperator" type="text" default="" label="K2_PATH_SEPARATOR" description="K2_THE_PATH_SEPARATOR_EG_A_RIGHT_ARROW"/>
 				<!-- Categories List (Menu) Settings -->
 				<field name="" type="k2header" default="K2_CATEGORIES_LIST_MENU_SETTINGS" label="" description=""/>
-				<field name="root_id" type="k2categories" default="K2_NONE_ONSELECTLISTS" label="K2_SELECT_ROOT_CATEGORY" description="K2_SELECT_THE_ROOT_CATEGORY_FOR_WHICH_YOU_WANT_TO_CREATE_A_CATEGORY_LIST_SELECT_NONE_TO_FETCH_A_LIST_OF_ALL_CATEGORIES"/>
+				<field name="root_id" type="k2categories" label="K2_SELECT_ROOT_CATEGORY" description="K2_SELECT_THE_ROOT_CATEGORY_FOR_WHICH_YOU_WANT_TO_CREATE_A_CATEGORY_LIST_SELECT_NONE_TO_FETCH_A_LIST_OF_ALL_CATEGORIES"/>
 				<field name="end_level" type="text" default="" size="4" label="K2_LEVELS_TO_RENDER" description="K2_SELECT_THE_NUMBER_OF_LEVELS_YOU_WISH_TO_RENDER_LEAVE_THIS_BLANK_IF_YOU_WISH_TO_RENDER_ALL_THE_LEVELS_BELOW_THE_SELECTED_ROOT_CATEGORY"/>
 				<field name="categoriesListOrdering" type="list" default="" label="K2_ORDER_BY" description="">
 					<option value="">K2_DEFAULT_BY_ID_ASCENDING</option>
@@ -81,10 +81,10 @@
 				</field>
 				<!-- Category Select Box Settings -->
 				<field name="" type="k2header" default="K2_CATEGORY_SELECT_BOX_SETTINGS" label="" description=""/>
-				<field name="root_id2" type="k2categories" default="K2_NONE_ONSELECTLISTS" label="K2_SELECT_ROOT_CATEGORY" description="K2_SELECT_THE_ROOT_CATEGORY_FOR_WHICH_YOU_WANT_TO_CREATE_A_CATEGORY_DROPDOWN_LIST_SELECT_NONE_TO_CREATE_A_DROPDOWN_LIST_FROM_ALL_CATEGORIES"/>
+				<field name="root_id2" type="k2categories" label="K2_SELECT_ROOT_CATEGORY" description="K2_SELECT_THE_ROOT_CATEGORY_FOR_WHICH_YOU_WANT_TO_CREATE_A_CATEGORY_DROPDOWN_LIST_SELECT_NONE_TO_CREATE_A_DROPDOWN_LIST_FROM_ALL_CATEGORIES"/>
 				<!-- Search Box Settings -->
 				<field name="" type="k2header" default="K2_SEARCH_BOX_SETTINGS" label="" description=""/>
-				<field name="category_id" type="k2categories" k2-multiple="1" label="K2_RESTRICT_SEARCH_RESULTS_TO_ONE_OR_MORE_CATEGORIES" description="K2_BY_CHOOSING_SPECIFIC_CATEGORIES_HERE_YOU_CAN_NARROW_DOWN_SEARCH_RESULTS_TO_ITEMS_BELONGING_IN_THE_SELECTED_CATEGORIES_THIS_OPTION_IS_VERY_HANDY_IF_YOU_ARE_DEVELOPING_A_WEBSITE_FOR_BOTH_GUEST_VISITORS_AND_REGISTERED_MEMBERS_EG_INTRANET_AND_YOU_WANT_TO_RESTRICT_SEARCH_RESULTS_FOR_GUEST_VISITORS_ONLY_TO_CATEGORIES_THAT_THEY_ARE_ALLOWED_TO_VIEW"/>
+				<field name="category_id" type="k2categories" k2multiple="1" k2recursive="select" label="K2_RESTRICT_SEARCH_RESULTS_TO_ONE_OR_MORE_CATEGORIES" description="K2_BY_CHOOSING_SPECIFIC_CATEGORIES_HERE_YOU_CAN_NARROW_DOWN_SEARCH_RESULTS_TO_ITEMS_BELONGING_IN_THE_SELECTED_CATEGORIES_THIS_OPTION_IS_VERY_HANDY_IF_YOU_ARE_DEVELOPING_A_WEBSITE_FOR_BOTH_GUEST_VISITORS_AND_REGISTERED_MEMBERS_EG_INTRANET_AND_YOU_WANT_TO_RESTRICT_SEARCH_RESULTS_FOR_GUEST_VISITORS_ONLY_TO_CATEGORIES_THAT_THEY_ARE_ALLOWED_TO_VIEW"/>
 				<field name="liveSearch" type="radio" default="" label="K2_ENABLE_LIVE_SEARCH" description="K2_IF_YOU_ENABLE_THIS_OPTION_SEARCH_RESULTS_WILL_BE_DISPLAYED_RIGHT_BELOW_THE_SEARCH_BOX_AS_YOU_TYPE_YOUR_SEARCH_QUERY">
 					<option value="">K2_NO</option>
 					<option value="1">K2_YES</option>
@@ -105,7 +105,7 @@
 				<field name="min_size" type="text" default="75" size="4" label="K2_MIN_FONT_SIZE" description="K2_FONT_SIZE_FOR_LESS_POPULAR_TAGS"/>
 				<field name="max_size" type="text" default="300" size="4" label="K2_MAX_FONT_SIZE" description="K2_FONT_SIZE_FOR_MOST_POPULAR_TAGS"/>
 				<field name="cloud_limit" type="text" default="30" size="4" label="K2_TAG_LIMIT_X_MOST_POPULAR" description="K2_SELECT_THE_X_MOST_POPULAR_TAGS_TO_DISPLAY"/>
-				<field name="cloud_category" type="k2categories" k2-multiple="1" label="K2_FILTER_TAGS_FROM_ONE_OR_MORE_CATEGORIES" description="K2_TO_SELECT_MULTIPLE_CATEGORIES_PRESS_AND_KEEP_CTRLCMD_AND_THEN_CLICK_ON_THE_DESIRED_CATEGORIES"/>
+				<field name="cloud_category" type="k2categories" k2multiple="1" k2recursive="select" label="K2_FILTER_TAGS_FROM_ONE_OR_MORE_CATEGORIES" description="K2_TO_SELECT_MULTIPLE_CATEGORIES_PRESS_AND_KEEP_CTRLCMD_AND_THEN_CLICK_ON_THE_DESIRED_CATEGORIES"/>
 				<!-- Custom code settings -->
 				<field name="" type="k2header" default="K2_CUSTOM_CODE_SETTINGS" label="" description=""/>
 				<field name="customCode" type="textarea" filter="raw" default="" label="K2_ADD_CUSTOM_HTML_CSS_JS_OR_PHP_CODE" description="" cols="60" rows="20" />

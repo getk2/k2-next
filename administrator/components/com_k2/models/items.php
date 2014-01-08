@@ -129,6 +129,17 @@ class K2ModelItems extends K2Model
 			$this->setState('access', $viewlevels);
 		}
 
+		// Shortcut method for setting the categoy filter
+		if ($this->getState('category.filter'))
+		{
+			$filter = $this->getState('category.filter');
+			if (isset($filter->enabled) && $filter->enabled)
+			{
+				$this->setState('category', $filter->categories);
+				$this->setState('recursive', $filter->recursive);
+			}
+		}
+
 		if ($this->getState('language'))
 		{
 			$query->where($db->quoteName('item.language').' = '.$db->quote($this->getState('language')));

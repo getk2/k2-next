@@ -21,7 +21,9 @@ class ModK2ToolsHelper
 	{
 		$model = K2Model::getInstance('Items');
 		$model->setState('site', true);
-		$model->setState('category', $params->get('archiveCategory', 0));
+		// Category filter
+		$filter = $params->get('archiveCategory');
+		$model->setState('category.filter', $filter);
 		$model->setState('sorting', 'created');
 		$rows = $model->getArchive();
 		$months = array(
@@ -38,15 +40,16 @@ class ModK2ToolsHelper
 			JText::_('K2_NOVEMBER'),
 			JText::_('K2_DECEMBER'),
 		);
+		$root = isset($filter->categories[0]) ? $filter->categories[0] : 0;
 		foreach ($rows as $row)
 		{
 			$row->numOfItems = '';
 			if ($params->get('archiveItemsCounter'))
 			{
-				$row->numOfItems = self::countArchiveItems($row->month, $row->year, $params->get('archiveCategory'));
+				$row->numOfItems = self::countArchiveItems($row->month, $row->year, $root);
 			}
 			$row->name = $months[($row->month) - 1];
-			$row->link = JRoute::_(K2HelperRoute::getDateRoute($row->year, $row->month, null, $params->get('archiveCategory')));
+			$row->link = JRoute::_(K2HelperRoute::getDateRoute($row->year, $row->month, null, $root));
 			$archives[] = $row;
 		}
 		return $archives;
@@ -68,7 +71,8 @@ class ModK2ToolsHelper
 	{
 		$model = K2Model::getInstance('Items');
 		$model->setState('site', true);
-		$model->setState('category', $params->get('authors_module_category', 0));
+		// Category filter
+		$model->setState('category.filter', $params->get('authors_module_category'));
 		$rows = $model->getAuthors();
 		$authors = array();
 		if (count($rows))
@@ -105,6 +109,7 @@ class ModK2ToolsHelper
 		$application = JFactory::getApplication();
 		$month = $application->input->get('month', 0, 'int');
 		$year = $application->input->get('year', 0, 'int');
+		$filter = $params->get('calendarCategory');
 
 		$months = array(
 			JText::_('K2_JANUARY'),
@@ -131,7 +136,8 @@ class ModK2ToolsHelper
 		);
 
 		$calendar = new K2Calendar();
-		$calendar->category = $params->get('calendarCategory', 0);
+		$root = isset($filter->categories[0]) ? $filter->categories[0] : 0;
+		$calendar->category = $root;
 		$calendar->setStartDay(1);
 		$calendar->setMonthNames($months);
 		$calendar->setDayNames($days);
@@ -204,7 +210,7 @@ class ModK2ToolsHelper
 		return $breadcrumbs;
 	}
 
-	public static function getCategories($params)
+	public static function getCategories($params, $type)
 	{
 		$application = JFactory::getApplication();
 		$option = $application->input->get('option', '', 'cmd');
@@ -212,12 +218,14 @@ class ModK2ToolsHelper
 		$task = $application->input->get('task', '', 'cmd');
 		$id = $application->input->get('id', 0, 'int');
 		$endLevel = $params->get('end_level', NULL);
+		$filter = ($type == 'default') ? $params->get('root_id') : $params->get('root_id2');
+		$root = isset($filter->categories[0]) ? $filter->categories[0] : 0;
 
 		$model = K2Model::getInstance('Categories');
 		$model->setState('site', true);
-		$model->setState('root', $params->get('root_id', 1));
+		$model->setState('root', $root);
 		$model->setState('sorting', 'ordering');
-		
+
 		$categories = $model->getRows();
 		$model = K2Model::getInstance('Items');
 		foreach ($categories as $category)
@@ -243,25 +251,13 @@ class ModK2ToolsHelper
 		$search->sef = $application->getCfg('sef');
 		$search->filter = '';
 
-		if ($params->get('catfilter'))
+		$filter = $params->get('category_id');
+
+		if ($filter && isset($filter->enabled) && $filter->enabled)
 		{
-			$categoryId = $params->get('category_id', NULL);
-			if (!is_null($categoryId))
-			{
-				if (!is_array($categoryId))
-				{
-					$categories = array($categoryId);
-				}
-				else
-				{
-					$categories = $categoryId;
-				}
-				$model = K2Model::getInstance('Categories');
-				$model->setState('site', true);
-				$model->setState('id', $categories);
-				$filter = $model->getRows();
-				$search->filter = implode(',', $filter);
-			}
+			$model = K2Model::getInstance('Categories');
+			$categories = K2ModelCategories::getCategoryFilter($filter->categories, $filter->recursive, true);
+			$search->filter = implode(',', $categories);
 		}
 
 		return $search;
@@ -272,8 +268,12 @@ class ModK2ToolsHelper
 	{
 
 		$model = K2Model::getInstance('Tags');
-		$model->setState('categories', $params->get('cloud_category'));
-		$model->setState('recursive', $params->get('cloud_category_recursive'));
+		$filter = $params->get('cloud_category');
+		if ($filter)
+		{
+			$model->setState('categories', $filter->categories);
+			$model->setState('recursive', $filter->recursive);
+		}
 		$tags = $model->getTagCloud();
 
 		usort($tags, 'self::sortTags');
@@ -292,18 +292,18 @@ class ModK2ToolsHelper
 			$spread = 1;
 		}
 		$step = ($maximumFontSize - $minimumFontSize) / ($spread);
-		
+
 		$rows = array();
-		foreach($tags as $tag)
+		foreach ($tags as $tag)
 		{
 			$rows[$tag->id] = $tag->counter;
-		}		
-		
+		}
+
 		$model = K2Model::getInstance('Tags');
 		$model->setState('site', true);
 		$model->setState('id', array_keys($rows));
 		$cloud = $model->getRows();
-		
+
 		foreach ($cloud as $entry)
 		{
 			$entry->counter = $rows[$entry->id];

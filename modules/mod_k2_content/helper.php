@@ -34,13 +34,8 @@ class ModK2ContentHelper
 		else
 		{
 			// Category filter
-			$filter = $params->get('filter');
-			if ($filter && isset($filter->enabled) && $filter->enabled)
-			{
-				$model->setState('category', $filter->categories);
-				$model->setState('recursive', $filter->recursive);
-			}
-
+			$model->setState('category.filter', $params->get('filter'));
+			
 			// Featured
 			if ($params->get('featured') == 2)
 			{

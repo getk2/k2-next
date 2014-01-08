@@ -381,7 +381,7 @@ class K2ModelTags extends K2Model
 		$query->where($db->quoteName('item.state').' > 0');
 		
 		// Handle categories
-		$categories = K2ModelCategories::getCategoryFilter($this->getState('categories'), $this->getState('recursive'));
+		$categories = K2ModelCategories::getCategoryFilter($this->getState('categories'), $this->getState('recursive'), true);
 		
 		// user cannot see any category return empty data
 		if (empty($categories))

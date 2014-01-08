@@ -35,12 +35,12 @@ switch ($params->get('usage'))
 		break;
 
 	case 'categories' :
-		$categories = ModK2ToolsHelper::getCategories($params);
+		$categories = ModK2ToolsHelper::getCategories($params, 'default');
 		require JModuleHelper::getLayoutPath('mod_k2_tools', 'categories');
 		break;
 
 	case 'categoriesList' :
-		$categories = ModK2ToolsHelper::getCategories($params);
+		$categories = ModK2ToolsHelper::getCategories($params, 'selectbox');
 		require JModuleHelper::getLayoutPath('mod_k2_tools', 'categories_select');
 		break;
 
