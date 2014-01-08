@@ -63,6 +63,10 @@ CREATE TABLE IF NOT EXISTS `#__k2_categories` (
   KEY `language` (`language`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
+
+INSERT INTO `#__k2_categories` (`id`, `asset_id`, `parent_id`, `lft`, `rgt`, `path`, `level`, `title`, `alias`, `state`, `access`, `description`, `image`, `extra_fields`, `template`, `inheritance`, `created`, `created_by`, `created_by_alias`, `modified`, `modified_by`, `checked_out`, `checked_out_time`, `metadata`, `plugins`, `params`, `language`) VALUES
+(0, 0, 0, 0, 4, '', 0, 'ROOT', 'root', 0, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 0, '', '0000-00-00 00:00:00', 0, 0, '0000-00-00 00:00:00', '', '', '', '');
+
 -- --------------------------------------------------------
 
 --

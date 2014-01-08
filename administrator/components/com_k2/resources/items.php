@@ -78,8 +78,16 @@ class K2Items extends K2Resource
 				$model->setState('alias', $id);
 			}
 			$item = $model->getRow();
-			self::$instances[$item->id] = $item;
-			self::$instances[$item->alias] = $item;
+			if ($item->id)
+			{
+				self::$instances[$item->id] = $item;
+				self::$instances[$item->alias] = $item;
+			}
+			else
+			{
+				self::$instances[$id] = $item;
+			}
+
 		}
 		return self::$instances[$id];
 	}

@@ -918,15 +918,16 @@ class K2ModelItems extends K2Model
 		unset($data['featured_ordering']);
 
 		// Handle tags
-		$tags = array();
-		foreach ($data['tags'] as $tag)
+		$tagNames = array();
+		$tags = json_decode($data['tags']);
+		foreach ($tags as $tag)
 		{
-			$tags[] = $tag->name;
+			$tagNames[] = $tag->name;
 		}
-		$data['tags'] = implode(',', $tags);
+		$data['tags'] = implode(',', $tagNames);
 
 		// Handle image
-		$imageId = isset($data['_image']->id) ? $data['_image']->id : false;
+		$imageId = isset($data['image']->id) ? $data['image']->id : false;
 		if ($imageId)
 		{
 			$path = 'media/k2/items/src/'.$imageId.'.jpg';
@@ -934,8 +935,8 @@ class K2ModelItems extends K2Model
 			$data['image'] = array(
 				'id' => $image->id,
 				'path' => '',
-				'caption' => $data['_image']->caption,
-				'credits' => $data['_image']->credits
+				'caption' => $data['image']->caption,
+				'credits' => $data['image']->credits
 			);
 		}
 		else

@@ -31,7 +31,7 @@ if (version_compare(JVERSION, '3.2', 'ge'))
 			$assetId = null;
 
 			// This is a category under a category.
-			if ($this->parent_id > 1)
+			if ($this->parent_id > 0)
 			{
 				// Build the query to get the asset id for the parent category.
 				$query = $this->_db->getQuery(true)->select($this->_db->quoteName('asset_id'))->from($this->_db->quoteName('#__k2_categories'))->where($this->_db->quoteName('id').' = '.$this->parent_id);
@@ -89,7 +89,7 @@ else
 			$assetId = null;
 
 			// This is a category under a category.
-			if ($this->parent_id > 1)
+			if ($this->parent_id > 0)
 			{
 				// Build the query to get the asset id for the parent category.
 				$query = $this->_db->getQuery(true)->select($this->_db->quoteName('asset_id'))->from($this->_db->quoteName('#__k2_categories'))->where($this->_db->quoteName('id').' = '.$this->parent_id);
@@ -183,7 +183,7 @@ class K2TableCategories extends K2TableNestedLegacy
 
 		if (!$this->parent_id)
 		{
-			$this->parent_id = 1;
+			$this->parent_id = 0;
 		}
 
 		if (JFactory::getConfig()->get('unicodeslugs') == 1)
