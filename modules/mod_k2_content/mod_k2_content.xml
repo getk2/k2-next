@@ -24,7 +24,7 @@
 					<option value="specific">K2_SELECT_SPECIFIC_ITEMS</option>
 				</field>
 				<field name="" type="k2header" default="K2_RETRIEVE_ITEMS_FROM_CATEGORIES" label="" description=""/>
-				<field name="filter" k2-multiple="1" type="k2categories" default="" label="K2_SELECT_ONE_OR_MORE_CATEGORIES" description="K2_SELECT_ONE_ORE_MORE_CATEGORIES_FOR_WHICH_YOU_WANT_TO_FILTER_AN_ITEMS_LIST_SELECT_NONE_TO_FETCH_ITEMS_FROM_ALL_CATEGORIES" />
+				<field name="filter" type="k2categories" k2multiple="1" k2recursive="select" label="K2_SELECT_ONE_OR_MORE_CATEGORIES" description="K2_SELECT_ONE_ORE_MORE_CATEGORIES_FOR_WHICH_YOU_WANT_TO_FILTER_AN_ITEMS_LIST_SELECT_NONE_TO_FETCH_ITEMS_FROM_ALL_CATEGORIES" />
 				<field name="limit" type="text" size="4" default="5" label="K2_ITEM_COUNT" description=""/>
 				<field name="sorting" type="list" default="" label="K2_ITEM_ORDERING" description="">
 					<option value="id">K2_DEFAULT</option>
