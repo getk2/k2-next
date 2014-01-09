@@ -20,7 +20,7 @@
 				<field name="moduleclass_sfx" type="text" default="" label="K2_MODULE_CLASS_SUFFIX" description="K2_MODULE_CLASS_SUFFIX_DESCRIPTION" />
 				<field name="pretext" type="textarea" cols="30" rows="5" default="" label="K2_PRETEXT" description="" />
 				<field name="posttext" type="textarea" cols="30" rows="5" label="K2_POSTTEXT" description="" />
-				<field name="" type="header" default="K2_OPTIONS_FOR_LOGGED_IN_USERS" label="" description="" />
+				<field name="" type="k2header" default="K2_OPTIONS_FOR_LOGGED_IN_USERS" label="" description="" />
 				<field name="userGreetingText" type="textarea" cols="30" rows="5" label="K2_GREETING_TEXT" description="K2_WRITE_A_CUSTOM_TEXT_TO_DISPLAY_TO_YOUR_USERS_WHEN_THEY_ARE_LOGGED_IN" />
 				<field name="name" type="list" default="1" label="K2_DISPLAY_USERNAME_OR_NAME" description="">
 					<option value="0">K2_USERNAME</option>
@@ -35,9 +35,9 @@
 					<option value="custom">K2_USE_CUSTOM_WIDTH</option>
 				</field>
 				<field name="userAvatarWidth" type="text" default="50" size="4" label="K2_CUSTOM_WIDTH_FOR_USER_AVATAR_IN_PX" description="" />
-				<field name="" type="header" default="K2_MENU_RENDER_OPTION" label="" description="" />
+				<field name="" type="k2header" default="K2_MENU_RENDER_OPTION" label="" description="" />
 				<field name="menu" type="menus" default="" label="K2_MENU_TO_RENDER" description="K2_MENU_TO_RENDER_DESC" />
-				<field name="" type="header" default="K2_LOGIN_LOGOUT_REDIRECTION" label="" description="" />
+				<field name="" type="k2header" default="K2_LOGIN_LOGOUT_REDIRECTION" label="" description="" />
 				<field name="login" type="menuitem" default="" disable="separator" label="K2_LOGIN_REDIRECTION_URL" description="K2_LOGIN_REDIRECTION_URL_DESCRIPTION" />
 				<field name="logout" type="menuitem" default="" disable="separator" label="K2_LOGOUT_REDIRECTION_URL" description="K2_LOGOUT_REDIRECTION_URL_DESCRIPTION" />
 				<field name="usesecure" type="radio" default="0" label="K2_ENCRYPT_LOGIN_FORM" description="K2_SUBMIT_ENCRYPTED_LOGIN_DATA_REQUIRES_SSL">

@@ -21,7 +21,6 @@ class ModK2ToolsHelper
 	{
 		$model = K2Model::getInstance('Items');
 		$model->setState('site', true);
-		// Category filter
 		$filter = $params->get('archiveCategory');
 		$model->setState('category.filter', $filter);
 		$model->setState('sorting', 'created');
@@ -40,6 +39,7 @@ class ModK2ToolsHelper
 			JText::_('K2_NOVEMBER'),
 			JText::_('K2_DECEMBER'),
 		);
+		$archives = array();
 		$root = isset($filter->categories[0]) ? $filter->categories[0] : 0;
 		foreach ($rows as $row)
 		{

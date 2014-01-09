@@ -6,7 +6,7 @@
 	<fields name="params">
 		<fieldset name="categoryLayoutOptions" addfieldpath="/administrator/components/com_k2/fields">
 			<field type="k2language"/>
-			<field name="" type="header" default="K2_LAYOUT_GRID" label="" description=""/>
+			<field name="" type="k2header" default="K2_LAYOUT_GRID" label="" description=""/>
 			<field name="num_leading_items" type="text" size="4" default="2" label="K2_LEADING_COUNT" description="K2_NUMBER_OF_ITEMS_TO_DISPLAY_AS_LEADING"/>
 			<field name="num_leading_columns" type="text" size="4" default="1" label="K2_COLUMNS_FOR_LEADING" description=""/>
 			<field name="leadingImgSize" type="list" default="Large" label="K2_IMAGE_SIZE_FOR_LEADING_ITEMS" description="K2_YOU_CAN_OVERRIDE_THE_GLOBAL_DIMENSIONS_FOR_EACH_SIZE_BY_ADJUSTING_THE_RELATED_SETTING_IN_THE_ITEM_IMAGE_OPTIONS_PANE_BELOW">
@@ -50,7 +50,7 @@
 				<option value="XLarge">K2_XLARGE</option>
 				<option value="none">K2_NO_IMAGE</option>
 			</field>
-			<field name="" type="header" default="K2_OTHER_LAYOUT_OPTIONS" label="" description=""/>
+			<field name="" type="k2header" default="K2_OTHER_LAYOUT_OPTIONS" label="" description=""/>
 			<field name="catCatalogMode" type="list" default="0" label="K2_CATALOG_MODE" description="K2_IF_YOU_SELECT_YES_THEN_ONLY_THE_ITEMS_DIRECTLY_BELONGING_TO_THIS_CATEGORY_WILL_BE_RETRIEVED_IF_YOU_SELECT_NO_THEN_ITEMS_FROM_ALL_SUBCATEGORIES_WILL_BE_RETRIEVED_SETTING_THIS_OPTION_TO_NO_IS_IDEAL_FOR_NEWSPORTALMAGAZINEBLOG_LAYOUTS">
 				<option value="0">K2_NO</option>
 				<option value="1">K2_YES</option>
@@ -110,7 +110,7 @@
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="" type="header" default="K2_SUBCATEGORY_HANDLING" label="" description=""/>
+			<field name="" type="k2header" default="K2_SUBCATEGORY_HANDLING" label="" description=""/>
 			<field name="subCategories" type="radio" default="1" label="K2_SUBCATEGORY_BLOCKS" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
@@ -233,7 +233,7 @@
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="" type="header" default="K2_ADVANCED" label="" description=""/>
+			<field name="" type="k2header" default="K2_ADVANCED" label="" description=""/>
 			<field name="catItemK2Plugins" type="radio" default="1" label="K2_ENABLE_K2_PLUGINS" description="">
 				<option value="0">K2_NO</option>
 				<option value="1">K2_YES</option>
@@ -373,7 +373,7 @@
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="" type="header" default="K2_SOCIAL_SHARING" label="" description=""/>
+			<field name="" type="k2header" default="K2_SOCIAL_SHARING" label="" description=""/>
 			<field name="itemTwitterButton" type="radio" default="1" label="K2_TWITTER_SHARE" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
@@ -386,7 +386,7 @@
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="" type="header" default="K2_AUTHOR_OPTIONS" label="" description=""/>
+			<field name="" type="k2header" default="K2_AUTHOR_OPTIONS" label="" description=""/>
 			<field name="itemAuthorBlock" type="radio" default="1" label="K2_DISPLAY_EXTENDED_AUTHOR_INFO" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
@@ -412,7 +412,7 @@
 				<option value="1">K2_SHOW</option>
 			</field>
 			<field name="itemAuthorLatestLimit" type="text" default="5" size="4" label="K2_LIMIT_FOR_LATEST_ITEMS_FROM_AUTHOR" description=""/>
-			<field name="" type="header" default="K2_RELATED_ITEMS" label="" description=""/>
+			<field name="" type="k2header" default="K2_RELATED_ITEMS" label="" description=""/>
 			<field name="itemRelated" type="radio" default="1" label="K2_RELATED_ITEMS_BY_TAG" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
@@ -454,7 +454,7 @@
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="" type="header" default="K2_ADVANCED" label="" description=""/>
+			<field name="" type="k2header" default="K2_ADVANCED" label="" description=""/>
 			<field name="itemK2Plugins" type="radio" default="1" label="K2_ENABLE_K2_PLUGINS" description="">
 				<option value="0">K2_NO</option>
 				<option value="1">K2_YES</option>

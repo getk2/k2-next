@@ -108,7 +108,7 @@
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="" type="header" default="K2_ADVANCED" label="" description=""/>
+			<field name="" type="k2header" default="K2_ADVANCED" label="" description=""/>
 			<field name="catItemK2Plugins" type="list" default="" label="K2_ENABLE_K2_PLUGINS" description="">
 				<option value="">K2_INHERIT_FROM_CATEGORY</option>
 				<option value="0">K2_NO</option>
@@ -281,7 +281,7 @@
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="" type="header" default="K2_SOCIAL_SHARING" label="" description=""/>
+			<field name="" type="k2header" default="K2_SOCIAL_SHARING" label="" description=""/>
 			<field name="itemTwitterButton" type="list" default="" label="K2_TWITTER_SHARE" description="">
 				<option value="">K2_INHERIT_FROM_CATEGORY</option>
 				<option value="0">K2_HIDE</option>
@@ -297,7 +297,7 @@
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="" type="header" default="K2_AUTHOR_OPTIONS" label="" description=""/>
+			<field name="" type="k2header" default="K2_AUTHOR_OPTIONS" label="" description=""/>
 			<field name="itemAuthorBlock" type="list" default="" label="K2_DISPLAY_EXTENDED_AUTHOR_INFO" description="">
 				<option value="">K2_INHERIT_FROM_CATEGORY</option>
 				<option value="0">K2_HIDE</option>
@@ -329,7 +329,7 @@
 				<option value="1">K2_SHOW</option>
 			</field>
 			<field name="itemAuthorLatestLimit" type="text" default="" size="4" label="K2_LIMIT_FOR_LATEST_ITEMS_FROM_AUTHOR" description="K2_LEAVE_BLANK_TO_INHERIT_FROM_CATEGORY"/>
-			<field name="" type="header" default="K2_RELATED_ITEMS" label="" description=""/>
+			<field name="" type="k2header" default="K2_RELATED_ITEMS" label="" description=""/>
 			<field name="itemRelated" type="list" default="" label="K2_RELATED_ITEMS_BY_TAG" description="">
 				<option value="">K2_INHERIT_FROM_CATEGORY</option>
 				<option value="0">K2_HIDE</option>
@@ -380,7 +380,7 @@
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="" type="header" default="K2_ADVANCED" label="" description=""/>
+			<field name="" type="k2header" default="K2_ADVANCED" label="" description=""/>
 			<field name="itemK2Plugins" type="list" default="" label="K2_ENABLE_K2_PLUGINS" description="">
 				<option value="">K2_INHERIT_FROM_CATEGORY</option>
 				<option value="0">K2_NO</option>

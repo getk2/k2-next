@@ -10,14 +10,14 @@
 		</fieldset>
 	</fields>
 	<fields name="params">
-		<fieldset name="basic" addfieldpath="/administrator/components/com_k2/elements">
-			<field name="" type="header" default="K2_SELECT_ONE_OR_MORE_CATEGORIES" label="" description=""/>
-			<field name="categories" type="k2category" default="" label="K2_SELECT_CATEGORIES" description="K2_IF_YOU_SELECT_MULTIPLE_CATEGORIES_YOU_CAN_ADJUST_ADDITIONAL_PARAMETERS_BELOW_IF_YOU_SELECT_ONLY_ONE_CATEGORY_THEN_K2_WILL_FETCH_THE_OPTIONS_AS_DEFINED_IN_THAT_SPECIFIC_CATEGORYS_OPTIONS_IN_K2_CATEGORIES"/>
+		<fieldset name="basic" addfieldpath="/administrator/components/com_k2/fields">
+			<field name="" type="k2header" default="K2_SELECT_ONE_OR_MORE_CATEGORIES" label="" description=""/>
+			<field name="categories" type="k2categories" k2multiple="1" default="" label="K2_SELECT_CATEGORIES" description="K2_IF_YOU_SELECT_MULTIPLE_CATEGORIES_YOU_CAN_ADJUST_ADDITIONAL_PARAMETERS_BELOW_IF_YOU_SELECT_ONLY_ONE_CATEGORY_THEN_K2_WILL_FETCH_THE_OPTIONS_AS_DEFINED_IN_THAT_SPECIFIC_CATEGORYS_OPTIONS_IN_K2_CATEGORIES"/>
 			<field name="catCatalogMode" type="list" default="0" label="K2_FETCH_ITEMS_FROM_CHILDREN_CATEGORIES" description="K2_IF_YOU_SELECT_NO_THEN_ONLY_THE_ITEMS_DIRECTLY_BELONGING_TO_THIS_CATEGORY_WILL_BE_RETRIEVED_IF_YOU_SELECT_YES_THEN_ITEMS_FROM_ALL_SUBCATEGORIES_WILL_BE_RETRIEVED_SETTING_THIS_OPTION_TO_YES_IS_IDEAL_FOR_NEWSPORTALMAGAZINEBLOG_LAYOUTS">
 				<option value="1">K2_NO</option>
 				<option value="0">K2_YES</option>
 			</field>
-			<field name="" type="header" default="K2_LAYOUT_OPTIONS_FOR_SINGLE_CATEGORY_SELECTION" label="" description=""/>
+			<field name="" type="k2header" default="K2_LAYOUT_OPTIONS_FOR_SINGLE_CATEGORY_SELECTION" label="" description=""/>
 			<field name="singleCatOrdering" type="list" default="" label="K2_ITEM_ORDERING" description="">
 				<option value="">K2_INHERIT_FROM_CATEGORY</option>
 				<option value="date">K2_OLDEST_FIRST</option>
@@ -33,8 +33,8 @@
 				<option value="modified">K2_LATEST_MODIFIED</option>
 				<option value="rand">K2_RANDOM_ORDERING</option>
 			</field>
-			<field name="" type="header" default="K2_LAYOUT_OPTIONS_FOR_MULTIPLE_CATEGORY_SELECTION" label="" description=""/>
-			<field name="theme" type="template" default="default" label="K2_SELECT_A_TEMPLATE"/>
+			<field name="" type="k2header" default="K2_LAYOUT_OPTIONS_FOR_MULTIPLE_CATEGORY_SELECTION" label="" description=""/>
+			<field name="theme" type="k2template" extension="com_k2" default="default" label="K2_SELECT_A_TEMPLATE"/>
 			<field name="@spacer" type="spacer" default="" label="" description=""/>
 			<field name="num_leading_items" type="text" size="4" default="2" label="K2_LEADING_COUNT" description="K2_NUMBER_OF_ITEMS_TO_DISPLAY_AS_LEADING"/>
 			<field name="num_leading_columns" type="text" size="4" default="1" label="K2_COLUMNS_FOR_LEADING" description=""/>
