@@ -111,263 +111,208 @@ class PlgSystemK2 extends JPlugin
 	// Extend user forms with K2 fields
 	public function onAfterDispatch()
 	{
-		
-		return;
-
+		// Get application
 		$application = JFactory::getApplication();
 
-		if ($application->isAdmin())
-			return;
-
+		// Get params
 		$params = JComponentHelper::getParams('com_k2');
-		if (!$params->get('K2UserProfile'))
-			return;
-		$option = JRequest::getCmd('option');
-		$view = JRequest::getCmd('view');
-		$task = JRequest::getCmd('task');
-		$layout = JRequest::getCmd('layout');
-		$user = JFactory::getUser();
 
-		if (K2_JVERSION != '15')
+		// Process only in front-end and only if K2 user profiles are enabled
+		if ($application->isSite() && $params->get('K2UserProfile'))
 		{
+
+			// Get user
+			$user = JFactory::getUser();
+
+			// Get layout from menu
 			$active = JFactory::getApplication()->getMenu()->getActive();
-			if (isset($active->query['layout']))
-			{
-				$layout = $active->query['layout'];
-			}
-		}
+			$default = isset($active->query['layout']) ? $active->query['layout'] : '';
 
-		if (($option == 'com_user' && $view == 'register') || ($option == 'com_users' && $view == 'registration'))
-		{
+			// Get input
+			$option = $application->input->get('option', '', 'cmd');
+			$view = $application->input->get('view', '', 'cmd');
+			$task = $application->input->get('task', '', 'cmd');
+			$layout = $application->input->get('layout', $default, 'cmd');
 
-			if ($params->get('recaptchaOnRegistration') && $params->get('recaptcha_public_key'))
+			// Registration page override
+			if ($option == 'com_users' && $view == 'registration')
 			{
-				$document = JFactory::getDocument();
-				$document->addScript('https://www.google.com/recaptcha/api/js/recaptcha_ajax.js');
-				$js = '
-				function showRecaptcha(){
-					Recaptcha.create("'.$params->get('recaptcha_public_key').'", "recaptcha", {
-						theme: "'.$params->get('recaptcha_theme', 'clean').'"
-					});
+
+				// Add reCapctha if it is enabled
+				if ($params->get('recaptchaOnRegistration') && $params->get('recaptcha_public_key'))
+				{
+					$document = JFactory::getDocument();
+					$document->addScript('https://www.google.com/recaptcha/api/js/recaptcha_ajax.js');
+					$js = '
+					function showRecaptcha(){
+						Recaptcha.create("'.$params->get('recaptcha_public_key').'", "recaptcha", {
+							theme: "'.$params->get('recaptcha_theme', 'clean').'"
+						});
+					}
+					$K2(document).ready(function() {
+						showRecaptcha();
+					});';
+					$document->addScriptDeclaration($js);
 				}
-				$K2(document).ready(function() {
-					showRecaptcha();
-				});
-				';
-				$document->addScriptDeclaration($js);
-			}
 
-			if (!$user->guest)
-			{
-				$application->enqueueMessage(JText::_('K2_YOU_ARE_ALREADY_REGISTERED_AS_A_MEMBER'), 'notice');
-				$application->redirect(JURI::root());
-				$application->close();
-			}
-			if (K2_JVERSION != '15')
-			{
-				require_once (JPATH_SITE.DS.'components'.DS.'com_users'.DS.'controller.php');
-				$controller = new UsersController;
+				// Ensure that user is not logged in
+				if (!$user->guest)
+				{
+					$application->enqueueMessage(JText::_('K2_YOU_ARE_ALREADY_REGISTERED_AS_A_MEMBER'), 'notice');
+					$application->redirect(JURI::root());
+					$application->close();
+				}
 
-			}
-			else
-			{
-				require_once (JPATH_SITE.DS.'components'.DS.'com_user'.DS.'controller.php');
-				$controller = new UserController;
-			}
-			$view = $controller->getView($view, 'html');
-			$view->addTemplatePath(JPATH_SITE.DS.'components'.DS.'com_k2'.DS.'templates');
-			$view->addTemplatePath(JPATH_SITE.DS.'templates'.DS.$application->getTemplate().DS.'html'.DS.'com_k2'.DS.'templates');
-			$view->addTemplatePath(JPATH_SITE.DS.'templates'.DS.$application->getTemplate().DS.'html'.DS.'com_k2');
-			$view->setLayout('register');
+				// Get controller
+				$controller = JControllerLegacy::getInstance('Users');
 
-			$K2User = new JObject;
+				// Get view
+				$view = $controller->getView('registration', 'html');
 
-			$K2User->description = '';
-			$K2User->gender = 'm';
-			$K2User->image = '';
-			$K2User->url = '';
-			$K2User->plugins = '';
+				// Add K2 layout paths to the core users view
+				$view->addTemplatePath(JPATH_SITE.'/components/com_k2/templates');
+				$view->addTemplatePath(JPATH_SITE.'/templates/'.$application->getTemplate().'/html/com_k2/templates');
+				$view->addTemplatePath(JPATH_SITE.'/templates/'.$application->getTemplate().'/html/com_k2');
 
-			$wysiwyg = JFactory::getEditor();
-			$editor = $wysiwyg->display('description', $K2User->description, '100%', '250px', '', '', false);
-			$view->assignRef('editor', $editor);
+				// Set the layout
+				$view->setLayout('register');
 
-			$lists = array();
-			$genderOptions[] = JHTML::_('select.option', 'm', JText::_('K2_MALE'));
-			$genderOptions[] = JHTML::_('select.option', 'f', JText::_('K2_FEMALE'));
-			$lists['gender'] = JHTML::_('select.radiolist', $genderOptions, 'gender', '', 'value', 'text', $K2User->gender);
+				// Get K2 user profile
+				$model = K2Model::getInstance('Users');
+				$K2User = $model->getRow();
 
-			$view->assignRef('lists', $lists);
-			$view->assignRef('K2Params', $params);
+				// Editor for user text field
+				$wysiwyg = JFactory::getEditor();
+				$editor = $wysiwyg->display('description', $K2User->description, '100%', '250px', '', '', false);
 
-			JPluginHelper::importPlugin('k2');
-			$dispatcher = JDispatcher::getInstance();
-			$K2Plugins = $dispatcher->trigger('onRenderAdminForm', array(
-				&$K2User,
-				'user'
-			));
-			$view->assignRef('K2Plugins', $K2Plugins);
+				// Gender field
+				$lists = array();
+				$genderOptions[] = JHTML::_('select.option', 'm', JText::_('K2_MALE'));
+				$genderOptions[] = JHTML::_('select.option', 'f', JText::_('K2_FEMALE'));
+				$lists['gender'] = JHTML::_('select.radiolist', $genderOptions, 'gender', '', 'value', 'text');
 
-			$view->assignRef('K2User', $K2User);
-			if (K2_JVERSION != '15')
-			{
+				// Assign variables to view
+				$view->assignRef('editor', $editor);
+				$view->assignRef('lists', $lists);
+				$view->assignRef('K2Params', $params);
 				$view->assignRef('user', $user);
-			}
-			$pathway = $application->getPathway();
-			$pathway->setPathway(NULL);
 
-			$nameFieldName = K2_JVERSION != '15' ? 'jform[name]' : 'name';
-			$view->assignRef('nameFieldName', $nameFieldName);
-			$usernameFieldName = K2_JVERSION != '15' ? 'jform[username]' : 'username';
-			$view->assignRef('usernameFieldName', $usernameFieldName);
-			$emailFieldName = K2_JVERSION != '15' ? 'jform[email1]' : 'email';
-			$view->assignRef('emailFieldName', $emailFieldName);
-			$passwordFieldName = K2_JVERSION != '15' ? 'jform[password1]' : 'password';
-			$view->assignRef('passwordFieldName', $passwordFieldName);
-			$passwordVerifyFieldName = K2_JVERSION != '15' ? 'jform[password2]' : 'password2';
-			$view->assignRef('passwordVerifyFieldName', $passwordVerifyFieldName);
-			$optionValue = K2_JVERSION != '15' ? 'com_users' : 'com_user';
-			$view->assignRef('optionValue', $optionValue);
-			$taskValue = K2_JVERSION != '15' ? 'registration.register' : 'register_save';
-			$view->assignRef('taskValue', $taskValue);
-			ob_start();
-			$view->display();
-			$contents = ob_get_clean();
-			$document = JFactory::getDocument();
-			$document->setBuffer($contents, 'component');
-
-		}
-
-		if (($option == 'com_user' && $view == 'user' && ($task == 'edit' || $layout == 'form')) || ($option == 'com_users' && $view == 'profile' && ($layout == 'edit' || $task == 'profile.edit')))
-		{
-
-			if ($user->guest)
-			{
-				$uri = JFactory::getURI();
-
-				if (K2_JVERSION != '15')
-				{
-					$url = 'index.php?option=com_users&view=login&return='.base64_encode($uri->toString());
-
-				}
-				else
-				{
-					$url = 'index.php?option=com_user&view=login&return='.base64_encode($uri->toString());
-				}
-				$application->enqueueMessage(JText::_('K2_YOU_NEED_TO_LOGIN_FIRST'), 'notice');
-				$application->redirect(JRoute::_($url, false));
-			}
-
-			if (K2_JVERSION != '15')
-			{
-				require_once (JPATH_SITE.DS.'components'.DS.'com_users'.DS.'controller.php');
-				$controller = new UsersController;
-			}
-			else
-			{
-				require_once (JPATH_SITE.DS.'components'.DS.'com_user'.DS.'controller.php');
-				$controller = new UserController;
-			}
-
-			/*
-			 // TO DO - We open the profile editing page in a modal, so let's define some CSS
-			 $document = JFactory::getDocument();
-			 $document->addStyleSheet(JURI::root(true).'/media/k2/assets/css/k2.frontend.css?v=2.6.8');
-			 $document->addStyleSheet(JURI::root(true).'/templates/system/css/general.css');
-			 $document->addStyleSheet(JURI::root(true).'/templates/system/css/system.css');
-			 if(K2_JVERSION != '15') {
-			 $document->addStyleSheet(JURI::root(true).'/administrator/templates/bluestork/css/template.css');
-			 $document->addStyleSheet(JURI::root(true).'/media/system/css/system.css');
-			 } else {
-			 $document->addStyleSheet(JURI::root(true).'/administrator/templates/khepri/css/general.css');
-			 }
-			 */
-
-			$view = $controller->getView($view, 'html');
-			$view->addTemplatePath(JPATH_SITE.DS.'components'.DS.'com_k2'.DS.'templates');
-			$view->addTemplatePath(JPATH_SITE.DS.'templates'.DS.$application->getTemplate().DS.'html'.DS.'com_k2'.DS.'templates');
-			$view->addTemplatePath(JPATH_SITE.DS.'templates'.DS.$application->getTemplate().DS.'html'.DS.'com_k2');
-			$view->setLayout('profile');
-
-			$model = K2Model::getInstance('Itemlist', 'K2Model');
-			$K2User = $model->getUserProfile($user->id);
-			if (!is_object($K2User))
-			{
-				$K2User = new Jobject;
-				$K2User->description = '';
-				$K2User->gender = 'm';
-				$K2User->url = '';
-				$K2User->image = NULL;
-			}
-			if (K2_JVERSION == '15')
-			{
-				JFilterOutput::objectHTMLSafe($K2User);
-			}
-			else
-			{
-				JFilterOutput::objectHTMLSafe($K2User, ENT_QUOTES, array(
-					'params',
-					'plugins'
+				// Trigger K2 plugins
+				JPluginHelper::importPlugin('k2');
+				$dispatcher = JDispatcher::getInstance();
+				$K2Plugins = $dispatcher->trigger('onRenderAdminForm', array(
+					&$K2User,
+					'user'
 				));
-			}
-			$wysiwyg = JFactory::getEditor();
-			$editor = $wysiwyg->display('description', $K2User->description, '100%', '250px', '', '', false);
-			$view->assignRef('editor', $editor);
+				$view->assignRef('K2Plugins', $K2Plugins);
+				$view->assignRef('K2User', $K2User);
 
-			$lists = array();
-			$genderOptions[] = JHTML::_('select.option', 'm', JText::_('K2_MALE'));
-			$genderOptions[] = JHTML::_('select.option', 'f', JText::_('K2_FEMALE'));
-			$lists['gender'] = JHTML::_('select.radiolist', $genderOptions, 'gender', '', 'value', 'text', $K2User->gender);
+				// More variables for the view
+				$nameFieldName = 'jform[name]';
+				$view->assignRef('nameFieldName', $nameFieldName);
+				$usernameFieldName = 'jform[username]';
+				$view->assignRef('usernameFieldName', $usernameFieldName);
+				$emailFieldName = 'jform[email1]';
+				$view->assignRef('emailFieldName', $emailFieldName);
+				$passwordFieldName = 'jform[password1]';
+				$view->assignRef('passwordFieldName', $passwordFieldName);
+				$passwordVerifyFieldName = 'jform[password2]';
+				$view->assignRef('passwordVerifyFieldName', $passwordVerifyFieldName);
+				$optionValue = 'com_users';
+				$view->assignRef('optionValue', $optionValue);
+				$taskValue = 'registration.register';
+				$view->assignRef('taskValue', $taskValue);
 
-			$view->assignRef('lists', $lists);
-
-			JPluginHelper::importPlugin('k2');
-			$dispatcher = JDispatcher::getInstance();
-			$K2Plugins = $dispatcher->trigger('onRenderAdminForm', array(
-				&$K2User,
-				'user'
-			));
-			$view->assignRef('K2Plugins', $K2Plugins);
-
-			$view->assignRef('K2User', $K2User);
-
-			// Asssign some variables depending on Joomla! version
-			$nameFieldName = K2_JVERSION != '15' ? 'jform[name]' : 'name';
-			$view->assignRef('nameFieldName', $nameFieldName);
-			$emailFieldName = K2_JVERSION != '15' ? 'jform[email1]' : 'email';
-			$view->assignRef('emailFieldName', $emailFieldName);
-			$passwordFieldName = K2_JVERSION != '15' ? 'jform[password1]' : 'password';
-			$view->assignRef('passwordFieldName', $passwordFieldName);
-			$passwordVerifyFieldName = K2_JVERSION != '15' ? 'jform[password2]' : 'password2';
-			$view->assignRef('passwordVerifyFieldName', $passwordVerifyFieldName);
-			$usernameFieldName = K2_JVERSION != '15' ? 'jform[username]' : 'username';
-			$view->assignRef('usernameFieldName', $usernameFieldName);
-			$idFieldName = K2_JVERSION != '15' ? 'jform[id]' : 'id';
-			$view->assignRef('idFieldName', $idFieldName);
-			$optionValue = K2_JVERSION != '15' ? 'com_users' : 'com_user';
-			$view->assignRef('optionValue', $optionValue);
-			$taskValue = K2_JVERSION != '15' ? 'profile.save' : 'save';
-			$view->assignRef('taskValue', $taskValue);
-
-			ob_start();
-			if (K2_JVERSION != '15')
-			{
-				$active = JFactory::getApplication()->getMenu()->getActive();
-				if (isset($active->query['layout']) && $active->query['layout'] != 'profile')
-				{
-					$active->query['layout'] = 'profile';
-				}
-				$view->assignRef('user', $user);
+				// Get buffer
+				ob_start();
 				$view->display();
-			}
-			else
-			{
-				$view->_displayForm();
-			}
+				$contents = ob_get_clean();
 
-			$contents = ob_get_clean();
-			$document = JFactory::getDocument();
-			$document->setBuffer($contents, 'component');
+				// Override the component output
+				$document = JFactory::getDocument();
+				$document->setBuffer($contents, 'component');
+
+			}
+			// Profile page override
+			else if ($option == 'com_users' && $view == 'profile' && ($layout == 'edit' || $task == 'profile.edit'))
+			{
+
+				// Process only if user is not guest
+				if (!$user->guest)
+				{
+					// Get controller
+					$controller = JControllerLegacy::getInstance('Users');
+
+					// Get view
+					$view = $controller->getView('profile', 'html');
+
+					// Add K2 layout paths to the core users view
+					$view->addTemplatePath(JPATH_SITE.'/components/com_k2/templates');
+					$view->addTemplatePath(JPATH_SITE.'/templates/'.$application->getTemplate().'/html/com_k2/templates');
+					$view->addTemplatePath(JPATH_SITE.'/templates/'.$application->getTemplate().'/html/com_k2');
+
+					// Set the layout
+					$view->setLayout('profile');
+
+					// Get K2 user profile
+					require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/users.php';
+					$K2User = K2Users::getInstance($user->id);
+
+					// Editor for user text field
+					$wysiwyg = JFactory::getEditor();
+					$editor = $wysiwyg->display('description', $K2User->description, '100%', '250px', '', '', false);
+
+					// Gender field
+					$lists = array();
+					$genderOptions[] = JHTML::_('select.option', 'm', JText::_('K2_MALE'));
+					$genderOptions[] = JHTML::_('select.option', 'f', JText::_('K2_FEMALE'));
+					$lists['gender'] = JHTML::_('select.radiolist', $genderOptions, 'gender', '', 'value', 'text', $K2User->gender);
+
+					// Assign variables to view
+					$view->assignRef('editor', $editor);
+					$view->assignRef('lists', $lists);
+					$view->assignRef('K2Params', $params);
+					$view->assignRef('user', $user);
+
+					// Trigger K2 plugins
+					JPluginHelper::importPlugin('k2');
+					$dispatcher = JDispatcher::getInstance();
+					$K2Plugins = $dispatcher->trigger('onRenderAdminForm', array(
+						&$K2User,
+						'user'
+					));
+					$view->assignRef('K2Plugins', $K2Plugins);
+					$view->assignRef('K2User', $K2User);
+
+					// More variables for the view
+					$nameFieldName = 'jform[name]';
+					$view->assignRef('nameFieldName', $nameFieldName);
+					$emailFieldName = 'jform[email1]';
+					$view->assignRef('emailFieldName', $emailFieldName);
+					$passwordFieldName = 'jform[password1]';
+					$view->assignRef('passwordFieldName', $passwordFieldName);
+					$passwordVerifyFieldName = 'jform[password2]';
+					$view->assignRef('passwordVerifyFieldName', $passwordVerifyFieldName);
+					$usernameFieldName = 'jform[username]';
+					$view->assignRef('usernameFieldName', $usernameFieldName);
+					$idFieldName = 'jform[id]';
+					$view->assignRef('idFieldName', $idFieldName);
+					$optionValue = 'com_users';
+					$view->assignRef('optionValue', $optionValue);
+					$taskValue = 'profile.save';
+					$view->assignRef('taskValue', $taskValue);
+
+					// Get buffer
+					ob_start();
+					$view->display();
+					$contents = ob_get_clean();
+
+					// Override the component output
+					$document = JFactory::getDocument();
+					$document->setBuffer($contents, 'component');
+				}
+
+			}
 
 		}
 
