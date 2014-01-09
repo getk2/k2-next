@@ -35,6 +35,7 @@ class PlgSystemK2 extends JPlugin
 		{
 			return;
 		}
+		return;
 
 		$params = JComponentHelper::getParams('com_k2');
 
@@ -110,6 +111,8 @@ class PlgSystemK2 extends JPlugin
 	// Extend user forms with K2 fields
 	public function onAfterDispatch()
 	{
+		
+		return;
 
 		$application = JFactory::getApplication();
 
@@ -378,6 +381,7 @@ class PlgSystemK2 extends JPlugin
 		// Load the K2 classes
 		require_once JPATH_ADMINISTRATOR.'/components/com_k2/tables/table.php';
 		require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/model.php';
+		K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
 
 		// Use K2 to make Joomla! Varnish-friendly. For more checkout: https://snipt.net/fevangelou/the-perfect-varnish-configuration-for-joomla-websites/
 		if (!$user->guest)

@@ -222,7 +222,7 @@ class K2ModelUsers extends K2Model
 		if ($id)
 		{
 			// Actions
-			$canEdit = $user->authorise('core.edit', 'com_users');
+			$canEdit = $user->authorise('core.edit', 'com_users') || $user->id == $id;
 			$canEditState = $user->authorise('core.edit.state', 'com_users');
 
 			// User cannot edit the user neither it's state. Stop the process

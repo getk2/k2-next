@@ -19,142 +19,93 @@ class PlgUserK2 extends JPlugin
 
 	public function onUserAfterSave($user, $isnew, $success, $msg)
 	{
+		// Get application
 		$application = JFactory::getApplication();
+
+		// Get params
 		$params = JComponentHelper::getParams('com_k2');
 
-		$task = $application->input->get('task');
+		// Get input
+		$task = $application->input->get('task', '', 'cmd');
+		$isK2UserForm = $application->input->get('K2UserForm', 0, 'int');
 
-		if ($application->isSite() && ($task == 'activate' || $isnew) && $params->get('stopForumSpam'))
+		// Process only in front-end
+		if ($application->isSite())
 		{
-			$this->checkSpammer($user);
-		}
-
-		if ($application->isSite() && $task != 'activate' && JRequest::getInt('K2UserForm'))
-		{
-			JPlugin::loadLanguage('com_k2');
-			JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_k2'.DS.'tables');
-			$row = JTable::getInstance('K2User', 'Table');
-			$k2id = $this->getK2UserID($user['id']);
-			JRequest::setVar('id', $k2id, 'post');
-			$row->bind(JRequest::get('post'));
-			$row->set('userID', $user['id']);
-			$row->set('userName', $user['name']);
-			$row->set('ip', $_SERVER['REMOTE_ADDR']);
-			$row->set('hostname', gethostbyaddr($_SERVER['REMOTE_ADDR']));
-			if (isset($user['notes']))
+			// Check spammer for activation and registrations. Only in front-end
+			if (($task == 'activate' || $isnew) && $params->get('stopForumSpam'))
 			{
-				$row->set('notes', $user['notes']);
-			}
-			if ($isnew)
-			{
-				$row->set('group', $params->get('K2UserGroup', 1));
-			}
-			else
-			{
-				$row->set('group', NULL);
-				$row->set('gender', JRequest::getVar('gender'));
-				$row->set('url', JRequest::getString('url'));
-			}
-			if ($row->gender != 'm' && $row->gender != 'f')
-			{
-				$row->gender = 'm';
-			}
-			$row->url = JString::str_ireplace(' ', '', $row->url);
-			$row->url = JString::str_ireplace('"', '', $row->url);
-			$row->url = JString::str_ireplace('<', '', $row->url);
-			$row->url = JString::str_ireplace('>', '', $row->url);
-			$row->url = JString::str_ireplace('\'', '', $row->url);
-			$row->set('description', JRequest::getVar('description', '', 'post', 'string', 4));
-			if ($params->get('xssFiltering'))
-			{
-				$filter = new JFilterInput( array(), array(), 1, 1, 0);
-				$row->description = $filter->clean($row->description);
+				$this->checkSpammer($user);
 			}
 
-			$file = JRequest::get('files');
-
-			require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_k2'.DS.'lib'.DS.'class.upload.php');
-			$savepath = JPATH_ROOT.DS.'media'.DS.'k2'.DS.'users'.DS;
-
-			if (isset($file['image']) && $file['image']['error'] == 0 && !JRequest::getBool('del_image'))
+			// Save K2 user profile for new users
+			if ($task != 'activate' && $isK2UserForm)
 			{
-				$handle = new Upload($file['image']);
-				$handle->allowed = array('image/*');
-				if ($handle->uploaded)
+				// Load K2 language file
+				$this->loadLanguage('com_k2');
+
+				// Get model
+				$model = K2Model::getInstance('Users');
+
+				// Get input data
+				$data = $application->input->getArray();
+
+				// Pass data to the model
+				$this->model->setState('data', $data);
+
+				// Save
+				$result = $this->model->save();
+
+				// Redirect
+				$itemid = $params->get('redirect');
+
+				if (!$isnew && $itemid)
 				{
-					$handle->file_auto_rename = false;
-					$handle->file_overwrite = true;
-					$handle->file_new_name_body = $row->id;
-					$handle->image_resize = true;
-					$handle->image_ratio_y = true;
-					$handle->image_x = $params->get('userImageWidth', '100');
-					$handle->Process($savepath);
-					$handle->Clean();
-				}
-				else
-				{
-					$application->enqueueMessage(JText::_('K2_COULD_NOT_UPLOAD_YOUR_IMAGE').$handle->error, 'notice');
-				}
-				$row->image = $handle->file_dst_name;
-			}
-
-			if (JRequest::getBool('del_image'))
-			{
-
-				if (JFile::exists(JPATH_ROOT.DS.'media'.DS.'k2'.DS.'users'.DS.$row->image))
-				{
-					JFile::delete(JPATH_ROOT.DS.'media'.DS.'k2'.DS.'users'.DS.$row->image);
-				}
-				$row->image = '';
-			}
-
-			$row->store();
-			$itemid = $params->get('redirect');
-
-			if (!$isnew && $itemid)
-			{
-				$menu = JSite::getMenu();
-				$item = $menu->getItem($itemid);
-				$url = JRoute::_($item->link.'&Itemid='.$itemid, false);
-				if (JURI::isInternal($url))
-				{
-					$application->enqueueMessage(JText::_('K2_YOUR_SETTINGS_HAVE_BEEN_SAVED'));
-					$application->redirect($url);
+					$menu = $application->getMenu();
+					$item = $menu->getItem($itemid);
+					$url = JRoute::_($item->link.'&Itemid='.$itemid, false);
+					if (JURI::isInternal($url))
+					{
+						$application->enqueueMessage(JText::_('K2_YOUR_SETTINGS_HAVE_BEEN_SAVED'));
+						$application->redirect($url);
+					}
 				}
 			}
 		}
+
 	}
 
 	public function onUserLogin($user, $options)
 	{
-		$params = JComponentHelper::getParams('com_k2');
+		// Get application
 		$application = JFactory::getApplication();
+
+		// Get params
+		$params = JComponentHelper::getParams('com_k2');
+
+		// Process only in front-end
 		if ($application->isSite())
 		{
 			// Get the user id
-			$db = JFactory::getDBO();
-			$db->setQuery("SELECT id FROM #__users WHERE username = ".$db->Quote($user['username']));
-			$id = $db->loadResult();
+			$id = JUserHelper::getUserId($user['username']);
 
-			// If K2 profiles are enabled assign non-existing K2 users to the default K2 group. Update user info for existing K2 users.
+			// If K2 profiles are enabled update profile with last used ip and hostname.
 			if ($params->get('K2UserProfile') && $id)
 			{
-				$k2id = $this->getK2UserID($id);
-				JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_k2'.DS.'tables');
-				$row = JTable::getInstance('K2User', 'Table');
-				if ($k2id)
-				{
-					$row->load($k2id);
-				}
-				else
-				{
-					$row->set('userID', $id);
-					$row->set('userName', $user['fullname']);
-					$row->set('group', $params->get('K2UserGroup', 1));
-				}
-				$row->ip = $_SERVER['REMOTE_ADDR'];
-				$row->hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
-				$row->store();
+				// Get database
+				$db = JFactory::getDbo();
+
+				// Get query
+				$query = $db->getQuery(true);
+
+				// Update
+				$query->update($db->quoteName('#__k2_users'));
+				$query->set($db->quoteName('ip').' = '.$db->quote($_SERVER['REMOTE_ADDR']));
+				$query->set($db->quoteName('hostname').' = '.$db->quote(gethostbyaddr($_SERVER['REMOTE_ADDR'])));
+				$query->where($db->quoteName('id').' = '.(int)$id);
+				$db->setQuery($query);
+				$db->execute();
+
 			}
 
 			// Set the Cookie domain for user based on K2 parameters
@@ -163,36 +114,59 @@ class PlgUserK2 extends JPlugin
 				setcookie('userID', $id, 0, '/', $params->get('cookieDomain'), 0);
 			}
 		}
+
+		// Return
 		return true;
 	}
 
 	public function onUserLogout($user)
 	{
-		$params = JComponentHelper::getParams('com_k2');
+		// Get application
 		$application = JFactory::getApplication();
+
+		// Get params
+		$params = JComponentHelper::getParams('com_k2');
+
+		// Expire the Cookie domain for user based on K2 parameters. Only in front-end
 		if ($application->isSite() && $params->get('cookieDomain'))
 		{
 			setcookie('userID', '', time() - 3600, '/', $params->get('cookieDomain'), 0);
 		}
+
+		// Return
 		return true;
 	}
 
 	public function onUserAfterDelete($user, $success, $msg)
 	{
-		$application = JFactory::getApplication();
-		$db = JFactory::getDBO();
-		$query = "DELETE FROM #__k2_users WHERE userID={$user['id']}";
+		// Get database
+		$db = JFactory::getDbo();
+
+		// Get query
+		$query = $db->getQuery(true);
+
+		// Delete
+		$query->delete($db->quoteName('#__k2_users'));
+		$query->where($db->quoteName('id').' = '.(int)$user['id']);
 		$db->setQuery($query);
-		$db->query();
+		$db->execute();
 	}
 
 	public function onUserBeforeSave($user, $isNew)
 	{
+		// Get application
 		$application = JFactory::getApplication();
+
+		// Get params
 		$params = JComponentHelper::getParams('com_k2');
-		$session = JFactory::getSession();
-		if ($params->get('K2UserProfile') && $isNew && $params->get('recaptchaOnRegistration') && $application->isSite() && !$session->get('socialConnectData'))
+
+		// Get input
+		$isK2UserForm = $application->input->get('K2UserForm', 0, 'int');
+
+		// Process only in front-end. Check all conditions
+		if ($params->get('K2UserProfile') && $isNew && $params->get('recaptchaOnRegistration') && $application->isSite() && $isK2UserForm)
 		{
+			// @TODO Implement captcha based on the new settings....
 			if (!function_exists('_recaptcha_qsencode'))
 			{
 				require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_k2'.DS.'lib'.DS.'recaptchalib.php');
@@ -203,37 +177,24 @@ class PlgUserK2 extends JPlugin
 			$resp = recaptcha_check_answer($privatekey, $_SERVER["REMOTE_ADDR"], $recaptcha_challenge_field, $recaptcha_response_field);
 			if (!$resp->is_valid)
 			{
-				if (K2_JVERSION != '15')
-				{
-					$url = 'index.php?option=com_users&view=registration';
-				}
-				else
-				{
-					$url = 'index.php?option=com_user&view=register';
-				}
+				$url = 'index.php?option=com_users&view=registration';
 				$application->enqueueMessage(JText::_('K2_THE_WORDS_YOU_TYPED_DID_NOT_MATCH_THE_ONES_DISPLAYED_PLEASE_TRY_AGAIN'), 'error');
 				$application->redirect($url);
 			}
 		}
 	}
 
-	private function getK2UserID($id)
-	{
-
-		$db = JFactory::getDBO();
-		$query = "SELECT id FROM #__k2_users WHERE userID={$id}";
-		$db->setQuery($query);
-		$result = $db->loadResult();
-		return $result;
-	}
-
 	private function checkSpammer(&$user)
 	{
+		// Process only if user is not already blocked
 		if (!$user['block'])
 		{
+			// Get data
 			$ip = $_SERVER['REMOTE_ADDR'];
 			$email = urlencode($user['email']);
 			$username = urlencode($user['username']);
+
+			// Use cURL to check user with stopforumspam.com
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, 'http://www.stopforumspam.com/api?ip='.$ip.'&email='.$email.'&username='.$username.'&f=json');
 			curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -242,14 +203,24 @@ class PlgUserK2 extends JPlugin
 			$response = curl_exec($ch);
 			$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			curl_close($ch);
+
+			// Go further only if we have response from the service and it is 200
 			if ($httpCode == 200)
 			{
+				// Convert response to object
 				$response = json_decode($response);
+
+				// Check if user is in spam lists
 				if ($response->ip->appears || $response->email->appears || $response->username->appears)
 				{
-					$db = JFactory::getDBO();
-					$db->setQuery("UPDATE #__users SET block = 1 WHERE id = ".$user['id']);
-					$db->query();
+					// User is in spam lists so block him
+					$db = JFactory::getDbo();
+					$query = $db->getQuery(true);
+					$query->update($db->quoteName('#__users'))->set($db->quoteName('block').' = 1')->where($db->quoteName('id').' = '.(int)$user['id']);
+					$db->setQuery($query);
+					$db->execute();
+
+					// Add the relative note
 					$user['notes'] = JText::_('K2_POSSIBLE_SPAMMER_DETECTED_BY_STOPFORUMSPAM');
 				}
 			}
