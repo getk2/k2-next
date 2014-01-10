@@ -107,7 +107,7 @@ class K2ModelCategories extends K2Model
 			// Set state for access
 			$this->setState('access', $viewlevels);
 		}
-		$query->where($db->quoteName('category.id').' != 0');
+		$query->where($db->quoteName('category.id').' != 1');
 		if ($this->getState('language'))
 		{
 			$query->where($db->quoteName('category.language').' = '.$db->quote($this->getState('language')));
