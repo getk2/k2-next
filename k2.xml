@@ -59,4 +59,21 @@
 	<config>
 		<fields></fields>
 	</config>
+	<modules>
+		<module module="mod_k2_comments" client="site" />
+		<module module="mod_k2_content" client="site" />
+		<module module="mod_k2_tools" client="site" />
+		<module module="mod_k2_users" client="site" />
+		<module module="mod_k2_user" client="site" />
+		<module module="mod_k2_quickicons" client="administrator" />
+		<module module="mod_k2_stats" client="administrator" />
+	</modules>
+	<plugins>
+		<plugin plugin="k2" group="finder" />
+		<plugin plugin="k2" group="search" />
+		<plugin plugin="k2" group="system" />
+		<plugin plugin="k2" group="user" />
+		<plugin plugin="k2category" group="josetta_ext" />
+		<plugin plugin="k2item" group="josetta_ext" />
+	</plugins>
 </extension>
