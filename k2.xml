@@ -20,7 +20,17 @@
 			<file driver="mysqli" charset="utf8">uninstall.sql</file>
 		</sql>
 	</uninstall>
-	<files></files>
+	<files folder="components/com_k2">
+		<folder>controllers</folder>
+		<folder>helpers</folder>
+		<folder>images</folder>
+		<folder>templates</folder>
+		<folder>views</folder>
+		<filename>controller.php</filename>
+		<filename>k2.php</filename>
+		<filename>metadata.xml</filename>
+		<filename>router.php</filename>
+	</files>
 	<administration>
 		<menu>COM_K2</menu>
 		<submenu>
