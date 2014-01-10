@@ -22,90 +22,89 @@ class PlgSystemK2 extends JPlugin
 		// Get application
 		$application = JFactory::getApplication();
 
-		// Base path
-		$basepath = ($application->isSite()) ? JPATH_SITE : JPATH_ADMINISTRATOR;
-
-		$this->loadLanguage('com_k2', $basepath);
-
-		if ($application->isAdmin())
+		// Process only in front-end
+		if ($application->isSite())
 		{
-			return;
-		}
-		if ((JRequest::getCmd('task') == 'add' || JRequest::getCmd('task') == 'edit') && JRequest::getCmd('option') == 'com_k2')
-		{
-			return;
-		}
-		return;
+			// Get params
+			$params = JComponentHelper::getParams('com_k2');
 
-		$params = JComponentHelper::getParams('com_k2');
+			// Get document
+			$document = JFactory::getDocument();
 
-		$document = JFactory::getDocument();
+			// jQuery and K2 JS loading
+			require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/html.php';
+			K2HelperHTML::jQuery();
+			$document->addScript(JURI::root(true).'/components/com_k2/js/k2.js?v2.6.8&amp;sitepath='.JURI::root(true).'/');
 
-		// jQuery and K2 JS loading
-		K2HelperHTML::loadjQuery();
+			// Get task
+			$task = $application->input->get('task');
 
-		$document->addScript(JURI::root(true).'/components/com_k2/js/k2.js?v2.6.8&amp;sitepath='.JURI::root(true).'/');
-		//$document->addScriptDeclaration("var K2SitePath = '".JURI::root(true)."/';");
-
-		if (JRequest::getCmd('task') == 'search' && $params->get('googleSearch'))
-		{
-			$language = JFactory::getLanguage();
-			$lang = $language->getTag();
-			// Fallback to the new container ID without breaking things
-			$googleSearchContainerID = trim($params->get('googleSearchContainer', 'k2GoogleSearchContainer'));
-			if ($googleSearchContainerID == 'k2Container')
+			// Google search integration
+			if ($task == 'search' && $params->get('googleSearch'))
 			{
-				$googleSearchContainerID = 'k2GoogleSearchContainer';
-			}
-			$document->addScript('http://www.google.com/jsapi');
-			$js = '
-			//<![CDATA[
-			google.load("search", "1", {"language" : "'.$lang.'"});
-
-			function OnLoad(){
-				var searchControl = new google.search.SearchControl();
-				var siteSearch = new google.search.WebSearch();
-				siteSearch.setUserDefinedLabel("'.$application->getCfg('sitename').'");
-				siteSearch.setUserDefinedClassSuffix("k2");
-				options = new google.search.SearcherOptions();
-				options.setExpandMode(google.search.SearchControl.EXPAND_MODE_OPEN);
-				siteSearch.setSiteRestriction("'.JURI::root().'");
-				searchControl.addSearcher(siteSearch, options);
-				searchControl.setResultSetSize(google.search.Search.LARGE_RESULTSET);
-				searchControl.setLinkTarget(google.search.Search.LINK_TARGET_SELF);
-				searchControl.draw(document.getElementById("'.$googleSearchContainerID.'"));
-				searchControl.execute("'.JRequest::getString('searchword').'");
+				$language = JFactory::getLanguage();
+				$languageTag = $language->getTag();
+				// Fallback to the new container ID without breaking things
+				$googleSearchContainerID = trim($params->get('googleSearchContainer', 'k2GoogleSearchContainer'));
+				if ($googleSearchContainerID == 'k2Container')
+				{
+					$googleSearchContainerID = 'k2GoogleSearchContainer';
+				}
+				$document->addScript('http://www.google.com/jsapi');
+				$js = '
+				//<![CDATA[
+				google.load("search", "1", {"language" : "'.$languageTag.'"});
+				function OnLoad(){
+					var searchControl = new google.search.SearchControl();
+					var siteSearch = new google.search.WebSearch();
+					siteSearch.setUserDefinedLabel("'.$application->getCfg('sitename').'");
+					siteSearch.setUserDefinedClassSuffix("k2");
+					options = new google.search.SearcherOptions();
+					options.setExpandMode(google.search.SearchControl.EXPAND_MODE_OPEN);
+					siteSearch.setSiteRestriction("'.JURI::root().'");
+					searchControl.addSearcher(siteSearch, options);
+					searchControl.setResultSetSize(google.search.Search.LARGE_RESULTSET);
+					searchControl.setLinkTarget(google.search.Search.LINK_TARGET_SELF);
+					searchControl.draw(document.getElementById("'.$googleSearchContainerID.'"));
+					searchControl.execute("'.$application->input->get('searchword', '', 'string').'");
+				}
+				google.setOnLoadCallback(OnLoad);
+				//]]>
+	 			';
+				$document->addScriptDeclaration($js);
 			}
 
-			google.setOnLoadCallback(OnLoad);
-			//]]>
- 			';
-			$document->addScriptDeclaration($js);
-		}
-
-		// Add related CSS to the <head>
-		if ($document->getType() == 'html' && $params->get('enable_css'))
-		{
-
-			jimport('joomla.filesystem.file');
-
-			// k2.css
-			if (JFile::exists(JPATH_SITE.DS.'templates'.DS.$application->getTemplate().DS.'css'.DS.'k2.css'))
-				$document->addStyleSheet(JURI::root(true).'/templates/'.$application->getTemplate().'/css/k2.css');
-			else
-				$document->addStyleSheet(JURI::root(true).'/components/com_k2/css/k2.css');
-
-			// k2.print.css
-			if (JRequest::getInt('print') == 1)
+			// Add base CSS
+			if ($document->getType() == 'html' && $params->get('enable_css'))
 			{
-				if (JFile::exists(JPATH_SITE.DS.'templates'.DS.$application->getTemplate().DS.'css'.DS.'k2.print.css'))
-					$document->addStyleSheet(JURI::root(true).'/templates/'.$application->getTemplate().'/css/k2.print.css', 'text/css', 'print');
+				// Import filesystem
+				jimport('joomla.filesystem.file');
+
+				// k2.css
+				if (JFile::exists(JPATH_SITE.'/templates/'.$application->getTemplate().'/css/k2.css'))
+				{
+					$document->addStyleSheet(JURI::root(true).'/templates/'.$application->getTemplate().'/css/k2.css');
+				}
 				else
-					$document->addStyleSheet(JURI::root(true).'/components/com_k2/css/k2.print.css', 'text/css', 'print');
+				{
+					$document->addStyleSheet(JURI::root(true).'/components/com_k2/css/k2.css');
+				}
+
+				// k2.print.css
+				$print = $application->input->get('print', false, 'bool');
+				if ($print)
+				{
+					if (JFile::exists(JPATH_SITE.'/templates/'.$application->getTemplate().'/css/k2.print.css'))
+					{
+						$document->addStyleSheet(JURI::root(true).'/templates/'.$application->getTemplate().'/css/k2.print.css', 'text/css', 'print');
+					}
+					else
+					{
+						$document->addStyleSheet(JURI::root(true).'/components/com_k2/css/k2.print.css', 'text/css', 'print');
+					}
+				}
 			}
-
 		}
-
 	}
 
 	// Extend user forms with K2 fields
