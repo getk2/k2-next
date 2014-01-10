@@ -420,6 +420,7 @@ class K2ModelCategories extends K2Model
 
 	protected function onAfterSave(&$data, $table)
 	{
+				
 		// If we have a tmpId we have a new category and we need to handle accordingly uploaded files
 		if (isset($data['tmpId']) && $data['tmpId'])
 		{
