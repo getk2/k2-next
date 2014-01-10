@@ -28,6 +28,9 @@ class Com_K2InstallerScript
 		
 		// Install plugins
         $plugins = $manifest->xpath('plugins/plugin');
+		
+		var_dump($type); var_dump($plugins); die;
+		
         foreach ($plugins as $plugin)
         {
         	// Get plugin variables
