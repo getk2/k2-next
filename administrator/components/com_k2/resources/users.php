@@ -72,27 +72,27 @@ class K2Users extends K2Resource
 		// Prepare generic properties like dates and authors
 		parent::prepare($mode);
 
-		// Prepare specific properties
-		$this->editLink = '#users/edit/'.$this->id;
-
-		// Link
-		$this->link = $this->getLink();
-		
-		// URL
-		$this->url = $this->getUrl();
-
 		if ($this->id)
 		{
+			// Prepare specific properties
+			$this->editLink = '#users/edit/'.$this->id;
+
+			// Link
+			$this->link = $this->getLink();
+
+			// URL
+			$this->url = $this->getUrl();
+
 			$this->enabled = (int)!$this->block;
 			$this->activated = (int)!$this->activation;
 			if (isset($this->groups))
 			{
 				$this->groupsValue = implode(', ', $this->groups);
 			}
-		}
 
-		// Image
-		$this->image = $this->getImage();
+			// Image
+			$this->image = $this->getImage();
+		}
 
 	}
 
@@ -108,7 +108,7 @@ class K2Users extends K2Resource
 		}
 		return JRoute::_(K2HelperRoute::getUserRoute($this->id.':'.$this->alias));
 	}
-	
+
 	public function getFeedLink()
 	{
 		if (JFactory::getConfig()->get('unicodeslugs') == 1)
