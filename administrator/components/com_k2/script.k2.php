@@ -12,7 +12,7 @@ defined('_JEXEC') or die ;
 
 class Com_K2InstallerScript
 {
-    public function install($parent)
+    public function postflight($type, $parent)
     {
     	// Get database
     	$db = JFactory::getDbo();
@@ -39,8 +39,8 @@ class Com_K2InstallerScript
             $installer = new JInstaller;
             $result = $installer->install($path);
            
-		   	// Enable the plugin
-			if($group != 'finder')
+		   	// Enable the plugin. Only for fresh installations, not updates!
+			if($type == 'install' && $group != 'finder')
 			{
 				$query = $db->getQuery(true);
 				$query->update($db->quoteName('#__extensions'))->set($db->quoteName('enabled').' = 1')->where($db->quoteName('type').' = '.$db->quote('plugin'))->where($db->quoteName('element').' = '.$db->quote($name))->where($db->quoteName('folder').' = '.$db->quote($group));
@@ -76,8 +76,8 @@ class Com_K2InstallerScript
 			// Update status
             $status->modules[] = array('name' => $name, 'client' => $client, 'result' => $result);
 			
-			// Publish the administrator modules
-			if($client == 'administrator')
+			// Publish the administrator modules. Only for fresh installations, not updates!
+			if($type == 'install' && $client == 'administrator')
 			{
 				// Detect target position
 				$position = version_compare(JVERSION, '3.0', '<') && $name == 'mod_k2_quickicons'? 'icon' : 'cpanel';
