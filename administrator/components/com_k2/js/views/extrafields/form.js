@@ -16,13 +16,14 @@ define(['marionette', 'text!layouts/extrafields/form.html', 'dispatcher', 'widge
 		},
 		onDomRefresh : function() {
 			this.renderExtraField();
-			K2Widget.updateEvents(this.$el);
 		},
 		renderExtraField : function() {
 			var type = this.$el.find('#type').val();
 			var form = this.model.getForm();
 			var definitions = form.get('definitions');
 			this.$el.find('#appExtraFieldDefinition').html(definitions[type]);
+			K2Widget.updateEvents(this.$el);
+			jQuery(document).trigger('K2ExtraFieldsRender');
 		}
 	});
 	return K2ViewExtraFields;

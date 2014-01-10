@@ -94,7 +94,7 @@ class K2ExtraFields extends K2Resource
 		}
 		return $definition;
 	}
-	
+
 	public function getInput()
 	{
 		$input = '';
@@ -108,7 +108,7 @@ class K2ExtraFields extends K2Resource
 		}
 		return $input;
 	}
-	
+
 	public function getOutput()
 	{
 		$input = '';
@@ -122,4 +122,10 @@ class K2ExtraFields extends K2Resource
 		}
 		return $input;
 	}
+
+	private function escape($string)
+	{
+		return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
+	}
+
 }
