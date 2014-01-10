@@ -22,10 +22,6 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/attachments/list.html', 't
 				this.saveAttachment();
 			}, this);
 		},
-		onRender : function() {
-			console.info(this.model.get('id'));
-		},
-		
 		onDomRefresh : function() {
 			K2Widget.updateEvents(this.$el);
 		},
