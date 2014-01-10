@@ -146,7 +146,8 @@ class K2ModelItems extends K2Model
 		}
 		if (is_numeric($this->getState('state')))
 		{
-			$query->where($db->quoteName('item.state').' = '.(int)$this->getState('state'));
+			$operator = $this->getState('state.operator') ? $this->getState('state.operator') : '=';
+			$query->where($db->quoteName('item.state').' '.$operator.' '.(int)$this->getState('state'));
 		}
 		if (is_numeric($this->getState('featured')))
 		{
