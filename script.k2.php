@@ -241,8 +241,7 @@ class Com_K2InstallerScript
 	{
 	$language = JFactory::getLanguage();
 	$language->load('com_k2');
-	$rows = 0;
- ?>
+	$rows = 0; ?>
         <h2><?php echo JText::_('K2_REMOVAL_STATUS'); ?></h2>
         <table class="adminlist table table-striped">
             <thead>
@@ -286,13 +285,12 @@ class Com_K2InstallerScript
                 <tr class="row<?php echo(++$rows % 2); ?>">
                     <td class="key"><?php echo ucfirst($plugin['name']); ?></td>
                     <td class="key"><?php echo ucfirst($plugin['group']); ?></td>
-                    <td><strong><?php echo ($plugin['result'])?JText::_('K2_REMOVED'):JText::_('K2_NOT_REMOVED'); ?><
-
-/strong></td></tr>
+                    <td><strong><?php echo ($plugin['result'])?JText::_('K2_REMOVED'):JText::_('K2_NOT_REMOVED'); ?></strong></td>
+                </tr>
                 <?php endforeach; ?>
-<?php endif; ?>
-</tbody>
-</table>
+				<?php endif; ?>
+			</tbody>
+		</table>
 <?php
 }
 }
