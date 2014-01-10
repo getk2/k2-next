@@ -91,10 +91,10 @@ class K2ControllerImages extends K2Controller
 			}
 			else if ($type == 'user')
 			{
-				$table = JTable::getInstance('Users', 'K2Table');
-				$table->load($itemId);
-				$table->image = 1;
-				$table->store();
+				$data = array('id' => $itemId, 'image' => 1);
+				$model = K2Model::getInstance('Users');
+				$model->setState('data', $data);
+				$model->save();
 			}
 
 		}

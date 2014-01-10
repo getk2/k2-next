@@ -14,6 +14,8 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/tables/table.php';
 
 class K2TableUsers extends K2Table
 {
+	protected $_autoincrement = false;
+	
 	public function __construct($db)
 	{
 		parent::__construct('#__k2_users', 'id', $db);

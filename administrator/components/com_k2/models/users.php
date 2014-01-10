@@ -277,21 +277,31 @@ class K2ModelUsers extends K2Model
 		$model = JModelLegacy::getInstance('User', 'UsersModel');
 
 		// Prepare some data for the core model
-		if (isset($data['id']) && $data['id'] && !isset($data['block']))
+		if (isset($data['id']) && $data['id'])
 		{
+			// Get the existing data
 			$jUser = JFactory::getUser($data['id']);
-			$data['block'] = $jUser->block;
+			
+			// Set the block if it is not set
+			if(!isset($data['block']))
+			{
+				$data['block'] = $jUser->block;
+			}
+			
+			// Set the groups if they are not set
+			if(!isset($data['groups']))
+			{
+				$data['groups'] = $jUser->getAuthorisedGroups();
+			}
+			
 		}
-
 		// First try to save the Joomla! user data. The model also makes checks for permissions
 		if (!$model->save($data))
 		{
 			$this->setError($model->getError());
 			return false;
 		}
-
-		$data['id'] = $model->getState('user.id');
-
+		
 		// Continue with K2 user data. If profile does not exists create the record before we save the data
 		if (!$table->load($data['id']) && (int)$data['id'] > 0)
 		{
