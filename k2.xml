@@ -9,7 +9,7 @@
 	<version>3.0.0</version>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<description>Thank you for installing K2 by JoomlaWorks, the powerful content extension for Joomla!</description>
-	<scriptfile></scriptfile>
+	<scriptfile>script.k2.php</scriptfile>
 	<install>
 		<sql>
 			<file driver="mysqli" charset="utf8">install.sql</file>
