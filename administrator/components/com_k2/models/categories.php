@@ -498,7 +498,7 @@ class K2ModelCategories extends K2Model
 		}
 
 		// Check for categories that are not trashed in the tree
-		$tree = $table->getTree();
+		$tree = $table->getTree($table->id);
 		foreach ($tree as $category)
 		{
 			if ($category->state != -1)
@@ -520,6 +520,23 @@ class K2ModelCategories extends K2Model
 
 		return true;
 	}
+
+
+	/**
+	 * onAfterDelete method. Hook for chidlren model.
+	 *
+	 * @param   JTable  $table     	The table object.
+	 *
+	 * @return boolean
+	 */
+
+	protected function onAfterDelete($table)
+	{
+
+		// Delete item image
+		K2HelperImages::removeResourceImage('category', $table->id);
+	}
+	
 
 	public function saveOrder($ids, $ordering)
 	{
