@@ -159,6 +159,8 @@ class ModK2ToolsHelper
 		$view = $application->input->get('view', '', 'cmd');
 		$task = $application->input->get('task', '', 'cmd');
 		$id = $application->input->get('id', 0, 'int');
+		$menu = $application->getMenu();
+		$active = $menu->getActive();
 
 		$breadcrumbs = new stdClass;
 		$breadcrumbs->title = '';
@@ -166,43 +168,86 @@ class ModK2ToolsHelper
 		$breadcrumbs->home = $params->get('home', JText::_('K2_HOME'));
 		$breadcrumbs->separator = $params->get('seperator', '&raquo;');
 
+		$pathway = $application->getPathway();
+		$pathwayItems = $pathway->getPathWay();
+
 		if ($option == 'com_k2' && $view == 'item' || ($view == 'itemlist' && $task == 'category'))
 		{
 
 			switch ($view)
 			{
 				case 'item' :
+					// Get item
 					$item = K2Items::getInstance($id);
-					$breadcrumbs->title = $item->title;
-					$categories = explode('/', $item->category->path);
-					foreach ($categories as $alias)
+
+					// Check for menu link
+					$matchItem = $active && isset($active->query['view']) && $active->query['view'] == 'item' && isset($active->query['id']) && $active->query['id'] == $id;
+					$matchCategory = $active && isset($active->query['view']) && $active->query['view'] == 'itemlist' && isset($active->query['task']) && $active->query['task'] == 'category' && isset($active->query['id']) && $active->query['id'] == $item->catid;
+
+					// Handle depending on matches
+					if ($matchItem)
 					{
-						$breadcrumbs->path[] = K2Categories::getInstance($alias);
+						$breadcrumbs->title = end($pathwayItems)->name;
+						foreach ($pathwayItems as $pathwayItem)
+						{
+							$breadcrumbs->path[] = $pathwayItem;
+						}
+						array_pop($breadcrumbs->path);
+					}
+					else if ($matchCategory)
+					{
+						$breadcrumbs->title = $item->title;
+						foreach ($pathwayItems as $pathwayItem)
+						{
+							$breadcrumbs->path[] = $pathwayItem;
+						}
+					}
+					else
+					{
+						$breadcrumbs->title = $item->title;
+						$categories = explode('/', $item->category->path);
+						foreach ($categories as $alias)
+						{
+							$breadcrumbs->path[] = K2Categories::getInstance($alias);
+						}
 					}
 					break;
 
 				case 'itemlist' :
-					$category = K2Categories::getInstance($id);
-					$breadcrumbs->title = $category->title;
-					$categories = explode('/', $category->path);
-					foreach ($categories as $alias)
+
+					// Check for menu link
+					$matchCategory = $active && isset($active->query['view']) && $active->query['view'] == 'itemlist' && isset($active->query['task']) && $active->query['task'] == 'category' && isset($active->query['id']) && $active->query['id'] == $id;
+
+					// Handle depending on matches
+					if ($matchCategory)
 					{
-						$breadcrumbs->path[] = K2Categories::getInstance($alias);
+						$breadcrumbs->title = end($pathwayItems)->name;
+						foreach ($pathwayItems as $pathwayItem)
+						{
+							$breadcrumbs->path[] = $pathwayItem;
+						}
 					}
+					else
+					{
+						$category = K2Categories::getInstance($id);
+						$breadcrumbs->title = $category->title;
+						$categories = explode('/', $category->path);
+						foreach ($categories as $alias)
+						{
+							$breadcrumbs->path[] = K2Categories::getInstance($alias);
+						}
+					}
+					array_pop($breadcrumbs->path);
 					break;
 			}
-
 		}
 		else
 		{
-			$document = JFactory::getDocument();
-			$breadcrumbs->title = $document->getTitle();
-			$pathway = $application->getPathway();
-			$items = $pathway->getPathWay();
-			foreach ($items as $item)
+
+			$breadcrumbs->title = end($pathwayItems);
+			foreach ($pathwayItems as $pathwayItem)
 			{
-				$item->title = $item->name;
-				$breadcrumbs->path[] = $item;
+				$breadcrumbs->path[] = $pathwayItem;
 			}
 			array_pop($breadcrumbs->path);
 		}
@@ -275,12 +320,12 @@ class ModK2ToolsHelper
 			$model->setState('recursive', $filter->recursive);
 		}
 		$tags = $model->getTagCloud();
-		
-		if(!count($tags))
+
+		if (!count($tags))
 		{
 			return $tags;
 		}
-		
+
 		usort($tags, 'self::sortTags');
 		$limit = (int)$params->get('cloud_limit');
 		if ($limit)

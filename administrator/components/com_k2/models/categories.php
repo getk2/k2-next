@@ -292,7 +292,6 @@ class K2ModelCategories extends K2Model
 				}
 			}
 		}
-		$filter[] = 0;
 		return array_unique($filter);
 	}
 
@@ -420,7 +419,7 @@ class K2ModelCategories extends K2Model
 
 	protected function onAfterSave(&$data, $table)
 	{
-				
+
 		// If we have a tmpId we have a new category and we need to handle accordingly uploaded files
 		if (isset($data['tmpId']) && $data['tmpId'])
 		{
@@ -521,7 +520,6 @@ class K2ModelCategories extends K2Model
 		return true;
 	}
 
-
 	/**
 	 * onAfterDelete method. Hook for chidlren model.
 	 *
@@ -536,7 +534,6 @@ class K2ModelCategories extends K2Model
 		// Delete item image
 		K2HelperImages::removeResourceImage('category', $table->id);
 	}
-	
 
 	public function saveOrder($ids, $ordering)
 	{

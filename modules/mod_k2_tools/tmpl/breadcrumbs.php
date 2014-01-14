@@ -18,7 +18,7 @@ defined('_JEXEC') or die ; ?>
 	<?php endif; ?>
 	
 	<?php foreach($breadcrumbs->path as $entry): ?>
-		<a href="<?php echo $entry->link; ?>"><?php echo $entry->title; ?></a><span class="bcSeparator"><?php echo $breadcrumbs->separator; ?></span>
+		<a href="<?php echo $entry->link; ?>"><?php echo $entry->name; ?></a><span class="bcSeparator"><?php echo $breadcrumbs->separator; ?></span>
 	<?php endforeach; ?>
 	
 	<?php echo $breadcrumbs->title; ?>

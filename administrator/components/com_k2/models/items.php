@@ -161,7 +161,12 @@ class K2ModelItems extends K2Model
 		}
 		else if ($this->getState('site'))
 		{
-			$query->where($db->quoteName('item.catid').' IN ('.implode(',', K2ModelCategories::getAuthorised()).')');
+			$authorised = K2ModelCategories::getAuthorised();
+			if(!count($authorised))
+			{
+				$authorised[] = 1;
+			}
+			$query->where($db->quoteName('item.catid').' IN ('.implode(',', $authorised).')');
 		}
 
 		if ($this->getState('access'))

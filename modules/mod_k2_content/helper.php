@@ -79,8 +79,12 @@ class ModK2ContentHelper
 				$model->setState('created.operator', '>');
 			}
 
-			// Fetch only items with media ?
-			$model->setState('media', true);
+			// Fetch only items with media
+			if($params->get('media'))
+			{
+				$model->setState('media', true);
+			}
+			
 			// Set limit
 			$model->setState('limit', $params->get('limit'));
 
