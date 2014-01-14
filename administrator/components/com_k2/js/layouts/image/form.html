@@ -3,11 +3,11 @@
     <%= l('K2_IMAGE') %>
     <% } %>
 </h2>
-<input type="file" name="file" data-widget="uploader" data-url="index.php?option=com_k2&task=images.upload&format=json&itemId=<%- itemId %>&tmpId=<%- tmpId %>&type=<%- type %>" data-callback="image:upload:<%- cid %>" />
+<input type="file" name="file" data-widget="uploader" data-url="index.php?option=com_k2&task=images.upload&format=json&itemId=<%- itemId %>&type=<%- type %>" data-callback="image:upload:<%- cid %>" />
 <% if(type !== 'user') { %>
 <input type="text" name="image[path]" data-widget="browser" data-callback="image:select:<%- cid %>" />
 <% } %>
-<% if(id) { %>
+<% if(src) { %>
 <div>
     <img alt="<%- l('K2_PREVIEW') %>" src="<%- src %>" />
     <button id="appRemoveImage">
@@ -24,3 +24,5 @@
 <input type="text" name="image[credits]" value="<%- credits %>" />
 <% } %>
 <input type="hidden" name="image[id]" value="<%- id %>" />
+<input type="hidden" name="image[temp]" value="<%- temp %>" />
+<input type="hidden" name="image[remove]" value="<%- remove %>" />

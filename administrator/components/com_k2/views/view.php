@@ -147,12 +147,6 @@ class K2View extends JViewLegacy
 		// Get the row
 		$model->setState('id', $id);
 		$row = $model->getRow();
-		
-		// Attach a temporary id for new rows to work with file uploads
-		if (!$id)
-		{
-			$row->tmpId = uniqid();
-		}
 
 		// Set K2 response row
 		K2Response::setRow($row);

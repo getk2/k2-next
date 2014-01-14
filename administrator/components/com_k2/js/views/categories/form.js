@@ -30,9 +30,6 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher', 'widget
 				this.onBeforeSave();
 			}, this);
 
-			// Determine current itemId
-			var itemId = this.model.get('id') || this.model.get('tmpId');
-
 			// Image
 			this.imageView = new K2ViewImageWidget({
 				row : this.model,

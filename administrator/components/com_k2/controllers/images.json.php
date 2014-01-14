@@ -33,8 +33,6 @@ class K2ControllerImages extends K2Controller
 		// Get input
 		$type = $this->input->get('type', '', 'cmd');
 		$itemId = $this->input->get('itemId', 0, 'int');
-		$tmpId = $this->input->get('tmpId', '', 'cmd');
-		$id = $itemId ? $itemId : $tmpId;
 		$file = $this->input->files->get('file');
 		$path = $this->input->get('path', '', 'string');
 		$path = str_replace(JURI::root(true).'/', '', $path);
@@ -63,41 +61,63 @@ class K2ControllerImages extends K2Controller
 		{
 			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'), 403);
 		}
+		
+		// Get session
+		$session = JFactory::getSession();
+		
+		// Get last uploaded temp file value
+		$temp = $session->get('K2Temp') ? $session->get('K2Temp') : false;
 
-		// Add image using helper
-		$image = K2HelperImages::addResourceImage($type, $id, $file, $path);
+		// File system
+		$filesystem = K2FileSystem::getInstance();
 
-		// Update the database if needed
-		if ($itemId)
+		// Save path
+		$savepath = 'media/k2/categories';
+
+		// First delete any previous temp file
+		if ($temp)
 		{
-			JTable::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/tables');
-			if ($type == 'item')
+			$key = $savepath.'/'.$temp.'.jpg';
+			if ($filesystem->has($key))
 			{
-				$table = JTable::getInstance('Items', 'K2Table');
-				$table->load($itemId);
-				$value = json_decode($table->image);
-				$value->flag = 1;
-				$table->image = json_encode($value);
-				$table->store();
+				$filesystem->delete($key);
 			}
-			else if ($type == 'category')
-			{
-				$table = JTable::getInstance('Categories', 'K2Table');
-				$table->load($itemId);
-				$value = json_decode($table->image);
-				$value->flag = 1;
-				$table->image = json_encode($value);
-				$table->store();
-			}
-			else if ($type == 'user')
-			{
-				$data = array('id' => $itemId, 'image' => 1);
-				$model = K2Model::getInstance('Users');
-				$model->setState('data', $data);
-				$model->save();
-			}
-
 		}
+
+		// ImageProcessor
+		$processor = K2ImageProcessor::getInstance();
+
+		// Generate the base file name
+		$baseFileName = uniqid();
+		
+		// Store it to session
+		$session->set('K2Temp', $baseFileName);
+
+		// Get image depending on source
+		if ($path)
+		{
+			$buffer = $filesystem->read($path);
+			$imageResource = $processor->load($buffer);
+		}
+		else
+		{
+			$source = $file['tmp_name'];
+			$imageResource = $processor->open($source);
+		}
+
+		// Write image file
+		$filesystem->write($savepath.'/'.$baseFileName.'.jpg', $imageResource->__toString(), true);
+
+		// Return
+		$response = new stdClass;
+		$response->temp = $baseFileName;
+		$response->preview = JURI::root(true).'/'.$savepath.'/'.$baseFileName.'.jpg?t='.time();
+
+		echo json_encode($response);
+
+		return $this;
+
+		$image = K2HelperImages::addResourceImage($type, $tmpId, $file, $path);
 
 		// Response
 		echo json_encode($image);
@@ -151,38 +171,6 @@ class K2ControllerImages extends K2Controller
 
 		// Remove image using helper
 		K2HelperImages::removeResourceImage($type, $itemId, $id);
-
-		// Update the database if needed
-		if ($itemId)
-		{
-			JTable::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/tables');
-			if ($type == 'item')
-			{
-				$table = JTable::getInstance('Items', 'K2Table');
-				$table->load($itemId);
-				$value = json_decode($table->image);
-				$value->flag = 0;
-				$table->image = json_encode($value);
-				$table->store();
-			}
-			else if ($type == 'category')
-			{
-				$table = JTable::getInstance('Categories', 'K2Table');
-				$table->load($itemId);
-				$value = json_decode($table->image);
-				$value->flag = 0;
-				$table->image = json_encode($value);
-				$table->store();
-			}
-			else if ($type == 'user')
-			{
-				$table = JTable::getInstance('Users', 'K2Table');
-				$table->load($itemId);
-				$table->image = 0;
-				$table->store();
-			}
-
-		}
 
 		// Response
 		K2Response::setResponse(true);

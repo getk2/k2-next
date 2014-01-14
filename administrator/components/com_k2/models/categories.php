@@ -14,6 +14,7 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/model.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/tables/table.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/categories.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/images.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
 
 class K2ModelCategories extends K2Model
 {
@@ -385,10 +386,19 @@ class K2ModelCategories extends K2Model
 		// Image
 		if (isset($data['image']))
 		{
-			$this->setState('imageId', $data['image']['id']);
-			$data['image']['flag'] = (int)(bool)$data['image']['id'];
+			// Detect if category has an image
+			$data['image']['flag'] = (int) (!$data['image']['remove'] && ($data['image']['id'] || $data['image']['temp']));
+			
+			// Store the input of the image to state
+			$this->setState('image', $data['image']);
+			
+			// Unset values we do not want to get stored to our database
 			unset($data['image']['path']);
 			unset($data['image']['id']);
+			unset($data['image']['temp']);
+			unset($data['image']['remove']);
+
+			// Encode the value to JSON
 			$data['image'] = json_encode($data['image']);
 		}
 
@@ -418,23 +428,50 @@ class K2ModelCategories extends K2Model
 	 */
 
 	protected function onAfterSave(&$data, $table)
-	{
-
-		// If we have a tmpId we have a new category and we need to handle accordingly uploaded files
-		if (isset($data['tmpId']) && $data['tmpId'])
+	{				
+		// Image
+		if ($image = $this->getState('image'))
 		{
-			// Image
-			if ($this->getState('imageId'))
-			{
-				require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
-				$filesystem = K2FileSystem::getInstance();
-				$baseSourceFileName = $this->getState('imageId');
-				$baseTargetFileName = md5('Image'.$table->id);
+			// Get file system
+			$filesystem = K2FileSystem::getInstance();
 
-				$path = 'media/k2/categories';
-				$source = $baseSourceFileName.'.jpg';
-				$target = $baseTargetFileName.'.jpg';
-				$filesystem->rename($path.'/'.$source, $path.'/'.$target);
+			// Images path
+			$imagesPath = 'media/k2/categories';
+
+			// Current image
+			$currentImage = md5('Image'.$table->id).'.jpg';
+
+			// Temporary (new) image
+			$newImage = $image['temp'] ? $image['temp'].'.jpg' : false;
+
+			// Category has a new image
+			if ($newImage)
+			{
+				// Delete current image
+				if ($filesystem->has($imagesPath.'/'.$currentImage))
+				{
+					$filesystem->delete($imagesPath.'/'.$currentImage);
+				}
+
+				// Rename new properly
+				$filesystem->rename($imagesPath.'/'.$newImage, $imagesPath.'/'.$currentImage);
+
+			}
+
+			// Category image has been removed
+			if ($image['remove'])
+			{
+				// Delete current image
+				if ($filesystem->has($imagesPath.'/'.$currentImage))
+				{
+					$filesystem->delete($imagesPath.'/'.$currentImage);
+				}
+
+				// Delete temp image
+				if ($newImage && $filesystem->has($imagesPath.'/'.$newImage))
+				{
+					$filesystem->delete($imagesPath.'/'.$newImage);
+				}
 			}
 		}
 

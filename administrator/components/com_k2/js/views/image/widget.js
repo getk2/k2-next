@@ -7,13 +7,14 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 		},
 		defaults : {
 			id : null,
-			tmpId : null,
+			temp : null,
 			itemId : null,
 			type : null,
 			src : null,
 			alt : null,
 			caption : null,
-			credits : null
+			credits : null,
+			remove : 0
 		},
 		urlRoot : 'index.php?option=com_k2&task=images.sync&format=json',
 		url : function() {
@@ -52,16 +53,16 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 		initialize : function(options) {
 
 			this.model = new ImageModel(options.row.get('image'));
-			this.model.set('tmpId', options.row.get('tmpId'));
 			this.model.set('itemId', options.row.get('id'));
 			this.model.set('type', options.type);
-
+			
 			K2Dispatcher.on('image:select:' + this.model.cid, function(path) {
 				this.setImageFromServer(path);
 			}, this);
 
 			K2Dispatcher.on('image:upload:' + this.model.cid, function(e, data) {
-				this.model.set('id', data.result.id);
+				this.model.set('temp', data.result.temp);
+				this.model.set('remove', 0);
 				this.model.set('src', data.result.preview);
 			}, this);
 
@@ -75,16 +76,15 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 		},
 		removeImage : function(event) {
 			event.preventDefault();
-			this.model.destroy();
 			this.model.set('id', null);
 			this.model.set('caption', '');
 			this.model.set('credits', '');
+			this.model.set('remove', 1);
 			this.model.set('src', '');
 
 		},
 		setImageFromServer : function(path) {
 			var data = {};
-			data['tmpId'] = this.model.get('tmpId');
 			data['itemId'] = this.model.get('itemId');
 			data['type'] = this.model.get('type');
 			data['path'] = path;
@@ -96,7 +96,9 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 				url : 'index.php?option=com_k2&task=images.upload&format=json',
 				data : data
 			}).done(function(data, status, xhr) {
-				self.model.set('id', data.id);
+				console.info(data);
+				self.model.set('temp', data.temp);
+				self.model.set('remove', 0);
 				self.model.set('src', data.preview);
 			}).fail(function(xhr, status, error) {
 				K2Dispatcher.trigger('app:message', 'error', xhr.responseText);
