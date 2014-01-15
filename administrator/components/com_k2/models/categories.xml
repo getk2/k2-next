@@ -141,11 +141,7 @@
 			</field>
 		</fieldset>
 		<fieldset name="categoryImageOptions" addfieldpath="/administrator/components/com_k2/fields">
-			<field name="itemImageXS" type="text" default="" label="K2_XSMALL_IMAGE_WIDTH_IN_PX" size="4" description="K2_IF_NO_VALUE_IS_ENTERED_THE_RELATED_SETTING_FROM_THE_COMPONENTS_GLOBAL_PARAMETERS_WILL_BE_RETRIEVED"/>
-			<field name="itemImageS" type="text" default="" label="K2_SMALL_IMAGE_WIDTH_IN_PX" size="4" description="K2_IF_NO_VALUE_IS_ENTERED_THE_RELATED_SETTING_FROM_THE_COMPONENTS_GLOBAL_PARAMETERS_WILL_BE_RETRIEVED"/>
-			<field name="itemImageM" type="text" default="" label="K2_MEDIUM_IMAGE_WIDTH_IN_PX" size="4" description="K2_IF_NO_VALUE_IS_ENTERED_THE_RELATED_SETTING_FROM_THE_COMPONENTS_GLOBAL_PARAMETERS_WILL_BE_RETRIEVED"/>
-			<field name="itemImageL" type="text" default="" label="K2_LARGE_IMAGE_WIDTH_IN_PX" size="4" description="K2_IF_NO_VALUE_IS_ENTERED_THE_RELATED_SETTING_FROM_THE_COMPONENTS_GLOBAL_PARAMETERS_WILL_BE_RETRIEVED"/>
-			<field name="itemImageXL" type="text" default="" label="K2_XLARGE_IMAGE_WIDTH_IN_PX" size="4" description="K2_IF_NO_VALUE_IS_ENTERED_THE_RELATED_SETTING_FROM_THE_COMPONENTS_GLOBAL_PARAMETERS_WILL_BE_RETRIEVED"/>
+			<field name="imageSizes" label="K2_CATEGORY_IMAGE_SIZES" type="k2ImageSizes" />
 		</fieldset>
 		<fieldset name="listingOptions" addfieldpath="/administrator/components/com_k2/fields">
 			<field name="catItemTitle" type="radio" default="1" label="K2_TITLE" description="">
