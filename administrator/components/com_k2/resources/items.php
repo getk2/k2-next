@@ -258,7 +258,7 @@ class K2Items extends K2Resource
 		$images = array();
 		if ($this->id)
 		{
-			$images = K2HelperImages::getResourceImages('item', $this);
+			$images = K2HelperImages::getItemImages($this);
 		}
 		return $images;
 	}

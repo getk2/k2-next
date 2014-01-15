@@ -10,6 +10,7 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 			temp : null,
 			itemId : null,
 			type : null,
+			flag : 0,
 			src : null,
 			alt : null,
 			caption : null,
@@ -55,19 +56,20 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 			this.model = new ImageModel(options.row.get('image'));
 			this.model.set('itemId', options.row.get('id'));
 			this.model.set('type', options.type);
-			
+
 			K2Dispatcher.on('image:select:' + this.model.cid, function(path) {
 				this.setImageFromServer(path);
 			}, this);
 
 			K2Dispatcher.on('image:upload:' + this.model.cid, function(e, data) {
 				this.model.set('temp', data.result.temp);
+				this.model.set('flag', 1);
 				this.model.set('remove', 0);
 				this.model.set('src', data.result.preview);
 			}, this);
 
 			this.on('cleanup', function() {
-				if(this.model.get('temp')) {
+				if (this.model.get('temp')) {
 					this.model.set('id', this.model.get('temp'));
 					this.model.destroy();
 				}
@@ -83,6 +85,7 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 			this.model.set('caption', '');
 			this.model.set('credits', '');
 			this.model.set('remove', 1);
+			this.model.set('flag', 0);
 			this.model.set('src', '');
 
 		},
@@ -101,6 +104,7 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 			}).done(function(data, status, xhr) {
 				self.model.set('temp', data.temp);
 				self.model.set('remove', 0);
+				self.model.set('flag', 1);
 				self.model.set('src', data.preview);
 			}).fail(function(xhr, status, error) {
 				K2Dispatcher.trigger('app:message', 'error', xhr.responseText);

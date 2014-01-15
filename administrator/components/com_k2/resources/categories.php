@@ -117,7 +117,7 @@ class K2Categories extends K2Resource
 
 	public function getImage()
 	{
-		return K2HelperImages::getResourceImages('category', $this);
+		return K2HelperImages::getCategoryImage($this);
 	}
 
 	public function getNumOfItems()

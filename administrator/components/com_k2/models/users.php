@@ -11,6 +11,7 @@
 defined('_JEXEC') or die ;
 
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/model.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/images.php';
 
 class K2ModelUsers extends K2Model
 {
@@ -281,19 +282,19 @@ class K2ModelUsers extends K2Model
 		{
 			// Get the existing data
 			$jUser = JFactory::getUser($data['id']);
-			
+
 			// Set the block if it is not set
-			if(!isset($data['block']))
+			if (!isset($data['block']))
 			{
 				$data['block'] = $jUser->block;
 			}
-			
+
 			// Set the groups if they are not set
-			if(!isset($data['groups']))
+			if (!isset($data['groups']))
 			{
 				$data['groups'] = $jUser->getAuthorisedGroups();
 			}
-			
+
 		}
 		// First try to save the Joomla! user data. The model also makes checks for permissions
 		if (!$model->save($data))
@@ -301,7 +302,7 @@ class K2ModelUsers extends K2Model
 			$this->setError($model->getError());
 			return false;
 		}
-		
+
 		// Continue with K2 user data. If profile does not exists create the record before we save the data
 		if (!$table->load($data['id']) && (int)$data['id'] > 0)
 		{
@@ -354,6 +355,70 @@ class K2ModelUsers extends K2Model
 		{
 			$data['extra_fields'] = json_encode($data['extra_fields']);
 		}
+
+		// Image
+		if (isset($data['image']))
+		{
+			// Detect if category has an image
+			$data['image']['flag'] = (int)(!$data['image']['remove'] && ($data['image']['id'] || $data['image']['temp']));
+
+			// Store the input of the image to state
+			$this->setState('image', $data['image']);
+
+			// Unset values we do not want to get stored to our database
+			unset($data['image']['path']);
+			unset($data['image']['id']);
+			unset($data['image']['temp']);
+			unset($data['image']['remove']);
+
+			// Encode the value to JSON
+			$data['image'] = json_encode($data['image']);
+		}
+
+		return true;
+
+	}
+
+	/**
+	 * onAfterSave method. Hook for chidlren model to save extra data.
+	 *
+	 * @param   array  $data     The data passed to the save function.
+	 * @param   JTable  $table   The table object.
+	 *
+	 * @return boolean
+	 */
+
+	protected function onAfterSave(&$data, $table)
+	{
+
+		// Image
+		if ($image = $this->getState('image'))
+		{
+			// Current image
+			$currentImageId = md5('Image'.$table->id);
+
+			// Temporary (new) image
+			$tempImageId = $image['temp'];
+
+			// Category image has been removed
+			if ($image['remove'])
+			{
+				K2HelperImages::removeUserImage($currentImageId);
+			}
+			else if ($tempImageId)
+			{
+				K2HelperImages::updateUserImage($tempImageId, $currentImageId);
+			}
+
+		}
+
+		// Clean up any temporary files
+		$session = JFactory::getSession();
+		if ($tmpId = $session->get('K2Temp'))
+		{
+			K2HelperImages::removeUserImage($tmpId);
+		}
+
 		return true;
 
 	}
@@ -430,6 +495,9 @@ class K2ModelUsers extends K2Model
 		// Delete statistics entry
 		$statistics = K2Model::getInstance('Statistics', 'K2Model');
 		$statistics->deleteUserEntry($this->getState('id'));
+		
+		// Delete image
+		K2HelperImages::removeUserImage(md5('Image'.$this->getState('id')));
 
 		// Return
 		return true;
@@ -517,7 +585,7 @@ class K2ModelUsers extends K2Model
 		// Return the result
 		return $rows;
 	}
-	
+
 	public function getTopAuthors()
 	{
 		// Get database

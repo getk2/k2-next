@@ -86,7 +86,7 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 		onBeforeClose : function() {
 			// Clean up uploaded files
 			if (this.model.isNew()) {
-				this.imageView.trigger('delete');
+				this.imageView.trigger('cleanup');
 				this.attachmentsView.trigger('delete');
 				this.galleriesView.trigger('delete');
 				this.mediaView.trigger('delete');

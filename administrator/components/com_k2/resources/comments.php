@@ -202,7 +202,7 @@ class K2Comments extends K2Resource
 				$user->image->src = '//www.gravatar.com/avatar/'.md5($this->email).'?s='.$params->get('commenterImgWidth', 48);
 				if ($params->get('userImageDefault'))
 				{
-					$user->image->src .= '&d='.urlencode(JURI::root(false).'/'.K2HelperImages::getPlaceholder('image'));
+					$user->image->src .= '&d='.urlencode(JURI::root(false).'/'.K2HelperImages::getPlaceholder('user'));
 				}
 				$user->image->url = $user->image->src;
 			}

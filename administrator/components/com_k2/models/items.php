@@ -162,7 +162,7 @@ class K2ModelItems extends K2Model
 		else if ($this->getState('site'))
 		{
 			$authorised = K2ModelCategories::getAuthorised();
-			if(!count($authorised))
+			if (!count($authorised))
 			{
 				$authorised[] = 1;
 			}
@@ -577,10 +577,19 @@ class K2ModelItems extends K2Model
 		// Image
 		if (isset($data['image']))
 		{
-			$this->setState('imageId', $data['image']['id']);
-			$data['image']['flag'] = (int)(bool)$data['image']['id'];
+			// Detect if category has an image
+			$data['image']['flag'] = (int)(!$data['image']['remove'] && ($data['image']['id'] || $data['image']['temp']));
+
+			// Store the input of the image to state
+			$this->setState('image', $data['image']);
+
+			// Unset values we do not want to get stored to our database
 			unset($data['image']['path']);
 			unset($data['image']['id']);
+			unset($data['image']['temp']);
+			unset($data['image']['remove']);
+
+			// Encode the value to JSON
 			$data['image'] = json_encode($data['image']);
 		}
 
@@ -672,6 +681,35 @@ class K2ModelItems extends K2Model
 
 	protected function onAfterSave(&$data, $table)
 	{
+
+		// Image
+		if ($image = $this->getState('image'))
+		{
+			// Current image
+			$currentImageId = md5('Image'.$table->id);
+
+			// Temporary (new) image
+			$tempImageId = $image['temp'];
+
+			// Category image has been removed
+			if ($image['remove'])
+			{
+				K2HelperImages::removeItemImage($currentImageId);
+			}
+			else if ($tempImageId)
+			{
+				K2HelperImages::updateItemImage($tempImageId, $currentImageId);
+			}
+
+		}
+
+		// Clean up any temporary files
+		$session = JFactory::getSession();
+		if ($tmpId = $session->get('K2Temp'))
+		{
+			K2HelperImages::removeItemImage($tmpId);
+		}
+
 		// Tags
 		if (isset($data['tags']))
 		{
@@ -683,42 +721,6 @@ class K2ModelItems extends K2Model
 			{
 				$model->tagItem($tag->id, $itemId);
 			}
-		}
-
-		// If we have a tmpId we have a new item and we need to handle accordingly uploaded files
-		if (isset($data['tmpId']) && $data['tmpId'])
-		{
-			// Image
-			if ($this->getState('imageId'))
-			{
-				$sizes = array(
-					'XL' => 600,
-					'L' => 400,
-					'M' => 240,
-					'S' => 180,
-					'XS' => 100
-				);
-
-				$filesystem = K2FileSystem::getInstance();
-				$baseSourceFileName = $this->getState('imageId');
-				$baseTargetFileName = md5('Image'.$table->id);
-
-				// Original image
-				$path = 'media/k2/items/src';
-				$source = $baseSourceFileName.'.jpg';
-				$target = $baseTargetFileName.'.jpg';
-				$filesystem->rename($path.'/'.$source, $path.'/'.$target);
-
-				// Resized images
-				$path = 'media/k2/items/cache';
-				foreach ($sizes as $size => $width)
-				{
-					$source = $baseSourceFileName.'_'.$size.'.jpg';
-					$target = $baseTargetFileName.'_'.$size.'.jpg';
-					$filesystem->rename($path.'/'.$source, $path.'/'.$target);
-				}
-			}
-
 		}
 
 		// If we have a tmpId we need to rename the gallery directory
@@ -849,7 +851,7 @@ class K2ModelItems extends K2Model
 	{
 
 		// Delete item image
-		K2HelperImages::removeResourceImage('item', $table->id);
+		K2HelperImages::removeItemImage(md5('Image'.$table->id));
 
 		// Delete item galleries
 		$galleries = json_decode($this->getState('galleries'));
@@ -937,10 +939,12 @@ class K2ModelItems extends K2Model
 		if ($imageId)
 		{
 			$path = 'media/k2/items/src/'.$imageId.'.jpg';
-			$image = K2HelperImages::addResourceImage('item', $data['tmpId'], null, $path);
+			$image = K2HelperImages::addItemImage(null, $path);
 			$data['image'] = array(
-				'id' => $image->id,
+				'id' => '',
+				'temp' => $image->temp,
 				'path' => '',
+				'remove' => 0,
 				'caption' => $data['image']->caption,
 				'credits' => $data['image']->credits
 			);

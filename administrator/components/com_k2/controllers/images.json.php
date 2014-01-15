@@ -62,8 +62,19 @@ class K2ControllerImages extends K2Controller
 			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'), 403);
 		}
 
-		// Genarate image using helper
-		$image = K2HelperImages::addResourceImage($type, $file, $path);
+		// Generate image using helper depending on type
+		if ($type == 'item')
+		{
+			$image = K2HelperImages::addItemImage($file, $path);
+		}
+		else if ($type == 'category')
+		{
+			$image = K2HelperImages::addCategoryImage($file, $path);
+		}
+		else if ($type == 'user')
+		{
+			$image = K2HelperImages::addUserImage($file, $path);
+		}
 
 		// Response
 		echo json_encode($image);
@@ -89,7 +100,7 @@ class K2ControllerImages extends K2Controller
 		// Get input
 		$input = $this->input;
 		$type = $input->get('type', '', 'cmd');
-		$id = $input->get('id', '', 'cmd');
+		$imageId = $input->get('id', '', 'cmd');
 		$itemId = $input->get('itemId', 0, 'int');
 
 		// Permissions check
@@ -117,8 +128,19 @@ class K2ControllerImages extends K2Controller
 			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'), 403);
 		}
 
-		// Remove image using helper
-		K2HelperImages::removeResourceImage($type, $itemId, $id);
+		// Remove image using helper depending on type
+		if ($type == 'item')
+		{
+			K2HelperImages::removeItemImage($imageId);
+		}
+		else if ($type == 'category')
+		{
+			K2HelperImages::removeCategoryImage($imageId);
+		}
+		else if ($type == 'user')
+		{
+			K2HelperImages::removeUserImage($imageId);
+		}
 
 		// Response
 		K2Response::setResponse(true);

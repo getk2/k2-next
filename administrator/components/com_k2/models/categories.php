@@ -429,60 +429,33 @@ class K2ModelCategories extends K2Model
 
 	protected function onAfterSave(&$data, $table)
 	{
-		// Get file system
-		$filesystem = K2FileSystem::getInstance();
-
-		// Images path
-		$imagesPath = 'media/k2/categories';
 
 		// Image
 		if ($image = $this->getState('image'))
 		{
 			// Current image
-			$currentImage = md5('Image'.$table->id).'.jpg';
+			$currentImageId = md5('Image'.$table->id);
 
 			// Temporary (new) image
-			$newImage = $image['temp'] ? $image['temp'].'.jpg' : false;
-
-			// Category has a new image
-			if ($newImage)
-			{
-				// Delete current image
-				if ($filesystem->has($imagesPath.'/'.$currentImage))
-				{
-					$filesystem->delete($imagesPath.'/'.$currentImage);
-				}
-
-				// Rename new properly
-				$filesystem->rename($imagesPath.'/'.$newImage, $imagesPath.'/'.$currentImage);
-
-			}
+			$tempImageId = $image['temp'];
 
 			// Category image has been removed
 			if ($image['remove'])
 			{
-				// Delete current image
-				if ($filesystem->has($imagesPath.'/'.$currentImage))
-				{
-					$filesystem->delete($imagesPath.'/'.$currentImage);
-				}
-
-				// Delete temp image
-				if ($newImage && $filesystem->has($imagesPath.'/'.$newImage))
-				{
-					$filesystem->delete($imagesPath.'/'.$newImage);
-				}
+				K2HelperImages::removeCategoryImage($currentImageId);
 			}
+			else if ($tempImageId)
+			{
+				K2HelperImages::updateCategoryImage($tempImageId, $currentImageId);
+			}
+
 		}
 
-		// Clean up any temp files
+		// Clean up any temporary files
 		$session = JFactory::getSession();
 		if ($tmpId = $session->get('K2Temp'))
 		{
-			if ($filesystem->has($imagesPath.'/'.$tmpId.'.jpg'))
-			{
-				$filesystem->delete($imagesPath.'/'.$tmpId.'.jpg');
-			}
+			K2HelperImages::removeCategoryImage($tmpId);
 		}
 
 		// Handle trash action
@@ -577,9 +550,10 @@ class K2ModelCategories extends K2Model
 
 	protected function onAfterDelete($table)
 	{
-
 		// Delete item image
-		K2HelperImages::removeResourceImage('category', $table->id);
+		K2HelperImages::removeCategoryImage(md5('Image'.$table->id));
+		
+		return true;
 	}
 
 	public function saveOrder($ids, $ordering)
@@ -623,12 +597,11 @@ class K2ModelCategories extends K2Model
 		// Get source item
 		$source = K2Categories::getInstance($id);
 
-		// Get source item properties as data array. This array will be the inout to the model.
+		// Get source item properties as data array. This array will be the input to the model.
 		$data = get_object_vars($source);
 
 		// It's a new item so reset some properties
 		$data['id'] = '';
-		$data['tmpId'] = uniqid();
 		$data['title'] = JText::_('K2_COPY_OF').' '.$data['title'];
 		$data['alias'] = '';
 		$data['extra_fields'] = json_decode($data['extra_fields']);
@@ -641,10 +614,12 @@ class K2ModelCategories extends K2Model
 		if ($imageId)
 		{
 			$path = 'media/k2/categories/'.$imageId.'.jpg';
-			$image = K2HelperImages::addResourceImage('category', $data['tmpId'], null, $path);
+			$image = K2HelperImages::addCategoryImage(null, $path);
 			$data['image'] = array(
-				'id' => $image->id,
+				'id' => '',
+				'temp' => $image->temp,
 				'path' => '',
+				'remove' => 0,
 				'caption' => $data['image']->caption,
 				'credits' => $data['image']->credits
 			);

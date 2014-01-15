@@ -25,7 +25,7 @@
 <span><%= moderatorName %></span>
 <span><%= modifiedOn %></span>
 <span>
-    <% if(image) { %>
+    <% if(image.flag) { %>
         <a href="<%= image.src %>"><%= l('K2_PREVIEW') %></a>
     <% } %>
 </span>

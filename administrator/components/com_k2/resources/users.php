@@ -137,7 +137,7 @@ class K2Users extends K2Resource
 
 	public function getImage()
 	{
-		return K2HelperImages::getResourceImages('user', $this);
+		return K2HelperImages::getUserImage($this);
 	}
 
 	public function getNumOfComments()
