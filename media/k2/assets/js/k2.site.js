@@ -222,7 +222,6 @@ jQuery(document).ready(function() {
 			},
 			reportUser : function(event) {
 				event.preventDefault();
-				console.info('reportUser');
 			},
 			paginate : function(event) {
 				event.preventDefault();

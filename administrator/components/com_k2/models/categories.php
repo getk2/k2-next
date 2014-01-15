@@ -387,11 +387,11 @@ class K2ModelCategories extends K2Model
 		if (isset($data['image']))
 		{
 			// Detect if category has an image
-			$data['image']['flag'] = (int) (!$data['image']['remove'] && ($data['image']['id'] || $data['image']['temp']));
-			
+			$data['image']['flag'] = (int)(!$data['image']['remove'] && ($data['image']['id'] || $data['image']['temp']));
+
 			// Store the input of the image to state
 			$this->setState('image', $data['image']);
-			
+
 			// Unset values we do not want to get stored to our database
 			unset($data['image']['path']);
 			unset($data['image']['id']);
@@ -428,16 +428,16 @@ class K2ModelCategories extends K2Model
 	 */
 
 	protected function onAfterSave(&$data, $table)
-	{				
+	{
+		// Get file system
+		$filesystem = K2FileSystem::getInstance();
+
+		// Images path
+		$imagesPath = 'media/k2/categories';
+
 		// Image
 		if ($image = $this->getState('image'))
 		{
-			// Get file system
-			$filesystem = K2FileSystem::getInstance();
-
-			// Images path
-			$imagesPath = 'media/k2/categories';
-
 			// Current image
 			$currentImage = md5('Image'.$table->id).'.jpg';
 
@@ -472,6 +472,16 @@ class K2ModelCategories extends K2Model
 				{
 					$filesystem->delete($imagesPath.'/'.$newImage);
 				}
+			}
+		}
+
+		// Clean up any temp files
+		$session = JFactory::getSession();
+		if ($tmpId = $session->get('K2Temp'))
+		{
+			if ($filesystem->has($imagesPath.'/'.$tmpId.'.jpg'))
+			{
+				$filesystem->delete($imagesPath.'/'.$tmpId.'.jpg');
 			}
 		}
 

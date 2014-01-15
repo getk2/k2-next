@@ -61,66 +61,14 @@ class K2ControllerImages extends K2Controller
 		{
 			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'), 403);
 		}
-		
-		// Get session
-		$session = JFactory::getSession();
-		
-		// Get last uploaded temp file value
-		$temp = $session->get('K2Temp') ? $session->get('K2Temp') : false;
 
-		// File system
-		$filesystem = K2FileSystem::getInstance();
-
-		// Save path
-		$savepath = 'media/k2/categories';
-
-		// First delete any previous temp file
-		if ($temp)
-		{
-			$key = $savepath.'/'.$temp.'.jpg';
-			if ($filesystem->has($key))
-			{
-				$filesystem->delete($key);
-			}
-		}
-
-		// ImageProcessor
-		$processor = K2ImageProcessor::getInstance();
-
-		// Generate the base file name
-		$baseFileName = uniqid();
-		
-		// Store it to session
-		$session->set('K2Temp', $baseFileName);
-
-		// Get image depending on source
-		if ($path)
-		{
-			$buffer = $filesystem->read($path);
-			$imageResource = $processor->load($buffer);
-		}
-		else
-		{
-			$source = $file['tmp_name'];
-			$imageResource = $processor->open($source);
-		}
-
-		// Write image file
-		$filesystem->write($savepath.'/'.$baseFileName.'.jpg', $imageResource->__toString(), true);
-
-		// Return
-		$response = new stdClass;
-		$response->temp = $baseFileName;
-		$response->preview = JURI::root(true).'/'.$savepath.'/'.$baseFileName.'.jpg?t='.time();
-
-		echo json_encode($response);
-
-		return $this;
-
-		$image = K2HelperImages::addResourceImage($type, $tmpId, $file, $path);
+		// Genarate image using helper
+		$image = K2HelperImages::addResourceImage($type, $file, $path);
 
 		// Response
 		echo json_encode($image);
+
+		return $this;
 	}
 
 	/**

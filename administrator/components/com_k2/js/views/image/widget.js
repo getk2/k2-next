@@ -66,8 +66,11 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 				this.model.set('src', data.result.preview);
 			}, this);
 
-			this.on('delete', function() {
-				this.model.destroy();
+			this.on('cleanup', function() {
+				if(this.model.get('temp')) {
+					this.model.set('id', this.model.get('temp'));
+					this.model.destroy();
+				}
 			});
 
 		},
@@ -96,7 +99,6 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 				url : 'index.php?option=com_k2&task=images.upload&format=json',
 				data : data
 			}).done(function(data, status, xhr) {
-				console.info(data);
 				self.model.set('temp', data.temp);
 				self.model.set('remove', 0);
 				self.model.set('src', data.preview);

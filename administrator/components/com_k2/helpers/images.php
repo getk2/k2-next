@@ -53,7 +53,7 @@ class K2HelperImages
 		return self::$placeholders[$type];
 	}
 
-	public static function addResourceImage($type, $id, $file, $path)
+	public static function addResourceImage($type, $file, $path)
 	{
 
 		if (!in_array($type, self::getTypes()))
@@ -61,14 +61,47 @@ class K2HelperImages
 			return false;
 		}
 
-		// Filesystem
+		// File system
 		$filesystem = K2FileSystem::getInstance();
 
 		// ImageProcessor
 		$processor = K2ImageProcessor::getInstance();
 
+		// Get session
+		$session = JFactory::getSession();
+
+		// Get last uploaded temp file value
+		$temp = $session->get('K2Temp') ? $session->get('K2Temp') : false;
+
+		// Detect save path based on type
+		switch($type)
+		{
+			case 'category' :
+				$savepath = 'media/k2/categories';
+				break;
+			case 'item' :
+				$savepath = 'media/k2/items';
+				break;
+			case 'user' :
+				$savepath = 'media/k2/users';
+				break;
+		}
+
+		// First delete any previous temp file
+		if ($temp)
+		{
+			$key = $savepath.'/'.$temp.'.jpg';
+			if ($filesystem->has($key))
+			{
+				$filesystem->delete($key);
+			}
+		}
+
 		// Generate the base file name
-		$baseFileName = md5('Image'.$id);
+		$baseFileName = uniqid();
+
+		// Store it to session
+		$session->set('K2Temp', $baseFileName);
 
 		// Get image depending on source
 		if ($path)
@@ -97,7 +130,7 @@ class K2HelperImages
 
 		// Return
 		$result = new stdClass;
-		$result->id = $baseFileName;
+		$result->temp = $baseFileName;
 		$result->preview = $preview;
 		return $result;
 	}

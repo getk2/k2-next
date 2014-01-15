@@ -75,7 +75,7 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher', 'widget
 			// Is it new?
 			if (this.model.isNew()) {
 				// Delete any uploaded images
-				this.imageView.trigger('delete');
+				this.imageView.trigger('cleanup');
 			}
 		},
 
