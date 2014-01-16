@@ -61,9 +61,9 @@ class K2HelperImages
 
 		if (isset($value->flag) && $value->flag)
 		{
-			$category = K2Categories::getInstance($item->catid);
-			$sizes = (array)$category->params->get('imageSizes');
-		
+			$params = JComponentHelper::getParams('com_k2');
+			$sizes = (array)$params->get('imageSizes');
+
 			$id = md5('Image'.$item->id);
 			$timestamp = JFactory::getDate($item->modified)->toUnix();
 			foreach ($sizes as $size)
@@ -83,7 +83,7 @@ class K2HelperImages
 		return $images;
 	}
 
-	public static function addItemImage($file, $path, $categoryId = null)
+	public static function addItemImage($file, $path)
 	{
 		// Settings
 		$params = JComponentHelper::getParams('com_k2');
@@ -100,13 +100,8 @@ class K2HelperImages
 		// Save path
 		$savepath = self::$paths['item'];
 
-		// Get available sizes from category
-		$sizes = array();
-		if ($categoryId)
-		{
-			$category = K2Categories::getInstance($categoryId);
-			$sizes = (array)$category->params->get('imageSizes');
-		}
+		// Get available sizes from settings
+		$sizes = (array)$params->get('imageSizes');
 
 		// Clean up
 		if ($tempImageId = $session->get('K2Temp'))
@@ -160,7 +155,7 @@ class K2HelperImages
 			$imageResource = $processor->load($originalImageBuffer);
 			$imageResource->resize($imageResource->getSize()->widen($size->width));
 			$buffer = $imageResource->get('jpeg', array('quality' => $size->quality));
-			
+
 			// Write image file
 			$filesystem->write($savepath.'/cache/'.$imageId.'_'.$size->id.'.jpg', $buffer, true);
 		}
@@ -173,7 +168,7 @@ class K2HelperImages
 
 	}
 
-	public static function updateItemImage($sourceImageId, $targetImageId, $categoryId = null)
+	public static function updateItemImage($sourceImageId, $targetImageId)
 	{
 		// File system
 		$filesystem = K2FileSystem::getInstance();
@@ -191,12 +186,8 @@ class K2HelperImages
 		$filesystem->rename($savepath.'/src/'.$source, $savepath.'/src/'.$target);
 
 		// Resized images
-		$sizes = array();
-		if ($categoryId)
-		{
-			$category = K2Categories::getInstance($categoryId);
-			$sizes = (array)$category->params->get('imageSizes');
-		}
+		$params = JComponentHelper::getParams('com_k2');
+		$sizes = (array)$params->get('imageSizes');
 		foreach ($sizes as $size)
 		{
 			$source = $sourceImageId.'_'.$size->id.'.jpg';
@@ -209,7 +200,7 @@ class K2HelperImages
 		}
 	}
 
-	public static function removeItemImage($imageId, $categoryId = null)
+	public static function removeItemImage($imageId)
 	{
 		// File system
 		$filesystem = K2FileSystem::getInstance();
@@ -225,12 +216,8 @@ class K2HelperImages
 		}
 
 		// Resized images
-		$sizes = array();
-		if ($categoryId)
-		{
-			$category = K2Categories::getInstance($categoryId);
-			$sizes = (array)$category->params->get('imageSizes');
-		}
+		$params = JComponentHelper::getParams('com_k2');
+		$sizes = (array)$params->get('imageSizes');
 		foreach ($sizes as $size)
 		{
 			$key = $savepath.'/cache/'.$imageId.'_'.$size->id.'.jpg';

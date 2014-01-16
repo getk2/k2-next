@@ -33,7 +33,6 @@ class K2ControllerImages extends K2Controller
 		// Get input
 		$type = $this->input->get('type', '', 'cmd');
 		$itemId = $this->input->get('itemId', 0, 'int');
-		$categoryId = $this->input->get('categoryId', 0, 'int');
 		$file = $this->input->files->get('file');
 		$path = $this->input->get('path', '', 'string');
 		$path = str_replace(JURI::root(true).'/', '', $path);
@@ -66,7 +65,7 @@ class K2ControllerImages extends K2Controller
 		// Generate image using helper depending on type
 		if ($type == 'item')
 		{
-			$image = K2HelperImages::addItemImage($file, $path, $categoryId);
+			$image = K2HelperImages::addItemImage($file, $path);
 		}
 		else if ($type == 'category')
 		{
@@ -103,7 +102,6 @@ class K2ControllerImages extends K2Controller
 		$type = $input->get('type', '', 'cmd');
 		$imageId = $input->get('id', '', 'cmd');
 		$itemId = $input->get('itemId', 0, 'int');
-		$categoryId = $this->input->get('categoryId', 0, 'int');
 
 		// Permissions check
 		if ($itemId)
@@ -133,7 +131,7 @@ class K2ControllerImages extends K2Controller
 		// Remove image using helper depending on type
 		if ($type == 'item')
 		{
-			K2HelperImages::removeItemImage($imageId, $categoryId);
+			K2HelperImages::removeItemImage($imageId);
 		}
 		else if ($type == 'category')
 		{

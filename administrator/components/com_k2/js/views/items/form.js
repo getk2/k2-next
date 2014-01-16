@@ -98,9 +98,6 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 			var value = this.$el.find('#catid').val();
 			// Extra fields
 			this.extraFieldsView.trigger('filter', value);
-			
-			// Image
-			this.imageView.model.set('categoryId', value);
 		},
 		
 		onRender : function() {

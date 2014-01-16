@@ -694,11 +694,11 @@ class K2ModelItems extends K2Model
 			// Category image has been removed
 			if ($image['remove'])
 			{
-				K2HelperImages::removeItemImage($currentImageId, $table->catid);
+				K2HelperImages::removeItemImage($currentImageId);
 			}
 			else if ($tempImageId)
 			{
-				K2HelperImages::updateItemImage($tempImageId, $currentImageId, $table->catid);
+				K2HelperImages::updateItemImage($tempImageId, $currentImageId);
 			}
 
 		}
@@ -707,7 +707,7 @@ class K2ModelItems extends K2Model
 		$session = JFactory::getSession();
 		if ($tmpId = $session->get('K2Temp'))
 		{
-			K2HelperImages::removeItemImage($tmpId, $table->catid);
+			K2HelperImages::removeItemImage($tmpId);
 		}
 
 		// Tags
@@ -852,7 +852,7 @@ class K2ModelItems extends K2Model
 	{
 
 		// Delete item image
-		K2HelperImages::removeItemImage(md5('Image'.$table->id), $this->getState('categoryId'));
+		K2HelperImages::removeItemImage(md5('Image'.$table->id));
 
 		// Delete item galleries
 		$galleries = json_decode($this->getState('galleries'));

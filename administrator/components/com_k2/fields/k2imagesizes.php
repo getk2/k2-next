@@ -18,7 +18,6 @@ class JFormFieldK2ImageSizes extends JFormField
 
 	public function getInput()
 	{
-		
 		$output = '
 		<div id="'.$this->id.'">
 		<span class="k2ImageSizesPlaceholder" style="display:none;">
@@ -35,6 +34,7 @@ class JFormFieldK2ImageSizes extends JFormField
 			
 			foreach ($this->value as $entry)
 			{
+				$entry = (object) $entry;
 				$counter++;
 				$output .= '
 				<li>

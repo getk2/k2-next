@@ -49,14 +49,12 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 			'input input[name="image[credits]"]' : 'updateCredits'
 		},
 		modelEvents : {
-			'change:src' : 'render',
-			'change:categoryId' : 'render'
+			'change:src' : 'render'
 		},
 		initialize : function(options) {
 
 			this.model = new ImageModel(options.row.get('image'));
 			this.model.set('itemId', options.row.get('id'));
-			this.model.set('categoryId', options.row.get('catid'));
 			this.model.set('type', options.type);
 
 			K2Dispatcher.on('image:select:' + this.model.cid, function(path) {
@@ -95,7 +93,6 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 			var data = {};
 			data['itemId'] = this.model.get('itemId');
 			data['type'] = this.model.get('type');
-			data['categoryId'] = this.model.get('categoryId');
 			data['path'] = path;
 			data[K2SessionToken] = 1;
 			var self = this;
