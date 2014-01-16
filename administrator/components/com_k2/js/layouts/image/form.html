@@ -3,7 +3,7 @@
     <%= l('K2_IMAGE') %>
     <% } %>
 </h2>
-<input type="file" name="file" data-widget="uploader" data-url="index.php?option=com_k2&task=images.upload&format=json&itemId=<%- itemId %>&type=<%- type %>" data-callback="image:upload:<%- cid %>" />
+<input type="file" name="file" data-widget="uploader" data-url="index.php?option=com_k2&task=images.upload&format=json&itemId=<%- itemId %>&type=<%- type %>&categoryId=<%- categoryId %>" data-callback="image:upload:<%- cid %>" />
 <% if(type !== 'user') { %>
 <input type="text" name="image[path]" data-widget="browser" data-callback="image:select:<%- cid %>" />
 <% } %>

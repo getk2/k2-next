@@ -16,7 +16,7 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 
 		// UI events
 		events : {
-			'change #catid' : 'updateExtraFields'
+			'change #catid' : 'updateCategory'
 		},
 
 		modelEvents : {
@@ -93,9 +93,14 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 			}
 		},
 
-		updateExtraFields : function(event) {
+		updateCategory : function(event) {
 			event.preventDefault();
-			this.extraFieldsView.trigger('filter', this.$el.find('#catid').val());
+			var value = this.$el.find('#catid').val();
+			// Extra fields
+			this.extraFieldsView.trigger('filter', value);
+			
+			// Image
+			this.imageView.model.set('categoryId', value);
 		},
 		
 		onRender : function() {

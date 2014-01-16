@@ -61,34 +61,29 @@ class K2HelperImages
 
 		if (isset($value->flag) && $value->flag)
 		{
-			// Sizes
-			$sizes = array(
-				'XL' => 600,
-				'L' => 400,
-				'M' => 240,
-				'S' => 180,
-				'XS' => 100
-			);
+			$category = K2Categories::getInstance($item->catid);
+			$sizes = (array)$category->params->get('imageSizes');
+		
 			$id = md5('Image'.$item->id);
 			$timestamp = JFactory::getDate($item->modified)->toUnix();
-			foreach ($sizes as $size => $width)
+			foreach ($sizes as $size)
 			{
 				$image = new stdClass;
 				$image->id = $id;
-				$image->src = JURI::root(true).'/'.$savepath.'/cache/'.$id.'_'.$size.'.jpg?t='.$timestamp;
-				$image->url = JURI::root(false).$savepath.'/cache/'.$id.'_'.$size.'.jpg?t='.$timestamp;
+				$image->src = JURI::root(true).'/'.$savepath.'/cache/'.$id.'_'.$size->id.'.jpg?t='.$timestamp;
+				$image->url = JURI::root(false).$savepath.'/cache/'.$id.'_'.$size->id.'.jpg?t='.$timestamp;
 				$image->alt = $value->caption ? $value->caption : $item->title;
 				$image->caption = $value->caption;
 				$image->credits = $value->credits;
 				$image->flag = 1;
-				$images[$size] = $image;
+				$images[$size->id] = $image;
 			}
 		}
 		// Return
 		return $images;
 	}
 
-	public static function addItemImage($file, $path, $imageId = null)
+	public static function addItemImage($file, $path, $categoryId = null)
 	{
 		// Settings
 		$params = JComponentHelper::getParams('com_k2');
@@ -105,14 +100,13 @@ class K2HelperImages
 		// Save path
 		$savepath = self::$paths['item'];
 
-		// Get available sizes
-		$sizes = array(
-			'XL' => 600,
-			'L' => 400,
-			'M' => 240,
-			'S' => 180,
-			'XS' => 100
-		);
+		// Get available sizes from category
+		$sizes = array();
+		if ($categoryId)
+		{
+			$category = K2Categories::getInstance($categoryId);
+			$sizes = (array)$category->params->get('imageSizes');
+		}
 
 		// Clean up
 		if ($tempImageId = $session->get('K2Temp'))
@@ -125,9 +119,9 @@ class K2HelperImages
 			}
 
 			// Clean temporary resized images
-			foreach ($sizes as $size => $width)
+			foreach ($sizes as $size)
 			{
-				$key = $savepath.'/cache/'.$tempImageId.'_'.$size.'.jpg';
+				$key = $savepath.'/cache/'.$tempImageId.'_'.$size->id.'.jpg';
 				if ($filesystem->has($key))
 				{
 					$filesystem->delete($key);
@@ -136,15 +130,11 @@ class K2HelperImages
 
 		}
 
-		// Handle image id
-		if (is_null($imageId))
-		{
-			// Generate it
-			$imageId = uniqid();
+		// Generate image id
+		$imageId = uniqid();
 
-			// Store it to session
-			$session->set('K2Temp', $imageId);
-		}
+		// Store it to session
+		$session->set('K2Temp', $imageId);
 
 		// Get image depending on source
 		if ($path)
@@ -160,29 +150,30 @@ class K2HelperImages
 
 		// Original image
 		$quality = $params->get('imagesQuality', 100);
-		$buffer = $imageResource->get('jpeg', array('quality' => $quality));
-		$filesystem->write($savepath.'/src/'.$imageId.'.jpg', $buffer, true);
+		$originalImageBuffer = $imageResource->get('jpeg', array('quality' => $quality));
+		$filesystem->write($savepath.'/src/'.$imageId.'.jpg', $originalImageBuffer, true);
 
 		// Resized images
-		foreach ($sizes as $size => $width)
+		foreach ($sizes as $size)
 		{
 			// Resize
-			$imageResource->resize($imageResource->getSize()->widen($width));
-			$buffer = $imageResource->get('jpeg', array('quality' => $quality));
-
+			$imageResource = $processor->load($originalImageBuffer);
+			$imageResource->resize($imageResource->getSize()->widen($size->width));
+			$buffer = $imageResource->get('jpeg', array('quality' => $size->quality));
+			
 			// Write image file
-			$filesystem->write($savepath.'/cache/'.$imageId.'_'.$size.'.jpg', $buffer, true);
+			$filesystem->write($savepath.'/cache/'.$imageId.'_'.$size->id.'.jpg', $buffer, true);
 		}
 
 		// Return
 		$result = new stdClass;
 		$result->temp = $imageId;
-		$result->preview = JURI::root(true).'/'.$savepath.'/cache/'.$imageId.'_M.jpg?t='.time();
+		$result->preview = JURI::root(true).'/'.$savepath.'/cache/'.$imageId.'_'.$size->id.'.jpg?t='.time();
 		return $result;
 
 	}
 
-	public static function updateItemImage($sourceImageId, $targetImageId)
+	public static function updateItemImage($sourceImageId, $targetImageId, $categoryId = null)
 	{
 		// File system
 		$filesystem = K2FileSystem::getInstance();
@@ -200,17 +191,16 @@ class K2HelperImages
 		$filesystem->rename($savepath.'/src/'.$source, $savepath.'/src/'.$target);
 
 		// Resized images
-		$sizes = array(
-			'XL' => 600,
-			'L' => 400,
-			'M' => 240,
-			'S' => 180,
-			'XS' => 100
-		);
-		foreach ($sizes as $size => $width)
+		$sizes = array();
+		if ($categoryId)
 		{
-			$source = $sourceImageId.'_'.$size.'.jpg';
-			$target = $targetImageId.'_'.$size.'.jpg';
+			$category = K2Categories::getInstance($categoryId);
+			$sizes = (array)$category->params->get('imageSizes');
+		}
+		foreach ($sizes as $size)
+		{
+			$source = $sourceImageId.'_'.$size->id.'.jpg';
+			$target = $targetImageId.'_'.$size->id.'.jpg';
 			if ($filesystem->has($savepath.'/cache/'.$target))
 			{
 				$filesystem->delete($savepath.'/cache/'.$target);
@@ -219,7 +209,7 @@ class K2HelperImages
 		}
 	}
 
-	public static function removeItemImage($imageId)
+	public static function removeItemImage($imageId, $categoryId = null)
 	{
 		// File system
 		$filesystem = K2FileSystem::getInstance();
@@ -235,16 +225,15 @@ class K2HelperImages
 		}
 
 		// Resized images
-		$sizes = array(
-			'XL' => 600,
-			'L' => 400,
-			'M' => 240,
-			'S' => 180,
-			'XS' => 100
-		);
-		foreach ($sizes as $size => $width)
+		$sizes = array();
+		if ($categoryId)
 		{
-			$key = $savepath.'/cache/'.$imageId.'_'.$size.'.jpg';
+			$category = K2Categories::getInstance($categoryId);
+			$sizes = (array)$category->params->get('imageSizes');
+		}
+		foreach ($sizes as $size)
+		{
+			$key = $savepath.'/cache/'.$imageId.'_'.$size->id.'.jpg';
 			if ($filesystem->has($key))
 			{
 				$filesystem->delete($key);
@@ -292,7 +281,7 @@ class K2HelperImages
 		return $image;
 	}
 
-	public static function addCategoryImage($file, $path, $imageId = null)
+	public static function addCategoryImage($file, $path)
 	{
 		// Params
 		$params = JComponentHelper::getParams('com_k2');
@@ -319,15 +308,11 @@ class K2HelperImages
 			}
 		}
 
-		// Handle image id
-		if (is_null($imageId))
-		{
-			// Generate it
-			$imageId = uniqid();
+		// Generate image id
+		$imageId = uniqid();
 
-			// Store it to session
-			$session->set('K2Temp', $imageId);
-		}
+		// Store it to session
+		$session->set('K2Temp', $imageId);
 
 		// Get image depending on source
 		if ($path)
@@ -443,7 +428,7 @@ class K2HelperImages
 		return $image;
 	}
 
-	public static function addUserImage($file, $path, $imageId = null)
+	public static function addUserImage($file, $path)
 	{
 		// Params
 		$params = JComponentHelper::getParams('com_k2');
@@ -470,15 +455,11 @@ class K2HelperImages
 			}
 		}
 
-		// Handle image id
-		if (is_null($imageId))
-		{
-			// Generate it
-			$imageId = uniqid();
+		// Generate image id
+		$imageId = uniqid();
 
-			// Store it to session
-			$session->set('K2Temp', $imageId);
-		}
+		// Store it to session
+		$session->set('K2Temp', $imageId);
 
 		// Get image depending on source
 		if ($path)
