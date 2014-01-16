@@ -691,15 +691,18 @@ class K2ModelItems extends K2Model
 			// Temporary (new) image
 			$tempImageId = $image['temp'];
 
-			// Category image has been removed
+			// Item image has been removed
 			if ($image['remove'])
 			{
 				K2HelperImages::removeItemImage($currentImageId);
 			}
 			else if ($tempImageId)
 			{
-				K2HelperImages::updateItemImage($tempImageId, $currentImageId, $table->catid);
+				K2HelperImages::updateItemImage($tempImageId, $currentImageId);
 			}
+
+			// Resize the images using the helper. Helper will only resize images if there are category overrides
+			//K2HelperImages::resizeItemImage($currentImageId, $table->catid);
 
 		}
 

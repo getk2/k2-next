@@ -61,11 +61,13 @@ class K2HelperImages
 
 		if (isset($value->flag) && $value->flag)
 		{
+			$id = md5('Image'.$item->id);
+			$timestamp = JFactory::getDate($item->modified)->toUnix();
+
 			$params = JComponentHelper::getParams('com_k2');
 			$sizes = (array)$params->get('imageSizes');
 
-			$id = md5('Image'.$item->id);
-			$timestamp = JFactory::getDate($item->modified)->toUnix();
+			// Add resized images to the array
 			foreach ($sizes as $size)
 			{
 				$image = new stdClass;
@@ -79,6 +81,18 @@ class K2HelperImages
 				$image->flag = 1;
 				$images[$size->id] = $image;
 			}
+
+			// Add the source image to the array
+			$image = new stdClass;
+			$image->id = $id;
+			$image->src = JURI::root(true).'/'.$savepath.'/src/'.$id.'.jpg?t='.$timestamp;
+			$image->url = JURI::root(false).$savepath.'/src/'.$id.'.jpg?t='.$timestamp;
+			$image->alt = $value->caption ? $value->caption : $item->title;
+			$image->caption = $value->caption;
+			$image->credits = $value->credits;
+			$image->flag = 1;
+			$images['src'] = $image;
+
 		}
 		// Return
 		return $images;
@@ -219,7 +233,7 @@ class K2HelperImages
 				$filesystem->delete($savepath.'/cache/'.$target);
 			}
 
-			// Check for category override
+			// Check for category overrides
 			if (array_key_exists($size->id, $overrides) && (int)$size->width != (int)$overrides[$size->id])
 			{
 				// We have overrides so we need to resize the temp resized images before renaming
@@ -231,6 +245,13 @@ class K2HelperImages
 
 			$filesystem->rename($savepath.'/cache/'.$source, $savepath.'/cache/'.$target);
 		}
+	}
+
+	public static function resizeItemImage($imageId, $categoryId)
+	{
+		// Get sizes from global settings
+		$params = JComponentHelper::getParams('com_k2');
+		$sizes = (array)$params->get('imageSizes');
 	}
 
 	public static function removeItemImage($imageId)
