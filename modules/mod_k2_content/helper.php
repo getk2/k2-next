@@ -35,7 +35,7 @@ class ModK2ContentHelper
 		{
 			// Category filter
 			$model->setState('category.filter', $params->get('filter'));
-			
+
 			// Featured
 			if ($params->get('featured') == 2)
 			{
@@ -80,11 +80,11 @@ class ModK2ContentHelper
 			}
 
 			// Fetch only items with media
-			if($params->get('media'))
+			if ($params->get('media'))
 			{
 				$model->setState('media', true);
 			}
-			
+
 			// Set limit
 			$model->setState('limit', $params->get('limit'));
 
@@ -105,6 +105,12 @@ class ModK2ContentHelper
 			if ($params->get('itemIntroTextWordLimit'))
 			{
 				$item->introtext = K2HelperUtilities::wordLimit($item->introtext, $params->get('itemIntroTextWordLimit'));
+			}
+
+			// Set the selected image as default
+			if ($params->get('itemImgSize') && array_key_exists($params->get('itemImgSize'), $item->images))
+			{
+				$item->image = $item->images[$params->get('itemImgSize')];
 			}
 		}
 

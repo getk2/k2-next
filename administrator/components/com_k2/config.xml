@@ -211,13 +211,7 @@
 			<option value="0">K2_HIDE</option>
 			<option value="1">K2_SHOW</option>
 		</field>
-		<field menu="hide" name="feedImgSize" type="list" default="S" label="K2_IMAGE_SIZE_FOR_ITEMS" description="">
-			<option value="XS">K2_XSMALL</option>
-			<option value="S">K2_SMALL</option>
-			<option value="M">K2_MEDIUM</option>
-			<option value="L">K2_LARGE</option>
-			<option value="XL">K2_XLARGE</option>
-		</field>
+		<field menu="hide" name="feedImgSize" type="k2ImageSizes" label="K2_IMAGE_SIZE_FOR_ITEMS" description="" />
 		<field menu="hide" name="feedItemIntroText" type="radio" default="1" label="K2_ITEM_INTROTEXT" description="">
 			<option value="0">K2_HIDE</option>
 			<option value="1">K2_SHOW</option>
@@ -270,7 +264,7 @@
 	<fieldset name="COM_K2_IMAGES_OPTIONS" label="K2_IMAGES" addfieldpath="/administrator/components/com_k2/fields">
 		<!-- ######################### Image Settings ######################### -->
 		<field menu="hide" name="imagesQuality" type="text" default="100" size="4" label="K2_QUALITY_USED_WHEN_PROCESSING_IMAGES" description="" />
-		<field menu="hide" name="imageSizes" label="K2_ITEM_IMAGE_SIZES" type="k2ImageSizes" />
+		<field menu="hide" name="imageSizes" k2mode="definition" label="K2_ITEM_IMAGE_SIZES" type="k2ImageSizes" />
 		<field menu="hide" name="catImageWidth" type="text" default="100" size="4" label="K2_CATEGORY_IMAGE_WIDTH_IN_PX" description="" />
 		<field menu="hide" name="catImageDefault" type="radio" default="1" label="K2_PLACEHOLDER_IMAGE_FOR_CATEGORY_IF_NONE_EXISTS" description="">
 			<option value="0">K2_HIDE</option>
@@ -299,13 +293,7 @@
 		<!-- ######################### Social Settings ######################### -->
 		<field menu="hide" name="socialButtonCode" type="textarea" default="" filter="raw" label="K2_SOCIAL_BUTTON_CODE" description="K2_PASTE_HTML_CODE_HERE_TO_INTEGRATE_SERVICES_LIKE_ADD_THIS_OR_SHARE_THIS_IN_THE_ITEM_PAGE" rows="8" cols="40" />
 		<field menu="hide" name="twitterUsername" type="text" default="" label="K2_YOUR_TWITTER_USERNAME" description="K2_ENTER_YOUR_TWITTER_USERNAME_ACCOUNT_TO_ENABLE_TWITTER_BUTTON_PERSONALIZATION" />
-		<field menu="hide" name="facebookImage" type="list" default="Medium" label="K2_FACEBOOK_IMAGE_SIZE" description="K2_FACEBOOK_IMAGE_SIZE_DESC">
-			<option value="XSmall">K2_XSMALL</option>
-			<option value="Small">K2_SMALL</option>
-			<option value="Medium">K2_MEDIUM</option>
-			<option value="Large">K2_LARGE</option>
-			<option value="XLarge">K2_XLARGE</option>
-		</field>
+		<field menu="hide" name="facebookImage" type="k2ImageSizes" label="K2_FACEBOOK_IMAGE_SIZE" description="K2_FACEBOOK_IMAGE_SIZE_DESC" />
 	</fieldset>
 	<fieldset name="COM_K2_COMMENTS_OPTIONS" label="K2_COMMENTS" addfieldpath="/administrator/components/com_k2/fields">
 		<!-- ######################### Comments ######################### -->

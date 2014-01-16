@@ -181,14 +181,7 @@
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemImgSize" type="list" default="" label="K2_IMAGE_SIZE" description="">
-				<option value="">K2_INHERIT_FROM_CATEGORY</option>
-				<option value="XSmall">K2_XSMALL</option>
-				<option value="Small">K2_SMALL</option>
-				<option value="Medium">K2_MEDIUM</option>
-				<option value="Large">K2_LARGE</option>
-				<option value="XLarge">K2_XLARGE</option>
-			</field>
+			<field name="itemImgSize" type="k2ImageSizes" label="K2_IMAGE_SIZE" description="" />
 			<field name="itemImageMainCaption" type="list" default="" label="K2_IMAGE_CAPTION" description="">
 				<option value="">K2_INHERIT_FROM_CATEGORY</option>
 				<option value="0">K2_HIDE</option>
@@ -346,15 +339,7 @@
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemRelatedImageSize" type="list" default="" label="K2_RELATED_ITEMS_IMAGE" description="">
-				<option value="">K2_INHERIT_FROM_CATEGORY</option>
-				<option value="0">K2_NONE_SELECTED</option>
-				<option value="XSmall">K2_XSMALL</option>
-				<option value="Small">K2_SMALL</option>
-				<option value="Medium">K2_MEDIUM</option>
-				<option value="Large">K2_LARGE</option>
-				<option value="XLarge">K2_XLARGE</option>
-			</field>
+			<field name="itemRelatedImageSize" type="k2ImageSizes" label="K2_RELATED_ITEMS_IMAGE" description="" />
 			<field name="itemRelatedIntrotext" type="list" default="" label="K2_RELATED_ITEMS_INTROTEXT" description="">
 				<option value="">K2_INHERIT_FROM_CATEGORY</option>
 				<option value="0">K2_HIDE</option>

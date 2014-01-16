@@ -92,13 +92,7 @@
 					<option value="0">K2_HIDE</option>
 					<option value="1">K2_SHOW</option>
 				</field>
-				<field name="itemImgSize" type="list" default="Small" label="K2_IMAGE_SIZE" description="">
-					<option value="XSmall">K2_XSMALL</option>
-					<option value="Small">K2_SMALL</option>
-					<option value="Medium">K2_MEDIUM</option>
-					<option value="Large">K2_LARGE</option>
-					<option value="XLarge">K2_XLARGE</option>
-				</field>
+				<field name="itemImgSize" type="k2ImageSizes" label="K2_IMAGE_SIZE" description="" />
 				<field name="itemVideo" type="radio" default="1" label="K2_VIDEO" description="">
 					<option value="0">K2_HIDE</option>
 					<option value="1">K2_SHOW</option>
