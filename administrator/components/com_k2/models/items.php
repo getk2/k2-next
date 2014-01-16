@@ -698,7 +698,7 @@ class K2ModelItems extends K2Model
 			}
 			else if ($tempImageId)
 			{
-				K2HelperImages::updateItemImage($tempImageId, $currentImageId);
+				K2HelperImages::updateItemImage($tempImageId, $currentImageId, $table->catid);
 			}
 
 		}

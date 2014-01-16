@@ -263,13 +263,24 @@ class K2Items extends K2Resource
 		return $images;
 	}
 
-	public function getImage()
+	public function getImage($size = null)
 	{
+		$image = null;
 		if (!isset($this->images))
 		{
 			$this->images = $this->getImages();
 		}
-		$image = (isset($this->images['M'])) ? $this->images['M'] : null;
+		if (count($this->images))
+		{
+			if (is_null($size))
+			{
+				$image = end($this->images);
+			}
+			else if (array_key_exists($size, $this->images))
+			{
+				$image = $this->images[$size];
+			}
+		}
 		return $image;
 	}
 

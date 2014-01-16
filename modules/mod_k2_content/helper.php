@@ -108,10 +108,7 @@ class ModK2ContentHelper
 			}
 
 			// Set the selected image as default
-			if ($params->get('itemImgSize') && array_key_exists($params->get('itemImgSize'), $item->images))
-			{
-				$item->image = $item->images[$params->get('itemImgSize')];
-			}
+			$item->image = $item->getImage($params->get('itemImgSize'));
 		}
 
 		// Set the avatar width if it's inherited from component settings

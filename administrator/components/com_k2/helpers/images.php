@@ -75,6 +75,7 @@ class K2HelperImages
 				$image->alt = $value->caption ? $value->caption : $item->title;
 				$image->caption = $value->caption;
 				$image->credits = $value->credits;
+				$image->width = $size->width;
 				$image->flag = 1;
 				$images[$size->id] = $image;
 			}
@@ -168,10 +169,13 @@ class K2HelperImages
 
 	}
 
-	public static function updateItemImage($sourceImageId, $targetImageId)
+	public static function updateItemImage($sourceImageId, $targetImageId, $categoryId = null)
 	{
 		// File system
 		$filesystem = K2FileSystem::getInstance();
+
+		// ImageProcessor
+		$processor = K2ImageProcessor::getInstance();
 
 		// Save path
 		$savepath = self::$paths['item'];
@@ -183,11 +187,29 @@ class K2HelperImages
 		{
 			$filesystem->delete($savepath.'/src/'.$target);
 		}
+		$originalImageBuffer = $filesystem->read($savepath.'/src/'.$source);
 		$filesystem->rename($savepath.'/src/'.$source, $savepath.'/src/'.$target);
 
-		// Resized images
+		// Get sizes from global settings
 		$params = JComponentHelper::getParams('com_k2');
 		$sizes = (array)$params->get('imageSizes');
+
+		// Check for category overrides
+		$overrides = array();
+		if ($categoryId)
+		{
+			$category = K2Categories::getInstance($categoryId);
+			$categorySizes = (array)$category->params->get('imageSizes');
+			foreach ($categorySizes as $categorySize)
+			{
+				if ((int)$categorySize->width > 0)
+				{
+					$overrides[$categorySize->id] = (int)$categorySize->width;
+				}
+			}
+		}
+
+		// Resized images
 		foreach ($sizes as $size)
 		{
 			$source = $sourceImageId.'_'.$size->id.'.jpg';
@@ -196,6 +218,17 @@ class K2HelperImages
 			{
 				$filesystem->delete($savepath.'/cache/'.$target);
 			}
+
+			// Check for category override
+			if (array_key_exists($size->id, $overrides) && (int)$size->width != (int)$overrides[$size->id])
+			{
+				// We have overrides so we need to resize the temp resized images before renaming
+				$imageResource = $processor->load($originalImageBuffer);
+				$imageResource->resize($imageResource->getSize()->widen($overrides[$size->id]));
+				$buffer = $imageResource->get('jpeg', array('quality' => $size->quality));
+				$filesystem->write($savepath.'/cache/'.$source, $buffer, true);
+			}
+
 			$filesystem->rename($savepath.'/cache/'.$source, $savepath.'/cache/'.$target);
 		}
 	}
