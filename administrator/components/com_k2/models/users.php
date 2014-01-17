@@ -214,7 +214,6 @@ class K2ModelUsers extends K2Model
 		// Get some variables
 		$table = $this->getTable();
 		$data = $this->getState('data');
-
 		// Check permissions
 		$user = JFactory::getUser();
 		$id = (isset($data['id'])) ? $data['id'] : 0;
@@ -225,37 +224,41 @@ class K2ModelUsers extends K2Model
 			// Actions
 			$canEdit = $user->authorise('core.edit', 'com_users') || $user->id == $id;
 			$canEditState = $user->authorise('core.edit.state', 'com_users');
+			$isRegistration = $id && $user->guest && $this->getState('site');
 
-			// User cannot edit the user neither it's state. Stop the process
-			if (!$canEdit && !$canEditState)
+			if (!$isRegistration)
 			{
-				$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
-				return false;
-			}
-			else
-			{
-				// Store the input states values in case we need them after
-				$block = $data['block'];
-				$activation = $data['activation'];
-
-				// User cannot edit the item. Reset the input
-				if (!$canEdit)
+				// User cannot edit the user neither it's state. Stop the process
+				if (!$canEdit && !$canEditState)
 				{
-					$data = array();
-					$data['id'] = $table->id;
-				}
-
-				// Set the states values depending on permissions
-				if ($canEditState)
-				{
-					$data['block'] = $block;
-					$data['activation'] = $activation;
+					$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
+					return false;
 				}
 				else
 				{
-					$jUser = JFactory::getUser($data['id']);
-					$data['block'] = $jUser->block;
-					$data['activation'] = $jUser->activation;
+					// Store the input states values in case we need them after
+					$block = $data['block'];
+					$activation = $data['activation'];
+
+					// User cannot edit the item. Reset the input
+					if (!$canEdit)
+					{
+						$data = array();
+						$data['id'] = $table->id;
+					}
+
+					// Set the states values depending on permissions
+					if ($canEditState)
+					{
+						$data['block'] = $block;
+						$data['activation'] = $activation;
+					}
+					else
+					{
+						$jUser = JFactory::getUser($data['id']);
+						$data['block'] = $jUser->block;
+						$data['activation'] = $jUser->activation;
+					}
 				}
 			}
 
@@ -269,38 +272,41 @@ class K2ModelUsers extends K2Model
 			}
 		}
 
-		// Load core users language files
-		$language = JFactory::getLanguage();
-		$language->load('com_users');
-
-		// Get core users model
-		JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_users/models');
-		$model = JModelLegacy::getInstance('User', 'UsersModel');
-
-		// Prepare some data for the core model
-		if (isset($data['id']) && $data['id'])
+		if (!$this->getState('site'))
 		{
-			// Get the existing data
-			$jUser = JFactory::getUser($data['id']);
+			// Load core users language files
+			$language = JFactory::getLanguage();
+			$language->load('com_users');
 
-			// Set the block if it is not set
-			if (!isset($data['block']))
+			// Get core users model
+			JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_users/models');
+			$model = JModelLegacy::getInstance('User', 'UsersModel');
+
+			// Prepare some data for the core model
+			if (isset($data['id']) && $data['id'])
 			{
-				$data['block'] = $jUser->block;
-			}
+				// Get the existing data
+				$jUser = JFactory::getUser($data['id']);
 
-			// Set the groups if they are not set
-			if (!isset($data['groups']))
+				// Set the block if it is not set
+				if (!isset($data['block']))
+				{
+					$data['block'] = $jUser->block;
+				}
+
+				// Set the groups if they are not set
+				if (!isset($data['groups']))
+				{
+					$data['groups'] = $jUser->getAuthorisedGroups();
+				}
+
+			}
+			// First try to save the Joomla! user data. The model also makes checks for permissions
+			if (!$model->save($data))
 			{
-				$data['groups'] = $jUser->getAuthorisedGroups();
+				$this->setError($model->getError());
+				return false;
 			}
-
-		}
-		// First try to save the Joomla! user data. The model also makes checks for permissions
-		if (!$model->save($data))
-		{
-			$this->setError($model->getError());
-			return false;
 		}
 
 		// Continue with K2 user data. If profile does not exists create the record before we save the data
@@ -495,7 +501,7 @@ class K2ModelUsers extends K2Model
 		// Delete statistics entry
 		$statistics = K2Model::getInstance('Statistics', 'K2Model');
 		$statistics->deleteUserEntry($this->getState('id'));
-		
+
 		// Delete image
 		K2HelperImages::removeUserImage(md5('Image'.$this->getState('id')));
 

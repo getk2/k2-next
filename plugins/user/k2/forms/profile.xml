@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fields name="k2Profile">
+		<fieldset name="k2Profile" label="K2_PERSONAL_DETAILS" addfieldpath="/administrator/components/com_k2/fields">
+			<field name="gender" label="K2_GENDER" type="radio" default="m" required="true">
+				<option value="m">K2_MALE</option>
+				<option value="f">K2_FEMALE</option>
+			</field>
+			<field name="description" type="editor" label="K2_DESCRIPTION" cols="30" rows="5" filter="safehtml"/>
+			<field name="image" type="k2userimage" label="K2_USER_IMAGE_AVATAR" />
+			<field name="site" type="url" filter="url" label="K2_URL" />
+		</fieldset>
+	</fields>
+</form>

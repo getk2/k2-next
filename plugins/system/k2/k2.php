@@ -117,7 +117,7 @@ class PlgSystemK2 extends JPlugin
 		$params = JComponentHelper::getParams('com_k2');
 
 		// Process only in front-end and only if K2 user profiles are enabled
-		if ($application->isSite() && $params->get('K2UserProfile'))
+		if ($application->isSite() && $params->get('K2UserProfile') == 'legacy')
 		{
 
 			// Get user

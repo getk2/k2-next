@@ -244,7 +244,7 @@ class ModK2ToolsHelper
 		else
 		{
 
-			$breadcrumbs->title = end($pathwayItems);
+			$breadcrumbs->title = end($pathwayItems)->name;
 			foreach ($pathwayItems as $pathwayItem)
 			{
 				$breadcrumbs->path[] = $pathwayItem;

@@ -420,6 +420,7 @@ class K2HelperImages
 			$image->id = md5('Image'.$user->id);
 			$image->src = JURI::root(true).'/'.$savepath.'/'.$image->id.'.jpg';
 			$image->url = JURI::root(false).$savepath.'/'.$image->id.'.jpg';
+			$image->alt = $user->name;
 			$image->flag = 1;
 		}
 		else if ($params->get('userImageDefault'))
@@ -428,6 +429,7 @@ class K2HelperImages
 			$image = new stdClass;
 			$image->src = JURI::root(true).'/'.$placeholder;
 			$image->url = JURI::root(false).$placeholder;
+			$image->alt = $user->name;
 			$image->flag = 0;
 		}
 		if ($params->get('gravatar') && !$image->flag)
@@ -442,6 +444,7 @@ class K2HelperImages
 				$image->src .= '?d='.urlencode($image->url);
 			}
 			$image->url = $image->src;
+			$image->alt = $user->name;
 			$image->flag = 0;
 		}
 		return $image;
@@ -500,7 +503,7 @@ class K2HelperImages
 
 		// Write image file
 		$filesystem->write($savepath.'/'.$imageId.'.jpg', $buffer, true);
-
+		
 		// Return
 		$result = new stdClass;
 		$result->temp = $imageId;

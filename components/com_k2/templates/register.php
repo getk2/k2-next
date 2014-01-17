@@ -113,12 +113,7 @@ JHtml::_('behavior.formvalidation');
 					<label id="imagemsg" for="image"><?php echo JText::_( 'K2_USER_IMAGE_AVATAR' ); ?></label>
 				</td>
 				<td>
-					<input type="file" id="image" name="image"/>
-					<?php if ($this->K2User->image): ?>
-					<img class="k2AdminImage" src="<?php echo $this->K2User->image->src; ?>" alt="<?php echo $this->user->name; ?>" />
-					<input type="checkbox" name="del_image" id="del_image" />
-					<label for="del_image"><?php echo JText::_('K2_CHECK_THIS_BOX_TO_DELETE_CURRENT_IMAGE_OR_JUST_UPLOAD_A_NEW_IMAGE_TO_REPLACE_THE_EXISTING_ONE'); ?></label>
-					<?php endif; ?>
+					<input type="file" name="image"/>
 				</td>
 			</tr>
 			<tr>

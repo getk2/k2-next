@@ -10,6 +10,8 @@
 // no direct access
 defined('_JEXEC') or die ;
 
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/users.php';
+
 /**
  * K2 User plugin
  */
@@ -17,7 +19,133 @@ defined('_JEXEC') or die ;
 class PlgUserK2 extends JPlugin
 {
 
-	public function onUserAfterSave($user, $isnew, $success, $msg)
+	/**
+	 * @param   string     $context  The context for the data
+	 * @param   integer    $data     The user id
+	 *
+	 * @return  boolean
+	 *
+	 * @since   1.6
+	 */
+	public function onContentPrepareData($context, $data)
+	{
+
+		// Get application
+		$application = JFactory::getApplication();
+
+		// Valid contexts
+		$contexts = array(
+			'com_users.profile',
+			'com_users.user',
+			'com_users.registration',
+			'com_admin.profile'
+		);
+
+		// Condition
+		if ($application->isSite() && in_array($context, $contexts) && is_object($data))
+		{
+			$userId = isset($data->id) ? $data->id : 0;
+			if (!isset($data->k2Profile) and $userId > 0)
+			{
+				$k2User = K2Users::getInstance($userId);
+				$data->k2Profile = array();
+				$data->k2Profile['description'] = $k2User->description;
+				$data->k2Profile['image'] = $k2User->image;
+				$data->k2Profile['site'] = $k2User->site;
+				$data->k2Profile['gender'] = $k2User->gender;
+			}
+			JHtml::register('users.description', 'PlgUserK2::description');
+			JHtml::register('users.image', 'PlgUserK2::image');
+			JHtml::register('users.gender', 'PlgUserK2::gender');
+			JHtml::register('users.site', 'PlgUserK2::site');
+		}
+		return true;
+	}
+
+	/**
+	 * @param   JForm    $form    The form to be altered.
+	 * @param   array    $data    The associated data for the form.
+	 *
+	 * @return  boolean
+	 * @since   1.6
+	 */
+	public function onContentPrepareForm($form, $data)
+	{
+		// Get application
+		$application = JFactory::getApplication();
+
+		// Get settings
+		$params = JComponentHelper::getParams('com_k2');
+
+		// Get form name
+		$name = $form->getName();
+
+		// Valid forms
+		$forms = array(
+			'com_admin.profile',
+			'com_users.user',
+			'com_users.profile',
+			'com_users.registration'
+		);
+
+		// Rendering condition
+		if ($application->isSite() && $params->get('K2UserProfile') == 'native' && in_array($name, $forms))
+		{
+			// Add K2 profile fields to the form
+			JForm::addFormPath(__DIR__.'/forms');
+			$form->loadFile('profile', false);
+		}
+
+		// Return
+		return true;
+	}
+
+	public static function description($value)
+	{
+		return $value;
+	}
+
+	public static function image($value)
+	{
+		return '<img alt="'.htmlspecialchars($value->alt).'" src="'.$value->src.'"/>';
+	}
+
+	public static function gender($value)
+	{
+		if ($value == 'm')
+		{
+			return JText::_('K2_MALE');
+		}
+		else if ($value == 'f')
+		{
+			return JText::_('K2_FEMALE');
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	public static function site($value)
+	{
+		if (empty($value))
+		{
+			return JHtml::_('users.value', $value);
+		}
+		else
+		{
+			if (substr($value, 0, 4) == "http")
+			{
+				return '<a href="'.$value.'">'.$value.'</a>';
+			}
+			else
+			{
+				return '<a href="http://'.$value.'">'.$value.'</a>';
+			}
+		}
+	}
+
+	public function onUserAfterSave($data, $isNew, $result, $error)
 	{
 		// Get application
 		$application = JFactory::getApplication();
@@ -33,45 +161,86 @@ class PlgUserK2 extends JPlugin
 		if ($application->isSite())
 		{
 			// Check spammer for activation and registrations. Only in front-end
-			if (($task == 'activate' || $isnew) && $params->get('stopForumSpam'))
+			if (($task == 'activate' || $isNew) && $params->get('stopForumSpam'))
 			{
-				$this->checkSpammer($user);
+				$this->checkSpammer($data);
 			}
 
-			// Save K2 user profile for new users
-			if ($task != 'activate' && $isK2UserForm)
+			// Save K2 user profile
+			if ($task != 'activate' && ($params->get('K2UserProfile') == 'native' || ($params->get('K2UserProfile') == 'legacy' && $isK2UserForm)))
 			{
-				// Load K2 language file
-				$this->loadLanguage('com_k2');
-
 				// Get model
 				$model = K2Model::getInstance('Users');
 
 				// Get input data
-				$data = $application->input->getArray();
+				$input = $data;
 
-				// Pass data to the model
-				$this->model->setState('data', $data);
-
-				// Save
-				$result = $this->model->save();
-
-				// Redirect
-				$itemid = $params->get('redirect');
-
-				if (!$isnew && $itemid)
+				// Convert plugin data to normal input so our model can save it
+				if (isset($data['k2Profile']))
 				{
-					$menu = $application->getMenu();
-					$item = $menu->getItem($itemid);
-					$url = JRoute::_($item->link.'&Itemid='.$itemid, false);
-					if (JURI::isInternal($url))
+					foreach ($data['k2Profile'] as $name => $value)
 					{
-						$application->enqueueMessage(JText::_('K2_YOUR_SETTINGS_HAVE_BEEN_SAVED'));
-						$application->redirect($url);
+						$input[$name] = $value;
 					}
 				}
+
+				if (!isset($input['image']))
+				{
+					$input['image'] = array();
+					$input['image']['remove'] = 0;
+					$input['image']['flag'] = 0;
+				}
+
+				if (!$input['image']['remove'])
+				{
+					// Get files
+					$files = $application->input->files->get('jform');
+					if (isset($files['k2Profile']) && $files['k2Profile']['image']['tmp_name'])
+					{
+						$file = $files['k2Profile']['image'];
+						$image = K2HelperImages::addUserImage($file, null);
+						$input['image']['flag'] = 1;
+						$input['image']['temp'] = $image->temp;
+					}
+				}
+				else
+				{
+					$input['image']['flag'] = 0;
+				}
+
+				// Pass data to the model
+				$model->setState('data', $input);
+				$model->setState('site', true);
+
+				// Save
+				if (!$model->save())
+				{
+					$this->_subject->setError($model->getError());
+					return false;
+				}
+
+				// Redirect
+				if ($params->get('K2UserProfile') == 'legacy')
+				{
+					$itemid = $params->get('redirect');
+
+					if (!$isNew && $itemid)
+					{
+						$menu = $application->getMenu();
+						$item = $menu->getItem($itemid);
+						$url = JRoute::_($item->link.'&Itemid='.$itemid, false);
+						if (JURI::isInternal($url))
+						{
+							$application->enqueueMessage(JText::_('K2_YOUR_SETTINGS_HAVE_BEEN_SAVED'));
+							$application->redirect($url);
+						}
+					}
+				}
+
 			}
 		}
+
+		return true;
 
 	}
 
