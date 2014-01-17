@@ -113,7 +113,7 @@ JHtml::_('behavior.formvalidation');
 					<label id="imagemsg" for="image"><?php echo JText::_( 'K2_USER_IMAGE_AVATAR' ); ?></label>
 				</td>
 				<td>
-					<input type="file" name="image"/>
+					<input type="file" name="jform[k2Profile][image]"/>
 				</td>
 			</tr>
 			<tr>
@@ -121,7 +121,7 @@ JHtml::_('behavior.formvalidation');
 					<label for="site"><?php echo JText::_('K2_URL'); ?></label>
 				</td>
 				<td>
-					<input type="text" size="50" value="<?php echo $this->K2User->site; ?>" name="site" id="site"/>
+					<input type="text" size="50" value="<?php echo $this->K2User->site; ?>" name="jform[k2Profile][site]" id="site"/>
 				</td>
 			</tr>
 			<?php if(count(array_filter($this->K2Plugins))): ?>

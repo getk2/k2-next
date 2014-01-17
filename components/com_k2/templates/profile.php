@@ -104,10 +104,10 @@ defined('_JEXEC') or die;
 					<label id="imagemsg" for="image"><?php echo JText::_( 'K2_USER_IMAGE_AVATAR' ); ?></label>
 				</td>
 				<td>
-					<input type="file" name="image"/>
+					<input type="file" name="jform[k2Profile][image]"/>
 					<?php if ($this->K2User->image): ?>
 					<img src="<?php echo $this->K2User->image->src; ?>" alt="<?php echo $this->user->name; ?>" />
-					<input type="checkbox" name="image[remove]" id="k2UserImageRemove" />
+					<input type="checkbox" name="jform[k2Profile][image][remove]" id="k2UserImageRemove" />
 					<label for="k2UserImageRemove"><?php echo JText::_('K2_CHECK_THIS_BOX_TO_DELETE_CURRENT_IMAGE_OR_JUST_UPLOAD_A_NEW_IMAGE_TO_REPLACE_THE_EXISTING_ONE'); ?></label>
 					<?php endif; ?>
 				</td>
@@ -117,7 +117,7 @@ defined('_JEXEC') or die;
 					<label id="urlmsg" for="url"><?php echo JText::_('K2_URL'); ?></label>
 				</td>
 				<td>
-					<input type="text" size="50" value="<?php echo $this->K2User->url; ?>" name="url" id="url"/>
+					<input type="text" size="50" value="<?php echo $this->K2User->url; ?>" name="jform[k2Profile][site]" id="url"/>
 				</td>
 			</tr>
 			<?php if(count(array_filter($this->K2Plugins))): ?>

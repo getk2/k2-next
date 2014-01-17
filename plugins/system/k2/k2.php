@@ -182,13 +182,13 @@ class PlgSystemK2 extends JPlugin
 
 				// Editor for user text field
 				$wysiwyg = JFactory::getEditor();
-				$editor = $wysiwyg->display('description', $K2User->description, '100%', '250px', '', '', false);
+				$editor = $wysiwyg->display('jform[k2Profile][description]', $K2User->description, '100%', '250px', '', '', false);
 
 				// Gender field
 				$lists = array();
 				$genderOptions[] = JHTML::_('select.option', 'm', JText::_('K2_MALE'));
 				$genderOptions[] = JHTML::_('select.option', 'f', JText::_('K2_FEMALE'));
-				$lists['gender'] = JHTML::_('select.radiolist', $genderOptions, 'gender', '', 'value', 'text');
+				$lists['gender'] = JHTML::_('select.radiolist', $genderOptions, 'jform[k2Profile][gender]', '', 'value', 'text');
 
 				// Assign variables to view
 				$view->assignRef('editor', $editor);
@@ -259,13 +259,13 @@ class PlgSystemK2 extends JPlugin
 
 					// Editor for user text field
 					$wysiwyg = JFactory::getEditor();
-					$editor = $wysiwyg->display('description', $K2User->description, '100%', '250px', '', '', false);
+					$editor = $wysiwyg->display('jform[k2Profile][description]', $K2User->description, '100%', '250px', '', '', false);
 
 					// Gender field
 					$lists = array();
 					$genderOptions[] = JHTML::_('select.option', 'm', JText::_('K2_MALE'));
 					$genderOptions[] = JHTML::_('select.option', 'f', JText::_('K2_FEMALE'));
-					$lists['gender'] = JHTML::_('select.radiolist', $genderOptions, 'gender', '', 'value', 'text', $K2User->gender);
+					$lists['gender'] = JHTML::_('select.radiolist', $genderOptions, 'jform[k2Profile][gender]', '', 'value', 'text', $K2User->gender);
 
 					// Assign variables to view
 					$view->assignRef('editor', $editor);

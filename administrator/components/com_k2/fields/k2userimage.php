@@ -41,6 +41,10 @@ class JFormFieldK2UserImage extends JFormField
 			<label for="k2UserImageRemove">'.JText::_('K2_CHECK_THIS_BOX_TO_DELETE_CURRENT_IMAGE_OR_JUST_UPLOAD_A_NEW_IMAGE_TO_REPLACE_THE_EXISTING_ONE').'</label>
 			</div>';
 		}
+		else 
+		{
+			$output .= '<input type="hidden" name="'.$this->name.'[remove]" value="" />';
+		}
 
 		return $output;
 	}

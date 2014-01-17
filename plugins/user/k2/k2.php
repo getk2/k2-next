@@ -183,12 +183,11 @@ class PlgUserK2 extends JPlugin
 						$input[$name] = $value;
 					}
 				}
-
-				if (!isset($input['image']))
+				
+				if(!isset($input['image']))
 				{
 					$input['image'] = array();
 					$input['image']['remove'] = 0;
-					$input['image']['flag'] = 0;
 				}
 
 				if (!$input['image']['remove'])
@@ -206,6 +205,7 @@ class PlgUserK2 extends JPlugin
 				else
 				{
 					$input['image']['flag'] = 0;
+					$input['image']['temp'] = false;
 				}
 
 				// Pass data to the model
