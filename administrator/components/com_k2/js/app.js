@@ -3,6 +3,16 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'vie
 	// Override the default Backbone.Sync implementation
 	require(['sync']);
 
+	// Keep alive
+	(function keepAlive() {
+		jQuery.ajax({
+			url : 'index.php',
+			complete : function() {
+				setTimeout(keepAlive, K2SessionTimeout);
+			}
+		});
+	})();
+
 	// Initialize the application
 	var K2 = new Marionette.Application();
 

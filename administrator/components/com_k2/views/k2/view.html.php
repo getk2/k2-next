@@ -26,13 +26,24 @@ class K2ViewK2 extends JViewLegacy
 			JHtml::_('jquery.framework');
 		}
 		
+		// Load the CSS
 		$document->addStyleSheet(JURI::root(true).'/administrator/components/com_k2/css/k2.css');
 
-		// Add the session token and the editor
+		// Add javascript variables
 		$document->addScriptDeclaration('var K2SessionToken = "'.JSession::getFormToken().'";');
 		$document->addScriptDeclaration('var K2Editor = '.$this->getEditor().';');
 		$document->addScriptDeclaration('var K2SitePath = "'.JURI::root(true).'";');
 		$document->addScriptDeclaration('var K2Language = '.$this->getLanguage().';');
+		
+		// Calculate session lifetime
+		$config = JFactory::getConfig();
+		$lifetime = ($config->get('lifetime') * 60000);
+		$refreshTime = ($lifetime <= 60000) ? 30000 : $lifetime - 60000;
+		if ($refreshTime > 3600000 || $refreshTime <= 0)
+		{
+			$refreshTime = 3600000;
+		}
+		$document->addScriptDeclaration('var K2SessionTimeout = '.$refreshTime.';');
 
 		// Load the application
 		$document->addCustomTag('<script data-main="'.JURI::base(true).'/components/com_k2/js/boot" src="'.JURI::base(true).'/components/com_k2/js/require.js"></script>');

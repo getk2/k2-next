@@ -1,6 +1,6 @@
 <div class="appAttachment">
     <label><%= l('K2_FILE') %></label>
-    <input type="file" data-widget="uploader" data-url="index.php?option=com_k2&task=attachments.upload&id=<%- id %>&itemId=<%- itemId %>&tmpId=<%- tmpId %>&format=json" data-callback="attachments:upload:<%- cid %>" name="file" />
+    <input type="file" data-widget="uploader" data-url="index.php?option=com_k2&task=attachments.upload&id=<%- id %>&itemId=<%- itemId %>&format=json" data-callback="attachments:upload:<%- cid %>" name="file" />
     <input type="hidden" name="attachments[file][]" value="<%- file %>" />
     <input type="text" data-widget="browser" data-callback="attachments:select:<%- cid %>" name="attachments[url][]" value="<%- url %>" />
     <label><%= l('K2_NAME') %></label>

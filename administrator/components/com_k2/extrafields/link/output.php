@@ -10,7 +10,7 @@
 // no direct access
 defined('_JEXEC') or die ; ?>
 <?php
-switch ($field->target)
+switch ($field->get('target'))
 {
 	case 'same' :
 	default :
