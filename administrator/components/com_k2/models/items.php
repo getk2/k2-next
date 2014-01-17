@@ -724,11 +724,10 @@ class K2ModelItems extends K2Model
 		}
 
 		// If we have a tmpId we need to rename the gallery directory
-		if (isset($data['galleries']) && $data['galleries'] && isset($data['tmpId']) && $data['tmpId'])
+		if (isset($data['galleries']) && $data['galleries'])
 		{
 			$filesystem = K2FileSystem::getInstance();
 			$path = 'media/k2/galleries';
-			$source = $data['tmpId'];
 			if ($filesystem->has($path.'/'.$source))
 			{
 				$target = $table->id;

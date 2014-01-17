@@ -183,8 +183,8 @@ class PlgUserK2 extends JPlugin
 						$input[$name] = $value;
 					}
 				}
-				
-				if(!isset($input['image']))
+
+				if (!isset($input['image']))
 				{
 					$input['image'] = array();
 					$input['image']['remove'] = 0;

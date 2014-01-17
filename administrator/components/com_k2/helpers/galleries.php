@@ -10,6 +10,10 @@
 // no direct access
 defined('_JEXEC') or die ;
 
+jimport('joomla.archive.archive');
+jimport('joomla.filesystem.file');
+jimport('joomla.filesystem.folder');
+
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
 
 /**
@@ -18,21 +22,16 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
 
 class K2HelperGalleries
 {
-	public static function add($archive, $itemId)
+	public static function add($archive)
 	{
-		// Filesystem
-		$filesystem = K2FileSystem::getInstance();
-		
+		// Application
+		$application = JFactory::getApplication();
+
 		// Generate gallery name
-		$gallery = uniqid();
-		
-		// Extract the gallery to a temporaty folder
-		jimport('joomla.archive.archive');
-		jimport('joomla.filesystem.file');
-		jimport('joomla.filesystem.folder');
+		$gallery = uniqid('k2_gallery_');
 
 		// Random temporary path
-		$tmpFolder = JPATH_SITE.'/media/k2/galleries/'.uniqid();
+		$tmpFolder = $application->getCfg('tmp_path').'/'.$gallery;
 
 		// Create the folder
 		JFolder::create($tmpFolder);
@@ -46,7 +45,23 @@ class K2HelperGalleries
 		// Delete the archive
 		JFile::delete($tmpFolder.'/'.$archive['name']);
 
-		// Transfer the files of the archive to the current filesystem
+		// return
+		return $gallery;
+
+	}
+
+	public static function update($source, $target)
+	{
+		// Application
+		$application = JFactory::getApplication();
+
+		// File system
+		$filesystem = K2FileSystem::getInstance();
+
+		// Get the temporary folder
+		$tmpFolder = $application->getCfg('tmp_path').'/'.$source;
+
+		// Transfer the files of the archive to the current file system
 		$files = JFolder::files($tmpFolder);
 		$target = 'media/k2/galleries/'.$itemId.'/'.$gallery;
 		foreach ($files as $file)
@@ -57,15 +72,24 @@ class K2HelperGalleries
 
 		// Delete the temporary folder
 		JFolder::delete($tmpFolder);
+	}
 
-		// return
-		return $gallery;
+	public static function clean($gallery)
+	{
+		// Application
+		$application = JFactory::getApplication();
+
+		// Delete temporary gallery
+		if ($gallery && JFolder::exists($application->getCfg('tmp_path').'/'.$gallery))
+		{
+			JFolder::delete($application->getCfg('tmp_path').'/'.$gallery);
+		}
 
 	}
 
 	public static function remove($gallery, $itemId)
 	{
-		// Filesystem
+		// File system
 		$filesystem = K2FileSystem::getInstance();
 
 		// Key
