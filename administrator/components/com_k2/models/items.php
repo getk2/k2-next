@@ -699,11 +699,8 @@ class K2ModelItems extends K2Model
 			else if ($tempImageId)
 			{
 				K2HelperImages::updateItemImage($tempImageId, $currentImageId);
+				K2HelperImages::resizeItemImage($currentImageId, $table->catid);
 			}
-
-			// Resize the images using the helper. Helper will only resize images if there are category overrides
-			//K2HelperImages::resizeItemImage($currentImageId, $table->catid);
-
 		}
 
 		// Clean up any temporary files

@@ -127,17 +127,6 @@ class K2HelperImages
 			{
 				$filesystem->delete($key);
 			}
-
-			// Clean temporary resized images
-			foreach ($sizes as $size)
-			{
-				$key = $savepath.'/cache/'.$tempImageId.'_'.$size->id.'.jpg';
-				if ($filesystem->has($key))
-				{
-					$filesystem->delete($key);
-				}
-			}
-
 		}
 
 		// Generate image id
@@ -163,22 +152,10 @@ class K2HelperImages
 		$originalImageBuffer = $imageResource->get('jpeg', array('quality' => $quality));
 		$filesystem->write($savepath.'/src/'.$imageId.'.jpg', $originalImageBuffer, true);
 
-		// Resized images
-		foreach ($sizes as $size)
-		{
-			// Resize
-			$imageResource = $processor->load($originalImageBuffer);
-			$imageResource->resize($imageResource->getSize()->widen($size->width));
-			$buffer = $imageResource->get('jpeg', array('quality' => $size->quality));
-
-			// Write image file
-			$filesystem->write($savepath.'/cache/'.$imageId.'_'.$size->id.'.jpg', $buffer, true);
-		}
-
 		// Return
 		$result = new stdClass;
 		$result->temp = $imageId;
-		$result->preview = JURI::root(true).'/'.$savepath.'/cache/'.$imageId.'_'.$size->id.'.jpg?t='.time();
+		$result->preview = JURI::root(true).'/'.$savepath.'/src/'.$imageId.'.jpg?t='.time();
 		return $result;
 
 	}
@@ -194,15 +171,29 @@ class K2HelperImages
 		// Save path
 		$savepath = self::$paths['item'];
 
-		// Original image
+		// Rename temporary image
 		$source = $sourceImageId.'.jpg';
 		$target = $targetImageId.'.jpg';
 		if ($filesystem->has($savepath.'/src/'.$target))
 		{
 			$filesystem->delete($savepath.'/src/'.$target);
 		}
-		$originalImageBuffer = $filesystem->read($savepath.'/src/'.$source);
 		$filesystem->rename($savepath.'/src/'.$source, $savepath.'/src/'.$target);
+	}
+
+	public static function resizeItemImage($imageId, $categoryId)
+	{
+		// File system
+		$filesystem = K2FileSystem::getInstance();
+
+		// ImageProcessor
+		$processor = K2ImageProcessor::getInstance();
+
+		// Save path
+		$savepath = self::$paths['item'];
+
+		// Buffer of source image
+		$sourceBuffer = $filesystem->read($savepath.'/src/'.$imageId.'.jpg');
 
 		// Get sizes from global settings
 		$params = JComponentHelper::getParams('com_k2');
@@ -223,35 +214,22 @@ class K2HelperImages
 			}
 		}
 
-		// Resized images
+		// Resize image
 		foreach ($sizes as $size)
 		{
-			$source = $sourceImageId.'_'.$size->id.'.jpg';
-			$target = $targetImageId.'_'.$size->id.'.jpg';
-			if ($filesystem->has($savepath.'/cache/'.$target))
-			{
-				$filesystem->delete($savepath.'/cache/'.$target);
-			}
+			// Filename
+			$filename = $imageId.'_'.$size->id.'.jpg';
 
-			// Check for category overrides
-			if (array_key_exists($size->id, $overrides) && (int)$size->width != (int)$overrides[$size->id])
-			{
-				// We have overrides so we need to resize the temp resized images before renaming
-				$imageResource = $processor->load($originalImageBuffer);
-				$imageResource->resize($imageResource->getSize()->widen($overrides[$size->id]));
-				$buffer = $imageResource->get('jpeg', array('quality' => $size->quality));
-				$filesystem->write($savepath.'/cache/'.$source, $buffer, true);
-			}
+			// Width. Check for overrides
+			$width = (array_key_exists($size->id, $overrides) && (int)$size->width != (int)$overrides[$size->id]) ? $overrides[$size->id] : $size->width;
 
-			$filesystem->rename($savepath.'/cache/'.$source, $savepath.'/cache/'.$target);
+			// Resize
+			$imageResource = $processor->load($sourceBuffer);
+			$imageResource->resize($imageResource->getSize()->widen($width));
+			$buffer = $imageResource->get('jpeg', array('quality' => $size->quality));
+			$filesystem->write($savepath.'/cache/'.$filename, $buffer, true);
 		}
-	}
 
-	public static function resizeItemImage($imageId, $categoryId)
-	{
-		// Get sizes from global settings
-		$params = JComponentHelper::getParams('com_k2');
-		$sizes = (array)$params->get('imageSizes');
 	}
 
 	public static function removeItemImage($imageId)
