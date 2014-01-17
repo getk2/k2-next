@@ -326,6 +326,10 @@ class PlgSystemK2 extends JPlugin
 		require_once JPATH_ADMINISTRATOR.'/components/com_k2/tables/table.php';
 		require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/model.php';
 		K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
+		
+		// Load K2 language
+		$language = JFactory::getLanguage();
+		$language->load('com_k2');
 
 		// Use K2 to make Joomla! Varnish-friendly. For more checkout: https://snipt.net/fevangelou/the-perfect-varnish-configuration-for-joomla-websites/
 		if (!$user->guest)
