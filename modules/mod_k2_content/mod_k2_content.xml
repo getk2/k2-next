@@ -15,8 +15,13 @@
 		<folder>tmpl</folder>
 	</files>
 	<config>
-		<fields name="params">
-			<fieldset name="basic" addfieldpath="/administrator/components/com_k2/fields/">
+		<fields name="params" addfieldpath="/administrator/components/com_k2/fields/">
+			
+			<fieldset name="basic" >
+				<field name="K2Settings" type="K2Settings" />
+			</fieldset>
+			
+			<fieldset label="K2_BASIC_SETTINGS" name="k2basic">
 				<field name="moduleclass_sfx" type="text" default="" label="K2_MODULE_CLASS_SUFFIX" description="K2_MODULE_CLASS_SUFFIX_DESCRIPTION"/>
 				<field name="template" type="k2template" extension="mod_k2_content" default="Default" label="K2_SELECT_SUBTEMPLATE" description="K2_THIS_MODULE_UTILIZES_ONTHEFLY_MVC_TEMPLATE_OVERRIDES_WHAT_THIS_MEANS_IS_THAT_YOU_CAN_CREATE_A_NEW_SUBTEMPLATE_FOLDER_FOR_THIS_MODULE_WITHIN_YOUR_JOOMLA_TEMPLATES_HTMLMOD_K2_CONTENT_FOLDER_THE_MODULE_WILL_THEN_PICKUP_THE_NEW_SUBTEMPLATE_AUTOMAGICALLY_WITHOUT_YOU_EDITING_ANY_XML_FILE_OR_DOING_ANY_OTHER_NONDESIGNER_WORK"/>
 				<field name="source" type="list" default="filter" label="K2_SOURCE" description="">
@@ -151,7 +156,7 @@
 				<field name="itemCustomLinkURL" type="text" default="http://" label="K2_CUSTOM_LINK_URL" description=""/>
 				<field name="itemCustomLinkMenuItem" type="menuitem" default="" label="K2_OR_SELECT_A_MENU_ITEM" description=""/>
 			</fieldset>
-			<fieldset name="advanced">
+			<fieldset label="K2_ADVANCED_SETTINGS" name="k2advanced">
 				<field name="k2Plugins" type="radio" default="1" label="K2_ENABLE_K2_PLUGINS" description="">
 					<option value="0">K2_NO</option>
 					<option value="1">K2_YES</option>

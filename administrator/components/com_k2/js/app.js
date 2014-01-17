@@ -3,12 +3,12 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'vie
 	// Override the default Backbone.Sync implementation
 	require(['sync']);
 
-	// Keep alive
-	(function keepAlive() {
+	// Keep alive the session
+	(function K2KeepAlive() {
 		jQuery.ajax({
 			url : 'index.php',
 			complete : function() {
-				setTimeout(keepAlive, K2SessionTimeout);
+				setTimeout(K2KeepAlive, K2SessionTimeout);
 			}
 		});
 	})();

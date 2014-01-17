@@ -27,7 +27,7 @@ class K2ViewK2 extends JViewLegacy
 		}
 		
 		// Load the CSS
-		$document->addStyleSheet(JURI::root(true).'/administrator/components/com_k2/css/k2.css');
+		$document->addStyleSheet(JURI::root(true).'/administrator/components/com_k2/css/app.k2.css');
 
 		// Add javascript variables
 		$document->addScriptDeclaration('var K2SessionToken = "'.JSession::getFormToken().'";');
