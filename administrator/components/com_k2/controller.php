@@ -375,6 +375,7 @@ class K2Controller extends JControllerLegacy
 				$data = array_merge($sourceData, $data);
 				$data['id'] = null;
 			}
+			$this->model->setState('patch', true);
 			$this->model->setState('data', $data);
 			$result = $this->model->save();
 			if (!$result)

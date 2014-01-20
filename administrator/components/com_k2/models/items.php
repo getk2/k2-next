@@ -623,10 +623,11 @@ class K2ModelItems extends K2Model
 		}
 
 		// Galleries
-		if (isset($data['galleries']))
+		if(!$this->getState('patch'))
 		{
-			$data['galleries'] = json_encode(array_values($data['galleries']));
+			$data['galleries'] = isset($data['galleries']) ? json_encode(array_values($data['galleries'])) : json_encode(array());
 		}
+		
 
 		if (isset($data['attachments']))
 		{
