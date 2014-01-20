@@ -1,12 +1,10 @@
 <div class="appGallery">
     <label><%= l('K2_FILE') %></label>
-    <input type="file" name="archive" data-widget="uploader" data-url="index.php?option=com_k2&task=galleries.upload&itemId=<%- itemId %>&upload=<%- upload %>&format=json" data-callback="galleries:upload:<%- cid %>"  />
-    <input type="hidden" name="galleries[upload][]" value="<%- upload %>" />
-
+    <input type="file" name="archive" data-widget="uploader" data-url="index.php?option=com_k2&task=galleries.upload&upload=<%- upload %>&format=json" data-callback="galleries:upload:<%- cid %>"  />
     <label><%= l('K2_URL') %></label>
-    <input type="text" name="galleries[url][]" value="<%- url %>" />
-
+    <input type="text" name="galleries[<%- cid %>][url]" value="<%- url %>" />
     <button class="appRemoveGallery">
         <%= l('K2_REMOVE') %>
     </button>
+    <input type="hidden" name="galleries[<%- cid %>][upload]" value="<%- upload %>" />
 </div>

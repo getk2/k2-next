@@ -625,20 +625,7 @@ class K2ModelItems extends K2Model
 		// Galleries
 		if (isset($data['galleries']))
 		{
-			$galleries = array();
-			if ($data['galleries'])
-			{
-				$urls = $data['galleries']['url'];
-				$uploads = $data['galleries']['upload'];
-				foreach ($urls as $key => $value)
-				{
-					$galleryEntry = new stdClass;
-					$galleryEntry->url = $urls[$key];
-					$galleryEntry->upload = $uploads[$key];
-					$galleries[] = $galleryEntry;
-				}
-			}
-			$data['galleries'] = json_encode($galleries);
+			$data['galleries'] = json_encode(array_values($data['galleries']));
 		}
 
 		if (isset($data['attachments']))
@@ -723,17 +710,15 @@ class K2ModelItems extends K2Model
 			}
 		}
 
-		// If we have a tmpId we need to rename the gallery directory
-		if (isset($data['galleries']) && $data['galleries'])
+		// Galleries
+		if (isset($data['galleries']))
 		{
-			$filesystem = K2FileSystem::getInstance();
-			$path = 'media/k2/galleries';
-			if ($filesystem->has($path.'/'.$source))
-			{
-				$target = $table->id;
-				$filesystem->rename($path.'/'.$source, $path.'/'.$target);
-			}
+			$galleries = json_decode($data['galleries']);
+			K2HelperGalleries::update($galleries, $table->id);
 		}
+
+		// Clean up
+		K2HelperGalleries::purge();
 
 		// If we have a tmpId we need to rename the media directory
 		if (isset($data['media']) && $data['media'] && isset($data['tmpId']) && $data['tmpId'])

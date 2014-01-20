@@ -5,19 +5,10 @@ define(['text!layouts/galleries/list.html', 'text!layouts/galleries/row.html', '
 		initialize : function() {
 			this.set('cid', this.cid);
 		},
-		idAttribute : 'upload',
 		defaults : {
-			itemId : null,
 			cid : null,
 			upload : null,
 			url : null
-		},
-		urlRoot : 'index.php?option=com_k2&task=galleries.sync&format=json',
-		url : function() {
-			var base = _.result(this, 'urlRoot') || _.result(this.collection, 'url') || urlError();
-			if (this.isNew())
-				return base;
-			return base + '&upload=' + encodeURIComponent(this.get('upload')) + '&itemId=' + encodeURIComponent(this.get('itemId'));
 		}
 	});
 
@@ -47,9 +38,7 @@ define(['text!layouts/galleries/list.html', 'text!layouts/galleries/row.html', '
 		},
 		removeGallery : function(event) {
 			event.preventDefault();
-			this.model.destroy({
-				wait : true
-			});
+			this.model.destroy();
 		}
 	});
 
@@ -62,25 +51,11 @@ define(['text!layouts/galleries/list.html', 'text!layouts/galleries/row.html', '
 			'click #appAddGallery' : 'addGallery'
 		},
 		initialize : function(options) {
-			this.itemId = options.itemId;
 			this.collection = new Galleries(options.data);
-			_.each(this.collection.models, function(model) {
-				model.set('itemId', options.itemId);
-			});
-
-			this.on('delete', function() {
-				_.each(this.collection.models, function(model) {
-					model.destroy({
-						wait : true
-					});
-				});
-			});
 		},
 		addGallery : function(event) {
 			event.preventDefault();
-			this.collection.add({
-				itemId : this.itemId
-			});
+			this.collection.add({});
 		}
 	});
 	return K2ViewGalleries;
