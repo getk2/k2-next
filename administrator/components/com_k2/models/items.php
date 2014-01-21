@@ -159,7 +159,8 @@ class K2ModelItems extends K2Model
 			$filter = K2ModelCategories::getCategoryFilter($categories, $this->getState('recursive'), $this->getState('site'));
 			$query->where($db->quoteName('item.catid').' IN ('.implode(',', $filter).')');
 		}
-		else if ($this->getState('site'))
+		else
+		if ($this->getState('site'))
 		{
 			$authorised = K2ModelCategories::getAuthorised();
 			if (!count($authorised))
@@ -312,17 +313,11 @@ class K2ModelItems extends K2Model
 				$direction = 'DESC';
 				break;
 			case 'ordering' :
-				$ordering = array(
-					'category.lft',
-					'item.ordering'
-				);
+				$ordering = array('category.lft', 'item.ordering');
 				$direction = 'ASC';
 				break;
 			case 'ordering.reverse' :
-				$ordering = array(
-					'category.lft',
-					'item.ordering'
-				);
+				$ordering = array('category.lft', 'item.ordering');
 				$direction = 'DESC';
 				break;
 			case 'featured_ordering' :
@@ -338,10 +333,7 @@ class K2ModelItems extends K2Model
 				$direction = 'DESC';
 				break;
 			case 'category' :
-				$ordering = array(
-					'categoryName',
-					'item.title'
-				);
+				$ordering = array('categoryName', 'item.title');
 				$direction = 'ASC';
 				break;
 			case 'author' :
@@ -623,11 +615,26 @@ class K2ModelItems extends K2Model
 		}
 
 		// Galleries
-		if(!$this->getState('patch'))
+		if (isset($data['galleries']))
 		{
-			$data['galleries'] = isset($data['galleries']) ? json_encode(array_values($data['galleries'])) : json_encode(array());
+			// Set the galleries input to state
+			$this->setState('galleries', $data['galleries']);
+
+			// Prepare the galleries input data for storing
+			$data['galleries'] = array_values($data['galleries']);
+			foreach ($data['galleries'] as $key => $gallery)
+			{
+				if ($gallery['remove'])
+				{
+					unset($data['galleries'][$key]);
+				}
+				else
+				{
+					unset($data['galleries'][$key]['remove']);
+				}
+			}
+			$data['galleries'] = json_encode(array_values($data['galleries']));
 		}
-		
 
 		if (isset($data['attachments']))
 		{
@@ -684,7 +691,8 @@ class K2ModelItems extends K2Model
 			{
 				K2HelperImages::removeItemImage($currentImageId);
 			}
-			else if ($tempImageId)
+			else
+			if ($tempImageId)
 			{
 				K2HelperImages::updateItemImage($tempImageId, $currentImageId);
 				K2HelperImages::resizeItemImage($currentImageId, $table->catid);
@@ -712,9 +720,8 @@ class K2ModelItems extends K2Model
 		}
 
 		// Galleries
-		if (isset($data['galleries']))
+		if ($galleries = $this->getState('galleries'))
 		{
-			$galleries = json_decode($data['galleries']);
 			K2HelperGalleries::update($galleries, $table->id);
 		}
 
@@ -926,14 +933,7 @@ class K2ModelItems extends K2Model
 		{
 			$path = 'media/k2/items/src/'.$imageId.'.jpg';
 			$image = K2HelperImages::addItemImage(null, $path);
-			$data['image'] = array(
-				'id' => '',
-				'temp' => $image->temp,
-				'path' => '',
-				'remove' => 0,
-				'caption' => $data['image']->caption,
-				'credits' => $data['image']->credits
-			);
+			$data['image'] = array('id' => '', 'temp' => $image->temp, 'path' => '', 'remove' => 0, 'caption' => $data['image']->caption, 'credits' => $data['image']->credits);
 		}
 		else
 		{
@@ -941,15 +941,7 @@ class K2ModelItems extends K2Model
 		}
 
 		// Handle media
-		$media = array(
-			'url' => array(),
-			'upload' => array(),
-			'provider' => array(),
-			'id' => array(),
-			'embed' => array(),
-			'caption' => array(),
-			'credits' => array()
-		);
+		$media = array('url' => array(), 'upload' => array(), 'provider' => array(), 'id' => array(), 'embed' => array(), 'caption' => array(), 'credits' => array());
 		if (is_array($data['media']))
 		{
 			foreach ($data['media'] as $entry)
@@ -975,10 +967,7 @@ class K2ModelItems extends K2Model
 		$data['media'] = $media;
 
 		// Handle galleries
-		$galleries = array(
-			'url' => array(),
-			'upload' => array()
-		);
+		$galleries = array('url' => array(), 'upload' => array());
 		foreach ($data['galleries'] as $entry)
 		{
 			if ($entry->upload)
@@ -1006,12 +995,7 @@ class K2ModelItems extends K2Model
 		$filesystem = K2FileSystem::getInstance();
 		$attachmentsModel = K2Model::getInstance('Attachments');
 		$input = array();
-		$attachments = array(
-			'id' => array(),
-			'name' => array(),
-			'title' => array(),
-			'file' => array()
-		);
+		$attachments = array('id' => array(), 'name' => array(), 'title' => array(), 'file' => array());
 		foreach ($data['attachments'] as $attachment)
 		{
 			// Save the new attachment record

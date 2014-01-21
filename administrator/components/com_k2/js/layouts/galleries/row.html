@@ -1,4 +1,5 @@
 <div class="appGallery">
+	<% if(remove == 0) { %>
     <label><%= l('K2_FILE') %></label>
     <input type="file" name="archive" data-widget="uploader" data-url="index.php?option=com_k2&task=galleries.upload&upload=<%- upload %>&format=json" data-callback="galleries:upload:<%- cid %>"  />
     <label><%= l('K2_URL') %></label>
@@ -6,5 +7,7 @@
     <button class="appRemoveGallery">
         <%= l('K2_REMOVE') %>
     </button>
+    <% } %>
     <input type="hidden" name="galleries[<%- cid %>][upload]" value="<%- upload %>" />
+    <input type="hidden" name="galleries[<%- cid %>][remove]" value="<%- remove %>" />
 </div>

@@ -8,7 +8,8 @@ define(['text!layouts/galleries/list.html', 'text!layouts/galleries/row.html', '
 		defaults : {
 			cid : null,
 			upload : null,
-			url : null
+			url : null,
+			remove : 0
 		}
 	});
 
@@ -38,7 +39,7 @@ define(['text!layouts/galleries/list.html', 'text!layouts/galleries/row.html', '
 		},
 		removeGallery : function(event) {
 			event.preventDefault();
-			this.model.destroy();
+			this.model.set('remove', 1);
 		}
 	});
 

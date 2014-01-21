@@ -84,20 +84,21 @@ class K2HelperGalleries
 		// File system
 		$filesystem = K2FileSystem::getInstance();
 
-		// Valid galleries
-		$validGalleries = array();
+		// Uploaded galleries
+		$uploadedGalleries = array();
 
 		// Iterate over the galleries and transfer the new galleries from /tmp to /media/k2/galleries
 		foreach ($galleries as $gallery)
 		{
-			if ($gallery->upload)
+			$gallery = (object)$gallery;
+			if (!$gallery->remove && $gallery->upload)
 			{
 				$source = $application->getCfg('tmp_path').'/'.$gallery->upload;
 
 				$target = 'media/k2/galleries/'.$itemId.'/'.$gallery->upload;
 
 				// Push the gallery to valid array
-				$validGalleries[] = $target;
+				$uploadedGalleries[] = $target;
 
 				// Check if the gallery is new
 				if (JFolder::exists($source))
@@ -131,7 +132,7 @@ class K2HelperGalleries
 
 		foreach ($folders as $galleryKey)
 		{
-			if (!in_array($galleryKey, $validGalleries) && $filesystem->has($galleryKey))
+			if (!in_array($galleryKey, $uploadedGalleries) && $filesystem->has($galleryKey))
 			{
 				$files = $filesystem->listKeys($galleryKey.'/');
 
