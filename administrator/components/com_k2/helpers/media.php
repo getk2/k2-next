@@ -61,7 +61,7 @@ class K2HelperMedia
 
 	}
 
-	public static function update($media, $itemId)
+	public static function update($media, $item)
 	{
 		// Application
 		$application = JFactory::getApplication();
@@ -71,6 +71,9 @@ class K2HelperMedia
 
 		// File system
 		$filesystem = K2FileSystem::getInstance();
+		
+		// Item id
+		$itemId = $item->id;
 
 		// Uploaded media
 		$uploadedMedia = array();
@@ -93,7 +96,7 @@ class K2HelperMedia
 				{
 					// Transfer the file from the temporary folder to the current file system
 					$buffer = JFile::read($source);
-					$filesystem->write($target.'/'.$file, $buffer, true);
+					$filesystem->write($target, $buffer, true);
 
 					// Delete the temporary file
 					JFile::delete($source);
@@ -124,7 +127,7 @@ class K2HelperMedia
 
 		// Check if the item folder contains more media files. If not delete it.
 		$keys = $filesystem->listKeys('media/k2/media/'.$itemId.'/');
-		if (empty($keys['keys']))
+		if (empty($keys['keys']) && $filesystem->has('media/k2/media/'.$itemId))
 		{
 			$filesystem->delete('media/k2/media/'.$itemId);
 		}
@@ -145,7 +148,7 @@ class K2HelperMedia
 
 			// Check if the item folder contains more media. If not delete it.
 			$keys = $filesystem->listKeys('media/k2/media/'.$itemId.'/');
-			if (empty($keys['dirs']))
+			if (empty($keys['keys']))
 			{
 				$filesystem->delete('media/k2/media/'.$itemId);
 			}

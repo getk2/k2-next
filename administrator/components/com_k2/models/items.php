@@ -17,6 +17,8 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/items.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/images.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/media.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/galleries.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/attachments.php';
+
 
 class K2ModelItems extends K2Model
 {
@@ -159,8 +161,7 @@ class K2ModelItems extends K2Model
 			$filter = K2ModelCategories::getCategoryFilter($categories, $this->getState('recursive'), $this->getState('site'));
 			$query->where($db->quoteName('item.catid').' IN ('.implode(',', $filter).')');
 		}
-		else
-		if ($this->getState('site'))
+		else if ($this->getState('site'))
 		{
 			$authorised = K2ModelCategories::getAuthorised();
 			if (!count($authorised))
@@ -584,7 +585,7 @@ class K2ModelItems extends K2Model
 			// Encode the value to JSON
 			$data['image'] = json_encode($data['image']);
 		}
-		
+
 		// Galleries
 		if (isset($data['galleries']))
 		{
@@ -612,7 +613,7 @@ class K2ModelItems extends K2Model
 		{
 			// Set the media input to state
 			$this->setState('media', $data['media']);
-			
+
 			// Prepare the media input data for storing
 			$data['media'] = array_values($data['media']);
 			foreach ($data['media'] as $key => $media)
@@ -628,13 +629,27 @@ class K2ModelItems extends K2Model
 			}
 			$data['media'] = json_encode(array_values($data['media']));
 		}
-
-
-
+		
+		// Attachments
 		if (isset($data['attachments']))
 		{
-			$data['_attachments'] = $data['attachments'];
-			$data['attachments'] = json_encode($data['attachments']['id']);
+			// Set the media input to state
+			$this->setState('attachments', $data['attachments']);
+
+			// Prepare the attachments input data for storing
+			$data['attachments'] = array_values($data['attachments']);
+			foreach ($data['attachments'] as $key => $attachment)
+			{
+				if ($attachment['remove'])
+				{
+					unset($data['attachments'][$key]);
+				}
+				else
+				{
+					unset($data['attachments'][$key]['remove']);
+				}
+			}
+			$data['attachments'] = json_encode(array_values($data['attachments']));
 		}
 
 		if (isset($data['tags']))
@@ -686,8 +701,7 @@ class K2ModelItems extends K2Model
 			{
 				K2HelperImages::removeItemImage($currentImageId);
 			}
-			else
-			if ($tempImageId)
+			else if ($tempImageId)
 			{
 				K2HelperImages::updateItemImage($tempImageId, $currentImageId);
 				K2HelperImages::resizeItemImage($currentImageId, $table->catid);
@@ -717,31 +731,25 @@ class K2ModelItems extends K2Model
 		// Galleries
 		if ($galleries = $this->getState('galleries'))
 		{
-			K2HelperGalleries::update($galleries, $table->id);
+			K2HelperGalleries::update($galleries, $table);
 		}
-		
+
 		// Media
 		if ($media = $this->getState('media'))
 		{
-			K2HelperMedia::update($media, $table->id);
+			K2HelperMedia::update($media, $table);
+		}
+		
+		// Attachments
+		if ($attachments = $this->getState('attachments'))
+		{
+			K2HelperAttachments::update($attachments, $table);
 		}
 
 		// Clean up
 		K2HelperGalleries::purge();
 		K2HelperMedia::purge();
-
-		// If we have a tmpId we need to rename the media directory
-		if (isset($data['media']) && $data['media'] && isset($data['tmpId']) && $data['tmpId'])
-		{
-			$filesystem = K2FileSystem::getInstance();
-			$path = 'media/k2/media';
-			$source = $data['tmpId'];
-			if ($filesystem->has($path.'/'.$source))
-			{
-				$target = $table->id;
-				$filesystem->rename($path.'/'.$source, $path.'/'.$target);
-			}
-		}
+		K2HelperAttachments::purge();
 
 		if (isset($data['_attachments']))
 		{

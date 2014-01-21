@@ -75,9 +75,9 @@ class K2ViewAttachments extends K2View
 		{
 			$key = 'media/k2/attachments/'.$attachment->itemId.'/'.$attachment->file;
 		}
-		else if ($attachment->url)
+		else if ($attachment->path)
 		{
-			$key = $attachment->url;
+			$key = $attachment->path;
 		}
 
 		// Check if file exists

@@ -73,7 +73,7 @@ class K2HelperGalleries
 
 	}
 
-	public static function update($galleries, $itemId)
+	public static function update($galleries, $item)
 	{
 		// Application
 		$application = JFactory::getApplication();
@@ -86,6 +86,9 @@ class K2HelperGalleries
 
 		// Uploaded galleries
 		$uploadedGalleries = array();
+		
+		// Item id
+		$itemId = $item->id;
 
 		// Iterate over the galleries and transfer the new galleries from /tmp to /media/k2/galleries
 		foreach ($galleries as $gallery)

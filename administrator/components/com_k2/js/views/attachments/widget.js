@@ -8,18 +8,16 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/attachments/list.html', 't
 			'click .appDownloadAttachment' : 'downloadAttachment'
 		},
 		modelEvents : {
-			'sync' : 'render'
+			'change' : 'render'
 		},
 		initialize : function() {
 			K2Dispatcher.on('attachments:select:' + this.model.cid, function(url) {
-				this.model.set('url', url);
+				this.model.set('path', url);
 				this.model.set('file', '');
-				this.saveAttachment();
 			}, this);
 			K2Dispatcher.on('attachments:upload:' + this.model.cid, function(e, data) {
 				this.model.set('file', data.result);
-				this.model.set('url', '');
-				this.saveAttachment();
+				this.model.set('path', '');
 			}, this);
 		},
 		onDomRefresh : function() {
@@ -27,9 +25,7 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/attachments/list.html', 't
 		},
 		removeAttachment : function(event) {
 			event.preventDefault();
-			this.model.destroy({
-				wait : true
-			});
+			this.model.set('remove', 1);
 		},
 		downloadAttachment : function(event) {
 			event.preventDefault();
@@ -37,13 +33,6 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/attachments/list.html', 't
 				var url = _.unescape(this.model.get('link'));
 				window.location = url;
 			}
-		},
-		saveAttachment : function() {
-			var data = [];
-			this.model.save({
-				'name' : this.$el.find('input[name="attachments[name][]"]').val(),
-				'title' : this.$el.find('input[name="attachments[title][]"]').val()
-			});
 		}
 	});
 
@@ -56,22 +45,10 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/attachments/list.html', 't
 		},
 		initialize : function(options) {
 			this.collection = new K2CollectionAttachments(options.data);
-			this.collection.setState('itemId', options.itemId);
-			this.collection.setState('tmpId', options.tmpId);
-			this.on('delete', function() {
-				_.each(this.collection.models, function(model) {
-					model.destroy({
-						wait : true
-					});
-				});
-			});
 		},
 		addAttachment : function(event) {
 			event.preventDefault();
-			this.collection.add({
-				'itemId' : this.collection.getState('itemId'),
-				'tmpId' : this.collection.getState('tmpId')
-			});
+			this.collection.add({});
 		}
 	});
 	return K2ViewAttachments;

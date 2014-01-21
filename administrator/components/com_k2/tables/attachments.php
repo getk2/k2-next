@@ -21,13 +21,13 @@ class K2TableAttachments extends K2Table
 
 	public function check()
 	{
-		if (JString::trim($this->file) == '' && JString::trim($this->url) == '')
+		if (JString::trim($this->file) == '' && JString::trim($this->path) == '')
 		{
 			$this->setError(JText::_('K2_ATTACHMENT_MUST_HAVE_A_FILE'));
 			return false;
 		}
 
-		$file = $this->file ? $this->file : basename($this->url);
+		$file = $this->file ? $this->file : basename($this->path);
 
 		if (JString::trim($this->name) == '')
 		{

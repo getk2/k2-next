@@ -7,12 +7,12 @@ define(['backbone', 'model'], function(Backbone, K2Model) {'use strict';
 		defaults : {
 			id : null,
 			itemId : null,
-			tmpId : null,
 			name : null,
 			title : null,
 			file : null,
-			url : null,
-			downloads : 0
+			path : null,
+			downloads : 0,
+			remove : 0
 		},
 		urlRoot : 'index.php?option=com_k2&task=attachments.sync&format=json',
 		url : function() {

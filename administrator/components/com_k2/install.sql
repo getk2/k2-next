@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS `#__k2_attachments` (
   `name` varchar(255) NOT NULL,
   `title` varchar(255) NOT NULL,
   `file` varchar(255) NOT NULL,
-  `url` varchar(255) NOT NULL,
+  `path` varchar(255) NOT NULL,
   `downloads` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `itemId` (`itemId`)
