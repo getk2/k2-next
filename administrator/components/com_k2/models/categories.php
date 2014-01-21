@@ -453,7 +453,7 @@ class K2ModelCategories extends K2Model
 
 		// Clean up any temporary files
 		$session = JFactory::getSession();
-		if ($tmpId = $session->get('K2Temp'))
+		if ($tmpId = $session->get('k2.image'))
 		{
 			K2HelperImages::removeCategoryImage($tmpId);
 		}

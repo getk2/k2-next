@@ -119,7 +119,7 @@ class K2HelperImages
 		$sizes = (array)$params->get('imageSizes');
 
 		// Clean up
-		if ($tempImageId = $session->get('K2Temp'))
+		if ($tempImageId = $session->get('k2.image'))
 		{
 			// Clean temporary source image
 			$key = $savepath.'/src/'.$tempImageId.'.jpg';
@@ -133,7 +133,7 @@ class K2HelperImages
 		$imageId = uniqid();
 
 		// Store it to session
-		$session->set('K2Temp', $imageId);
+		$session->set('k2.image', $imageId);
 
 		// Get image depending on source
 		if ($path)
@@ -318,7 +318,7 @@ class K2HelperImages
 		$savepath = self::$paths['category'];
 
 		// Clean up
-		if ($tempImageId = $session->get('K2Temp'))
+		if ($tempImageId = $session->get('k2.image'))
 		{
 			$key = $savepath.'/'.$tempImageId.'.jpg';
 			if ($filesystem->has($key))
@@ -331,7 +331,7 @@ class K2HelperImages
 		$imageId = uniqid();
 
 		// Store it to session
-		$session->set('K2Temp', $imageId);
+		$session->set('k2.image', $imageId);
 
 		// Get image depending on source
 		if ($path)
@@ -468,7 +468,7 @@ class K2HelperImages
 		$savepath = self::$paths['user'];
 
 		// Clean up
-		if ($tempImageId = $session->get('K2Temp'))
+		if ($tempImageId = $session->get('k2.image'))
 		{
 			$key = $savepath.'/'.$tempImageId.'.jpg';
 			if ($filesystem->has($key))
@@ -481,7 +481,7 @@ class K2HelperImages
 		$imageId = uniqid();
 
 		// Store it to session
-		$session->set('K2Temp', $imageId);
+		$session->set('k2.image', $imageId);
 
 		// Get image depending on source
 		if ($path)
