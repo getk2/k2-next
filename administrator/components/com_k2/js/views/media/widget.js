@@ -37,7 +37,7 @@ define(['text!layouts/media/list.html', 'text!layouts/media/row.html', 'widgets/
 		initialize : function() {
 			K2Dispatcher.on('media:select:' + this.model.cid, function(url) {
 				this.model.set('url', url);
-				this.model.set('file', '');
+				this.model.set('upload', '');
 			}, this);
 			K2Dispatcher.on('media:upload:' + this.model.cid, function(e, data) {
 				this.model.set('upload', data.result);
