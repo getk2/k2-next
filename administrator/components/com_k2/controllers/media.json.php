@@ -29,77 +29,26 @@ class K2ControllerMedia extends K2Controller
 		// Check for token
 		JSession::checkToken() or K2Response::throwError(JText::_('JINVALID_TOKEN'));
 
+		// Get user
+		$user = JFactory::getUser();
+
+		// Permissions check
+		if (!$user->authorise('k2.item.create', 'com_k2') && !$user->authorise('k2.item.edit', 'com_k2') && !$user->authorise('k2.item.edit.own', 'com_k2'))
+		{
+			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'), 403);
+		}
+
 		// Get input
-		$itemId = $this->input->get('itemId', '', 'cmd');
 		$upload = $this->input->get('upload', '', 'cmd');
 		$file = $this->input->files->get('file');
 
-		// Permissions check
-		if (is_numeric($itemId))
-		{
-			// Existing items check permission for specific item
-			$authorised = K2Items::getInstance($itemId)->canEdit;
-		}
-		else
-		{
-			// New items. We can only check the generic create permission. We cannot check against specific category since we do not know the category of the item.
-			$authorised = JFactory::getUser()->authorise('k2.item.create', 'com_k2');
-		}
-		if (!$authorised)
-		{
-			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'), 403);
-		}
-
-		// If the current file is uploaded then we should remove it before we upload a new one
-		if ($upload)
-		{
-			K2HelperMedia::remove($upload, $itemId);
-		}
-
-		$response = K2HelperMedia::add($file, $itemId);
-
-		echo json_encode($response);
+		// Upload media using helper
+		$media = K2HelperMedia::add($file, $upload);
+		
+		echo json_encode($media);
 
 		// Return
 		return $this;
-
-	}
-
-	/**
-	 * Delete function.
-	 * Deletes a resource.
-	 * Usually there will be no need to override this function.
-	 *
-	 * @return void
-	 */
-	protected function delete()
-	{
-		// Check for token
-		JSession::checkToken() or K2Response::throwError(JText::_('JINVALID_TOKEN'));
-
-		// Get id from input
-		$itemId = $this->input->get('itemId', '', 'cmd');
-		$upload = $this->input->get('upload', '', 'cmd');
-
-		// Permissions check
-		if (is_numeric($itemId))
-		{
-			// Existing items check permission for specific item
-			$authorised = K2Items::getInstance($itemId)->canEdit;
-		}
-		else
-		{
-			$authorised = true;
-		}
-		if (!$authorised)
-		{
-			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'), 403);
-		}
-
-		K2HelperMedia::remove($upload, $itemId);
-
-		// Response
-		K2Response::setResponse(true);
 
 	}
 
@@ -167,25 +116,13 @@ class K2ControllerMedia extends K2Controller
 
 		if ($application->isAdmin())
 		{
-			$permissions = array(
-				'read' => true,
-				'write' => true
-			);
+			$permissions = array('read' => true, 'write' => true);
 		}
 		else
 		{
-			$permissions = array(
-				'read' => true,
-				'write' => false
-			);
+			$permissions = array('read' => true, 'write' => false);
 		}
-		$options = array('roots' => array( array(
-					'driver' => 'LocalFileSystem',
-					'path' => $path,
-					'URL' => $url,
-					'accessControl' => 'access',
-					'defaults' => $permissions
-				)));
+		$options = array('roots' => array( array('driver' => 'LocalFileSystem', 'path' => $path, 'URL' => $url, 'accessControl' => 'access', 'defaults' => $permissions)));
 		$connector = new elFinderConnector(new elFinder($options));
 		$connector->run();
 		return $this;

@@ -5,7 +5,6 @@ define(['text!layouts/media/list.html', 'text!layouts/media/row.html', 'widgets/
 		initialize : function() {
 			this.set('cid', this.cid);
 		},
-		idAttribute : 'upload',
 		defaults : {
 			itemId : null,
 			cid : null,
@@ -15,14 +14,8 @@ define(['text!layouts/media/list.html', 'text!layouts/media/row.html', 'widgets/
 			id : null,
 			embed : null,
 			caption : null,
-			credits : null
-		},
-		urlRoot : 'index.php?option=com_k2&task=media.sync&format=json',
-		url : function() {
-			var base = _.result(this, 'urlRoot') || _.result(this.collection, 'url') || urlError();
-			if (this.isNew())
-				return base;
-			return base + '&upload=' + encodeURIComponent(this.get('upload')) + '&itemId=' + encodeURIComponent(this.get('itemId'));
+			credits : null,
+			remove : 0
 		}
 	});
 
@@ -47,7 +40,7 @@ define(['text!layouts/media/list.html', 'text!layouts/media/row.html', 'widgets/
 				this.model.set('file', '');
 			}, this);
 			K2Dispatcher.on('media:upload:' + this.model.cid, function(e, data) {
-				this.model.set('upload', data.result.upload);
+				this.model.set('upload', data.result);
 				this.model.set('url', '');
 			}, this);
 		},
@@ -56,9 +49,7 @@ define(['text!layouts/media/list.html', 'text!layouts/media/row.html', 'widgets/
 		},
 		removeMedia : function(event) {
 			event.preventDefault();
-			this.model.destroy({
-				wait : true
-			});
+			this.model.set('remove', 1);
 		}
 	});
 
@@ -71,25 +62,11 @@ define(['text!layouts/media/list.html', 'text!layouts/media/row.html', 'widgets/
 			'click #appAddMedia' : 'addMedia'
 		},
 		initialize : function(options) {
-			this.itemId = options.itemId;
 			this.collection = new MediaCollection(options.data);
-			_.each(this.collection.models, function(model) {
-				model.set('itemId', options.itemId);
-			});
-
-			this.on('delete', function() {
-				_.each(this.collection.models, function(model) {
-					model.destroy({
-						wait : true
-					});
-				});
-			});
 		},
 		addMedia : function(event) {
 			event.preventDefault();
-			this.collection.add({
-				itemId : this.itemId
-			});
+			this.collection.add({});
 		}
 	});
 	return K2ViewMedia;

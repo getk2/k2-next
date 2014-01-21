@@ -27,6 +27,15 @@ class K2ControllerGalleries extends K2Controller
 		// Check for token
 		JSession::checkToken() or K2Response::throwError(JText::_('JINVALID_TOKEN'));
 
+		// Get user
+		$user = JFactory::getUser();
+
+		// Permissions check
+		if (!$user->authorise('k2.item.create', 'com_k2') && !$user->authorise('k2.item.edit', 'com_k2') && !$user->authorise('k2.item.edit.own', 'com_k2'))
+		{
+			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'), 403);
+		}
+
 		// Get input
 		$input = JFactory::getApplication()->input;
 		$upload = $input->get('upload', '', 'cmd');

@@ -584,36 +584,7 @@ class K2ModelItems extends K2Model
 			// Encode the value to JSON
 			$data['image'] = json_encode($data['image']);
 		}
-
-		// Media
-		if (isset($data['media']))
-		{
-			$media = array();
-			if ($data['media'])
-			{
-				$urls = $data['media']['url'];
-				$uploads = $data['media']['upload'];
-				$providers = $data['media']['provider'];
-				$ids = $data['media']['id'];
-				$embed = $data['media']['embed'];
-				$captions = $data['media']['caption'];
-				$credits = $data['media']['credits'];
-				foreach ($urls as $key => $value)
-				{
-					$mediaEntry = new stdClass;
-					$mediaEntry->url = $urls[$key];
-					$mediaEntry->upload = $uploads[$key];
-					$mediaEntry->provider = $providers[$key];
-					$mediaEntry->id = $ids[$key];
-					$mediaEntry->embed = $embed[$key];
-					$mediaEntry->caption = $captions[$key];
-					$mediaEntry->credits = $credits[$key];
-					$media[] = $mediaEntry;
-				}
-			}
-			$data['media'] = json_encode($media);
-		}
-
+		
 		// Galleries
 		if (isset($data['galleries']))
 		{
@@ -635,6 +606,30 @@ class K2ModelItems extends K2Model
 			}
 			$data['galleries'] = json_encode(array_values($data['galleries']));
 		}
+
+		// Media
+		if (isset($data['media']))
+		{
+			// Set the media input to state
+			$this->setState('media', $data['media']);
+			
+			// Prepare the media input data for storing
+			$data['media'] = array_values($data['media']);
+			foreach ($data['media'] as $key => $media)
+			{
+				if ($media['remove'])
+				{
+					unset($data['media'][$key]);
+				}
+				else
+				{
+					unset($data['media'][$key]['remove']);
+				}
+			}
+			$data['media'] = json_encode(array_values($data['media']));
+		}
+
+
 
 		if (isset($data['attachments']))
 		{
@@ -724,9 +719,16 @@ class K2ModelItems extends K2Model
 		{
 			K2HelperGalleries::update($galleries, $table->id);
 		}
+		
+		// Media
+		if ($media = $this->getState('media'))
+		{
+			K2HelperMedia::update($media, $table->id);
+		}
 
 		// Clean up
 		K2HelperGalleries::purge();
+		K2HelperMedia::purge();
 
 		// If we have a tmpId we need to rename the media directory
 		if (isset($data['media']) && $data['media'] && isset($data['tmpId']) && $data['tmpId'])
