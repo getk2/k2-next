@@ -745,51 +745,11 @@ class K2ModelItems extends K2Model
 		{
 			K2HelperAttachments::update($attachments, $table);
 		}
-
-		// Clean up
+		
+		// Clean up temporary uploads
 		K2HelperGalleries::purge();
 		K2HelperMedia::purge();
 		K2HelperAttachments::purge();
-
-		if (isset($data['_attachments']))
-		{
-
-			$filesystem = K2FileSystem::getInstance();
-
-			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
-			$model = K2Model::getInstance('Attachments', 'K2Model');
-
-			$ids = $data['_attachments']['id'];
-			$names = $data['_attachments']['name'];
-			$titles = $data['_attachments']['title'];
-			$files = $data['_attachments']['file'];
-			$path = 'media/k2/attachments';
-
-			foreach ($ids as $key => $value)
-			{
-				$attachmentsData = array();
-				$attachmentsData['id'] = $ids[$key];
-				$attachmentsData['name'] = $names[$key];
-				$attachmentsData['title'] = $titles[$key];
-				$attachmentsData['itemId'] = $this->getState('id');
-				$attachmentsData['file'] = $files[$key];
-				if ($data['tmpId'])
-				{
-					list($folder, $file) = explode('/', $attachmentsData['file']);
-					$source = $path.'/'.$folder.'/'.$file;
-					$target = $path.'/'.$this->getState('id').'/'.$file;
-					$filesystem->rename($source, $target);
-					$attachmentsData['file'] = $file;
-				}
-				$model->setState('data', $attachmentsData);
-				$model->save();
-			}
-			if ($data['tmpId'] && $filesystem->has($path.'/'.$data['tmpId']))
-			{
-				$filesystem->delete($path.'/'.$data['tmpId']);
-			}
-
-		}
 
 		// Handle statistics
 		$statistics = K2Model::getInstance('Statistics', 'K2Model');
