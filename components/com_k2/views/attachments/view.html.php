@@ -78,6 +78,8 @@ class K2ViewAttachments extends K2View
 		else if ($attachment->path)
 		{
 			$key = $attachment->path;
+			// Since it is a path we need to enforce the local adapter for the file system
+			$filesystem = K2FileSystem::getInstance('Local');
 		}
 
 		// Check if file exists

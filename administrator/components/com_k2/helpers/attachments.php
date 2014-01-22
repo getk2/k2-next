@@ -83,7 +83,7 @@ class K2HelperAttachments
 
 		// Attachment Ids
 		$attachmentIds = array();
-		
+
 		// Iterate over the galleries and transfer the new attachment files from /tmp to /media/k2/attachments
 		foreach ($attachments as $attachment)
 		{
@@ -159,7 +159,7 @@ class K2HelperAttachments
 				// Save attachment
 				$attachment->itemId = $itemId;
 				$model->setState('data', (array)$attachment);
-				if($model->save())
+				if ($model->save())
 				{
 					// Push the id of the attachment to the array
 					$attachmentIds[] = $model->getState('id');
@@ -172,47 +172,16 @@ class K2HelperAttachments
 		$item->store();
 
 		// Iterate over the media files in /media/k2/media and delete those who have been removed by the user
-		$keys = $filesystem->listKeys('media/k2/attachments/'.$itemId.'/');
-		$files = $keys['keys'];
-
+		$folderKey = 'media/k2/attachments/'.$itemId.'/';
+		$keys = $filesystem->listKeys($folderKey);
+		$files = isset($keys['keys']) ? $keys['keys'] : $keys;
 		foreach ($files as $attachmentKey)
 		{
-			if (!in_array($attachmentKey, $uploadedAttachments) && $filesystem->has($attachmentKey))
+			if ($key != $folderKey && !in_array($attachmentKey, $uploadedAttachments) && $filesystem->has($attachmentKey))
 			{
 				$filesystem->delete($attachmentKey);
 			}
 		}
-
-		// Check if the item folder contains more attachments files. If not delete it.
-		$keys = $filesystem->listKeys('media/k2/attachments/'.$itemId.'/');
-		if (empty($keys['keys']))
-		{
-			$filesystem->delete('media/k2/attachments/'.$itemId);
-		}
-
-	}
-
-	public static function remove($attachment, $itemId)
-	{
-		// File system
-		$filesystem = K2FileSystem::getInstance();
-
-		// Key
-		$attachmentKey = 'media/k2/attachments/'.$itemId.'/'.$attachment;
-
-		if ($filesystem->has($attachmentKey))
-		{
-			$filesystem->delete($attachmentKey);
-
-			// Check if the item folder contains more attachments. If not delete it.
-			$keys = $filesystem->listKeys('media/k2/attachments/'.$itemId.'/');
-			if (empty($keys['keys']))
-			{
-				$filesystem->delete('media/k2/attachments/'.$itemId);
-			}
-		}
-
-		return true;
 	}
 
 	public static function purge()
