@@ -30,6 +30,7 @@ class JFormFieldK2ImageSizes extends JFormField
 			$params = JComponentHelper::getParams('com_k2');
 			$sizes = (array)$params->get('imageSizes');
 			$overrides = (array)$this->value;
+			$overrides = array_filter($overrides);
 			$values = array();
 			foreach ($overrides as $override)
 			{
