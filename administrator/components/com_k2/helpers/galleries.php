@@ -152,7 +152,7 @@ class K2HelperGalleries
 
 		// Check if the item folder contains more galleries. If not delete it.
 		$keys = $filesystem->listKeys('media/k2/galleries/'.$itemId.'/');
-		if (empty($keys['dirs']))
+		if (isset($keys['dirs']) && empty($keys['dirs']))
 		{
 			$filesystem->delete('media/k2/galleries/'.$itemId);
 		}

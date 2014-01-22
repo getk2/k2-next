@@ -182,6 +182,14 @@ class K2HelperAttachments
 				$filesystem->delete($attachmentKey);
 			}
 		}
+
+		// Check if the item folder contains more attachments files. If not delete it. Only for local file system
+		$keys = $filesystem->listKeys($folderKey);
+		if (isset($keys['keys']) && empty($keys['keys']))
+		{
+			$filesystem->delete($folderKey);
+		}
+
 	}
 
 	public static function purge()

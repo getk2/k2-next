@@ -20,13 +20,80 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/imageprocessor.php'
 class K2HelperImages
 {
 
-	private static $paths = array(
-		'item' => 'media/k2/items',
-		'category' => 'media/k2/categories',
-		'user' => 'media/k2/users'
-	);
+	private static $paths = array('item' => 'media/k2/items', 'category' => 'media/k2/categories', 'user' => 'media/k2/users');
 
 	private static $placeholders = array();
+
+	public static function add($file, $path, $replace = null)
+	{
+		// Application
+		$application = JFactory::getApplication();
+
+		// Session
+		$session = JFactory::getSession();
+
+		// ImageProcessor
+		$processor = K2ImageProcessor::getInstance();
+		
+		// Load the image
+		if ($path)
+		{
+			$filesystem = K2FileSystem::getInstance('Local');
+			$buffer = $filesystem->read($path);
+			$imageResource = $processor->load($buffer);
+		}
+		else
+		{
+			$imageResource = $processor->open($file['tmp_name']);
+		}
+
+		// Convert to JPEG
+		$buffer = $imageResource->get('jpeg', array('quality' => 100));
+
+		// Generate temporary image name
+		$name = uniqid().'.jpg';
+
+		// Upload the file to the temporary folder
+		JFile::write($application->getCfg('tmp_path').'/'.$name, $buffer);
+
+		// Add the temporary folder to session so we can perform clean up when needed
+		$session->set('k2.image', $name);
+
+		// Handle previous temporary files
+		if ($replace && JFile::exists($application->getCfg('tmp_path').'/'.$replace))
+		{
+			// Remove from file system
+			JFile::delete($application->getCfg('tmp_path').'/'.$replace);
+		}
+		
+		// Return
+		$result = new stdClass;
+		$result->temp = $name;
+		$result->preview = JURI::root(true).'/tmp/'.$name.'?t='.time();
+		return $result;
+		
+	}
+
+	public static function purge()
+	{
+		// Application
+		$application = JFactory::getApplication();
+
+		// Session
+		$session = JFactory::getSession();
+
+		// Temporary image file
+		$image = $session->get('k2.image', array());
+
+		if ($image && JFile::exists($application->getCfg('tmp_path').'/'.$image))
+		{
+			// Remove from tmp folder
+			JFile::delete($application->getCfg('tmp_path').'/'.$image);
+		}
+		
+		$session->set('k2.image', null);
+
+	}
 
 	public static function getPlaceholder($type)
 	{
@@ -260,7 +327,7 @@ class K2HelperImages
 	{
 		// Settings
 		$params = JComponentHelper::getParams('com_k2');
-		
+
 		// File system
 		$filesystem = K2FileSystem::getInstance();
 
@@ -335,7 +402,8 @@ class K2HelperImages
 		// Get image depending on source
 		if ($path)
 		{
-			$buffer = $filesystem->read($path);
+			$localFilesystem = K2FileSystem::getInstance('Local');
+			$buffer = $localFilesystem->read($path);
 			$imageResource = $processor->load($buffer);
 		}
 		else
@@ -374,7 +442,7 @@ class K2HelperImages
 
 		// Delete current image
 		$filesystem = K2FileSystem::getInstance();
-		
+
 		// Rename
 		$filesystem->write($savepath.'/'.$target, $filesystem->read($savepath.'/'.$source), true);
 	}
@@ -481,7 +549,8 @@ class K2HelperImages
 		// Get image depending on source
 		if ($path)
 		{
-			$buffer = $filesystem->read($path);
+			$localFilesystem = K2FileSystem::getInstance('Local');
+			$buffer = $localFilesystem->read($path);
 			$imageResource = $processor->load($buffer);
 		}
 		else
@@ -498,7 +567,7 @@ class K2HelperImages
 
 		// Write image file
 		$filesystem->write($savepath.'/'.$imageId.'.jpg', $buffer, true);
-		
+
 		// Return
 		$result = new stdClass;
 		$result->temp = $imageId;
