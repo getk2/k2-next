@@ -72,8 +72,8 @@ class K2HelperImages
 			{
 				$image = new stdClass;
 				$image->id = $id;
-				$image->src = JURI::root(true).'/'.$savepath.'/cache/'.$id.'_'.$size->id.'.jpg?t='.$timestamp;
-				$image->url = JURI::root(false).$savepath.'/cache/'.$id.'_'.$size->id.'.jpg?t='.$timestamp;
+				$image->src = K2Filesystem::getURIRoot(true).$savepath.'/cache/'.$id.'_'.$size->id.'.jpg?t='.$timestamp;
+				$image->url = K2Filesystem::getURIRoot(false).$savepath.'/cache/'.$id.'_'.$size->id.'.jpg?t='.$timestamp;
 				$image->alt = $value->caption ? $value->caption : $item->title;
 				$image->caption = $value->caption;
 				$image->credits = $value->credits;
@@ -85,8 +85,8 @@ class K2HelperImages
 			// Add the source image to the array
 			$image = new stdClass;
 			$image->id = $id;
-			$image->src = JURI::root(true).'/'.$savepath.'/src/'.$id.'.jpg?t='.$timestamp;
-			$image->url = JURI::root(false).$savepath.'/src/'.$id.'.jpg?t='.$timestamp;
+			$image->src = K2Filesystem::getURIRoot(true).$savepath.'/src/'.$id.'.jpg?t='.$timestamp;
+			$image->url = K2Filesystem::getURIRoot(false).$savepath.'/src/'.$id.'.jpg?t='.$timestamp;
 			$image->alt = $value->caption ? $value->caption : $item->title;
 			$image->caption = $value->caption;
 			$image->credits = $value->credits;
@@ -155,7 +155,7 @@ class K2HelperImages
 		// Return
 		$result = new stdClass;
 		$result->temp = $imageId;
-		$result->preview = JURI::root(true).'/'.$savepath.'/src/'.$imageId.'.jpg?t='.time();
+		$result->preview = K2Filesystem::getURIRoot(true).$savepath.'/src/'.$imageId.'.jpg?t='.time();
 		return $result;
 
 	}
@@ -174,11 +174,7 @@ class K2HelperImages
 		// Rename temporary image
 		$source = $sourceImageId.'.jpg';
 		$target = $targetImageId.'.jpg';
-		if ($filesystem->has($savepath.'/src/'.$target))
-		{
-			$filesystem->delete($savepath.'/src/'.$target);
-		}
-		$filesystem->rename($savepath.'/src/'.$source, $savepath.'/src/'.$target);
+		$filesystem->write($savepath.'/'.$target, $filesystem->read($savepath.'/'.$source), true);
 	}
 
 	public static function resizeItemImage($imageId, $categoryId)
@@ -264,6 +260,9 @@ class K2HelperImages
 	{
 		// Settings
 		$params = JComponentHelper::getParams('com_k2');
+		
+		// File system
+		$filesystem = K2FileSystem::getInstance();
 
 		// Initialize value
 		$image = null;
@@ -279,8 +278,8 @@ class K2HelperImages
 			$image = new stdClass;
 			$image->id = md5('Image'.$category->id);
 			$timestamp = JFactory::getDate($category->modified)->toUnix();
-			$image->src = JURI::root(true).'/'.$savepath.'/'.$image->id.'.jpg?t='.$timestamp;
-			$image->url = JURI::root(false).$savepath.'/'.$image->id.'.jpg?t='.$timestamp;
+			$image->src = K2FileSystem::getUriRoot(true).$savepath.'/'.$image->id.'.jpg?t='.$timestamp;
+			$image->url = K2FileSystem::getUriRoot().$savepath.'/'.$image->id.'.jpg?t='.$timestamp;
 			$image->alt = $value->caption ? $value->caption : $category->title;
 			$image->caption = $value->caption;
 			$image->credits = $value->credits;
@@ -290,8 +289,8 @@ class K2HelperImages
 		{
 			$placeholder = self::getPlaceholder('category');
 			$image = new stdClass;
-			$image->src = JURI::root(true).'/'.$placeholder;
-			$image->url = JURI::root(false).$placeholder;
+			$image->src = K2Filesystem::getURIRoot(true).$placeholder;
+			$image->url = K2Filesystem::getURIRoot(false).$placeholder;
 			$image->alt = $category->title;
 			$image->caption = '';
 			$image->credits = '';
@@ -357,7 +356,7 @@ class K2HelperImages
 		// Return
 		$result = new stdClass;
 		$result->temp = $imageId;
-		$result->preview = JURI::root(true).'/'.$savepath.'/'.$imageId.'.jpg?t='.time();
+		$result->preview = K2Filesystem::getUriRoot(true).$savepath.'/'.$imageId.'.jpg?t='.time();
 		return $result;
 
 	}
@@ -375,13 +374,9 @@ class K2HelperImages
 
 		// Delete current image
 		$filesystem = K2FileSystem::getInstance();
-		if ($filesystem->has($savepath.'/'.$target))
-		{
-			$filesystem->delete($savepath.'/'.$target);
-		}
-
+		
 		// Rename
-		$filesystem->rename($savepath.'/'.$source, $savepath.'/'.$target);
+		$filesystem->write($savepath.'/'.$target, $filesystem->read($savepath.'/'.$source), true);
 	}
 
 	public static function removeCategoryImage($imageId)
@@ -418,8 +413,8 @@ class K2HelperImages
 		{
 			$image = new stdClass;
 			$image->id = md5('Image'.$user->id);
-			$image->src = JURI::root(true).'/'.$savepath.'/'.$image->id.'.jpg';
-			$image->url = JURI::root(false).$savepath.'/'.$image->id.'.jpg';
+			$image->src = K2Filesystem::getURIRoot(true).$savepath.'/'.$image->id.'.jpg';
+			$image->url = K2Filesystem::getURIRoot(false).$savepath.'/'.$image->id.'.jpg';
 			$image->alt = $user->name;
 			$image->flag = 1;
 		}
@@ -427,8 +422,8 @@ class K2HelperImages
 		{
 			$placeholder = self::getPlaceholder('user');
 			$image = new stdClass;
-			$image->src = JURI::root(true).'/'.$placeholder;
-			$image->url = JURI::root(false).$placeholder;
+			$image->src = K2Filesystem::getURIRoot(true).$placeholder;
+			$image->url = K2Filesystem::getURIRoot(false).$placeholder;
 			$image->alt = $user->name;
 			$image->flag = 0;
 		}
@@ -507,7 +502,7 @@ class K2HelperImages
 		// Return
 		$result = new stdClass;
 		$result->temp = $imageId;
-		$result->preview = JURI::root(true).'/'.$savepath.'/'.$imageId.'.jpg?t='.time();
+		$result->preview = K2Filesystem::getURIRoot(true).$savepath.'/'.$imageId.'.jpg?t='.time();
 		return $result;
 
 	}
@@ -523,15 +518,9 @@ class K2HelperImages
 		// Target
 		$target = $targetImageId.'.jpg';
 
-		// Delete current image
-		$filesystem = K2FileSystem::getInstance();
-		if ($filesystem->has($savepath.'/'.$target))
-		{
-			$filesystem->delete($savepath.'/'.$target);
-		}
-
 		// Rename
-		$filesystem->rename($savepath.'/'.$source, $savepath.'/'.$target);
+		$filesystem = K2FileSystem::getInstance();
+		$filesystem->write($savepath.'/'.$target, $filesystem->read($savepath.'/'.$source), true);
 	}
 
 	public static function removeUserImage($imageId)

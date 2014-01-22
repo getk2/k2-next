@@ -13,6 +13,8 @@ defined('_JEXEC') or die ;
 // Auto load
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/vendor/autoload.php';
 
+use Aws\S3\S3Client;
+
 /**
  * K2 File class.
  * Uses the Gaufrette library
@@ -20,23 +22,51 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/vendor/autoload.php';
 
 class K2FileSystem
 {
-	
+
 	protected static $instances = array();
-	
+
 	public static function getInstance($adapter = null)
 	{
 		if (is_null($adapter))
 		{
-			$adapter = 'Local';
+			$adapter = 'Amazon';
 		}
 
 		if (empty(self::$instances[$adapter]))
 		{
-			$filesystem = new Gaufrette\Filesystem(new Gaufrette\Adapter\Local(JPATH_SITE));
-			self::$instances[$adapter] = $filesystem;
+			if ($adapter == 'Local')
+			{
+				$filesystem = new Gaufrette\Filesystem(new Gaufrette\Adapter\Local(JPATH_SITE));
+				self::$instances[$adapter] = $filesystem;
+			}
+			elseif ($adapter == 'Amazon')
+			{
+				define('AWS_CERTIFICATE_AUTHORITY', true);
+				$service = S3Client::factory(array('key' => 'AKIAJSRRZ6DVIMDFY6MA', 'secret' => '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'));
+				$filesystem = new Gaufrette\Filesystem(new Gaufrette\Adapter\AwsS3($service, 'k2fs'));
+				self::$instances[$adapter] = $filesystem;
+			}
+
 		}
 
 		return self::$instances[$adapter];
+	}
+
+	public static function getURIRoot($pathonly = false, $adapter = null)
+	{
+		if (is_null($adapter))
+		{
+			$adapter = 'Amazon';
+		}
+		if ($adapter == 'Local')
+		{
+			$root = ($pathonly) ? JURI::root($pathonly).'/' : JURI::root($pathonly);
+		}
+		elseif ($adapter == 'Amazon')
+		{
+			$root = 'https://k2fs.s3.amazonaws.com/';
+		}
+		return $root;
 	}
 
 }

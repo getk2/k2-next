@@ -6,6 +6,10 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Symfony\\Component\\EventDispatcher\\' => array($vendorDir . '/symfony/event-dispatcher'),
     'Imagine' => array($vendorDir . '/imagine/imagine/lib'),
+    'Guzzle\\Tests' => array($vendorDir . '/guzzle/guzzle/tests'),
+    'Guzzle' => array($vendorDir . '/guzzle/guzzle/src'),
     'Gaufrette' => array($vendorDir . '/knplabs/gaufrette/src'),
+    'Aws' => array($vendorDir . '/aws/aws-sdk-php/src'),
 );
