@@ -34,7 +34,7 @@ class K2HelperImages
 
 		// ImageProcessor
 		$processor = K2ImageProcessor::getInstance();
-		
+
 		// Load the image
 		if ($path)
 		{
@@ -65,13 +65,13 @@ class K2HelperImages
 			// Remove from file system
 			JFile::delete($application->getCfg('tmp_path').'/'.$replace);
 		}
-		
+
 		// Return
 		$result = new stdClass;
 		$result->temp = $name;
 		$result->preview = JURI::root(true).'/tmp/'.$name.'?t='.time();
 		return $result;
-		
+
 	}
 
 	public static function purge()
@@ -90,7 +90,7 @@ class K2HelperImages
 			// Remove from tmp folder
 			JFile::delete($application->getCfg('tmp_path').'/'.$image);
 		}
-		
+
 		$session->set('k2.image', null);
 
 	}
@@ -217,7 +217,10 @@ class K2HelperImages
 		// Original image
 		$quality = $params->get('imagesQuality', 100);
 		$originalImageBuffer = $imageResource->get('jpeg', array('quality' => $quality));
-		$filesystem->write($savepath.'/src/'.$imageId.'.jpg', $originalImageBuffer, true);
+
+		$adapter = $filesystem->getAdapter();
+		$adapter->setMetadata($savepath.'/src/'.$imageId.'.jpg', array('ContentType' => 'image/jpeg'));
+		$adapter->write($savepath.'/src/'.$imageId.'.jpg', $originalImageBuffer, true);
 
 		// Return
 		$result = new stdClass;
@@ -241,7 +244,11 @@ class K2HelperImages
 		// Rename temporary image
 		$source = $sourceImageId.'.jpg';
 		$target = $targetImageId.'.jpg';
-		$filesystem->write($savepath.'/'.$target, $filesystem->read($savepath.'/'.$source), true);
+
+		$adapter = $filesystem->getAdapter();
+		$adapter->setMetadata($savepath.'/src/'.$target, array('ContentType' => 'image/jpeg'));
+		$adapter->write($savepath.'/src/'.$target, $filesystem->read($savepath.'/src/'.$source), true);
+
 	}
 
 	public static function resizeItemImage($imageId, $categoryId)
@@ -290,7 +297,11 @@ class K2HelperImages
 			$imageResource = $processor->load($sourceBuffer);
 			$imageResource->resize($imageResource->getSize()->widen($width));
 			$buffer = $imageResource->get('jpeg', array('quality' => $size->quality));
-			$filesystem->write($savepath.'/cache/'.$filename, $buffer, true);
+
+			$adapter = $filesystem->getAdapter();
+			$adapter->setMetadata($savepath.'/cache/'.$filename, array('ContentType' => 'image/jpeg'));
+			$adapter->write($savepath.'/cache/'.$filename, $buffer, true);
+
 		}
 
 	}
@@ -419,7 +430,9 @@ class K2HelperImages
 		$buffer = $imageResource->get('jpeg', array('quality' => $quality));
 
 		// Write image file
-		$filesystem->write($savepath.'/'.$imageId.'.jpg', $buffer, true);
+		$adapter = $filesystem->getAdapter();
+		$adapter->setMetadata($savepath.'/'.$imageId.'.jpg', array('ContentType' => 'image/jpeg'));
+		$adapter->write($savepath.'/'.$imageId.'.jpg', $buffer, true);
 
 		// Return
 		$result = new stdClass;
@@ -444,7 +457,9 @@ class K2HelperImages
 		$filesystem = K2FileSystem::getInstance();
 
 		// Rename
-		$filesystem->write($savepath.'/'.$target, $filesystem->read($savepath.'/'.$source), true);
+		$adapter = $filesystem->getAdapter();
+		$adapter->setMetadata($savepath.'/'.$target, array('ContentType' => 'image/jpeg'));
+		$adapter->write($savepath.'/'.$target, $filesystem->read($savepath.'/'.$source), true);
 	}
 
 	public static function removeCategoryImage($imageId)
@@ -566,7 +581,9 @@ class K2HelperImages
 		$buffer = $imageResource->get('jpeg', array('quality' => $quality));
 
 		// Write image file
-		$filesystem->write($savepath.'/'.$imageId.'.jpg', $buffer, true);
+		$adapter = $filesystem->getAdapter();
+		$adapter->setMetadata($savepath.'/'.$imageId.'.jpg', array('ContentType' => 'image/jpeg'));
+		$adapter->write($savepath.'/'.$imageId.'.jpg', $buffer, true);
 
 		// Return
 		$result = new stdClass;
@@ -589,7 +606,11 @@ class K2HelperImages
 
 		// Rename
 		$filesystem = K2FileSystem::getInstance();
-		$filesystem->write($savepath.'/'.$target, $filesystem->read($savepath.'/'.$source), true);
+
+		$adapter = $filesystem->getAdapter();
+		$adapter->setMetadata($savepath.'/'.$target, array('ContentType' => 'image/jpeg'));
+		$adapter->write($savepath.'/'.$target, $filesystem->read($savepath.'/'.$source), true);
+
 	}
 
 	public static function removeUserImage($imageId)
