@@ -27,9 +27,11 @@ class K2FileSystem
 
 	public static function getInstance($adapter = null)
 	{
+		$params = JComponentHelper::getParams('com_k2');
+
 		if (is_null($adapter))
 		{
-			$adapter = 'Microsoft';
+			$adapter = $params->get('filesystem', 'Local');
 		}
 
 		if (empty(self::$instances[$adapter]))
@@ -39,17 +41,24 @@ class K2FileSystem
 				$filesystem = new Gaufrette\Filesystem(new Gaufrette\Adapter\Local(JPATH_SITE));
 				self::$instances[$adapter] = $filesystem;
 			}
-			elseif ($adapter == 'Amazon')
+			elseif ($adapter == 'AmazonS3')
 			{
-				$service = S3Client::factory(array('key' => 'AKIAJSRRZ6DVIMDFY6MA', 'secret' => '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'));
-				$filesystem = new Gaufrette\Filesystem(new Gaufrette\Adapter\AwsS3($service, 'k2fs'));
+				$AmazonS3AccessKey = $params->get('AmazonS3AccessKey');
+				$AmazonS3SecretAccessKey = $params->get('AmazonS3SecretAccessKey');
+				$AmazonS3Bucket = $params->get('AmazonS3Bucket');
+				$service = S3Client::factory(array('key' => $AmazonS3AccessKey, 'secret' => $AmazonS3SecretAccessKey));
+				$filesystem = new Gaufrette\Filesystem(new Gaufrette\Adapter\AwsS3($service, $AmazonS3Bucket));
 				self::$instances[$adapter] = $filesystem;
 			}
-			elseif ($adapter == 'Microsoft')
+			elseif ($adapter == 'MicrosoftAzure')
 			{
-				$connectionString = 'BlobEndpoint=http://k2fs.blob.core.windows.net/;AccountName=k2fs;AccountKey=VD7K8zb5y4LSFX6Im1/8whDX5JFhBn4Ze//ZnH+F5/9OzUQu7aYvZ660LD1usTm37wfHPCOHk0Jng9BbJSazTg==';
+				$MicrosoftAzureEndpoint = $params->get('MicrosoftAzureEndpoint');
+				$MicrosoftAzureAccountName = $params->get('MicrosoftAzureAccountName');
+				$MicrosoftAzureAccountKey = $params->get('MicrosoftAzureAccountKey');
+				$MicrosoftAzureContainer = $params->get('MicrosoftAzureContainer');
+				$connectionString = 'BlobEndpoint='.$MicrosoftAzureEndpoint.'/;AccountName='.$MicrosoftAzureAccountName.';AccountKey='.$MicrosoftAzureAccountKey;
 				$factory = new Gaufrette\Adapter\AzureBlobStorage\BlobProxyFactory($connectionString);
-				$filesystem = new Gaufrette\Filesystem(new Gaufrette\Adapter\AzureBlobStorage($factory, 'k2files'));
+				$filesystem = new Gaufrette\Filesystem(new Gaufrette\Adapter\AzureBlobStorage($factory, $MicrosoftAzureContainer));
 				self::$instances[$adapter] = $filesystem;
 			}
 
@@ -60,21 +69,23 @@ class K2FileSystem
 
 	public static function getURIRoot($pathonly = false, $adapter = null)
 	{
+		$params = JComponentHelper::getParams('com_k2');
+
 		if (is_null($adapter))
 		{
-			$adapter = 'Microsoft';
+			$adapter = $params->get('filesystem', 'Local');
 		}
 		if ($adapter == 'Local')
 		{
 			$root = ($pathonly) ? JURI::root($pathonly).'/' : JURI::root($pathonly);
 		}
-		elseif ($adapter == 'Amazon')
+		elseif ($adapter == 'AmazonS3')
 		{
-			$root = 'https://k2fs.s3.amazonaws.com/';
+			$root = 'https://'.$params->get('AmazonS3Bucket').'.s3.amazonaws.com/';
 		}
-		elseif ($adapter == 'Microsoft')
+		elseif ($adapter == 'MicrosoftAzure')
 		{
-			$root = 'http://k2fs.blob.core.windows.net/k2files/';
+			$root = $params->get('MicrosoftAzureEndpoint').'/'.$params->get('MicrosoftAzureContainer');
 		}
 		return $root;
 	}
@@ -82,12 +93,13 @@ class K2FileSystem
 	// We need a special function for writing image files because we need to set the content type correctly. This is not possible using Gaufrette for all adapters...
 	public static function writeImageFile($key, $buffer)
 	{
+		$params = JComponentHelper::getParams('com_k2');
 		$filesystem = self::getInstance();
 		$adapter = $filesystem->getAdapter();
 		// Add content header for Amazon S3
-		if (method_exists($adapter, 'setMetadata'))
+		if (method_exists($adapter, 'setMetadata') && $params->get('filesystem') == 'AmazonS3')
 		{
-			//$adapter->setMetadata($key, array('ContentType' => 'image/jpeg'));
+			$adapter->setMetadata($key, array('ContentType' => 'image/jpeg'));
 		}
 		$adapter->write($key, $buffer, true);
 	}
