@@ -162,7 +162,7 @@ class K2HelperAttachments
 				if ($model->save())
 				{
 					// Push the id of the attachment to the array
-					$attachmentIds[] = $model->getState('id');
+					$attachmentIds[] = (int)$model->getState('id');
 				}
 			}
 		}
@@ -181,13 +181,6 @@ class K2HelperAttachments
 			{
 				$filesystem->delete($attachmentKey);
 			}
-		}
-
-		// Check if the item folder contains more attachments files. If not delete it. Only for local file system
-		$keys = $filesystem->listKeys($folderKey);
-		if (isset($keys['keys']) && empty($keys['keys']))
-		{
-			$filesystem->delete($folderKey);
 		}
 
 	}

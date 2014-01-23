@@ -147,17 +147,12 @@ class K2HelperGalleries
 						$filesystem->delete($key);
 					}
 				}
-				$filesystem->delete($galleryKey);
+				if ($filesystem->has($galleryKey))
+				{
+					$filesystem->delete($galleryKey);
+				}
 			}
 		}
-
-		// Check if the item folder contains more galleries. If not delete it.
-		$keys = $filesystem->listKeys($folderKey);
-		if (isset($keys['dirs']) && empty($keys['dirs']))
-		{
-			$filesystem->delete($folderKey);
-		}
-
 	}
 
 	public static function purge()

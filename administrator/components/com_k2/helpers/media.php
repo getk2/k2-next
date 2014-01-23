@@ -125,14 +125,6 @@ class K2HelperMedia
 				$filesystem->delete($mediaKey);
 			}
 		}
-
-		// Check if the item folder contains more media files. If not delete it.
-		$keys = $filesystem->listKeys($folderKey);
-		if (isset($keys['keys']) && empty($keys['keys']))
-		{
-			$filesystem->delete($folderKey);
-		}
-
 	}
 
 	public static function purge()

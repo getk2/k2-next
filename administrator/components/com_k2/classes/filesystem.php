@@ -29,7 +29,7 @@ class K2FileSystem
 	{
 		if (is_null($adapter))
 		{
-			$adapter = 'Amazon';
+			$adapter = 'Microsoft';
 		}
 
 		if (empty(self::$instances[$adapter]))
@@ -45,6 +45,13 @@ class K2FileSystem
 				$filesystem = new Gaufrette\Filesystem(new Gaufrette\Adapter\AwsS3($service, 'k2fs'));
 				self::$instances[$adapter] = $filesystem;
 			}
+			elseif ($adapter == 'Microsoft')
+			{
+				$connectionString = 'BlobEndpoint=http://k2fs.blob.core.windows.net/;AccountName=k2fs;AccountKey=VD7K8zb5y4LSFX6Im1/8whDX5JFhBn4Ze//ZnH+F5/9OzUQu7aYvZ660LD1usTm37wfHPCOHk0Jng9BbJSazTg==';
+				$factory = new Gaufrette\Adapter\AzureBlobStorage\BlobProxyFactory($connectionString);
+				$filesystem = new Gaufrette\Filesystem(new Gaufrette\Adapter\AzureBlobStorage($factory, 'k2files'));
+				self::$instances[$adapter] = $filesystem;
+			}
 
 		}
 
@@ -55,7 +62,7 @@ class K2FileSystem
 	{
 		if (is_null($adapter))
 		{
-			$adapter = 'Amazon';
+			$adapter = 'Microsoft';
 		}
 		if ($adapter == 'Local')
 		{
@@ -65,6 +72,10 @@ class K2FileSystem
 		{
 			$root = 'https://k2fs.s3.amazonaws.com/';
 		}
+		elseif ($adapter == 'Microsoft')
+		{
+			$root = 'http://k2fs.blob.core.windows.net/k2files/';
+		}
 		return $root;
 	}
 
@@ -73,9 +84,10 @@ class K2FileSystem
 	{
 		$filesystem = self::getInstance();
 		$adapter = $filesystem->getAdapter();
+		// Add content header for Amazon S3
 		if (method_exists($adapter, 'setMetadata'))
 		{
-			$adapter->setMetadata($key, array('ContentType' => 'image/jpeg'));
+			//$adapter->setMetadata($key, array('ContentType' => 'image/jpeg'));
 		}
 		$adapter->write($key, $buffer, true);
 	}

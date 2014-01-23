@@ -205,7 +205,8 @@ class K2HelperImages
 		// Get image depending on source
 		if ($path)
 		{
-			$buffer = $filesystem->read($path);
+			$localFilesystem = K2FileSystem::getInstance('Local');
+			$buffer = $localFilesystem->read($path);
 			$imageResource = $processor->load($buffer);
 		}
 		else

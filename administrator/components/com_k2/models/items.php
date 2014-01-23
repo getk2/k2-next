@@ -19,7 +19,6 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/media.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/galleries.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/attachments.php';
 
-
 class K2ModelItems extends K2Model
 {
 	public function getRows()
@@ -629,7 +628,7 @@ class K2ModelItems extends K2Model
 			}
 			$data['media'] = json_encode(array_values($data['media']));
 		}
-		
+
 		// Attachments
 		if (isset($data['attachments']))
 		{
@@ -660,10 +659,14 @@ class K2ModelItems extends K2Model
 			$data['tags'] = array();
 			foreach ($tags as $tag)
 			{
-				$entry = new stdClass;
-				$entry->name = $tag;
-				$entry->id = $model->addTag($tag);
-				$data['tags'][] = $entry;
+				$tag = trim($tag);
+				if ($tag)
+				{
+					$entry = new stdClass;
+					$entry->name = $tag;
+					$entry->id = $model->addTag($tag);
+					$data['tags'][] = $entry;
+				}
 			}
 			$data['tags'] = json_encode($data['tags']);
 		}
@@ -739,13 +742,13 @@ class K2ModelItems extends K2Model
 		{
 			K2HelperMedia::update($media, $table);
 		}
-		
+
 		// Attachments
 		if ($attachments = $this->getState('attachments'))
 		{
 			K2HelperAttachments::update($attachments, $table);
 		}
-		
+
 		// Clean up temporary uploads
 		K2HelperGalleries::purge();
 		K2HelperMedia::purge();
