@@ -41,9 +41,10 @@ class JFormFieldK2ImageSizes extends JFormField
 				$output .= '<ul>';
 				foreach ($sizes as $key => $size)
 				{
+					$value = isset($values[$size->id]) ? $values[$size->id] : '';
 					$output .= '<li>
 					<label>'.$size->name.'</label> 
-					<input type="number" placeholder="'.htmlspecialchars(JText::_('K2_CURRENT_VALUE').' '.$size->width).'px" value="'.$values[$size->id].'" name="'.$this->name.'['.$key.'][width]" /> px
+					<input type="number" placeholder="'.htmlspecialchars(JText::_('K2_CURRENT_VALUE').' '.$size->width).'px" value="'.$value.'" name="'.$this->name.'['.$key.'][width]" /> px
 					<input type="hidden" value="'.$size->id.'" name="'.$this->name.'['.$key.'][id]" />
 					<input type="hidden" value="'.$size->name.'" name="'.$this->name.'['.$key.'][name]" />
 					<input type="hidden" value="'.$size->quality.'" name="'.$this->name.'['.$key.'][quality]" />
