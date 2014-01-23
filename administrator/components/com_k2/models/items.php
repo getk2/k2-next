@@ -493,6 +493,19 @@ class K2ModelItems extends K2Model
 
 		}
 
+		// Before anything else store the revision data to the state
+		if ($table->id)
+		{
+			$revisionData = new stdClass;
+			$revisionData->title = $table->title;
+			$revisionData->introtext = $table->introtext;
+			$revisionData->fulltext = $table->fulltext;
+			$revisionData->tags = $table->tags;
+			$revisionData->extra_fields = $table->extra_fields;
+			$preSaveRevisionDataHash = sha1(json_encode($revisionData));
+			$this->setState('preSaveRevisionDataHash', $preSaveRevisionDataHash);
+		}
+
 		$configuration = JFactory::getConfig();
 		$userTimeZone = $user->getParam('timezone', $configuration->get('offset'));
 
@@ -766,6 +779,29 @@ class K2ModelItems extends K2Model
 			{
 				$statistics->decreaseUserItemsCounter($this->getState('owner'));
 				$statistics->increaseUserItemsCounter($table->created_by);
+			}
+		}
+
+		// Handle revisions
+		if ($preSaveRevisionDataHash = $this->getState('preSaveRevisionDataHash'))
+		{
+			// Compute new version data hash
+			$revisionData = new stdClass;
+			$revisionData->title = $table->title;
+			$revisionData->introtext = $table->introtext;
+			$revisionData->fulltext = $table->fulltext;
+			$revisionData->tags = $table->tags;
+			$revisionData->extra_fields = $table->extra_fields;
+			$afterSaveRevisionDataHash = sha1(json_encode($revisionData));
+			if ($preSaveRevisionDataHash != $afterSaveRevisionDataHash)
+			{
+				$input = array();
+				$input['itemId'] = $table->id;
+				$input['data'] = json_encode($revisionData);
+				$input['hash'] = $afterSaveRevisionDataHash;
+				$model = K2Model::getInstance('Revisions');
+				$model->setState('data', $input);
+				$model->save($input);
 			}
 		}
 

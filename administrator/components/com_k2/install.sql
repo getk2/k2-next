@@ -199,6 +199,23 @@ CREATE TABLE IF NOT EXISTS `#__k2_items_stats` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `#__k2_revisions`
+--
+
+CREATE TABLE IF NOT EXISTS `#__k2_revisions` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `itemId` int(10) unsigned NOT NULL,
+  `userId` int(10) unsigned NOT NULL,
+  `date` datetime NOT NULL,
+  `data` mediumtext NOT NULL,
+  `hash` varchar(50) NOT NULL,
+  `notes` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `#__k2_tags`
 --
 
