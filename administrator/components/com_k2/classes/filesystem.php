@@ -29,7 +29,7 @@ class K2FileSystem
 	{
 		if (is_null($adapter))
 		{
-			$adapter = 'Amazon';
+			$adapter = 'Local';
 		}
 
 		if (empty(self::$instances[$adapter]))
@@ -56,7 +56,7 @@ class K2FileSystem
 	{
 		if (is_null($adapter))
 		{
-			$adapter = 'Amazon';
+			$adapter = 'Local';
 		}
 		if ($adapter == 'Local')
 		{
@@ -67,6 +67,18 @@ class K2FileSystem
 			$root = 'https://k2fs.s3.amazonaws.com/';
 		}
 		return $root;
+	}
+
+	// We need a special function for writing image files because we need to set the content type correctly. This is not possible using Gaufrette for all adapters...
+	public static function writeImageFile($key, $buffer)
+	{
+		$filesystem = self::getInstance();
+		$adapter = $filesystem->getAdapter();
+		if (method_exists($adapter, 'setMetadata'))
+		{
+			$adapter->setMetadata($key, array('ContentType' => 'image/jpeg'));
+		}
+		$adapter->write($key, $buffer, true);
 	}
 
 }

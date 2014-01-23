@@ -217,10 +217,7 @@ class K2HelperImages
 		// Original image
 		$quality = $params->get('imagesQuality', 100);
 		$originalImageBuffer = $imageResource->get('jpeg', array('quality' => $quality));
-
-		$adapter = $filesystem->getAdapter();
-		$adapter->setMetadata($savepath.'/src/'.$imageId.'.jpg', array('ContentType' => 'image/jpeg'));
-		$adapter->write($savepath.'/src/'.$imageId.'.jpg', $originalImageBuffer, true);
+		K2FileSystem::writeImageFile($savepath.'/src/'.$imageId.'.jpg', $originalImageBuffer);
 
 		// Return
 		$result = new stdClass;
@@ -244,11 +241,7 @@ class K2HelperImages
 		// Rename temporary image
 		$source = $sourceImageId.'.jpg';
 		$target = $targetImageId.'.jpg';
-
-		$adapter = $filesystem->getAdapter();
-		$adapter->setMetadata($savepath.'/src/'.$target, array('ContentType' => 'image/jpeg'));
-		$adapter->write($savepath.'/src/'.$target, $filesystem->read($savepath.'/src/'.$source), true);
-
+		K2FileSystem::writeImageFile($savepath.'/src/'.$target, $filesystem->read($savepath.'/src/'.$source));
 	}
 
 	public static function resizeItemImage($imageId, $categoryId)
@@ -297,11 +290,7 @@ class K2HelperImages
 			$imageResource = $processor->load($sourceBuffer);
 			$imageResource->resize($imageResource->getSize()->widen($width));
 			$buffer = $imageResource->get('jpeg', array('quality' => $size->quality));
-
-			$adapter = $filesystem->getAdapter();
-			$adapter->setMetadata($savepath.'/cache/'.$filename, array('ContentType' => 'image/jpeg'));
-			$adapter->write($savepath.'/cache/'.$filename, $buffer, true);
-
+			K2FileSystem::writeImageFile($savepath.'/cache/'.$filename, $buffer);
 		}
 
 	}
@@ -430,9 +419,7 @@ class K2HelperImages
 		$buffer = $imageResource->get('jpeg', array('quality' => $quality));
 
 		// Write image file
-		$adapter = $filesystem->getAdapter();
-		$adapter->setMetadata($savepath.'/'.$imageId.'.jpg', array('ContentType' => 'image/jpeg'));
-		$adapter->write($savepath.'/'.$imageId.'.jpg', $buffer, true);
+		K2FileSystem::writeImageFile($savepath.'/'.$imageId.'.jpg', $buffer);
 
 		// Return
 		$result = new stdClass;
@@ -457,9 +444,7 @@ class K2HelperImages
 		$filesystem = K2FileSystem::getInstance();
 
 		// Rename
-		$adapter = $filesystem->getAdapter();
-		$adapter->setMetadata($savepath.'/'.$target, array('ContentType' => 'image/jpeg'));
-		$adapter->write($savepath.'/'.$target, $filesystem->read($savepath.'/'.$source), true);
+		K2FileSystem::writeImageFile($savepath.'/'.$target, $filesystem->read($savepath.'/'.$source));
 	}
 
 	public static function removeCategoryImage($imageId)
@@ -581,9 +566,7 @@ class K2HelperImages
 		$buffer = $imageResource->get('jpeg', array('quality' => $quality));
 
 		// Write image file
-		$adapter = $filesystem->getAdapter();
-		$adapter->setMetadata($savepath.'/'.$imageId.'.jpg', array('ContentType' => 'image/jpeg'));
-		$adapter->write($savepath.'/'.$imageId.'.jpg', $buffer, true);
+		K2FileSystem::writeImageFile($savepath.'/'.$imageId.'.jpg', $buffer);
 
 		// Return
 		$result = new stdClass;
@@ -606,10 +589,7 @@ class K2HelperImages
 
 		// Rename
 		$filesystem = K2FileSystem::getInstance();
-
-		$adapter = $filesystem->getAdapter();
-		$adapter->setMetadata($savepath.'/'.$target, array('ContentType' => 'image/jpeg'));
-		$adapter->write($savepath.'/'.$target, $filesystem->read($savepath.'/'.$source), true);
+		K2FileSystem::writeImageFile($savepath.'/'.$target, $filesystem->read($savepath.'/'.$source));
 
 	}
 
