@@ -29,7 +29,7 @@ class K2FileSystem
 	{
 		if (is_null($adapter))
 		{
-			$adapter = 'Local';
+			$adapter = 'Amazon';
 		}
 
 		if (empty(self::$instances[$adapter]))
@@ -41,7 +41,6 @@ class K2FileSystem
 			}
 			elseif ($adapter == 'Amazon')
 			{
-				define('AWS_CERTIFICATE_AUTHORITY', true);
 				$service = S3Client::factory(array('key' => 'AKIAJSRRZ6DVIMDFY6MA', 'secret' => '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'));
 				$filesystem = new Gaufrette\Filesystem(new Gaufrette\Adapter\AwsS3($service, 'k2fs'));
 				self::$instances[$adapter] = $filesystem;
@@ -56,7 +55,7 @@ class K2FileSystem
 	{
 		if (is_null($adapter))
 		{
-			$adapter = 'Local';
+			$adapter = 'Amazon';
 		}
 		if ($adapter == 'Local')
 		{
