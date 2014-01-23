@@ -86,7 +86,7 @@ class K2HelperGalleries
 
 		// Uploaded galleries
 		$uploadedGalleries = array();
-		
+
 		// Item id
 		$itemId = $item->id;
 
@@ -110,7 +110,7 @@ class K2HelperGalleries
 					$files = JFolder::files($source);
 					foreach ($files as $file)
 					{
-						$buffer = JFile::read($file);
+						$buffer = JFile::read($source.'/'.$file);
 						$filesystem->write($target.'/'.$file, $buffer, true);
 					}
 
@@ -130,15 +130,16 @@ class K2HelperGalleries
 		}
 
 		// Iterate over the galleries in /media/k2/galleries and delete those who have been removed by the user
-		$keys = $filesystem->listKeys('media/k2/galleries/'.$itemId.'/');
-		$folders = $keys['dirs'];
+		$folderKey = 'media/k2/galleries/'.$itemId.'/';
+		$keys = $filesystem->listKeys($folderKey);
+		$folders = isset($keys['dirs']) ? $keys['dirs'] : $keys;
 
 		foreach ($folders as $galleryKey)
 		{
-			if (!in_array($galleryKey, $uploadedGalleries) && $filesystem->has($galleryKey))
+			if ($galleryKey != $folderKey && !in_array($galleryKey, $uploadedGalleries) && $filesystem->has($galleryKey))
 			{
 				$files = $filesystem->listKeys($galleryKey.'/');
-
+				$images = isset($files['keys']) ? $files['keys'] : $files;
 				foreach ($files['keys'] as $key)
 				{
 					if ($filesystem->has($key))
@@ -151,44 +152,12 @@ class K2HelperGalleries
 		}
 
 		// Check if the item folder contains more galleries. If not delete it.
-		$keys = $filesystem->listKeys('media/k2/galleries/'.$itemId.'/');
+		$keys = $filesystem->listKeys($folderKey);
 		if (isset($keys['dirs']) && empty($keys['dirs']))
 		{
-			$filesystem->delete('media/k2/galleries/'.$itemId);
+			$filesystem->delete($folderKey);
 		}
 
-	}
-
-	public static function remove($gallery, $itemId)
-	{
-		// File system
-		$filesystem = K2FileSystem::getInstance();
-
-		// Key
-		$galleryKey = 'media/k2/galleries/'.$itemId.'/'.$gallery;
-
-		if ($filesystem->has($galleryKey))
-		{
-			$files = $filesystem->listKeys($galleryKey);
-
-			foreach ($files['keys'] as $key)
-			{
-				if ($filesystem->has($key))
-				{
-					$filesystem->delete($key);
-				}
-			}
-			$filesystem->delete($galleryKey);
-
-			// Check if the item folder contains more galleries. If not delete it.
-			$keys = $filesystem->listKeys('media/k2/galleries/'.$itemId.'/');
-			if (empty($keys['dirs']))
-			{
-				$filesystem->delete('media/k2/galleries/'.$itemId);
-			}
-		}
-
-		return true;
 	}
 
 	public static function purge()

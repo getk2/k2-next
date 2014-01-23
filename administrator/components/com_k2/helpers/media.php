@@ -71,7 +71,7 @@ class K2HelperMedia
 
 		// File system
 		$filesystem = K2FileSystem::getInstance();
-		
+
 		// Item id
 		$itemId = $item->id;
 
@@ -114,47 +114,25 @@ class K2HelperMedia
 		}
 
 		// Iterate over the media files in /media/k2/media and delete those who have been removed by the user
-		$keys = $filesystem->listKeys('media/k2/media/'.$itemId.'/');
-		$files = $keys['keys'];
+		$folderKey = 'media/k2/media/'.$itemId.'/';
+		$keys = $filesystem->listKeys($folderKey);
+		$files = isset($keys['keys']) ? $keys['keys'] : $keys;
 
 		foreach ($files as $mediaKey)
 		{
-			if (!in_array($mediaKey, $uploadedMedia) && $filesystem->has($mediaKey))
+			if ($mediaKey != $folderKey && !in_array($mediaKey, $uploadedMedia) && $filesystem->has($mediaKey))
 			{
 				$filesystem->delete($mediaKey);
 			}
 		}
 
 		// Check if the item folder contains more media files. If not delete it.
-		$keys = $filesystem->listKeys('media/k2/media/'.$itemId.'/');
-		if (empty($keys['keys']) && $filesystem->has('media/k2/media/'.$itemId))
+		$keys = $filesystem->listKeys($folderKey);
+		if (isset($keys['keys']) && empty($keys['keys']))
 		{
-			$filesystem->delete('media/k2/media/'.$itemId);
+			$filesystem->delete($folderKey);
 		}
 
-	}
-
-	public static function remove($media, $itemId)
-	{
-		// File system
-		$filesystem = K2FileSystem::getInstance();
-
-		// Key
-		$mediaKey = 'media/k2/media/'.$itemId.'/'.$media;
-
-		if ($filesystem->has($mediaKey))
-		{
-			$filesystem->delete($mediaKey);
-
-			// Check if the item folder contains more media. If not delete it.
-			$keys = $filesystem->listKeys('media/k2/media/'.$itemId.'/');
-			if (empty($keys['keys']))
-			{
-				$filesystem->delete('media/k2/media/'.$itemId);
-			}
-		}
-
-		return true;
 	}
 
 	public static function purge()
