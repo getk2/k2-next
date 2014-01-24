@@ -246,8 +246,10 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 				};
 				options.multiselect = element.data('multiple') || false;
 				var types = element.data('types') || null;
-				if (types) {
-					options.extensions = [types];
+				if (types == 'media') {
+					options.extensions = ['audio', 'video'];
+				} else if (types == 'images') {
+					options.extensions = ['images'];
 				}
 				var button = Dropbox.createChooseButton(options);
 				element.append(button);

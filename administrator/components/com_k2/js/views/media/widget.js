@@ -39,6 +39,10 @@ define(['text!layouts/media/list.html', 'text!layouts/media/row.html', 'widgets/
 				this.model.set('url', url);
 				this.model.set('upload', '');
 			}, this);
+			K2Dispatcher.on('media:dropbox:' + this.model.cid, function(url) {
+				this.model.set('url', url);
+				this.model.set('upload', '');
+			}, this);
 			K2Dispatcher.on('media:upload:' + this.model.cid, function(e, data) {
 				this.model.set('upload', data.result);
 				this.model.set('url', '');

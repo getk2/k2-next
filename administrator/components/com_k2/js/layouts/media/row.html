@@ -5,6 +5,7 @@
 
     <label><%= l('K2_URL') %></label>
     <input type="text" name="media[<%- cid %>][url]" value="<%- url %>" data-widget="browser" data-callback="media:select:<%- cid %>" />
+    <span data-widget="dropbox" data-types="media" data-callback="media:dropbox:<%- cid %>"></span>
 
     <label><%= l('K2_PROVIDER') %></label>
     <input type="text" name="media[<%- cid %>][provider]" value="<%- provider %>" />
