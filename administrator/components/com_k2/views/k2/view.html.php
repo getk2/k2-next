@@ -35,6 +35,14 @@ class K2ViewK2 extends JViewLegacy
 		$document->addScriptDeclaration('var K2SitePath = "'.JURI::root(true).'";');
 		$document->addScriptDeclaration('var K2Language = '.$this->getLanguage().';');
 		
+		// Add DropBox drop-in
+		$params = JComponentHelper::getParams('com_k2');
+		if($dropBoxAppKey = $params->get('dropboxAppKey'))
+		{
+			// Load DropBox script
+			$document->addCustomTag('<script data-app-key="'.$dropBoxAppKey.'" id="dropboxjs" src="https://www.dropbox.com/static/api/2/dropins.js"></script>');
+		}
+		
 		// Calculate session lifetime
 		$config = JFactory::getConfig();
 		$lifetime = ($config->get('lifetime') * 60000);

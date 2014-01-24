@@ -205,8 +205,15 @@ class K2HelperImages
 		// Get image depending on source
 		if ($path)
 		{
-			$localFilesystem = K2FileSystem::getInstance('Local');
-			$buffer = $localFilesystem->read($path);
+			// Local or remote
+			if (strpos($path, 'http') === 0)
+			{
+				$buffer = JFile::read($path);
+			}
+			else
+			{
+				$buffer = JFile::read(JPATH_SITE.'/'.$path);
+			}
 			$imageResource = $processor->load($buffer);
 		}
 		else
@@ -403,8 +410,15 @@ class K2HelperImages
 		// Get image depending on source
 		if ($path)
 		{
-			$localFilesystem = K2FileSystem::getInstance('Local');
-			$buffer = $localFilesystem->read($path);
+			// Local or remote
+			if (strpos($path, 'http') === 0)
+			{
+				$buffer = JFile::read($path);
+			}
+			else
+			{
+				$buffer = JFile::read(JPATH_SITE.'/'.$path);
+			}
 			$imageResource = $processor->load($buffer);
 		}
 		else
@@ -550,8 +564,15 @@ class K2HelperImages
 		// Get image depending on source
 		if ($path)
 		{
-			$localFilesystem = K2FileSystem::getInstance('Local');
-			$buffer = $localFilesystem->read($path);
+			// Local or remote
+			if (strpos($path, 'http') === 0)
+			{
+				$buffer = JFile::read($path);
+			}
+			else
+			{
+				$buffer = JFile::read(JPATH_SITE.'/'.$path);
+			}
 			$imageResource = $processor->load($buffer);
 		}
 		else

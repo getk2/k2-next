@@ -67,25 +67,48 @@ class K2ViewAttachments extends K2View
 		// Trigger onK2BeforeDownload event
 		$dispatcher->trigger('onK2BeforeDownload', array(&$attachment));
 
-		// Filesystem
-		$filesystem = K2FileSystem::getInstance();
+		// Remote path file
+		if ($attachment->path && (strpos($attachment->path, 'http:') === 0 || strpos($attachment->path, 'https:') === 0))
+		{
+			// Set the required variables
+			$content = JFile::read($attachment->path);
+			$filename = basename($attachment->path);
 
-		// Determine the key
-		if ($attachment->file)
-		{
-			$key = 'media/k2/attachments/'.$attachment->itemId.'/'.$attachment->file;
-		}
-		else if ($attachment->path)
-		{
-			$key = $attachment->path;
-			// Since it is a path we need to enforce the local adapter for the file system
+			// We need to write a temporary file. There is no other way to get it's size
 			$filesystem = K2FileSystem::getInstance('Local');
+			$filesystem->write($application->getCfg('tmp_path').'/'.$filename, $content, true);
+			$file = $filesystem->get($application->getCfg('tmp_path').'/'.$filename);
+			$size = $file->getSize();
+			$filesystem->delete($application->getCfg('tmp_path').'/'.$filename);
 		}
-
-		// Check if file exists
-		if (!$filesystem->has($key))
+		else
 		{
-			JError::raiseError(404, JText::_('K2_NOT_FOUND'));
+			// File in K2 attachments folder
+			if ($attachment->file)
+			{
+				// File system
+				$filesystem = K2FileSystem::getInstance();
+				$key = 'media/k2/attachments/'.$attachment->itemId.'/'.$attachment->file;
+			}
+			// File path in out server
+			else
+			{
+				// File system. Enforced the Local adapter
+				$filesystem = K2FileSystem::getInstance('Local');
+				$key = $attachment->path;
+			}
+
+			// Since the file is in our server we can check if it exists
+			if (!$filesystem->has($key))
+			{
+				JError::raiseError(404, JText::_('K2_NOT_FOUND'));
+			}
+
+			// Set the required variables
+			$file = $filesystem->get($key);
+			$size = $file->getSize();
+			$content = $file->getContent();
+			$filename = basename($key);
 		}
 
 		// Update downloads counter
@@ -98,10 +121,6 @@ class K2ViewAttachments extends K2View
 		$dispatcher->trigger('onK2AfterDownload', array(&$attachment));
 
 		// Read the file
-		$file = $filesystem->get($key);
-		$size = $file->getSize();
-		$content = $file->getContent();
-		$filename = basename($key);
 		$finfo = new finfo(FILEINFO_MIME);
 		$mime = $finfo->buffer($content);
 		ob_end_clean();

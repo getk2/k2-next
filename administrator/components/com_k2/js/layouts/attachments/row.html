@@ -4,6 +4,8 @@
     <input type="file" data-widget="uploader" data-url="index.php?option=com_k2&task=attachments.upload&id=<%- id %>&itemId=<%- itemId %>&format=json" data-callback="attachments:upload:<%- cid %>" name="file" />
     <input type="hidden" name="attachments[<%- cid %>][file]" value="<%- file %>" />
     <input type="text" data-widget="browser" data-callback="attachments:select:<%- cid %>" name="attachments[<%- cid %>][path]" value="<%- path %>" />
+    <span data-widget="dropbox" data-callback="attachments:dropbox:<%- cid %>"></span>
+
     <label><%= l('K2_NAME') %></label>
     <input type="text" name="attachments[<%- cid %>][name]" value="<%- name %>" />
     <label><%= l('K2_TITLE') %></label>

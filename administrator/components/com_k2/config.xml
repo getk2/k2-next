@@ -382,6 +382,9 @@
 	<fieldset name="COM_K2_ADVANCED_OPTIONS" label="K2_ADVANCED" addfieldpath="/libraries/joomla/form/fields">
 		<!-- ######################### Advanced Settings ######################### -->
 		
+		<field menu="hide" name="dropboxAppKey" type="text" default="" label="K2_DROPBOX_APP_KEY_FOR_DROPIN"/>
+
+		
 		<field menu="hide" name="filesystem" type="list" default="Local" label="K2_FILESYSTEM">
 			<option value="Local">K2_LOCAL</option>
 			<option value="AmazonS3">K2_AMAZON_S3</option>

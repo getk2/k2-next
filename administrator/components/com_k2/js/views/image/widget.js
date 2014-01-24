@@ -60,6 +60,10 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 			K2Dispatcher.on('image:select:' + this.model.cid, function(path) {
 				this.setImageFromServer(path);
 			}, this);
+			
+			K2Dispatcher.on('image:dropbox:' + this.model.cid, function(path) {
+				this.setImageFromServer(path);
+			}, this);
 
 			K2Dispatcher.on('image:upload:' + this.model.cid, function(e, data) {
 				this.model.set('temp', data.result.temp);

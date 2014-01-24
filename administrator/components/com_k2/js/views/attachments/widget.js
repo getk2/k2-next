@@ -15,6 +15,10 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/attachments/list.html', 't
 				this.model.set('path', url);
 				this.model.set('file', '');
 			}, this);
+			K2Dispatcher.on('attachments:dropbox:' + this.model.cid, function(url) {
+				this.model.set('path', url);
+				this.model.set('file', '');
+			}, this);
 			K2Dispatcher.on('attachments:upload:' + this.model.cid, function(e, data) {
 				this.model.set('file', data.result);
 				this.model.set('path', '');

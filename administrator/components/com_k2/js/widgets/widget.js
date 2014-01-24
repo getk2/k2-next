@@ -6,7 +6,7 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 			// Copy this to a variable
 			var self = this;
 			// Browse server
-			container.find('input[data-widget]').each(function() {
+			container.find('[data-widget]').each(function() {
 				self.attachWidget(jQuery(this));
 			});
 
@@ -234,6 +234,26 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 				}
 
 			});
+		},
+
+		dropbox : function(element) {
+			if ( typeof (Dropbox) != 'undefined') {
+				var options = {
+					linkType : 'direct',
+					success : function(files) {
+						K2Dispatcher.trigger(element.data('callback'), files[0].link);
+					}
+				};
+				options.multiselect = element.data('multiple') || false;
+				var types = element.data('types') || null;
+				if (types) {
+					options.extensions = [types];
+				}
+				var button = Dropbox.createChooseButton(options);
+				element.append(button);
+			} else {
+				element.remove();
+			}
 		}
 	};
 	return K2Widget;
