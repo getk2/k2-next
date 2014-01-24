@@ -85,7 +85,7 @@ class K2FileSystem
 		}
 		elseif ($adapter == 'MicrosoftAzure')
 		{
-			$root = $params->get('MicrosoftAzureEndpoint').'/'.$params->get('MicrosoftAzureContainer');
+			$root = $params->get('MicrosoftAzureEndpoint').'/'.$params->get('MicrosoftAzureContainer').'/';
 		}
 		return $root;
 	}
