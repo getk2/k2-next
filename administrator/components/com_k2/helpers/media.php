@@ -22,7 +22,7 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
 
 class K2HelperMedia
 {
-	public static function add($file, $replace = null)
+	public static function add($file, $url = null, $replace = null)
 	{
 		// Application
 		$application = JFactory::getApplication();
@@ -30,11 +30,24 @@ class K2HelperMedia
 		// Session
 		$session = JFactory::getSession();
 
-		// Generate gallery name
-		$name = uniqid().'.'.JFile::getExt($file['name']);
+		// Handle URLs and uploaded files
+		if ($file)
+		{
+			// Generate media name
+			$name = uniqid().'.'.JFile::getExt($file['name']);
 
-		// Upload the file to the temporary folder
-		JFile::upload($file['tmp_name'], $application->getCfg('tmp_path').'/'.$name);
+			// Upload the file to the temporary folder
+			JFile::upload($file['tmp_name'], $application->getCfg('tmp_path').'/'.$name);
+		}
+		elseif ($url)
+		{
+			// Generate media name
+			$name = uniqid().'.'.JFile::getExt(basename($url));
+
+			// Download the file to the temporary folder
+			$buffer = JFile::read($url);
+			JFile::write($application->getCfg('tmp_path').'/'.$name, $buffer);
+		}
 
 		// Add the temporary folder to session so we can perform clean up when needed
 		$media = $session->get('k2.media', array());

@@ -40,6 +40,7 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/attachments/list.html', 't
 		setFileFromDropBox : function(url) {
 			var data = {};
 			data['url'] = url;
+			data['file'] = this.model.get('file');
 			data[K2SessionToken] = 1;
 			var self = this;
 			jQuery.ajax({
@@ -53,7 +54,7 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/attachments/list.html', 't
 			}).fail(function(xhr, status, error) {
 				K2Dispatcher.trigger('app:message', 'error', xhr.responseText);
 			});
-		},
+		}
 	});
 
 	var K2ViewAttachments = Marionette.CompositeView.extend({

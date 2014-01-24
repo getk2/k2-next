@@ -5,6 +5,7 @@ define(['text!layouts/media/list.html', 'text!layouts/media/row.html', 'widgets/
 		initialize : function() {
 			this.set('cid', this.cid);
 		},
+		idAttribute: '_id',
 		defaults : {
 			itemId : null,
 			cid : null,
@@ -40,8 +41,7 @@ define(['text!layouts/media/list.html', 'text!layouts/media/row.html', 'widgets/
 				this.model.set('upload', '');
 			}, this);
 			K2Dispatcher.on('media:dropbox:' + this.model.cid, function(url) {
-				this.model.set('url', url);
-				this.model.set('upload', '');
+				this.setMediaFromDropBox(url);
 			}, this);
 			K2Dispatcher.on('media:upload:' + this.model.cid, function(e, data) {
 				this.model.set('upload', data.result);
@@ -54,6 +54,24 @@ define(['text!layouts/media/list.html', 'text!layouts/media/row.html', 'widgets/
 		removeMedia : function(event) {
 			event.preventDefault();
 			this.model.set('remove', 1);
+		},
+		setMediaFromDropBox : function(url) {
+			var data = {};
+			data['url'] = url;
+			data['upload'] = this.model.get('upload');
+			data[K2SessionToken] = 1;
+			var self = this;
+			jQuery.ajax({
+				dataType : 'json',
+				type : 'POST',
+				url : 'index.php?option=com_k2&task=media.upload&format=json',
+				data : data
+			}).done(function(data, status, xhr) {
+				self.model.set('upload', data);
+				self.model.set('url', '');
+			}).fail(function(xhr, status, error) {
+				K2Dispatcher.trigger('app:message', 'error', xhr.responseText);
+			});
 		}
 	});
 
@@ -67,6 +85,7 @@ define(['text!layouts/media/list.html', 'text!layouts/media/row.html', 'widgets/
 		},
 		initialize : function(options) {
 			this.collection = new MediaCollection(options.data);
+			console.info(this.collection);
 		},
 		addMedia : function(event) {
 			event.preventDefault();

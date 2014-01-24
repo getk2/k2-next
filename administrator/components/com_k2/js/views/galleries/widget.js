@@ -33,6 +33,9 @@ define(['text!layouts/galleries/list.html', 'text!layouts/galleries/row.html', '
 				this.model.set('upload', data.result);
 				this.model.set('url', '');
 			}, this);
+			K2Dispatcher.on('galleries:dropbox:' + this.model.cid, function(url) {
+				this.setGalleryFromDropBox(url);
+			}, this);
 		},
 		onDomRefresh : function() {
 			K2Widget.updateEvents(this.$el);
@@ -40,6 +43,24 @@ define(['text!layouts/galleries/list.html', 'text!layouts/galleries/row.html', '
 		removeGallery : function(event) {
 			event.preventDefault();
 			this.model.set('remove', 1);
+		},
+		setGalleryFromDropBox : function(url) {
+			var data = {};
+			data['url'] = url;
+			data['upload'] = this.model.get('upload');
+			data[K2SessionToken] = 1;
+			var self = this;
+			jQuery.ajax({
+				dataType : 'json',
+				type : 'POST',
+				url : 'index.php?option=com_k2&task=galleries.upload&format=json',
+				data : data
+			}).done(function(data, status, xhr) {
+				self.model.set('upload', data);
+				self.model.set('path', '');
+			}).fail(function(xhr, status, error) {
+				K2Dispatcher.trigger('app:message', 'error', xhr.responseText);
+			});
 		}
 	});
 

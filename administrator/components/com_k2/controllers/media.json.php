@@ -40,10 +40,11 @@ class K2ControllerMedia extends K2Controller
 
 		// Get input
 		$upload = $this->input->get('upload', '', 'cmd');
+		$url = $this->input->get('url', '', 'string');
 		$file = $this->input->files->get('file');
 
 		// Upload media using helper
-		$media = K2HelperMedia::add($file, $upload);
+		$media = K2HelperMedia::add($file, $url, $upload);
 		
 		echo json_encode($media);
 

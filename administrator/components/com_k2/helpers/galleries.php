@@ -22,7 +22,7 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
 
 class K2HelperGalleries
 {
-	public static function add($archive, $replace = null)
+	public static function add($archive, $url = null, $replace = null)
 	{
 		// Application
 		$application = JFactory::getApplication();
@@ -40,13 +40,24 @@ class K2HelperGalleries
 		JFolder::create($newTempGalleryPath);
 
 		// Upload the file to the temporary folder
-		JFile::upload($archive['tmp_name'], $newTempGalleryPath.'/'.$archive['name']);
+		if ($archive)
+		{
+			$name = $archive['name'];
+			JFile::upload($archive['tmp_name'], $newTempGalleryPath.'/'.$name);
+		}
+		else if ($url)
+		{
+			// Download the file to the temporary folder
+			$buffer = JFile::read($url);
+			$name = basename($url);
+			JFile::write($newTempGalleryPath.'/'.$name, $buffer);
+		}
 
 		// Extract the archive
-		JArchive::extract($newTempGalleryPath.'/'.$archive['name'], $newTempGalleryPath);
+		JArchive::extract($newTempGalleryPath.'/'.$name, $newTempGalleryPath);
 
 		// Delete the archive
-		JFile::delete($newTempGalleryPath.'/'.$archive['name']);
+		JFile::delete($newTempGalleryPath.'/'.$name);
 
 		// Add the temporary folder to session so we can perform clean up when needed
 		$galleries = $session->get('k2.galleries', array());

@@ -39,10 +39,11 @@ class K2ControllerGalleries extends K2Controller
 		// Get input
 		$input = JFactory::getApplication()->input;
 		$upload = $input->get('upload', '', 'cmd');
+		$url = $input->get('url', '', 'string');
 		$archive = $input->files->get('archive');
 
 		// Create the gallery and delete the previous one if it is set
-		$gallery = K2HelperGalleries::add($archive, $upload);
+		$gallery = K2HelperGalleries::add($archive, $url, $upload);
 
 		// Response
 		echo json_encode($gallery);

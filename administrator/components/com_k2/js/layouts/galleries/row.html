@@ -4,6 +4,7 @@
     <input type="file" name="archive" data-widget="uploader" data-url="index.php?option=com_k2&task=galleries.upload&upload=<%- upload %>&format=json" data-callback="galleries:upload:<%- cid %>"  />
     <label><%= l('K2_URL') %></label>
     <input type="text" name="galleries[<%- cid %>][url]" value="<%- url %>" />
+    <span data-widget="dropbox" data-types=".zip" data-callback="galleries:dropbox:<%- cid %>"></span>
     <button class="appRemoveGallery">
         <%= l('K2_REMOVE') %>
     </button>
