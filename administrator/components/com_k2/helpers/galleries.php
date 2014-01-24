@@ -98,6 +98,9 @@ class K2HelperGalleries
 		// Item id
 		$itemId = $item->id;
 
+		// Uploaded galleries
+		$uploadedGalleries = array();
+
 		// Iterate over the galleries and transfer the new galleries from /tmp to /media/k2/galleries
 		foreach ($galleries as $gallery)
 		{
@@ -107,6 +110,9 @@ class K2HelperGalleries
 				$source = $application->getCfg('tmp_path').'/'.$gallery->upload;
 
 				$target = 'media/k2/galleries/'.$itemId.'/'.$gallery->upload;
+
+				// Push the gallery to uploaded galleries array
+				$uploadedGalleries[] = $target;
 
 				// Check if the gallery is new
 				if (JFolder::exists($source))
@@ -132,11 +138,47 @@ class K2HelperGalleries
 				}
 
 			}
-			else if ($gallery->remove && $gallery->upload)
+		}
+
+		// Iterate over the galleries in /media/k2/galleries and delete those who have been removed by the user
+		$folderKey = 'media/k2/galleries/'.$itemId;
+		$keys = $filesystem->listKeys($folderKey);
+		if (isset($keys['dirs']))
+		{
+			$folders = $keys['dirs'];
+		}
+		else
+		{
+			$folders = array();
+			foreach ($keys as $key)
 			{
-				$key = 'media/k2/galleries/'.$itemId.'/'.$gallery->upload.'/';
-				$keys = $filesystem->listKeys($key);
-				$images = isset($keys['keys']) ? $keys['keys'] : $keys;
+				$parts = explode('/', $key);
+				$end = end($parts);
+				if ($end)
+				{
+					if (strpos($end, '.') === false)
+					{
+						$folders[] = $end;
+					}
+					else
+					{
+						$index = key($parts);
+						unset($parts[$index]);
+						$folders[] = implode('/', $parts);
+					}
+				}
+				else
+				{
+					$folders[] = rtrim($key, '/');
+				}
+			}
+		}
+		foreach ($folders as $folder)
+		{
+			if (!in_array($folder, $uploadedGalleries))
+			{
+				$files = $filesystem->listKeys($folder);
+				$images = isset($files['keys']) ? $files['keys'] : $files;
 				foreach ($images as $image)
 				{
 					if ($filesystem->has($image))
@@ -144,12 +186,9 @@ class K2HelperGalleries
 						$filesystem->delete($image);
 					}
 				}
-				if ($filesystem->has($key))
-				{
-					$filesystem->delete($key);
-				}
 			}
 		}
+
 	}
 
 	public static function purge()
