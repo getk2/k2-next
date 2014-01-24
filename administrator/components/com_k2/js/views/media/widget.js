@@ -85,7 +85,6 @@ define(['text!layouts/media/list.html', 'text!layouts/media/row.html', 'widgets/
 		},
 		initialize : function(options) {
 			this.collection = new MediaCollection(options.data);
-			console.info(this.collection);
 		},
 		addMedia : function(event) {
 			event.preventDefault();

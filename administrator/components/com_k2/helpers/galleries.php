@@ -95,9 +95,6 @@ class K2HelperGalleries
 		// File system
 		$filesystem = K2FileSystem::getInstance();
 
-		// Uploaded galleries
-		$uploadedGalleries = array();
-
 		// Item id
 		$itemId = $item->id;
 
@@ -111,9 +108,6 @@ class K2HelperGalleries
 
 				$target = 'media/k2/galleries/'.$itemId.'/'.$gallery->upload;
 
-				// Push the gallery to valid array
-				$uploadedGalleries[] = $target;
-
 				// Check if the gallery is new
 				if (JFolder::exists($source))
 				{
@@ -122,7 +116,7 @@ class K2HelperGalleries
 					foreach ($files as $file)
 					{
 						$buffer = JFile::read($source.'/'.$file);
-						$filesystem->write($target.'/'.$file, $buffer, true);
+						$result = $filesystem->write($target.'/'.$file, $buffer, true);
 					}
 
 					// Delete the temporary folder
@@ -138,29 +132,21 @@ class K2HelperGalleries
 				}
 
 			}
-		}
-
-		// Iterate over the galleries in /media/k2/galleries and delete those who have been removed by the user
-		$folderKey = 'media/k2/galleries/'.$itemId.'/';
-		$keys = $filesystem->listKeys($folderKey);
-		$folders = isset($keys['dirs']) ? $keys['dirs'] : $keys;
-
-		foreach ($folders as $galleryKey)
-		{
-			if ($galleryKey != $folderKey && !in_array($galleryKey, $uploadedGalleries) && $filesystem->has($galleryKey))
+			else if ($gallery->remove && $gallery->upload)
 			{
-				$files = $filesystem->listKeys($galleryKey.'/');
-				$images = isset($files['keys']) ? $files['keys'] : $files;
-				foreach ($files['keys'] as $key)
+				$key = 'media/k2/galleries/'.$itemId.'/'.$gallery->upload.'/';
+				$keys = $filesystem->listKeys($key);
+				$images = isset($keys['keys']) ? $keys['keys'] : $keys;
+				foreach ($images as $image)
 				{
-					if ($filesystem->has($key))
+					if ($filesystem->has($image))
 					{
-						$filesystem->delete($key);
+						$filesystem->delete($image);
 					}
 				}
-				if ($filesystem->has($galleryKey))
+				if ($filesystem->has($key))
 				{
-					$filesystem->delete($galleryKey);
+					$filesystem->delete($key);
 				}
 			}
 		}
