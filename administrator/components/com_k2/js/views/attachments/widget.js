@@ -16,8 +16,7 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/attachments/list.html', 't
 				this.model.set('file', '');
 			}, this);
 			K2Dispatcher.on('attachments:dropbox:' + this.model.cid, function(url) {
-				this.model.set('path', url);
-				this.model.set('file', '');
+				this.setFileFromDropBox(url);
 			}, this);
 			K2Dispatcher.on('attachments:upload:' + this.model.cid, function(e, data) {
 				this.model.set('file', data.result);
@@ -37,7 +36,24 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/attachments/list.html', 't
 				var url = _.unescape(this.model.get('link'));
 				window.location = url;
 			}
-		}
+		},
+		setFileFromDropBox : function(url) {
+			var data = {};
+			data['url'] = url;
+			data[K2SessionToken] = 1;
+			var self = this;
+			jQuery.ajax({
+				dataType : 'json',
+				type : 'POST',
+				url : 'index.php?option=com_k2&task=attachments.upload&format=json',
+				data : data
+			}).done(function(data, status, xhr) {
+				self.model.set('file', data);
+				self.model.set('path', '');
+			}).fail(function(xhr, status, error) {
+				K2Dispatcher.trigger('app:message', 'error', xhr.responseText);
+			});
+		},
 	});
 
 	var K2ViewAttachments = Marionette.CompositeView.extend({

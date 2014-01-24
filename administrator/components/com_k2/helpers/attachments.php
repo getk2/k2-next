@@ -22,7 +22,7 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
 
 class K2HelperAttachments
 {
-	public static function add($file, $replace = null)
+	public static function add($file, $url = null, $replace = null)
 	{
 		// Application
 		$application = JFactory::getApplication();
@@ -30,11 +30,24 @@ class K2HelperAttachments
 		// Session
 		$session = JFactory::getSession();
 
-		// Generate gallery name
-		$name = uniqid().'_'.$file['name'];
+		// Handle URLs and uploaded files
+		if ($file)
+		{
+			// Generate gallery name
+			$name = uniqid().'_'.$file['name'];
 
-		// Upload the file to the temporary folder
-		JFile::upload($file['tmp_name'], $application->getCfg('tmp_path').'/'.$name);
+			// Upload the file to the temporary folder
+			JFile::upload($file['tmp_name'], $application->getCfg('tmp_path').'/'.$name);
+		}
+		elseif ($url)
+		{
+			// Generate gallery name
+			$name = uniqid().'_'.basename($url);
+
+			// Download the file to the temporary folder
+			$buffer = JFile::read($url);
+			JFile::write($application->getCfg('tmp_path').'/'.$name, $buffer);
+		}
 
 		// Add the temporary folder to session so we can perform clean up when needed
 		$attachments = $session->get('k2.attachments', array());

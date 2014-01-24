@@ -39,10 +39,11 @@ class K2ControllerAttachments extends K2Controller
 		// Get input
 		$input = JFactory::getApplication()->input;
 		$upload = $input->get('file', '', 'cmd');
+		$url = $input->get('url', '', 'string');
 		$file = $input->files->get('file');
 
 		// Create the gallery and delete the previous one if it is set
-		$attachment = K2HelperAttachments::add($file, $upload);
+		$attachment = K2HelperAttachments::add($file, $url, $upload);
 
 		// Response
 		echo json_encode($attachment);
