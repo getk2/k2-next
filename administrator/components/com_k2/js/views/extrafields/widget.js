@@ -1,11 +1,11 @@
-define(['marionette', 'text!layouts/extrafields/widget.html'], function(Marionette, template) {'use strict';
+define(['marionette', 'text!layouts/extrafields/widget.html', 'widgets/widget'], function(Marionette, template, K2Widget) {'use strict';
 
 	var K2CollectionExtraFieldsWidget = Backbone.Collection.extend({
 		initialize : function() {
 			this.options = {};
 		},
 		url : function() {
-			return 'index.php?option=com_k2&task=extrafields.render&format=json&scope=' + this.options.scope + '&resourceId=' + this.options.resourceId + '&filterId=' + this.options.filterId
+			return 'index.php?option=com_k2&task=extrafields.render&format=json&scope=' + this.options.scope + '&resourceId=' + this.options.resourceId + '&filterId=' + this.options.filterId;
 		},
 		setOption : function(name, value) {
 			this.options[name] = value;
@@ -30,6 +30,7 @@ define(['marionette', 'text!layouts/extrafields/widget.html'], function(Marionet
 			});
 		},
 		onDomRefresh : function() {
+			K2Widget.updateEvents(this.$el);
 			jQuery(document).trigger('K2ExtraFieldsRender');
 		}
 	});
