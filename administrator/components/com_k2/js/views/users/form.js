@@ -65,6 +65,12 @@ define(['marionette', 'text!layouts/users/form.html', 'dispatcher', 'widgets/wid
 				this.imageView.trigger('delete');
 			}
 		},
+		// OnBeforeSave event
+		onBeforeSave : function() {
+
+			// Update form from editor contents
+			K2Editor.save('description');
+		}
 	});
 	return K2ViewUser;
 });

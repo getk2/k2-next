@@ -18,4 +18,11 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/controller.php';
 
 class K2ControllerUsers extends K2Controller
 {
+	protected function getInputData()
+	{
+		$data = parent::getInputData();
+		$data['description'] = JComponentHelper::filterText($this->input->get('description', '', 'raw'));
+		return $data;
+	}
+
 }

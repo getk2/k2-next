@@ -60,5 +60,12 @@ class K2ControllerCategories extends K2Controller
 
 		return $this;
 	}
+	
+	protected function getInputData()
+	{
+		$data = parent::getInputData();
+		$data['description'] = JComponentHelper::filterText($this->input->get('description', '', 'raw'));
+		return $data;
+	}
 
 }

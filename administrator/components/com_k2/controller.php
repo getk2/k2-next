@@ -222,7 +222,7 @@ class K2Controller extends JControllerLegacy
 		JSession::checkToken() or K2Response::throwError(JText::_('JINVALID_TOKEN'));
 
 		// Get input data
-		$data = $this->input->getArray();
+		$data = $this->getInputData();
 
 		// Ensure we are not passed with an id
 		$data['id'] = null;
@@ -275,7 +275,7 @@ class K2Controller extends JControllerLegacy
 		}
 
 		// Get input data
-		$data = $this->input->getArray();
+		$data = $this->getInputData();
 
 		// Pass data to the model
 		$this->model->setState('data', $data);
@@ -384,6 +384,11 @@ class K2Controller extends JControllerLegacy
 		}
 
 		K2Response::setResponse($result);
+	}
+
+	protected function getInputData()
+	{
+		return $this->input->getArray();
 	}
 
 }
