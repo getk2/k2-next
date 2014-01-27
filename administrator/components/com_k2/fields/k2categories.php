@@ -41,7 +41,7 @@ class JFormFieldK2Categories extends JFormField
 			$this->value['recursive'] = '';
 		}
 
-		// Get some variables from XML markup
+		// Get some variables from XML
 		$this->multiple = (bool)$this->element['k2multiple'];
 		$this->recursive = (string)$this->element['k2recursive'];
 		$this->size = (int)$this->element['size'];

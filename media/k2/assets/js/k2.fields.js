@@ -8,4 +8,25 @@ jQuery(document).ready(function() {
 		}
 		jQuery('select[name="' + target + '"]').trigger('chosen:updated').trigger('liszt:updated');
 	});
+
+	jQuery('.k2Modal').click(function(event) {
+		event.preventDefault();
+		jQuery.magnificPopup.open({
+			alignTop : false,
+			closeBtnInside : true,
+			items : {
+				src : this.href,
+				type : 'iframe'
+			}
+		});
+	});
+
+	jQuery('.k2FieldItemsMultiple').sortable({
+		handle : 'span.k2FieldItemsHandle'
+	});
+	jQuery('.k2FieldItemsMultiple').on('click', '.k2FieldItemsRemove', function(event) {
+		event.preventDefault();
+		jQuery(this).parent().remove();
+	});
+
 });

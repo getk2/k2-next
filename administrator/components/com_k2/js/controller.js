@@ -455,7 +455,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 		
 		selectRow : function(id) {
 			var row = this.collection.get(id);
-			console.info(row);
+			parent.K2SelectRow(row);
 		}
 	});
 

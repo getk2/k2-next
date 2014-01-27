@@ -28,8 +28,33 @@ class ModK2ContentHelper
 		// Set states depending on source
 		if ($params->get('source') == 'specific')
 		{
-			// Fetch specific items
-			$model->setState('site', $params->get('items'));
+			$items = array();
+
+			if ($params->get('items'))
+			{
+				$itemIds = array_filter((array)$params->get('items'));
+				if (count($itemIds))
+				{
+					// Fetch specific items
+					$model->setState('id', $itemIds);
+					$rows = $model->getRows();
+
+					// Apply sorting
+					foreach ($itemIds as $itemId)
+					{
+						foreach ($rows as $row)
+						{
+							if ($itemId == $row->id)
+							{
+								$items[] = $row;
+								break;
+							}
+						}
+					}
+
+				}
+			}
+
 		}
 		else
 		{
