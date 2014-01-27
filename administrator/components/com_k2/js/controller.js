@@ -237,7 +237,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 			}, this));
 		},
 
-		// Sabe function. Saves the model and redirects properly.
+		// Save function. Saves the model and redirects properly.
 		save : function(redirect, callback) {
 
 			// Trigger the onBeforeSave event

@@ -78,6 +78,9 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 		// OnBeforeSave event
 		onBeforeSave : function() {
 
+			// Validate extra fields
+			//this.extraFieldsView.validate();
+
 			// Update form from editor contents
 			K2Editor.save('text');
 		},

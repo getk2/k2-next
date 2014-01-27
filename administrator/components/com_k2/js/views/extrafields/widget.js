@@ -32,7 +32,22 @@ define(['marionette', 'text!layouts/extrafields/widget.html', 'widgets/widget'],
 		onDomRefresh : function() {
 			K2Widget.updateEvents(this.$el);
 			jQuery(document).trigger('K2ExtraFieldsRender');
-		}
+		},
+		/*validate : function() {
+			_.each(this.collection.models, function(group) {
+				var fields = group.get('fields');
+				_.each(fields, function(field) {
+					if(field.required > 0) {
+						var el = jQuery('[name="extra_fields['+field.id+'][value]"]');
+						console.info(el.val());
+						if(el.val() == '')
+						{
+							alert('Required!');
+						}
+					}
+				});
+			});
+		}*/
 	});
 	return K2ViewExtraFieldsWidget;
 });
