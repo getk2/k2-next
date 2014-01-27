@@ -7,7 +7,7 @@
 	</view>
 	<fields name="request">
 		<fieldset name="request" addfieldpath="/administrator/components/com_k2/fields">
-			<field name="id" type="k2item" default="" label="K2_SELECT_ITEM" description="K2_SELECT_AN_ITEM_TO_LINK_TO_DIRECTLY" required="true"/>
+			<field name="id" type="k2items" default="" label="K2_SELECT_ITEM" description="K2_SELECT_AN_ITEM_TO_LINK_TO_DIRECTLY" required="true"/>
 		</fieldset>
 	</fields>
 </metadata>

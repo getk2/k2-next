@@ -62,7 +62,7 @@ class JFormFieldK2Items extends JFormField
 			";
 			$document->addScriptDeclaration($js);
 
-			$html = '<div id="'.$this->id.'"><a class="k2Modal btn" title="'.JText::_('K2_ADD_ITEMS').'"  href="'.$link.'"><i class="icon-file"></i>'.JText::_('K2_ADD_ITEMS').'</a>';
+			$html = '<div id="'.$this->id.'"><a class="k2Modal btn" title="'.JText::_('K2_ADD_ITEMS').'"  href="'.$link.'"><i class="icon-list"></i>'.JText::_('K2_ADD_ITEMS').'</a>';
 			$html .= '<ul class="k2FieldItemsMultiple">';
 			foreach ($items as $item)
 			{
@@ -98,7 +98,7 @@ class JFormFieldK2Items extends JFormField
 
 			$html = '<span class="input-append">
             <input type="text" id="'.$this->name.'_name" value="'.htmlspecialchars($title, ENT_QUOTES, 'UTF-8').'" disabled="disabled" />
-            <a class="k2Modal btn" title="'.JText::_('K2_SELECT_AN_ITEM').'"  href="'.$link.'"><i class="icon-file"></i>'.JText::_('K2_SELECT').'</a>
+            <a class="k2Modal btn" title="'.JText::_('K2_SELECT_AN_ITEM').'"  href="'.$link.'"><i class="icon-list"></i>'.JText::_('K2_SELECT').'</a>
             <input type="hidden" class="required modal-value" id="'.$this->name.'_id" name="'.$this->name.'" value="'.( int )$this->value.'" />
             </span>';
 

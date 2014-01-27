@@ -31,10 +31,7 @@ class K2ViewItemlist extends K2View
 		// Trigger the corresponding subview
 		if (method_exists($this, $task))
 		{
-			call_user_func(array(
-				$this,
-				$task
-			));
+			call_user_func(array($this, $task));
 		}
 		else
 		{
@@ -70,6 +67,17 @@ class K2ViewItemlist extends K2View
 
 		// Get category
 		$this->category = K2Categories::getInstance($id);
+		
+		// Merge menu params with category params. Take care of inheritance
+		if ($this->category->inheritance)
+		{
+			$masterCategory = K2Categories::getInstance($this->category->inheritance);
+			$this->params->merge($masterCategory->params);
+		}
+		else
+		{
+			$this->params->merge($this->category->params);
+		}
 
 		// Get items
 		$model = K2Model::getInstance('Items');
@@ -187,10 +195,10 @@ class K2ViewItemlist extends K2View
 		$model->setState('limit', $limit);
 		$model->setState('limitstart', $offset);
 		$this->items = $model->getRows();
-		
+
 		// Count items
 		$this->total = $model->countRows();
-		
+
 	}
 
 	private function search()
