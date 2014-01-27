@@ -894,14 +894,18 @@ class K2ModelItems extends K2Model
 
 		// Handle statistics
 		// First get statistics model
-		$statistics = K2Model::getInstance('Statistics', 'K2Model');
+		$statistics = K2Model::getInstance('Statistics');
 
 		// Delete the item entry
 		$statistics->deleteItemEntry($table->id);
 
 		// Decrease users statistics
 		$statistics->decreaseUserItemsCounter($this->getState('userId'));
-
+		
+		// Delete revisions
+		$model = K2Model::getInstance('Revisions');
+		$model->deleteItemRevisions($itemId);
+		
 		// Return
 		return true;
 

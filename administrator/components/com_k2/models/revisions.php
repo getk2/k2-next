@@ -131,4 +131,22 @@ class K2ModelRevisions extends K2Model
 		return true;
 	}
 
+	public function deleteItemRevisions($itemId)
+	{
+		// Get database
+		$db = $this->getDbo();
+
+		// Get query
+		$query = $db->getQuery(true);
+
+		// Build query
+		$query->delete($db->quoteName('#__k2_revisions'))->where($db->quoteName('itemId').' = '.(int)$itemId);
+		
+		// Set query
+		$db->setQuery($query);
+		
+		// Execute
+		$db->execute();
+	}
+
 }
