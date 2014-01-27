@@ -131,6 +131,69 @@ class K2ModelRevisions extends K2Model
 		return true;
 	}
 
+	/**
+	 * onAfterSave method.
+	 *
+	 * @param   array  $data     The input data.
+	 * @param   JTable  $table   The table object.
+	 *
+	 * @return boolean
+	 */
+
+	protected function onAfterSave(&$data, $table)
+	{
+		$params = JComponentHelper::getParams('com_k2');
+		$itemId = (int)$table->itemId;
+
+		if ($maximumRevisions = (int)$params->get('maxRevisions'))
+		{
+			// First count item revisions
+			$this->setState('id', '');
+			$this->setState('itemId', $itemId);
+			$revisions = $this->countRows();
+
+			// Revisions are more than the allowed limit. We need to purge.
+			if ($revisions > $maximumRevisions)
+			{
+				// Get database
+				$db = $this->getDbo();
+
+				// Find the last id we want to delete
+				$query = $db->getQuery(true);
+				$query->select($db->quoteName('id'))->from($db->quoteName('#__k2_revisions'))->where($db->quoteName('itemId').' = '.$itemId)->order($db->quoteName('id').' DESC');
+				$db->setQuery($query, $maximumRevisions, 1);
+				$id = (int)$db->loadResult();
+
+				// If we have found an id delete all previous revisions
+				if ($id)
+				{
+					$query = $db->getQuery(true);
+					$query->delete($db->quoteName('#__k2_revisions'))->where($db->quoteName('id').' <= '.$id)->where($db->quoteName('itemId').' = '.$itemId);
+					$db->setQuery($query);
+					$db->execute();
+				}
+			}
+		}
+
+		return true;
+	}
+
+	public function buildRevisionData($item)
+	{
+		$data = new stdClass;
+		$data->title = $item->title;
+		$data->introtext = $item->introtext;
+		$data->fulltext = $item->fulltext;
+		$data->tags = $item->tags;
+		$data->extra_fields = $item->extra_fields;
+		return $data;
+	}
+
+	public function computeDataHash($data)
+	{
+		return sha1(json_encode($data));
+	}
+
 	public function deleteItemRevisions($itemId)
 	{
 		// Get database
@@ -141,10 +204,10 @@ class K2ModelRevisions extends K2Model
 
 		// Build query
 		$query->delete($db->quoteName('#__k2_revisions'))->where($db->quoteName('itemId').' = '.(int)$itemId);
-		
+
 		// Set query
 		$db->setQuery($query);
-		
+
 		// Execute
 		$db->execute();
 	}

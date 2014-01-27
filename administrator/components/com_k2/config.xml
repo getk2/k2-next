@@ -381,6 +381,13 @@
 	</fieldset>
 	<fieldset name="COM_K2_ADVANCED_OPTIONS" label="K2_ADVANCED" addfieldpath="/libraries/joomla/form/fields">
 		<!-- ######################### Advanced Settings ######################### -->
+		<field menu="hide" name="revisions" type="radio" default="0" label="K2_ENABLE_ITEM_REVISIONS">
+			<option value="0">K2_NO</option>
+			<option value="1">K2_YES</option>
+		</field>
+		
+		<field menu="hide" name="maxRevisions" type="text" default="10" label="K2_MAXIMUM_REVISIONS_PER_ITEM"/>
+		
 		
 		<field menu="hide" name="dropboxAppKey" type="text" default="" label="K2_DROPBOX_APP_KEY_FOR_DROPIN"/>
 

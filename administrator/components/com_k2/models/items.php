@@ -420,6 +420,9 @@ class K2ModelItems extends K2Model
 		// User
 		$user = JFactory::getUser();
 
+		// Params
+		$params = JComponentHelper::getParams('com_k2');
+
 		// Create action
 		if (!$table->id)
 		{
@@ -494,15 +497,10 @@ class K2ModelItems extends K2Model
 		}
 
 		// Before anything else store the revision data to the state
-		if ($table->id)
+		if ($params->get('revisions') && $table->id)
 		{
-			$revisionData = new stdClass;
-			$revisionData->title = $table->title;
-			$revisionData->introtext = $table->introtext;
-			$revisionData->fulltext = $table->fulltext;
-			$revisionData->tags = $table->tags;
-			$revisionData->extra_fields = $table->extra_fields;
-			$preSaveRevisionDataHash = sha1(json_encode($revisionData));
+			$model = K2Model::getInstance('Revisions');
+			$preSaveRevisionDataHash = $model->computeDataHash($model->buildRevisionData($table));
 			$this->setState('preSaveRevisionDataHash', $preSaveRevisionDataHash);
 		}
 
@@ -786,20 +784,16 @@ class K2ModelItems extends K2Model
 		if ($preSaveRevisionDataHash = $this->getState('preSaveRevisionDataHash'))
 		{
 			// Compute new version data hash
-			$revisionData = new stdClass;
-			$revisionData->title = $table->title;
-			$revisionData->introtext = $table->introtext;
-			$revisionData->fulltext = $table->fulltext;
-			$revisionData->tags = $table->tags;
-			$revisionData->extra_fields = $table->extra_fields;
-			$afterSaveRevisionDataHash = sha1(json_encode($revisionData));
+			$model = K2Model::getInstance('Revisions');
+			$revisionData = $model->buildRevisionData($table);
+			$afterSaveRevisionDataHash = $model->computeDataHash($revisionData);
 			if ($preSaveRevisionDataHash != $afterSaveRevisionDataHash)
 			{
 				$input = array();
 				$input['itemId'] = $table->id;
 				$input['data'] = json_encode($revisionData);
 				$input['hash'] = $afterSaveRevisionDataHash;
-				$model = K2Model::getInstance('Revisions');
+				$input['notes'] = $data['notes'];
 				$model->setState('data', $input);
 				$model->save($input);
 			}
@@ -901,11 +895,11 @@ class K2ModelItems extends K2Model
 
 		// Decrease users statistics
 		$statistics->decreaseUserItemsCounter($this->getState('userId'));
-		
+
 		// Delete revisions
 		$model = K2Model::getInstance('Revisions');
 		$model->deleteItemRevisions($itemId);
-		
+
 		// Return
 		return true;
 
