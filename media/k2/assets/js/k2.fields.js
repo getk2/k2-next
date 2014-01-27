@@ -22,8 +22,9 @@ jQuery(document).ready(function() {
 	});
 
 	jQuery('.k2FieldItemsMultiple').sortable({
-		handle : 'span.k2FieldItemsHandle'
+		handle : 'span.k2FieldItemsHandle',
 	});
+
 	jQuery('.k2FieldItemsMultiple').on('click', '.k2FieldItemsRemove', function(event) {
 		event.preventDefault();
 		jQuery(this).parent().remove();
