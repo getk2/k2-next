@@ -97,6 +97,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 				var first = _.first(parts);
 				if(first == 'modal') {
 					jQuery('#appPrimaryMenu').hide();
+					jQuery('#appSecondaryMenu').hide();
 					jQuery('#appActions').hide();
 					this.isModal = true;
 					parts = _.rest(parts);
@@ -454,6 +455,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 		
 		selectRow : function(id) {
 			var row = this.collection.get(id);
+			console.info(row);
 		}
 	});
 
