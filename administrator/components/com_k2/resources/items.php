@@ -598,6 +598,13 @@ class K2Items extends K2Resource
 		return $events;
 	}
 
+	public function hit()
+	{
+		$model = K2Model::getInstance('Statistics');
+		$model->increaseItemHitsCounter($this->id);
+		$this->hits++;
+	}
+
 	public function checkSiteAccess()
 	{
 		// Get date

@@ -49,7 +49,7 @@ class K2ViewItem extends K2View
 
 		// Get the image depending on params
 		$this->item->image = $this->item->getImage($this->params->get('itemImgSize'));
-		
+
 		// Trigger plugins
 		$this->item->events = $this->item->getEvents('com_k2.item', $this->params, 0);
 
@@ -70,19 +70,18 @@ class K2ViewItem extends K2View
 			// @TODO Trigger comments events
 			$this->item->events->K2CommentsBlock = '';
 		}
-		
+
 		// @TODO Trigger user events
-		
+
 		// Get related items
 		$this->item->related = $this->item->getRelated($this->params->get('itemRelatedLimit'));
-		
+
 		// Get latest from same author
 		$this->authorLatestItems = $this->item->getLatestByAuthor($this->params->get('itemAuthorLatestLimit'));
-		
+
 		// Increase hits counter
-		$model = K2Model::getInstance('Statistics');
-		$model->increaseItemHitsCounter($this->item->id);
-		
+		$this->item->hit();
+
 		// Set title, metadata and pathway if the current menu is different from our page
 		if (!$this->isActive)
 		{
