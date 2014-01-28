@@ -28,7 +28,7 @@ class K2ViewItemlist extends K2View
 		$offset = $application->input->get('offset', 0, 'int');
 		$limit = $application->input->get('limit', 10, 'int');
 
-		// Trigger the corresponding subview
+		// Trigger the corresponding method
 		if (method_exists($this, $task))
 		{
 			call_user_func(array($this, $task));

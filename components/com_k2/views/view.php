@@ -25,7 +25,7 @@ class K2View extends JViewLegacy
 
 		// Get application
 		$application = JFactory::getApplication();
-		
+
 		// Set print variable
 		$this->print = $application->input->getBool('print');
 
@@ -57,7 +57,12 @@ class K2View extends JViewLegacy
 		// Add template paths
 		$template = $application->getTemplate();
 		$this->addTemplatePath(JPATH_SITE.'/components/com_k2/templates/default');
-		$this->addTemplatePath(JPATH_SITE.'/templates/'.$template.'/html/com_k2/templates/default');
+		$this->addTemplatePath(JPATH_SITE.'/templates/'.$template.'/html/com_k2/default');
+		if ($theme = $this->params->get('theme'))
+		{
+			$this->addTemplatePath(JPATH_SITE.'/components/com_k2/templates/'.$theme);
+			$this->addTemplatePath(JPATH_SITE.'/templates/'.$template.'/html/com_k2/'.$theme);
+		}
 
 		// Set active (determine if the current menu Itemid is the same of the current view)
 		$this->setActive();

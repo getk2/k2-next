@@ -43,13 +43,16 @@ class K2ViewItem extends K2View
 		{
 			$this->params->merge($this->category->params);
 		}
-		
+
 		// Merge params with item params
 		$this->params->merge($this->item->params);
-		
+
 		// Get the image depending on params
 		$this->item->image = $this->item->getImage($this->params->get('itemImgSize'));
 		
+		// Trigger plugins
+		$this->item->triggerPlugins('com_k2.item', $this->params, 0);
+
 		// Get comments
 		if ($this->params->get('itemComments') && $this->params->get('comments'))
 		{
@@ -63,13 +66,42 @@ class K2ViewItem extends K2View
 			$document->addScript(JURI::root(true).'/administrator/components/com_k2/js/lib/backbone-min.js');
 			$document->addScript(JURI::root(true).'/administrator/components/com_k2/js/lib/backbone.marionette.min.js');
 			$document->addScript(JURI::root(true).'/administrator/components/com_k2/js/sync.js');
+
+			// @TODO Trigger comments events
+			$this->item->events->K2CommentsBlock = '';
 		}
+		
 
-		// Trigger plugins
-		$this->item->triggerPlugins('com_k2.item', $this->params, 0);
-
-		// @TODO Trigger comments events
-		$this->item->events->K2CommentsBlock = '';
+		// @TODO Trigger user events
+		
+		// Increase hits counter
+		$model = K2Model::getInstance('Statistics');
+		$model->increaseItemHitsCounter($this->item->id);
+		
+		// Set title, metadata and pathway if the current menu is different from our page
+		if (!$this->isActive)
+		{
+			$this->setTitle($this->item->title);
+			$this->params->set('page_heading', $this->item->title);
+			if ($this->item->metadata->get('description'))
+			{
+				$this->document->setDescription($this->item->metadata->get('description'));
+			}
+			if ($this->item->metadata->get('kewords'))
+			{
+				$this->document->setMetadata('keywords', $this->item->metadata->get('kewords'));
+			}
+			if ($this->item->metadata->get('robots'))
+			{
+				$this->document->setMetadata('robots', $this->item->metadata->get('robots'));
+			}
+			if ($this->item->metadata->get('author'))
+			{
+				$this->document->setMetadata('author', $this->item->metadata->get('author'));
+			}
+			$pathway = $application->getPathWay();
+			$pathway->addItem($this->item->title, '');
+		}
 
 		// Set the layout
 		$this->setLayout('item');

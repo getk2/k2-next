@@ -310,12 +310,7 @@ class K2Items extends K2Resource
 				$gallery->text = '{gallery}'.$tag.'{/gallery}';
 
 				// Render the gallery
-				$dispatcher->trigger('onContentPrepare', array(
-					'com_k2',
-					&$gallery,
-					&$params,
-					0
-				));
+				$dispatcher->trigger('onContentPrepare', array('com_k2', &$gallery, &$params, 0));
 
 				// Restore
 				$gallery->output = $gallery->text;
@@ -374,12 +369,7 @@ class K2Items extends K2Resource
 					$entry->text = $tag;
 
 					// Render media
-					$dispatcher->trigger('onContentPrepare', array(
-						'com_k2',
-						&$entry,
-						&$params,
-						0
-					));
+					$dispatcher->trigger('onContentPrepare', array('com_k2', &$entry, &$params, 0));
 
 					// Restore
 					$entry->output = $entry->text;
@@ -482,8 +472,8 @@ class K2Items extends K2Resource
 		$model->setState('ordering.value', $this->ordering);
 		$model->setState('ordering.operator', '<');
 		$model->setState('limit', 1);
-		$previous = $model->getRow();
-		return $previous->id ? $previous : false;
+		$rows = $model->getRows();
+		return ($rows && isset($rows[0])) ? $rows[0] : false;
 	}
 
 	public function getNext()
@@ -497,8 +487,8 @@ class K2Items extends K2Resource
 		$model->setState('ordering.value', $this->ordering);
 		$model->setState('ordering.operator', '>');
 		$model->setState('limit', 1);
-		$next = $model->getRow();
-		return $next->id ? $next : false;
+		$rows = $model->getRows();
+		return ($rows && isset($rows[0])) ? $rows[0] : false;
 	}
 
 	public function triggerPlugins($context, &$params, $offset, $k2Plugins = true, $jPlugins = true)
@@ -526,32 +516,12 @@ class K2Items extends K2Resource
 			// Import content plugins
 			JPluginHelper::importPlugin('content');
 
-			$dispatcher->trigger('onContentPrepare', array(
-				$context,
-				&$this,
-				&$params,
-				$offset
-			));
-			$results = $dispatcher->trigger('onContentAfterTitle', array(
-				$context,
-				&$this,
-				&$params,
-				$offset
-			));
+			$dispatcher->trigger('onContentPrepare', array($context, &$this, &$params, $offset));
+			$results = $dispatcher->trigger('onContentAfterTitle', array($context, &$this, &$params, $offset));
 			$this->events->AfterDisplayTitle = trim(implode("\n", $results));
-			$results = $dispatcher->trigger('onContentBeforeDisplay', array(
-				$context,
-				&$this,
-				&$params,
-				$offset
-			));
+			$results = $dispatcher->trigger('onContentBeforeDisplay', array($context, &$this, &$params, $offset));
 			$this->events->BeforeDisplayContent = trim(implode("\n", $results));
-			$results = $dispatcher->trigger('onContentAfterDisplay', array(
-				$context,
-				&$this,
-				&$params,
-				$offset
-			));
+			$results = $dispatcher->trigger('onContentAfterDisplay', array($context, &$this, &$params, $offset));
 			$this->events->AfterDisplayContent = trim(implode("\n", $results));
 
 		}
@@ -562,46 +532,22 @@ class K2Items extends K2Resource
 			// Import K2 plugins
 			JPluginHelper::importPlugin('k2');
 
-			$results = $dispatcher->trigger('onK2BeforeDisplay', array(
-				&$this,
-				&$params,
-				$offset
-			));
+			$results = $dispatcher->trigger('onK2BeforeDisplay', array(&$this, &$params, $offset));
 			$this->events->K2BeforeDisplay = trim(implode("\n", $results));
 
-			$results = $dispatcher->trigger('onK2AfterDisplay', array(
-				&$this,
-				&$params,
-				$offset
-			));
+			$results = $dispatcher->trigger('onK2AfterDisplay', array(&$this, &$params, $offset));
 			$this->events->K2AfterDisplay = trim(implode("\n", $results));
 
-			$results = $dispatcher->trigger('onK2AfterDisplayTitle', array(
-				&$this,
-				&$params,
-				$offset
-			));
+			$results = $dispatcher->trigger('onK2AfterDisplayTitle', array(&$this, &$params, $offset));
 			$this->events->K2AfterDisplayTitle = trim(implode("\n", $results));
 
-			$results = $dispatcher->trigger('onK2BeforeDisplayContent', array(
-				&$this,
-				&$params,
-				$offset
-			));
+			$results = $dispatcher->trigger('onK2BeforeDisplayContent', array(&$this, &$params, $offset));
 			$this->events->K2BeforeDisplayContent = trim(implode("\n", $results));
 
-			$results = $dispatcher->trigger('onK2AfterDisplayContent', array(
-				&$this,
-				&$params,
-				$offset
-			));
+			$results = $dispatcher->trigger('onK2AfterDisplayContent', array(&$this, &$params, $offset));
 			$this->events->K2AfterDisplayContent = trim(implode("\n", $results));
 
-			$dispatcher->trigger('onK2PrepareContent', array(
-				&$this,
-				&$params,
-				$offset
-			));
+			$dispatcher->trigger('onK2PrepareContent', array(&$this, &$params, $offset));
 		}
 
 		// Restore introtext and fulltext
@@ -618,7 +564,7 @@ class K2Items extends K2Resource
 		$now = $date->toSql();
 
 		// State check
-		if ($this->state < 1 || $this->categoryState < 1)
+		if ($this->state < 1 || $this->categoryState < 1 || (int)$this->id < 1)
 		{
 			JError::raiseError(404, JText::_('K2_NOT_FOUND'));
 			return false;
