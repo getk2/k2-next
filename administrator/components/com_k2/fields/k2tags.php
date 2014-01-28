@@ -12,11 +12,11 @@ defined('_JEXEC') or die ;
 
 jimport('joomla.form.formfield');
 
-require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/users.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/tags.php';
 
-class JFormFieldK2Users extends JFormField
+class JFormFieldK2Tags extends JFormField
 {
-	var $type = 'K2Users';
+	var $type = 'K2Tags';
 
 	public function getInput()
 	{
@@ -30,47 +30,47 @@ class JFormFieldK2Users extends JFormField
 		$document->addScript(JURI::root(true).'/media/k2/assets/js/k2.fields.js');
 
 		$this->multiple = (bool)$this->element['k2multiple'];
-		$link = JURI::root(true).'/administrator/index.php?option=com_k2&tmpl=component#modal/users';
+		$link = JURI::root(true).'/administrator/index.php?option=com_k2&tmpl=component#modal/tags';
 
 		if ($this->multiple)
 		{
-			$title = JText::_('K2_ADD_USERS');
-			$users = array();
+			$title = JText::_('K2_ADD_TAGS');
+			$tags = array();
 			if ($this->value)
 			{
-				foreach ($this->value as $userId)
+				foreach ($this->value as $tagId)
 				{
-					$users[] = K2Users::getInstance($userId);
+					$tags[] = K2Tags::getInstance($tagId);
 				}
 			}
 			$js = "
 			function K2SelectRow(row) {
-				var userAlreadyInList = false;
+				var tagAlreadyInList = false;
 				jQuery('#".$this->id." input').each(function(){
 					if(jQuery(this).val() == row.get('id')){
-						alert('".JText::_('K2_THE_SELECTED_USER_IS_ALREADY_IN_THE_LIST')."');
-						userAlreadyInList = true;
+						alert('".JText::_('K2_THE_SELECTED_TAG_IS_ALREADY_IN_THE_LIST')."');
+						tagAlreadyInList = true;
 					}
 				});
-				if(!userAlreadyInList){
-					var li = '<li><button class=\"k2FieldUsersRemove\">".JText::_('K2_REMOVE_ENTRY_FROM_LIST')."</button><span class=\"k2FieldUsersHandle\">' + row.get('name') + '</span><input type=\"hidden\" value=\"' + row.get('id') + '\" name=\"".$this->name."[]\"/></li>';
-					jQuery('#".$this->id." .k2FieldUsersMultiple').append(li);
+				if(!tagAlreadyInList){
+					var li = '<li><button class=\"k2FieldTagsRemove\">".JText::_('K2_REMOVE_ENTRY_FROM_LIST')."</button><span class=\"k2FieldTagsHandle\">' + row.get('name') + '</span><input type=\"hidden\" value=\"' + row.get('id') + '\" name=\"".$this->name."[]\"/></li>';
+					jQuery('#".$this->id." .k2FieldTagsMultiple').append(li);
 					jQuery('#".$this->id." ul').sortable('refresh');
-					alert('".JText::_('K2_USER_ADDED_IN_THE_LIST', true)."');
+					alert('".JText::_('K2_TAG_ADDED_IN_THE_LIST', true)."');
 				}
 			}
 			";
 			$document->addScriptDeclaration($js);
 
-			$html = '<div id="'.$this->id.'"><a class="k2Modal btn" title="'.JText::_('K2_ADD_USERS').'"  href="'.$link.'"><i class="icon-list"></i>'.JText::_('K2_ADD_USERS').'</a>';
-			$html .= '<ul class="k2FieldUsersMultiple">';
-			foreach ($users as $user)
+			$html = '<div id="'.$this->id.'"><a class="k2Modal btn" title="'.JText::_('K2_ADD_TAGS').'"  href="'.$link.'"><i class="icon-list"></i>'.JText::_('K2_ADD_TAGS').'</a>';
+			$html .= '<ul class="k2FieldTagsMultiple">';
+			foreach ($tags as $tag)
 			{
 				$html .= '
 				<li>
-					<button class="k2FieldUsersRemove">'.JText::_('K2_REMOVE_ENTRY_FROM_LIST').'</button>
-					<span class="k2FieldUsersHandle">'.$user->name.'</span>
-					<input type="hidden" value="'.$user->id.'" name="'.$this->name.'[]"/>
+					<button class="k2FieldTagsRemove">'.JText::_('K2_REMOVE_ENTRY_FROM_LIST').'</button>
+					<span class="k2FieldTagsHandle">'.$tag->name.'</span>
+					<input type="hidden" value="'.$tag->id.'" name="'.$this->name.'[]"/>
 				</li>
 				';
 			}
@@ -80,11 +80,11 @@ class JFormFieldK2Users extends JFormField
 		}
 		else
 		{
-			$title = JText::_('K2_SELECT_A_USER');
+			$title = JText::_('K2_SELECT_A_TAG');
 			if ($this->value)
 			{
-				$user = K2Users::getInstance($this->value);
-				$title = $user->name;
+				$tag = K2Tags::getInstance($this->value);
+				$title = $tag->name;
 			}
 
 			$js = "
@@ -98,7 +98,7 @@ class JFormFieldK2Users extends JFormField
 
 			$html = '<span class="input-append">
             <input type="text" id="'.$this->name.'_name" value="'.htmlspecialchars($title, ENT_QUOTES, 'UTF-8').'" disabled="disabled" />
-            <a class="k2Modal btn" title="'.JText::_('K2_SELECT_A_CATEGORY').'"  href="'.$link.'"><i class="icon-list"></i>'.JText::_('K2_SELECT').'</a>
+            <a class="k2Modal btn" title="'.JText::_('K2_SELECT_A_TAG').'"  href="'.$link.'"><i class="icon-list"></i>'.JText::_('K2_SELECT').'</a>
             <input type="hidden" class="required modal-value" id="'.$this->name.'_id" name="'.$this->name.'" value="'.( int )$this->value.'" />
             </span>';
 
