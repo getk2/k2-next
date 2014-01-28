@@ -141,6 +141,22 @@ class K2ModelItems extends K2Model
 			}
 		}
 
+		if ($this->getState('category'))
+		{
+			$categories = (array)$this->getState('category');
+			$filter = K2ModelCategories::getCategoryFilter($categories, $this->getState('recursive'), $this->getState('site'));
+			$query->where($db->quoteName('category.id').' IN ('.implode(',', $filter).')');
+		}
+		else if ($this->getState('site'))
+		{
+			$authorised = K2ModelCategories::getAuthorised();
+			if (!count($authorised))
+			{
+				$authorised[] = 1;
+			}
+			$query->where($db->quoteName('category.id').' IN ('.implode(',', $authorised).')');
+		}
+
 		if ($this->getState('language'))
 		{
 			$query->where($db->quoteName('item.language').' = '.$db->quote($this->getState('language')));
@@ -153,21 +169,6 @@ class K2ModelItems extends K2Model
 		if (is_numeric($this->getState('featured')))
 		{
 			$query->where($db->quoteName('item.featured').' = '.(int)$this->getState('featured'));
-		}
-		if ($this->getState('category'))
-		{
-			$categories = (array)$this->getState('category');
-			$filter = K2ModelCategories::getCategoryFilter($categories, $this->getState('recursive'), $this->getState('site'));
-			$query->where($db->quoteName('item.catid').' IN ('.implode(',', $filter).')');
-		}
-		else if ($this->getState('site'))
-		{
-			$authorised = K2ModelCategories::getAuthorised();
-			if (!count($authorised))
-			{
-				$authorised[] = 1;
-			}
-			$query->where($db->quoteName('item.catid').' IN ('.implode(',', $authorised).')');
 		}
 
 		if ($this->getState('access'))
@@ -209,6 +210,33 @@ class K2ModelItems extends K2Model
 				$query->where($db->quoteName('item.created_by_alias').' = '.$db->quote(''));
 			}
 		}
+
+		if ($tag = $this->getState('tag'))
+		{
+			$subquery = $db->getQuery(true);
+			$subquery->select($db->quoteName('itemId'));
+			$subquery->from($db->quoteName('#__k2_tags_xref'));
+			if ($excludeItemId = $this->getState('tag.exclude.item'))
+			{
+				$subquery->where($db->quoteName('itemId').' != '.(int)$excludeItemId);
+			}
+			else
+			{
+				$subquery->where($db->quoteName('itemId').' != 0');
+			}
+			if (is_array($tag))
+			{
+				JArrayHelper::toInteger($tag);
+				$subquery->where($db->quoteName('tagId').' IN ('.implode(',', $tag).')');
+			}
+			else
+			{
+				$subquery->where($db->quoteName('tagId').' = '.(int)$tag);
+			}
+			$subquery->group($db->quoteName('itemId'));
+			$query->rightJoin('('.$subquery->__toString().') AS '.$db->quoteName('xref').' ON '.$db->quoteName('xref.itemId').' = '.$db->quoteName('item.id'));
+		}
+
 		if ($this->getState('publish_up'))
 		{
 			$query->where('('.$db->quoteName('item.publish_up').' = '.$db->Quote($db->getNullDate()).' OR '.$db->quoteName('item.publish_up').' <= '.$db->Quote($this->getState('publish_up')).')');
@@ -292,6 +320,11 @@ class K2ModelItems extends K2Model
 		{
 			$query->where($db->quoteName('item.ordering').' '.$this->getState('ordering.operator').' '.(int)$this->getState('ordering.value'));
 		}
+		if($excludeItemId = $this->getState('exclude'))
+		{
+			$query->where($db->quoteName('item.id').' != '.(int)$excludeItemId);
+		}
+
 	}
 
 	private function setQuerySorting(&$query)

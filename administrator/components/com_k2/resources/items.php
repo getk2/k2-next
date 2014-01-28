@@ -491,6 +491,38 @@ class K2Items extends K2Resource
 		return ($rows && isset($rows[0])) ? $rows[0] : false;
 	}
 
+	public function getRelated($limit = 10)
+	{
+		$rows = array();
+		if (count($this->tags))
+		{
+			$model = K2Model::getInstance('Items');
+			$model->setState('site', 1);
+			$model->setState('limit', 10);
+			$tagIds = array();
+			foreach ($this->tags as $tag)
+			{
+				$tagIds[] = $tag->id;
+			}
+			$model->setState('tag', $tagIds);
+			$model->setState('tag.exclude.item', $this->id);
+			$model->setState('limit', $limit);
+			$model->setState('limitstart', 0);
+			$rows = $model->getRows();
+		}
+		return $rows;
+	}
+
+	public function getLatestByAuthor($limit = 10)
+	{
+		$rows = array();
+		if (trim($this->created_by_alias) == '')
+		{
+			$rows = $this->author->getLatest($limit, $this->id);
+		}
+		return $rows;
+	}
+
 	public function triggerPlugins($context, &$params, $offset, $k2Plugins = true, $jPlugins = true)
 	{
 		// Get dispatcher

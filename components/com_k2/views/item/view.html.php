@@ -71,8 +71,13 @@ class K2ViewItem extends K2View
 			$this->item->events->K2CommentsBlock = '';
 		}
 		
-
 		// @TODO Trigger user events
+		
+		// Get related items
+		$this->item->related = $this->item->getRelated($this->params->get('itemRelatedLimit'));
+		
+		// Get latest from same author
+		$this->authorLatestItems = $this->item->getLatestByAuthor($this->params->get('itemAuthorLatestLimit'));
 		
 		// Increase hits counter
 		$model = K2Model::getInstance('Statistics');

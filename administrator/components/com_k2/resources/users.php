@@ -155,13 +155,26 @@ class K2Users extends K2Resource
 		$events = new stdClass;
 		$dispatcher = JDispatcher::getInstance();
 		JPluginHelper::importPlugin('k2');
-		$results = $dispatcher->trigger('onK2UserDisplay', array(
-			&$this,
-			&$params,
-			0
-		));
+		$results = $dispatcher->trigger('onK2UserDisplay', array(&$this, &$params, 0));
 		$events->K2UserDisplay = trim(implode("\n", $results));
 		return $events;
+	}
+
+	public function getLatest($limit = 10, $exclude = null)
+	{
+		K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
+		$model = K2Model::getInstance('Items');
+		$model->setState('site', true);
+		$model->setState('author', $this->id);
+		$model->setState('ordering', 'created');
+		if ($exclude)
+		{
+			$model->setState('exclude', $exclude);
+		}
+		$model->setState('limit', 0);
+		$model->setState('limitstart', 0);
+		$rows = $model->getRows();
+		return $rows;
 	}
 
 }

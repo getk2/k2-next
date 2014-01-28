@@ -321,7 +321,7 @@ defined('_JEXEC') or die ;
   </div>
   <?php endif; ?>
 
-  <?php if($this->params->get('itemAuthorLatest') && empty($this->item->created_by_alias) && isset($this->authorLatestItems)): ?>
+  <?php if($this->params->get('itemAuthorLatest') && !empty($this->authorLatestItems)): ?>
   <!-- Latest items from author -->
 	<div class="itemAuthorLatest">
 		<h3><?php echo JText::_('K2_LATEST_FROM'); ?> <?php echo $this->item->author->name; ?></h3>
@@ -331,6 +331,66 @@ defined('_JEXEC') or die ;
 				<a href="<?php echo $item->link ?>"><?php echo $item->title; ?></a>
 			</li>
 			<?php endforeach; ?>
+		</ul>
+		<div class="clr"></div>
+	</div>
+	<?php endif; ?>
+	
+  <?php if($this->params->get('itemRelated') && isset($this->item->related)): ?>
+  <!-- Related items by tag -->
+	<div class="itemRelated">
+		<h3><?php echo JText::_("K2_RELATED_ITEMS_BY_TAG"); ?></h3>
+		<ul>
+			<?php foreach($this->item->related as $key=>$item): ?>
+			<li class="<?php echo ($key%2) ? "odd" : "even"; ?>">
+
+				<?php if($this->params->get('itemRelatedTitle', 1)): ?>
+				<a class="itemRelTitle" href="<?php echo $item->link ?>"><?php echo $item->title; ?></a>
+				<?php endif; ?>
+
+				<?php if($this->params->get('itemRelatedCategory')): ?>
+				<div class="itemRelCat"><?php echo JText::_("K2_IN"); ?> <a href="<?php echo $item->category->link ?>"><?php echo $item->category->title; ?></a></div>
+				<?php endif; ?>
+
+				<?php if($this->params->get('itemRelatedAuthor')): ?>
+				<div class="itemRelAuthor"><?php echo JText::_("K2_BY"); ?> <a rel="author" href="<?php echo $item->author->link; ?>"><?php echo $item->author->name; ?></a></div>
+				<?php endif; ?>
+
+				<?php if($this->params->get('itemRelatedImageSize') && $item->image): ?>
+				<img style="width:<?php echo $item->image->width; ?>px;height:auto;" class="itemRelImg" src="<?php echo $item->image->src; ?>" alt="<?php echo $item->image->alt; ?>" />
+				<?php endif; ?>
+
+				<?php if($this->params->get('itemRelatedIntrotext')): ?>
+				<div class="itemRelIntrotext"><?php echo $item->introtext; ?></div>
+				<?php endif; ?>
+
+				<?php if($this->params->get('itemRelatedFulltext')): ?>
+				<div class="itemRelFulltext"><?php echo $item->fulltext; ?></div>
+				<?php endif; ?>
+
+				<?php if($this->params->get('itemRelatedMedia') && !empty($item->media)): ?>
+				  <div class="itemRelMediaBlock">
+				  	<?php foreach ($item->media as $entry) : ?>
+					<div class="itemRelMedia">
+						<span class="itemRelMediaOutput"><?php echo $entry->output; ?></span>
+						<div class="clr"></div>
+				  	</div> 
+					<?php endforeach; ?>
+				  </div>
+				<?php endif; ?>
+
+				<?php if($this->params->get('itemRelatedImageGallery') && !empty($item->galleries)): ?>
+					<div class="itemRelImageGalleries">
+				  	<?php foreach ($item->galleries as $gallery): ?>
+				  		<div class="itemRelImageGallery">
+				  			<?php echo $gallery->output; ?>
+				  		</div>
+				  	<?php endforeach; ?>
+  					</div>
+				<?php endif; ?>
+			</li>
+			<?php endforeach; ?>
+			<li class="clr"></li>
 		</ul>
 		<div class="clr"></div>
 	</div>
