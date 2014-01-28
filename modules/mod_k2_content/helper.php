@@ -35,23 +35,13 @@ class ModK2ContentHelper
 				$itemIds = array_filter((array)$params->get('items'));
 				if (count($itemIds))
 				{
-					// Fetch specific items
-					$model->setState('id', $itemIds);
-					$rows = $model->getRows();
-
 					// Apply sorting
 					foreach ($itemIds as $itemId)
 					{
-						foreach ($rows as $row)
-						{
-							if ($itemId == $row->id)
-							{
-								$items[] = $row;
-								break;
-							}
-						}
+						// Fetch item
+						$model->setState('id', $itemId);
+						$items[] = $model->getRow();
 					}
-
 				}
 			}
 
@@ -115,10 +105,10 @@ class ModK2ContentHelper
 
 			// Set sorting
 			$model->setState('sorting', $params->get('sorting'));
-		}
 
-		// Get items
-		$items = $model->getRows();
+			// Get items
+			$items = $model->getRows();
+		}
 
 		// Prepare data
 		foreach ($items as $item)
