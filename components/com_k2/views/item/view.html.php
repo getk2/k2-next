@@ -51,7 +51,7 @@ class K2ViewItem extends K2View
 		$this->item->image = $this->item->getImage($this->params->get('itemImgSize'));
 		
 		// Trigger plugins
-		$this->item->triggerPlugins('com_k2.item', $this->params, 0);
+		$this->item->events = $this->item->getEvents('com_k2.item', $this->params, 0);
 
 		// Get comments
 		if ($this->params->get('itemComments') && $this->params->get('comments'))

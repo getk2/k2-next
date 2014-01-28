@@ -130,4 +130,60 @@ class K2Categories extends K2Resource
 		return $numOfItems;
 	}
 
+	public function getEvents($context = 'com_k2.category', &$params = null, $offset = 0, $k2Plugins = true, $jPlugins = true)
+	{
+		// Params
+		if (is_null($params))
+		{
+			$params = JComponentHelper::getParams('com_k2');
+		}
+
+		// Get dispatcher
+		$dispatcher = JDispatcher::getInstance();
+
+		// Create the text variable
+		$this->text = $this->description;
+
+		// Create the event object with null values
+		$events = new stdClass;
+		$events->K2CategoryDisplay = '';
+
+		// Content plugins
+		if ($jPlugins)
+		{
+			// Import content plugins
+			JPluginHelper::importPlugin('content');
+
+			$dispatcher->trigger('onContentPrepare', array($context, &$this, &$params, $offset));
+			$results = $dispatcher->trigger('onContentAfterTitle', array($context, &$this, &$params, $offset));
+			$events->AfterDisplayTitle = trim(implode("\n", $results));
+			$results = $dispatcher->trigger('onContentBeforeDisplay', array($context, &$this, &$params, $offset));
+			$events->BeforeDisplayContent = trim(implode("\n", $results));
+			$results = $dispatcher->trigger('onContentAfterDisplay', array($context, &$this, &$params, $offset));
+			$events->AfterDisplayContent = trim(implode("\n", $results));
+
+		}
+
+		// K2 plugins
+		if ($k2Plugins)
+		{
+			// Import K2 plugins
+			JPluginHelper::importPlugin('k2');
+
+			$results = $dispatcher->trigger('onK2CategoryDisplay', array(&$this, &$params, $offset));
+			$events->K2CategoryDisplay = trim(implode("\n", $results));
+
+			$dispatcher->trigger('onK2PrepareContent', array(&$this, &$params, $offset));
+		}
+
+		// Restore description
+		$this->description = $this->text;
+
+		// Unset the text
+		unset($this->text);
+
+		// return
+		return $events;
+	}
+
 }
