@@ -20,6 +20,7 @@ class JFormFieldK2ImageSizes extends JFormField
 	{
 		// Get the rendering mode.
 		$this->mode = (string)$this->element['k2mode'];
+		$this->inheritance = (string)$this->element['k2inheritance'];
 
 		// Initialize output variable
 		$output = '';
@@ -118,6 +119,13 @@ class JFormFieldK2ImageSizes extends JFormField
 		{
 			$params = JComponentHelper::getParams('com_k2');
 			$sizes = (array)$params->get('imageSizes');
+			if ($this->inheritance)
+			{
+				$option = new stdClass;
+				$option->id = '';
+				$option->name = JText::_('K2_INHERIT_FROM_CATEGORY');
+				array_unshift($sizes, $option);
+			}
 			if (count($sizes))
 			{
 				$output .= JHtml::_('select.genericlist', $sizes, $this->name, '', 'id', 'name', $this->value);

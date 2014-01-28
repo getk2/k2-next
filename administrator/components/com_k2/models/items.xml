@@ -181,7 +181,7 @@
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemImgSize" type="k2ImageSizes" label="K2_IMAGE_SIZE" description="" />
+			<field name="itemImgSize" type="k2ImageSizes" k2inheritance="1" label="K2_IMAGE_SIZE" description="" />
 			<field name="itemImageMainCaption" type="list" default="" label="K2_IMAGE_CAPTION" description="">
 				<option value="">K2_INHERIT_FROM_CATEGORY</option>
 				<option value="0">K2_HIDE</option>
