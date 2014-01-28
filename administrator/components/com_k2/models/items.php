@@ -90,11 +90,14 @@ class K2ModelItems extends K2Model
 		// Select statement
 		$query->select('COUNT(*)')->from($db->quoteName('#__k2_items', 'item'));
 
-		// Join over the categories
-		$query->leftJoin($db->quoteName('#__k2_categories', 'category').' ON '.$db->quoteName('category.id').' = '.$db->quoteName('item.catid'));
+		// Set a flag that this is a count query so we can optimize it
+		$this->setState('query.count', true);
 
 		// Set query conditions
 		$this->setQueryConditions($query);
+
+		// Restore the count query flag
+		$this->setState('query.count', '');
 
 		// Hook for plugins
 		$this->onBeforeSetQuery($query, 'com_k2.items.count');
@@ -145,7 +148,15 @@ class K2ModelItems extends K2Model
 		{
 			$categories = (array)$this->getState('category');
 			$filter = K2ModelCategories::getCategoryFilter($categories, $this->getState('recursive'), $this->getState('site'));
-			$query->where($db->quoteName('category.id').' IN ('.implode(',', $filter).')');
+			if ($this->getState('query.count'))
+			{
+				$query->where($db->quoteName('item.catid').' IN ('.implode(',', $filter).')');
+			}
+			else
+			{
+				$query->where($db->quoteName('category.id').' IN ('.implode(',', $filter).')');
+			}
+
 		}
 		else if ($this->getState('site'))
 		{
@@ -154,7 +165,15 @@ class K2ModelItems extends K2Model
 			{
 				$authorised[] = 1;
 			}
-			$query->where($db->quoteName('category.id').' IN ('.implode(',', $authorised).')');
+			if ($this->getState('query.count'))
+			{
+				$query->where($db->quoteName('item.catid').' IN ('.implode(',', $authorised).')');
+			}
+			else
+			{
+				$query->where($db->quoteName('category.id').' IN ('.implode(',', $authorised).')');
+			}
+
 		}
 
 		if ($this->getState('language'))
@@ -320,7 +339,7 @@ class K2ModelItems extends K2Model
 		{
 			$query->where($db->quoteName('item.ordering').' '.$this->getState('ordering.operator').' '.(int)$this->getState('ordering.value'));
 		}
-		if($excludeItemId = $this->getState('exclude'))
+		if ($excludeItemId = $this->getState('exclude'))
 		{
 			$query->where($db->quoteName('item.id').' != '.(int)$excludeItemId);
 		}

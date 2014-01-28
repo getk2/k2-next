@@ -110,4 +110,15 @@ class K2Tags extends K2Resource
 		return JRoute::_(K2HelperRoute::getTagRoute($this->id.':'.$this->alias), true, -1);
 	}
 
+	public function checkSiteAccess()
+	{
+		// State check
+		if ($this->state < 1 || (int)$this->id < 1)
+		{
+			JError::raiseError(404, JText::_('K2_NOT_FOUND'));
+			return false;
+		}
+		return true;
+	}
+
 }

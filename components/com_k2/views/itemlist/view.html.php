@@ -154,6 +154,9 @@ class K2ViewItemlist extends K2View
 
 		// Get tag
 		$this->tag = K2Tags::getInstance($id);
+		
+		// Check access and publishing state
+		$this->tag->checkSiteAccess();
 
 		// Get items
 		$model = K2Model::getInstance('Items');
