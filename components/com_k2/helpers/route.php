@@ -108,6 +108,24 @@ class K2HelperRoute
 				}
 			}
 
+			// Second pass for menu links to multiple categories
+			if (is_null($match))
+			{
+				foreach ($items as $item)
+				{
+					if ($item->query['view'] == 'itemlist' && isset($item->query['task']) && $item->query['task'] == 'category')
+					{
+						// Get menu link categories
+						$filter = $item->params->get('categories');
+						if (isset($filter->categories) && is_array($filter->categories) && in_array($id, $filter->categories))
+						{
+							$match = $item;
+							break;
+						}
+					}
+				}
+			}
+
 			// Add what we found to cache
 			self::$cache['category'][$id] = $match;
 		}
