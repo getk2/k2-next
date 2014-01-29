@@ -104,25 +104,26 @@ class K2ViewItemlist extends K2View
 		// Get application
 		$application = JFactory::getApplication();
 
+		// Get params
+		$params = JComponentHelper::getParams('com_k2');
+
 		// Get input
 		$id = $application->input->get('id', 0, 'int');
-		$offset = $application->input->get('offset', 0, 'int');
-		$limit = $application->input->get('limit', 10, 'int');
+		$limit = $params->get('limit', 10, 'int');
 
 		// Get user
-		$this->user = K2Users::getInstance($id);
+		$this->author = K2Users::getInstance($id);
+
+		// Check access
+		$this->author->checkSiteAccess();
 
 		// Get items
 		$model = K2Model::getInstance('Items');
 		$model->setState('site', true);
 		$model->setState('author', $id);
 		$model->setState('limit', $limit);
-		$model->setState('limitstart', $offset);
+		$model->setState('limitstart', 0);
 		$this->items = $model->getRows();
-
-		// Count items
-		$this->total = $model->countRows();
-
 	}
 
 	private function tag()
@@ -222,6 +223,5 @@ class K2ViewItemlist extends K2View
 			}
 		}
 	}
-
 
 }

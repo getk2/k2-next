@@ -325,6 +325,14 @@ class PlgSystemK2 extends JPlugin
 		// Load the K2 classes
 		require_once JPATH_ADMINISTRATOR.'/components/com_k2/tables/table.php';
 		require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/model.php';
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/attachments.php';
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/categories.php';
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/comments.php';
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/extrafields.php';
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/extrafieldsgroups.php';
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/items.php';
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/tags.php';
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/users.php';
 		K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
 		
 		// Load K2 language
