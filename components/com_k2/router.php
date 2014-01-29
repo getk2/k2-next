@@ -36,18 +36,50 @@ function K2BuildRoute(&$query)
 		// Get menu
 		$menu = $application->getMenu();
 
-		// Get associated menu link
+		// Get associated menu item
 		$item = $menu->getItem($query['Itemid']);
 
-		// Strip all variables from URL that are already in the menu item
-		foreach ($item->query as $key => $value)
+		// Assume that this is our menu item
+		$match = true;
+
+		// Check that all variables match
+		foreach ($query as $key => $value)
 		{
-			if ($key != 'Itemid' && $key != 'option')
+			// Don't check for matching Itemid since it does not exists in menu item query
+			if ($key == 'Itemid')
 			{
-				unset($query[$key]);
+				continue;
+			}
+
+			// The variable of the menu does not exist in query. Don't match and break
+			if (!isset($item->query[$key]))
+			{
+				$match = false;
+				break;
+			}
+
+			// Check for numeric values ( for example when id contains alias )
+			$checkedValue = is_numeric($item->query[$key]) ? (int)$value : $value;
+
+			// The variable of the menu does exist in query but has different value. Don't match and break
+			if ($checkedValue != $value)
+			{
+				$match = false;
+				break;
 			}
 		}
 
+		// If the menu item is verified unset the common query variables. Keep only Itemid and option
+		if ($match)
+		{
+			foreach ($item->query as $key => $value)
+			{
+				if ($key != 'Itemid' && $key != 'option')
+				{
+					unset($query[$key]);
+				}
+			}
+		}
 	}
 
 	if (isset($query['view']))
