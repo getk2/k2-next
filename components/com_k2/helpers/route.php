@@ -16,12 +16,7 @@ defined('_JEXEC') or die ;
 class K2HelperRoute
 {
 
-	private static $cache = array(
-		'item' => array(),
-		'category' => array(),
-		'user' => array(),
-		'tag' => array()
-	);
+	private static $cache = array('item' => array(), 'category' => array(), 'user' => array(), 'tag' => array());
 
 	public static function getItemRoute($id, $category)
 	{
@@ -128,12 +123,91 @@ class K2HelperRoute
 
 	public static function getUserRoute($id)
 	{
-		return 'index.php?option=com_k2&view=itemlist&task=user&id='.$id;
+		// Get application
+		$application = JFactory::getApplication();
+
+		// Get component menu links
+		$component = JComponentHelper::getComponent('com_k2');
+		$menu = $application->getMenu('site');
+		$items = $menu->getItems('component_id', $component->id);
+
+		// Initialze route
+		$route = 'index.php?option=com_k2&view=itemlist&task=user&id='.$id;
+
+		// Cast variables
+		$id = (int)$id;
+
+		// Search only if we have not the item in our cache
+		if (!isset(self::$cache['user'][$id]))
+		{
+			// Initialize match
+			$match = null;
+
+			// If we do not have menu link to the item search for a menu link to it's category
+			foreach ($items as $item)
+			{
+				if ($item->query['view'] == 'itemlist' && isset($item->query['task']) && $item->query['task'] == 'user' && $item->query['id'] == $id)
+				{
+					$match = $item;
+					break;
+				}
+			}
+
+			// Add what we found to cache
+			self::$cache['user'][$id] = $match;
+		}
+
+		// If a menu is found append it's id to the route
+		if (self::$cache['user'][$id])
+		{
+			$route .= '&Itemid='.self::$cache['user'][$id]->id;
+		}
+		return $route;
+
 	}
 
 	public static function getTagRoute($id)
 	{
-		return 'index.php?option=com_k2&view=itemlist&task=tag&id='.$id;
+		// Get application
+		$application = JFactory::getApplication();
+
+		// Get component menu links
+		$component = JComponentHelper::getComponent('com_k2');
+		$menu = $application->getMenu('site');
+		$items = $menu->getItems('component_id', $component->id);
+
+		// Initialze route
+		$route = 'index.php?option=com_k2&view=itemlist&task=tag&id='.$id;
+
+		// Cast variables
+		$id = (int)$id;
+
+		// Search only if we have not the item in our cache
+		if (!isset(self::$cache['tag'][$id]))
+		{
+			// Initialize match
+			$match = null;
+
+			// If we do not have menu link to the item search for a menu link to it's category
+			foreach ($items as $item)
+			{
+				if ($item->query['view'] == 'itemlist' && isset($item->query['task']) && $item->query['task'] == 'tag' && $item->query['id'] == $id)
+				{
+					$match = $item;
+					break;
+				}
+			}
+
+			// Add what we found to cache
+			self::$cache['tag'][$id] = $match;
+		}
+
+		// If a menu is found append it's id to the route
+		if (self::$cache['tag'][$id])
+		{
+			$route .= '&Itemid='.self::$cache['tag'][$id]->id;
+		}
+		return $route;
 	}
 
 	public static function getDateRoute($year, $month, $day = null, $category = null)
