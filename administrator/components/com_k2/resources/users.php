@@ -177,4 +177,15 @@ class K2Users extends K2Resource
 		return $rows;
 	}
 
+	public function checkSiteAccess()
+	{
+		// State check
+		if ((int)$this->block > 0)
+		{
+			JError::raiseError(404, JText::_('K2_NOT_FOUND'));
+			return false;
+		}
+		return true;
+	}
+
 }

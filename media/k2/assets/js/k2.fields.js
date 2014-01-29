@@ -6,7 +6,17 @@ jQuery(document).ready(function() {
 		} else {
 			jQuery('select[name="' + target + '"] option').prop('selected', false);
 		}
-		jQuery('select[name="' + target + '"]').trigger('chosen:updated').trigger('liszt:updated');
+		jQuery('select[name="' + target + '"]').trigger('change').trigger('chosen:updated').trigger('liszt:updated');
+	});
+
+	jQuery('select[data-mode="k2categoriesmenu"]').change(function(event) {
+		var id, value = jQuery(this).val();
+		if (value === null || value.length > 1) {
+			id = '';
+		} else {
+			id = value[0];
+		}
+		jQuery('input[name="jform[request][id]"]').val(id);
 	});
 
 	jQuery('.k2Modal').click(function(event) {
@@ -20,8 +30,8 @@ jQuery(document).ready(function() {
 			}
 		});
 	});
-	
-	if(typeof(jQuery.sortable) == 'function') {
+
+	if ( typeof (jQuery.sortable) == 'function') {
 		jQuery('.k2FieldItemsMultiple').sortable({
 			handle : 'span.k2FieldItemsHandle',
 		});

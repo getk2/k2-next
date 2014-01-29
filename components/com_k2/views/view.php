@@ -145,4 +145,207 @@ class K2View extends JViewLegacy
 		$document->setTitle($title);
 	}
 
+	protected function setMetadata($resource)
+	{
+		if (!$this->isActive)
+		{
+			// Detect title
+			$title = isset($resource->title) ? $resource->title : $resource->name;
+
+			// Set the browser title according to the settings
+			$this->setTitle($title);
+
+			// Hide page heading since the current menu item is inherited
+			$this->params->set('show_page_heading', false);
+
+			// Detect and set metadata
+			if (isset($resource->metadata) && $metadata = $resource->metadata)
+			{
+				if ($metadata->get('description'))
+				{
+					$this->document->setDescription($metadata->get('description'));
+				}
+				if ($metadata->get('kewords'))
+				{
+					$this->document->setMetadata('keywords', $metadata->get('kewords'));
+				}
+				if ($metadata->get('robots'))
+				{
+					$this->document->setMetadata('robots', $metadata->get('robots'));
+				}
+				if ($metadata->get('author'))
+				{
+					$this->document->setMetadata('author', $metadata->get('author'));
+				}
+			}
+
+			// Update pathway
+			$application = JFactory::getApplication();
+			$pathway = $application->getPathWay();
+			$pathway->addItem($title, '');
+		}
+	}
+
+	protected function getJsonItem($item)
+	{
+		$row = new stdClass;
+		$row->id = $item->id;
+		$row->title = $item->title;
+		$row->alias = $item->alias;
+		$row->link = $item->link;
+		$row->url = $item->url;
+		$row->catid = $item->catid;
+		$row->introtext = $item->introtext;
+		$row->fulltext = $item->fulltext;
+		$row->extra_fields = $item->extra_fields;
+		$row->created = $item->created;
+		$row->created_by_alias = $item->created_by_alias;
+		$row->modified = $item->modified;
+		$row->featured = $item->featured;
+		$row->image = $item->image;
+		$row->images = $item->images;
+		$row->media = $item->media;
+		$row->galleries = $item->galleries;
+		$row->hits = $item->hits;
+		$row->category = new stdClass;
+		$row->category->id = $item->category->id;
+		$row->category->title = $item->category->title;
+		$row->category->alias = $item->category->alias;
+		$row->category->link = $item->category->link;
+		$row->category->url = $item->category->url;
+		$row->category->description = $item->category->description;
+		$row->category->extra_fields = $item->category->extra_fields;
+		$row->category->image = $item->category->image;
+		$row->tags = $item->tags;
+		$row->attachments = $item->attachments;
+		$row->author = new stdClass;
+		$row->author->name = $item->author->name;
+		$row->author->link = $item->author->link;
+		$row->author->url = $item->author->url;
+		$row->author->image = $item->author->image;
+		$row->author->description = $item->author->description;
+		$row->author->site = $item->author->site;
+		$row->author->gender = $item->author->gender;
+		$row->author->extra_fields = $item->author->extra_fields;
+		$row->numOfComments = $item->numOfComments;
+		$row->events = $item->events;
+		$row->language = $item->language;
+		return $row;
+	}
+
+	protected function getFeedItem($item)
+	{
+		// Get configuration
+		$configuration = JFactory::getConfig();
+
+		// Get params
+		$params = JComponentHelper::getParams('com_k2');
+
+		// Create the entry
+		$entry = new JFeedItem;
+
+		// Title
+		$entry->title = $this->escape($item->title);
+
+		// Link
+		$entry->link = $item->url;
+
+		// Build description
+		$entry->description = '';
+
+		// Image
+		if ($params->get('feedItemImage') && $item->image)
+		{
+			$entry->description .= '<div class="K2FeedImage"><img src="'.$item->image->url.'" alt="'.$item->image->alt.'" /></div>';
+		}
+
+		// Introtext
+		if ($params->get('feedItemIntroText'))
+		{
+			//Introtext word limit
+			if ($params->get('feedTextWordLimit') && $item->introtext)
+			{
+				$item->introtext = K2HelperUtilities::wordLimit($item->introtext, $params->get('feedTextWordLimit'));
+			}
+			$entry->description .= '<div class="K2FeedIntroText">'.$item->introtext.'</div>';
+		}
+
+		// Fulltext
+		if ($params->get('feedItemFullText') && $item->fulltext)
+		{
+			$entry->description .= '<div class="K2FeedFullText">'.$item->fulltext.'</div>';
+		}
+
+		// Tags
+		if ($params->get('feedItemTags') && count($item->tags))
+		{
+			$entry->description .= '<div class="K2FeedTags"><ul>';
+			foreach ($item->tags as $tag)
+			{
+				$entry->description .= '<li><a href="'.$tag->url.'">'.$tag->name.'</a></li>';
+			}
+			$entry->description .= '</ul></div>';
+		}
+
+		// Media
+		if ($params->get('feedItemVideo') && count($item->media))
+		{
+			$entry->description .= '<div class="K2FeedMedia"><ul>';
+			foreach ($item->media as $video)
+			{
+				$entry->description .= '<li>'.$video->output.'</li>';
+			}
+			$entry->description .= '</ul></div>';
+		}
+
+		// Galleries
+		if ($params->get('feedItemGallery') && count($item->galleries))
+		{
+			$entry->description .= '<div class="K2FeedGalleries"><ul>';
+			foreach ($item->galleries as $gallery)
+			{
+				$entry->description .= '<li>'.$gallery->output.'</li>';
+			}
+			$entry->description .= '</ul></div>';
+		}
+
+		// Attachments
+		if ($params->get('feedItemAttachments') && count($item->attachments))
+		{
+			$entry->description .= '<div class="K2FeedAttachments"><ul>';
+			foreach ($item->attachments as $attachment)
+			{
+				$entry->description .= '<li><a title="'.htmlspecialchars($attachment->title).'" href="'.$attachment->url.'">'.$attachment->name.'</a></li>';
+			}
+			$entry->description .= '</ul></div>';
+		}
+
+		// Creation date
+		$entry->date = $item->created;
+
+		// Category
+		$entry->category = $item->category->name;
+
+		// Author
+		$entry->author = $item->author->name;
+		if ($params->get('feedBogusEmail'))
+		{
+			$entry->authorEmail = $params->get('feedBogusEmail');
+		}
+		else
+		{
+			if ($configuration->get('feed_email') == 'author')
+			{
+				$entry->authorEmail = $item->author->email;
+			}
+			else
+			{
+				$entry->authorEmail = $configuration->get('mailfrom');
+			}
+		}
+
+		// Return feed item
+		return $entry;
+	}
+
 }

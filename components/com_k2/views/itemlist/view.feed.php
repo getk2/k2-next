@@ -40,10 +40,7 @@ class K2ViewItemlist extends K2View
 		// Trigger the corresponding subview
 		if (method_exists($this, $task))
 		{
-			call_user_func(array(
-				$this,
-				$task
-			));
+			call_user_func(array($this, $task));
 		}
 		else
 		{
@@ -63,49 +60,43 @@ class K2ViewItemlist extends K2View
 		// Get application
 		$application = JFactory::getApplication();
 
+		// Get params
+		$params = JComponentHelper::getParams('com_k2');
+
 		// Get input
 		$id = $application->input->get('id', 0, 'int');
-		$offset = $application->input->get('offset', 0, 'int');
-		$limit = $application->input->get('limit', 10, 'int');
+		$categories = $this->params->get('categories');
+		$limit = $params->get('limit', 10, 'int');
 
-		// Get category
-		$this->category = K2Categories::getInstance($id);
-
-		// Get items
+		// Get model
 		$model = K2Model::getInstance('Items');
 		$model->setState('site', true);
-		$model->setState('category', $id);
-		$model->setState('limit', $limit);
-		$model->setState('limitstart', $offset);
-		$this->items = $model->getRows();
 
-		// Count items
-		$this->total = $model->countRows();
-
-		// Set title, metadata and pathway if the current menu is different from our page
-		if (!$this->isActive)
+		// Single category
+		if ($id)
 		{
-			$this->setTitle($this->category->title);
-			$this->params->set('page_heading', $this->category->title);
-			if ($this->category->metadata->get('description'))
-			{
-				$this->document->setDescription($this->category->metadata->get('description'));
-			}
-			if ($this->category->metadata->get('kewords'))
-			{
-				$this->document->setMetadata('keywords', $this->category->metadata->get('kewords'));
-			}
-			if ($this->category->metadata->get('robots'))
-			{
-				$this->document->setMetadata('robots', $this->category->metadata->get('robots'));
-			}
-			if ($this->category->metadata->get('author'))
-			{
-				$this->document->setMetadata('author', $this->category->metadata->get('author'));
-			}
-			$pathway = $application->getPathWay();
-			$pathway->addItem($this->category->title, '');
+			// Get category
+			$this->category = K2Categories::getInstance($id);
+
+			// Check access
+			$this->category->checkSiteAccess();
+
+			// Set model state
+			$model->setState('category', $id);
+
 		}
+		// Multiple categories from menu item parameters
+		else if ($categories)
+		{
+			$model->setState('category.filter', $categories);
+		}
+
+		// @TODO Apply menu settings. Since they will be common all tasks we need to wait
+
+		// Get items
+		$model->setState('limit', $limit);
+		$model->setState('limitstart', 0);
+		$this->items = $model->getRows();
 	}
 
 	private function user()
@@ -232,114 +223,5 @@ class K2ViewItemlist extends K2View
 		}
 	}
 
-	private function getFeedItem($item)
-	{
-		// Get configuration
-		$configuration = JFactory::getConfig();
-		
-		// Get params
-		$params = JComponentHelper::getParams('com_k2');
-
-		// Create the entry
-		$entry = new JFeedItem;
-
-		// Title
-		$entry->title = $this->escape($item->title);
-
-		// Link
-		$entry->link = $item->url;
-
-		// Build description
-		$entry->description = '';
-
-		// Image
-		if ($params->get('feedItemImage') && $item->image)
-		{
-			$entry->description .= '<div class="K2FeedImage"><img src="'.$item->image->url.'" alt="'.$item->image->alt.'" /></div>';
-		}
-
-		// Introtext
-		if ($params->get('feedItemIntroText'))
-		{
-			//Introtext word limit
-			if ($params->get('feedTextWordLimit') && $item->introtext)
-			{
-				$item->introtext = K2HelperUtilities::wordLimit($item->introtext, $params->get('feedTextWordLimit'));
-			}
-			$entry->description .= '<div class="K2FeedIntroText">'.$item->introtext.'</div>';
-		}
-
-		// Fulltext
-		if ($params->get('feedItemFullText') && $item->fulltext)
-		{
-			$entry->description .= '<div class="K2FeedFullText">'.$item->fulltext.'</div>';
-		}
-
-		// Tags
-		if ($params->get('feedItemTags') && count($item->tags))
-		{
-			$entry->description .= '<div class="K2FeedTags"><ul>';
-			foreach ($item->tags as $tag)
-			{
-				$entry->description .= '<li><a href="'.$tag->url.'">'.$tag->name.'</a></li>';
-			}
-			$entry->description .= '<ul></div>';
-		}
-
-		// Media
-		if ($params->get('feedItemVideo') && count($item->media))
-		{
-			$entry->description .= '<div class="K2FeedMedia"><ul>';
-			foreach ($item->media as $video)
-			{
-				$entry->description .= '<li>'.$video->output.'</li>';
-			}
-			$entry->description .= '<ul></div>';
-		}
-
-		// Gallery
-		if ($params->get('feedItemGallery') && $item->gallery)
-		{
-			$entry->description .= '<div class="K2FeedGallery">'.$item->gallery.'</div>';
-		}
-
-		// Attachments
-		if ($params->get('feedItemAttachments') && count($item->attachments))
-		{
-			$entry->description .= '<div class="K2FeedAttachments"><ul>';
-			foreach ($item->attachments as $attachment)
-			{
-				$entry->description .= '<li><a title="'.htmlspecialchars($attachment->title).'" href="'.$attachment->url.'">'.$attachment->name.'</a></li>';
-			}
-			$entry->description .= '<ul></div>';
-		}
-		
-		// Creation date
-		$entry->date = $item->created;
-		
-		// Category
-		$entry->category = $item->category->name;
-		
-		// Author
-		$entry->author = $item->author->name;
-		if ($params->get('feedBogusEmail'))
-		{
-			$entry->authorEmail = $params->get('feedBogusEmail');
-		}
-		else
-		{
-			if ($configuration->get('feed_email') == 'author')
-			{
-				$entry->authorEmail = $item->author->email;
-			}
-			else
-			{
-				$entry->authorEmail = $configuration->get('mailfrom');
-			}
-		}
-
-		// Return feed item
-		return $entry;
-	}
 
 }

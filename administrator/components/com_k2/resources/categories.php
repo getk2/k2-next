@@ -186,4 +186,65 @@ class K2Categories extends K2Resource
 		return $events;
 	}
 
+	public function getEffectiveParams()
+	{
+		$effectiveParams = $this->params;
+		if ($this->inheritance)
+		{
+			$effectiveParams = K2Categories::getInstance($this->inheritance)->params;
+		}
+		return $effectiveParams;
+	}
+
+	public function checkSiteAccess()
+	{
+		// Get date
+		$date = JFactory::getDate();
+		$now = $date->toSql();
+
+		// State check
+		if ($this->state < 1 || (int)$this->id < 1)
+		{
+			JError::raiseError(404, JText::_('K2_NOT_FOUND'));
+			return false;
+		}
+
+		// Get user
+		$user = JFactory::getUser();
+		$viewLevels = $user->getAuthorisedViewLevels();
+
+		// Access check
+		if (!in_array($this->access, $viewLevels))
+		{
+			if ($user->guest)
+			{
+				// Get application
+				$application = JFactory::getApplication();
+
+				// Get document
+				$document = JFactory::getDocument();
+
+				// In front end HTML requests redirect the user to the login page
+				if ($application->isSite() && $document->getType() == 'html')
+				{
+					require_once JPATH_SITE.'/components/com_users/helpers/route.php';
+					$uri = JFactory::getURI();
+					$url = 'index.php?option=com_users&view=login&return='.base64_encode($uri->toString()).'&Itemid='.UsersHelperRoute::getLoginRoute();
+					$application->redirect(JRoute::_($url, false), JText::_('K2_YOU_NEED_TO_LOGIN_FIRST'));
+				}
+
+				// Return false
+				return false;
+			}
+			else
+			{
+				JError::raiseError(403, JText::_('K2_NOT_AUTHORISED'));
+				return false;
+			}
+		}
+
+		return true;
+
+	}
+
 }

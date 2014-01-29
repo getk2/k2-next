@@ -44,6 +44,7 @@ class JFormFieldK2Categories extends JFormField
 		// Get some variables from XML
 		$this->multiple = (bool)$this->element['k2multiple'];
 		$this->recursive = (string)$this->element['k2recursive'];
+		$this->mode = (string)$this->element['k2mode'];
 		$this->size = (int)$this->element['size'];
 
 		// Build attributes string
@@ -55,6 +56,10 @@ class JFormFieldK2Categories extends JFormField
 		if ($this->size)
 		{
 			$attributes .= ' size="'.$this->size.'"';
+		}
+		if($this->mode == 'menu')
+		{
+			$attributes.= ' data-mode="k2categoriesmenu"';
 		}
 
 		// Init output

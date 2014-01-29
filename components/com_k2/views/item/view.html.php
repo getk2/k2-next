@@ -33,16 +33,8 @@ class K2ViewItem extends K2View
 		// Check access
 		$this->item->checkSiteAccess();
 
-		// Merge menu params with category params. Take care of inheritance
-		if ($this->item->category->inheritance)
-		{
-			$masterCategory = K2Categories::getInstance($this->item->category->inheritance);
-			$this->params->merge($masterCategory->params);
-		}
-		else
-		{
-			$this->params->merge($this->category->params);
-		}
+		// Merge menu params with category params
+		$this->params->merge($this->item->category->getEffectiveParams());
 
 		// Merge params with item params
 		$this->params->merge($this->item->params);
@@ -50,11 +42,11 @@ class K2ViewItem extends K2View
 		// Get the image depending on params
 		$this->item->image = $this->item->getImage($this->params->get('itemImgSize'));
 
-		// Trigger plugins
+		// Trigger plugins. We need to do this there in order to provide the correct context
 		$this->item->events = $this->item->getEvents('com_k2.item', $this->params, 0);
 
 		// Get comments
-		if ($this->params->get('itemComments') && $this->params->get('comments'))
+		if ($this->params->get('itemComments') && $this->params->get('comments') && empty($this->item->events->K2CommentsCounter) && empty($this->item->events->K2CommentsBlock))
 		{
 			// Check if user can comment
 			$this->user->canComment = $this->user->authorise('k2.comment.create', 'com_k2');
@@ -66,45 +58,25 @@ class K2ViewItem extends K2View
 			$this->document->addScript(JURI::root(true).'/administrator/components/com_k2/js/lib/backbone.marionette.min.js');
 			$this->document->addScript(JURI::root(true).'/administrator/components/com_k2/js/sync.js');
 
-			// @TODO Trigger comments events
-			$this->item->events->K2CommentsBlock = '';
 		}
 
-		// @TODO Trigger user events
+		// Get related items. We need to do this here since the parameter is related with the view
+		if ($this->params->get('itemRelated'))
+		{
+			$this->item->related = $this->item->getRelated($this->params->get('itemRelatedLimit'));
+		}
 
-		// Get related items
-		$this->item->related = $this->item->getRelated($this->params->get('itemRelatedLimit'));
-
-		// Get latest from same author
-		$this->authorLatestItems = $this->item->getLatestByAuthor($this->params->get('itemAuthorLatestLimit'));
+		// Get latest from same author. We need to do this here since the parameter is related with the view
+		if ($this->params->get('itemAuthorLatest'))
+		{
+			$this->item->author->latest = $this->item->getLatestByAuthor($this->params->get('itemAuthorLatestLimit'), $this->item->id);
+		}
 
 		// Increase hits counter
 		$this->item->hit();
 
-		// Set metadata from item since we are not under a menu link
-		if (!$this->isActive)
-		{
-			$this->setTitle($this->item->title);
-			$this->params->set('show_page_heading', false);
-			if ($this->item->metadata->get('description'))
-			{
-				$this->document->setDescription($this->item->metadata->get('description'));
-			}
-			if ($this->item->metadata->get('kewords'))
-			{
-				$this->document->setMetadata('keywords', $this->item->metadata->get('kewords'));
-			}
-			if ($this->item->metadata->get('robots'))
-			{
-				$this->document->setMetadata('robots', $this->item->metadata->get('robots'));
-			}
-			if ($this->item->metadata->get('author'))
-			{
-				$this->document->setMetadata('author', $this->item->metadata->get('author'));
-			}
-			$pathway = $application->getPathWay();
-			$pathway->addItem($this->item->title, '');
-		}
+		// Set metadata
+		$this->setMetadata($this->item);
 
 		// Set the layout
 		$this->setLayout('item');

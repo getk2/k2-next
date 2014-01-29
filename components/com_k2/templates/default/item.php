@@ -328,12 +328,12 @@ defined('_JEXEC') or die ;
   </div>
   <?php endif; ?>
 
-  <?php if($this->params->get('itemAuthorLatest') && !empty($this->authorLatestItems)): ?>
+  <?php if($this->params->get('itemAuthorLatest') && !empty($this->item->author->latest)): ?>
   <!-- Latest items from author -->
 	<div class="itemAuthorLatest">
 		<h3><?php echo JText::_('K2_LATEST_FROM'); ?> <?php echo $this->item->author->name; ?></h3>
 		<ul>
-			<?php foreach($this->authorLatestItems as $key=>$item): ?>
+			<?php foreach($this->item->author->latest as $key=>$item): ?>
 			<li class="<?php echo ($key%2) ? "odd" : "even"; ?>">
 				<a href="<?php echo $item->link ?>"><?php echo $item->title; ?></a>
 			</li>
@@ -343,7 +343,7 @@ defined('_JEXEC') or die ;
 	</div>
 	<?php endif; ?>
 	
-  <?php if($this->params->get('itemRelated') && isset($this->item->related)): ?>
+  <?php if($this->params->get('itemRelated') && !empty($this->item->related)): ?>
   <!-- Related items by tag -->
 	<div class="itemRelated">
 		<h3><?php echo JText::_("K2_RELATED_ITEMS_BY_TAG"); ?></h3>

@@ -586,6 +586,15 @@ class K2Items extends K2Resource
 			$events->K2AfterDisplayContent = trim(implode("\n", $results));
 
 			$dispatcher->trigger('onK2PrepareContent', array(&$this, &$params, $offset));
+
+			if ($params->get('comments'))
+			{
+				$results = $dispatcher->trigger('onK2CommentsCounter', array(&$this, &$params, $offset));
+				$events->K2CommentsCounter = trim(implode("\n", $results));
+				
+				$results = $dispatcher->trigger('onK2CommentsBlock', array(&$this, &$params, $offset));
+				$events->K2CommentsBlock = trim(implode("\n", $results));
+			}
 		}
 
 		// Restore introtext and fulltext

@@ -8,14 +8,14 @@
 		<description>K2_DISPLAYS_A_LIST_OF_ITEMS_FROM_ONE_OR_MORE_CATEGORIES</description>
 		<fields name="request">
 			<fieldset name="request">
-				<field name="task" type="hidden" default=""/>
+				<field name="task" type="hidden" default="category"/>
 				<field name="id" type="hidden" default=""/>
 			</fieldset>
 		</fields>
 		<fields name="params">
 			<fieldset name="basic" addfieldpath="/administrator/components/com_k2/fields">
 				<field name="" type="k2header" default="K2_SELECT_ONE_OR_MORE_CATEGORIES" label="" description=""/>
-				<field name="categories" type="k2categories" k2multiple="1" default="" label="K2_SELECT_CATEGORIES" description="K2_IF_YOU_SELECT_MULTIPLE_CATEGORIES_YOU_CAN_ADJUST_ADDITIONAL_PARAMETERS_BELOW_IF_YOU_SELECT_ONLY_ONE_CATEGORY_THEN_K2_WILL_FETCH_THE_OPTIONS_AS_DEFINED_IN_THAT_SPECIFIC_CATEGORYS_OPTIONS_IN_K2_CATEGORIES"/>
+				<field name="categories" type="k2categories" k2multiple="1" k2mode="menu" default="" label="K2_SELECT_CATEGORIES" description="K2_IF_YOU_SELECT_MULTIPLE_CATEGORIES_YOU_CAN_ADJUST_ADDITIONAL_PARAMETERS_BELOW_IF_YOU_SELECT_ONLY_ONE_CATEGORY_THEN_K2_WILL_FETCH_THE_OPTIONS_AS_DEFINED_IN_THAT_SPECIFIC_CATEGORYS_OPTIONS_IN_K2_CATEGORIES"/>
 				<field name="catCatalogMode" type="list" default="0" label="K2_FETCH_ITEMS_FROM_CHILDREN_CATEGORIES" description="K2_IF_YOU_SELECT_NO_THEN_ONLY_THE_ITEMS_DIRECTLY_BELONGING_TO_THIS_CATEGORY_WILL_BE_RETRIEVED_IF_YOU_SELECT_YES_THEN_ITEMS_FROM_ALL_SUBCATEGORIES_WILL_BE_RETRIEVED_SETTING_THIS_OPTION_TO_YES_IS_IDEAL_FOR_NEWSPORTALMAGAZINEBLOG_LAYOUTS">
 					<option value="1">K2_NO</option>
 					<option value="0">K2_YES</option>

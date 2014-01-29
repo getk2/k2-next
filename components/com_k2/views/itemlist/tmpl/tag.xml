@@ -8,7 +8,7 @@
 		<description>K2_CREATE_A_MENU_ITEM_LINKING_TO_A_TAG_IN_K2</description>
 		<fields name="request">
 			<fieldset name="request" addfieldpath="/administrator/components/com_k2/fields">
-				<field name="tag" type="k2tags" default="" label="K2_SELECT_TAG" description=""/>
+				<field name="id" type="k2tags" default="" label="K2_SELECT_TAG" description=""/>
 				<field name="task" type="hidden" default="tag"/>
 			</fieldset>
 		</fields>

@@ -62,58 +62,48 @@ class K2ViewItemlist extends K2View
 
 		// Get input
 		$id = $application->input->get('id', 0, 'int');
+		$categories = $this->params->get('categories');
 		$offset = $application->input->get('offset', 0, 'int');
 		$limit = $application->input->get('limit', 10, 'int');
 
-		// Get category
-		$this->category = K2Categories::getInstance($id);
-		
-		// Merge menu params with category params. Take care of inheritance
-		if ($this->category->inheritance)
-		{
-			$masterCategory = K2Categories::getInstance($this->category->inheritance);
-			$this->params->merge($masterCategory->params);
-		}
-		else
-		{
-			$this->params->merge($this->category->params);
-		}
-
-		// Get items
+		// Get model
 		$model = K2Model::getInstance('Items');
 		$model->setState('site', true);
-		$model->setState('category', $id);
+
+		// Single category
+		if ($id)
+		{
+			// Get category
+			$this->category = K2Categories::getInstance($id);
+
+			// Check access
+			$this->category->checkSiteAccess();
+
+			// Merge menu params with category params
+			$this->params->merge($this->category->getEffectiveParams());
+
+			// Set metadata
+			$this->setMetadata($this->category);
+
+			// Set model state
+			$model->setState('category', $id);
+
+		}
+		// Multiple categories from menu item parameters
+		else if ($categories)
+		{
+			$model->setState('category.filter', $categories);
+		}
+
+		// @TODO Apply menu settings. Since they will be common all tasks we need to wait
+
+		// Get items
 		$model->setState('limit', $limit);
 		$model->setState('limitstart', $offset);
 		$this->items = $model->getRows();
 
 		// Count items
 		$this->total = $model->countRows();
-
-		// Set title, metadata and pathway if the current menu is different from our page
-		if (!$this->isActive)
-		{
-			$this->setTitle($this->category->title);
-			$this->params->set('page_heading', $this->category->title);
-			if ($this->category->metadata->get('description'))
-			{
-				$this->document->setDescription($this->category->metadata->get('description'));
-			}
-			if ($this->category->metadata->get('kewords'))
-			{
-				$this->document->setMetadata('keywords', $this->category->metadata->get('kewords'));
-			}
-			if ($this->category->metadata->get('robots'))
-			{
-				$this->document->setMetadata('robots', $this->category->metadata->get('robots'));
-			}
-			if ($this->category->metadata->get('author'))
-			{
-				$this->document->setMetadata('author', $this->category->metadata->get('author'));
-			}
-			$pathway = $application->getPathWay();
-			$pathway->addItem($this->category->title, '');
-		}
 	}
 
 	private function user()
@@ -127,7 +117,12 @@ class K2ViewItemlist extends K2View
 		$limit = $application->input->get('limit', 10, 'int');
 
 		// Get user
-		$this->user = K2Users::getInstance($id);
+		$this->author = K2Users::getInstance($id);
+
+		// Check access
+		$this->author->checkSiteAccess();
+
+		// @TODO Apply menu settings. Since they will be common all tasks we need to wait
 
 		// Get items
 		$model = K2Model::getInstance('Items');
@@ -139,6 +134,9 @@ class K2ViewItemlist extends K2View
 
 		// Count items
 		$this->total = $model->countRows();
+		
+		// Set metadata
+		$this->setMetadata($this->author);
 
 	}
 
@@ -154,9 +152,11 @@ class K2ViewItemlist extends K2View
 
 		// Get tag
 		$this->tag = K2Tags::getInstance($id);
-		
+
 		// Check access and publishing state
 		$this->tag->checkSiteAccess();
+
+		// @TODO Apply menu settings. Since they will be common all tasks we need to wait
 
 		// Get items
 		$model = K2Model::getInstance('Items');
@@ -169,10 +169,8 @@ class K2ViewItemlist extends K2View
 		// Count items
 		$this->total = $model->countRows();
 
-		if (!$this->isActive)
-		{
-			$this->setTitle(JText::_('K2_DISPLAYING_ITEMS_BY_TAG').' '.$this->tag->name);
-		}
+		// Set metadata
+		$this->setMetadata($this->tag);
 	}
 
 	private function date()
@@ -222,5 +220,4 @@ class K2ViewItemlist extends K2View
 		$model->setState('limitstart', $offset);
 		$this->items = $model->getRows();
 	}
-
 }
