@@ -254,9 +254,13 @@ class K2View extends JViewLegacy
 		$entry->description = '';
 
 		// Image
-		if ($params->get('feedItemImage') && $item->image)
+		if ($params->get('feedItemImage'))
 		{
-			$entry->description .= '<div class="K2FeedImage"><img src="'.$item->image->url.'" alt="'.$item->image->alt.'" /></div>';
+			$image = $item->getImage($params->get('feedImgSize'));
+			if ($image)
+			{
+				$entry->description .= '<div class="K2FeedImage"><img src="'.$image->url.'" alt="'.$image->alt.'" /></div>';
+			}
 		}
 
 		// Introtext
