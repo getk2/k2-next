@@ -59,10 +59,10 @@ function K2BuildRoute(&$query)
 			}
 
 			// Check for numeric values ( for example when id contains alias )
-			$checkedValue = is_numeric($item->query[$key]) ? (int)$value : $value;
+			$value = is_numeric($item->query[$key]) ? (int)$value : $value;
 
 			// The variable of the menu does exist in query but has different value. Don't match and break
-			if ($checkedValue != $value)
+			if ($item->query[$key] != $value)
 			{
 				$match = false;
 				break;
