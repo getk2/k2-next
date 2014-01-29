@@ -36,44 +36,18 @@ function K2BuildRoute(&$query)
 		// Get menu
 		$menu = $application->getMenu();
 
-		// Get active
-		$active = $menu->getItem($query['Itemid']);
+		// Get associated menu link
+		$item = $menu->getItem($query['Itemid']);
 
-		// Assume that this is our menu item
-		$match = true;
-
-		// Check that all variables match
-		foreach ($active->query as $key => $value)
+		// Strip all variables from URL that are already in the menu item
+		foreach ($item->query as $key => $value)
 		{
-			// The variable of the menu does not exist in query. Don't match and break
-			if (!isset($query[$key]))
+			if ($key != 'Itemid' && $key != 'option')
 			{
-				$match = false;
-				break;
-			}
-
-			// Check for numeric values ( for example when id contains alias )
-			$checkedValue = is_numeric($value) ? (int)$query[$key] : $query[$key];
-
-			// The variable of the menu does exist in query but has different value. Don't match and break
-			if ($checkedValue != $value)
-			{
-				$match = false;
-				break;
+				unset($query[$key]);
 			}
 		}
 
-		// If the menu item is verified unset the common query variables. Keep only Itemid and option
-		if ($match)
-		{
-			foreach ($active->query as $key => $value)
-			{
-				if ($key != 'Itemid' && $key != 'option')
-				{
-					unset($query[$key]);
-				}
-			}
-		}
 	}
 
 	if (isset($query['view']))
@@ -337,10 +311,7 @@ function K2AdvancedSEFBuild(&$segments)
 function K2AdvancedSEFParse(&$vars, $segments)
 {
 	$params = JComponentHelper::getParams('com_k2');
-	$reservedViews = array(
-		'item',
-		'itemlist'
-	);
+	$reservedViews = array('item', 'itemlist');
 
 	if (!in_array($segments[0], $reservedViews))
 	{

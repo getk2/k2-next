@@ -60,12 +60,11 @@ class K2ViewItem extends K2View
 			$this->user->canComment = $this->user->authorise('k2.comment.create', 'com_k2');
 
 			// Load comments requirements
-			$document = JFactory::getDocument();
-			$document->addScriptDeclaration('var K2SessionToken = "'.JSession::getFormToken().'";');
-			$document->addScript(JURI::root(true).'/administrator/components/com_k2/js/lib/underscore-min.js');
-			$document->addScript(JURI::root(true).'/administrator/components/com_k2/js/lib/backbone-min.js');
-			$document->addScript(JURI::root(true).'/administrator/components/com_k2/js/lib/backbone.marionette.min.js');
-			$document->addScript(JURI::root(true).'/administrator/components/com_k2/js/sync.js');
+			$this->document->addScriptDeclaration('var K2SessionToken = "'.JSession::getFormToken().'";');
+			$this->document->addScript(JURI::root(true).'/administrator/components/com_k2/js/lib/underscore-min.js');
+			$this->document->addScript(JURI::root(true).'/administrator/components/com_k2/js/lib/backbone-min.js');
+			$this->document->addScript(JURI::root(true).'/administrator/components/com_k2/js/lib/backbone.marionette.min.js');
+			$this->document->addScript(JURI::root(true).'/administrator/components/com_k2/js/sync.js');
 
 			// @TODO Trigger comments events
 			$this->item->events->K2CommentsBlock = '';
@@ -82,7 +81,7 @@ class K2ViewItem extends K2View
 		// Increase hits counter
 		$this->item->hit();
 
-		// Set title, metadata and pathway if the current menu is different from our page
+		// Set metadata from item since we are not under a menu link
 		if (!$this->isActive)
 		{
 			$this->setTitle($this->item->title);
