@@ -86,7 +86,7 @@ class K2ViewItem extends K2View
 		if (!$this->isActive)
 		{
 			$this->setTitle($this->item->title);
-			$this->params->set('page_heading', $this->item->title);
+			$this->params->set('show_page_heading', false);
 			if ($this->item->metadata->get('description'))
 			{
 				$this->document->setDescription($this->item->metadata->get('description'));

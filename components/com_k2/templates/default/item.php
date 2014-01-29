@@ -24,6 +24,13 @@ defined('_JEXEC') or die ;
 
 	<!-- K2 Plugins: K2BeforeDisplay -->
 	<?php echo $this->item->events->K2BeforeDisplay; ?>
+	
+	<?php if($this->params->get('show_page_heading')): ?>
+	<!-- Page heading -->
+	<h1>
+		<?php echo $this->escape($this->params->get('page_heading')); ?>
+	</h1>
+	<?php endif; ?>
 
 	<div class="itemHeader">
 

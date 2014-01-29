@@ -38,8 +38,10 @@ class K2View extends JViewLegacy
 		// Set the user
 		$this->user = JFactory::getUser();
 
-		// Add CSS
+		// Get document
 		$document = JFactory::getDocument();
+
+		// Add CSS
 		if ($document->getType() == 'html')
 		{
 			$document->addStyleSheet(JURI::root(true).'/media/k2/assets/css/k2.site.css');
@@ -66,6 +68,40 @@ class K2View extends JViewLegacy
 
 		// Set active (determine if the current menu Itemid is the same of the current view)
 		$this->setActive();
+
+		// Set page metadata and options correctly since Joomla! does not take care of it
+		if ($this->isActive)
+		{
+			// Get menu
+			$menu = $application->getMenu();
+
+			// Get active
+			$active = $menu->getActive();
+
+			// Set page heading
+			$this->params->def('page_heading', $this->params->get('page_title', $active->title));
+
+			// Set browser title
+			$this->setTitle($this->params->get('page_title'));
+
+			// Set meta description
+			if ($this->params->get('menu-meta_description'))
+			{
+				$document->setDescription($this->params->get('menu-meta_description'));
+			}
+
+			// Set meta keywords
+			if ($this->params->get('menu-meta_keywords'))
+			{
+				$document->setMetadata('keywords', $this->params->get('menu-meta_keywords'));
+			}
+
+			// Set robots
+			if ($this->params->get('robots'))
+			{
+				$document->setMetadata('robots', $this->params->get('robots'));
+			}
+		}
 	}
 
 	private function setActive()
