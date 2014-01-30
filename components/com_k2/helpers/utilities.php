@@ -63,6 +63,23 @@ class K2HelperUtilities
 		return $string;
 	}
 
+	public static function characterLimit($string, $length = 150, $endCharacter = '...')
+	{
+		if (!$string = trim($string))
+		{
+			return $string;
+		}
+		$string = strip_tags($string);
+		$string = preg_replace('/\s+/', ' ', $string);
+		if (strlen($string) > $length)
+		{
+			$string = substr($string, 0, $length);
+			$string = rtrim($string);
+			$string .= $endCharacter;
+		}
+		return $string;
+	}
+
 	public static function getModule($id)
 	{
 		// Get module

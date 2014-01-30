@@ -146,6 +146,8 @@ class K2View extends JViewLegacy
 
 	protected function setMetadata($resource)
 	{
+		$params = JComponentHelper::getParams('com_k2');
+
 		if (!$this->isActive)
 		{
 			// Detect title
@@ -157,31 +159,50 @@ class K2View extends JViewLegacy
 			// Hide page heading since the current menu item is inherited
 			$this->params->set('show_page_heading', false);
 
-			// Detect and set metadata
-			if (isset($resource->metadata) && $metadata = $resource->metadata)
-			{
-				if ($metadata->get('description'))
-				{
-					$this->document->setDescription($metadata->get('description'));
-				}
-				if ($metadata->get('kewords'))
-				{
-					$this->document->setMetadata('keywords', $metadata->get('kewords'));
-				}
-				if ($metadata->get('robots'))
-				{
-					$this->document->setMetadata('robots', $metadata->get('robots'));
-				}
-				if ($metadata->get('author'))
-				{
-					$this->document->setMetadata('author', $metadata->get('author'));
-				}
-			}
-
 			// Update pathway
 			$application = JFactory::getApplication();
 			$pathway = $application->getPathWay();
 			$pathway->addItem($title, '');
+
+		}
+
+		// Detect and set metadata
+		if (isset($resource->metadata) && $metadata = $resource->metadata)
+		{
+			if ($metadata->get('description'))
+			{
+				$this->document->setDescription($metadata->get('description'));
+			}
+			if ($metadata->get('kewords'))
+			{
+				$this->document->setMetadata('keywords', $metadata->get('kewords'));
+			}
+			if ($metadata->get('robots'))
+			{
+				$this->document->setMetadata('robots', $metadata->get('robots'));
+			}
+			if ($metadata->get('author'))
+			{
+				$this->document->setMetadata('author', $metadata->get('author'));
+			}
+		}
+
+		// If meta description is empty ( this means it was not set in the menu or item/category form ) then use the content of the resource
+		if (!$this->document->getDescription())
+		{
+			$resourceType = get_class($resource);
+			if ($resourceType == 'K2Items')
+			{
+				$description = $resource->introtext.' '.$resource->fulltext;
+			}
+			else if ($resourceType == 'K2Categories')
+			{
+				$description = $resource->description;
+			}
+			$description = strip_tags($description);
+			$description = K2HelperUtilities::characterLimit($description, $params->get('metaDescLimit', 150));
+			$this->document->setDescription($description);
+
 		}
 	}
 
