@@ -19,7 +19,7 @@ class JFormFieldK2Settings extends JFormField
 	{
 		// Add head data
 		$document = JFactory::getDocument();
-		$document->addStyleSheet(JURI::base(true).'/administrator/components/com_k2/css/fields.k2.css');
+		$document->addStyleSheet(JURI::root(true).'/administrator/components/com_k2/css/fields.k2.css');
 		$document->addScript(JURI::root(true).'/administrator/components/com_k2/js/fields.k2.js');
 
 		// Include custom layout
