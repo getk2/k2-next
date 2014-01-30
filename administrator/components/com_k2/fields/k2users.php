@@ -27,7 +27,7 @@ class JFormFieldK2Users extends JFormField
 		$document->addStyleSheet(JURI::root(true).'/administrator/components/com_k2/js/widgets/magnific/magnific-popup.css');
 		$document->addScript(JURI::root(true).'/administrator/components/com_k2/js/widgets/magnific/jquery.magnific-popup.min.js');
 		$document->addScript(JURI::root(true).'/administrator/components/com_k2/js/widgets/sortable/jquery-sortable-min.js');
-		$document->addScript(JURI::root(true).'/media/k2/assets/js/fields.k2.js');
+		$document->addScript(JURI::root(true).'/administrator/components/com_k2/js/fields.k2.js');
 
 		$this->multiple = (bool)$this->element['k2multiple'];
 		$link = JURI::root(true).'/administrator/index.php?option=com_k2&tmpl=component#modal/users';
@@ -53,7 +53,7 @@ class JFormFieldK2Users extends JFormField
 					}
 				});
 				if(!userAlreadyInList){
-					var li = '<li><button class=\"k2FieldUsersRemove\">".JText::_('K2_REMOVE_ENTRY_FROM_LIST')."</button><span class=\"k2FieldUsersHandle\">' + row.get('name') + '</span><input type=\"hidden\" value=\"' + row.get('id') + '\" name=\"".$this->name."[]\"/></li>';
+					var li = '<li><button class=\"k2FieldResourceRemove\">".JText::_('K2_REMOVE_ENTRY_FROM_LIST')."</button><span class=\"k2FieldResourceMultipleHandle\">' + row.get('name') + '</span><input type=\"hidden\" value=\"' + row.get('id') + '\" name=\"".$this->name."[]\"/></li>';
 					jQuery('#".$this->id." .k2FieldUsersMultiple').append(li);
 					jQuery('#".$this->id." ul').sortable('refresh');
 					alert('".JText::_('K2_USER_ADDED_IN_THE_LIST', true)."');
@@ -63,13 +63,13 @@ class JFormFieldK2Users extends JFormField
 			$document->addScriptDeclaration($js);
 
 			$html = '<div id="'.$this->id.'"><a class="k2Modal btn" title="'.JText::_('K2_ADD_USERS').'"  href="'.$link.'"><i class="icon-list"></i>'.JText::_('K2_ADD_USERS').'</a>';
-			$html .= '<ul class="k2FieldUsersMultiple">';
+			$html .= '<ul class="k2FieldResourceMultiple k2FieldUsersMultiple">';
 			foreach ($users as $user)
 			{
 				$html .= '
 				<li>
-					<button class="k2FieldUsersRemove">'.JText::_('K2_REMOVE_ENTRY_FROM_LIST').'</button>
-					<span class="k2FieldUsersHandle">'.$user->name.'</span>
+					<button class="k2FieldResourceRemove">'.JText::_('K2_REMOVE_ENTRY_FROM_LIST').'</button>
+					<span class="k2FieldResourceMultipleHandle">'.$user->name.'</span>
 					<input type="hidden" value="'.$user->id.'" name="'.$this->name.'[]"/>
 				</li>
 				';

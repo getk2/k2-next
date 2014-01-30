@@ -1,4 +1,16 @@
 jQuery(document).ready(function() {
+	
+	// Dynamic params in K2
+	var group = jQuery('.k2GroupSwitcher').val();
+	jQuery('div[data-k2group]').css('display', 'none');
+	jQuery('div[data-k2group="'+group+'"]').css('display', 'block');
+	jQuery('.k2GroupSwitcher').change(function() {
+		var group = jQuery(this).val();
+		jQuery('div[data-k2group]').css('display', 'none');
+		jQuery('div[data-k2group="'+group+'"]').css('display', 'block');
+	});
+	
+	// K2 categories field
 	jQuery('.k2FieldCategoriesFilterEnabled').change(function(event) {
 		var target = jQuery(this).data('categories');
 		if (jQuery(this).val() == '0') {
@@ -18,7 +30,8 @@ jQuery(document).ready(function() {
 		}
 		jQuery('input[name="jform[request][id]"]').val(id);
 	});
-
+	
+	// K2 modal
 	jQuery('.k2Modal').click(function(event) {
 		event.preventDefault();
 		jQuery.magnificPopup.open({
@@ -31,13 +44,14 @@ jQuery(document).ready(function() {
 		});
 	});
 
+	// K2 Items, users and tags fields
 	if ( typeof (jQuery.sortable) == 'function') {
-		jQuery('.k2FieldItemsMultiple').sortable({
-			handle : 'span.k2FieldItemsHandle',
+		jQuery('.k2FieldResourceMultiple').sortable({
+			handle : 'span.k2FieldResourceMultipleHandle',
 		});
 	}
 
-	jQuery('.k2FieldItemsMultiple').on('click', '.k2FieldItemsRemove', function(event) {
+	jQuery('.k2FieldResourceMultiple').on('click', '.k2FieldResourceRemove', function(event) {
 		event.preventDefault();
 		jQuery(this).parent().remove();
 	});

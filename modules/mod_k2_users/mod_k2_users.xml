@@ -15,14 +15,19 @@
 		<folder>tmpl</folder>
 	</files>
 	<config>
-		<fields name="params">
-			<fieldset name="basic" addfieldpath="/administrator/components/com_k2/fields/">
+		<fields name="params" addfieldpath="/administrator/components/com_k2/fields/">
+			<fieldset name="basic" >
+				<field name="K2Settings" type="K2Settings" />
+			</fieldset>
+			<fieldset label="K2_BASIC_SETTINGS" name="k2basic">
 				<field name="moduleclass_sfx" type="text" default="" label="K2_MODULE_CLASS_SUFFIX" description="K2_MODULE_CLASS_SUFFIX_DESCRIPTION"/>
 				<field name="getTemplate" type="moduletemplate" modulename="mod_k2_users" default="Default" label="K2_SELECT_SUBTEMPLATE" description="This module utilizes on-the-fly MVC template overrides. What this means is that you can create a new sub-template folder for this module within your Joomla! template's /html/mod_k2_users/ folder. The module will then pickup the new sub-template auto-magically, without you editing any XML file or doing any other non-designer work!"/>
-				<field name="source" type="list" default="0" label="K2_SOURCE" description="">
+				<field name="source" type="list" default="0" class="k2GroupSwitcher" label="K2_SOURCE" description="">
 					<option value="filter">K2_RETRIEVE_USERS_USING_FILTERS</option>
 					<option value="specific">K2_RETRIEVE_SPECIFIC_USERS</option>
 				</field>
+			</fieldset>
+			<fieldset label="K2_RETRIEVE_USERS_USING_FILTERS" name="K2GROUP_filters">
 				<field name="" type="k2header" default="K2_RETRIEVE_USERS_USING_FILTERS" label="" description=""/>
 				<field name="filter" type="list" default="mostItems" label="K2_FETCH_USERS" description="">
 					<option value="mostItems">K2_WITH_MOST_ITEMS</option>
@@ -30,9 +35,11 @@
 					<option value="mostCommentedItems">K2_WITH_MOST_COMMENTED_ITEMS</option>
 				</field>
 				<field name="limit" type="text" default="4" size="4" label="K2_LIMIT" description=""/>
-				<field name="" type="k2header" default="K2_RETRIEVE_SPECIFIC_USERS" label="" description=""/>
+			</fieldset>
+			<fieldset label="K2_RETRIEVE_SPECIFIC_USERS" name="K2GROUP_specific">
 				<field name="userIDs" type="k2users" k2multiple="1" default="" label="K2_SELECTED_USERS_SORT_WITH_DRAG_DROP" description="K2_DRAG_USERS_ONE_BY_ONE_TO_REORDER_THE_LIST_CLICK_THE_REMOVE_ICON_TO_REMOVE_A_USER_FROM_THE_LIST"/>
-				<field name="" type="k2header" default="K2_DISPLAY_OPTIONS" label="" description=""/>
+			</fieldset>
+			<fieldset label="K2_DISPLAY_OPTIONS" name="display">
 				<field name="userName" type="radio" default="1" label="K2_NAME" description="">
 					<option value="0">K2_HIDE</option>
 					<option value="1">K2_SHOW</option>
@@ -65,7 +72,7 @@
 				</field>
 				<field name="userItemCount" type="text" default="1" size="4" label="K2_ITEM_COUNT" description=""/>
 			</fieldset>
-			<fieldset name="advanced">
+			<fieldset label="K2_ADVANCED_SETTINGS" name="advanced">
 				<field name="cache" type="list" default="1" label="K2_CACHING" description="K2_SELECT_WHETHER_TO_CACHE_THE_CONTENT_OF_THIS_MODULE">
 					<option value="1">K2_USE_GLOBAL</option>
 					<option value="0">K2_NO_CACHING</option>

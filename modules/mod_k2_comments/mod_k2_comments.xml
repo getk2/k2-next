@@ -15,15 +15,21 @@
 		<folder>tmpl</folder>
 	</files>
 	<config>
-		<fields name="params">
-			<fieldset name="basic" addfieldpath="/administrator/components/com_k2/fields/">
+		<fields name="params" addfieldpath="/administrator/components/com_k2/fields/">
+			
+			<fieldset name="basic" >
+				<field name="K2Settings" type="K2Settings" />
+			</fieldset>
+			
+			<fieldset label="K2_BASIC_SETTINGS" name="k2basic">
 				<field name="moduleclass_sfx" type="text" default="" label="K2_MODULE_CLASS_SUFFIX" description="K2_MODULE_CLASS_SUFFIX_DESCRIPTION"/>
-				<field name="usage" type="list" default="" label="K2_SELECT_MODULE_FUNCTIONALITY" description="K2_SELECT_MODULE_FUNCTIONALITY_DESC">
+				<field name="usage" type="list" class="k2GroupSwitcher" default="" label="K2_SELECT_MODULE_FUNCTIONALITY" description="K2_SELECT_MODULE_FUNCTIONALITY_DESC">
 					<option value="comments">K2_LATEST_COMMENTS</option>
 					<option value="commenters">K2_TOP_COMMENTERS</option>
 				</field>
+			</fieldset>
+			<fieldset label="K2_LATEST_COMMENTS" name="K2GROUP_comments">
 				<!-- Latest Comments -->
-				<field name="" type="k2header" default="K2_LATEST_COMMENTS" label="" description=""/>
 				<field name="category_id" type="k2categories" k2multiple="1" label="K2_FILTER_COMMENTS_BY_SELECTED_CATEGORIES" description="K2_SELECT_ONE_ORE_MORE_CATEGORIES_FROM_WHICH_YOU_WANT_TO_FILTER_THEIR_COMMENTS_SELECT_NONE_TO_FETCH_COMMENTS_FROM_ALL_CATEGORIES"/>
 				<field name="comments_limit" type="text" size="4" default="5" label="K2_COMMENTS_LIST_LIMIT" description=""/>
 				<field name="comments_word_limit" type="text" size="4" default="10" label="K2_COMMENT_WORD_LIMIT" description="K2_IF_WORD_LIMIT_IS_ENABLED_ANY_HTML_TAGS_WILL_BE_STRIPPED_OFF_TO_PREVENT_THE_PAGE_MARKUP_FROM_BREAKING"/>
@@ -65,8 +71,9 @@
 					<option value="0">K2_HIDE</option>
 					<option value="1">K2_SHOW</option>
 				</field>
+			</fieldset>
+			<fieldset label="K2_TOP_COMMENTERS" name="K2GROUP_commenters">
 				<!-- Top Commenters -->
-				<field name="" type="k2header" default="K2_TOP_COMMENTERS" label="" description=""/>
 				<field name="commenters_limit" type="text" size="4" default="5" label="K2_COMMENTERS_LIST_LIMIT" description=""/>
 				<field name="commenterNameOrUsername" type="list" default="1" label="K2_COMMENTER_IDENTIFIER" description="">
 					<option value="1">K2_SHOW_NAME</option>
@@ -94,7 +101,7 @@
 					<option value="1">K2_SHOW</option>
 				</field>
 			</fieldset>
-			<fieldset name="advanced">
+			<fieldset label="K2_ADVANCED_SETTINGS" name="advanced">
 				<field name="cache" type="list" default="1" label="K2_CACHING" description="K2_SELECT_WHETHER_TO_CACHE_THE_CONTENT_OF_THIS_MODULE">
 					<option value="1">K2_USE_GLOBAL</option>
 					<option value="0">K2_NO_CACHING</option>

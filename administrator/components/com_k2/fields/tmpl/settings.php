@@ -10,11 +10,12 @@
 // no direct access
 defined('_JEXEC') or die ; ?>
 
+
 <div id="K2SettingsContainer">
 	<div id="K2SettingsMenu">
 		<ul>
-			<?php foreach ($this->form->getFieldsets() as $name => $fieldset): ?>
-			<?php if($name != 'basic' && $name != 'advanced'): ?>
+			<?php foreach ($this->form->getFieldsets() as $name => $fieldset): ?>				
+			<?php if($name != 'basic' && strpos($name, 'K2GROUP_') === false): ?>
 				<li><a href="#<?php echo $name; ?>"><?php echo JText::_($fieldset->label); ?></a></li>
 			<?php endif; ?>
 			<?php endforeach; ?>
@@ -22,8 +23,9 @@ defined('_JEXEC') or die ; ?>
 	</div>
 	<div id="K2Settings">
 	<?php foreach ($this->form->getFieldsets() as $name => $fieldset): ?>
-	<?php if($name != 'basic' && $name != 'advanced'): ?>
-		<div class="K2SettingsSection">
+	<?php if($name != 'basic'): ?>
+		<?php $attributes = strpos($name, 'K2GROUP_') === 0 ? 'style="display:none;" data-k2group="'.substr($name, 8).'"' : ''; ?>
+		<div class="K2SettingsSection" <?php echo $attributes;?>>
 			<h3 class="K2SettingsSectionHeader" id="<?php echo $name; ?>"><?php echo JText::_($fieldset->label); ?></h3>
 			<?php if (isset($fieldset->description) && !empty($fieldset->description)) : ?>
 				<p><?php echo JText::_($fieldset->description); ?></p>
