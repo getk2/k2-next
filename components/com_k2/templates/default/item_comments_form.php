@@ -45,10 +45,7 @@ defined('_JEXEC') or die ; ?>
 	<label for="k2CommentUrl"><?php echo JText::_('K2_WEBSITE_URL'); ?></label>
 	<input type="text" name="url" id="k2CommentUrl" placeholder="<?php echo JText::_('K2_ENTER_YOUR_SITE_URL'); ?>" />
 
-	<?php if($this->params->get('recaptcha') && ($this->user->guest || $this->params->get('recaptchaForRegistered', 1))): ?>
-	<label><?php echo JText::_('K2_ENTER_THE_TWO_WORDS_YOU_SEE_BELOW'); ?></label>
-	<div id="k2Recaptcha"></div>
-	<?php endif; ?>
+	<?php echo K2HelperCaptcha::display(); ?>
 
 	<button type="submit" data-action="create"><?php echo JText::_('K2_SUBMIT_COMMENT'); ?></button>
 	

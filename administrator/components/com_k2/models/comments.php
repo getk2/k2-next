@@ -50,7 +50,7 @@ class K2ModelComments extends K2Model
 
 		// Set the query
 		$db->setQuery($query, (int)$this->getState('limitstart'), (int)$this->getState('limit'));
-		
+
 		// Get rows
 		$data = $db->loadAssocList();
 
@@ -300,7 +300,12 @@ class K2ModelComments extends K2Model
 				$data['email'] = $user->email;
 			}
 
-			// @TODO Check captcha depending on settings
+			// Check captcha depending on settings
+			require_once JPATH_SITE.'/components/com_k2/helpers/captcha.php';
+			if (!$result = K2HelperCapctha::check($data, $this))
+			{
+				return false;
+			}
 
 			// Everything seems fine, lets enforce the common variables
 			$data['ip'] = $_SERVER['REMOTE_ADDR'];

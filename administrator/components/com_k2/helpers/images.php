@@ -381,8 +381,8 @@ class K2HelperImages
 		{
 			$placeholder = self::getPlaceholder('category');
 			$image = new stdClass;
-			$image->src = K2Filesystem::getURIRoot(true).$placeholder;
-			$image->url = K2Filesystem::getURIRoot(false).$placeholder;
+			$image->src = JURI::root(true).$placeholder;
+			$image->url = JURI::root(false).$placeholder;
 			$image->alt = $category->title;
 			$image->caption = '';
 			$image->credits = '';
@@ -522,8 +522,8 @@ class K2HelperImages
 		{
 			$placeholder = self::getPlaceholder('user');
 			$image = new stdClass;
-			$image->src = K2Filesystem::getURIRoot(true).$placeholder;
-			$image->url = K2Filesystem::getURIRoot(false).$placeholder;
+			$image->src = JURI::root(true).$placeholder;
+			$image->url = JURI::root(false).$placeholder;
 			$image->alt = $user->name;
 			$image->flag = 0;
 		}

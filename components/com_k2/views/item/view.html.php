@@ -57,6 +57,8 @@ class K2ViewItem extends K2View
 			$this->document->addScript(JURI::root(true).'/administrator/components/com_k2/js/lib/backbone-min.js');
 			$this->document->addScript(JURI::root(true).'/administrator/components/com_k2/js/lib/backbone.marionette.min.js');
 			$this->document->addScript(JURI::root(true).'/administrator/components/com_k2/js/sync.js');
+			require_once JPATH_SITE.'/components/com_k2/helpers/captcha.php';
+			K2HelperCaptcha::initialize();
 
 		}
 

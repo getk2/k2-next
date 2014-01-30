@@ -34,7 +34,7 @@ class PlgSystemK2 extends JPlugin
 			// jQuery and K2 JS loading
 			require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/html.php';
 			K2HelperHTML::jQuery();
-			$document->addScript(JURI::root(true).'/components/com_k2/js/k2.js?v2.6.8&amp;sitepath='.JURI::root(true).'/');
+			$document->addScript(JURI::root(true).'/components/com_k2/js/site.k2.js?v2.6.8&amp;sitepath='.JURI::root(true).'/');
 
 			// Get task
 			$task = $application->input->get('task');

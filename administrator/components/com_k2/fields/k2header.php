@@ -19,7 +19,7 @@ class JFormFieldK2Header extends JFormField
 	public function getInput()
 	{
 		$document = JFactory::getDocument();
-		$document->addStyleSheet(JURI::root(true).'/media/k2/assets/css/k2.modules.css?v=3.0.0');
+		$document->addStyleSheet(JURI::root(true).'/administrator/components/com_k2/css/modules.k2.css?v=3.0.0');
 		return '<div class="paramHeaderContainer"><div class="paramHeaderContent">'.JText::_($this->value).'</div><div class="k2clr"></div></div>';
 	}
 	

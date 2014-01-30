@@ -27,7 +27,7 @@ class JFormFieldK2Items extends JFormField
 		$document->addStyleSheet(JURI::root(true).'/administrator/components/com_k2/js/widgets/magnific/magnific-popup.css');
 		$document->addScript(JURI::root(true).'/administrator/components/com_k2/js/widgets/magnific/jquery.magnific-popup.min.js');
 		$document->addScript(JURI::root(true).'/administrator/components/com_k2/js/widgets/sortable/jquery-sortable-min.js');
-		$document->addScript(JURI::root(true).'/media/k2/assets/js/k2.fields.js');
+		$document->addScript(JURI::root(true).'/media/k2/assets/js/fields.k2.js');
 
 		$this->multiple = (bool)$this->element['k2multiple'];
 		$link = JURI::root(true).'/administrator/index.php?option=com_k2&tmpl=component#modal/items';

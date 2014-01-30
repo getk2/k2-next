@@ -46,6 +46,13 @@ class K2ImageProcessor
 			$instanceName = 'Imagine\\'.$adapter.'\Imagine';
 			$processor = new $instanceName();
 			self::$instances[$adapter] = $processor;
+
+			// Check for memory limit override in K2 settings
+			$params = JComponentHelper::getParams('com_k2');
+			if ($memoryLimit = (int)$params->get('imageMemoryLimit'))
+			{
+				ini_set('memory_limit', $memoryLimit.'M');
+			}
 		}
 
 		return self::$instances[$adapter];
