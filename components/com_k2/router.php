@@ -223,38 +223,42 @@ function K2AdvancedSEFBuild(&$segments)
 		{
 			case 'category' :
 
-				// Replace itemlist with the categories prefix
-				$segments[0] = $params->get('k2SefLabelCat', 'content');
-
-				// Remove the task completely
-				unset($segments[1]);
-
-				// Are we using the id in the URL?
-				if ($params->get('k2SefInsertCatId'))
+				// Only for links to single category
+				if (isset($segments[2]))
 				{
-					// If category alias is used in the URL. Check the desired separator
-					if ($params->get('k2SefUseCatTitleAlias'))
+					// Replace itemlist with the categories prefix
+					$segments[0] = $params->get('k2SefLabelCat', 'content');
+
+					// Remove the task completely
+					unset($segments[1]);
+
+					// Are we using the id in the URL?
+					if ($params->get('k2SefInsertCatId'))
 					{
-						// If the desired separator is slash, then apply it
-						if ($params->get('k2SefCatIdTitleAliasSep') == 'slash')
+						// If category alias is used in the URL. Check the desired separator
+						if ($params->get('k2SefUseCatTitleAlias'))
 						{
-							$segments[2] = str_replace(':', '/', $segments[2]);
+							// If the desired separator is slash, then apply it
+							if ($params->get('k2SefCatIdTitleAliasSep') == 'slash')
+							{
+								$segments[2] = str_replace(':', '/', $segments[2]);
+							}
+						}
+						// Category alias is not used in the URL. Keep only the numeric Id
+						else
+						{
+							$segments[2] = (int)$segments[2];
 						}
 					}
-					// Category alias is not used in the URL. Keep only the numeric Id
+					// Id will not be used in URL
 					else
 					{
-						$segments[2] = (int)$segments[2];
-					}
-				}
-				// Id will not be used in URL
-				else
-				{
-					// Try to split the slug
-					list($id, $alias) = explode(':', $segments[2]);
+						// Try to split the slug
+						list($id, $alias) = explode(':', $segments[2]);
 
-					// Use only alias
-					$segments[2] = $alias;
+						// Use only alias
+						$segments[2] = $alias;
+					}
 				}
 
 				break;
