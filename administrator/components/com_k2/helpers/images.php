@@ -129,18 +129,25 @@ class K2HelperImages
 		if (isset($value->flag) && $value->flag)
 		{
 			$id = md5('Image'.$item->id);
-			$timestamp = JFactory::getDate($item->modified)->toUnix();
 
 			$params = JComponentHelper::getParams('com_k2');
 			$sizes = (array)$params->get('imageSizes');
-
+			if ($params->get('imageTimestamp'))
+			{
+				$timestamp = JFactory::getDate($item->modified)->toUnix();
+			}
 			// Add resized images to the array
 			foreach ($sizes as $size)
 			{
 				$image = new stdClass;
 				$image->id = $id;
-				$image->src = K2Filesystem::getURIRoot(true).$savepath.'/cache/'.$id.'_'.$size->id.'.jpg?t='.$timestamp;
-				$image->url = K2Filesystem::getURIRoot(false).$savepath.'/cache/'.$id.'_'.$size->id.'.jpg?t='.$timestamp;
+				$image->src = K2Filesystem::getURIRoot(true).$savepath.'/cache/'.$id.'_'.$size->id.'.jpg';
+				$image->url = K2Filesystem::getURIRoot(false).$savepath.'/cache/'.$id.'_'.$size->id.'.jpg';
+				if (isset($timestamp))
+				{
+					$image->src .= '?t='.$timestamp;
+					$image->url .= '?t='.$timestamp;
+				}
 				$image->alt = $value->caption ? $value->caption : $item->title;
 				$image->caption = $value->caption;
 				$image->credits = $value->credits;
@@ -152,8 +159,13 @@ class K2HelperImages
 			// Add the source image to the array
 			$image = new stdClass;
 			$image->id = $id;
-			$image->src = K2Filesystem::getURIRoot(true).$savepath.'/src/'.$id.'.jpg?t='.$timestamp;
-			$image->url = K2Filesystem::getURIRoot(false).$savepath.'/src/'.$id.'.jpg?t='.$timestamp;
+			$image->src = K2Filesystem::getURIRoot(true).$savepath.'/src/'.$id.'.jpg';
+			$image->url = K2Filesystem::getURIRoot(false).$savepath.'/src/'.$id.'.jpg';
+			if (isset($timestamp))
+			{
+				$image->src .= '?t='.$timestamp;
+				$image->url .= '?t='.$timestamp;
+			}
 			$image->alt = $value->caption ? $value->caption : $item->title;
 			$image->caption = $value->caption;
 			$image->credits = $value->credits;
@@ -352,9 +364,14 @@ class K2HelperImages
 		{
 			$image = new stdClass;
 			$image->id = md5('Image'.$category->id);
-			$timestamp = JFactory::getDate($category->modified)->toUnix();
-			$image->src = K2FileSystem::getUriRoot(true).$savepath.'/'.$image->id.'.jpg?t='.$timestamp;
-			$image->url = K2FileSystem::getUriRoot().$savepath.'/'.$image->id.'.jpg?t='.$timestamp;
+			$image->src = K2FileSystem::getUriRoot(true).$savepath.'/'.$image->id.'.jpg';
+			$image->url = K2FileSystem::getUriRoot().$savepath.'/'.$image->id.'.jpg';
+			if ($params->get('imageTimestamp'))
+			{
+				$timestamp = JFactory::getDate($category->modified)->toUnix();
+				$image->src .= '?t='.$timestamp;
+				$image->url .= '?t='.$timestamp;
+			}
 			$image->alt = $value->caption ? $value->caption : $category->title;
 			$image->caption = $value->caption;
 			$image->credits = $value->credits;
