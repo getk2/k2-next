@@ -254,7 +254,41 @@ class K2HelperRoute
 
 	public static function getSearchRoute()
 	{
-		return 'index.php?option=com_k2&view=itemlist&task=search';
+		// Get application
+		$application = JFactory::getApplication();
+
+		// Get component menu links
+		$component = JComponentHelper::getComponent('com_k2');
+		$menu = $application->getMenu('site');
+		$items = $menu->getItems('component_id', $component->id);
+
+		// Initialze route
+		$route = 'index.php?option=com_k2&view=itemlist&task=search';
+
+		// Search only if we have not the item in our cache
+		if (!isset(self::$cache['search']))
+		{
+			// Initialize Itemid
+			$Itemid = '';
+
+			// If we do not have menu link to the item search for a menu link to it's category
+			foreach ($items as $item)
+			{
+				if ($item->query['view'] == 'itemlist' && isset($item->query['task']) && $item->query['task'] == 'search')
+				{
+					$Itemid = $item->id;
+					break;
+				}
+			}
+
+			// Add what we found to cache
+			self::$cache['search'] = $Itemid;
+		}
+
+		// Append what we have found
+		$route .= '&Itemid='.self::$cache['search'];
+
+		return $route;
 	}
 
 }

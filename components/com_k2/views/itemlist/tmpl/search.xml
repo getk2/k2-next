@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="K2_SEARCH">
+		<message>K2_CREATE_A_MENU_ITEM_LINKING_TO_K2_SEARCH</message>
+	</layout>
+	<state>
+		<name>K2_SEARCH</name>
+		<description>K2_CREATE_A_MENU_ITEM_LINKING_TO_K2_SEARCH</description>
+		<fields name="request">
+			<fieldset name="request">
+				<field name="task" type="hidden" default="search"/>
+			</fieldset>
+		</fields>
+	</state>
+</metadata>

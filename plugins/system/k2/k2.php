@@ -87,7 +87,7 @@ class PlgSystemK2 extends JPlugin
 				}
 				else
 				{
-					$document->addStyleSheet(JURI::root(true).'/components/com_k2/css/k2.css');
+					$document->addStyleSheet(JURI::root(true).'/components/com_k2/css/site.k2.css');
 				}
 
 				// k2.print.css

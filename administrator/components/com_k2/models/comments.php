@@ -302,7 +302,7 @@ class K2ModelComments extends K2Model
 
 			// Check captcha depending on settings
 			require_once JPATH_SITE.'/components/com_k2/helpers/captcha.php';
-			if (!$result = K2HelperCapctha::check($data, $this))
+			if (!$result = K2HelperCaptcha::check($data, $this))
 			{
 				return false;
 			}
