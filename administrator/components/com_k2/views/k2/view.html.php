@@ -54,7 +54,7 @@ class K2ViewK2 extends JViewLegacy
 		$document->addScriptDeclaration('var K2SessionTimeout = '.$refreshTime.';');
 
 		// Load the application
-		$document->addCustomTag('<script data-main="'.JURI::base(true).'/components/com_k2/js/boot" src="'.JURI::base(true).'/components/com_k2/js/require.js"></script>');
+		$document->addCustomTag('<script data-main="'.JURI::root(true).'/administrator/components/com_k2/js/boot" src="'.JURI::base(true).'/components/com_k2/js/require.js"></script>');
 
 		// Add version variable
 		if (version_compare(JVERSION, '3.0', 'ge'))
@@ -68,7 +68,11 @@ class K2ViewK2 extends JViewLegacy
 		$this->assignRef('JVersion', $JVersion);
 
 		// Set title
-		JToolBarHelper::title(JText::_('COM_K2'));
+		if(class_exists('JToolBarHelper'))
+		{
+			JToolBarHelper::title(JText::_('COM_K2'));
+		}
+		
 
 		// Display
 		parent::display($tpl);
