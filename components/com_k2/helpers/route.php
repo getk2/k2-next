@@ -38,41 +38,57 @@ class K2HelperRoute
 		// Search only if we have not the item in our cache
 		if (!isset(self::$cache['item'][$id]))
 		{
-			// Initialize match
-			$match = null;
+			// Initialize Itemid
+			$Itemid = '';
 
 			// Search the menu
 			foreach ($items as $item)
 			{
 				if ($item->query['view'] == 'item' && $item->query['id'] == $id)
 				{
-					$match = $item;
+					$Itemid = $item->id;
 					break;
 				}
 			}
 
 			// If we do not have menu link to the item search for a menu link to it's category
-			if (!$match)
+			if (!$Itemid)
 			{
 				foreach ($items as $item)
 				{
 					if ($item->query['view'] == 'itemlist' && isset($item->query['task']) && $item->query['task'] == 'category' && isset($item->query['id']) && $item->query['id'] == $category)
 					{
-						$match = $item;
+						$Itemid = $item->id;
 						break;
 					}
 				}
 			}
 
+			// Second pass for menu links to multiple categories
+			if (!$Itemid)
+			{
+				foreach ($items as $item)
+				{
+					if ($item->query['view'] == 'itemlist' && isset($item->query['task']) && $item->query['task'] == 'category' && !isset($item->query['id']))
+					{
+						// Get menu link categories
+						$filter = $item->params->get('categories');
+						if (isset($filter->categories) && is_array($filter->categories) && in_array($category, $filter->categories))
+						{
+							$Itemid = $item->id;
+							break;
+						}
+					}
+				}
+			}
+
 			// Add what we found to cache
-			self::$cache['item'][$id] = $match;
+			self::$cache['item'][$id] = $Itemid;
 		}
 
-		// If a menu is found append it's id to the route
-		if (self::$cache['item'][$id])
-		{
-			$route .= '&Itemid='.self::$cache['item'][$id]->id;
-		}
+		// Append what we have found
+		$route .= '&Itemid='.self::$cache['item'][$id];
+
 		return $route;
 	}
 
@@ -95,31 +111,31 @@ class K2HelperRoute
 		// Search only if we have not the item in our cache
 		if (!isset(self::$cache['category'][$id]))
 		{
-			// Initialize match
-			$match = null;
+			// Initialize Itemid
+			$Itemid = '';
 
 			// If we do not have menu link to the item search for a menu link to it's category
 			foreach ($items as $item)
 			{
 				if ($item->query['view'] == 'itemlist' && isset($item->query['task']) && $item->query['task'] == 'category' && isset($item->query['id']) && $item->query['id'] == $id)
 				{
-					$match = $item;
+					$Itemid = $item->id;
 					break;
 				}
 			}
 
 			// Second pass for menu links to multiple categories
-			if (is_null($match))
+			if (!$Itemid)
 			{
 				foreach ($items as $item)
 				{
-					if ($item->query['view'] == 'itemlist' && isset($item->query['task']) && $item->query['task'] == 'category')
+					if ($item->query['view'] == 'itemlist' && isset($item->query['task']) && $item->query['task'] == 'category' && !isset($item->query['id']))
 					{
 						// Get menu link categories
 						$filter = $item->params->get('categories');
 						if (isset($filter->categories) && is_array($filter->categories) && in_array($id, $filter->categories))
 						{
-							$match = $item;
+							$Itemid = $item->id;
 							break;
 						}
 					}
@@ -127,14 +143,12 @@ class K2HelperRoute
 			}
 
 			// Add what we found to cache
-			self::$cache['category'][$id] = $match;
+			self::$cache['category'][$id] = $Itemid;
 		}
 
-		// If a menu is found append it's id to the route
-		if (self::$cache['category'][$id])
-		{
-			$route .= '&Itemid='.self::$cache['category'][$id]->id;
-		}
+		// Append what we have found
+		$route .= '&Itemid='.self::$cache['category'][$id];
+
 		return $route;
 
 	}
@@ -158,28 +172,26 @@ class K2HelperRoute
 		// Search only if we have not the item in our cache
 		if (!isset(self::$cache['user'][$id]))
 		{
-			// Initialize match
-			$match = null;
+			// Initialize Itemid
+			$Itemid = null;
 
 			// If we do not have menu link to the item search for a menu link to it's category
 			foreach ($items as $item)
 			{
 				if ($item->query['view'] == 'itemlist' && isset($item->query['task']) && $item->query['task'] == 'user' && $item->query['id'] == $id)
 				{
-					$match = $item;
+					$Itemid = $item->id;
 					break;
 				}
 			}
 
 			// Add what we found to cache
-			self::$cache['user'][$id] = $match;
+			self::$cache['user'][$id] = $Itemid;
 		}
 
-		// If a menu is found append it's id to the route
-		if (self::$cache['user'][$id])
-		{
-			$route .= '&Itemid='.self::$cache['user'][$id]->id;
-		}
+		// Append what we have found
+		$route .= '&Itemid='.self::$cache['user'][$id];
+
 		return $route;
 
 	}
@@ -203,28 +215,26 @@ class K2HelperRoute
 		// Search only if we have not the item in our cache
 		if (!isset(self::$cache['tag'][$id]))
 		{
-			// Initialize match
-			$match = null;
+			// Initialize Itemid
+			$Itemid = '';
 
 			// If we do not have menu link to the item search for a menu link to it's category
 			foreach ($items as $item)
 			{
 				if ($item->query['view'] == 'itemlist' && isset($item->query['task']) && $item->query['task'] == 'tag' && $item->query['id'] == $id)
 				{
-					$match = $item;
+					$Itemid = $item->id;
 					break;
 				}
 			}
 
 			// Add what we found to cache
-			self::$cache['tag'][$id] = $match;
+			self::$cache['tag'][$id] = $Itemid;
 		}
 
-		// If a menu is found append it's id to the route
-		if (self::$cache['tag'][$id])
-		{
-			$route .= '&Itemid='.self::$cache['tag'][$id]->id;
-		}
+		// Append what we have found
+		$route .= '&Itemid='.self::$cache['tag'][$id];
+
 		return $route;
 	}
 

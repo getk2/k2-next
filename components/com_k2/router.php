@@ -27,59 +27,57 @@ function K2BuildRoute(&$query)
 	// Initialize segments
 	$segments = array();
 
-	// If we are viewing a menu item check if it is the current one. If it is remove all it's variables
-	if (!empty($query['Itemid']))
+	// Get application
+	$application = JFactory::getApplication();
+
+	// Get menu
+	$menu = $application->getMenu();
+
+	// Get the associated menu item id and detect if it was found by K2 route helper or is inherited
+	if (empty($query['Itemid']))
 	{
-		// Get application
-		$application = JFactory::getApplication();
-
-		// Get menu
-		$menu = $application->getMenu();
-
-		// Get associated menu item
+		$item = $menu->getActive();
+		$match = false;
+	}
+	else
+	{
 		$item = $menu->getItem($query['Itemid']);
-
-		// Assume that this is our menu item
 		$match = true;
+	}
 
-		// Check that all variables match
+	// If the menu item is verified unset the common query variables
+	if ($match)
+	{
+		// Special case for multiple categories match
+		if (isset($query['task']) && $query['task'] == 'category' && !isset($item->query['id']))
+		{
+			unset($query['id']);
+		}
+
 		foreach ($query as $key => $value)
 		{
-			// Don't check for matching Itemid since it does not exists in menu item query
-			if ($key == 'Itemid')
+			// Don't unset the option
+			if ($key == 'option')
 			{
 				continue;
 			}
 
-			// The variable of the menu does not exist in query. Don't match and break
-			if (!isset($item->query[$key]))
+			if (isset($item->query[$key]))
 			{
-				$match = false;
-				break;
-			}
+				// Handle numeric values. For example when id contains alias
+				$value = is_numeric($item->query[$key]) ? (int)$query[$key] : $query[$key];
 
-			// Check for numeric values ( for example when id contains alias )
-			$value = is_numeric($item->query[$key]) ? (int)$value : $value;
-
-			// The variable of the menu does exist in query but has different value. Don't match and break
-			if ($item->query[$key] != $value)
-			{
-				$match = false;
-				break;
-			}
-		}
-
-		// If the menu item is verified unset the common query variables. Keep only Itemid and option
-		if ($match)
-		{
-			foreach ($item->query as $key => $value)
-			{
-				if ($key != 'Itemid' && $key != 'option')
+				// If the variable exists in our menu, unset it
+				if ($item->query[$key] == $value)
 				{
 					unset($query[$key]);
 				}
 			}
 		}
+	}
+	else
+	{
+		unset($query['Itemid']);
 	}
 
 	if (isset($query['view']))
