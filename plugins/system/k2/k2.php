@@ -22,7 +22,18 @@ class PlgSystemK2 extends JPlugin
 		// Get application
 		$application = JFactory::getApplication();
 
-		// Process only in front-end
+		// Get input
+		$option = $application->input->get('option');
+		$view = $application->input->get('view');
+		$task = $application->input->get('task');
+
+		// Redirect settings editing from com_config to K2
+		if ($application->isAdmin() && $option == 'com_config' && $view == 'component' && $application->input->get('component') == 'com_k2')
+		{
+			$application->redirect('index.php?option=com_k2#settings');
+		}
+
+		// Front-end
 		if ($application->isSite())
 		{
 			// Get params
@@ -34,13 +45,10 @@ class PlgSystemK2 extends JPlugin
 			// jQuery and K2 JS loading
 			require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/html.php';
 			K2HelperHTML::jQuery();
-			$document->addScript(JURI::root(true).'/components/com_k2/js/site.k2.js?v2.6.8&amp;sitepath='.JURI::root(true).'/');
-
-			// Get task
-			$task = $application->input->get('task');
+			$document->addScript(JURI::root(true).'/components/com_k2/js/site.k2.js?v3.0.0&amp;sitepath='.JURI::root(true).'/');
 
 			// Google search integration
-			if ($task == 'search' && $params->get('googleSearch'))
+			if ($view == 'itemlist' && $task == 'search' && $params->get('googleSearch'))
 			{
 				$language = JFactory::getLanguage();
 				$languageTag = $language->getTag();
@@ -199,10 +207,7 @@ class PlgSystemK2 extends JPlugin
 				// Trigger K2 plugins
 				JPluginHelper::importPlugin('k2');
 				$dispatcher = JDispatcher::getInstance();
-				$K2Plugins = $dispatcher->trigger('onRenderAdminForm', array(
-					&$K2User,
-					'user'
-				));
+				$K2Plugins = $dispatcher->trigger('onRenderAdminForm', array(&$K2User, 'user'));
 				$view->assignRef('K2Plugins', $K2Plugins);
 				$view->assignRef('K2User', $K2User);
 
@@ -276,10 +281,7 @@ class PlgSystemK2 extends JPlugin
 					// Trigger K2 plugins
 					JPluginHelper::importPlugin('k2');
 					$dispatcher = JDispatcher::getInstance();
-					$K2Plugins = $dispatcher->trigger('onRenderAdminForm', array(
-						&$K2User,
-						'user'
-					));
+					$K2Plugins = $dispatcher->trigger('onRenderAdminForm', array(&$K2User, 'user'));
 					$view->assignRef('K2Plugins', $K2Plugins);
 					$view->assignRef('K2User', $K2User);
 
@@ -334,7 +336,7 @@ class PlgSystemK2 extends JPlugin
 		require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/tags.php';
 		require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/users.php';
 		K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
-		
+
 		// Load K2 language
 		$language = JFactory::getLanguage();
 		$language->load('com_k2');
@@ -354,20 +356,8 @@ class PlgSystemK2 extends JPlugin
 	public function onAfterRender()
 	{
 		$response = JResponse::getBody();
-		$searches = array(
-			'<meta name="og:url"',
-			'<meta name="og:title"',
-			'<meta name="og:type"',
-			'<meta name="og:image"',
-			'<meta name="og:description"'
-		);
-		$replacements = array(
-			'<meta property="og:url"',
-			'<meta property="og:title"',
-			'<meta property="og:type"',
-			'<meta property="og:image"',
-			'<meta property="og:description"'
-		);
+		$searches = array('<meta name="og:url"', '<meta name="og:title"', '<meta name="og:type"', '<meta name="og:image"', '<meta name="og:description"');
+		$replacements = array('<meta property="og:url"', '<meta property="og:title"', '<meta property="og:type"', '<meta property="og:image"', '<meta property="og:description"');
 		if (strpos($response, 'prefix="og: http://ogp.me/ns#"') === false)
 		{
 			$searches[] = '<html ';
