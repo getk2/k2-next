@@ -18,16 +18,41 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/controller.php';
 
 class K2ControllerCategories extends K2Controller
 {
+
+	protected function onBeforeRead($mode, $id)
+	{
+		$user = JFactory::getUser();
+		$authorized = false;
+		if ($mode == 'row')
+		{
+			// Create
+			if ($id)
+			{
+				$category = K2Categories::getInstance();
+				$authorized = $category->canEdit;
+			}
+			else
+			{
+				$authorized = $user->authorise('k2.category.create', 'com_k2');
+			}
+		}
+		else
+		{
+			$authorized = $user->authorise('k2.category.create', 'com_k2') || $user->authorise('k2.category.edit', 'com_k2') || $user->authorise('k2.category.edit.own', 'com_k2') || $user->authorise('k2.category.edit.state', 'com_k2') || $user->authorise('k2.category.delete', 'com_k2');
+		}
+		return $authorized;
+	}
+
 	public function saveOrder()
 	{
 		// Check for token
 		JSession::checkToken() or K2Response::throwError(JText::_('JINVALID_TOKEN'));
-		
+
 		// Get user
 		$user = JFactory::getUser();
-		
+
 		// Check permissions
-		if(!$user->authorise('k2.category.edit', 'com_k2'))
+		if (!$user->authorise('k2.category.edit', 'com_k2'))
 		{
 			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'), 403);
 		}
@@ -36,12 +61,9 @@ class K2ControllerCategories extends K2Controller
 		$id = $this->input->get('id', 0, 'int');
 		$reference_id = $this->input->get('reference_id', 0, 'int');
 		$location = $this->input->get('location', '', 'cmd');
-		
+
 		// Valid location values
-		$locations = array(
-			'first-child',
-			'after'
-		);
+		$locations = array('first-child', 'after');
 
 		// Ensure that we have valid input
 		if (!$id || $reference_id < 1 || !in_array($location, $locations))
@@ -60,7 +82,7 @@ class K2ControllerCategories extends K2Controller
 
 		return $this;
 	}
-	
+
 	protected function getInputData()
 	{
 		$data = parent::getInputData();

@@ -86,13 +86,19 @@ class K2Controller extends JControllerLegacy
 
 		}
 
-		// Fix when we are in front-end
+		// Special case when the controller is called in the front-end
 		$application = JFactory::getApplication();
-		if ($application->isSite() && $this->input->get('view') == 'admin')
+		if ($application->isSite())
 		{
+			// Fix base meta tag
 			$uri = JURI::getInstance();
 			$document->setBase($uri->toString());
-			$this->input->set('view', 'k2');
+
+			// Proxy the "admin" view to "k2" view
+			if ($this->input->get('view') == 'admin')
+			{
+				$this->input->set('view', 'k2');
+			}
 		}
 
 	}
@@ -181,6 +187,20 @@ class K2Controller extends JControllerLegacy
 	}
 
 	/**
+	 * onBeforeRead function.
+	 * Hook for chidlren controllers to check for access
+	 *
+	 * @param string $mode		The mode of the read function. Pass 'row' for retrieving a single row or 'list' to retrieve a collection of rows.
+	 * @param mixed $id			The id of the row to load when we are retrieving a single row.
+	 *
+	 * @return void
+	 */
+	protected function onBeforeRead($mode, $id)
+	{
+		return true;
+	}
+
+	/**
 	 * Read function.
 	 * Handles all the read requests ( lists and forms ) and triggers the appropriate view method.
 	 *
@@ -191,6 +211,12 @@ class K2Controller extends JControllerLegacy
 	 */
 	protected function read($mode = 'row', $id = null)
 	{
+		// First of all ensure that user can access this
+		if (!$this->onBeforeRead($mode, $id))
+		{
+			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
+		}
+
 		// Get the document
 		$document = JFactory::getDocument();
 
