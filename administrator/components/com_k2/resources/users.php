@@ -85,13 +85,13 @@ class K2Users extends K2Resource
 
 			$this->enabled = (int)!$this->block;
 			$this->activated = (int)!$this->activation;
-			if (isset($this->groups))
-			{
-				$this->groupsValue = implode(', ', $this->groups);
-			}
+			$this->groupsValue = isset($this->groups) ? implode(', ', $this->groups) : '';
 
 			// Image
 			$this->image = $this->getImage();
+			
+			// Unset password
+			$this->password = '';
 		}
 
 	}

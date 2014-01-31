@@ -10,10 +10,23 @@
 // no direct access
 defined('_JEXEC') or die ;
 
-// Load dependencies
-require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/model.php';
+// Get application
+$application = JFactory::getApplication();
+
+// Get input
+$view = $application->input->get('view');
+$task = $application->input->get('task');
+
+// Build controller configuration
+$configuration = array();
+$configuration['originalTask'] = JFactory::getApplication()->input->get('task');
+if ($view == '' || $view == 'admin')
+{
+	// If no view is set proxy all requests to administrator controllers
+	$configuration['base_path'] = JPATH_ADMINISTRATOR.'/components/com_k2';
+}
 
 // Bootstrap K2
-$controller = JControllerLegacy::getInstance('K2', array('originalTask' => JFactory::getApplication()->input->get('task')));
-$controller->execute(JFactory::getApplication()->input->get('task'));
+$controller = JControllerLegacy::getInstance('K2', $configuration);
+$controller->execute($application->input->get('task'));
 $controller->redirect();

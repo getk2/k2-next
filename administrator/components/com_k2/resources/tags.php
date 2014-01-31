@@ -76,13 +76,13 @@ class K2Tags extends K2Resource
 
 		// Link
 		$this->link = $this->getLink();
-		
+
 		// URL
 		$this->url = $this->getUrl();
 
 		// Num of items per tag
-		$application = JFactory::getApplication();
-		if ($application->isAdmin())
+		$user = JFactory::getUser();
+		if ($user->authorise('k2.tags.manage', 'com_k2'))
 		{
 			$this->items = $this->getItems();
 		}
@@ -104,7 +104,7 @@ class K2Tags extends K2Resource
 	{
 		return JRoute::_(K2HelperRoute::getTagRoute($this->id.':'.$this->alias));
 	}
-	
+
 	public function getUrl()
 	{
 		return JRoute::_(K2HelperRoute::getTagRoute($this->id.':'.$this->alias), true, -1);

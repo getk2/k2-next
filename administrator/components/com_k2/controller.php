@@ -86,6 +86,15 @@ class K2Controller extends JControllerLegacy
 
 		}
 
+		// Fix when we are in front-end
+		$application = JFactory::getApplication();
+		if ($application->isSite() && $this->input->get('view') == 'admin')
+		{
+			$uri = JURI::getInstance();
+			$document->setBase($uri->toString());
+			$this->input->set('view', 'k2');
+		}
+
 	}
 
 	/**
@@ -229,10 +238,10 @@ class K2Controller extends JControllerLegacy
 
 		// Pass data to the model
 		$this->model->setState('data', $data);
-		
+
 		// Save
 		$result = $this->model->save();
-		
+
 		// Handle save result
 		if ($result)
 		{

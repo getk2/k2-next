@@ -144,10 +144,14 @@ class K2Comments extends K2Resource
 			// Is Author response?
 			$this->isAuthorResponse = $this->getIsAuthorResponse();
 
-			// Unset sensitive data
-			unset($this->email);
-			unset($this->ip);
-			unset($this->hostname);
+			// Unset sensitive data if user is not authorised to edit the comment
+			if(!$this->canEdit)
+			{
+				unset($this->email);
+				unset($this->ip);
+				unset($this->hostname);
+			}
+
 
 		}
 

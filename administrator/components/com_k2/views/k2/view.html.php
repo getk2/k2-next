@@ -54,7 +54,7 @@ class K2ViewK2 extends JViewLegacy
 		$document->addScriptDeclaration('var K2SessionTimeout = '.$refreshTime.';');
 
 		// Load the application
-		$document->addCustomTag('<script data-main="'.JURI::root(true).'/administrator/components/com_k2/js/boot" src="'.JURI::base(true).'/components/com_k2/js/require.js"></script>');
+		$document->addCustomTag('<script data-main="'.JURI::root(true).'/administrator/components/com_k2/js/boot" src="'.JURI::root(true).'/administrator/components/com_k2/js/require.js"></script>');
 
 		// Add version variable
 		if (version_compare(JVERSION, '3.0', 'ge'))
