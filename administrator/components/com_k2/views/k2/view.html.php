@@ -14,8 +14,36 @@ class K2ViewK2 extends JViewLegacy
 {
 	public function display($tpl = null)
 	{
+		// Get application
+		$application = JFactory::getApplication();
+
 		// Get document
 		$document = JFactory::getDocument();
+
+		// Get user
+		$user = JFactory::getUser();
+
+		// Front-end permissions check. We need to do this here since front-end requests are not executed through /administrator/components/com_k2/k2.php
+		if ($application->isSite())
+		{
+			if (!$user->authorise('core.manage', 'com_k2'))
+			{
+				if ($user->guest)
+				{
+					// If user is guest redirect him to login page
+					require_once JPATH_SITE.'/components/com_users/helpers/route.php';
+					$uri = JFactory::getURI();
+					$url = 'index.php?option=com_users&view=login&return='.base64_encode($uri->toString()).'&Itemid='.UsersHelperRoute::getLoginRoute();
+					$application->redirect(JRoute::_($url, false), JText::_('K2_YOU_NEED_TO_LOGIN_FIRST'));
+					return false;
+				}
+				else
+				{
+					JError::raiseError(403, JText::_('K2_NOT_AUTHORISED'));
+					return false;
+				}
+			}
+		}
 
 		// Set the correct metadata
 		$document->setMetaData('viewport', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
@@ -25,7 +53,7 @@ class K2ViewK2 extends JViewLegacy
 		{
 			JHtml::_('jquery.framework');
 		}
-		
+
 		// Load the CSS
 		$document->addStyleSheet(JURI::root(true).'/administrator/components/com_k2/css/admin.k2.css');
 
@@ -34,15 +62,15 @@ class K2ViewK2 extends JViewLegacy
 		$document->addScriptDeclaration('var K2Editor = '.$this->getEditor().';');
 		$document->addScriptDeclaration('var K2SitePath = "'.JURI::root(true).'";');
 		$document->addScriptDeclaration('var K2Language = '.$this->getLanguage().';');
-		
+
 		// Add DropBox drop-in
 		$params = JComponentHelper::getParams('com_k2');
-		if($dropBoxAppKey = $params->get('dropboxAppKey'))
+		if ($dropBoxAppKey = $params->get('dropboxAppKey'))
 		{
 			// Load DropBox script
 			$document->addCustomTag('<script data-app-key="'.$dropBoxAppKey.'" id="dropboxjs" src="https://www.dropbox.com/static/api/2/dropins.js"></script>');
 		}
-		
+
 		// Calculate session lifetime
 		$config = JFactory::getConfig();
 		$lifetime = ($config->get('lifetime') * 60000);
@@ -68,11 +96,10 @@ class K2ViewK2 extends JViewLegacy
 		$this->assignRef('JVersion', $JVersion);
 
 		// Set title
-		if(class_exists('JToolBarHelper'))
+		if (class_exists('JToolBarHelper'))
 		{
 			JToolBarHelper::title(JText::_('COM_K2'));
 		}
-		
 
 		// Display
 		parent::display($tpl);
