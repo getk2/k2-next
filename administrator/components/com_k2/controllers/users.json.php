@@ -18,11 +18,62 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/controller.php';
 
 class K2ControllerUsers extends K2Controller
 {
+
+	protected function onBeforeRead($mode, $id)
+	{
+		$user = JFactory::getUser();
+		$authorized = false;
+		if ($mode == 'row')
+		{
+			// Edit
+			if ($id)
+			{
+				$authorized = ($id == $user->id) || $user->authorise('core.edit', 'com_users');
+			}
+			else
+			{
+				$authorized = $user->authorise('core.create', 'com_users');
+			}
+		}
+		else
+		{
+			$authorized = $user->authorise('core.edit', 'com_users');
+		}
+		return $authorized;
+	}
+
 	protected function getInputData()
 	{
 		$data = parent::getInputData();
 		$data['description'] = JComponentHelper::filterText($this->input->get('description', '', 'raw'));
 		return $data;
+	}
+
+	public function report()
+	{
+		// Check for token
+		JSession::checkToken() or K2Response::throwError(JText::_('JINVALID_TOKEN'));
+
+		// Get application
+		$application = JFactory::getApplication();
+
+		// Get input
+		$id = $application->input->get('id', 0, 'int');
+
+		// Get model
+		$model = K2Model::getInstance('Users');
+		$model->setState('id', $id);
+		$model->report();
+		if (!$model->report())
+		{
+			K2Response::throwError($model->getError());
+		}
+
+		// Response
+		echo json_encode(K2Response::render());
+
+		// Return
+		return $this;
 	}
 
 }
