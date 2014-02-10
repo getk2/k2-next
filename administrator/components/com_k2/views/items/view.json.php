@@ -110,22 +110,7 @@ class K2ViewItems extends K2View
 	protected function setFilters()
 	{
 		// Sorting filter
-		$sortingOptions = array(
-			'K2_ID' => 'id',
-			'K2_TITLE' => 'title',
-			'K2_ORDERING' => 'ordering',
-			'K2_FEATURED_ORDERING' => 'featured_ordering',
-			'K2_STATE' => 'state',
-			'K2_FEATURED' => 'featured',
-			'K2_CATEGORY' => 'category',
-			'K2_AUTHOR' => 'author',
-			'K2_MODERATOR' => 'moderator',
-			'K2_ACCESS_LEVEL' => 'access',
-			'K2_CREATED' => 'created',
-			'K2_MODIFIED' => 'modified',
-			'K2_LANGUAGE' => 'language',
-			'K2_HITS' => 'hits'
-		);
+		$sortingOptions = array('K2_ID' => 'id', 'K2_TITLE' => 'title', 'K2_ORDERING' => 'ordering', 'K2_FEATURED_ORDERING' => 'featured_ordering', 'K2_STATE' => 'state', 'K2_FEATURED' => 'featured', 'K2_CATEGORY' => 'category', 'K2_AUTHOR' => 'author', 'K2_MODERATOR' => 'moderator', 'K2_ACCESS_LEVEL' => 'access', 'K2_CREATED' => 'created', 'K2_MODIFIED' => 'modified', 'K2_LANGUAGE' => 'language', 'K2_HITS' => 'hits');
 		K2Response::addFilter('sorting', JText::_('K2_SORT_BY'), K2HelperHTML::sorting($sortingOptions), false, 'header');
 
 		// Categories filter
@@ -172,41 +157,16 @@ class K2ViewItems extends K2View
 
 		if ($canEditFeaturedState)
 		{
-			K2Response::addToolbarAction('feature', 'K2_FEATURE', array(
-				'data-state' => 'featured',
-				'data-value' => '1',
-				'class' => 'appActionSetState',
-				'id' => 'appActionFeature'
-			));
-			K2Response::addToolbarAction('unfeature', 'K2_UNFEATURE', array(
-				'data-state' => 'featured',
-				'data-value' => '0',
-				'class' => 'appActionSetState',
-				'id' => 'appActionUnFeature'
-			));
+			K2Response::addToolbarAction('feature', 'K2_FEATURE', array('data-state' => 'featured', 'data-value' => '1', 'class' => 'appActionSetState', 'id' => 'appActionFeature'));
+			K2Response::addToolbarAction('unfeature', 'K2_UNFEATURE', array('data-state' => 'featured', 'data-value' => '0', 'class' => 'appActionSetState', 'id' => 'appActionUnFeature'));
 		}
 
 		if ($canEditState)
 		{
-			K2Response::addToolbarAction('publish', 'K2_PUBLISH', array(
-				'data-state' => 'state',
-				'data-value' => '1',
-				'class' => 'appActionSetState',
-				'id' => 'appActionPublish'
-			));
-			K2Response::addToolbarAction('unpublish', 'K2_UNPUBLISH', array(
-				'data-state' => 'state',
-				'data-value' => '0',
-				'class' => 'appActionSetState',
-				'id' => 'appActionUnpublish'
-			));
+			K2Response::addToolbarAction('publish', 'K2_PUBLISH', array('data-state' => 'state', 'data-value' => '1', 'class' => 'appActionSetState', 'id' => 'appActionPublish'));
+			K2Response::addToolbarAction('unpublish', 'K2_UNPUBLISH', array('data-state' => 'state', 'data-value' => '0', 'class' => 'appActionSetState', 'id' => 'appActionUnpublish'));
 
-			K2Response::addToolbarAction('trash', 'K2_TRASH', array(
-				'data-state' => 'state',
-				'data-value' => '-1',
-				'class' => 'appActionSetState',
-				'id' => 'appActionTrash'
-			));
+			K2Response::addToolbarAction('trash', 'K2_TRASH', array('data-state' => 'state', 'data-value' => '-1', 'class' => 'appActionSetState', 'id' => 'appActionTrash'));
 		}
 		K2Response::addToolbarAction('batch', 'K2_BATCH', array('id' => 'appActionBatch'));
 
@@ -225,8 +185,19 @@ class K2ViewItems extends K2View
 		require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/editor.php';
 		$config = JFactory::getConfig();
 		$editor = K2Editor::getInstance($config->get('editor'));
-		$value = trim($row->fulltext) != '' ? $row->introtext.'<hr id="system-readmore" />'.$row->fulltext : $row->introtext;
-		$form->text = $editor->display('text', $value, '100%', '300', '40', '5');
+
+		$params = JComponentHelper::getParams('com_k2');
+		if ($params->get('mergeEditors'))
+		{
+			$value = trim($row->fulltext) != '' ? $row->introtext.'<hr id="system-readmore" />'.$row->fulltext : $row->introtext;
+			$form->text = $editor->display('text', $value, '100%', '300', '40', '5');
+		}
+		else
+		{
+			$form->introtext = $editor->display('introtext', $row->introtext, '100%', '300', '40', '5', array('readmore'));
+			$form->fulltext = $editor->display('fulltext', $row->fulltext, '100%', '300', '40', '5', array('readmore'));
+		}
+
 		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/extrafields.php';
 		$form->extraFields = K2HelperExtraFields::getItemExtraFields($row->catid, $row->extra_fields);
 	}
@@ -242,10 +213,7 @@ class K2ViewItems extends K2View
 		$user = JFactory::getUser();
 		if ($user->authorise('k2.item.create', 'com_k2'))
 		{
-			K2Response::addAction('add', 'K2_ADD', array(
-				'class' => 'appAction',
-				'id' => 'appActionAdd'
-			));
+			K2Response::addAction('add', 'K2_ADD', array('class' => 'appAction', 'id' => 'appActionAdd'));
 		}
 	}
 

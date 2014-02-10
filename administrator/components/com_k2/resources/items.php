@@ -181,6 +181,12 @@ class K2Items extends K2Resource
 
 		// Author
 		$this->author = $this->getAuthor();
+
+		// Revisions
+		if ($this->canEdit)
+		{
+			$this->revisions = $this->getRevisions();
+		}
 	}
 
 	public function getCategory()
@@ -591,7 +597,7 @@ class K2Items extends K2Resource
 			{
 				$results = $dispatcher->trigger('onK2CommentsCounter', array(&$this, &$params, $offset));
 				$events->K2CommentsCounter = trim(implode("\n", $results));
-				
+
 				$results = $dispatcher->trigger('onK2CommentsBlock', array(&$this, &$params, $offset));
 				$events->K2CommentsBlock = trim(implode("\n", $results));
 			}
@@ -605,6 +611,18 @@ class K2Items extends K2Resource
 
 		// return
 		return $events;
+	}
+
+	public function getRevisions()
+	{
+		$revisions = array();
+		if ($this->id)
+		{
+			$model = K2Model::getInstance('Revisions');
+			$model->setState('itemId', $this->id);
+			$revisions = $model->getRows();
+		}
+		return $revisions;
 	}
 
 	public function hit()

@@ -16,7 +16,8 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 
 		// UI events
 		events : {
-			'change #catid' : 'updateCategory'
+			'change #catid' : 'updateCategory',
+			'click #appManageRevisions' : 'showRevisions'
 		},
 
 		modelEvents : {
@@ -82,7 +83,14 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 			//this.extraFieldsView.validate();
 
 			// Update form from editor contents
-			K2Editor.save('text');
+			var form = this.model.getForm();
+			if(form.has('text')) {
+				K2Editor.save('text');
+			} else {
+				K2Editor.save('introtext');
+				K2Editor.save('fulltext');
+			}
+			
 		},
 
 		// OnBeforeClose event ( Marionette.js build in event )
@@ -90,9 +98,6 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 			// Clean up uploaded files
 			if (this.model.isNew()) {
 				this.imageView.trigger('cleanup');
-				this.attachmentsView.trigger('delete');
-				this.galleriesView.trigger('delete');
-				this.mediaView.trigger('delete');
 			}
 		},
 
@@ -101,6 +106,10 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 			var value = this.$el.find('#catid').val();
 			// Extra fields
 			this.extraFieldsView.trigger('filter', value);
+		},
+		
+		showRevisions : function(event) {
+			event.preventDefault();
 		},
 		
 		onRender : function() {

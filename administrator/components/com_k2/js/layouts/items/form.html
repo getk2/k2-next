@@ -5,9 +5,6 @@
 
     <label for="alias"><%= l('K2_ALIAS') %></label>
     <input type="text" name="alias" id="alias" value="<%- row.alias %>" />
-    
-  	<label for="notes"><%= l('K2_REVISION_NOTES') %></label>
-    <input type="text" name="notes" id="notes" value="" />
 
     <label for="catid"><%= l('K2_CATEGORY') %></label>
     <%= form.category %>
@@ -78,8 +75,15 @@
         <span><%= row.moderatorName %></span>
     </div>
 
+	<% if(form.text) { %>
     <label for="text"><%= l('K2_TEXT') %></label>
     <%= form.text %>
+    <% } else { %>
+    <label for="introtext"><%= l('K2_INTROTEXT') %></label>
+    <%= form.introtext %>
+    <label for="fulltext"><%= l('K2_FULLTEXT') %></label>
+    <%= form.fulltext %>
+    <% } %>
 
     <!-- Tags -->
     <h2><%= l('K2_TAGS') %></h2>
@@ -99,6 +103,20 @@
 
     <!-- Extra Fields -->
     <div id="appItemExtraFields"></div>
+    
+    <!-- Revisions -->
+    <div id="appItemRevisions">
+    	<h2><%= l('K2_REVISIONS') %></h2>
+    	<button id="appManageRevisions"><%= l('K2_MANAGE_REVISIONS') %></button>
+    	<ul>
+    		<% _.each(row.revisions, function(revision) { %>
+    			<li><span><%= revision.date %></span><span><%= revision.user %></span></li>
+    		<% }); %>
+    	</ul>
+    	
+    	<label for="notes"><%= l('K2_REVISION_NOTES') %></label>
+    	<input type="text" name="notes" id="notes" value="" />
+    </div>
 
     <input type="hidden" name="id" value="<%- row.id %>" / >
 

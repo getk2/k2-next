@@ -46,7 +46,16 @@ class K2ControllerItems extends K2Controller
 	protected function getInputData()
 	{
 		$data = parent::getInputData();
-		$data['text'] = JComponentHelper::filterText($this->input->get('text', '', 'raw'));
+		$params = JComponentHelper::getParams('com_k2');
+		if ($params->get('mergeEditors'))
+		{
+			$data['text'] = JComponentHelper::filterText($this->input->get('text', '', 'raw'));
+		}
+		else
+		{
+			$data['introtext'] = JComponentHelper::filterText($this->input->get('introtext', '', 'raw'));
+			$data['fulltext'] = JComponentHelper::filterText($this->input->get('fulltext', '', 'raw'));
+		}
 		return $data;
 	}
 
