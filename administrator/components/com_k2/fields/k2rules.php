@@ -28,8 +28,6 @@ class JFormFieldK2Rules extends JFormFieldRules
 	 */
 	protected function getInput()
 	{
-		JHtml::_('bootstrap.tooltip');
-
 		// Initialise some field attributes.
 		$section = $this->section;
 		$component = $this->component;
