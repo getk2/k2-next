@@ -28,7 +28,7 @@ class K2ControllerCategories extends K2Controller
 			// Create
 			if ($id)
 			{
-				$category = K2Categories::getInstance();
+				$category = K2Categories::getInstance($id);
 				$authorized = $category->canEdit;
 			}
 			else

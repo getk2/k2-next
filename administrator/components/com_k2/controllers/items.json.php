@@ -28,7 +28,7 @@ class K2ControllerItems extends K2Controller
 			// Create
 			if ($id)
 			{
-				$item = K2Items::getInstance();
+				$item = K2Items::getInstance($id);
 				$authorized = $item->canEdit;
 			}
 			else
