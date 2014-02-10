@@ -29,9 +29,10 @@ class K2Controller extends JControllerLegacy
 	public function display($cachable = false, $urlparams = false)
 	{
 
+		$application = JFactory::getApplication();
 		$user = JFactory::getUser();
 
-		if ($user->guest && $this->input->getMethod() == 'GET')
+		if ($user->guest && $application->input->getMethod() == 'GET')
 		{
 			$cachable = true;
 		}

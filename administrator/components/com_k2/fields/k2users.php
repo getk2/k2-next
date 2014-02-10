@@ -13,6 +13,7 @@ defined('_JEXEC') or die ;
 jimport('joomla.form.formfield');
 
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/users.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/html.php';
 
 class JFormFieldK2Users extends JFormField
 {
@@ -20,7 +21,7 @@ class JFormFieldK2Users extends JFormField
 
 	public function getInput()
 	{
-		JHtml::_('jquery.framework');
+		K2HelperHTML::jQuery();
 
 		// Load required scripts
 		$document = JFactory::getDocument();

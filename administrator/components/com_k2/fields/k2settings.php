@@ -10,6 +10,8 @@
 // no direct access
 defined('_JEXEC') or die ;
 
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/html.php';
+
 class JFormFieldK2Settings extends JFormField
 {
 
@@ -18,6 +20,7 @@ class JFormFieldK2Settings extends JFormField
 	function getInput()
 	{
 		// Add head data
+		K2HelperHTML::jQuery();		
 		$document = JFactory::getDocument();
 		$document->addStyleSheet(JURI::root(true).'/administrator/components/com_k2/css/fields.k2.css');
 		$document->addScript(JURI::root(true).'/administrator/components/com_k2/js/fields.k2.js');

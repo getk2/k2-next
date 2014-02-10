@@ -48,11 +48,8 @@ class K2ViewK2 extends JViewLegacy
 		// Set the correct metadata
 		$document->setMetaData('viewport', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
 
-		// Load jQuery for Joomla! 3.x series
-		if (version_compare(JVERSION, '3.0', 'ge'))
-		{
-			JHtml::_('jquery.framework');
-		}
+		// Load jQuery
+		K2HelperHTML::jQuery();
 
 		// Load the CSS
 		$document->addStyleSheet(JURI::root(true).'/administrator/components/com_k2/css/admin.k2.css');
