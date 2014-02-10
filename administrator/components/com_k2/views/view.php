@@ -322,7 +322,7 @@ class K2View extends JViewLegacy
 			JPluginHelper::importPlugin('k2');
 
 			// Get the dispatcher.
-			$dispatcher = JEventDispatcher::getInstance();
+			$dispatcher = JDispatcher::getInstance();
 
 			// Trigger the form preparation event
 			$results = $dispatcher->trigger('onContentPrepareForm', array(

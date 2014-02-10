@@ -10,6 +10,8 @@
 // no direct access
 defined('_JEXEC') or die ;
 
+jimport('joomla.database.tablenested');
+
 class K2TableNested extends JTableNested
 {
 
