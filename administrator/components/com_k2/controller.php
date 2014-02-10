@@ -423,7 +423,7 @@ class K2Controller extends JControllerLegacy
 
 	protected function getInputData()
 	{
-		return $this->input->getArray();
+		return version_compare(JVERSION, '3.2', 'ge') ? $this->input->getArray() : JRequest::get('post');
 	}
 
 }
