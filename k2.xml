@@ -31,6 +31,19 @@
 		<filename>metadata.xml</filename>
 		<filename>router.php</filename>
 	</files>
+	<languages folder="language/en-GB">
+		<language tag="en-GB">en-GB.com_k2.ini</language>
+		<language tag="en-GB">en-GB.mod_k2_comments.ini</language>
+		<language tag="en-GB">en-GB.mod_k2_comments.sys.ini</language>
+		<language tag="en-GB">en-GB.mod_k2_content.ini</language>
+		<language tag="en-GB">en-GB.mod_k2_content.sys.ini</language>
+		<language tag="en-GB">en-GB.mod_k2_tools.ini</language>
+		<language tag="en-GB">en-GB.mod_k2_tools.sys.ini</language>
+		<language tag="en-GB">en-GB.mod_k2_users.ini</language>
+		<language tag="en-GB">en-GB.mod_k2_users.sys.ini</language>
+		<language tag="en-GB">en-GB.mod_k2_user.ini</language>
+		<language tag="en-GB">en-GB.mod_k2_user.sys.ini</language>
+	</languages>
 	<administration>
 		<menu>COM_K2</menu>
 		<submenu>
@@ -65,6 +78,22 @@
 			<filename>install.sql</filename>
 			<filename>k2.php</filename>
 		</files>
+		<languages folder="administrator/language/en-GB">
+			<language tag="en-GB">en-GB.com_k2.ini</language>
+			<language tag="en-GB">en-GB.com_k2.sys.ini</language>
+			<language tag="en-GB">en-GB.mod_k2_quickicons.ini</language>
+			<language tag="en-GB">en-GB.mod_k2_quickicons.sys.ini</language>
+			<language tag="en-GB">en-GB.mod_k2_stats.ini</language>
+			<language tag="en-GB">en-GB.mod_k2_stats.sys.ini</language>
+			<language tag="en-GB">en-GB.plg_finder_k2.ini</language>
+			<language tag="en-GB">en-GB.plg_finder_k2.sys.ini</language>
+			<language tag="en-GB">en-GB.plg_search_k2.ini</language>
+			<language tag="en-GB">en-GB.plg_search_k2.sys.ini</language>
+			<language tag="en-GB">en-GB.plg_system_k2.ini</language>
+			<language tag="en-GB">en-GB.plg_system_k2.sys.ini</language>
+			<language tag="en-GB">en-GB.plg_user_k2.ini</language>
+			<language tag="en-GB">en-GB.plg_user_k2.sys.ini</language>
+		</languages>
 	</administration>
 	<config>
 		<fields></fields>

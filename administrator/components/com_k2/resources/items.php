@@ -616,7 +616,8 @@ class K2Items extends K2Resource
 	public function getRevisions()
 	{
 		$revisions = array();
-		if ($this->id)
+		$params = JComponentHelper::getParams('com_k2');
+		if ($this->id && $params->get('revisions'))
 		{
 			$model = K2Model::getInstance('Revisions');
 			$model->setState('itemId', $this->id);
