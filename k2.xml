@@ -28,7 +28,6 @@
 		<folder>views</folder>
 		<filename>controller.php</filename>
 		<filename>k2.php</filename>
-		<filename>metadata.xml</filename>
 		<filename>router.php</filename>
 	</files>
 	<languages folder="language/en-GB">
