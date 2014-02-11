@@ -52,6 +52,12 @@ class K2Controller extends JControllerLegacy
 		// Parent constructor
 		parent::__construct($config);
 
+		// If we are at Joomla! 2.5 set the controller input
+		if (version_compare(JVERSION, '3.0', 'lt'))
+		{
+			$this->input = JFactory::getApplication()->input;
+		}
+
 		// Add extra functionality only for JSON views
 		$document = JFactory::getDocument();
 		if ($document->getType() == 'json')
@@ -73,12 +79,6 @@ class K2Controller extends JControllerLegacy
 				list($resourceType, $action) = explode('.', $config['originalTask']);
 			}
 			$this->resourceType = $resourceType;
-
-			// If we are at Joomla! 2.5 set the controller input
-			if (version_compare(JVERSION, '3.0', 'lt'))
-			{
-				$this->input = JFactory::getApplication()->input;
-			}
 
 			// Add the model to the controller for quick access
 			$this->addModelPath(JPATH_ADMINISTRATOR.'/components/com_k2/models', 'K2Model');
