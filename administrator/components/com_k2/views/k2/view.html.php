@@ -49,6 +49,7 @@ class K2ViewK2 extends JViewLegacy
 		$document->setMetaData('viewport', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
 
 		// Load jQuery
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/html.php';
 		K2HelperHTML::jQuery();
 
 		// Load the CSS
