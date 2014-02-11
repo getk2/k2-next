@@ -80,7 +80,8 @@ class K2ViewItemlist extends K2View
 			$this->category->checkSiteAccess();
 
 			// Merge menu params with category params
-			$this->params->merge($this->category->getEffectiveParams());
+			$effectiveParams = $this->category->getEffectiveParams();
+			$this->params->merge($effectiveParams);
 
 			// Set metadata
 			$this->setMetadata($this->category);

@@ -35,7 +35,8 @@ class K2ViewItem extends K2View
 		$this->item->checkSiteAccess();
 
 		// Merge menu params with category params
-		$this->params->merge($this->item->category->getEffectiveParams());
+		$effectiveParams = $this->item->category->getEffectiveParams();
+		$this->params->merge($effectiveParams);
 
 		// Merge params with item params
 		$this->params->merge($this->item->params);
