@@ -93,6 +93,7 @@ class K2ViewComments extends K2View
 		$this->setUserState('search', '', 'string');
 		$this->setUserState('state', '', 'cmd');
 		$this->setUserState('sorting', 'ordering', 'string');
+		$this->setUserState('itemId', 0, 'int');
 	}
 
 	protected function setFilters()
