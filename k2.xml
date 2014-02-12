@@ -21,7 +21,6 @@
 		</sql>
 	</uninstall>
 	<files folder="components/com_k2">
-		<folder>controllers</folder>
 		<folder>helpers</folder>
 		<folder>images</folder>
 		<folder>templates</folder>
