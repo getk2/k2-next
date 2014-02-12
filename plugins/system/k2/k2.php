@@ -41,6 +41,12 @@ class PlgSystemK2 extends JPlugin
 
 			// Get document
 			$document = JFactory::getDocument();
+			
+			// Enforce system template for editing
+			if($view == 'admin')
+			{
+				$application->input->set('template', 'system');
+			}
 
 			// jQuery and K2 JS loading
 			require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/html.php';

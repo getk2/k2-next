@@ -93,6 +93,10 @@ class K2Controller extends JControllerLegacy
 			// Fix base meta tag
 			$uri = JURI::getInstance();
 			$document->setBase($uri->toString());
+			
+			// Load administration language file
+			$language = JFactory::getLanguage();
+			$language->load('com_k2', JPATH_ADMINISTRATOR);
 
 			// Proxy the "admin" view to "k2" view
 			if ($this->input->get('view') == 'admin')

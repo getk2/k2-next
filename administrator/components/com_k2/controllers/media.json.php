@@ -35,7 +35,7 @@ class K2ControllerMedia extends K2Controller
 	 */
 	protected function onBeforeRead($mode, $id)
 	{
-		return false;
+		return true;
 	}
 
 	public function upload()
