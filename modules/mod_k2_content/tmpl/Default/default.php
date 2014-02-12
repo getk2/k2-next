@@ -204,7 +204,7 @@ defined('_JEXEC') or die ; ?>
 
 	<?php if($params->get('feed')): ?>
 	<div class="k2FeedIcon">
-		<a href="<?php echo JRoute::_('index.php?option=com_k2&view=itemlist&task=module&id='.$module->id.'&format=feed'); ?>" title="<?php echo JText::_('K2_SUBSCRIBE_TO_THIS_RSS_FEED'); ?>">
+		<a href="<?php echo JRoute::_('index.php?option=com_k2&view=itemlist&task=module&id='.$module->id.'&format=feed&Itemid='); ?>" title="<?php echo JText::_('K2_SUBSCRIBE_TO_THIS_RSS_FEED'); ?>">
 			<span><?php echo JText::_('K2_SUBSCRIBE_TO_THIS_RSS_FEED'); ?></span>
 		</a>
 		<div class="clr"></div>
