@@ -660,16 +660,15 @@ class K2ModelUsers extends K2Model
 		// Get database
 		$db = $this->getDbo();
 
-		// Get query
-		$query = $db->getQuery(true);
-
 		// Unpublish user comments
+		$query = $db->getQuery(true);
 		$query->update($db->quoteName('#__k2_comments'))->set($db->quoteName('state').' = 0')->where($db->quoteName('userId').' = '.$id);
 		$db->setQuery($query);
 		$db->execute();
 		$application->enqueueMessage(JText::_('K2_USER_COMMENTS_UNPUBLISHED'));
 
 		// Unpublish user items
+		$query = $db->getQuery(true);
 		$query->update($db->quoteName('#__k2_items'))->set($db->quoteName('state').' = 0')->where($db->quoteName('created_by').' = '.$id);
 		$db->setQuery($query);
 		$db->execute();
@@ -694,6 +693,7 @@ class K2ModelUsers extends K2Model
 		}
 
 		// Finally block the reported user
+		$query = $db->getQuery(true);
 		$query->update($db->quoteName('#__users'))->set($db->quoteName('block').' = 1')->where($db->quoteName('id').' = '.$id);
 		$db->setQuery($query);
 		$db->execute();

@@ -222,6 +222,14 @@ jQuery(document).ready(function() {
 			},
 			reportUser : function(event) {
 				event.preventDefault();
+				var el = jQuery(event.currentTarget);
+				var data = 'id='+el.data('id')+'&'+K2SessionToken + '=1';
+				jQuery.post( K2CommentsSite + '/index.php?option=com_k2&task=users.report&format=json', data)
+				.success(function(data) {
+					el.hide();
+				}).error(function(data) {
+					el.parent().append('<span>' + data.responseText + '</span>');
+				});
 			},
 			paginate : function(event) {
 				event.preventDefault();
