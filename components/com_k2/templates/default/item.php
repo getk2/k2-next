@@ -601,6 +601,8 @@ defined('_JEXEC') or die ;
 			<div id="recaptcha"></div>
 			<?php endif; ?>
 			
+			<?php echo K2HelperCaptcha::display(); ?>
+			
 			<button data-action="report.send"><?php echo JText::_('K2_SEND_REPORT'); ?></button>
 			<span data-role="log"></span>
 			<input type="hidden" name="id" value="" />
