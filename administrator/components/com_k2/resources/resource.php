@@ -23,6 +23,11 @@ class K2Resource
 	protected static $instances = array();
 
 	/**
+	 * @var array	Languages instances container.
+	 */
+	protected static $languages = array();
+
+	/**
 	 * Constructor.
 	 * It assigns the data to object properties.
 	 *
@@ -79,10 +84,7 @@ class K2Resource
 		$method = 'get'.ucfirst($name);
 		if (method_exists($this, $method))
 		{
-			$data = call_user_func(array(
-				$this,
-				$method
-			));
+			$data = call_user_func(array($this, $method));
 			$this->$name = $data;
 			return $this->$name;
 		}
@@ -163,10 +165,24 @@ class K2Resource
 			$this->plugins = new JRegistry($this->plugins);
 		}
 
-		if (property_exists($this, 'language') && property_exists($this, 'languageTitle') && empty($this->languageTitle))
+		if (property_exists($this, 'language'))
 		{
-
-			$this->languageTitle = JText::_('K2_ALL');
+			if ($this->language == '*')
+			{
+				$this->languageTitle = JText::_('K2_ALL');
+			}
+			else
+			{
+				if (empty(self::$languages))
+				{
+					$languages = JLanguageHelper::getLanguages();
+					foreach ($languages as $language)
+					{
+						self::$languages[$language->lang_code] = $language->title;
+					}
+				}
+				$this->languageTitle = self::$languages[$this->language];
+			}
 		}
 
 	}

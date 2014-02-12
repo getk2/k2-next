@@ -56,10 +56,6 @@ class K2ModelItems extends K2Model
 		// Join over the hits
 		$query->select($db->quoteName('stats.hits', 'hits'));
 		$query->leftJoin($db->quoteName('#__k2_items_stats', 'stats').' ON '.$db->quoteName('stats.itemId').' = '.$db->quoteName('item.id'));
-		
-		// Join over the language
-		$query->select($db->quoteName('language.title', 'languageTitle'));
-		$query->leftJoin($db->quoteName('#__languages', 'language').' ON '.$db->quoteName('language.lang_code').' = '.$db->quoteName('item.language'));
 
 		// Set query conditions
 		$this->setQueryConditions($query);
@@ -135,6 +131,14 @@ class K2ModelItems extends K2Model
 
 			// Set state for access
 			$this->setState('access', $viewlevels);
+
+			// Language filter
+			$application = JFactory::getApplication();
+			if ($application->isSite() && $application->getLanguageFilter())
+			{
+				$language = JFactory::getLanguage();
+				$query->where($db->quoteName('item.language').' IN ('.$db->quote($language->getTag()).', '.$db->quote('*').')');
+			}
 		}
 
 		// Shortcut method for setting the categoy filter
@@ -425,7 +429,7 @@ class K2ModelItems extends K2Model
 				$direction = 'DESC';
 				break;
 			case 'language' :
-				$ordering = 'languageTitle';
+				$ordering = 'item.language';
 				$direction = 'ASC';
 				break;
 			case 'publishUp' :

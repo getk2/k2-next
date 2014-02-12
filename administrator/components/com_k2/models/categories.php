@@ -107,6 +107,14 @@ class K2ModelCategories extends K2Model
 
 			// Set state for access
 			$this->setState('access', $viewlevels);
+
+			// Language filter
+			$application = JFactory::getApplication();
+			if ($application->isSite() && $application->getLanguageFilter())
+			{
+				$language = JFactory::getLanguage();
+				$query->where($db->quoteName('category.language').' IN ('.$db->quote($language->getTag()).', '.$db->quote('*').')');
+			}
 		}
 		$query->where($db->quoteName('category.id').' != 1');
 		if ($this->getState('language'))
@@ -202,7 +210,7 @@ class K2ModelCategories extends K2Model
 				$direction = 'DESC';
 				break;
 			case 'language' :
-				$ordering = 'languageTitle';
+				$ordering = 'category.language';
 				$direction = 'ASC';
 				break;
 			case 'image' :
@@ -438,7 +446,6 @@ class K2ModelCategories extends K2Model
 
 		// Clean up any temporary files
 		K2HelperImages::purge('category');
-		
 
 		// Handle trash action
 		if ($this->getState('trash'))
@@ -473,7 +480,7 @@ class K2ModelCategories extends K2Model
 
 		return true;
 	}
-	
+
 	/**
 	 * Close method.
 	 *
@@ -547,7 +554,7 @@ class K2ModelCategories extends K2Model
 	{
 		// Delete item image
 		K2HelperImages::remove('category', $table->id);
-		
+
 		return true;
 	}
 
@@ -610,14 +617,7 @@ class K2ModelCategories extends K2Model
 		{
 			$path = 'media/k2/categories/'.$imageId.'.jpg';
 			$image = K2HelperImages::add('category', null, $path);
-			$data['image'] = array(
-				'id' => '',
-				'temp' => $image->temp,
-				'path' => '',
-				'remove' => 0,
-				'caption' => $data['image']->caption,
-				'credits' => $data['image']->credits
-			);
+			$data['image'] = array('id' => '', 'temp' => $image->temp, 'path' => '', 'remove' => 0, 'caption' => $data['image']->caption, 'credits' => $data['image']->credits);
 		}
 		else
 		{
