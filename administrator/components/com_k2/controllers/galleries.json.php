@@ -22,6 +22,20 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/galleries.php';
 class K2ControllerGalleries extends K2Controller
 {
 
+	/**
+	 * onBeforeRead function.
+	 * Hook for chidlren controllers to check for access
+	 *
+	 * @param string $mode		The mode of the read function. Pass 'row' for retrieving a single row or 'list' to retrieve a collection of rows.
+	 * @param mixed $id			The id of the row to load when we are retrieving a single row.
+	 *
+	 * @return void
+	 */
+	protected function onBeforeRead($mode, $id)
+	{
+		return false;
+	}
+
 	public function upload()
 	{
 		// Check for token

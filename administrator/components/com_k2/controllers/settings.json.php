@@ -18,6 +18,22 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/controller.php';
 
 class K2ControllerSettings extends K2Controller
 {
+
+	/**
+	 * onBeforeRead function.
+	 * Hook for chidlren controllers to check for access
+	 *
+	 * @param string $mode		The mode of the read function. Pass 'row' for retrieving a single row or 'list' to retrieve a collection of rows.
+	 * @param mixed $id			The id of the row to load when we are retrieving a single row.
+	 *
+	 * @return void
+	 */
+	protected function onBeforeRead($mode, $id)
+	{
+		$user = JFactory::getUser();
+		return $user->authorise('core.admin', 'com_k2');
+	}
+
 	/**
 	 * Update function.
 	 * Updates an existing resource.
@@ -74,11 +90,7 @@ class K2ControllerSettings extends K2Controller
 		}
 
 		// Attempt to save the configuration.
-		$data = array(
-			'params' => $return,
-			'id' => $id,
-			'option' => $option
-		);
+		$data = array('params' => $return, 'id' => $id, 'option' => $option);
 		$return = $model->save($data);
 
 		// Check the return value.
