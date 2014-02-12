@@ -187,6 +187,20 @@ class K2Controller extends JControllerLegacy
 	}
 
 	/**
+	 * Close function.
+	 * Hook for chidlren controllers to perform clean up of temporary files etc.
+	 *
+	 * @return JControllerLegacy	A JControllerLegacy object to support chaining.
+	 */
+	public function close()
+	{
+		// Check for token
+		JSession::checkToken() or K2Response::throwError(JText::_('JINVALID_TOKEN'));
+		return $this;
+	}
+	
+
+	/**
 	 * onBeforeRead function.
 	 * Hook for chidlren controllers to check for access
 	 *

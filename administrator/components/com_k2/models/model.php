@@ -165,6 +165,17 @@ class K2Model extends JModelLegacy
 	}
 
 	/**
+	 * Close method.
+	 *
+	 * @return boolean	True on success false on failure.
+	 */
+
+	public function close()
+	{
+		return true;
+	}
+
+	/**
 	 * Delete method.
 	 *
 	 * @return boolean	True on success false on failure.
@@ -235,10 +246,7 @@ class K2Model extends JModelLegacy
 	{
 		$dispatcher = JDispatcher::getInstance();
 		JPluginHelper::importPlugin('k2');
-		$dispatcher->trigger('onBeforeSetQuery', array(
-			&$query,
-			$context
-		));
+		$dispatcher->trigger('onBeforeSetQuery', array(&$query, $context));
 	}
 
 	/**

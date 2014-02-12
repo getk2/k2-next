@@ -72,13 +72,6 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 				this.model.set('src', data.result.preview);
 			}, this);
 
-			this.on('cleanup', function() {
-				if (this.model.get('temp')) {
-					this.model.set('id', this.model.get('temp'));
-					this.model.destroy();
-				}
-			});
-
 		},
 		onDomRefresh : function() {
 			K2Widget.updateEvents(this.$el);

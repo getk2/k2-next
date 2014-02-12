@@ -49,11 +49,15 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 				silent : true,
 				wait : true,
 				patch : true
-			}
+			};
 			_.extend(params, options);
 			this.save({
 				'checked_out' : 0
 			}, params);
+		},
+
+		cleanUp : function(resource) {
+			jQuery.post('index.php?option=com_k2&task=' + resource + '.close&format=json', K2SessionToken + '=1');
 		},
 
 		toggleState : function(state, options) {
@@ -61,7 +65,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher'], function(_, Backb
 				silent : true,
 				wait : true,
 				patch : true
-			}
+			};
 			_.extend(params, options);
 			var attrs = {};
 			attrs[state] = (this.get(state) > 0 ) ? 0 : 1;

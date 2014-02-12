@@ -76,4 +76,19 @@ class K2ControllerUsers extends K2Controller
 		return $this;
 	}
 
+	public function close()
+	{
+		// Check for token
+		JSession::checkToken() or K2Response::throwError(JText::_('JINVALID_TOKEN'));
+
+		// User
+		$user = JFactory::getUser();
+
+		if ($user->authorise('core.edit', 'com_users'))
+		{
+			$this->model->close();
+		}
+		return $this;
+	}
+
 }

@@ -24,57 +24,303 @@ class K2HelperImages
 
 	private static $placeholders = array();
 
-	public static function add($file, $path, $replace = null)
+	public static function add($type, $file, $path, $replace = null, $categoryId = null)
 	{
 		// Application
 		$application = JFactory::getApplication();
 
-		// Session
-		$session = JFactory::getSession();
+		// Params
+		$params = JComponentHelper::getParams('com_k2');
+
+		// Images quality
+		$quality = $params->get('imagesQuality', 100);
 
 		// ImageProcessor
 		$processor = K2ImageProcessor::getInstance();
 
-		// Load the image
+		// Get session
+		$session = JFactory::getSession();
+
+		// Generate image id
+		$imageId = uniqid();
+
+		// Save path
+		$savepath = ($type == 'item') ? JPATH_SITE.'/tmp/'.$imageId : JPATH_SITE.'/tmp';
+
+		// Ensure for items that folder exists
+		if ($type == 'item' && !JFolder::exists($savepath))
+		{
+			JFolder::create($savepath);
+		}
+
+		// Clean up
+		if ($replace)
+		{
+			if ($type == 'item')
+			{
+				if (JFolder::exists(JPATH_SITE.'/tmp/'.$replace))
+				{
+					JFolder::delete(JPATH_SITE.'/tmp/'.$replace);
+				}
+			}
+			else
+			{
+				if (JFile::exists($savepath.'/'.$replace.'.jpg'))
+				{
+					JFile::delete($savepath.'/'.$replace.'.jpg');
+				}
+			}
+
+		}
+
+		// Store it to session
+		$session->set('k2.'.$type.'.image', $imageId);
+
+		// Get image depending on source
 		if ($path)
 		{
-			$filesystem = K2FileSystem::getInstance('Local');
-			$buffer = $filesystem->read($path);
+			// Local or remote
+			if (strpos($path, 'http') === 0)
+			{
+				$buffer = JFile::read($path);
+			}
+			else
+			{
+				$buffer = JFile::read(JPATH_SITE.'/'.$path);
+			}
 			$imageResource = $processor->load($buffer);
 		}
 		else
 		{
-			$imageResource = $processor->open($file['tmp_name']);
+			$source = $file['tmp_name'];
+			$imageResource = $processor->open($source);
 		}
 
-		// Convert to JPEG
-		$buffer = $imageResource->get('jpeg', array('quality' => 100));
-
-		// Generate temporary image name
-		$name = uniqid().'.jpg';
-
-		// Upload the file to the temporary folder
-		JFile::write($application->getCfg('tmp_path').'/'.$name, $buffer);
-
-		// Add the temporary folder to session so we can perform clean up when needed
-		$session->set('k2.image', $name);
-
-		// Handle previous temporary files
-		if ($replace && JFile::exists($application->getCfg('tmp_path').'/'.$replace))
+		// Resize the image
+		if ($type == 'item')
 		{
-			// Remove from file system
-			JFile::delete($application->getCfg('tmp_path').'/'.$replace);
+			// Src image
+			$sourceImageBuffer = $imageResource->get('jpeg', array('quality' => $quality));
+			JFile::write($savepath.'/src/'.$imageId.'.jpg', $sourceImageBuffer);
+
+			// Get sizes from global settings
+			$sizes = (array)$params->get('imageSizes');
+
+			// Check for category overrides
+			$overrides = array();
+			if ($categoryId)
+			{
+				$category = K2Categories::getInstance($categoryId);
+				$categorySizes = (array)$category->params->get('imageSizes');
+				foreach ($categorySizes as $categorySize)
+				{
+					if ((int)$categorySize->width > 0)
+					{
+						$overrides[$categorySize->id] = (int)$categorySize->width;
+					}
+				}
+			}
+
+			// Resize image
+			foreach ($sizes as $size)
+			{
+				// Filename
+				$filename = $imageId.'_'.$size->id.'.jpg';
+
+				// Width. Check for overrides
+				$width = (array_key_exists($size->id, $overrides) && (int)$size->width != (int)$overrides[$size->id]) ? $overrides[$size->id] : $size->width;
+
+				// Resize
+				$imageResource = $processor->load($sourceImageBuffer);
+				$imageResource->resize($imageResource->getSize()->widen($width));
+				$buffer = $imageResource->get('jpeg', array('quality' => $size->quality));
+				JFile::write($savepath.'/cache/'.$filename, $buffer);
+			}
+
+			// Pass the last size as preview
+			$preview = JURI::root(true).'/tmp/'.$imageId.'/cache/'.$filename.'?t='.time();
+		}
+		else
+		{
+			$width = ($type == 'category') ? $params->get('catImageWidth', 100) : $params->get('userImageWidth', 100);
+			$imageResource->resize($imageResource->getSize()->widen($width));
+			$buffer = $imageResource->get('jpeg', array('quality' => $quality));
+			JFile::write($savepath.'/'.$imageId.'.jpg', $buffer);
+			$preview = JURI::root(true).'/tmp/'.$imageId.'.jpg?t='.time();
 		}
 
 		// Return
 		$result = new stdClass;
-		$result->temp = $name;
-		$result->preview = JURI::root(true).'/tmp/'.$name.'?t='.time();
+		$result->temp = $imageId;
+		$result->preview = $preview;
 		return $result;
+	}
+
+	public static function update($type, $image, $table)
+	{
+		// File system
+		$filesystem = K2FileSystem::getInstance();
+
+		// ImageProcessor
+		$processor = K2ImageProcessor::getInstance();
+
+		// Params
+		$params = JComponentHelper::getParams('com_k2');
+
+		// Save path
+		$savepath = self::$paths[$type];
+
+		// Current image
+		$currentImageId = md5('Image'.$table->id);
+
+		// Temporary (new) image
+		$tempImageId = $image['temp'];
+
+		// Image has been removed
+		if ($image['remove'])
+		{
+
+			if ($type == 'item')
+			{
+				// Src image
+				$key = $savepath.'/src/'.$currentImageId.'.jpg';
+				if ($filesystem->has($key))
+				{
+					$filesystem->delete($key);
+				}
+
+				// Resized images
+				$sizes = (array)$params->get('imageSizes');
+				foreach ($sizes as $size)
+				{
+					$key = $savepath.'/cache/'.$currentImageId.'_'.$size->id.'.jpg';
+					if ($filesystem->has($key))
+					{
+						$filesystem->delete($key);
+					}
+				}
+			}
+			else
+			{
+				// File to delete
+				$key = $savepath.'/'.$currentImageId.'.jpg';
+
+				// Delete the file
+				if ($filesystem->has($key))
+				{
+					$filesystem->delete($key);
+				}
+			}
+
+		}
+		// We have a new image so we need to update our filesystem
+		else if ($tempImageId)
+		{
+			// Item image
+			if ($type == 'item')
+			{
+				if (JFile::exists(JPATH_SITE.'/tmp/'.$tempImageId.'/src/'.$tempImageId.'.jpg'))
+				{
+					// Src image
+					$srcImageBuffer = JFile::read(JPATH_SITE.'/tmp/'.$tempImageId.'/src/'.$tempImageId.'.jpg');
+					K2FileSystem::writeImageFile($savepath.'/src/'.$currentImageId.'.jpg', $srcImageBuffer);
+
+					// Get sizes from global settings
+					$sizes = (array)$params->get('imageSizes');
+
+					// Check for category overrides
+					$overrides = array();
+					if ($table->catid)
+					{
+						$category = K2Categories::getInstance($categoryId);
+						$categorySizes = (array)$category->params->get('imageSizes');
+						foreach ($categorySizes as $categorySize)
+						{
+							if ((int)$categorySize->width > 0)
+							{
+								$overrides[$categorySize->id] = (int)$categorySize->width;
+							}
+						}
+					}
+
+					// Resized images
+					foreach ($sizes as $size)
+					{
+						// Filename
+						$filename = $currentImageId.'_'.$size->id.'.jpg';
+
+						// Width. Check for overrides
+						$width = (array_key_exists($size->id, $overrides) && (int)$size->width != (int)$overrides[$size->id]) ? $overrides[$size->id] : $size->width;
+
+						// Resize
+						$imageResource = $processor->load($srcImageBuffer);
+						$imageResource->resize($imageResource->getSize()->widen($width));
+						$buffer = $imageResource->get('jpeg', array('quality' => $size->quality));
+						K2FileSystem::writeImageFile($savepath.'/cache/'.$filename, $buffer);
+					}
+
+					JFolder::delete(JPATH_SITE.'/tmp/'.$tempImageId);
+				}
+			}
+			// Category and user image
+			else
+			{
+				// Copy the temporary image to the filesystem
+				if (JFile::exists(JPATH_SITE.'/tmp/'.$tempImageId.'.jpg'))
+				{
+					$buffer = JFile::read(JPATH_SITE.'/tmp/'.$tempImageId.'.jpg');
+					K2FileSystem::writeImageFile($savepath.'/'.$currentImageId.'.jpg', $buffer);
+					JFile::delete(JPATH_SITE.'/tmp/'.$tempImageId.'.jpg');
+				}
+			}
+
+		}
+	}
+
+	public static function remove($type, $id)
+	{
+		// File system
+		$filesystem = K2FileSystem::getInstance();
+
+		// Save path
+		$savepath = self::$paths[$type];
+
+		// Image id
+		$imageId = md5('Image'.$id);
+
+		if ($type == 'item')
+		{
+			// Original image
+			$key = $savepath.'/src/'.$imageId.'.jpg';
+			if ($filesystem->has($key))
+			{
+				$filesystem->delete($key);
+			}
+
+			// Resized images
+			$params = JComponentHelper::getParams('com_k2');
+			$sizes = (array)$params->get('imageSizes');
+			foreach ($sizes as $size)
+			{
+				$key = $savepath.'/cache/'.$imageId.'_'.$size->id.'.jpg';
+				if ($filesystem->has($key))
+				{
+					$filesystem->delete($key);
+				}
+			}
+		}
+		else
+		{
+			$key = $savepath.'/'.$imageId.'.jpg';
+			if ($filesystem->has($key))
+			{
+				$filesystem->delete($key);
+			}
+		}
 
 	}
 
-	public static function purge()
+	public static function purge($type)
 	{
 		// Application
 		$application = JFactory::getApplication();
@@ -82,17 +328,24 @@ class K2HelperImages
 		// Session
 		$session = JFactory::getSession();
 
-		// Temporary image file
-		$image = $session->get('k2.image', array());
+		// Get image
+		$image = $session->get('k2.'.$type.'.image');
 
-		if ($image && JFile::exists($application->getCfg('tmp_path').'/'.$image))
+		// Temporary folders
+		if ($image)
 		{
-			// Remove from tmp folder
-			JFile::delete($application->getCfg('tmp_path').'/'.$image);
+			if (JFile::exists(JPATH_SITE.'/tmp/'.$image.'.jpg'))
+			{
+				JFile::delete(JPATH_SITE.'/tmp/'.$image.'.jpg');
+			}
+
+			if (JFolder::exists(JPATH_SITE.'/tmp/'.$image))
+			{
+				JFolder::delete(JPATH_SITE.'/tmp/'.$image);
+			}
 		}
 
-		$session->set('k2.image', null);
-
+		$session->set('k2.'.$type.'.image', null);
 	}
 
 	public static function getPlaceholder($type)
@@ -177,172 +430,6 @@ class K2HelperImages
 		return $images;
 	}
 
-	public static function addItemImage($file, $path)
-	{
-		// Settings
-		$params = JComponentHelper::getParams('com_k2');
-
-		// File system
-		$filesystem = K2FileSystem::getInstance();
-
-		// ImageProcessor
-		$processor = K2ImageProcessor::getInstance();
-
-		// Get session
-		$session = JFactory::getSession();
-
-		// Save path
-		$savepath = self::$paths['item'];
-
-		// Get available sizes from settings
-		$sizes = (array)$params->get('imageSizes');
-
-		// Clean up
-		if ($tempImageId = $session->get('k2.image'))
-		{
-			// Clean temporary source image
-			$key = $savepath.'/src/'.$tempImageId.'.jpg';
-			if ($filesystem->has($key))
-			{
-				$filesystem->delete($key);
-			}
-		}
-
-		// Generate image id
-		$imageId = uniqid();
-
-		// Store it to session
-		$session->set('k2.image', $imageId);
-
-		// Get image depending on source
-		if ($path)
-		{
-			// Local or remote
-			if (strpos($path, 'http') === 0)
-			{
-				$buffer = JFile::read($path);
-			}
-			else
-			{
-				$buffer = JFile::read(JPATH_SITE.'/'.$path);
-			}
-			$imageResource = $processor->load($buffer);
-		}
-		else
-		{
-			$source = $file['tmp_name'];
-			$imageResource = $processor->open($source);
-		}
-
-		// Original image
-		$quality = $params->get('imagesQuality', 100);
-		$originalImageBuffer = $imageResource->get('jpeg', array('quality' => $quality));
-		K2FileSystem::writeImageFile($savepath.'/src/'.$imageId.'.jpg', $originalImageBuffer);
-
-		// Return
-		$result = new stdClass;
-		$result->temp = $imageId;
-		$result->preview = K2Filesystem::getURIRoot(true).$savepath.'/src/'.$imageId.'.jpg?t='.time();
-		return $result;
-
-	}
-
-	public static function updateItemImage($sourceImageId, $targetImageId, $categoryId = null)
-	{
-		// File system
-		$filesystem = K2FileSystem::getInstance();
-
-		// ImageProcessor
-		$processor = K2ImageProcessor::getInstance();
-
-		// Save path
-		$savepath = self::$paths['item'];
-
-		// Rename temporary image
-		$source = $sourceImageId.'.jpg';
-		$target = $targetImageId.'.jpg';
-		K2FileSystem::writeImageFile($savepath.'/src/'.$target, $filesystem->read($savepath.'/src/'.$source));
-	}
-
-	public static function resizeItemImage($imageId, $categoryId)
-	{
-		// File system
-		$filesystem = K2FileSystem::getInstance();
-
-		// ImageProcessor
-		$processor = K2ImageProcessor::getInstance();
-
-		// Save path
-		$savepath = self::$paths['item'];
-
-		// Buffer of source image
-		$sourceBuffer = $filesystem->read($savepath.'/src/'.$imageId.'.jpg');
-
-		// Get sizes from global settings
-		$params = JComponentHelper::getParams('com_k2');
-		$sizes = (array)$params->get('imageSizes');
-
-		// Check for category overrides
-		$overrides = array();
-		if ($categoryId)
-		{
-			$category = K2Categories::getInstance($categoryId);
-			$categorySizes = (array)$category->params->get('imageSizes');
-			foreach ($categorySizes as $categorySize)
-			{
-				if ((int)$categorySize->width > 0)
-				{
-					$overrides[$categorySize->id] = (int)$categorySize->width;
-				}
-			}
-		}
-
-		// Resize image
-		foreach ($sizes as $size)
-		{
-			// Filename
-			$filename = $imageId.'_'.$size->id.'.jpg';
-
-			// Width. Check for overrides
-			$width = (array_key_exists($size->id, $overrides) && (int)$size->width != (int)$overrides[$size->id]) ? $overrides[$size->id] : $size->width;
-
-			// Resize
-			$imageResource = $processor->load($sourceBuffer);
-			$imageResource->resize($imageResource->getSize()->widen($width));
-			$buffer = $imageResource->get('jpeg', array('quality' => $size->quality));
-			K2FileSystem::writeImageFile($savepath.'/cache/'.$filename, $buffer);
-		}
-
-	}
-
-	public static function removeItemImage($imageId)
-	{
-		// File system
-		$filesystem = K2FileSystem::getInstance();
-
-		// Save path
-		$savepath = self::$paths['item'];
-
-		// Original image
-		$key = $savepath.'/src/'.$imageId.'.jpg';
-		if ($filesystem->has($key))
-		{
-			$filesystem->delete($key);
-		}
-
-		// Resized images
-		$params = JComponentHelper::getParams('com_k2');
-		$sizes = (array)$params->get('imageSizes');
-		foreach ($sizes as $size)
-		{
-			$key = $savepath.'/cache/'.$imageId.'_'.$size->id.'.jpg';
-			if ($filesystem->has($key))
-			{
-				$filesystem->delete($key);
-			}
-		}
-	}
-
 	public static function getCategoryImage($category)
 	{
 		// Settings
@@ -389,110 +476,6 @@ class K2HelperImages
 			$image->flag = 0;
 		}
 		return $image;
-	}
-
-	public static function addCategoryImage($file, $path)
-	{
-		// Params
-		$params = JComponentHelper::getParams('com_k2');
-
-		// File system
-		$filesystem = K2FileSystem::getInstance();
-
-		// ImageProcessor
-		$processor = K2ImageProcessor::getInstance();
-
-		// Get session
-		$session = JFactory::getSession();
-
-		// Save path
-		$savepath = self::$paths['category'];
-
-		// Clean up
-		if ($tempImageId = $session->get('k2.image'))
-		{
-			$key = $savepath.'/'.$tempImageId.'.jpg';
-			if ($filesystem->has($key))
-			{
-				$filesystem->delete($key);
-			}
-		}
-
-		// Generate image id
-		$imageId = uniqid();
-
-		// Store it to session
-		$session->set('k2.image', $imageId);
-
-		// Get image depending on source
-		if ($path)
-		{
-			// Local or remote
-			if (strpos($path, 'http') === 0)
-			{
-				$buffer = JFile::read($path);
-			}
-			else
-			{
-				$buffer = JFile::read(JPATH_SITE.'/'.$path);
-			}
-			$imageResource = $processor->load($buffer);
-		}
-		else
-		{
-			$source = $file['tmp_name'];
-			$imageResource = $processor->open($source);
-		}
-
-		// Resize the image
-		$width = $params->get('catImageWidth', 100);
-		$quality = $params->get('imagesQuality', 100);
-		$imageResource->resize($imageResource->getSize()->widen($width));
-		$buffer = $imageResource->get('jpeg', array('quality' => $quality));
-
-		// Write image file
-		K2FileSystem::writeImageFile($savepath.'/'.$imageId.'.jpg', $buffer);
-
-		// Return
-		$result = new stdClass;
-		$result->temp = $imageId;
-		$result->preview = K2Filesystem::getUriRoot(true).$savepath.'/'.$imageId.'.jpg?t='.time();
-		return $result;
-
-	}
-
-	public static function updateCategoryImage($sourceImageId, $targetImageId)
-	{
-		// Save path
-		$savepath = self::$paths['category'];
-
-		// Source
-		$source = $sourceImageId.'.jpg';
-
-		// Target
-		$target = $targetImageId.'.jpg';
-
-		// Delete current image
-		$filesystem = K2FileSystem::getInstance();
-
-		// Rename
-		K2FileSystem::writeImageFile($savepath.'/'.$target, $filesystem->read($savepath.'/'.$source));
-	}
-
-	public static function removeCategoryImage($imageId)
-	{
-		// Save path
-		$savepath = self::$paths['category'];
-
-		// File to delete
-		$key = $savepath.'/'.$imageId.'.jpg';
-
-		// Delete the file
-		$filesystem = K2FileSystem::getInstance();
-		if ($filesystem->has($key))
-		{
-			$filesystem->delete($key);
-		}
 	}
 
 	public static function getUserImage($user)
@@ -543,109 +526,6 @@ class K2HelperImages
 			$image->flag = 0;
 		}
 		return $image;
-	}
-
-	public static function addUserImage($file, $path)
-	{
-		// Params
-		$params = JComponentHelper::getParams('com_k2');
-
-		// File system
-		$filesystem = K2FileSystem::getInstance();
-
-		// ImageProcessor
-		$processor = K2ImageProcessor::getInstance();
-
-		// Get session
-		$session = JFactory::getSession();
-
-		// Save path
-		$savepath = self::$paths['user'];
-
-		// Clean up
-		if ($tempImageId = $session->get('k2.image'))
-		{
-			$key = $savepath.'/'.$tempImageId.'.jpg';
-			if ($filesystem->has($key))
-			{
-				$filesystem->delete($key);
-			}
-		}
-
-		// Generate image id
-		$imageId = uniqid();
-
-		// Store it to session
-		$session->set('k2.image', $imageId);
-
-		// Get image depending on source
-		if ($path)
-		{
-			// Local or remote
-			if (strpos($path, 'http') === 0)
-			{
-				$buffer = JFile::read($path);
-			}
-			else
-			{
-				$buffer = JFile::read(JPATH_SITE.'/'.$path);
-			}
-			$imageResource = $processor->load($buffer);
-		}
-		else
-		{
-			$source = $file['tmp_name'];
-			$imageResource = $processor->open($source);
-		}
-
-		// Resize the image
-		$width = $params->get('userImageWidth', 100);
-		$quality = $params->get('imagesQuality', 100);
-		$imageResource->resize($imageResource->getSize()->widen($width));
-		$buffer = $imageResource->get('jpeg', array('quality' => $quality));
-
-		// Write image file
-		K2FileSystem::writeImageFile($savepath.'/'.$imageId.'.jpg', $buffer);
-
-		// Return
-		$result = new stdClass;
-		$result->temp = $imageId;
-		$result->preview = K2Filesystem::getURIRoot(true).$savepath.'/'.$imageId.'.jpg?t='.time();
-		return $result;
-
-	}
-
-	public static function updateUserImage($sourceImageId, $targetImageId)
-	{
-		// Save path
-		$savepath = self::$paths['user'];
-
-		// Source
-		$source = $sourceImageId.'.jpg';
-
-		// Target
-		$target = $targetImageId.'.jpg';
-
-		// Rename
-		$filesystem = K2FileSystem::getInstance();
-		K2FileSystem::writeImageFile($savepath.'/'.$target, $filesystem->read($savepath.'/'.$source));
-
-	}
-
-	public static function removeUserImage($imageId)
-	{
-		// Save path
-		$savepath = self::$paths['user'];
-
-		// File to delete
-		$key = $savepath.'/'.$imageId.'.jpg';
-
-		// Delete the file
-		$filesystem = K2FileSystem::getInstance();
-		if ($filesystem->has($key))
-		{
-			$filesystem->delete($key);
-		}
 	}
 
 }

@@ -58,5 +58,20 @@ class K2ControllerItems extends K2Controller
 		}
 		return $data;
 	}
+	
+	public function close()
+	{
+		// Check for token
+		JSession::checkToken() or K2Response::throwError(JText::_('JINVALID_TOKEN'));
+
+		// User
+		$user = JFactory::getUser();
+
+		if ($user->authorise('k2.item.edit', 'com_k2'))
+		{
+			$this->model->close();
+		}
+		return $this;
+	}
 
 }

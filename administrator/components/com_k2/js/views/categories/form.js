@@ -69,16 +69,6 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher', 'widget
 			K2Editor.save('description');
 		},
 
-		// OnBeforeClose event ( Marionette.js build in event )
-		onBeforeClose : function() {
-
-			// Is it new?
-			if (this.model.isNew()) {
-				// Delete any uploaded images
-				this.imageView.trigger('cleanup');
-			}
-		},
-
 		updateExtraFields : function(event) {
 			event.preventDefault();
 			this.extraFieldsView.trigger('filter', this.$el.find('#parent_id').val());

@@ -271,7 +271,8 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 		// Close function. Checks in the row and redirects to list.
 		close : function() {
 			if (this.model.isNew() || !this.model.has('checked_out')) {
-				this.list()
+				this.model.cleanUp(this.resource);
+				this.list();
 			} else {
 				this.model.checkin({
 					success : _.bind(function() {

@@ -21,7 +21,7 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/categories.php';
 
 class K2ControllerImages extends K2Controller
 {
-	
+
 	/**
 	 * onBeforeRead function.
 	 * Hook for chidlren controllers to check for access
@@ -47,16 +47,20 @@ class K2ControllerImages extends K2Controller
 		// Get input
 		$type = $this->input->get('type', '', 'cmd');
 		$itemId = $this->input->get('itemId', 0, 'int');
+		$replace = $this->input->get('temp', '', 'cmd');
 		$file = $this->input->files->get('file');
 		$path = $this->input->get('path', '', 'string');
 		$path = str_replace(JURI::root(true).'/', '', $path);
+		$categoryId = null;
 
 		// Permissions check
 		if ($itemId)
 		{
 			if ($type == 'item')
 			{
-				$authorised = K2Items::getInstance($itemId)->canEdit;
+				$item = K2Items::getInstance($itemId);
+				$authorised = $item->canEdit;
+				$categoryId = $item->catid;
 			}
 			else if ($type == 'category')
 			{
@@ -77,87 +81,12 @@ class K2ControllerImages extends K2Controller
 		}
 
 		// Generate image using helper depending on type
-		if ($type == 'item')
-		{
-			$image = K2HelperImages::addItemImage($file, $path);
-		}
-		else if ($type == 'category')
-		{
-			$image = K2HelperImages::addCategoryImage($file, $path);
-		}
-		else if ($type == 'user')
-		{
-			$image = K2HelperImages::addUserImage($file, $path);
-		}
-
+		$image = K2HelperImages::add($type, $file, $path, $replace, $categoryId);
+		
 		// Response
 		echo json_encode($image);
 
 		return $this;
-	}
-
-	/**
-	 * Delete function.
-	 * Deletes a resource.
-	 * Usually there will be no need to override this function.
-	 *
-	 * @return void
-	 */
-	protected function delete()
-	{
-		// Check for token
-		JSession::checkToken() or K2Response::throwError(JText::_('JINVALID_TOKEN'));
-
-		// User
-		$user = JFactory::getUser();
-
-		// Get input
-		$input = $this->input;
-		$type = $input->get('type', '', 'cmd');
-		$imageId = $input->get('id', '', 'cmd');
-		$itemId = $input->get('itemId', 0, 'int');
-
-		// Permissions check
-		if ($itemId)
-		{
-			if ($type == 'item')
-			{
-				$authorised = K2Items::getInstance($itemId)->canEdit;
-			}
-			else if ($type == 'category')
-			{
-				$authorised = K2Categories::getInstance($itemId)->canEdit;
-			}
-			else if ($type == 'user')
-			{
-				$authorised = $user->authorise('core.edit', 'com_users') || $user->id == $itemId;
-			}
-		}
-		else
-		{
-			$authorised = true;
-		}
-		if (!$authorised)
-		{
-			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'), 403);
-		}
-
-		// Remove image using helper depending on type
-		if ($type == 'item')
-		{
-			K2HelperImages::removeItemImage($imageId);
-		}
-		else if ($type == 'category')
-		{
-			K2HelperImages::removeCategoryImage($imageId);
-		}
-		else if ($type == 'user')
-		{
-			K2HelperImages::removeUserImage($imageId);
-		}
-
-		// Response
-		K2Response::setResponse(true);
 	}
 
 }

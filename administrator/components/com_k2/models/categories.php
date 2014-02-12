@@ -433,30 +433,12 @@ class K2ModelCategories extends K2Model
 		// Image
 		if ($image = $this->getState('image'))
 		{
-			// Current image
-			$currentImageId = md5('Image'.$table->id);
-
-			// Temporary (new) image
-			$tempImageId = $image['temp'];
-
-			// Category image has been removed
-			if ($image['remove'])
-			{
-				K2HelperImages::removeCategoryImage($currentImageId);
-			}
-			else if ($tempImageId)
-			{
-				K2HelperImages::updateCategoryImage($tempImageId, $currentImageId);
-			}
-
+			K2HelperImages::update('category', $image, $table);
 		}
 
 		// Clean up any temporary files
-		$session = JFactory::getSession();
-		if ($tmpId = $session->get('k2.image'))
-		{
-			K2HelperImages::removeCategoryImage($tmpId);
-		}
+		K2HelperImages::purge('category');
+		
 
 		// Handle trash action
 		if ($this->getState('trash'))
@@ -489,6 +471,19 @@ class K2ModelCategories extends K2Model
 			return false;
 		}
 
+		return true;
+	}
+	
+	/**
+	 * Close method.
+	 *
+	 * @return boolean	True on success false on failure.
+	 */
+
+	public function close()
+	{
+		// Clean up any temporary images
+		K2HelperImages::purge('category');
 		return true;
 	}
 
@@ -551,7 +546,7 @@ class K2ModelCategories extends K2Model
 	protected function onAfterDelete($table)
 	{
 		// Delete item image
-		K2HelperImages::removeCategoryImage(md5('Image'.$table->id));
+		K2HelperImages::remove('category', $table->id);
 		
 		return true;
 	}
@@ -614,7 +609,7 @@ class K2ModelCategories extends K2Model
 		if ($imageId)
 		{
 			$path = 'media/k2/categories/'.$imageId.'.jpg';
-			$image = K2HelperImages::addCategoryImage(null, $path);
+			$image = K2HelperImages::add('category', null, $path);
 			$data['image'] = array(
 				'id' => '',
 				'temp' => $image->temp,

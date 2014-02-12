@@ -400,30 +400,11 @@ class K2ModelUsers extends K2Model
 		// Image
 		if ($image = $this->getState('image'))
 		{
-			// Current image
-			$currentImageId = md5('Image'.$table->id);
-
-			// Temporary (new) image
-			$tempImageId = $image['temp'];
-
-			// Category image has been removed
-			if ($image['remove'])
-			{
-				K2HelperImages::removeUserImage($currentImageId);
-			}
-			else if ($tempImageId)
-			{
-				K2HelperImages::updateUserImage($tempImageId, $currentImageId);
-			}
-
+			K2HelperImages::update('user', $image, $table);
 		}
 
 		// Clean up any temporary files
-		$session = JFactory::getSession();
-		if ($tmpId = $session->get('k2.image'))
-		{
-			K2HelperImages::removeUserImage($tmpId);
-		}
+		K2HelperImages::purge('user');
 
 		return true;
 
@@ -503,9 +484,22 @@ class K2ModelUsers extends K2Model
 		$statistics->deleteUserEntry($this->getState('id'));
 
 		// Delete image
-		K2HelperImages::removeUserImage(md5('Image'.$this->getState('id')));
+		K2HelperImages::remove('user', $this->getState('id'));
 
 		// Return
+		return true;
+	}
+
+	/**
+	 * Close method.
+	 *
+	 * @return boolean	True on success false on failure.
+	 */
+
+	public function close()
+	{
+		// Clean up any temporary images
+		K2HelperImages::purge('user');
 		return true;
 	}
 

@@ -760,29 +760,7 @@ class K2ModelItems extends K2Model
 		// Image
 		if ($image = $this->getState('image'))
 		{
-			// Current image
-			$currentImageId = md5('Image'.$table->id);
-
-			// Temporary (new) image
-			$tempImageId = $image['temp'];
-
-			// Item image has been removed
-			if ($image['remove'])
-			{
-				K2HelperImages::removeItemImage($currentImageId);
-			}
-			else if ($tempImageId)
-			{
-				K2HelperImages::updateItemImage($tempImageId, $currentImageId);
-				K2HelperImages::resizeItemImage($currentImageId, $table->catid);
-			}
-		}
-
-		// Clean up any temporary files
-		$session = JFactory::getSession();
-		if ($tmpId = $session->get('k2.image'))
-		{
-			K2HelperImages::removeItemImage($tmpId);
+			K2HelperImages::update('item', $image, $table);
 		}
 
 		// Tags
@@ -817,6 +795,7 @@ class K2ModelItems extends K2Model
 		}
 
 		// Clean up temporary uploads
+		K2HelperImages::purge('item');
 		K2HelperGalleries::purge();
 		K2HelperMedia::purge();
 		K2HelperAttachments::purge();
@@ -903,7 +882,7 @@ class K2ModelItems extends K2Model
 	{
 
 		// Delete item image
-		K2HelperImages::removeItemImage(md5('Image'.$table->id));
+		K2HelperImages::remove('item', $table->id);
 
 		// Delete item galleries
 		$galleries = json_decode($this->getState('galleries'));
@@ -961,6 +940,22 @@ class K2ModelItems extends K2Model
 
 	}
 
+	/**
+	 * Close method.
+	 *
+	 * @return boolean	True on success false on failure.
+	 */
+
+	public function close()
+	{
+		// Clean up any temporary images and files
+		K2HelperImages::purge('item');
+		K2HelperGalleries::purge();
+		K2HelperMedia::purge();
+		K2HelperAttachments::purge();
+		return true;
+	}
+
 	public function getCopyData($id)
 	{
 		// Get source item
@@ -995,7 +990,7 @@ class K2ModelItems extends K2Model
 		if ($imageId)
 		{
 			$path = 'media/k2/items/src/'.$imageId.'.jpg';
-			$image = K2HelperImages::addItemImage(null, $path);
+			$image = K2HelperImages::add('item', null, $path);
 			$data['image'] = array('id' => '', 'temp' => $image->temp, 'path' => '', 'remove' => 0, 'caption' => $data['image']->caption, 'credits' => $data['image']->credits);
 		}
 		else

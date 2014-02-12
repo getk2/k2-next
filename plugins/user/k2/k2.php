@@ -197,7 +197,7 @@ class PlgUserK2 extends JPlugin
 					if (isset($files['k2Profile']) && $files['k2Profile']['image']['tmp_name'])
 					{
 						$file = $files['k2Profile']['image'];
-						$image = K2HelperImages::addUserImage($file, null);
+						$image = K2HelperImages::add('user', $file, null);
 						$input['image']['flag'] = 1;
 						$input['image']['temp'] = $image->temp;
 					}
