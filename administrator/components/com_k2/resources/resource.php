@@ -28,6 +28,11 @@ class K2Resource
 	protected static $languages = array();
 
 	/**
+	 * @var array	View levels instances container.
+	 */
+	protected static $viewlevels = array();
+
+	/**
 	 * Constructor.
 	 * It assigns the data to object properties.
 	 *
@@ -111,6 +116,15 @@ class K2Resource
 			$mode = (JFactory::getApplication()->isSite()) ? 'site' : 'admin';
 		}
 
+		if (property_exists($this, 'access'))
+		{
+			if (empty(self::$viewlevels))
+			{
+				self::getViewLevels();
+			}
+			$this->viewLevel = self::$viewlevels[$this->access];
+		}
+
 		if (property_exists($this, 'created'))
 		{
 			$this->createdDate = JHtml::_('date', $this->created, 'Y-m-d');
@@ -185,6 +199,21 @@ class K2Resource
 			}
 		}
 
+	}
+
+	private static function getViewLevels()
+	{
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+		$query->select($db->quoteName('id'));
+		$query->select($db->quoteName('title'));
+		$query->from($db->quoteName('#__viewlevels'));
+		$db->setQuery($query);
+		$levels = $db->loadObjectList();
+		foreach ($levels as $level)
+		{
+			self::$viewlevels[$level->id] = $level->title;
+		}
 	}
 
 }

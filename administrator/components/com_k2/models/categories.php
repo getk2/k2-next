@@ -33,10 +33,6 @@ class K2ModelCategories extends K2Model
 		// Select rows
 		$query->select($db->quoteName('category').'.*')->from($db->quoteName('#__k2_categories', 'category'));
 
-		// Join over the asset groups.
-		$query->select($db->quoteName('assetGroup.title', 'viewLevel'));
-		$query->leftJoin($db->quoteName('#__viewlevels', 'assetGroup').' ON '.$db->quoteName('assetGroup.id').' = '.$db->quoteName('category.access'));
-
 		// Join over the user
 		$query->select($db->quoteName('author.name', 'authorName'));
 		$query->leftJoin($db->quoteName('#__users', 'author').' ON '.$db->quoteName('author.id').' = '.$db->quoteName('category.created_by'));
@@ -198,7 +194,7 @@ class K2ModelCategories extends K2Model
 				$direction = 'ASC';
 				break;
 			case 'access' :
-				$ordering = 'viewLevel';
+				$ordering = 'category.access';
 				$direction = 'ASC';
 				break;
 			case 'created' :

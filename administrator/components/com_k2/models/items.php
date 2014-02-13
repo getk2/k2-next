@@ -41,10 +41,6 @@ class K2ModelItems extends K2Model
 		$query->select($db->quoteName('category.params', 'categoryParams'));
 		$query->leftJoin($db->quoteName('#__k2_categories', 'category').' ON '.$db->quoteName('category.id').' = '.$db->quoteName('item.catid'));
 
-		// Join over the asset groups.
-		$query->select($db->quoteName('assetGroup.title', 'viewLevel'));
-		$query->leftJoin($db->quoteName('#__viewlevels', 'assetGroup').' ON '.$db->quoteName('assetGroup.id').' = '.$db->quoteName('item.access'));
-
 		// Join over the author
 		$query->select($db->quoteName('author.name', 'authorName'));
 		$query->leftJoin($db->quoteName('#__users', 'author').' ON '.$db->quoteName('author.id').' = '.$db->quoteName('item.created_by'));
@@ -405,7 +401,7 @@ class K2ModelItems extends K2Model
 				$direction = 'ASC';
 				break;
 			case 'access' :
-				$ordering = 'viewLevel';
+				$ordering = 'item.access';
 				$direction = 'ASC';
 				break;
 			case 'created' :
