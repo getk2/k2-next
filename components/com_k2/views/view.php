@@ -197,10 +197,12 @@ class K2View extends JViewLegacy
 			{
 				$description = $resource->description;
 			}
-			$description = strip_tags($description);
-			$description = K2HelperUtilities::characterLimit($description, $params->get('metaDescLimit', 150));
-			$this->document->setDescription($description);
-
+			if(isset($description))
+			{
+				$description = strip_tags($description);
+				$description = K2HelperUtilities::characterLimit($description, $params->get('metaDescLimit', 150));
+				$this->document->setDescription($description);
+			}
 		}
 	}
 

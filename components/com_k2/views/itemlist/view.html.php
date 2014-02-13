@@ -114,7 +114,7 @@ class K2ViewItemlist extends K2View
 		// @TODO Apply menu settings. Since they will be common all tasks we need to wait
 		
 		// Set the flag for sending feed links to head
-		$this->feedLinkToHead = $this->params->get('catFeedLink', 1);
+		$this->feedLinkToHead = $this->params->get('catFeedLink');
 
 		// Get items
 		$model->setState('limit', $limit);
@@ -162,6 +162,10 @@ class K2ViewItemlist extends K2View
 		
 		// Set the layout
 		$this->setLayout('user');
+		
+		// Set the flag for sending feed links to head
+		$this->feedLinkToHead = $this->params->get('userFeedLink');
+
 
 	}
 
@@ -196,6 +200,13 @@ class K2ViewItemlist extends K2View
 
 		// Set metadata
 		$this->setMetadata($this->tag);
+		
+		// Set the layout
+		$this->setLayout('tag');		
+		
+		// Set the flag for sending feed links to head
+		$this->feedLinkToHead = $this->params->get('tagFeedLink');
+		
 	}
 
 	private function date()
