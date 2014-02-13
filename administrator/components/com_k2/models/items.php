@@ -890,27 +890,13 @@ class K2ModelItems extends K2Model
 
 		// Delete item galleries
 		$galleries = json_decode($this->getState('galleries'));
-		foreach ($galleries as $gallery)
-		{
-			if (isset($gallery->upload) && $gallery->upload)
-			{
-				K2HelperGalleries::remove($gallery->upload, $table->id);
-			}
-		}
+		K2HelperGalleries::remove($galleries, $table->id);
+		
 
 		// Delete item media
 		$media = json_decode($this->getState('media'));
-		if (is_array($media))
-		{
-			foreach ($media as $entry)
-			{
-				if (isset($entry->upload) && $entry->upload)
-				{
-					K2HelperMedia::remove($entry->upload, $table->id);
-				}
-			}
-		}
-
+		K2HelperMedia::remove($media, $table->id);
+		
 		// Delete item tags reference
 		$tagsModel = K2Model::getInstance('Tags');
 		$tagsModel->deleteItemTags($table->id);

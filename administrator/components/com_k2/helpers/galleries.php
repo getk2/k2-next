@@ -191,6 +191,37 @@ class K2HelperGalleries
 
 	}
 
+	public static function remove($galleries, $itemId)
+	{
+		// File system
+		$filesystem = K2FileSystem::getInstance();
+
+		foreach ($galleries as $gallery)
+		{
+			if (isset($gallery->upload) && $gallery->upload)
+			{
+				// Key
+				$galleryKey = 'media/k2/galleries/'.$itemId.'/'.$gallery->upload;
+
+				if ($filesystem->has($galleryKey))
+				{
+					$files = $filesystem->listKeys($galleryKey);
+
+					foreach ($files['keys'] as $key)
+					{
+						if ($filesystem->has($key))
+						{
+							$filesystem->delete($key);
+						}
+					}
+					$filesystem->delete($galleryKey);
+				}
+			}
+		}
+
+		return true;
+	}
+
 	public static function purge()
 	{
 		// Application

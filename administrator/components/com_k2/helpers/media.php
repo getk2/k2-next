@@ -140,6 +140,37 @@ class K2HelperMedia
 		}
 	}
 
+	public static function remove($media, $itemId)
+	{
+		// File system
+		$filesystem = K2FileSystem::getInstance();
+
+		foreach ($media as $entry)
+		{
+			if (isset($entry->upload) && $entry->upload)
+			{
+				// Key
+				$mediaKey = 'media/k2/media/'.$itemId.'/'.$entry->upload;
+
+				if ($filesystem->has($mediaKey))
+				{
+					$files = $filesystem->listKeys($mediaKey);
+
+					foreach ($files['keys'] as $key)
+					{
+						if ($filesystem->has($key))
+						{
+							$filesystem->delete($key);
+						}
+					}
+					$filesystem->delete($mediaKey);
+				}
+			}
+		}
+
+		return true;
+	}
+
 	public static function purge()
 	{
 		// Application
