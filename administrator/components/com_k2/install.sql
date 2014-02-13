@@ -55,12 +55,13 @@ CREATE TABLE IF NOT EXISTS `#__k2_categories` (
   KEY `idx_left_right` (`lft`,`rgt`),
   KEY `parent_id` (`parent_id`),
   KEY `level` (`level`),
-  KEY `published` (`state`),
+  KEY `state` (`state`),
   KEY `access` (`access`),
   KEY `created_by` (`created_by`),
   KEY `modified_by` (`modified_by`),
   KEY `checked_out` (`checked_out`),
-  KEY `language` (`language`)
+  KEY `language` (`language`),
+  KEY `auth` (`state`,`access`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
