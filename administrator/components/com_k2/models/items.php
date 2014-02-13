@@ -719,7 +719,7 @@ class K2ModelItems extends K2Model
 					unset($data['attachments'][$key]['remove']);
 				}
 			}
-			$data['attachments'] = json_encode(array_values($data['attachments']));
+			$data['attachments'] = json_encode(array());
 		}
 
 		if (isset($data['tags']))
@@ -982,8 +982,7 @@ class K2ModelItems extends K2Model
 
 		// Handle tags
 		$tagNames = array();
-		$tags = json_decode($data['tags']);
-		foreach ($tags as $tag)
+		foreach ($data['tags'] as $tag)
 		{
 			$tagNames[] = $tag->name;
 		}
@@ -1003,10 +1002,10 @@ class K2ModelItems extends K2Model
 		}
 
 		// Handle media
-		$media = array('url' => array(), 'upload' => array(), 'provider' => array(), 'id' => array(), 'embed' => array(), 'caption' => array(), 'credits' => array());
+		$media = array();
 		if (is_array($data['media']))
 		{
-			foreach ($data['media'] as $entry)
+			foreach ($data['media'] as $key => $entry)
 			{
 				if ($entry->upload)
 				{
@@ -1017,20 +1016,23 @@ class K2ModelItems extends K2Model
 						$filesystem->write('media/k2/media/'.$data['tmpId'].'/'.$entry->upload, $buffer, true);
 					}
 				}
-				$media['url'][] = $entry->url;
-				$media['upload'][] = $entry->upload;
-				$media['provider'][] = $entry->provider;
-				$media['id'][] = $entry->id;
-				$media['embed'][] = $entry->embed;
-				$media['caption'][] = $entry->caption;
-				$media['credits'][] = $entry->credits;
+				$newEntry = array();
+				$newEntry['url'] = $entry->url;
+				$newEntry['provider'] = $entry->provider;
+				$newEntry['id'] = $entry->id;
+				$newEntry['embed'] = $entry->embed;
+				$newEntry['caption'] = $entry->caption;
+				$newEntry['credits'] = $entry->credits;
+				$newEntry['upload'] = $entry->upload;
+				$newEntry['remove'] = 0;
+				$media[$key] = $newEntry;
 			}
 		}
 		$data['media'] = $media;
 
 		// Handle galleries
-		$galleries = array('url' => array(), 'upload' => array());
-		foreach ($data['galleries'] as $entry)
+		$galleries = array();
+		foreach ($data['galleries'] as $key => $entry)
 		{
 			if ($entry->upload)
 			{
@@ -1048,8 +1050,11 @@ class K2ModelItems extends K2Model
 					}
 				}
 			}
-			$galleries['url'][] = $entry->url;
-			$galleries['upload'][] = $entry->upload;
+			$newEntry = array();
+			$newEntry['url'] = $entry->url;
+			$newEntry['upload'] = $entry->upload;
+			$newEntry['remove'] = 0;
+			$galleries[$key] = $newEntry;
 		}
 		$data['galleries'] = $galleries;
 
@@ -1057,8 +1062,8 @@ class K2ModelItems extends K2Model
 		$filesystem = K2FileSystem::getInstance();
 		$attachmentsModel = K2Model::getInstance('Attachments');
 		$input = array();
-		$attachments = array('id' => array(), 'name' => array(), 'title' => array(), 'file' => array());
-		foreach ($data['attachments'] as $attachment)
+		$attachments = array();
+		foreach ($data['attachments'] as $key => $attachment)
 		{
 			// Save the new attachment record
 			$input['id'] = null;
@@ -1081,10 +1086,13 @@ class K2ModelItems extends K2Model
 			$attachmentsModel->save();
 
 			// Prepare the data array
-			$attachments['id'][] = $attachmentsModel->getState('id');
-			$attachments['name'][] = $input['name'];
-			$attachments['title'][] = $input['title'];
-			$attachments['file'][] = $input['file'];
+			$newEntry = array();
+			$newEntry['id'] = $attachmentsModel->getState('id');
+			$newEntry['name'] = $input['name'];
+			$newEntry['title'] = $input['title'];
+			$newEntry['file'] = $input['file'];
+			$newEntry['remove'] = 0;
+			$attachments[$key] = $newEntry;
 		}
 		$data['attachments'] = $attachments;
 

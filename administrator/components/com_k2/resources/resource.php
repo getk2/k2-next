@@ -167,7 +167,7 @@ class K2Resource
 
 		if (property_exists($this, 'language'))
 		{
-			if ($this->language == '*')
+			if ($this->language == '*' || $this->language == '')
 			{
 				$this->languageTitle = JText::_('K2_ALL');
 			}

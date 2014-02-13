@@ -232,7 +232,7 @@ class K2HelperImages
 					$overrides = array();
 					if ($table->catid)
 					{
-						$category = K2Categories::getInstance($categoryId);
+						$category = K2Categories::getInstance($table->catid);
 						$categorySizes = (array)$category->params->get('imageSizes');
 						foreach ($categorySizes as $categorySize)
 						{
