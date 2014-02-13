@@ -23,7 +23,7 @@ jimport('joomla.filesystem.file');
 
 class K2ControllerMedia extends K2Controller
 {
-	
+
 	/**
 	 * onBeforeRead function.
 	 * Hook for chidlren controllers to check for access
@@ -35,7 +35,8 @@ class K2ControllerMedia extends K2Controller
 	 */
 	protected function onBeforeRead($mode, $id)
 	{
-		return true;
+		$user = JFactory::getUser();
+		return !$user->guest;
 	}
 
 	public function upload()
@@ -59,7 +60,7 @@ class K2ControllerMedia extends K2Controller
 
 		// Upload media using helper
 		$media = K2HelperMedia::add($file, $url, $upload);
-		
+
 		echo json_encode($media);
 
 		// Return
@@ -70,6 +71,11 @@ class K2ControllerMedia extends K2Controller
 	public function connector()
 	{
 		$application = JFactory::getApplication();
+		$user = JFactory::getUser();
+		if ($user->guest)
+		{
+			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'), 403);
+		}
 		$params = JComponentHelper::getParams('com_media');
 		$root = $params->get('file_path', 'media');
 		$folder = $this->input->get('folder', $root, 'path');
