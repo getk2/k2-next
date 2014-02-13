@@ -38,11 +38,6 @@ class K2Items extends K2Resource
 	public $hits = 0;
 
 	/**
-	 * @var string	Params.
-	 */
-	public $categoryParams = '';
-
-	/**
 	 * Constructor.
 	 *
 	 * @param object $data
@@ -105,6 +100,9 @@ class K2Items extends K2Resource
 		// Prepare generic properties like dates and authors
 		parent::prepare($mode);
 
+		// Category
+		$this->category = $this->getCategory();
+
 		// Edit link
 		$this->editLink = '#items/edit/'.$this->id;
 
@@ -138,9 +136,6 @@ class K2Items extends K2Resource
 			$this->canDelete = $user->authorise('k2.item.delete', 'com_k2.item.'.$this->id);
 			$this->canSort = $user->authorise('k2.item.edit', 'com_k2');
 		}
-
-		// Category params
-		$this->categoryParams = $this->getCategoryParams();
 
 		// Media
 		$this->media = $this->getMedia();
@@ -197,11 +192,6 @@ class K2Items extends K2Resource
 			$category = K2Categories::getInstance($this->catid);
 		}
 		return $category;
-	}
-
-	public function getCategoryParams()
-	{
-		$categoryParams = isset($this->categoryParams) ? new JRegistry($this->categoryParams) : new JRegistry();
 	}
 
 	public function getExtraFields()
@@ -640,7 +630,7 @@ class K2Items extends K2Resource
 		$now = $date->toSql();
 
 		// State check
-		if ($this->state < 1 || $this->categoryState < 1 || (int)$this->id < 1)
+		if ($this->state < 1 || $this->category->state < 1 || (int)$this->id < 1)
 		{
 			JError::raiseError(404, JText::_('K2_NOT_FOUND'));
 			return false;
@@ -661,7 +651,7 @@ class K2Items extends K2Resource
 		$viewLevels = $user->getAuthorisedViewLevels();
 
 		// Access check
-		if (!in_array($this->access, $viewLevels) || !in_array($this->categoryAccess, $viewLevels))
+		if (!in_array($this->access, $viewLevels) || !in_array($this->category->access, $viewLevels))
 		{
 			if ($user->guest)
 			{

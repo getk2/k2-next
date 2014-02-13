@@ -32,14 +32,11 @@ class K2ModelItems extends K2Model
 		// Select rows
 		$query->select($db->quoteName('item').'.*')->from($db->quoteName('#__k2_items', 'item'));
 
-		// Join over the categories
-		$query->select($db->quoteName('category.title', 'categoryName'));
-		$query->select($db->quoteName('category.state', 'categoryState'));
-		$query->select($db->quoteName('category.access', 'categoryAccess'));
-		$query->select($db->quoteName('category.level', 'categoryLevel'));
-		$query->select($db->quoteName('category.path', 'categoryPath'));
-		$query->select($db->quoteName('category.params', 'categoryParams'));
-		$query->leftJoin($db->quoteName('#__k2_categories', 'category').' ON '.$db->quoteName('category.id').' = '.$db->quoteName('item.catid'));
+		// Join over the categories if required
+		if($this->getState('sorting') == 'ordering' || $this->getState('sorting') == 'ordering.reverse' || $this->getState('sorting') == 'category')
+		{
+			$query->leftJoin($db->quoteName('#__k2_categories', 'category').' ON '.$db->quoteName('category.id').' = '.$db->quoteName('item.catid'));
+		}
 
 		// Join over the author
 		$query->select($db->quoteName('author.name', 'authorName'));
@@ -152,15 +149,7 @@ class K2ModelItems extends K2Model
 		{
 			$categories = (array)$this->getState('category');
 			$filter = K2ModelCategories::getCategoryFilter($categories, $this->getState('recursive'), $this->getState('site'));
-			if ($this->getState('query.count'))
-			{
-				$query->where($db->quoteName('item.catid').' IN ('.implode(',', $filter).')');
-			}
-			else
-			{
-				$query->where($db->quoteName('category.id').' IN ('.implode(',', $filter).')');
-			}
-
+			$query->where($db->quoteName('item.catid').' IN ('.implode(',', $filter).')');
 		}
 		else if ($this->getState('site'))
 		{
@@ -169,15 +158,7 @@ class K2ModelItems extends K2Model
 			{
 				$authorised[] = 1;
 			}
-			if ($this->getState('query.count'))
-			{
-				$query->where($db->quoteName('item.catid').' IN ('.implode(',', $authorised).')');
-			}
-			else
-			{
-				$query->where($db->quoteName('category.id').' IN ('.implode(',', $authorised).')');
-			}
-
+			$query->where($db->quoteName('item.catid').' IN ('.implode(',', $authorised).')');
 		}
 
 		if ($this->getState('language'))
@@ -389,7 +370,7 @@ class K2ModelItems extends K2Model
 				$direction = 'DESC';
 				break;
 			case 'category' :
-				$ordering = array('categoryName', 'item.title');
+				$ordering = array('category.title', 'item.title');
 				$direction = 'ASC';
 				break;
 			case 'author' :
