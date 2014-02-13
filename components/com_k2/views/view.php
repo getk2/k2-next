@@ -17,6 +17,7 @@ defined('_JEXEC') or die ;
 class K2View extends JViewLegacy
 {
 	protected $isActive = true;
+	protected $feedLinkToHead = false;
 
 	public function __construct($config = array())
 	{
@@ -189,6 +190,10 @@ class K2View extends JViewLegacy
 				$description = $resource->introtext.' '.$resource->fulltext;
 			}
 			else if ($resourceType == 'K2Categories')
+			{
+				$description = $resource->description;
+			}
+			else if ($resourceType == 'K2Users')
 			{
 				$description = $resource->description;
 			}

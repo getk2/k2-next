@@ -25,7 +25,7 @@ class K2ViewItemlist extends K2View
 
 		// Get input
 		$task = $application->input->get('task', '', 'cmd');
-		$offset = $application->input->get('offset', 0, 'int');
+		$offset = $application->input->get('limitstart', 0, 'int');
 		$limit = $application->input->get('limit', 10, 'int');
 
 		// Trigger the corresponding method
@@ -43,13 +43,28 @@ class K2ViewItemlist extends K2View
 		{
 			$item->events = $item->getEvents('com_k2.itemlist.'.$task, $this->params, $offset);
 		}
-
+		
+		// Add feed link
+		$this->feedLink = JRoute::_('&format=feed&limitstart=');
+		
+		// Add feed links to head 
+		if($this->feedLinkToHead)
+		{
+			$attributes = array(
+				'type' => 'application/rss+xml',
+				'title' => 'RSS 2.0'
+			);
+			$this->document->addHeadLink(JRoute::_('&format=feed&limitstart=&type=rss'), 'alternate', 'rel', $attributes);
+			$attributes = array(
+				'type' => 'application/atom+xml',
+				'title' => 'Atom 1.0'
+			);
+			$this->document->addHeadLink(JRoute::_('&format=feed&limitstart=&type=atom'), 'alternate', 'rel', $attributes);
+		}
+		
 		// Pagination
 		jimport('joomla.html.pagination');
 		$this->pagination = new JPagination($this->total, $offset, $limit);
-
-		// Set the layout
-		$this->setLayout('itemlist');
 
 		// Display
 		parent::display($tpl);
@@ -63,7 +78,7 @@ class K2ViewItemlist extends K2View
 		// Get input
 		$id = $application->input->get('id', 0, 'int');
 		$categories = $this->params->get('categories');
-		$offset = $application->input->get('offset', 0, 'int');
+		$offset = $application->input->get('limitstart', 0, 'int');
 		$limit = $application->input->get('limit', 10, 'int');
 
 		// Get model
@@ -97,6 +112,9 @@ class K2ViewItemlist extends K2View
 		}
 
 		// @TODO Apply menu settings. Since they will be common all tasks we need to wait
+		
+		// Set the flag for sending feed links to head
+		$this->feedLinkToHead = $this->params->get('catFeedLink', 1);
 
 		// Get items
 		$model->setState('limit', $limit);
@@ -105,6 +123,9 @@ class K2ViewItemlist extends K2View
 
 		// Count items
 		$this->total = $model->countRows();
+		
+		// Set the layout
+		$this->setLayout('itemlist');
 	}
 
 	private function user()
@@ -119,7 +140,7 @@ class K2ViewItemlist extends K2View
 
 		// Get user
 		$this->author = K2Users::getInstance($id);
-
+		
 		// Check access
 		$this->author->checkSiteAccess();
 
@@ -138,6 +159,9 @@ class K2ViewItemlist extends K2View
 		
 		// Set metadata
 		$this->setMetadata($this->author);
+		
+		// Set the layout
+		$this->setLayout('user');
 
 	}
 

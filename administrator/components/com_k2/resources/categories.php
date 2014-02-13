@@ -120,6 +120,24 @@ class K2Categories extends K2Resource
 		return K2HelperImages::getCategoryImage($this);
 	}
 
+	public function getChildren()
+	{
+		$children = array();
+		$model = K2Model::getInstance('Categories');
+		$model->setState('site', true);
+		$model->setState('root', $this->id);
+		$chidlren = $model->getRows();
+		foreach ($chidlren as $key => $child)
+		{
+			if ($child->id == $this->id)
+			{
+				unset($chidlren[$key]);
+				break;
+			}
+		}
+		return $chidlren;
+	}
+
 	public function getNumOfItems()
 	{
 		$numOfItems = 0;

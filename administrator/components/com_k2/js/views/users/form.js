@@ -10,6 +10,12 @@ define(['marionette', 'text!layouts/users/form.html', 'dispatcher', 'widgets/wid
 			'change' : 'render'
 		},
 		initialize : function() {
+			
+			// Add a listener for the before save event
+			K2Dispatcher.on('app:controller:beforeSave', function() {
+				this.onBeforeSave();
+			}, this);
+			
 			// Image
 			this.imageView = new K2ViewImageWidget({
 				row : this.model,
@@ -58,16 +64,8 @@ define(['marionette', 'text!layouts/users/form.html', 'dispatcher', 'widgets/wid
 			// Extra fields
 			this.extraFieldsRegion.show(this.extraFieldsView);
 		},
-		// OnBeforeClose event ( Marionette.js build in event )
-		onBeforeClose : function() {
-			// Clean up uploaded files
-			if (this.model.isNew()) {
-				this.imageView.trigger('delete');
-			}
-		},
 		// OnBeforeSave event
 		onBeforeSave : function() {
-
 			// Update form from editor contents
 			K2Editor.save('description');
 		}
