@@ -596,13 +596,16 @@ class K2ModelCategories extends K2Model
 
 	public function getCopyData($id)
 	{
-		// Get source item
+		// Get params
+		$params = JComponentHelper::getParams('com_k2');
+
+		// Get source category
 		$source = K2Categories::getInstance($id);
 
-		// Get source item properties as data array. This array will be the input to the model.
+		// Get source category properties as data array. This array will be the input to the model.
 		$data = get_object_vars($source);
 
-		// It's a new item so reset some properties
+		// It's a new category so reset some properties
 		$data['id'] = '';
 		$data['title'] = JText::_('K2_COPY_OF').' '.$data['title'];
 		$data['alias'] = '';
@@ -612,10 +615,11 @@ class K2ModelCategories extends K2Model
 		$data['params'] = $data['params']->toString();
 
 		// Handle image
-		$imageId = isset($data['image']->id) ? $data['image']->id : false;
-		if ($imageId)
+		if (isset($data['image']) && isset($data['image']->id))
 		{
-			$path = 'media/k2/categories/'.$imageId.'.jpg';
+			// If filesystem is not local then path is the URL
+			$filesystem = $params->get('filesystem');
+			$path = ($filesystem == 'Local' || !$filesystem) ? 'media/k2/categories/'.$data['image']->id.'.jpg' : $data['image']->url;
 			$image = K2HelperImages::add('category', null, $path);
 			$data['image'] = array('id' => '', 'temp' => $image->temp, 'path' => '', 'remove' => 0, 'caption' => $data['image']->caption, 'credits' => $data['image']->credits);
 		}

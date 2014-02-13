@@ -154,15 +154,6 @@ class K2HelperMedia
 
 				if ($filesystem->has($mediaKey))
 				{
-					$files = $filesystem->listKeys($mediaKey);
-
-					foreach ($files['keys'] as $key)
-					{
-						if ($filesystem->has($key))
-						{
-							$filesystem->delete($key);
-						}
-					}
 					$filesystem->delete($mediaKey);
 				}
 			}

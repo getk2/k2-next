@@ -891,12 +891,11 @@ class K2ModelItems extends K2Model
 		// Delete item galleries
 		$galleries = json_decode($this->getState('galleries'));
 		K2HelperGalleries::remove($galleries, $table->id);
-		
 
 		// Delete item media
 		$media = json_decode($this->getState('media'));
 		K2HelperMedia::remove($media, $table->id);
-		
+
 		// Delete item tags reference
 		$tagsModel = K2Model::getInstance('Tags');
 		$tagsModel->deleteItemTags($table->id);
@@ -923,7 +922,7 @@ class K2ModelItems extends K2Model
 
 		// Delete revisions
 		$model = K2Model::getInstance('Revisions');
-		$model->deleteItemRevisions($itemId);
+		$model->deleteItemRevisions($table->id);
 
 		// Return
 		return true;
@@ -948,6 +947,9 @@ class K2ModelItems extends K2Model
 
 	public function getCopyData($id)
 	{
+		// Get params
+		$params = JComponentHelper::getParams('com_k2');
+
 		// Get source item
 		$source = K2Items::getInstance($id);
 
@@ -975,10 +977,11 @@ class K2ModelItems extends K2Model
 		$data['tags'] = implode(',', $tagNames);
 
 		// Handle image
-		$imageId = isset($data['image']->id) ? $data['image']->id : false;
-		if ($imageId)
+		if (isset($data['images']) && is_array($data['images']) && isset($data['images']['src']))
 		{
-			$path = 'media/k2/items/src/'.$imageId.'.jpg';
+			// If filesystem is not local then path is the URL
+			$filesystem = $params->get('filesystem');
+			$path = ($filesystem == 'Local' || !$filesystem) ? 'media/k2/items/src/'.$data['images']['src']->id.'.jpg' : $data['images']['src']->url;
 			$image = K2HelperImages::add('item', null, $path);
 			$data['image'] = array('id' => '', 'temp' => $image->temp, 'path' => '', 'remove' => 0, 'caption' => $data['image']->caption, 'credits' => $data['image']->credits);
 		}
@@ -999,7 +1002,7 @@ class K2ModelItems extends K2Model
 					if ($filesystem->has('media/k2/media/'.$id.'/'.$entry->upload))
 					{
 						$buffer = $filesystem->read('media/k2/media/'.$id.'/'.$entry->upload);
-						$filesystem->write('media/k2/media/'.$data['tmpId'].'/'.$entry->upload, $buffer, true);
+						JFile::write(JPATH_SITE.'/tmp/'.$entry->upload, $buffer);
 					}
 				}
 				$newEntry = array();
@@ -1025,13 +1028,14 @@ class K2ModelItems extends K2Model
 				$filesystem = K2FileSystem::getInstance();
 				if ($filesystem->has('media/k2/galleries/'.$id.'/'.$entry->upload))
 				{
+					JFolder::create(JPATH_SITE.'/tmp/'.$entry->upload);
 					$files = $filesystem->listKeys('media/k2/galleries/'.$id.'/'.$entry->upload);
 					foreach ($files['keys'] as $key)
 					{
 						if ($filesystem->has($key))
 						{
 							$buffer = $filesystem->read($key);
-							$filesystem->write('media/k2/galleries/'.$data['tmpId'].'/'.$entry->upload.'/'.basename($key), $buffer, true);
+							JFile::write(JPATH_SITE.'/tmp/'.$entry->upload.'/'.basename($key), $buffer);
 						}
 					}
 				}
@@ -1047,36 +1051,26 @@ class K2ModelItems extends K2Model
 		// Handle attachments
 		$filesystem = K2FileSystem::getInstance();
 		$attachmentsModel = K2Model::getInstance('Attachments');
-		$input = array();
 		$attachments = array();
 		foreach ($data['attachments'] as $key => $attachment)
 		{
-			// Save the new attachment record
-			$input['id'] = null;
-			$input['itemId'] = 0;
-			$input['name'] = $attachment->name;
-			$input['title'] = $attachment->title;
-			$input['file'] = '';
-			if ($attachment->file)
-			{
-				if ($filesystem->has('media/k2/attachments/'.$id.'/'.$attachment->file))
-				{
-					$buffer = $filesystem->read('media/k2/attachments/'.$id.'/'.$attachment->file);
-					$filesystem->write('media/k2/attachments/'.$data['tmpId'].'/'.$attachment->file, $buffer, true);
-				}
-				$input['file'] = $data['tmpId'].'/'.$attachment->file;
-			}
-			$input['url'] = $attachment->url;
-			$input['downloads'] = 0;
-			$attachmentsModel->setState('data', $input);
-			$attachmentsModel->save();
 
 			// Prepare the data array
 			$newEntry = array();
-			$newEntry['id'] = $attachmentsModel->getState('id');
-			$newEntry['name'] = $input['name'];
-			$newEntry['title'] = $input['title'];
-			$newEntry['file'] = $input['file'];
+			$newEntry['id'] = '';
+			$newEntry['name'] = $attachment->name;
+			$newEntry['title'] = $attachment->title;
+			if ($attachment->file)
+			{
+				$tmpId = uniqid();
+				if ($filesystem->has('media/k2/attachments/'.$id.'/'.$attachment->file))
+				{
+					$buffer = $filesystem->read('media/k2/attachments/'.$id.'/'.$attachment->file);
+					JFile::write(JPATH_SITE.'/tmp/'.$tmpId.'_'.$attachment->file, $buffer);
+				}
+				$newEntry['file'] = $tmpId.'_'.$attachment->file;
+			}
+			$newEntry['path'] = $attachment->path;
 			$newEntry['remove'] = 0;
 			$attachments[$key] = $newEntry;
 		}
