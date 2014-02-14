@@ -21,17 +21,19 @@ jQuery(document).ready(function() {
 			jQuery(this).addClass('k2SearchLoading');
 			parentElement.find('.k2LiveSearchResults').css('display', 'none').empty();
 			parentElement.find('input[name=t]').val(jQuery.now());
-			parentElement.find('input[name=format]').val('raw');
+			parentElement.find('input[name=format]').val('json');
 			var url = 'index.php?option=com_k2&view=itemlist&task=search&' + parentElement.find('form').serialize();
 			parentElement.find('input[name=format]').val('html');
-			jQuery.ajax({
-				url : url,
-				type : 'get',
-				success : function(response) {
-					parentElement.find('.k2LiveSearchResults').html(response);
-					parentElement.find('input[name=searchword]').removeClass('k2SearchLoading');
-					parentElement.find('.k2LiveSearchResults').css('display', 'block');
-				}
+			jQuery.getJSON(url).done(function(data) {
+				var template = jQuery('#k2LiveSearchTemplate');
+				var site = template.data('site');
+				_.each(data.items, function(item) {
+					item.link = item.link.replace(site + '/', '');
+				});
+				var compiled = _.template(template.html(), data);
+				parentElement.find('.k2LiveSearchResults').html(compiled);
+				parentElement.find('input[name=searchword]').removeClass('k2SearchLoading');
+				parentElement.find('.k2LiveSearchResults').css('display', 'block');
 			});
 		} else {
 			parentElement.find('.k2LiveSearchResults').css('display', 'none').empty();

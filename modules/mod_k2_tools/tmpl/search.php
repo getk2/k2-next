@@ -37,11 +37,17 @@ If you wish to use the live search option, it's important that you maintain the 
 		<?php if($params->get('liveSearch')): ?>
 		<input type="hidden" name="format" value="html" />
 		<input type="hidden" name="t" value="" />
-		<input type="hidden" name="tpl" value="search" />
 		<?php endif; ?>
 	</form>
 
 	<?php if($params->get('liveSearch')): ?>
 	<div class="k2LiveSearchResults"></div>
+	<script type="text/template" id="k2LiveSearchTemplate" data-site="<?php echo JURI::root(true); ?>">
+		<ul class="liveSearchResults">
+			<% _.each(items, function(item) { %>
+				<li><a href="<%- item.link %>"><%= item.title %></a></li>
+			<% }); %>
+		</ul>
+	</script>
 	<?php endif; ?>
 </div>

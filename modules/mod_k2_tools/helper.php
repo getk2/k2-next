@@ -25,20 +25,7 @@ class ModK2ToolsHelper
 		$model->setState('category.filter', $filter);
 		$model->setState('sorting', 'created');
 		$rows = $model->getArchive();
-		$months = array(
-			JText::_('K2_JANUARY'),
-			JText::_('K2_FEBRUARY'),
-			JText::_('K2_MARCH'),
-			JText::_('K2_APRIL'),
-			JText::_('K2_MAY'),
-			JText::_('K2_JUNE'),
-			JText::_('K2_JULY'),
-			JText::_('K2_AUGUST'),
-			JText::_('K2_SEPTEMBER'),
-			JText::_('K2_OCTOBER'),
-			JText::_('K2_NOVEMBER'),
-			JText::_('K2_DECEMBER'),
-		);
+		$months = array(JText::_('K2_JANUARY'), JText::_('K2_FEBRUARY'), JText::_('K2_MARCH'), JText::_('K2_APRIL'), JText::_('K2_MAY'), JText::_('K2_JUNE'), JText::_('K2_JULY'), JText::_('K2_AUGUST'), JText::_('K2_SEPTEMBER'), JText::_('K2_OCTOBER'), JText::_('K2_NOVEMBER'), JText::_('K2_DECEMBER'), );
 		$archives = array();
 		$root = isset($filter->categories[0]) ? $filter->categories[0] : 0;
 		foreach ($rows as $row)
@@ -111,29 +98,8 @@ class ModK2ToolsHelper
 		$year = $application->input->get('year', 0, 'int');
 		$filter = $params->get('calendarCategory');
 
-		$months = array(
-			JText::_('K2_JANUARY'),
-			JText::_('K2_FEBRUARY'),
-			JText::_('K2_MARCH'),
-			JText::_('K2_APRIL'),
-			JText::_('K2_MAY'),
-			JText::_('K2_JUNE'),
-			JText::_('K2_JULY'),
-			JText::_('K2_AUGUST'),
-			JText::_('K2_SEPTEMBER'),
-			JText::_('K2_OCTOBER'),
-			JText::_('K2_NOVEMBER'),
-			JText::_('K2_DECEMBER'),
-		);
-		$days = array(
-			JText::_('K2_SUN'),
-			JText::_('K2_MON'),
-			JText::_('K2_TUE'),
-			JText::_('K2_WED'),
-			JText::_('K2_THU'),
-			JText::_('K2_FRI'),
-			JText::_('K2_SAT'),
-		);
+		$months = array(JText::_('K2_JANUARY'), JText::_('K2_FEBRUARY'), JText::_('K2_MARCH'), JText::_('K2_APRIL'), JText::_('K2_MAY'), JText::_('K2_JUNE'), JText::_('K2_JULY'), JText::_('K2_AUGUST'), JText::_('K2_SEPTEMBER'), JText::_('K2_OCTOBER'), JText::_('K2_NOVEMBER'), JText::_('K2_DECEMBER'), );
+		$days = array(JText::_('K2_SUN'), JText::_('K2_MON'), JText::_('K2_TUE'), JText::_('K2_WED'), JText::_('K2_THU'), JText::_('K2_FRI'), JText::_('K2_SAT'), );
 
 		$calendar = new K2Calendar();
 		$root = isset($filter->categories[0]) ? $filter->categories[0] : 0;
@@ -187,7 +153,7 @@ class ModK2ToolsHelper
 					// Handle depending on matches
 					if ($matchItem)
 					{
-						$breadcrumbs->title = end($pathwayItems)->name;
+						$breadcrumbs->title =  end($pathwayItems)->name;
 						foreach ($pathwayItems as $pathwayItem)
 						{
 							$breadcrumbs->path[] = $pathwayItem;
@@ -221,7 +187,7 @@ class ModK2ToolsHelper
 					// Handle depending on matches
 					if ($matchCategory)
 					{
-						$breadcrumbs->title = end($pathwayItems)->name;
+						$breadcrumbs->title =  end($pathwayItems)->name;
 						foreach ($pathwayItems as $pathwayItem)
 						{
 							$breadcrumbs->path[] = $pathwayItem;
@@ -244,7 +210,7 @@ class ModK2ToolsHelper
 		else
 		{
 
-			$breadcrumbs->title = end($pathwayItems)->name;
+			$breadcrumbs->title =  end($pathwayItems)->name;
 			foreach ($pathwayItems as $pathwayItem)
 			{
 				$breadcrumbs->path[] = $pathwayItem;
@@ -303,6 +269,16 @@ class ModK2ToolsHelper
 			$model = K2Model::getInstance('Categories');
 			$categories = K2ModelCategories::getCategoryFilter($filter->categories, $filter->recursive, true);
 			$search->filter = implode(',', $categories);
+		}
+
+		if ($params->get('liveSearch'))
+		{
+			$document = JFactory::getDocument();
+			if ($document->getType() == 'html')
+			{
+				$document->addScript(JURI::root(true).'/administrator/components/com_k2/js/lib/underscore-min.js');
+				$document->addScriptDeclaration('var K2Site = "'.JURI::root(true).'";');
+			}
 		}
 
 		return $search;
@@ -400,11 +376,7 @@ class ModK2ToolsHelper
 				JPluginHelper::importPlugin('content');
 				$row = new stdClass;
 				$row->text = $output;
-				$dispatcher->trigger('onContentPrepare', array(
-					'mod_k2_tools',
-					&$row,
-					&$params
-				));
+				$dispatcher->trigger('onContentPrepare', array('mod_k2_tools', &$row, &$params));
 				$output = $row->text;
 			}
 			if ($params->get('K2Plugins'))
@@ -412,10 +384,7 @@ class ModK2ToolsHelper
 				JPluginHelper::importPlugin('k2');
 				$row = new stdClass;
 				$row->text = $output;
-				$dispatcher->trigger('onK2PrepareContent', array(
-					&$row,
-					&$params
-				));
+				$dispatcher->trigger('onK2PrepareContent', array(&$row, &$params));
 				$output = $row->text;
 			}
 
