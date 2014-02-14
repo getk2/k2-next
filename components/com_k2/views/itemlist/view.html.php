@@ -43,25 +43,19 @@ class K2ViewItemlist extends K2View
 		{
 			$item->events = $item->getEvents('com_k2.itemlist.'.$task, $this->params, $offset);
 		}
-		
+
 		// Add feed link
 		$this->feedLink = JRoute::_('&format=feed&limitstart=');
-		
-		// Add feed links to head 
-		if($this->feedLinkToHead)
+
+		// Add feed links to head
+		if ($this->feedLinkToHead)
 		{
-			$attributes = array(
-				'type' => 'application/rss+xml',
-				'title' => 'RSS 2.0'
-			);
+			$attributes = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
 			$this->document->addHeadLink(JRoute::_('&format=feed&limitstart=&type=rss'), 'alternate', 'rel', $attributes);
-			$attributes = array(
-				'type' => 'application/atom+xml',
-				'title' => 'Atom 1.0'
-			);
+			$attributes = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
 			$this->document->addHeadLink(JRoute::_('&format=feed&limitstart=&type=atom'), 'alternate', 'rel', $attributes);
 		}
-		
+
 		// Pagination
 		jimport('joomla.html.pagination');
 		$this->pagination = new JPagination($this->total, $offset, $limit);
@@ -112,9 +106,6 @@ class K2ViewItemlist extends K2View
 		}
 
 		// @TODO Apply menu settings. Since they will be common all tasks we need to wait
-		
-		// Set the flag for sending feed links to head
-		$this->feedLinkToHead = $this->params->get('catFeedLink');
 
 		// Get items
 		$model->setState('limit', $limit);
@@ -123,9 +114,12 @@ class K2ViewItemlist extends K2View
 
 		// Count items
 		$this->total = $model->countRows();
-		
+
+		// Set the flag for sending feed links to head
+		$this->feedLinkToHead = $this->params->get('catFeedLink');
+
 		// Set the layout
-		$this->setLayout('itemlist');
+		$this->setLayout('category');
 	}
 
 	private function user()
@@ -135,12 +129,12 @@ class K2ViewItemlist extends K2View
 
 		// Get input
 		$id = $application->input->get('id', 0, 'int');
-		$offset = $application->input->get('offset', 0, 'int');
+		$offset = $application->input->get('limitstart', 0, 'int');
 		$limit = $application->input->get('limit', 10, 'int');
 
 		// Get user
 		$this->author = K2Users::getInstance($id);
-		
+
 		// Check access
 		$this->author->checkSiteAccess();
 
@@ -156,16 +150,15 @@ class K2ViewItemlist extends K2View
 
 		// Count items
 		$this->total = $model->countRows();
-		
-		// Set metadata
-		$this->setMetadata($this->author);
-		
-		// Set the layout
-		$this->setLayout('user');
-		
+
 		// Set the flag for sending feed links to head
 		$this->feedLinkToHead = $this->params->get('userFeedLink');
 
+		// Set metadata
+		$this->setMetadata($this->author);
+
+		// Set the layout
+		$this->setLayout('user');
 
 	}
 
@@ -176,7 +169,7 @@ class K2ViewItemlist extends K2View
 
 		// Get input
 		$id = $application->input->get('id', 0, 'int');
-		$offset = $application->input->get('offset', 0, 'int');
+		$offset = $application->input->get('limitstart', 0, 'int');
 		$limit = $application->input->get('limit', 10, 'int');
 
 		// Get tag
@@ -195,18 +188,18 @@ class K2ViewItemlist extends K2View
 		$model->setState('limitstart', $offset);
 		$this->items = $model->getRows();
 
+		// Set the flag for sending feed links to head
+		$this->feedLinkToHead = $this->params->get('tagFeedLink');
+
 		// Count items
 		$this->total = $model->countRows();
 
 		// Set metadata
 		$this->setMetadata($this->tag);
-		
+
 		// Set the layout
-		$this->setLayout('tag');		
-		
-		// Set the flag for sending feed links to head
-		$this->feedLinkToHead = $this->params->get('tagFeedLink');
-		
+		$this->setLayout('tag');
+
 	}
 
 	private function date()
@@ -219,7 +212,7 @@ class K2ViewItemlist extends K2View
 		$month = $application->input->get('month', 0, 'int');
 		$day = $application->input->get('day', 0, 'int');
 		$category = $application->input->get('category', 0, 'int');
-		$offset = $application->input->get('offset', 0, 'int');
+		$offset = $application->input->get('limitstart', 0, 'int');
 		$limit = $application->input->get('limit', 10, 'int');
 
 		// Get items
@@ -236,6 +229,12 @@ class K2ViewItemlist extends K2View
 		// Count items
 		$this->total = $model->countRows();
 
+		// Set the flag for sending feed links to head
+		$this->feedLinkToHead = $this->params->get('genericFeedLink');
+
+		// Set the layout
+		$this->setLayout('search');
+
 	}
 
 	private function search()
@@ -245,9 +244,9 @@ class K2ViewItemlist extends K2View
 
 		// Get input
 		$search = $application->input->get('searchword', '', 'string');
-		$offset = $application->input->get('offset', 0, 'int');
+		$offset = $application->input->get('limitstart', 0, 'int');
 		$limit = $application->input->get('limit', 10, 'int');
-
+		
 		// Get items
 		$model = K2Model::getInstance('Items');
 		$model->setState('site', true);
@@ -255,5 +254,16 @@ class K2ViewItemlist extends K2View
 		$model->setState('limit', $limit);
 		$model->setState('limitstart', $offset);
 		$this->items = $model->getRows();
+
+		// Count items
+		$this->total = $model->countRows();
+
+		// Set the flag for sending feed links to head
+		$this->feedLinkToHead = $this->params->get('genericFeedLink');
+
+		// Set the layout
+		$this->setLayout('date');
+
 	}
+
 }

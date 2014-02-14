@@ -10,7 +10,7 @@
 // no direct access
 defined('_JEXEC') or die; ?>
 
-<div id="k2Container" class="tagView<?php if($this->params->get('pageclass_sfx')) echo ' '.$this->params->get('pageclass_sfx'); ?>">
+<div id="k2Container" class="searchView<?php if($this->params->get('pageclass_sfx')) echo ' '.$this->params->get('pageclass_sfx'); ?>">
 
 	<?php if($this->params->get('show_page_heading')): ?>
 	<!-- Page heading -->
@@ -19,7 +19,12 @@ defined('_JEXEC') or die; ?>
 	</h1>
 	<?php endif; ?>
 	
-	<?php if($this->params->get('tagFeedIcon')): ?>
+	<?php if($this->params->get('googleSearch')): ?>
+	<!-- Google Search container -->
+	<div id="<?php echo $this->params->get('googleSearchContainer'); ?>"></div>
+	<?php endif; ?>
+	
+	<?php if($this->params->get('genericFeedIcon')): ?>
 	<!-- RSS feed icon -->
 	<div class="k2FeedIcon">
 		<a href="<?php echo $this->feedLink; ?>" title="<?php echo JText::_('K2_SUBSCRIBE_TO_THIS_RSS_FEED'); ?>">

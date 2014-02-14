@@ -22,6 +22,12 @@ class PlgSystemK2 extends JPlugin
 		// Get application
 		$application = JFactory::getApplication();
 
+		// Get params
+		$params = JComponentHelper::getParams('com_k2');
+
+		// Get document
+		$document = JFactory::getDocument();
+
 		// Get input
 		$option = $application->input->get('option');
 		$view = $application->input->get('view');
@@ -36,14 +42,8 @@ class PlgSystemK2 extends JPlugin
 		// Front-end
 		if ($application->isSite())
 		{
-			// Get params
-			$params = JComponentHelper::getParams('com_k2');
-
-			// Get document
-			$document = JFactory::getDocument();
-			
 			// Enforce system template for editing
-			if($view == 'admin')
+			if ($view == 'admin')
 			{
 				$application->input->set('template', 'system');
 			}

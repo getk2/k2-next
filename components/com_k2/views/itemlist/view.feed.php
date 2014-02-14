@@ -26,16 +26,8 @@ class K2ViewItemlist extends K2View
 		// Get document
 		$document = JFactory::getDocument();
 
-		// Get params
-		$params = $application->getParams('com_k2');
-
-		// Get global configuration
-		$configuration = JFactory::getConfig();
-
 		// Get input
 		$task = $application->input->get('task', '', 'cmd');
-		$offset = $application->input->get('offset', 0, 'int');
-		$limit = $application->input->get('limit', 10, 'int');
 
 		// Trigger the corresponding subview
 		if (method_exists($this, $task))
@@ -60,13 +52,10 @@ class K2ViewItemlist extends K2View
 		// Get application
 		$application = JFactory::getApplication();
 
-		// Get params
-		$params = JComponentHelper::getParams('com_k2');
-
 		// Get input
 		$id = $application->input->get('id', 0, 'int');
 		$categories = $this->params->get('categories');
-		$limit = $params->get('limit', 10, 'int');
+		$limit = $this->params->get('feedLimit', 10, 'int');
 
 		// Get model
 		$model = K2Model::getInstance('Items');
@@ -104,12 +93,9 @@ class K2ViewItemlist extends K2View
 		// Get application
 		$application = JFactory::getApplication();
 
-		// Get params
-		$params = JComponentHelper::getParams('com_k2');
-
 		// Get input
 		$id = $application->input->get('id', 0, 'int');
-		$limit = $params->get('limit', 10, 'int');
+		$limit = $this->params->get('feedLimit', 10, 'int');
 
 		// Get user
 		$this->author = K2Users::getInstance($id);
@@ -133,27 +119,21 @@ class K2ViewItemlist extends K2View
 
 		// Get input
 		$id = $application->input->get('id', 0, 'int');
-		$offset = $application->input->get('offset', 0, 'int');
-		$limit = $application->input->get('limit', 10, 'int');
+		$limit = $this->params->get('feedLimit', 10, 'int');
 
 		// Get tag
 		$this->tag = K2Tags::getInstance($id);
+
+		// Check access and publishing state
+		$this->tag->checkSiteAccess();
 
 		// Get items
 		$model = K2Model::getInstance('Items');
 		$model->setState('site', true);
 		$model->setState('tag', $id);
 		$model->setState('limit', $limit);
-		$model->setState('limitstart', $offset);
+		$model->setState('limitstart', 0);
 		$this->items = $model->getRows();
-
-		// Count items
-		$this->total = $model->countRows();
-
-		if (!$this->isActive)
-		{
-			$this->setTitle(JText::_('K2_DISPLAYING_ITEMS_BY_TAG').' '.$this->tag->name);
-		}
 	}
 
 	private function date()
@@ -166,8 +146,7 @@ class K2ViewItemlist extends K2View
 		$month = $application->input->get('month', 0, 'int');
 		$day = $application->input->get('day', 0, 'int');
 		$category = $application->input->get('category', 0, 'int');
-		$offset = $application->input->get('offset', 0, 'int');
-		$limit = $application->input->get('limit', 10, 'int');
+		$limit = $this->params->get('feedLimit', 10, 'int');
 
 		// Get items
 		$model = K2Model::getInstance('Items');
@@ -177,7 +156,7 @@ class K2ViewItemlist extends K2View
 		$model->setState('day', $day);
 		$model->setState('category', $category);
 		$model->setState('limit', $limit);
-		$model->setState('limitstart', $offset);
+		$model->setState('limitstart', 0);
 		$this->items = $model->getRows();
 	}
 
@@ -188,15 +167,14 @@ class K2ViewItemlist extends K2View
 
 		// Get input
 		$search = $application->input->get('searchword', '', 'string');
-		$offset = $application->input->get('offset', 0, 'int');
-		$limit = $application->input->get('limit', 10, 'int');
+		$limit = $this->params->get('feedLimit', 10, 'int');
 
 		// Get items
 		$model = K2Model::getInstance('Items');
 		$model->setState('site', true);
 		$model->setState('search', $search);
 		$model->setState('limit', $limit);
-		$model->setState('limitstart', $offset);
+		$model->setState('limitstart', 0);
 		$this->items = $model->getRows();
 	}
 
