@@ -103,10 +103,25 @@ class K2Model extends JModelLegacy
 
 	public function save()
 	{
+		// Get dispatcher
+		$dispatcher = JDispatcher::getInstance();
+
+		// Import content plugins
+		JPluginHelper::importPlugin('content');
+
+		// Get table
 		$table = $this->getTable();
+
+		// Get data
 		$data = $this->getState('data');
+
+		// Is new
+		$isNew = true;
+
+		// If we have an id we are editting
 		if (isset($data['id']) && $data['id'])
 		{
+			$isNew = false;
 			if (!$table->load($data['id']))
 			{
 				$this->setError($table->getError());
@@ -119,20 +134,35 @@ class K2Model extends JModelLegacy
 			}
 
 		}
+
+		// Before save hook for children models
 		if (!$this->onBeforeSave($data, $table))
 		{
 			return false;
 		}
+
+		// Trigger onContentBeforeSave event
+		$dispatcher->trigger('onContentBeforeSave', array('com_k2.'.$this->getName(), $table, $isNew));
+
+		// Save
 		if (!$table->save($data))
 		{
 			$this->setError($table->getError());
 			return false;
 		}
+
+		// Set the id to the state
 		$this->setState('id', $table->id);
+
+		// After save hook for children models
 		if (!$this->onAfterSave($data, $table))
 		{
 			return false;
 		}
+
+		// Trigger onContentAfterSave event
+		$dispatcher->trigger('onContentAfterSave', array('com_k2.'.$this->getName(), $table, $isNew));
+
 		return true;
 	}
 
@@ -183,27 +213,50 @@ class K2Model extends JModelLegacy
 
 	public function delete()
 	{
+		// Get dispatcher
+		$dispatcher = JDispatcher::getInstance();
+
+		// Import content plugins
+		JPluginHelper::importPlugin('content');
+
+		// Get table
 		$table = $this->getTable();
+
+		// Get id
 		$id = $this->getState('id');
+
+		// Load record
 		if (!$table->load($id))
 		{
 			$this->setError($table->getError());
 			return false;
 		}
+
+		// Before delete hook for children models
 		if (!$this->onBeforeDelete($table))
 		{
 			return false;
 		}
+
+		// Trigger onContentBeforeDelete event
+		$dispatcher->trigger('onContentBeforeDelete', array('com_k2.'.$this->getName(), $table));
+
+		// Delete
 		if (!$table->delete())
 		{
 			$this->setError($table->getError());
 			return false;
 		}
 
+		// After delete hook for children models
 		if (!$this->onAfterDelete($table))
 		{
 			return false;
 		}
+
+		// Trigger onContentAfterDelete event
+		$dispatcher->trigger('onContentBeforeDelete', array('com_k2.'.$this->getName(), $table));
+
 		return true;
 	}
 
