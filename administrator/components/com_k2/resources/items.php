@@ -293,6 +293,7 @@ class K2Items extends K2Resource
 
 			// Get params
 			$params = JComponentHelper::getParams('com_k2');
+			$params->set('galleries_rootfolder', 'media/k2/galleries');
 
 			// Get dispatcher
 			$dispatcher = JDispatcher::getInstance();
@@ -348,23 +349,26 @@ class K2Items extends K2Resource
 					if ($entry->upload)
 					{
 						$parts = explode('.', $entry->upload);
+						$name = reset($parts);
 						$extension = strtolower(end($parts));
-						$tag = '{'.$extension.'}'.$entry->upload.'{'.$extension.'}';
+						$tag = '{'.$extension.'}'.$this->id.'/'.$name.'{/'.$extension.'}';
 					}
 					else if ($entry->provider)
 					{
-						$tag = '{'.$entry->provider.'}'.$entry->id.'{'.$entry->provider.'}';
+						$tag = '{'.$entry->provider.'}'.$entry->id.'{/'.$entry->provider.'}';
 					}
 					else if ($entry->url)
 					{
 						$parts = explode('.', $entry->url);
 						$extension = strtolower(end($parts));
-						$tag = '{'.$extension.'remote}'.$entry->url.'{'.$extension.'remote}';
+						$tag = '{'.$extension.'remote}'.$entry->url.'{/'.$extension.'remote}';
 					}
 
 					$entry->text = $tag;
 
 					// Render media
+					$params->set('afolder', 'media/k2/media');
+					$params->set('vfolder', 'media/k2/media');
 					$dispatcher->trigger('onContentPrepare', array('com_k2', &$entry, &$params, 0));
 
 					// Restore
