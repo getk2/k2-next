@@ -32,7 +32,11 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 				this.onBeforeSave();
 			}, this);
 
-			// Image
+			// Image view. First override the size with the one from the settings
+			if(this.model.get('image')) {
+				var images = this.model.get('images');
+				this.model.set('image', images['admin']);
+			}
 			this.imageView = new K2ViewImageWidget({
 				row : this.model,
 				type : 'item'

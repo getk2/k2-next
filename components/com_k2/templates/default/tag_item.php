@@ -83,7 +83,7 @@ defined('_JEXEC') or die ;
 	  <!-- Item Image -->
 	  <div class="itemImageBlock">
 		  <span class="itemImage">
-		  	<a href="<?php echo $this->item->image->src; ?>" title="<?php echo JText::_('K2_CLICK_TO_PREVIEW_IMAGE'); ?>">
+		  	<a href="<?php echo $this->item->link; ?>" title="<?php echo $this->escape($this->item->image->alt); ?>">
 		  		<img src="<?php echo $this->item->image->src; ?>" alt="<?php echo $this->escape($this->item->image->alt); ?>" style="width:<?php echo $this->item->image->width; ?>px; height:auto;" />
 		  	</a>
 		  </span>

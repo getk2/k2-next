@@ -381,6 +381,11 @@
 	</fieldset>
 	<fieldset name="COM_K2_ADVANCED_OPTIONS" label="K2_ADVANCED" addfieldpath="/libraries/joomla/form/fields">
 		<!-- ######################### Advanced Settings ######################### -->
+		
+		<field menu="hide" type="k2imagesizes" name="adminPreviewImageSize" label="K2_ADMIN_PREVIEW_IMAGE_SIZE"/>
+		<field menu="hide" type="k2imagesizes" name="modalImageSize" label="K2_MODAL_IMAGE_SIZE"/>
+		
+		
 		<field menu="hide" name="revisions" type="radio" default="0" label="K2_ENABLE_ITEM_REVISIONS">
 			<option value="0">K2_NO</option>
 			<option value="1">K2_YES</option>

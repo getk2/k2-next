@@ -138,7 +138,15 @@ class K2HelperImages
 			}
 
 			// Pass the last size as preview
-			$preview = JURI::root(true).'/tmp/'.$imageId.'/cache/'.$filename.'?t='.time();
+			$adminPreviewImageSize = $params->get('adminPreviewImageSize');
+			if ($adminPreviewImageSize)
+			{
+				$preview = JURI::root(true).'/tmp/'.$imageId.'/cache/'.$imageId.'_'.$adminPreviewImageSize.'.jpg';
+			}
+			else
+			{
+				$preview = JURI::root(true).'/tmp/'.$imageId.'/cache/'.$filename.'?t='.time();
+			}
 		}
 		else
 		{
@@ -424,6 +432,28 @@ class K2HelperImages
 			$image->credits = $value->credits;
 			$image->flag = 1;
 			$images['src'] = $image;
+
+			// Preview image when editing items
+			$adminPreviewImageSize = $params->get('adminPreviewImageSize');
+			if ($adminPreviewImageSize && isset($images[$adminPreviewImageSize]))
+			{
+				$images['admin'] = $images[$adminPreviewImageSize];
+			}
+			else
+			{
+				$images['admin'] = $images['src'];
+			}
+
+			// Modal image
+			$modalImageSize = $params->get('modalImageSize');
+			if ($modalImageSize && isset($images[$modalImageSize]))
+			{
+				$images['modal'] = $images[$modalImageSize];
+			}
+			else
+			{
+				$images['modal'] = $images['src'];
+			}
 
 		}
 		// Return
