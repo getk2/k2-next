@@ -192,7 +192,8 @@ class K2TableCategories extends K2TableNestedLegacy
 		}
 		else
 		{
-			$this->alias = JFilterOutput::stringURLSafe($this->alias);
+			require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/language.php';
+			$this->alias = K2HelperLanguage::transliterate($this->alias, $this->language);
 		}
 
 		$db = $this->getDbo();

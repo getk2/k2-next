@@ -163,7 +163,8 @@ class K2TableItems extends K2TableLegacy
 		}
 		else
 		{
-			$this->alias = JFilterOutput::stringURLSafe($this->alias);
+			require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/language.php';
+			$this->alias = K2HelperLanguage::transliterate($this->alias, $this->language);
 		}
 
 		if (JString::trim($this->alias) == '')
