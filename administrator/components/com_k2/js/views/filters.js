@@ -45,6 +45,13 @@ define(['marionette', 'text!layouts/filters.html', 'dispatcher', 'widgets/widget
 					text : l('K2_ANY')
 				});
 				K2Dispatcher.trigger('app:controller:setCollectionState', 'author', 0);
+				
+				// Tag
+				this.$('.appFilters input[name="tag"]').select2('data', {
+					id : 0,
+					text : l('K2_ANY')
+				});
+				K2Dispatcher.trigger('app:controller:setCollectionState', 'tag', 0);
 
 				// Always go to first page after reset
 				K2Dispatcher.trigger('app:controller:filter', 'page', 1);
