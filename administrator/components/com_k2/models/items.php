@@ -238,7 +238,7 @@ class K2ModelItems extends K2Model
 				$subquery->where($db->quoteName('tagId').' = '.(int)$tag);
 			}
 			$subquery->group($db->quoteName('itemId'));
-			$query->rightJoin('('.$subquery->__toString().') AS '.$db->quoteName('xref').' ON '.$db->quoteName('xref.itemId').' = '.$db->quoteName('item.id'));
+			$query->innerJoin('('.$subquery->__toString().') AS '.$db->quoteName('xref').' ON '.$db->quoteName('xref.itemId').' = '.$db->quoteName('item.id'));
 		}
 
 		if ($this->getState('publish_up'))

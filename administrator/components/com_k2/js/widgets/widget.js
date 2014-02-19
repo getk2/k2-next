@@ -118,6 +118,59 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 				});
 			});
 		},
+		tag : function(element) {
+			require(['widgets/select2/select2', 'css!widgets/select2/select2.css'], function() {
+				var tagId = element.val();
+				var tagName = element.data('name');
+				var showNull = element.data('null');
+				element.select2({
+					minimumInputLength : element.data('min') || 0,
+					placeholder : element.data('placeholder') || l('K2_SELECT_TAG'),
+					initSelection : function(element, callback) {
+						if (tagId) {
+							var data = {
+								id : tagId,
+								text : tagName
+							};
+							callback(data);
+						}
+					},
+					ajax : {
+						url : 'index.php?option=com_k2&task=tags.search&format=json',
+						dataType : 'json',
+						quietMillis : 100,
+						data : function(term, page) {
+							return {
+								search : term,
+								sorting : 'name',
+								limit : 50,
+								page : page,
+							};
+						},
+						results : function(data, page) {
+							var tags = [];
+							if (showNull) {
+								tags.push({
+									id : 0,
+									text : showNull
+								});
+							}
+							jQuery.each(data.rows, function(index, row) {
+								tags.push({
+									id : row.id,
+									text : row.name
+								});
+							});
+							var more = (page * 50) < data.total;
+							return {
+								results : tags,
+								more : more
+							};
+						}
+					},
+				});
+			});
+		},
 		tags : function(element) {
 			require(['widgets/select2/select2', 'css!widgets/select2/select2.css'], function() {
 				element.select2({

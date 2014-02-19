@@ -72,6 +72,12 @@ define(['marionette', 'text!layouts/filters.html', 'dispatcher', 'widgets/widget
 						text : states.authorName
 					});
 				}
+				if (states.tagName !== undefined) {
+					this.$el.find('.appFilters input[name="tag"]').select2('data', {
+						id : states.tag,
+						text : states.tagName
+					});
+				}
 			}, this));
 		},
 
