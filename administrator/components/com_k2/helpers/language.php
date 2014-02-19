@@ -30,6 +30,7 @@ class K2HelperLanguage
 		$language = JLanguage::getInstance($tag);
 		$string = $language->transliterate($string);
 		$string = JFilterOutput::stringURLSafe($string);
+		return $string;
 	}
 
 }
