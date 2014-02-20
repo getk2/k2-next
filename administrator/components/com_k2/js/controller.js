@@ -414,7 +414,33 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 		},
 
 		information : function() {
+			// Load the required files
+			require(['models/information', 'views/information'], _.bind(function(Model, View) {
 
+				// Create the model
+				this.model = new Model();
+
+				// Fetch the data from server
+				this.model.fetch({
+
+					// Success callback
+					success : _.bind(function() {
+
+						// Create the view
+						var view = new View({
+							model : this.model
+						});
+
+						// Render the view
+						K2Dispatcher.trigger('app:region:show', view, 'content');
+
+					}, this),
+					error : _.bind(function(model, xhr, options) {
+						this.enqueueMessage('error', xhr.responseText);
+					}, this)
+				});
+
+			}, this));
 		},
 
 		media : function() {

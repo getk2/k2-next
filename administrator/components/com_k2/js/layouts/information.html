@@ -1,0 +1,400 @@
+<table class="table">
+	<tr>
+		<td>
+		<fieldset>
+			<legend>
+				<%= l('K2_ABOUT') %>
+			</legend>
+			<div>
+				<%= l('K2_ABOUT_TEXT') %>
+			</div>
+		</fieldset>
+		<fieldset>
+			<legend>
+				<%= l('K2_CREDITS') %>
+			</legend>
+			<table>
+				<thead>
+					<tr>
+						<th><%= l('K2_PROVIDER') %></th>
+						<th><%= l('K2_VERSION') %></th>
+						<th><%= l('K2_TYPE') %></th>
+						<th><%= l('K2_LICENSE') %></th>
+					</tr>
+				</thead>
+				<tfoot>
+					<tr>
+						<th colspan="4">&nbsp;</th>
+					</tr>
+				</tfoot>
+				<tbody>
+					<tr>
+						<td><a target="_blank" href="http://nuovext.pwsp.net/">NuoveXT</a></td>
+						<td>2.2</td>
+						<td><%= l('K2_ICONS') %></td>
+						<td><%= l('K2_GNUGPL') %></td>
+					</tr>
+					<tr>
+						<td><a target="_blank" href="http://p.yusukekamiyamane.com/">Fugue Icons
+						<br />
+						(by Yusuke Kamiyamane)</a></td>
+						<td>3.5.3</td>
+						<td><%= l('K2_ICONS') %></td>
+						<td><%= l('K2_CREATIVE_COMMONS_ATTRIBUTION_30_LICENSE') %></td>
+					</tr>
+					<tr>
+						<td><a target="_blank" href="http://www.iconarchive.com/artist/tpdkdesign.net.html">"Choose Your Sport" Icon Pack
+						<br />
+						(by TpdkDesign.net)</a></td>
+						<td><%= l('K2_NA') %></td>
+						<td><%= l('K2_ICONS') %></td>
+						<td><%= l('K2_INFO_FREE_LICENSE') %></td>
+					</tr>
+					<tr>
+						<td><a target="_blank" href="http://jquery.com">jQuery</a></td>
+						<td>1.5.x - 1.9.x</td>
+						<td><%= l('K2_JS_LIB') %></td>
+						<td><%= l('K2_MIT') %></td>
+					</tr>
+					<tr>
+						<td><a target="_blank" href="http://jqueryui.com/">jQuery UI</a></td>
+						<td>1.8.24</td>
+						<td><%= l('K2_JS_LIB') %></td>
+						<td><%= l('K2_MIT') %></td>
+					</tr>
+					<tr>
+						<td><a target="_blank" href="http://elfinder.org/">elFinder</a></td>
+						<td>2.0 (rc1)</td>
+						<td><%= l('K2_INFO_FILE_MANAGER') %></td>
+						<td><%= l('K2_BSD') %></td>
+					</tr>
+				</tbody>
+			</table>
+		</fieldset></td>
+		<td>
+		<fieldset>
+			<legend>
+				<%= l('K2_SYSTEM_INFORMATION') %>
+			</legend>
+			<table>
+				<thead>
+					<tr>
+						<th><%= l('K2_CHECK') %></th>
+						<th><%= l('K2_RESULT') %></th>
+					</tr>
+				</thead>
+				<tfoot>
+					<tr>
+						<th colspan="2">&nbsp;</th>
+					</tr>
+				</tfoot>
+				<tbody>
+					<tr>
+						<td><strong><%= l('K2_WEB_SERVER') %></strong></td>
+						<td><%= server %></td>
+					</tr>
+					<tr>
+						<td><strong><%= l('K2_PHP_VERSION') %></strong></td>
+						<td><%= phpVersion %></td>
+					</tr>
+					<tr>
+						<td><strong><%= l('K2_MYSQL_VERSION') %></strong></td>
+						<td><%= dbVersion %></td>
+					</tr>
+					<tr>
+						<td><strong><%= l('K2_GD_IMAGE_LIBRARY') %></strong></td>
+						<td> <% if(gd) { %>
+						<%= gdVersion %>
+						<% } else { %>
+						<%= l('K2_DISABLED') %>
+						<% } %> </td>
+					</tr>
+					<tr>
+						<td><strong><%= l('K2_UPLOAD_LIMIT') %></strong></td>
+						<td><%= maxFileUploadSize %></td>
+					</tr>
+					<tr>
+						<td><strong><%= l('K2_MEMORY_LIMIT') %></strong></td>
+						<td><%= memoryLimit %></td>
+					</tr>
+					<tr>
+						<td><strong><%= l('K2_OPEN_REMOTE_FILES_ALLOW_URL_FOPEN') %></strong></td>
+						<td> <% if(allowURLFopen) { %>
+						<%= l('K2_YES') %>
+						<% } else { %>
+						<%= l('K2_NO') %>
+						<% } %> </td>
+					</tr>
+				</tbody>
+			</table>
+		</fieldset>
+		<fieldset>
+			<legend>
+				<%= l('K2_DIRECTORY_PERMISSIONS') %>
+			</legend>
+			<table>
+				<thead>
+					<tr>
+						<th><%= l('K2_CHECK') %></th>
+						<th><%= l('K2_RESULT') %></th>
+					</tr>
+				</thead>
+				<tfoot>
+					<tr>
+						<th colspan="2">&nbsp;</th>
+					</tr>
+				</tfoot>
+				<tbody>
+					<tr>
+						<td><strong>media/k2</strong></td>
+						<td> <% if(mediaFolder) { %>
+						<%= l('K2_WRITABLE') %>
+						<% } else { %>
+						<%= l('K2_NOT_WRITABLE') %>
+						<% } %> </td>
+					</tr>
+					<tr>
+						<td><strong>media/k2/attachments</strong></td>
+						<td> <% if(attachmentsFolder) { %>
+						<%= l('K2_WRITABLE') %>
+						<% } else { %>
+						<%= l('K2_NOT_WRITABLE') %>
+						<% } %> </td>
+					</tr>
+					<tr>
+						<td><strong>media/k2/categories</strong></td>
+						<td> <% if(categoriesFolder) { %>
+						<%= l('K2_WRITABLE') %>
+						<% } else { %>
+						<%= l('K2_NOT_WRITABLE') %>
+						<% } %> </td>
+					</tr>
+					<tr>
+						<td><strong>media/k2/galleries</strong></td>
+						<td> <% if(galleriesFolder) { %>
+						<%= l('K2_WRITABLE') %>
+						<% } else { %>
+						<%= l('K2_NOT_WRITABLE') %>
+						<% } %> </td>
+					</tr>
+					<tr>
+						<td><strong>media/k2/items</strong></td>
+						<td> <% if(itemsFolder) { %>
+						<%= l('K2_WRITABLE') %>
+						<% } else { %>
+						<%= l('K2_NOT_WRITABLE') %>
+						<% } %> </td>
+					</tr>
+					<tr>
+						<td><strong>media/k2/users</strong></td>
+						<td> <% if(usersFolder) { %>
+						<%= l('K2_WRITABLE') %>
+						<% } else { %>
+						<%= l('K2_NOT_WRITABLE') %>
+						<% } %> </td>
+					</tr>
+					<tr>
+						<td><strong>media/k2/media</strong></td>
+						<td> <% if(mediaFolder) { %>
+						<%= l('K2_WRITABLE') %>
+						<% } else { %>
+						<%= l('K2_NOT_WRITABLE') %>
+						<% } %> </td>
+					</tr>
+					<tr>
+						<td><strong>cache</strong></td>
+						<td> <% if(cacheFolder) { %>
+						<%= l('K2_WRITABLE') %>
+						<% } else { %>
+						<%= l('K2_NOT_WRITABLE') %>
+						<% } %> </td>
+					</tr>
+				</tbody>
+			</table>
+		</fieldset>
+		<fieldset>
+			<legend>
+				<%= l('K2_MODULES') %>
+			</legend>
+			<table>
+				<thead>
+					<tr>
+						<th><%= l('K2_CHECK') %></th>
+						<th><%= l('K2_RESULT') %></th>
+					</tr>
+				</thead>
+				<tfoot>
+					<tr>
+						<th colspan="2">&nbsp;</th>
+					</tr>
+				</tfoot>
+				<tbody>
+					<tr>
+						<td><strong>mod_k2_comments</strong></td>
+						<td> <% if(mod_k2_comments) { %>
+						<%= l('K2_INSTALLED') %>
+						<% } else { %>
+						<%= l('K2_NOT_INSTALLED') %>
+						<% } %> </td>
+					</tr>
+					<tr>
+						<td><strong>mod_k2_content</strong></td>
+						<td> <% if(mod_k2_content) { %>
+						<%= l('K2_INSTALLED') %>
+						<% } else { %>
+						<%= l('K2_NOT_INSTALLED') %>
+						<% } %> </td>
+					</tr>
+					<tr>
+						<td><strong>mod_k2_tools</strong></td>
+						<td> <% if(mod_k2_tools) { %>
+						<%= l('K2_INSTALLED') %>
+						<% } else { %>
+						<%= l('K2_NOT_INSTALLED') %>
+						<% } %> </td>
+					</tr>
+					<tr>
+						<td><strong>mod_k2_user</strong></td>
+						<td> <% if(mod_k2_user) { %>
+						<%= l('K2_INSTALLED') %>
+						<% } else { %>
+						<%= l('K2_NOT_INSTALLED') %>
+						<% } %> </td>
+					</tr>
+					<tr>
+						<td><strong>mod_k2_users</strong></td>
+						<td> <% if(mod_k2_users) { %>
+						<%= l('K2_INSTALLED') %>
+						<% } else { %>
+						<%= l('K2_NOT_INSTALLED') %>
+						<% } %> </td>
+					</tr>
+					<tr>
+						<td><strong>mod_k2_quickicons</strong> (administrator)</td>
+						<td> <% if(mod_k2_quickicons) { %>
+						<%= l('K2_INSTALLED') %>
+						<% } else { %>
+						<%= l('K2_NOT_INSTALLED') %>
+						<% } %> </td>
+					</tr>
+					<tr>
+						<td><strong>mod_k2_stats</strong> (administrator)</td>
+						<td> <% if(mod_k2_stats) { %>
+						<%= l('K2_INSTALLED') %>
+						<% } else { %>
+						<%= l('K2_NOT_INSTALLED') %>
+						<% } %> </td>
+					</tr>
+				</tbody>
+			</table>
+		</fieldset>
+		<fieldset>
+			<legend>
+				<%= l('K2_PLUGINS') %>
+			</legend>
+			<table>
+				<thead>
+					<tr>
+						<th><%= l('K2_CHECK') %></th>
+						<th><%= l('K2_RESULT') %></th>
+					</tr>
+				</thead>
+				<tfoot>
+					<tr>
+						<th colspan="2">&nbsp;</th>
+					</tr>
+				</tfoot>
+				<tbody>
+					<tr>
+						<td><strong>Finder - K2</strong></td>
+						<td> <% if(plg_finder_k2) { %>
+						<%= l('K2_INSTALLED') %> -
+						<% if(plg_finder_k2_enabled) { %>
+						<%= l('K2_ENABLED') %>
+						<% } else { %>
+						<%= l('K2_DISABLED') %>
+						<% } %>
+						<% } else { %>
+						<%= l('K2_NOT_INSTALLED') %>
+						<% } %> </td>
+					</tr>
+					<tr>
+						<td><strong>Search - K2</strong></td>
+						<td> <% if(plg_search_k2) { %>
+						<%= l('K2_INSTALLED') %> -
+						<% if(plg_search_k2_enabled) { %>
+						<%= l('K2_ENABLED') %>
+						<% } else { %>
+						<%= l('K2_DISABLED') %>
+						<% } %>
+						<% } else { %>
+						<%= l('K2_NOT_INSTALLED') %>
+						<% } %> </td>
+					</tr>
+					<tr>
+						<td><strong>System - K2</strong></td>
+						<td> <% if(plg_system_k2) { %>
+						<%= l('K2_INSTALLED') %> -
+						<% if(plg_system_k2_enabled) { %>
+						<%= l('K2_ENABLED') %>
+						<% } else { %>
+						<%= l('K2_DISABLED') %>
+						<% } %>
+						<% } else { %>
+						<%= l('K2_NOT_INSTALLED') %>
+						<% } %> </td>
+					</tr>
+					<tr>
+						<td><strong>User - K2</strong></td>
+						<td> <% if(plg_user_k2) { %>
+						<%= l('K2_INSTALLED') %> -
+						<% if(plg_user_k2_enabled) { %>
+						<%= l('K2_ENABLED') %>
+						<% } else { %>
+						<%= l('K2_DISABLED') %>
+						<% } %>
+						<% } else { %>
+						<%= l('K2_NOT_INSTALLED') %>
+						<% } %> </td>
+					</tr>
+				</tbody>
+			</table>
+		</fieldset>
+		<fieldset>
+			<legend>
+				<%= l('K2_THIRDPARTY_PLUGIN_INFORMATION') %>
+			</legend>
+			<table>
+				<thead>
+					<tr>
+						<th><%= l('K2_CHECK') %></th>
+						<th><%= l('K2_RESULT') %></th>
+					</tr>
+				</thead>
+				<tfoot>
+					<tr>
+						<th colspan="2">&nbsp;</th>
+					</tr>
+				</tfoot>
+				<tbody>
+					<tr>
+						<td><strong><%= l('K2_ALLVIDEOS_PLUGIN') %></strong></td>
+						<td> <% if(plg_content_allvideos) { %>
+						<%= l('K2_INSTALLED') %>
+						<% } else { %>
+						<%= l('K2_NOT_INSTALLED') %>
+						<% } %> </td>
+					</tr>
+					<tr>
+						<td><strong><%= l('K2_SIMPLE_IMAGE_GALLERY_PRO_PLUGIN') %></strong></td>
+						<td> <% if(plg_content_sigpro) { %>
+						<%= l('K2_INSTALLED') %>
+						<% } else { %>
+						<%= l('K2_NOT_INSTALLED') %>
+						<% } %> </td>
+					</tr>
+				</tbody>
+			</table>
+		</fieldset></td>
+	</tr>
+</table>
