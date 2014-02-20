@@ -17,6 +17,6 @@ $id = 'extraFieldId'.$this->id;
 <?php foreach($field->get('options') as $option): ?>
 	<label>
 		<?php echo $option; ?>
-		<input type="radio" name="<?php echo $name; ?>" value="<?php echo htmlspecialchars($option, ENT_QUOTES, 'UTF-8'); ?>" />
+		<input type="radio" name="<?php echo $name; ?>" value="<?php echo htmlspecialchars($option, ENT_QUOTES, 'UTF-8'); ?>" <?php if($field->get('value') == $option) { echo 'checked="checked"';} ?> />
 	</label>
 <?php endforeach; ?>

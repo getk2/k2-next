@@ -27,11 +27,6 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 		// Initialize
 		initialize : function() {
 
-			// Add a listener for the before save event
-			K2Dispatcher.on('app:controller:beforeSave', function() {
-				this.onBeforeSave();
-			}, this);
-
 			// Image view. First override the size with the one from the settings
 			if(this.model.get('image')) {
 				var images = this.model.get('images');
@@ -83,9 +78,6 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 		// OnBeforeSave event
 		onBeforeSave : function() {
 
-			// Validate extra fields
-			//this.extraFieldsView.validate();
-
 			// Update form from editor contents
 			var form = this.model.getForm();
 			if(form.has('text')) {
@@ -94,6 +86,11 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 				K2Editor.save('introtext');
 				K2Editor.save('fulltext');
 			}
+			
+			// Validate extra fields
+			var result = this.extraFieldsView.validate();
+			
+			return result;
 			
 		},
 

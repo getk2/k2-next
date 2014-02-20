@@ -23,10 +23,9 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 
 			// Listener for edit event.
 			K2Dispatcher.on('app:controller:edit', function(id) {
-				if(this.isModal) {
+				if (this.isModal) {
 					this.selectRow(id);
-				}
-				else {
+				} else {
 					this.edit(id);
 				}
 			}, this);
@@ -63,12 +62,12 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 
 			// Listener for batch set state event.
 			K2Dispatcher.on('app:controller:batchSetState', function(rows, value, state) {
-				this.batchSetState(rows,value, state);
+				this.batchSetState(rows, value, state);
 			}, this);
-			
+
 			// Listener for batch set multiple states event.
 			K2Dispatcher.on('app:controller:batchSetMultipleStates', function(rows, states, mode) {
-				this.batchSetMultipleStates(rows,states, mode);
+				this.batchSetMultipleStates(rows, states, mode);
 			}, this);
 
 			// Listener for save ordering
@@ -95,7 +94,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 			} else {
 				var parts = url.split('/');
 				var first = _.first(parts);
-				if(first == 'modal') {
+				if (first == 'modal') {
 					jQuery('#appPrimaryMenu').hide();
 					jQuery('#appSecondaryMenu').hide();
 					jQuery('#appActions').hide();
@@ -217,12 +216,12 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 				this.model.fetch({
 					success : _.bind(function() {
 						// Create the view
-						var view = new View({
+						this.view = new View({
 							model : this.model
 						});
 
 						// Render the view
-						K2Dispatcher.trigger('app:region:show', view, 'content');
+						K2Dispatcher.trigger('app:region:show', this.view, 'content');
 
 						// Determine the new URL
 						var suffix = (id) ? '/edit/' + id : '/add';
@@ -241,31 +240,37 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 		// Save function. Saves the model and redirects properly.
 		save : function(redirect, callback) {
 
-			// Trigger the onBeforeSave event
-			K2Dispatcher.trigger('app:controller:beforeSave');
+			// Trigger the onBeforeSave event if available
+			var onBeforeSave = true;
+			if ( typeof (this.view.onBeforeSave) === 'function') {
+				onBeforeSave = this.view.onBeforeSave();
+			}
 
-			// Get the form variables
-			var input = jQuery('.appEditForm').serializeArray();
+			if (onBeforeSave) {
+				// Get the form variables
+				var input = jQuery('.appEditForm').serializeArray();
 
-			// Save
-			this.model.save(null, {
-				data : input,
-				silent : true,
-				success : _.bind(function(model) {
-					if (redirect === 'list') {
-						this.list();
-					} else if (redirect === 'add') {
-						this.edit();
-					} else if (redirect === 'edit') {
-						this.edit(this.model.get('id'));
-					} else if (redirect === 'custom' && callback) {
-						this[callback]();
-					}
-				}, this),
-				error : _.bind(function(model, xhr, options) {
-					this.enqueueMessage('error', xhr.responseText);
-				}, this)
-			});
+				// Save
+				this.model.save(null, {
+					data : input,
+					silent : true,
+					success : _.bind(function(model) {
+						if (redirect === 'list') {
+							this.list();
+						} else if (redirect === 'add') {
+							this.edit();
+						} else if (redirect === 'edit') {
+							this.edit(this.model.get('id'));
+						} else if (redirect === 'custom' && callback) {
+							this[callback]();
+						}
+					}, this),
+					error : _.bind(function(model, xhr, options) {
+						this.enqueueMessage('error', xhr.responseText);
+					}, this)
+				});
+			}
+
 		},
 
 		// Close function. Checks in the row and redirects to list.
@@ -364,7 +369,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 				}, this)
 			});
 		},
-		
+
 		// Batch function. Updates the collection states depending on the batch actions and renders the list again.
 		batchSetMultipleStates : function(rows, states, mode) {
 			var keys = [];
@@ -479,7 +484,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 				K2Dispatcher.trigger('app:region:show', view, 'modal');
 			}, this));
 		},
-		
+
 		selectRow : function(id) {
 			var row = this.collection.get(id);
 			parent.K2SelectRow(row);

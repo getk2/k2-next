@@ -11,11 +11,6 @@ define(['marionette', 'text!layouts/users/form.html', 'dispatcher', 'widgets/wid
 		},
 		initialize : function() {
 			
-			// Add a listener for the before save event
-			K2Dispatcher.on('app:controller:beforeSave', function() {
-				this.onBeforeSave();
-			}, this);
-			
 			// Image
 			this.imageView = new K2ViewImageWidget({
 				row : this.model,
@@ -68,6 +63,11 @@ define(['marionette', 'text!layouts/users/form.html', 'dispatcher', 'widgets/wid
 		onBeforeSave : function() {
 			// Update form from editor contents
 			K2Editor.save('description');
+			
+			// Validate extra fields
+			var result = this.extraFieldsView.validate();
+			
+			return result;
 		}
 	});
 	return K2ViewUser;

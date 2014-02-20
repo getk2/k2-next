@@ -2,25 +2,15 @@ define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categor
 	var K2ViewCategoriesRow = Marionette.CompositeView.extend({
 		tagName : 'li',
 		template : _.template(row),
+		events : {
+			'click a.appEditLink' : 'edit',
+		},
+		edit : function(event) {
+			event.preventDefault();
+			K2Dispatcher.trigger('app:controller:edit', this.model.get('id'));
+		},
 		initialize : function() {
 			this.collection = new Backbone.Collection(this.model.get('children'));
-		},
-		events : {
-			'click .appActionToggleState' : 'toggleState'
-		},
-		toggleState : function(event) {
-			event.preventDefault();
-			event.stopPropagation();
-			var el = jQuery(event.currentTarget);
-			var state = el.data('state');
-			this.model.toggleState(state, {
-				success : _.bind(function() {
-					K2Dispatcher.trigger('app:controller:list');
-				}, this),
-				error : _.bind(function(model, xhr, options) {
-					K2Dispatcher.trigger('app:message', 'error', xhr.responseText);
-				}, this)
-			});
 		},
 		onRender : function() {
 			// If the row is a nested one but it's parent is missing from the view, then add the extra padding

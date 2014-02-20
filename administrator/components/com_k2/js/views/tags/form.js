@@ -24,6 +24,14 @@ define(['marionette', 'text!layouts/tags/form.html', 'views/extrafields/widget']
 				'form' : this.model.getForm().toJSON()
 			};
 			return data;
+		},
+		// OnBeforeSave event
+		onBeforeSave : function() {
+			
+			// Validate extra fields
+			var result = this.extraFieldsView.validate();
+			
+			return result;
 		}
 	});
 	return K2ViewTag;

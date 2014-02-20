@@ -8,7 +8,7 @@
     <h3><%= group.name %></h3>
     <fieldset>
         <% _.each(group.fields, function(field) { %>
-        <div>
+        <div id="k2ExtraField<%- field.id %>">
             <label><%= field.name %></label> <%= field.input %>
         </div>
         <% }); %>
