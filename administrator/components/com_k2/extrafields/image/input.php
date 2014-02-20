@@ -11,6 +11,6 @@
 defined('_JEXEC') or die ;
 ?>
 <label><?php echo JText::_('K2_SOURCE'); ?></label>
-<input type="text" name="extra_fields[<?php echo $this->id; ?>][src]" value="<?php echo htmlspecialchars($field->get('src'), ENT_QUOTES, 'UTF-8'); ?>" data-widget="browse" /> 
+<input type="text" name="extra_fields[<?php echo $this->id; ?>][src]" value="<?php echo htmlspecialchars($field->get('src'), ENT_QUOTES, 'UTF-8'); ?>" data-widget="browser" /> 
 <label><?php echo JText::_('K2_ALT'); ?></label>
 <input type="text" name="extra_fields[<?php echo $this->id; ?>][alt]" value="<?php echo htmlspecialchars($field->get('alt'), ENT_QUOTES, 'UTF-8'); ?>" />
