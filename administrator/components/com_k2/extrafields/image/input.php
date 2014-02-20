@@ -11,6 +11,17 @@
 defined('_JEXEC') or die ;
 ?>
 <label><?php echo JText::_('K2_SOURCE'); ?></label>
-<input type="text" name="extra_fields[<?php echo $this->id; ?>][src]" value="<?php echo htmlspecialchars($field->get('src'), ENT_QUOTES, 'UTF-8'); ?>" data-widget="browser" /> 
+<input type="text" name="<?php echo $field->get('prefix'); ?>[src]" value="<?php echo htmlspecialchars($field->get('src'), ENT_QUOTES, 'UTF-8'); ?>" data-widget="browser" /> 
 <label><?php echo JText::_('K2_ALT'); ?></label>
-<input type="text" name="extra_fields[<?php echo $this->id; ?>][alt]" value="<?php echo htmlspecialchars($field->get('alt'), ENT_QUOTES, 'UTF-8'); ?>" />
+<input type="text" name="<?php echo $field->get('prefix'); ?>[alt]" value="<?php echo htmlspecialchars($field->get('alt'), ENT_QUOTES, 'UTF-8'); ?>" />
+
+<?php if($this->required): ?>
+<script type="text/javascript">
+	jQuery(document).bind('K2ExtraFieldsValidate', function(event, K2ExtraFields) {
+		var element = jQuery('input[name="<?php echo $field->get('prefix'); ?>[src]"]');
+		if(element.val() == '') {
+			K2ExtraFields.addValidationError(<?php echo $this->id; ?>);
+		}
+	});
+</script>
+<?php endif; ?>

@@ -10,4 +10,4 @@
 // no direct access
 defined('_JEXEC') or die ;
 ?>
-<input type="text" name="<?php echo $field->get('_name'); ?>[date]" value="<?php echo htmlspecialchars($field->get('date'), ENT_QUOTES, 'UTF-8'); ?>" data-widget="datepicker" /> 
+<input type="text" name="<?php echo $field->get('prefix'); ?>[date]" value="<?php echo htmlspecialchars($field->get('date'), ENT_QUOTES, 'UTF-8'); ?>" data-widget="datepicker" /> 

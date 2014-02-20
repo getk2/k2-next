@@ -10,12 +10,12 @@
 // no direct access
 defined('_JEXEC') or die ;
 ?>
-<input type="text" name="extra_fields[<?php echo $this->id; ?>][date]" value="<?php echo htmlspecialchars($field->get('date'), ENT_QUOTES, 'UTF-8'); ?>" data-widget="datepicker" /> 
+<input type="text" name="<?php echo $field->get('prefix'); ?>[date]" value="<?php echo htmlspecialchars($field->get('date'), ENT_QUOTES, 'UTF-8'); ?>" data-widget="datepicker" /> 
 
 <?php if($this->required): ?>
 <script type="text/javascript">
 	jQuery(document).bind('K2ExtraFieldsValidate', function(event, K2ExtraFields) {
-		var element = jQuery('input[name="extra_fields[<?php echo $this->id; ?>][date]"]');
+		var element = jQuery('input[name="<?php echo $field->get('prefix'); ?>[date]"]');
 		if(element.val() == '') {
 			K2ExtraFields.addValidationError(<?php echo $this->id; ?>);
 		}

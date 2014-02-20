@@ -10,4 +10,15 @@
 // no direct access
 defined('_JEXEC') or die ; ?>
 
-<input type="text" name="extra_fields[<?php echo $this->id; ?>][value]" value="<?php echo htmlspecialchars($field->get('value'), ENT_QUOTES, 'UTF-8'); ?>" />
+<input type="text" name="<?php echo $field->get('prefix'); ?>[value]" value="<?php echo htmlspecialchars($field->get('value'), ENT_QUOTES, 'UTF-8'); ?>" />
+
+<?php if($this->required): ?>
+<script type="text/javascript">
+	jQuery(document).bind('K2ExtraFieldsValidate', function(event, K2ExtraFields) {
+		var element = jQuery('input[name="<?php echo $field->get('prefix'); ?>[value]"]');
+		if(element.val() == '') {
+			K2ExtraFields.addValidationError(<?php echo $this->id; ?>);
+		}
+	});
+</script>
+<?php endif; ?>

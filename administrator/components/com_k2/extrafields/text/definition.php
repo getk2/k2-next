@@ -10,4 +10,5 @@
 // no direct access
 defined('_JEXEC') or die ; ?>
 
-<input type="text" name="value[value]" value="<?php echo htmlspecialchars($field->get('value'), ENT_QUOTES, 'UTF-8'); ?>" />
+
+<input type="text" name="<?php echo $field->get('prefix'); ?>[value]" value="<?php echo htmlspecialchars($field->get('value'), ENT_QUOTES, 'UTF-8'); ?>" />

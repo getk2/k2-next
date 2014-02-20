@@ -16,7 +16,7 @@ defined('_JEXEC') or die ;
 	<?php if(is_array($field->get('options'))) : ?>
 	<?php foreach($field->get('options') as $option): ?>
 	<div class="extraFieldRadioOption">
-		<input type="text" name="value[options][]" value="<?php echo htmlspecialchars($option, ENT_QUOTES, 'UTF-8'); ?>"> <button class="extraFieldRadioRemoveOption"><?php echo JText::_('K2_REMOVE'); ?></button>
+		<input type="text" name="<?php echo $field->get('prefix'); ?>[options][]" value="<?php echo htmlspecialchars($option, ENT_QUOTES, 'UTF-8'); ?>"> <button class="extraFieldRadioRemoveOption"><?php echo JText::_('K2_REMOVE'); ?></button>
 	</div>
 	<?php endforeach; ?>
 	<?php endif; ?>
@@ -30,7 +30,7 @@ defined('_JEXEC') or die ;
 	jQuery('#extraFieldRadioAddOption').click(function(event) {
 		event.preventDefault();
 		var container = jQuery('<div>').attr('class', 'extraFieldRadioOption');
-		var option = jQuery('<input>').attr('type', 'text').attr('name', 'value[options][]');
+		var option = jQuery('<input>').attr('type', 'text').attr('name', '<?php echo $field->get('prefix'); ?>[options][]');
 		var button = jQuery('<button>').text('<?php echo JText::_('K2_REMOVE'); ?>').attr('class', 'extraFieldRadioRemoveOption');
 		container.append(option);
 		container.append(button);

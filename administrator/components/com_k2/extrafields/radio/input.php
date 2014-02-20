@@ -10,13 +10,22 @@
 // no direct access
 defined('_JEXEC') or die ;
 
-$name = 'extra_fields['.$this->id.'][value]';
-$id = 'extraFieldId'.$this->id;
 ?>
 
 <?php foreach($field->get('options') as $option): ?>
 	<label>
 		<?php echo $option; ?>
-		<input type="radio" name="<?php echo $name; ?>" value="<?php echo htmlspecialchars($option, ENT_QUOTES, 'UTF-8'); ?>" <?php if($field->get('value') == $option) { echo 'checked="checked"';} ?> />
+		<input type="radio" name="<?php echo $field->get('prefix'); ?>[value]>" value="<?php echo htmlspecialchars($option, ENT_QUOTES, 'UTF-8'); ?>" <?php if($field->get('value') == $option) { echo 'checked="checked"';} ?> />
 	</label>
 <?php endforeach; ?>
+
+<?php if($this->required): ?>
+<script type="text/javascript">
+	jQuery(document).bind('K2ExtraFieldsValidate', function(event, K2ExtraFields) {
+		var checked = jQuery('input[name="<?php echo $field->get('prefix'); ?>[value]"]:checked');
+		if(checked.length == 0) {
+			K2ExtraFields.addValidationError(<?php echo $this->id; ?>);
+		}
+	});
+</script>
+<?php endif; ?>

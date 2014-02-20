@@ -10,8 +10,6 @@
 // no direct access
 defined('_JEXEC') or die ;
 
-$name = 'extra_fields['.$this->id.'][value]';
-$id = 'extraFieldId'.$this->id;
 $attributes = '';
 if($field->get('multiple'))
 {
@@ -20,7 +18,7 @@ if($field->get('multiple'))
 }
 ?>
 
-<select id="<?php echo $id; ?>" name="<?php echo $name; ?>" <?php echo $attributes; ?>>
+<select id="k2ExtraFieldSelectId<?php echo $id; ?>" name="<?php echo $field->get('prefix'); ?>[value]" <?php echo $attributes; ?>>
 <?php if($field->get('null')): ?>
 	<option value=""><?php echo JText::_('K2_SELECT_AN_OPTION'); ?></option>
 <?php endif; ?>
@@ -31,6 +29,15 @@ if($field->get('multiple'))
 
 <script type="text/javascript">
 	jQuery(document).on('K2ExtraFieldsRender', function() {
-		jQuery('#extraFieldId<?php echo $this->id; ?>').val(<?php echo json_encode($field->get('value')); ?>);
+		jQuery('#k2ExtraFieldSelectId<?php echo $this->id; ?>').val(<?php echo json_encode($field->get('value')); ?>);
 	});
+	
+	<?php if($this->required): ?>
+	jQuery(document).bind('K2ExtraFieldsValidate', function(event, K2ExtraFields) {
+		var element = jQuery('#k2ExtraFieldSelectId<?php echo $id; ?>');
+		if(!element.val()) {
+			K2ExtraFields.addValidationError(<?php echo $this->id; ?>);
+		}
+	});
+	<?php endif; ?>
 </script>
