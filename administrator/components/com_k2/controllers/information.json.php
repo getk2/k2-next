@@ -29,7 +29,7 @@ class K2ControllerInformation extends K2Controller
 	protected function onBeforeRead($mode, $id)
 	{
 		$user = JFactory::getUser();
-		return !$user->guest;
+		return $user->authorise('core.login.admin');
 	}
 
 }
