@@ -10,6 +10,4 @@
 // no direct access
 defined('_JEXEC') or die ; ?>
 
-<?php foreach($field->get('options') as $option): ?>
-	<div><?php echo $option; ?></div>
-<?php endforeach; ?>
+<div><?php echo $field->get('value'); ?></div>

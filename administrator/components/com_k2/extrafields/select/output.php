@@ -9,7 +9,16 @@
 
 // no direct access
 defined('_JEXEC') or die ; ?>
+<div>
+<?php if($field->get('multiple')): ?>
+	
+	<?php foreach($field->get('value') as $value): ?>
+		<?php echo $value; ?>
+	<?php endforeach; ?>
+	
+<?php else : ?>
 
-<?php foreach($field->get('options') as $option): ?>
-	<div><?php echo $option; ?></div>
-<?php endforeach; ?>
+	<?php echo $value ?>
+	
+<?php endif; ?>
+</div>
