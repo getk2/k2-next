@@ -108,12 +108,40 @@ class K2Controller extends JControllerLegacy
 	}
 
 	/**
+	 * Typical view method for MVC based architecture
+	 *
+	 * This function is provide as a default implementation, in most cases
+	 * you will need to override it in your own controllers.
+	 *
+	 * @param   boolean  $cachable   If true, the view output will be cached
+	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 *
+	 * @return  JControllerLegacy  A JControllerLegacy object to support chaining.
+	 *
+	 * @since   12.2
+	 */
+	public function display($cachable = false, $urlparams = array())
+	{
+		$document = JFactory::getDocument();
+		if($document->getType() != 'html')
+		{
+			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
+		}
+		parent::display($cachable, $urlparams);
+	}
+
+	/**
 	 * Search function. Used for autocomplete and search requests
 	 *
 	 * @return JControllerLegacy	A JControllerLegacy object to support chaining.
 	 */
 	public function search()
 	{
+		$user = JFactory::getUser();
+		if($user->guest)
+		{
+			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
+		}
 		$model = $this->getModel($this->resourceType);
 		$model->setState('search', $this->input->get('search'));
 		$model->setState('sorting', $this->input->get('sorting'));
