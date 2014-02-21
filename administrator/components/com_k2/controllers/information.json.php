@@ -10,6 +10,8 @@
 // no direct access
 defined('_JEXEC') or die ;
 
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/controller.php';
+
 /**
  * Information JSON controller.
  */
