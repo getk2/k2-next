@@ -86,8 +86,9 @@ class K2ControllerUsers extends K2Controller
 
 		if ($user->authorise('core.edit', 'com_users'))
 		{
-			$this->model->close();
+			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'), 403);
 		}
+		$this->model->close();
 		return $this;
 	}
 

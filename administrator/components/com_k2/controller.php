@@ -93,7 +93,7 @@ class K2Controller extends JControllerLegacy
 			// Fix base meta tag
 			$uri = JURI::getInstance();
 			$document->setBase($uri->toString());
-			
+
 			// Load administration language file
 			$language = JFactory::getLanguage();
 			$language->load('com_k2', JPATH_ADMINISTRATOR);
@@ -123,7 +123,7 @@ class K2Controller extends JControllerLegacy
 	public function display($cachable = false, $urlparams = array())
 	{
 		$document = JFactory::getDocument();
-		if($document->getType() != 'html')
+		if ($document->getType() != 'html')
 		{
 			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
 		}
@@ -138,7 +138,7 @@ class K2Controller extends JControllerLegacy
 	public function search()
 	{
 		$user = JFactory::getUser();
-		if($user->guest)
+		if ($user->guest)
 		{
 			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
 		}
@@ -226,11 +226,17 @@ class K2Controller extends JControllerLegacy
 	 */
 	public function close()
 	{
+		$user = JFactory::getUser();
+
+		if ($user->guest)
+		{
+			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'), 403);
+		}
+
 		// Check for token
 		JSession::checkToken() or K2Response::throwError(JText::_('JINVALID_TOKEN'));
 		return $this;
 	}
-	
 
 	/**
 	 * onBeforeRead function.

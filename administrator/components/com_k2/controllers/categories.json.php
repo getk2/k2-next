@@ -98,10 +98,12 @@ class K2ControllerCategories extends K2Controller
 		// User
 		$user = JFactory::getUser();
 
-		if ($user->authorise('k2.category.edit', 'com_k2'))
+		if (!$user->authorise('k2.category.edit', 'com_k2'))
 		{
-			$this->model->close();
+			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'), 403);
 		}
+
+		$this->model->close();
 		return $this;
 	}
 
