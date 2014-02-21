@@ -147,6 +147,16 @@ class K2Categories extends K2Resource
 		$numOfItems = $model->countRows();
 		return $numOfItems;
 	}
+	
+	public function getExtraFields()
+	{
+		$extraFields = array();
+		if ($this->id)
+		{
+			$extraFields = K2HelperExtraFields::getCategoryExtraFields($this->id, $this->extra_fields);
+		}
+		return $extraFields;
+	}
 
 	public function getEvents($context = 'com_k2.category', &$params = null, $offset = 0, $k2Plugins = true, $jPlugins = true)
 	{

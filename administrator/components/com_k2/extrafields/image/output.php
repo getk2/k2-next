@@ -10,4 +10,6 @@
 // no direct access
 defined('_JEXEC') or die ; ?>
 
+<?php if($field->get('src')): ?>
 <img src="<?php echo htmlspecialchars($field->get('src'), ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($field->get('alt'), ENT_QUOTES, 'UTF-8'); ?>" />
+<?php endif; ?>

@@ -109,6 +109,16 @@ class K2Tags extends K2Resource
 	{
 		return JRoute::_(K2HelperRoute::getTagRoute($this->id.':'.$this->alias), true, -1);
 	}
+	
+	public function getExtraFields()
+	{
+		$extraFields = array();
+		if ($this->id)
+		{
+			$extraFields = K2HelperExtraFields::getTagExtraFields($this->id, $this->extra_fields);
+		}
+		return $extraFields;
+	}
 
 	public function checkSiteAccess()
 	{

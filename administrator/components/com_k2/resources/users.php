@@ -149,6 +149,16 @@ class K2Users extends K2Resource
 		$numOfComments = $model->countRows();
 		return $numOfComments;
 	}
+	
+	public function getExtraFields()
+	{
+		$extraFields = array();
+		if ($this->id)
+		{
+			$extraFields = K2HelperExtraFields::getUserExtraFields($this->id, $this->extra_fields);
+		}
+		return $extraFields;
+	}
 
 	public function getEvents()
 	{

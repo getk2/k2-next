@@ -35,6 +35,10 @@ class K2View extends JViewLegacy
 
 		// Set the params
 		$this->params = $application->getParams('com_k2');
+		
+		$this->params->set('catExtraFields', 1);
+		$this->params->set('userExtraFields', 1);
+		$this->params->set('tagExtraFields', 1);
 
 		// Set the user
 		$this->user = JFactory::getUser();

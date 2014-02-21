@@ -30,4 +30,6 @@ switch ($field->get('target'))
 		break;
 }
 ?>
+<?php if($field->get('url')): ?>
 <a <?php echo $attributes; ?> href="<?php echo htmlspecialchars($field->get('url'), ENT_QUOTES, 'UTF-8'); ?>"><?php echo $field->get('text'); ?></a>
+<?php endif; ?>

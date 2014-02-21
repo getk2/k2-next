@@ -60,6 +60,25 @@ defined('_JEXEC') or die; ?>
 			<!-- Category description -->
 			<p><?php echo $this->category->description; ?></p>
 			<?php endif; ?>
+			
+			<?php if($this->params->get('catExtraFields') && count($this->category->extraFields)): ?>
+			<!-- Category extra fields -->
+			<div class="catExtraFields">
+				<h3><?php echo JText::_('K2_ADDITIONAL_INFO'); ?></h3>
+				<?php foreach ($this->category->extraFields as $extraFieldGroup): ?>
+				<h4><?php echo $extraFieldGroup->name; ?></h4>
+				<ul>
+				<?php foreach ($extraFieldGroup->fields as $key=>$extraField): ?>
+					<li class="<?php echo ($key%2) ? "odd" : "even"; ?> type<?php echo ucfirst($extraField->type); ?> group<?php echo $extraField->group; ?>">
+					<span class="catExtraFieldsLabel"><?php echo $extraField->name; ?>:</span>
+					<span class="catExtraFieldsValue"><?php echo $extraField->output; ?></span>
+					</li>
+				<?php endforeach; ?>
+				</ul>
+				<?php endforeach; ?>
+				<div class="clr"></div>
+			</div>
+			<?php endif; ?>
 
 			<!-- K2 Plugins: K2CategoryDisplay -->
 			<?php echo $this->category->events->K2CategoryDisplay; ?>

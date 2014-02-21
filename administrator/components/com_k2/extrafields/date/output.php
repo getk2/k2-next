@@ -10,4 +10,6 @@
 // no direct access
 defined('_JEXEC') or die ; ?>
 
-<span><?php echo JHtml::_('date', $field->get('date'), JText::_('K2_DATE_FORMAT')); ?></span>
+<?php if($value = $field->get('date')): ?>
+<span><?php echo JHtml::_('date', $value, JText::_('K2_DATE_FORMAT')); ?></span>
+<?php endif; ?>

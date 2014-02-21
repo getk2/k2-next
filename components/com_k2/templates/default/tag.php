@@ -29,6 +29,25 @@ defined('_JEXEC') or die; ?>
 	</div>
 	<?php endif; ?>
 	
+	<?php if($this->params->get('tagExtraFields') && count($this->tag->extraFields)): ?>
+	<!-- Tag extra fields -->
+	<div class="tagExtraFields">
+		<h3><?php echo JText::_('K2_ADDITIONAL_INFO'); ?></h3>
+		<?php foreach ($this->tag->extraFields as $extraFieldGroup): ?>
+		<h4><?php echo $extraFieldGroup->name; ?></h4>
+		<ul>
+		<?php foreach ($extraFieldGroup->fields as $key=>$extraField): ?>
+			<li class="<?php echo ($key%2) ? "odd" : "even"; ?> type<?php echo ucfirst($extraField->type); ?> group<?php echo $extraField->group; ?>">
+			<span class="tagExtraFieldsLabel"><?php echo $extraField->name; ?>:</span>
+			<span class="tagExtraFieldsValue"><?php echo $extraField->output; ?></span>
+			</li>
+		<?php endforeach; ?>
+		</ul>
+		<?php endforeach; ?>
+		<div class="clr"></div>
+	</div>
+	<?php endif; ?>
+	
 	<?php if(count($this->items)): ?>
 	<div class="itemList">
 		<?php foreach($this->items as $item): ?>
