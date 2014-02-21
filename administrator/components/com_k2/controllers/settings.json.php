@@ -92,6 +92,13 @@ class K2ControllerSettings extends K2Controller
 		// Attempt to save the configuration.
 		$data = array('params' => $return, 'id' => $id, 'option' => $option);
 		$return = $model->save($data);
+		
+		if (version_compare(JVERSION, '3.2', 'ge'))
+		{
+			$options = array('defaultgroup' => '_system', 'cachebase' => JPATH_ADMINISTRATOR.'/cache');
+			$cache = JCache::getInstance('callback', $options);
+			$cache->clean();
+		}
 
 		// Check the return value.
 		if ($return === false)
