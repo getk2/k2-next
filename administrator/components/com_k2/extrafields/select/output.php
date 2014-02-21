@@ -12,7 +12,7 @@ defined('_JEXEC') or die ; ?>
 <div>
 <?php if($field->get('multiple')): ?>
 	
-	<?php foreach($field->get('value') as $value): ?>
+	<?php foreach($field->get('value', array()) as $value): ?>
 		<?php echo $value; ?>
 	<?php endforeach; ?>
 	

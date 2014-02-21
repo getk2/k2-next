@@ -22,7 +22,7 @@ if($field->get('multiple'))
 <?php if($field->get('null')): ?>
 	<option value=""><?php echo JText::_('K2_SELECT_AN_OPTION'); ?></option>
 <?php endif; ?>
-<?php foreach($field->get('options') as $option): ?>
+<?php foreach($field->get('options', array()) as $option): ?>
 	<option value="<?php echo htmlspecialchars($option, ENT_QUOTES, 'UTF-8'); ?>"><?php echo $option; ?></option>
 <?php endforeach; ?>
 </select>

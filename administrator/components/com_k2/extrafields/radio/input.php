@@ -12,7 +12,7 @@ defined('_JEXEC') or die ;
 
 ?>
 
-<?php foreach($field->get('options') as $option): ?>
+<?php foreach($field->get('options', array()) as $option): ?>
 	<label>
 		<?php echo $option; ?>
 		<input type="radio" name="<?php echo $field->get('prefix'); ?>[value]" value="<?php echo htmlspecialchars($option, ENT_QUOTES, 'UTF-8'); ?>" <?php if($field->get('value') == $option) { echo 'checked="checked"';} ?> />
