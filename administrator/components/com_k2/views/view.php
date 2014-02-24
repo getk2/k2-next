@@ -319,7 +319,7 @@ class K2View extends JViewLegacy
 			$form->bind($row);
 
 			// Import plugins to extend the form
-			JPluginHelper::importPlugin('k2');
+			JPluginHelper::importPlugin('content');
 
 			// Get the dispatcher.
 			$dispatcher = JDispatcher::getInstance();
