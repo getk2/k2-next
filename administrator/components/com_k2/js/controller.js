@@ -402,12 +402,12 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 					success : _.bind(function() {
 
 						// Create the view
-						var view = new View({
+						this.view = new View({
 							model : this.model
 						});
 
 						// Render the view
-						K2Dispatcher.trigger('app:region:show', view, 'content');
+						K2Dispatcher.trigger('app:region:show', this.view, 'content');
 
 					}, this),
 					error : _.bind(function(model, xhr, options) {
@@ -432,12 +432,12 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 					success : _.bind(function() {
 
 						// Create the view
-						var view = new View({
+						this.view = new View({
 							model : this.model
 						});
 
 						// Render the view
-						K2Dispatcher.trigger('app:region:show', view, 'content');
+						K2Dispatcher.trigger('app:region:show', this.view, 'content');
 
 					}, this),
 					error : _.bind(function(model, xhr, options) {
@@ -462,12 +462,12 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 					success : _.bind(function() {
 
 						// Create the view
-						var view = new View({
+						this.view = new View({
 							model : this.model
 						});
 
 						// Render the view
-						K2Dispatcher.trigger('app:region:show', view, 'content');
+						K2Dispatcher.trigger('app:region:show', this.view, 'content');
 
 					}, this),
 					error : _.bind(function(model, xhr, options) {
@@ -480,8 +480,8 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 
 		browseServer : function(options) {
 			require(['views/media/manager'], _.bind(function(K2ViewMediaManager) {
-				var view = new K2ViewMediaManager(options);
-				K2Dispatcher.trigger('app:region:show', view, 'modal');
+				this.view = new K2ViewMediaManager(options);
+				K2Dispatcher.trigger('app:region:show', this.view, 'modal');
 			}, this));
 		},
 
