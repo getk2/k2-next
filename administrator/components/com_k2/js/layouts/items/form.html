@@ -84,6 +84,11 @@
     <label for="fulltext"><%= l('K2_FULLTEXT') %></label>
     <%= form.fulltext %>
     <% } %>
+    
+    <% _.each(form.k2Plugins['item-content'], function(field) { %>
+    	<%= field.label %>
+		<%= field.input %>
+	<% }); %>
 
     <!-- Tags -->
     <h2><%= l('K2_TAGS') %></h2>
@@ -91,18 +96,43 @@
 
     <!-- Image -->
     <div id="appItemImage"></div>
+    
+    <% _.each(form.k2Plugins['item-image'], function(field) { %>
+    	<%= field.label %>
+		<%= field.input %>
+	<% }); %>
 
     <!-- Attachments -->
     <div id="appItemAttachments"></div>
+    
+    <% _.each(form.k2Plugins['item-attachments'], function(field) { %>
+    	<%= field.label %>
+		<%= field.input %>
+	<% }); %>
 
     <!-- Galleries -->
     <div id="appItemGalleries"></div>
+    
+    <% _.each(form.k2Plugins['item-galleries'], function(field) { %>
+    	<%= field.label %>
+		<%= field.input %>
+	<% }); %>
 
     <!-- Media -->
     <div id="appItemMedia"></div>
+    
+    <% _.each(form.k2Plugins['item-media'], function(field) { %>
+    	<%= field.label %>
+		<%= field.input %>
+	<% }); %>
 
     <!-- Extra Fields -->
     <div id="appItemExtraFields"></div>
+    
+    <% _.each(form.k2Plugins['item-extra-fields'], function(field) { %>
+    	<%= field.label %>
+		<%= field.input %>
+	<% }); %>
     
     <!-- Revisions -->
     <div id="appItemRevisions">
@@ -120,19 +150,31 @@
 
     <input type="hidden" name="id" value="<%- row.id %>" / >
 
-    <% _(form.jform).each(function(field) { %>
+    <% _.each(form.jform, function(field) { %>
     <%= field.label %>
     <%= field.input %>
-    <% }); %> <h2><%= l('K2_METADATA') %></h2> <% _(form.metadata).each(function(field) { %>
+    <% }); %>
+    
+    <h2><%= l('K2_METADATA') %></h2>
+    <% _.each(form.metadata, function(field) { %>
     <%= field.label %>
     <%= field.input %>
-    <% }); %> <h2><%= l('K2_LISTING_OPTIONS') %></h2> <% _(form.listingOptions).each(function(field) { %>
+    <% }); %>
+    
+    <h2><%= l('K2_LISTING_OPTIONS') %></h2>
+    <% _.each(form.listingOptions, function(field) { %>
     <%= field.label %>
     <%= field.input %>
-    <% }); %> <h2><%= l('K2_ITEM_OPTIONS') %></h2> <% _(form.itemOptions).each(function(field) { %>
+    <% }); %>
+    
+    <h2><%= l('K2_ITEM_OPTIONS') %></h2> 
+    <% _.each(form.itemOptions, function(field) { %>
     <%= field.label %>
     <%= field.input %>
-    <% }); %> <h2><%= l('K2_PERMISSIONS') %></h2> <% _(form.permissions).each(function(field) { %>
+    <% }); %>
+    
+    <h2><%= l('K2_PERMISSIONS') %></h2> 
+    <% _.each(form.permissions, function(field) { %>
     <%= field.label %>
     <%= field.input %>
     <% }); %>

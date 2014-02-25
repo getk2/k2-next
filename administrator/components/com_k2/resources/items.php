@@ -566,9 +566,11 @@ class K2Items extends K2Resource
 
 		// K2 plugins
 		if ($k2Plugins)
-		{
+		{			
 			// Import K2 plugins
 			JPluginHelper::importPlugin('k2');
+			
+			$dispatcher->trigger('onK2PluginInit', array($this));
 
 			$results = $dispatcher->trigger('onK2BeforeDisplay', array(&$this, &$params, $offset));
 			$events->K2BeforeDisplay = trim(implode("\n", $results));

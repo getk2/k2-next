@@ -13,14 +13,14 @@
     
     
     <h2><%= l('K2_PERMISSIONS') %></h2>
-    <% _(form.permissions).each(function(field) { %>
+    <% _.each(form.permissions, function(field) { %>
     <%= field.label %>
     <%= field.input %>
     <% }); %>
      
 
     
-    <% _(form.jform).each(function(field) { %>
+    <% _.each(form.jform, function(field) { %>
     <%= field.label %>
     <%= field.input %>
     <% }); %>

@@ -27,7 +27,7 @@
 
     <input type="hidden" name="id" value="<%= row.id %>" / >
 
-    <% _(form.jform).each(function(field) { %>
+    <% _.each(form.jform, function(field) { %>
     <%= field.label %>
     <%= field.input %>
     <% }); %>

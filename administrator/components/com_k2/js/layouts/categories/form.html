@@ -59,42 +59,47 @@
     
     <input type="hidden" name="id" value="<%= row.id %>" / >
     
-    <% _(form.jform).each(function(field) { %>
+    <% _.each(form.k2Plugins['category'], function(field) { %>
+    	<%= field.label %>
+		<%= field.input %>
+	<% }); %>
+    
+    <% _.each(form.jform, function(field) { %>
     <%= field.label %>
     <%= field.input %>
     <% }); %>
     <h2><%= l('K2_METADATA') %></h2>
-    <% _(form.metadata).each(function(field) { %>
+    <% _.each(form.metadata, function(field) { %>
     <%= field.label %>
     <%= field.input %>
     <% }); %>
     <h2><%= l('K2_CATEGORY_LAYOUT_OPTIONS') %></h2>
-    <% _(form.categoryLayoutOptions).each(function(field) { %>
+    <% _.each(form.categoryLayoutOptions, function(field) { %>
     <%= field.label %>
     <%= field.input %>
     <% }); %>
     <h2><%= l('K2_CATEGORY_VIEW_OPTIONS') %></h2>
-    <% _(form.categoryViewOptions).each(function(field) { %>
+    <% _.each(form.categoryViewOptions, function(field) { %>
     <%= field.label %>
     <%= field.input %>
     <% }); %>
     <h2><%= l('K2_CATEGORY_IMAGE_OPTIONS') %></h2>
-    <% _(form.categoryImageOptions).each(function(field) { %>
+    <% _.each(form.categoryImageOptions, function(field) { %>
     <%= field.label %>
     <%= field.input %>
     <% }); %>
     <h2><%= l('K2_LISTING_OPTIONS') %></h2>
-    <% _(form.listingOptions).each(function(field) { %>
+    <% _.each(form.listingOptions, function(field) { %>
     <%= field.label %>
     <%= field.input %>
     <% }); %>
     <h2><%= l('K2_ITEM_OPTIONS') %></h2>
-    <% _(form.itemOptions).each(function(field) { %>
+    <% _.each(form.itemOptions, function(field) { %>
     <%= field.label %>
     <%= field.input %>
     <% }); %>
     <h2><%= l('K2_PERMISSIONS') %></h2>
-    <% _(form.permissions).each(function(field) { %>
+    <% _.each(form.permissions, function(field) { %>
     <%= field.label %>
     <%= field.input %>
     <% }); %>

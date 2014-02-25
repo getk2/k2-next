@@ -1,8 +1,8 @@
 <form id="k2SettingsForm" class="appEditForm">
-    <% _(form).each(function(fields, name) { %>
+    <% _.each(form, function(fields, name) { %>
         <h3><%= name %></h3>
         <fieldset>
-        <% _(fields).each(function(field) { %>
+        <% _.each(fields, function(field) { %>
             <%= field.label %>
             <%= field.input %>
         <% }); %>

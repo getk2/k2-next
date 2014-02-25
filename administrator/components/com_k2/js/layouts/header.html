@@ -4,7 +4,7 @@
 
 <% if(!_.isEmpty(menu)) { %>
 <ul id="appPrimaryMenu">
-    <% _(menu).each(function(link) { %>
+    <% _.each(menu, function(link) { %>
     <li>
         <a <% if(link.attributes.id) { %> id="<%= link.attributes.id %>" <% } %> <% if(link.attributes.class) { %> class="<%= link.attributes.class %>" <% } %> href="<%= link.attributes.href %>"><%= link.name %></a>
     </li>
@@ -14,7 +14,7 @@
 
 <% if(!_.isEmpty(actions)) { %>
 <ul id="appActions">
-    <% _(actions).each(function(button) { %>
+    <% _.each(actions, function(button) { %>
     <li>
         <button <% if(button.attributes.id) { %> id="<%= button.attributes.id %>" <% } %> <% if(button.attributes.class) { %> class="<%= button.attributes.class %>" <% } %> <% if(button.attributes['data-resource']) { %> data-resource="<%= button.attributes['data-resource'] %>" <% } %>>
             <%= button.name %>

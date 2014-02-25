@@ -197,6 +197,8 @@ class K2Categories extends K2Resource
 		{
 			// Import K2 plugins
 			JPluginHelper::importPlugin('k2');
+			
+			$dispatcher->trigger('onK2PluginInit', array($this));
 
 			$results = $dispatcher->trigger('onK2CategoryDisplay', array(&$this, &$params, $offset));
 			$events->K2CategoryDisplay = trim(implode("\n", $results));

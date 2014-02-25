@@ -1,6 +1,6 @@
 <% if(!_.isEmpty(menu)) { %>
 <ul id="appSecondaryMenu">
-    <% _(menu).each(function(link) { %>
+    <% _.each(menu, function(link) { %>
     <li>
         <a <% if(link.attributes.id) { %> id="<%= link.attributes.id %>" <% } %> <% if(link.attributes.class) { %> class="<%= link.attributes.class %>" <% } %> href="<%= link.attributes.href %>"><%= link.name %></a>
     </li>
@@ -10,7 +10,7 @@
 
 <% if(!_.isEmpty(filters)) { %>
 <div class="appFilters">
-    <% _(filters).each(function(filter) { %>
+    <% _.each(filters, function(filter) { %>
     <div class="appFilter">
         <% if(filter.radio) { %>
         <label><%= filter.label %></label>

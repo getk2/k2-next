@@ -16,7 +16,7 @@
     </label>
 </div>
 <div class="appBatchActions">
-    <% _(actions).each(function(action) { %>
+    <% _.each(actions, function(action) { %>
         <div id="<%= action.id %>">
             <label><%= action.label %></label>
             <%= action.input %>

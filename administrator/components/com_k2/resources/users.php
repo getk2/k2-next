@@ -165,6 +165,7 @@ class K2Users extends K2Resource
 		$events = new stdClass;
 		$dispatcher = JDispatcher::getInstance();
 		JPluginHelper::importPlugin('k2');
+		$dispatcher->trigger('onK2PluginInit', array($this));
 		$results = $dispatcher->trigger('onK2UserDisplay', array(&$this, &$params, 0));
 		$events->K2UserDisplay = trim(implode("\n", $results));
 		return $events;

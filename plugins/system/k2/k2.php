@@ -331,6 +331,7 @@ class PlgSystemK2 extends JPlugin
 		$user = JFactory::getUser();
 
 		// Load the K2 classes
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/plugin.php';
 		require_once JPATH_ADMINISTRATOR.'/components/com_k2/tables/table.php';
 		require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/model.php';
 		require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/attachments.php';

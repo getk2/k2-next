@@ -3,7 +3,7 @@
     <input type="hidden" name="id" value="<%= row.id %>" / >
     
     <h2><%= l('K2_USER_DETAILS') %></h2>
-    <% _(form.user_details).each(function(field) { %>
+    <% _.each(form.user_details, function(field) { %>
     <%= field.label %>
     <%= field.input %>
     <% }); %> 
@@ -31,8 +31,13 @@
      <!-- Extra Fields -->
     <div id="appUserExtraFields"></div>
     
+    <% _.each(form.k2Plugins['user'], function(field) { %>
+    	<%= field.label %>
+		<%= field.input %>
+	<% }); %>
+    
     <h2><%= l('K2_USER_SETTINGS') %></h2>
-    <% _(form.settings).each(function(field) { %>
+    <% _.each(form.settings, function(field) { %>
     <%= field.label %>
     <%= field.input %>
     <% }); %> 

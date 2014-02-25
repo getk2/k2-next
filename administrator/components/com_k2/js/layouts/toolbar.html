@@ -2,7 +2,7 @@
     <span id="appToolbarCounter"></span>
     <span id="appToolbarTitle"><%= l('K2_SELECTED') %></span>
     <ul id="appToolbarActions">
-        <% _(toolbar).each(function(button) { %>
+        <% _.each(toolbar, function(button) { %>
         <button <% _.each(button.attributes, function(value, name) { print(name + '="' + value + '" ');}) %>>
             <%= button.name %>
         </button>

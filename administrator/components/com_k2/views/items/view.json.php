@@ -208,6 +208,17 @@ class K2ViewItems extends K2View
 
 		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/extrafields.php';
 		$form->extraFields = K2HelperExtraFields::getItemExtraFields($row->catid, $row->extra_fields);
+		
+		
+		// Import plugins to extend the form
+		JPluginHelper::importPlugin('k2');
+
+		// Get the dispatcher.
+		$dispatcher = JDispatcher::getInstance();
+		
+			
+			
+		$dispatcher->trigger('onK2RenderAdminForm', array('com_k2.item', &$form, $row));
 	}
 
 	/**
