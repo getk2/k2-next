@@ -286,6 +286,9 @@ class K2View extends JViewLegacy
 
 		// Initialize form object
 		$_form = new stdClass;
+		
+		// Get the dispatcher.
+		$dispatcher = JDispatcher::getInstance();
 
 		// Check if form file exists
 		jimport('joomla.filesystem.file');
@@ -321,9 +324,6 @@ class K2View extends JViewLegacy
 			// Import plugins to extend the form
 			JPluginHelper::importPlugin('content');
 
-			// Get the dispatcher.
-			$dispatcher = JDispatcher::getInstance();
-
 			// Trigger the form preparation event
 			$results = $dispatcher->trigger('onContentPrepareForm', array($form, $row));
 
@@ -345,6 +345,10 @@ class K2View extends JViewLegacy
 				$_form->$name = $array;
 			}
 		}
+
+		// Extend the form with K2 plugins
+		JPluginHelper::importPlugin('k2');
+		$dispatcher->trigger('onK2RenderAdminForm', array('com_k2.'.$this->getName(), &$_form, $row));
 
 		$this->setFormFields($_form, $row);
 
