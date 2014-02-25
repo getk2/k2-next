@@ -73,6 +73,7 @@
 			<filename>config.xml</filename>
 			<filename>controller.php</filename>
 			<filename>install.sql</filename>
+			<filename>uninstall.sql</filename>
 			<filename>k2.php</filename>
 		</files>
 		<languages folder="administrator/language/en-GB">
