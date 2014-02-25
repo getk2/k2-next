@@ -347,6 +347,7 @@ class K2View extends JViewLegacy
 		}
 
 		// Extend the form with K2 plugins
+		$_form->k2Plugins = array();
 		JPluginHelper::importPlugin('k2');
 		$dispatcher->trigger('onK2RenderAdminForm', array('com_k2.'.$this->getName(), &$_form, $row));
 

@@ -33,11 +33,6 @@ class K2Plugin extends JPlugin
 		jimport('joomla.form.form');
 		$jform = JForm::getInstance('plg_k2_'.$this->_name.'_'.$type, $manifest, array(), true, 'fieldset[starts-with(@name, "'.$type.'")]');
 		
-		if (!isset($form->k2Plugins))
-		{
-			$form->k2Plugins = array();
-		}
-
 		foreach ($jform->getFieldsets() as $fieldset)
 		{
 
