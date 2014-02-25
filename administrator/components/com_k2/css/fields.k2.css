@@ -1,0 +1,25 @@
+/* Joomla! 2.5 Container fixes */
+.panel {
+	border: none !important;
+}
+.panel h3.title {
+	display: none;
+}
+.panel fieldset {
+	border: none !important;
+	margin: 0 !important;
+	padding: 0 !important;
+}
+input#jform_title {
+	width: 250px;
+}
+div.width-40 {
+	width: 60% !important;
+}
+div.width-60 {
+	width: 40% !important;
+}
+
+.pane-slider, fieldset.panelform {
+	overflow: visible !important;
+}
