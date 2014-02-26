@@ -142,7 +142,7 @@ class K2Model extends JModelLegacy
 		}
 
 		// Trigger onContentBeforeSave event
-		$dispatcher->trigger('onContentBeforeSave', array('com_k2.'.$this->getName(), $table, $isNew));
+		$dispatcher->trigger('onContentBeforeSave', array('com_k2.'.$this->getName(), &$table, $isNew));
 
 		// Save
 		if (!$table->save($data))
@@ -161,7 +161,7 @@ class K2Model extends JModelLegacy
 		}
 
 		// Trigger onContentAfterSave event
-		$dispatcher->trigger('onContentAfterSave', array('com_k2.'.$this->getName(), $table, $isNew));
+		$dispatcher->trigger('onContentAfterSave', array('com_k2.'.$this->getName(), &$table, $isNew));
 
 		return true;
 	}
@@ -239,7 +239,7 @@ class K2Model extends JModelLegacy
 		}
 
 		// Trigger onContentBeforeDelete event
-		$dispatcher->trigger('onContentBeforeDelete', array('com_k2.'.$this->getName(), $table));
+		$dispatcher->trigger('onContentBeforeDelete', array('com_k2.'.$this->getName(), &$table));
 
 		// Delete
 		if (!$table->delete())
@@ -255,7 +255,7 @@ class K2Model extends JModelLegacy
 		}
 
 		// Trigger onContentAfterDelete event
-		$dispatcher->trigger('onContentBeforeDelete', array('com_k2.'.$this->getName(), $table));
+		$dispatcher->trigger('onContentBeforeDelete', array('com_k2.'.$this->getName(), &$table));
 
 		return true;
 	}
@@ -299,7 +299,7 @@ class K2Model extends JModelLegacy
 	{
 		$dispatcher = JDispatcher::getInstance();
 		JPluginHelper::importPlugin('k2');
-		$dispatcher->trigger('onBeforeSetQuery', array(&$query, $context));
+		$dispatcher->trigger('onBeforeSetQuery', array($context, &$query));
 	}
 
 	/**

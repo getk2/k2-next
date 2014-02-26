@@ -36,7 +36,7 @@ class K2ModelExtraFields extends K2Model
 		$this->setQuerySorting($query);
 
 		// Hook for plugins
-		$this->onBeforeSetQuery($query, 'com_k2.extraFields.list');
+		$this->onBeforeSetQuery($query, 'com_k2.extrafields.list');
 
 		// Set the query
 		$db->setQuery($query, (int)$this->getState('limitstart'), (int)$this->getState('limit'));
@@ -66,7 +66,7 @@ class K2ModelExtraFields extends K2Model
 		$this->setQueryConditions($query);
 
 		// Hook for plugins
-		$this->setQueryConditions($query, 'com_k2.extraFields.count');
+		$this->onBeforeSetQuery($query, 'com_k2.extrafields.count');
 
 		// Set the query
 		$db->setQuery($query);

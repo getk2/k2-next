@@ -110,7 +110,7 @@ class K2ModelUsers extends K2Model
 		$this->setQueryConditions($query);
 
 		// Hook for plugins
-		$this->setQueryConditions($query, 'com_k2.users.count');
+		$this->onBeforeSetQuery($query, 'com_k2.users.count');
 
 		// Set the query
 		$db->setQuery($query);

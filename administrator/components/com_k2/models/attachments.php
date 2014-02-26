@@ -63,7 +63,7 @@ class K2ModelAttachments extends K2Model
 		$this->setQueryConditions($query);
 
 		// Hook for plugins
-		$this->setQueryConditions($query, 'com_k2.attachments.count');
+		$this->onBeforeSetQuery($query, 'com_k2.attachments.count');
 
 		// Set the query
 		$db->setQuery($query);
