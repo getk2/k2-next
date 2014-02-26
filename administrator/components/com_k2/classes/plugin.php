@@ -22,15 +22,10 @@ class K2Plugin extends JPlugin
 		$this->values = $row->plugins;
 	}
 
-	public function onK2RenderAdminForm($context, &$form, $row)
+	public function onK2RenderAdminForm(&$form, $row, $type)
 	{
-
-		$mainframe = JFactory::getApplication();
-		$manifest = JPATH_SITE.'/plugins/k2/'.$this->_name.'/'.$this->_name.'.xml';
-		$parts = explode('.', $context);
-		$type = end($parts);
-		
 		jimport('joomla.form.form');
+		$manifest = JPATH_SITE.'/plugins/k2/'.$this->_name.'/'.$this->_name.'.xml';
 		$jform = JForm::getInstance('plg_k2_'.$this->_name.'_'.$type, $manifest, array(), true, 'fieldset[starts-with(@name, "'.$type.'")]');
 		
 		foreach ($jform->getFieldsets() as $fieldset)
