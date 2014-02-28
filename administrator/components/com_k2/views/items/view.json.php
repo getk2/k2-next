@@ -224,6 +224,10 @@ class K2ViewItems extends K2View
 		{
 			K2Response::addAction('add', 'K2_ADD', array('class' => 'appAction', 'id' => 'appActionAdd'));
 		}
+		if ($user->authorise('core.admin', 'com_k2'))
+		{
+			K2Response::addAction('import', 'K2_IMPORT', array('class' => 'appAction', 'id' => 'appActionImport'));
+		}
 	}
 
 	protected function setBatchActions()

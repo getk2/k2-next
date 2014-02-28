@@ -384,13 +384,13 @@ class K2Items extends K2Resource
 	public function getAttachments()
 	{
 		$attachments = array();
-		$this->attachments = json_decode($this->attachments);
-		if (is_array($this->attachments))
+		$attachmentsIds = json_decode($this->attachments);
+		if (is_array($attachmentsIds) && count($attachmentsIds))
 		{
 
 			$application = JFactory::getApplication();
 			$model = K2Model::getInstance('Attachments');
-			$model->setState('id', $this->attachments);
+			$model->setState('id', $attachmentsIds);
 			$attachments = $model->getRows();
 		}
 		return $attachments;

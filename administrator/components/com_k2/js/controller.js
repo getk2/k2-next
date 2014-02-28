@@ -39,6 +39,11 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 			K2Dispatcher.on('app:controller:close', function() {
 				this.close();
 			}, this);
+			
+			// Listener for import event.
+			K2Dispatcher.on('app:controller:import', function() {
+				this.import(0);
+			}, this);
 
 			// Listener for list event.
 			K2Dispatcher.on('app:controller:list', function(id) {
@@ -288,6 +293,16 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 					}, this)
 				});
 			}
+		},
+		
+		// Import function
+		import : function(id) {
+			var self = this;
+			jQuery.post('index.php?option=com_k2&task=' +this.resource + '.import&id='+id+'&format=json', K2SessionToken + '=1', function(data) {
+				if(data && data.lastId) {
+					self.import(data.lastId);
+				}
+			});
 		},
 
 		// Toggle state function.

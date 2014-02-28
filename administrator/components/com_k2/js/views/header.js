@@ -9,7 +9,8 @@ define(['marionette', 'text!layouts/header.html', 'dispatcher', 'widgets/widget'
 			'click #appActionSave' : 'save',
 			'click #appActionSaveAndNew' : 'saveAndNew',
 			'click #appActionSaveAndClose' : 'saveAndClose',
-			'click #appActionClose' : 'close'
+			'click #appActionClose' : 'close',
+			'click #appActionImport' : 'import'
 		},
 
 		modelEvents : {
@@ -58,6 +59,11 @@ define(['marionette', 'text!layouts/header.html', 'dispatcher', 'widgets/widget'
 		close : function(event) {
 			event.preventDefault();
 			K2Dispatcher.trigger('app:controller:close');
+		},
+		
+		import : function(event) {
+			event.preventDefault();
+			K2Dispatcher.trigger('app:controller:import');
 		}
 	});
 
