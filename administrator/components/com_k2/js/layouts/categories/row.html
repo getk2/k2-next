@@ -13,7 +13,7 @@
 <span><span class="appOrderingHandle">DRAG ME</span></span>
 <span>
     <% if(canEditState) { %>
-    <a class="appActionToggleState <%= state == 1 ? ' appStateActive' : '' %>" data-id="<%= id %>" data-state="state"><%= state %></a>
+    <a class="appActionToggleCategoryState <%= state == 1 ? ' appStateActive' : '' %>" data-id="<%= id %>" data-state="state"><%= state %></a>
     <% } else { %>
     <%= state %>
     <% } %>

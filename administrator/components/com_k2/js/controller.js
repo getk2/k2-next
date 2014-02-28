@@ -51,8 +51,8 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 			}, this);
 
 			// Listener for toggle state event.
-			K2Dispatcher.on('app:controller:toggleState', function(id, state) {
-				this.toggleState(id, state);
+			K2Dispatcher.on('app:controller:toggleState', function(id, state, model) {
+				this.toggleState(id, state, model);
 			}, this);
 
 			// Listener for filter event.
@@ -306,8 +306,10 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 		},
 
 		// Toggle state function.
-		toggleState : function(id, state) {
-			var model = this.collection.get(id);
+		toggleState : function(id, state, model) {
+			if(typeof(model) == 'undefined') {
+				model = this.collection.get(id);
+			}
 			model.toggleState(state, {
 				success : _.bind(function() {
 					this.list();

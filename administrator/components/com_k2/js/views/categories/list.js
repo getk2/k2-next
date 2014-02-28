@@ -4,6 +4,7 @@ define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categor
 		template : _.template(row),
 		events : {
 			'click a.appEditLink' : 'edit',
+			'click .appActionToggleCategoryState' : 'toggleState'
 		},
 		edit : function(event) {
 			event.preventDefault();
@@ -21,6 +22,14 @@ define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categor
 		},
 		appendHtml : function(compositeView, itemView) {
 			compositeView.$('ul:first').append(itemView.el);
+		},
+		toggleState : function(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			var el = jQuery(event.currentTarget);
+			var id = el.data('id');
+			var state = el.data('state');
+			K2Dispatcher.trigger('app:controller:toggleState', id, state, this.model);
 		}
 	});
 	var K2ViewCategories = Marionette.CompositeView.extend({
