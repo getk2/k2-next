@@ -213,6 +213,7 @@ class ModK2ToolsHelper
 			$breadcrumbs->title =  end($pathwayItems)->name;
 			foreach ($pathwayItems as $pathwayItem)
 			{
+				$pathwayItem->title = $pathwayItem->name;
 				$breadcrumbs->path[] = $pathwayItem;
 			}
 			array_pop($breadcrumbs->path);

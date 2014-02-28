@@ -119,11 +119,6 @@ class K2Categories extends K2Resource
 	{
 		return K2HelperImages::getCategoryImage($this);
 	}
-	
-	public function getName()
-	{
-		return $this->title;
-	}
 
 	public function getChildren()
 	{
