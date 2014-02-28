@@ -467,13 +467,45 @@ class K2Controller extends JControllerLegacy
 				$sourceData = $this->model->getCopyData($id);
 				$data = array_merge($sourceData, $data);
 				$data['id'] = null;
+				$this->model->setState('patch', false);
+			}
+			else
+			{
+				$this->model->setState('patch', true);
 			}
 			$this->model->setState('data', $data);
+
 			$result = $this->model->save();
+
 			if (!$result)
 			{
 				K2Response::throwError($this->model->getError());
 			}
+		}
+				
+		// Trigger change state event for items and categories
+		if ($mode != 'clone' && isset($states['state']) && in_array($this->resourceType, array('items', 'categories')))
+		{
+			// Get dispatcher
+			$dispatcher = JDispatcher::getInstance();
+
+			// Import content plugins
+			JPluginHelper::importPlugin('content');
+
+			if ($this->resourceType == 'items')
+			{
+				$eventName = 'onContentChangeState';
+				$context = 'com_k2.'.$this->resourceType;
+
+			}
+			else if ($this->resourceType == 'categories')
+			{
+				$eventName = 'onCategoryChangeState';
+				$context = 'com_k2';
+			}
+
+			$dispatcher->trigger($eventName, array($context, $ids, $states['state']));
+
 		}
 
 		K2Response::setResponse($result);

@@ -141,8 +141,11 @@ class K2Model extends JModelLegacy
 			return false;
 		}
 
-		// Trigger onContentBeforeSave event
-		$dispatcher->trigger('onContentBeforeSave', array('com_k2.'.$this->getName(), &$table, $isNew));
+		// Trigger onContentBeforeSave event if this request is not a patch
+		if(!$this->getState('patch'))
+		{
+			$dispatcher->trigger('onContentBeforeSave', array('com_k2.'.$this->getName(), &$table, $isNew));
+		}
 
 		// Save
 		if (!$table->save($data))
@@ -160,8 +163,11 @@ class K2Model extends JModelLegacy
 			return false;
 		}
 
-		// Trigger onContentAfterSave event
-		$dispatcher->trigger('onContentAfterSave', array('com_k2.'.$this->getName(), &$table, $isNew));
+		// Trigger onContentAfterSave event if this request is not a patch
+		if(!$this->getState('patch'))
+		{
+			$dispatcher->trigger('onContentAfterSave', array('com_k2.'.$this->getName(), &$table, $isNew));
+		}
 
 		return true;
 	}

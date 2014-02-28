@@ -366,4 +366,28 @@ class PlgFinderK2 extends FinderIndexerAdapter
 		return $query;
 	}
 
+	/**
+	 * Method to get a SQL query to load the published and access states for
+	 * an article and category.
+	 *
+	 * @return  JDatabaseQuery  A database object.
+	 *
+	 * @since   2.5
+	 */
+	protected function getStateQuery()
+	{
+		$query = $this->db->getQuery(true);
+
+		// Item ID
+		$query->select('a.id');
+
+		// Item and category published state
+		$query->select('a.'.$this->state_field.' AS state, c.state AS cat_state');
+
+		// Item and category access levels
+		$query->select('a.access, c.access AS cat_access')->from($this->table.' AS a')->join('LEFT', '#__k2_categories AS c ON c.id = a.catid');
+
+		return $query;
+	}
+
 }
