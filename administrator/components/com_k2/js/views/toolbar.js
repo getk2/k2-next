@@ -7,7 +7,7 @@ define(['marionette', 'text!layouts/toolbar.html', 'dispatcher', 'widgets/widget
 		events : {
 			'click .appActionSetState' : 'setState',
 			'click #appActionRemove' : 'remove',
-			'click .appActionCloseToolbar' : 'closeToolbar',
+			'click [data-action="close"]' : 'closeToolbar',
 			'click #appActionBatch' : 'batch'
 		},
 
@@ -47,20 +47,18 @@ define(['marionette', 'text!layouts/toolbar.html', 'dispatcher', 'widgets/widget
 		},
 
 		onRender : function() {
-			
-			// Hide toolbar
-			this.$el.find('.appToolbar').hide();
+			this.hideToolbar();
 		},
 
 		remove : function(event) {
 			event.preventDefault();
-			var rows = jQuery('input.appRowToggler:checked').serializeArray();
+			var rows = jQuery('input[data-action="toggle"]:checked').serializeArray();
 			K2Dispatcher.trigger('app:controller:batchDelete', rows);
 		},
 
 		setState : function(event) {
 			event.preventDefault();
-			var rows = jQuery('input.appRowToggler:checked').serializeArray();
+			var rows = jQuery('input[data-action="toggle"]:checked').serializeArray();
 			var el = jQuery(event.currentTarget);
 			var value = el.data('value');
 			var state = el.data('state');
@@ -68,12 +66,12 @@ define(['marionette', 'text!layouts/toolbar.html', 'dispatcher', 'widgets/widget
 		},
 
 		showToolbar : function() {
-			this.$el.find('#appToolbarCounter').text(jQuery('input.appRowToggler:checked').length);
-			this.$el.find('.appToolbar').show();
+			this.$('[data-name="counter"]').text(jQuery('input[data-action="toggle"]:checked').length);
+			this.$('[data-region="toolbar"]').show();
 		},
 
 		hideToolbar : function() {
-			this.$el.find('.appToolbar').hide();
+			this.$('[data-region="toolbar"]').hide();
 		},
 
 		closeToolbar : function(event) {
@@ -83,7 +81,7 @@ define(['marionette', 'text!layouts/toolbar.html', 'dispatcher', 'widgets/widget
 		},
 
 		batch : function() {
-			var counter = jQuery('input.appRowToggler:checked').length;
+			var counter = jQuery('input[data-action="toggle"]:checked').length;
 			var actions = this.model.get('batchActions');
 			var model = new Backbone.Model;
 			model.set('counter', counter);

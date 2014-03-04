@@ -9,12 +9,12 @@ define(['marionette', 'text!layouts/pagination.html', 'dispatcher'], function(Ma
 		},
 
 		events : {
-			'change .appLimit' : 'limit',
-			'click .appPaginationPages a' : 'paginate'
+			'change select[name="limit"]' : 'limit',
+			'click [data-page]' : 'paginate'
 		},
 
 		onRender : function() {
-			this.$el.find('.appLimit').val(this.model.get('limit'));
+			this.$('select[name="limit"]').val(this.model.get('limit'));
 		},
 
 		limit : function(event) {

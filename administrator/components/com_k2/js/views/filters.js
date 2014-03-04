@@ -32,7 +32,7 @@ define(['marionette', 'text!layouts/filters.html', 'dispatcher', 'widgets/widget
 			K2Dispatcher.on('app:subheader:resetFilters', function() {
 
 				// Apply select states
-				this.$('.appFilters select').each(function() {
+				this.$('[data-region="filters"] select').each(function() {
 					var el = jQuery(this);
 					var value = el.find('option:first').val();
 					el.select2('val', value);
@@ -40,14 +40,14 @@ define(['marionette', 'text!layouts/filters.html', 'dispatcher', 'widgets/widget
 				});
 
 				// Author
-				this.$('.appFilters input[name="author"]').select2('data', {
+				this.$('[data-region="filters"] input[name="author"]').select2('data', {
 					id : 0,
 					text : l('K2_ANY')
 				});
 				K2Dispatcher.trigger('app:controller:setCollectionState', 'author', 0);
 				
 				// Tag
-				this.$('.appFilters input[name="tag"]').select2('data', {
+				this.$('[data-region="filters"] input[name="tag"]').select2('data', {
 					id : 0,
 					text : l('K2_ANY')
 				});
@@ -66,21 +66,21 @@ define(['marionette', 'text!layouts/filters.html', 'dispatcher', 'widgets/widget
 		onRender : function() {
 
 			_.each(this.model.get('states'), _.bind(function(value, state) {
-				var filter = this.$el.find('[name="' + state + '"]');
+				var filter = this.$('[name="' + state + '"]');
 				filter.val(value);
 			}, this));
 
 			require(['widgets/select2/select2', 'css!widgets/select2/select2.css'], _.bind(function() {
-				this.$el.find('.appFilters select').select2();
+				this.$('[data-region="filters"] select').select2();
 				var states = this.model.get('states');
 				if (states.authorName !== undefined) {
-					this.$el.find('.appFilters input[name="author"]').select2('data', {
+					this.$('[data-region="filters"] input[name="author"]').select2('data', {
 						id : states.author,
 						text : states.authorName
 					});
 				}
 				if (states.tagName !== undefined) {
-					this.$el.find('.appFilters input[name="tag"]').select2('data', {
+					this.$('[data-region="filters"] input[name="tag"]').select2('data', {
 						id : states.tag,
 						text : states.tagName
 					});

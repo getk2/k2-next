@@ -1,23 +1,23 @@
-<td class="appCheckboxHolder">
-    <label for="appCheckBox<%= id %>" class="appCheckbox">
-        <input class="appRowToggler" name="id[]" id="appCheckBox<%= id %>" value="<%= id %>" type="checkbox" />
+<td>
+    <label>
+        <input data-action="toggle" name="id[]" value="<%= id %>" type="checkbox" />
     </label>
 </td>
-<td><a class="appEditLink" href="<%= editLink %>"><%= title %></a></td>
+<td><a data-action="edit" href="<%= editLink %>"><%= title %></a></td>
 <td><span class="appOrderingHandle" data-column="featured_ordering">DRAG ME</span></td>
 <td>
     <input type="text" maxlength="6" size="6" name="featured_ordering[]" value="<%= featured_ordering %>" data-id="<%= id %>" disabled="disabled" />
 </td>
 <td>
     <% if(canEditState) { %>
-    <a class="appActionToggleState appPublishedState<%= state > 0 ? ' appStateActive' : '' %>" data-state="state" data-id="<%= id %>"><%= state %></a>
+    <a data-action="toggle-state" data-state-value="<%= state %>" data-state="state" data-id="<%= id %>"><%= state %></a>
     <% } else { %>
     <%= state %>
     <% } %>
 </td>
 <td>
     <% if(canEditState && canEditFeaturedState) { %>
-    <a class="appActionToggleState appFeaturedState<%= featured > 0 ? ' appStateActive' : '' %>" data-state="featured" data-id="<%= id %>"><%= featured %></a>
+    <a data-action="toggle-state" data-state-value="<%= featured %>" data-state="featured" data-id="<%= id %>"><%= featured %></a>
     <% } else { %>
     <%= featured %>
     <% } %>

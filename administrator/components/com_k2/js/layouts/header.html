@@ -1,9 +1,9 @@
-<div id="appLogo">
-    <i class="hidden">K2</i>
+<div>
+    <i>K2</i>
 </div>
 
 <% if(!_.isEmpty(menu)) { %>
-<ul id="appPrimaryMenu">
+<ul data-region="menu-primary">
     <% _.each(menu, function(link) { %>
     <li>
         <a <% if(link.attributes.id) { %> id="<%= link.attributes.id %>" <% } %> <% if(link.attributes.class) { %> class="<%= link.attributes.class %>" <% } %> href="<%= link.attributes.href %>"><%= link.name %></a>
@@ -13,7 +13,7 @@
 <% } %>
 
 <% if(!_.isEmpty(actions)) { %>
-<ul id="appActions">
+<ul data-region="actions">
     <% _.each(actions, function(button) { %>
     <li>
         <button <% if(button.attributes.id) { %> id="<%= button.attributes.id %>" <% } %> <% if(button.attributes.class) { %> class="<%= button.attributes.class %>" <% } %> <% if(button.attributes['data-resource']) { %> data-resource="<%= button.attributes['data-resource'] %>" <% } %>>
@@ -23,5 +23,3 @@
     <% }); %>
 </ul>
 <% } %>
-
-<div class="appClr"></div>

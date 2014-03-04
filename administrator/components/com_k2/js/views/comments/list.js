@@ -3,7 +3,7 @@ define(['marionette', 'text!layouts/comments/list.html', 'text!layouts/comments/
 		tagName : 'tr',
 		template : _.template(row),
 		events : {
-			'click a.appEditLink' : 'edit',
+			'click a[data-action="edit"]' : 'edit'
 		},
 		edit : function(event) {
 			event.preventDefault();

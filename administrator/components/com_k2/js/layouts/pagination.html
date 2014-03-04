@@ -1,7 +1,7 @@
-<div class="appPaginationWrapper">
-    <div class="appLimitBox">
+<div>
+    <div>
         <label><%= l('K2_DISPLAY') %></label>
-        <select name="limit" class="appLimit">
+        <select name="limit">
             <option value="5">5</option>
             <option value="10">10</option>
             <option value="20">20</option>
@@ -9,18 +9,18 @@
             <option value="100">100</option>
         </select>
     </div>
-    <div class="appPaginationNavigation">
+    <div>
         <% if(pagesTotal > 1) { %>
-        <div class="appPaginationInformation">
+        <div>
             <%= l('K2_PAGE') %> <span><%= pagesCurrent %></span> <%= l('K2_OF') %> <span> <%= pagesTotal %> </span>
         </div>
-        <ul class="appPaginationPages">
+        <ul>
             <li>
-                <a data-page="1" href="#<%= link %>/page/1" class="appPaginationStart"><%= l('K2_START') %></a>
+                <a data-page="1" href="#<%= link %>/page/1"><%= l('K2_START') %></a>
             </li>
             <% if((pagesCurrent - 1) > 0) { %>
             <li>
-                <a data-page="previous" href="#<%= link %>/page/<%= pagesCurrent-1 %>" class="appPaginationPrevious"><%= l('K2_PREVIOUS') %></a>
+                <a data-page="previous" href="#<%= link %>/page/<%= pagesCurrent-1 %>"><%= l('K2_PREVIOUS') %></a>
             </li>
             <% } %>
             <% for(i=pagesStart; i <= pagesStop; i++){ %>
@@ -30,16 +30,16 @@
             <% } %>
             <% if((pagesCurrent + 1) <= pagesTotal) { %>
             <li>
-                <a data-page="next" href="#<%= link %>/page/<%= pagesCurrent + 1 %>" class="appPaginationNext"><%= l('K2_NEXT') %></a>
+                <a data-page="next" href="#<%= link %>/page/<%= pagesCurrent + 1 %>"><%= l('K2_NEXT') %></a>
             </li>
             <% } %>
             <li>
-                <a data-page="<%= pagesTotal %>" href="#<%= link %>/page/<%= pagesTotal %>" class="appPaginationEnd"><%= l('K2_END') %></a>
+                <a data-page="<%= pagesTotal %>" href="#<%= link %>/page/<%= pagesTotal %>"><%= l('K2_END') %></a>
             </li>
         </ul>
         <% } %>
     </div>
-    <div class="appTotalItems">
+    <div>
         <strong><%= total %></strong> <%= label %>
     </div>
 </div>

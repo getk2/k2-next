@@ -1,12 +1,12 @@
-<div class="appToolbar">
-    <span id="appToolbarCounter"></span>
-    <span id="appToolbarTitle"><%= l('K2_SELECTED') %></span>
-    <ul id="appToolbarActions">
+<div data-region="toolbar">
+    <span data-name="counter"></span>
+    <span><%= l('K2_SELECTED') %></span>
+    <ul>
         <% _.each(toolbar, function(button) { %>
         <button <% _.each(button.attributes, function(value, name) { print(name + '="' + value + '" ');}) %>>
             <%= button.name %>
         </button>
         <% }); %>
     </ul>
-    <button class="appActionCloseToolbar"><%= l('K2_CANCEL') %></button>
+    <button data-action="close"><%= l('K2_CANCEL') %></button>
 </div>

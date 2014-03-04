@@ -1,11 +1,11 @@
-<div class="appBatchHeader">
+<div>
     <h3><%= l('K2_BATCH_OPERATIONS') %></h3>
     <span>
         <span><%= counter %></span>
         <%= l('K2_SELECTED_ITEMS') %>
     </span>
 </div>
-<div class="appBatchMode">
+<div>
     <label>
         <strong><%= l('K2_ASSIGN') %></strong>
         <input type="radio" name="batchMode" value="apply" checked="checked" />
@@ -15,7 +15,7 @@
         <input type="radio" name="batchMode" value="clone"  />
     </label>
 </div>
-<div class="appBatchActions">
+<div>
     <% _.each(actions, function(action) { %>
         <div id="<%= action.id %>">
             <label><%= action.label %></label>
@@ -23,7 +23,7 @@
         </div>
     <% }); %>
 </div>
-<div class="appBatchButtons">
-    <button id="appBatchApplyButton"><%= l('K2_APPLY') %></button>
-    <button id="appBatchCancelButton"><%= l('K2_CANCEL') %></button>
+<div>
+    <button data-action="apply"><%= l('K2_APPLY') %></button>
+    <button data-action="cancel"><%= l('K2_CANCEL') %></button>
 </div>

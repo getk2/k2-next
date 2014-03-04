@@ -1,15 +1,15 @@
-<td class="appCheckboxHolder">
-    <label for="appCheckBox<%= id %>" class="appCheckbox">
-        <input class="appRowToggler" name="id[]" id="appCheckBox<%= id %>" value="<%= id %>" type="checkbox" />
+<td>
+    <label>
+        <input data-action="toggle" name="id[]" value="<%= id %>" type="checkbox" />
     </label>
 </td>
-<td><a class="appEditLink" href="<%= editLink %>"><%= name %></a></td>
+<td><a data-action="edit" href="<%= editLink %>"><%= name %></a></td>
 <td><%= username %></td>
 <td>
-    <a class="appActionToggleState <%= enabled == 1 ? ' appStateActive' : '' %>" data-id="<%= id %>" data-state="block"><%= enabled %></a>
+    <a data-action="toggle-state" data-state="block" data-state-value="<%= enabled  %>" data-id="<%= id %>" ><%= enabled %></a>
 </td>
 <td>
-    <span class="appStateActive"><%= activated %></a>
+    <span><%= activated %></a>
 </td>
 <td><%= groupsValue %></td>
 <td><%= email %></td>

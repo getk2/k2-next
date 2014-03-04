@@ -3,8 +3,8 @@ define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categor
 		tagName : 'li',
 		template : _.template(row),
 		events : {
-			'click a.appEditLink' : 'edit',
-			'click .appActionToggleCategoryState' : 'toggleState'
+			'click a[data-action="edit"]' : 'edit',
+			'click a[data-action="toggle-state-category"]' : 'toggleState'
 		},
 		edit : function(event) {
 			event.preventDefault();

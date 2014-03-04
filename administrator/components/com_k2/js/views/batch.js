@@ -2,8 +2,8 @@ define(['marionette', 'dispatcher', 'text!layouts/batch.html'], function(Marione
 	var K2ViewBatch = Marionette.ItemView.extend({
 		template : _.template(template),
 		events : {
-			'click #appBatchApplyButton' : 'batch',
-			'click #appBatchCancelButton' : 'close'
+			'click [data-action="apply"]' : 'batch',
+			'click [data-action="cancel"]' : 'close'
 		},
 		onBeforeClose : function() {
 			jQuery.magnificPopup.close();
@@ -22,7 +22,7 @@ define(['marionette', 'dispatcher', 'text!layouts/batch.html'], function(Marione
 		},
 		batch : function(event) {
 			event.preventDefault();
-			var rows = jQuery('input.appRowToggler:checked').serializeArray();
+			var rows = jQuery('input[data-action="toggle"]:checked').serializeArray();
 			var states = {};
 			this.$('select').each(function() {
 				states[jQuery(this).attr('name')] = jQuery(this).val();

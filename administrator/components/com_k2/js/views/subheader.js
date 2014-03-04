@@ -14,7 +14,7 @@ define(['marionette', 'text!layouts/subheader.html', 'dispatcher', 'widgets/widg
 		},
 
 		updateTitle : function() {
-			this.$('#appTitle').text(this.model.get('title'));
+			this.$('[data-name="title"]').text(this.model.get('title'));
 		},
 
 		initialize : function() {

@@ -10,9 +10,9 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session'], fun
 		},
 
 		events : {
-			'change .appFilters input' : 'filter',
-			'change .appFilters select' : 'filter',
-			'click .appActionResetFilters' : 'resetFilters'
+			'change [data-region="filters"] input' : 'filter',
+			'change [data-region="filters"] select' : 'filter',
+			'click [data-action="reset"]' : 'resetFilters'
 		},
 
 		initialize : function() {
@@ -46,7 +46,7 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session'], fun
 
 		resetFilters : function(event) {
 			event.preventDefault();
-			this.$el.find('.appFilter').each(function() {
+			this.$('[data-role="filter"]').each(function() {
 				var el = jQuery(this).find('input:first');
 				var name = el.attr('name');
 				var type = el.attr('type');
@@ -57,7 +57,7 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session'], fun
 				}
 				K2Dispatcher.trigger('app:controller:setCollectionState', name, '');
 			});
-			this.$el.find('.appFilter select').each(function() {
+			this.$('[data-role="filter"] select').each(function() {
 				var el = jQuery(this);
 				var value = el.find('option:first').val();
 				el.val(value);

@@ -1,6 +1,6 @@
-<div class="appFilters">
+<div data-region="filters">
     <% _.each(filters, function(filter) { %>
-    <div class="appFilter">
+    <div data-role="filter">
         <% if(filter.radio) { %>
         <label><%= filter.label %></label>
         <% } else { %>

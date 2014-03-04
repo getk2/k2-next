@@ -1,9 +1,9 @@
-<td class="appCheckboxHolder">
-    <label for="appCheckBox<%= id %>" class="appCheckbox">
-        <input class="appRowToggler" name="id[]" id="appCheckBox<%= id %>" value="<%= id %>" type="checkbox" />
+<td>
+    <label>
+        <input data-action="toggle" name="id[]" value="<%= id %>" type="checkbox" />
     </label>
 </td>
-<td><a class="appEditLink" href="<%= editLink %>"><%= name %></a></td>
-<td><a class="appActionToggleState appPublishedState<%= state == 1 ? ' appStateActive' : '' %>" data-state="state" data-id="<%= id %>"><%= state %></a></td>
+<td><a data-action="edit" href="<%= editLink %>"><%= name %></a></td>
+<td><a data-action="toggle-state" data-state-value="<%= state %>" data-state="state" data-id="<%= id %>"><%= state %></a></td>
 <td><%= items %></td>
 <td><%= id %></td>

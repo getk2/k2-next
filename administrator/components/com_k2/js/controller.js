@@ -100,9 +100,9 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 				var parts = url.split('/');
 				var first = _.first(parts);
 				if (first == 'modal') {
-					jQuery('#appPrimaryMenu').hide();
-					jQuery('#appSecondaryMenu').hide();
-					jQuery('#appActions').hide();
+					jQuery('data-region="menu-primary"').hide();
+					jQuery('data-region="menu-secondary"').hide();
+					jQuery('[data-region="actions"]').hide();
 					this.isModal = true;
 					parts = _.rest(parts);
 				}
