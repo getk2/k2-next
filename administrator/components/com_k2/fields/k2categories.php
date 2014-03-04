@@ -12,7 +12,6 @@ defined('_JEXEC') or die ;
 
 jimport('joomla.form.formfield');
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/html.php';
-require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/html.php';
 
 class JFormFieldK2Categories extends JFormField
 {
@@ -21,7 +20,7 @@ class JFormFieldK2Categories extends JFormField
 	public function getInput()
 	{
 		// Load javascript
-		K2HelperHTML::jQuery();
+		JHtml::_('jquery.framework');
 		$document = JFactory::getDocument();
 		$document->addScript(JURI::root(true).'/administrator/components/com_k2/js/fields.k2.js');
 

@@ -46,7 +46,7 @@ class K2View extends JViewLegacy
 		if ($document->getType() == 'html')
 		{
 			$document->addStyleSheet(JURI::root(true).'/components/com_k2/css/site.k2.css');
-			K2HelperHTML::jQuery();
+			JHtml::_('jquery.framework');
 		}
 
 		// Add template paths

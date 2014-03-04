@@ -276,22 +276,4 @@ class K2HelperHTML
 		}
 		return JHtml::_('select.genericlist', $options, $name, $attributes, 'value', 'text', $value);
 	}
-
-	public static function jQuery($ui = false)
-	{
-		// Get application
-		$application = JFactory::getApplication();
-
-		// Get document
-		$document = JFactory::getDocument();
-
-		// Get params
-		$params = JComponentHelper::getParams('com_k2');
-
-		if ($document->getType() == 'html')
-		{
-			JHtml::_('jquery.framework');
-		}
-	}
-
 }
