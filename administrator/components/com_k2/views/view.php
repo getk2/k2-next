@@ -191,15 +191,6 @@ class K2View extends JViewLegacy
 		// Get the pagination
 		$pagination = new JPagination($total, $limitstart, $limit);
 
-		// Convert some variables for Joomla! 2.5 compatibility
-		if (version_compare(JVERSION, '3.0', 'lt'))
-		{
-			$pagination->pagesCurrent = $pagination->get('pages.current');
-			$pagination->pagesTotal = $pagination->get('pages.total');
-			$pagination->pagesStart = $pagination->get('pages.start');
-			$pagination->pagesStop = $pagination->get('pages.stop');
-		}
-
 		// Set the K2 response pagination object
 		K2Response::setPagination($pagination);
 	}

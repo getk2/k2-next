@@ -290,37 +290,7 @@ class K2HelperHTML
 
 		if ($document->getType() == 'html')
 		{
-			if (version_compare(JVERSION, '3.2', 'ge'))
-			{
-				JHtml::_('jquery.framework');
-			}
-			else
-			{
-				$handling = $application->isAdmin() ? $params->get('backendJQueryHandling', 'remote') : $params->get('jQueryHandling', '1.8remote');
-				if ($handling == 'remote')
-				{
-					$document->addScript('//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js');
-				}
-				else if ($handling == 'local')
-				{
-					$document->addScript(JURI::root(true).'/media/k2/assets/js/jquery-1.8.3.min.js');
-				}
-				else
-				{
-					if ($handling && JString::strpos($handling, 'remote') !== false)
-					{
-						if ($handling == '1.9remote')
-						{
-							$handling = '1remote';
-						}
-						$document->addScript('//ajax.googleapis.com/ajax/libs/jquery/'.str_replace('remote', '', $handling).'/jquery.min.js');
-					}
-					else if ($handling && JString::strpos($handling, 'remote') === false)
-					{
-						$document->addScript(JURI::root(true).'/media/k2/assets/js/jquery-'.$handling.'.min.js');
-					}
-				}
-			}
+			JHtml::_('jquery.framework');
 		}
 	}
 

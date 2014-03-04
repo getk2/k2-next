@@ -52,12 +52,6 @@ class K2Controller extends JControllerLegacy
 		// Parent constructor
 		parent::__construct($config);
 
-		// If we are at Joomla! 2.5 set the controller input
-		if (version_compare(JVERSION, '3.0', 'lt'))
-		{
-			$this->input = JFactory::getApplication()->input;
-		}
-
 		// Add extra functionality only for JSON views
 		$document = JFactory::getDocument();
 		if ($document->getType() == 'json')
@@ -482,7 +476,7 @@ class K2Controller extends JControllerLegacy
 				K2Response::throwError($this->model->getError());
 			}
 		}
-				
+
 		// Trigger change state event for items and categories
 		if ($mode != 'clone' && isset($states['state']) && in_array($this->resourceType, array('items', 'categories')))
 		{
@@ -513,7 +507,7 @@ class K2Controller extends JControllerLegacy
 
 	protected function getInputData()
 	{
-		return version_compare(JVERSION, '3.2', 'ge') ? $this->input->getArray() : JRequest::get('post');
+		return $this->input->getArray();
 	}
 
 }

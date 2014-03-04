@@ -15,17 +15,15 @@ jimport('joomla.html.pane');
 
 // Quick and dirty fix for Joomla! 3.0 missing CSS tabs when creating tabs using the API.
 // Should be removed when Joomla! fixes that...
-if (version_compare(JVERSION, '3.2', 'ge'))
-{
-	$document = JFactory::getDocument();
-	$document->addStyleDeclaration('
+
+$document = JFactory::getDocument();
+$document->addStyleDeclaration('
 		dl.tabs {float:left;margin:10px 0 -1px 0;z-index:50;}
 		dl.tabs dt {float:left;padding:4px 10px;border:1px solid #ccc;margin-left:3px;background:#e9e9e9;color:#666;}
 		dl.tabs dt.open {background:#F9F9F9;border-bottom:1px solid #f9f9f9;z-index:100;color:#000;}
 		div.current {clear:both;border:1px solid #ccc;padding:10px 10px;}
 		dl.tabs h3 {font-size:12px;line-height:12px;margin:4px;}
 ');
-}
 
 ?>
 

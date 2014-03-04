@@ -82,17 +82,6 @@ class K2ViewK2 extends JViewLegacy
 		// Load the application
 		$document->addCustomTag('<script data-main="'.JURI::root(true).'/administrator/components/com_k2/js/boot" src="'.JURI::root(true).'/administrator/components/com_k2/js/require.js"></script>');
 
-		// Add version variable
-		if (version_compare(JVERSION, '3.0', 'ge'))
-		{
-			$JVersion = '31';
-		}
-		else
-		{
-			$JVersion = '25';
-		}
-		$this->assignRef('JVersion', $JVersion);
-
 		// Set title
 		if (class_exists('JToolBarHelper'))
 		{

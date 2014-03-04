@@ -64,11 +64,8 @@ class K2ControllerSettings extends K2Controller
 		$data = $input['jform'];
 
 		// Use Joomla! model for saving settings
-		if (version_compare(JVERSION, '3.2', 'ge'))
-		{
-			require_once JPATH_SITE.'/components/com_config/model/cms.php';
-			require_once JPATH_SITE.'/components/com_config/model/form.php';
-		}
+		require_once JPATH_SITE.'/components/com_config/model/cms.php';
+		require_once JPATH_SITE.'/components/com_config/model/form.php';
 
 		JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_config/models');
 		$model = JModelLegacy::getInstance('Component', 'ConfigModel');
@@ -93,13 +90,10 @@ class K2ControllerSettings extends K2Controller
 		$data = array('params' => $return, 'id' => $id, 'option' => $option);
 		$return = $model->save($data);
 		
-		if (version_compare(JVERSION, '3.2', 'ge'))
-		{
-			$options = array('defaultgroup' => '_system', 'cachebase' => JPATH_ADMINISTRATOR.'/cache');
-			$cache = JCache::getInstance('callback', $options);
-			$cache->clean();
-		}
-
+		$options = array('defaultgroup' => '_system', 'cachebase' => JPATH_ADMINISTRATOR.'/cache');
+		$cache = JCache::getInstance('callback', $options);
+		$cache->clean();
+		
 		// Check the return value.
 		if ($return === false)
 		{

@@ -81,7 +81,7 @@ class Com_K2InstallerScript
 			if($type == 'install' && $client == 'administrator')
 			{
 				// Detect target position
-				$position = version_compare(JVERSION, '3.0', '<') && $name == 'mod_k2_quickicons'? 'icon' : 'cpanel';
+				$position = 'cpanel';
 				
 				// Publish the module
 				$query = $db->getQuery(true);

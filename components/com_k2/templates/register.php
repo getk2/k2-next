@@ -57,7 +57,6 @@ JHtml::_('behavior.formvalidation');
 					*
 				</td>
 			</tr>
-			<?php if(version_compare(JVERSION, '1.6', 'ge')): ?>
 			<tr>
 				<td class="key">
 					<label id="email2msg" for="email2"><?php echo JText::_('K2_CONFIRM_EMAIL'); ?></label>
@@ -67,7 +66,6 @@ JHtml::_('behavior.formvalidation');
 					*
 				</td>
 			</tr>
-			<?php endif; ?>
 			<tr>
 				<td class="key">
 					<label id="pwmsg" for="password"><?php echo JText::_('K2_PASSWORD'); ?></label>
