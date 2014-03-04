@@ -5,8 +5,8 @@ define(['marionette', 'text!layouts/subheader.html', 'dispatcher', 'widgets/widg
 		template : _.template(template),
 
 		regions : {
-			toolbarRegion : '#appSubheaderToolbar',
-			filtersRegion : '#appSubheaderFilters'
+			toolbarRegion : '[data-region="toolbar"]',
+			filtersRegion : '[data-region="filters"]'
 		},
 
 		modelEvents : {

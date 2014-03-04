@@ -9,14 +9,14 @@
 
 // no direct access
 defined('_JEXEC') or die ; ?>
-<div id="appApplication">
-	<div id="appMessages"></div>
-    <div id="appHeader"></div>
-    <div id="appSidebar"></div>
-    <div id="appMain">
-        <div id="appSubheader"></div>
-        <div id="appContent"></div>
-        <div class="appClr"></div>
+<div data-application="k2">
+	<div data-region="messages"></div>
+    <div data-region="header"></div>
+    <div data-region="sidebar" style="float:left; width : 20%;"></div>
+    <div style="float: left; width: 80%;">
+        <div data-region="subheader"></div>
+        <div data-region="content"></div>
     </div>
-    <div id="appModal"></div>
+    <div style="clear: both;"></div>
+    <div data-region="modal"></div>
 </div>

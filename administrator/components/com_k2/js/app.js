@@ -18,12 +18,12 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'vie
 
 	// Set the regions
 	K2.addRegions({
-		messages : '#appMessages',
-		header : '#appHeader',
-		sidebar : '#appSidebar',
-		subheader : '#appSubheader',
-		content : '#appContent',
-		modal : '#appModal'
+		messages : '[data-region="messages"]',
+		header : '[data-region="header"]',
+		sidebar : '[data-region="sidebar"]',
+		subheader : '[data-region="subheader"]',
+		content : '[data-region="content"]',
+		modal : '[data-region="modal"]'
 	});
 
 	// On after initialize
