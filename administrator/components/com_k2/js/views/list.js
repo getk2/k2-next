@@ -7,7 +7,7 @@ define(['marionette', 'text!layouts/list.html', 'dispatcher'], function(Marionet
 			pagination : '[data-region="pagination"]'
 		},
 		events : {
-			'click .appActionSort' : 'sort',
+			'click [data-action="sort"]' : 'sort',
 			'click [data-action="toggle-state"]' : 'toggleState',
 			'click .appActionSaveOrder' : 'saveOrder',
 			'change input[data-action="toggle-all"]' : 'toggleRowsSelection',

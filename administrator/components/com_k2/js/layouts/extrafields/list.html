@@ -5,18 +5,18 @@
                     <input data-action="toggle-all" type="checkbox" />
                 </label>
             </td>
-            <td><a class="appActionSort" data-sorting="name"><%= l('K2_NAME') %></a></td>
-            <td><a class="appActionSort" data-sorting="group"><%= l('K2_GROUP') %></a></td>
-            <td><a class="appActionSort" data-sorting="type"><%= l('K2_TYPE') %></a></td>
+            <td><a data-action="sort" data-sorting="name"><%= l('K2_NAME') %></a></td>
+            <td><a data-action="sort" data-sorting="group"><%= l('K2_GROUP') %></a></td>
+            <td><a data-action="sort" data-sorting="type"><%= l('K2_TYPE') %></a></td>
             <td></td>
             <td>
-                <a class="appActionSort" data-sorting="ordering"><%= l('K2_ORDER') %></a>
+                <a data-action="sort" data-sorting="ordering"><%= l('K2_ORDER') %></a>
                 <button data-column="ordering" class="appActionSaveOrder">
                     <%= l('K2_SAVE_ORDER') %>
                 </button>
             </td>
-            <td><a class="appActionSort" data-sorting="state"><%= l('K2_STATE') %></a></td>
-            <td><a class="appActionSort" data-sorting="id"><%= l('K2_ID') %></a></td>
+            <td><a data-action="sort" data-sorting="state"><%= l('K2_STATE') %></a></td>
+            <td><a data-action="sort" data-sorting="id"><%= l('K2_ID') %></a></td>
         </tr>
     </thead>
     <tbody></tbody>
