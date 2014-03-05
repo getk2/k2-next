@@ -253,7 +253,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 
 			if (onBeforeSave) {
 				// Get the form variables
-				var input = jQuery('.appEditForm').serializeArray();
+				var input = this.view.$('form').serializeArray();
 
 				// Save
 				this.model.save(null, {
