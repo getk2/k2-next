@@ -389,5 +389,34 @@ class PlgFinderK2 extends FinderIndexerAdapter
 
 		return $query;
 	}
+	
+	/**
+	 * Method to update index data on category access level changes
+	 *
+	 * @param   JTable  $row  A JTable object
+	 *
+	 * @return  void
+	 *
+	 * @since   2.5
+	 */
+	protected function categoryAccessChange($row)
+	{
+		$query = clone($this->getStateQuery());
+		$query->where('c.id = ' . (int) $row->id);
+
+		// Get the access level.
+		$this->db->setQuery($query);
+		$items = $this->db->loadObjectList();
+
+		// Adjust the access level for each item within the category.
+		foreach ($items as $item)
+		{
+			// Set the access level.
+			$temp = max($item->access, $row->access);
+
+			// Update the item.
+			$this->change((int) $item->id, 'access', $temp);
+		}
+	}
 
 }
