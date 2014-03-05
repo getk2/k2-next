@@ -260,7 +260,7 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 					containerSelector : 'table',
 					itemPath : '> tbody',
 					itemSelector : 'tr',
-					placeholder : '<tr class="placeholder"/>',
+					placeholder : '<tr class="k2SortingPlaceholder"/>',
 					onDrop : function(item, container, _super) {
 						var value = minimumValue;
 						var keys = [];

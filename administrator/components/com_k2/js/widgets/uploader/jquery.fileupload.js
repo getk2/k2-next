@@ -1,5 +1,5 @@
 /*
- * jQuery File Upload Plugin 5.34.0
+ * jQuery File Upload Plugin 5.40.1
  * https://github.com/blueimp/jQuery-File-Upload
  *
  * Copyright 2010, Sebastian Tschan
@@ -9,8 +9,8 @@
  * http://www.opensource.org/licenses/MIT
  */
 
-/*jslint nomen: true, unparam: true, regexp: true */
-/*global define, window, document, location, File, Blob, FormData */
+/* jshint nomen:false */
+/* global define, window, document, location, Blob, FormData */
 
 (function (factory) {
     'use strict';
@@ -40,9 +40,11 @@
         $('<input type="file">').prop('disabled'));
 
     // The FileReader API is not actually used, but works as feature detection,
-    // as e.g. Safari supports XHR file uploads via the FormData API,
-    // but not non-multipart XHR file uploads:
-    $.support.xhrFileUpload = !!(window.XMLHttpRequestUpload && window.FileReader);
+    // as some Safari versions (5?) support XHR file uploads via the FormData API,
+    // but not non-multipart XHR file uploads.
+    // window.XMLHttpRequestUpload is not available on IE10, so we check for
+    // window.ProgressEvent instead to detect XHR2 file upload capability:
+    $.support.xhrFileUpload = !!(window.ProgressEvent && window.FileReader);
     $.support.xhrFormDataFileUpload = !!window.FormData;
 
     // Detect support for Blob slicing (required for chunked uploads):
@@ -88,6 +90,14 @@
             // To limit the number of files uploaded with one XHR request,
             // set the following option to an integer greater than 0:
             limitMultiFileUploads: undefined,
+            // The following option limits the number of files uploaded with one
+            // XHR request to keep the request size under or equal to the defined
+            // limit in bytes:
+            limitMultiFileUploadSize: undefined,
+            // Multipart file uploads add a number of bytes to each uploaded file,
+            // therefore the following option adds an overhead for each file used
+            // in the limitMultiFileUploadSize configuration:
+            limitMultiFileUploadSizeOverhead: 512,
             // Set the following option to true to issue all file upload requests
             // in a sequential order:
             sequentialUploads: false,
@@ -283,7 +293,7 @@
 
         _getFormData: function (options) {
             var formData;
-            if (typeof options.formData === 'function') {
+            if ($.type(options.formData) === 'function') {
                 return options.formData(options.form);
             }
             if ($.isArray(options.formData)) {
@@ -409,7 +419,8 @@
                 file = options.files[0],
                 // Ignore non-multipart setting if not supported:
                 multipart = options.multipart || !$.support.xhrFileUpload,
-                paramName = options.paramName[0];
+                paramName = $.type(options.paramName) === 'array' ?
+                    options.paramName[0] : options.paramName;
             options.headers = $.extend({}, options.headers);
             if (options.contentRange) {
                 options.headers['Content-Range'] = options.contentRange;
@@ -419,7 +430,7 @@
                     encodeURI(file.name) + '"';
             }
             if (!multipart) {
-                options.contentType = file.type;
+                options.contentType = file.type || 'application/octet-stream';
                 options.data = options.blob || file;
             } else if ($.support.xhrFormDataFileUpload) {
                 if (options.postMessage) {
@@ -436,7 +447,8 @@
                     } else {
                         $.each(options.files, function (index, file) {
                             formData.push({
-                                name: options.paramName[index] || paramName,
+                                name: ($.type(options.paramName) === 'array' &&
+                                    options.paramName[index]) || paramName,
                                 value: file
                             });
                         });
@@ -459,9 +471,10 @@
                             if (that._isInstanceOf('File', file) ||
                                     that._isInstanceOf('Blob', file)) {
                                 formData.append(
-                                    options.paramName[index] || paramName,
+                                    ($.type(options.paramName) === 'array' &&
+                                        options.paramName[index]) || paramName,
                                     file,
-                                    file.name
+                                    file.uploadName || file.name
                                 );
                             }
                         });
@@ -607,16 +620,23 @@
         // Adds convenience methods to the data callback argument:
         _addConvenienceMethods: function (e, data) {
             var that = this,
-                getPromise = function (data) {
-                    return $.Deferred().resolveWith(that, [data]).promise();
+                getPromise = function (args) {
+                    return $.Deferred().resolveWith(that, args).promise();
                 };
             data.process = function (resolveFunc, rejectFunc) {
                 if (resolveFunc || rejectFunc) {
                     data._processQueue = this._processQueue =
-                        (this._processQueue || getPromise(this))
-                            .pipe(resolveFunc, rejectFunc);
+                        (this._processQueue || getPromise([this])).pipe(
+                            function () {
+                                if (data.errorThrown) {
+                                    return $.Deferred()
+                                        .rejectWith(that, [data]).promise();
+                                }
+                                return getPromise(arguments);
+                            }
+                        ).pipe(resolveFunc, rejectFunc);
                 }
-                return this._processQueue || getPromise(this);
+                return this._processQueue || getPromise([this]);
             };
             data.submit = function () {
                 if (this.state() !== 'pending') {
@@ -633,7 +653,9 @@
                 if (this.jqXHR) {
                     return this.jqXHR.abort();
                 }
-                return that._getXHRPromise();
+                this.errorThrown = 'abort';
+                that._trigger('fail', null, this);
+                return that._getXHRPromise(false);
             };
             data.state = function () {
                 if (this.jqXHR) {
@@ -642,6 +664,10 @@
                 if (this._processQueue) {
                     return that._getDeferredState(this._processQueue);
                 }
+            };
+            data.processing = function () {
+                return !this.jqXHR && this._processQueue && that
+                    ._getDeferredState(this._processQueue) === 'pending';
             };
             data.progress = function () {
                 return this._progress;
@@ -920,32 +946,59 @@
             var that = this,
                 result = true,
                 options = $.extend({}, this.options, data),
+                files = data.files,
+                filesLength = files.length,
                 limit = options.limitMultiFileUploads,
+                limitSize = options.limitMultiFileUploadSize,
+                overhead = options.limitMultiFileUploadSizeOverhead,
+                batchSize = 0,
                 paramName = this._getParamName(options),
                 paramNameSet,
                 paramNameSlice,
                 fileSet,
-                i;
-            if (!(options.singleFileUploads || limit) ||
+                i,
+                j = 0;
+            if (limitSize && (!filesLength || files[0].size === undefined)) {
+                limitSize = undefined;
+            }
+            if (!(options.singleFileUploads || limit || limitSize) ||
                     !this._isXHRUpload(options)) {
-                fileSet = [data.files];
+                fileSet = [files];
                 paramNameSet = [paramName];
-            } else if (!options.singleFileUploads && limit) {
+            } else if (!(options.singleFileUploads || limitSize) && limit) {
                 fileSet = [];
                 paramNameSet = [];
-                for (i = 0; i < data.files.length; i += limit) {
-                    fileSet.push(data.files.slice(i, i + limit));
+                for (i = 0; i < filesLength; i += limit) {
+                    fileSet.push(files.slice(i, i + limit));
                     paramNameSlice = paramName.slice(i, i + limit);
                     if (!paramNameSlice.length) {
                         paramNameSlice = paramName;
                     }
                     paramNameSet.push(paramNameSlice);
                 }
+            } else if (!options.singleFileUploads && limitSize) {
+                fileSet = [];
+                paramNameSet = [];
+                for (i = 0; i < filesLength; i = i + 1) {
+                    batchSize += files[i].size + overhead;
+                    if (i + 1 === filesLength ||
+                            ((batchSize + files[i + 1].size + overhead) > limitSize) ||
+                            (limit && i + 1 - j >= limit)) {
+                        fileSet.push(files.slice(j, i + 1));
+                        paramNameSlice = paramName.slice(j, i + 1);
+                        if (!paramNameSlice.length) {
+                            paramNameSlice = paramName;
+                        }
+                        paramNameSet.push(paramNameSlice);
+                        j = i + 1;
+                        batchSize = 0;
+                    }
+                }
             } else {
                 paramNameSet = paramName;
             }
-            data.originalFiles = data.files;
-            $.each(fileSet || data.files, function (index, element) {
+            data.originalFiles = files;
+            $.each(fileSet || files, function (index, element) {
                 var newData = $.extend({}, data);
                 newData.files = fileSet ? element : [element];
                 newData.paramName = paramNameSet[index];
@@ -1254,15 +1307,21 @@
 
         _initDataAttributes: function () {
             var that = this,
-                options = this.options;
+                options = this.options,
+                clone = $(this.element[0].cloneNode(false));
             // Initialize options set via HTML5 data-attributes:
             $.each(
-                $(this.element[0].cloneNode(false)).data(),
+                clone.data(),
                 function (key, value) {
-                    if (that._isRegExpOption(key, value)) {
-                        value = that._getRegExp(value);
+                    var dataAttributeName = 'data-' +
+                        // Convert camelCase to hyphen-ated key:
+                        key.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+                    if (clone.attr(dataAttributeName)) {
+                        if (that._isRegExpOption(key, value)) {
+                            value = that._getRegExp(value);
+                        }
+                        options[key] = value;
                     }
-                    options[key] = value;
                 }
             );
         },
