@@ -229,9 +229,6 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 
 			});
 		},
-		editor : function(element) {
-
-		},
 		uploader : function(element) {
 			require(['widgets/uploader/jquery.iframe-transport', 'widgets/uploader/jquery.fileupload'], function() {
 				element.fileupload({
@@ -286,6 +283,21 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 					element.find('[data-action="save-ordering"][data-column="' + column + '"]').prop('disabled', true);
 				}
 
+			});
+		},
+
+		tabs : function(element) {
+			var navigationContainer = element.find('[data-role="tabs-navigation"]:first');
+			var navigationElements = navigationContainer.find('a');
+			var contentsContainer = element.find('[data-role="tabs-content"]:first');
+			var contentElements = contentsContainer.find('> div');
+			contentElements.css('display', 'none');
+			contentElements.eq(0).css('display', 'block');
+			navigationElements.click(function(event) {
+				event.preventDefault();
+				var index = navigationElements.index(jQuery(this));
+				contentElements.css('display', 'none');
+				contentElements.eq(index).css('display', 'block');
 			});
 		},
 
