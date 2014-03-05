@@ -21,7 +21,7 @@ define(['marionette', 'text!layouts/extrafields/form.html', 'dispatcher', 'widge
 			var type = this.$el.find('#type').val();
 			var form = this.model.getForm();
 			var definitions = form.get('definitions');
-			this.$el.find('#appExtraFieldDefinition').html(definitions[type]);
+			this.$('[data-region="extra-field-definition"]').html(definitions[type]);
 			K2Widget.updateEvents(this.$el);
 			jQuery(document).trigger('K2ExtraFieldsRender');
 		}

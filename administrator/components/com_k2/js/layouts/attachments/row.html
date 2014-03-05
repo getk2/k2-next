@@ -1,4 +1,4 @@
-<div class="appAttachment">
+<div>
 	<% if(remove == 0) { %>
     <label><%= l('K2_FILE') %></label>
     <input type="file" data-widget="uploader" data-url="index.php?option=com_k2&task=attachments.upload&id=<%- id %>&itemId=<%- itemId %>&format=json" data-callback="attachments:upload:<%- cid %>" name="file" />
@@ -10,11 +10,11 @@
     <input type="text" name="attachments[<%- cid %>][name]" value="<%- name %>" />
     <label><%= l('K2_TITLE') %></label>
     <input type="text" name="attachments[<%- cid %>][title]" value="<%- title %>" />
-    <button class="appRemoveAttachment">
+    <button data-action="remove">
         <%= l('K2_REMOVE') %>
     </button>
     <% if(id) { %>
-    <button class="appDownloadAttachment">
+    <button data-action="download">
         <%= l('K2_DOWNLOAD') %>
     </button>
     <% } %>

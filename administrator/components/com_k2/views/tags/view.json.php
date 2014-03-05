@@ -99,12 +99,7 @@ class K2ViewTags extends K2View
 	{
 
 		// Sorting filter
-		$sortingOptions = array(
-			'K2_ID' => 'id',
-			'K2_NAME' => 'name',
-			'K2_ITEMS' => 'items',
-			'K2_STATE' => 'state'
-		);
+		$sortingOptions = array('K2_ID' => 'id', 'K2_NAME' => 'name', 'K2_ITEMS' => 'items', 'K2_STATE' => 'state');
 		K2Response::addFilter('sorting', JText::_('K2_SORT_BY'), K2HelperHTML::sorting($sortingOptions), false, 'header');
 
 		// Search filter
@@ -117,20 +112,10 @@ class K2ViewTags extends K2View
 
 	protected function setToolbar()
 	{
-		K2Response::addToolbarAction('publish', 'K2_PUBLISH', array(
-			'data-state' => 'state',
-			'data-value' => '1',
-			'class' => 'appActionSetState',
-			'id' => 'appActionPublish'
-		));
-		K2Response::addToolbarAction('unpublish', 'K2_UNPUBLISH', array(
-			'data-state' => 'state',
-			'data-value' => '0',
-			'class' => 'appActionSetState',
-			'id' => 'appActionUnpublish'
-		));
+		K2Response::addToolbarAction('publish', 'K2_PUBLISH', array('data-state' => 'state', 'data-value' => '1', 'data-action' => 'set-state'));
+		K2Response::addToolbarAction('unpublish', 'K2_UNPUBLISH', array('data-state' => 'state', 'data-value' => '0', 'data-action' => 'set-state'));
 
-		K2Response::addToolbarAction('remove', 'K2_DELETE', array('id' => 'appActionRemove'));
+		K2Response::addToolbarAction('remove', 'K2_DELETE', array('data-action' => 'remove'));
 	}
 
 	protected function setFormFields(&$form, $row)
@@ -140,7 +125,7 @@ class K2ViewTags extends K2View
 		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/extrafields.php';
 		$form->extraFields = K2HelperExtraFields::getTagExtraFields($row->id, $row->extra_fields);
 	}
-	
+
 	/**
 	 * Hook for children views to allow them set the menu for the list requests.
 	 * Children views usually will not need to override this method.
@@ -152,10 +137,7 @@ class K2ViewTags extends K2View
 		$user = JFactory::getUser();
 		if ($user->authorise('k2.tags.manage', 'com_k2'))
 		{
-			K2Response::addAction('add', 'K2_ADD', array(
-				'class' => 'appAction',
-				'id' => 'appActionAdd'
-			));
+			K2Response::addAction('add', 'K2_ADD', array('data-action' => 'add'));
 		}
 	}
 

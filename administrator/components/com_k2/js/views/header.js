@@ -5,12 +5,12 @@ define(['marionette', 'text!layouts/header.html', 'dispatcher', 'widgets/widget'
 		template : _.template(template),
 
 		events : {
-			'click #appActionAdd' : 'add',
-			'click #appActionSave' : 'save',
-			'click #appActionSaveAndNew' : 'saveAndNew',
-			'click #appActionSaveAndClose' : 'saveAndClose',
-			'click #appActionClose' : 'close',
-			'click #appActionImport' : 'import'
+			'click [data-action="add"]' : 'add',
+			'click [data-action="save"]' : 'save',
+			'click [data-action="save-and-new"]' : 'saveAndNew',
+			'click [data-action="save-and-close"]' : 'saveAndClose',
+			'click [data-action="close"]' : 'close',
+			'click [data-action="import"]' : 'import'
 		},
 
 		modelEvents : {

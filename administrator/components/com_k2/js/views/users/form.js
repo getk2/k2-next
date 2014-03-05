@@ -3,8 +3,8 @@ define(['marionette', 'text!layouts/users/form.html', 'dispatcher', 'widgets/wid
 		template : _.template(template),
 		// Regions
 		regions : {
-			imageRegion : '#appUserImage',
-			extraFieldsRegion : '#appUserExtraFields'
+			imageRegion : '[data-region="user-image"]',
+			extraFieldsRegion : '[data-region="user-extra-fields"]'
 		},
 		modelEvents : {
 			'change' : 'render'

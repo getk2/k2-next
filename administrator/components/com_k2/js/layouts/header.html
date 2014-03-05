@@ -6,7 +6,7 @@
 <ul data-region="menu-primary">
     <% _.each(menu, function(link) { %>
     <li>
-        <a <% if(link.attributes.id) { %> id="<%= link.attributes.id %>" <% } %> <% if(link.attributes.class) { %> class="<%= link.attributes.class %>" <% } %> href="<%= link.attributes.href %>"><%= link.name %></a>
+        <a <% _.each(link.attributes, function(value, name) { print(name + '="' + value + '" ');}) %>><%= link.name %></a>
     </li>
     <% }); %>
 </ul>
@@ -16,7 +16,7 @@
 <ul data-region="actions">
     <% _.each(actions, function(button) { %>
     <li>
-        <button <% if(button.attributes.id) { %> id="<%= button.attributes.id %>" <% } %> <% if(button.attributes.class) { %> class="<%= button.attributes.class %>" <% } %> <% if(button.attributes['data-resource']) { %> data-resource="<%= button.attributes['data-resource'] %>" <% } %>>
+        <button <% _.each(button.attributes, function(value, name) { print(name + '="' + value + '" ');}) %>>
             <%= button.name %>
         </button>
     </li>

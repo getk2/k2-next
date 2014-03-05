@@ -95,7 +95,7 @@
     <input data-widget="tags" value="<%- row.tagsValue %>" type="hidden" name="tags" />
 
     <!-- Image -->
-    <div id="appItemImage"></div>
+    <div data-region="item-image"></div>
     
     <% _.each(form.k2Plugins['items-image'], function(field) { %>
     	<%= field.label %>
@@ -103,7 +103,7 @@
 	<% }); %>
 
     <!-- Attachments -->
-    <div id="appItemAttachments"></div>
+    <div data-region="item-attachments"></div>
     
     <% _.each(form.k2Plugins['items-attachments'], function(field) { %>
     	<%= field.label %>
@@ -111,7 +111,7 @@
 	<% }); %>
 
     <!-- Galleries -->
-    <div id="appItemGalleries"></div>
+    <div data-region="item-galleries"></div>
     
     <% _.each(form.k2Plugins['items-galleries'], function(field) { %>
     	<%= field.label %>
@@ -119,7 +119,7 @@
 	<% }); %>
 
     <!-- Media -->
-    <div id="appItemMedia"></div>
+    <div data-region="item-media"></div>
     
     <% _.each(form.k2Plugins['items-media'], function(field) { %>
     	<%= field.label %>
@@ -127,7 +127,7 @@
 	<% }); %>
 
     <!-- Extra Fields -->
-    <div id="appItemExtraFields"></div>
+    <div data-region="item-extra-fields"></div>
     
     <% _.each(form.k2Plugins['items-extra-fields'], function(field) { %>
     	<%= field.label %>
@@ -135,9 +135,9 @@
 	<% }); %>
     
     <!-- Revisions -->
-    <div id="appItemRevisions">
+    <div>
     	<h2><%= l('K2_REVISIONS') %></h2>
-    	<button id="appManageRevisions"><%= l('K2_MANAGE_REVISIONS') %></button>
+    	<button><%= l('K2_MANAGE_REVISIONS') %></button>
     	<ul>
     		<% _.each(row.revisions, function(revision) { %>
     			<li><span><%= revision.date %></span><span><%= revision.user %></span></li>

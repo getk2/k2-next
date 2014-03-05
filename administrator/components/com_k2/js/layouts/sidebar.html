@@ -2,7 +2,7 @@
 <ul data-region="menu-secondary">
     <% _.each(menu, function(link) { %>
     <li>
-        <a <% if(link.attributes.id) { %> id="<%= link.attributes.id %>" <% } %> <% if(link.attributes.class) { %> class="<%= link.attributes.class %>" <% } %> href="<%= link.attributes.href %>"><%= link.name %></a>
+        <a <% _.each(link.attributes, function(value, name) { print(name + '="' + value + '" ');}) %>><%= link.name %></a>
     </li>
     <% }); %>
 </ul>

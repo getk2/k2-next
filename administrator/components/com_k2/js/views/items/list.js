@@ -2,9 +2,9 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 
 	// List items layout. It handles the two views for items ( table and sortable list)
 	var K2ViewItems = Marionette.Layout.extend({
-		template : _.template('<div id="appItemsInnerGrid"></div>'),
+		template : _.template('<div data-region="items-inner"></div>'),
 		regions : {
-			content : '#appItemsInnerGrid',
+			content : '[data-region="items-inner"]',
 		},
 		initialize : function(options) {
 			this.isModal = options.isModal || false;
@@ -108,14 +108,14 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 			this.collection = new Backbone.Collection(this.model.get('children'));
 		},
 		appendHtml : function(compositeView, itemView) {
-			compositeView.$('ul.children:first').append(itemView.el);
+			compositeView.$('[data-region="category-children"]:first').append(itemView.el);
 		}
 	});
 
 	// Sortable view
 	var K2ViewItemsSortable = Marionette.CompositeView.extend({
 		template : _.template(sortableList),
-		itemViewContainer : 'ul#appItems',
+		itemViewContainer : '[data-region="items"]',
 		itemView : K2ViewItemsSortableRow,
 		initialize : function(options) {
 			this.itemsCollection = options.itemsCollection;
@@ -123,11 +123,11 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 		onCompositeCollectionRendered : function() {
 
 			// Enable sorting
-			var el = this.$el.find('#appItems');
+			var el = this.$('[data-region="items"]');
 			var items = this.itemsCollection;
 			require(['widgets/sortable/jquery-sortable-min'], _.bind(function() {
 				el.sortable({
-					handle : '.appOrderingHandle',
+					handle : '[data-role="ordering-handle"]',
 					onDrop : function(item, container, _super) {
 						var id = item.find('input[name="ordering[]"]').data('id');
 						var catid = item.data('id');

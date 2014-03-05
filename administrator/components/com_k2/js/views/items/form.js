@@ -7,17 +7,16 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 
 		// Regions
 		regions : {
-			imageRegion : '#appItemImage',
-			attachmentsRegion : '#appItemAttachments',
-			galleriesRegion : '#appItemGalleries',
-			mediaRegion : '#appItemMedia',
-			extraFieldsRegion : '#appItemExtraFields'
+			imageRegion : '[data-region="item-image"]',
+			attachmentsRegion : '[data-region="item-attachments"]',
+			galleriesRegion : '[data-region="item-galleries"]',
+			mediaRegion : '[data-region="item-media"]',
+			extraFieldsRegion : '[data-region="item-extra-fields"]'
 		},
 
 		// UI events
 		events : {
-			'change #catid' : 'updateCategory',
-			'click #appManageRevisions' : 'showRevisions'
+			'change #catid' : 'updateCategory'
 		},
 
 		modelEvents : {

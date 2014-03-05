@@ -10,7 +10,7 @@
         <%= str_repeat('-', level) %><%= title %>
     <% } %>
 </span>
-<span><span class="appOrderingHandle">DRAG ME</span></span>
+<span><span data-role="ordering-handle">DRAG ME</span></span>
 <span>
     <% if(canEditState) { %>
     <a data-action="toggle-state-category" data-state-value="<%= state %>" data-id="<%= id %>" data-state="state"><%= state %></a>

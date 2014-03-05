@@ -111,7 +111,7 @@ class K2ViewUserGroups extends K2View
 
 	protected function setToolbar()
 	{
-		K2Response::addToolbarAction('remove', 'K2_DELETE', array('id' => 'appActionRemove'));
+		K2Response::addToolbarAction('remove', 'K2_DELETE', array('data-action' => 'remove'));
 	}
 
 	protected function prepareJForm(&$form, $row)

@@ -34,7 +34,7 @@ define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categor
 	});
 	var K2ViewCategories = Marionette.CompositeView.extend({
 		template : _.template(list),
-		itemViewContainer : '#appCategories',
+		itemViewContainer : '[data-region="categories"]',
 		itemView : K2ViewCategoriesRow,
 		collectionEvents : {
 			'reset' : 'buildTree',
@@ -58,11 +58,11 @@ define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categor
 		onCompositeCollectionRendered : function() {
 
 			// Enable sorting
-			var el = this.$el.find('#appCategories');
+			var el = this.$('[data-region="categories"]');
 			var collection = this.collection;
 			require(['widgets/sortable/jquery-sortable-min'], function() {
 				el.sortable({
-					handle : '.appOrderingHandle',
+					handle : '[data-role="ordering-handle"]',
 					onDrop : function(item, container, _super) {
 						var id = item.data('id');
 						var parent = item.parent();

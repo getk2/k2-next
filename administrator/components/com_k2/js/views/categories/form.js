@@ -8,8 +8,8 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher', 'widget
 
 		// Regions
 		regions : {
-			imageRegion : '#appCategoryImage',
-			extraFieldsRegion : '#appCategoryExtraFields'
+			imageRegion : '[data-region="category-image"]',
+			extraFieldsRegion : '[data-region="category-extra-fields"]'
 		},
 
 		// UI events

@@ -13,7 +13,7 @@ define(['marionette', 'text!layouts/tags/form.html', 'views/extrafields/widget']
 			'change' : 'render'
 		},
 		regions : {
-			extraFieldsRegion : '#appTagExtraFields'
+			extraFieldsRegion : '[data-region="tag-extra-fields"]'
 		},
 		onShow : function() {
 			this.extraFieldsRegion.show(this.extraFieldsView);

@@ -123,7 +123,7 @@ class K2ViewItems extends K2View
 
 		// Author filter
 		K2Response::addFilter('author', JText::_('K2_AUTHOR'), '<input data-widget="user" data-null="'.JText::_('K2_ANY').'" data-min="0" data-name="'.JText::_('K2_ANY').'" type="hidden" name="author" value="" />', false, 'header');
-		
+
 		// Author filter
 		K2Response::addFilter('tag', JText::_('K2_TAG'), '<input data-widget="tag" data-null="'.JText::_('K2_ANY').'" data-min="0" data-name="'.JText::_('K2_ANY').'" type="hidden" name="tag" value="" />', false, 'header');
 
@@ -165,22 +165,22 @@ class K2ViewItems extends K2View
 
 		if ($canEditFeaturedState)
 		{
-			K2Response::addToolbarAction('feature', 'K2_FEATURE', array('data-state' => 'featured', 'data-value' => '1', 'class' => 'appActionSetState', 'id' => 'appActionFeature'));
-			K2Response::addToolbarAction('unfeature', 'K2_UNFEATURE', array('data-state' => 'featured', 'data-value' => '0', 'class' => 'appActionSetState', 'id' => 'appActionUnFeature'));
+			K2Response::addToolbarAction('feature', 'K2_FEATURE', array('data-state' => 'featured', 'data-value' => '1', 'data-action' => 'set-state'));
+			K2Response::addToolbarAction('unfeature', 'K2_UNFEATURE', array('data-state' => 'featured', 'data-value' => '0', 'data-actiob' => 'set-state'));
 		}
 
 		if ($canEditState)
 		{
-			K2Response::addToolbarAction('publish', 'K2_PUBLISH', array('data-state' => 'state', 'data-value' => '1', 'class' => 'appActionSetState', 'id' => 'appActionPublish'));
-			K2Response::addToolbarAction('unpublish', 'K2_UNPUBLISH', array('data-state' => 'state', 'data-value' => '0', 'class' => 'appActionSetState', 'id' => 'appActionUnpublish'));
+			K2Response::addToolbarAction('publish', 'K2_PUBLISH', array('data-state' => 'state', 'data-value' => '1', 'data-action' => 'set-state'));
+			K2Response::addToolbarAction('unpublish', 'K2_UNPUBLISH', array('data-state' => 'state', 'data-value' => '0', 'data-action' => 'set-state'));
 
-			K2Response::addToolbarAction('trash', 'K2_TRASH', array('data-state' => 'state', 'data-value' => '-1', 'class' => 'appActionSetState', 'id' => 'appActionTrash'));
+			K2Response::addToolbarAction('trash', 'K2_TRASH', array('data-state' => 'state', 'data-value' => '-1', 'data-action' => 'set-state'));
 		}
-		K2Response::addToolbarAction('batch', 'K2_BATCH', array('id' => 'appActionBatch'));
+		K2Response::addToolbarAction('batch', 'K2_BATCH', array('data-action' => 'batch'));
 
 		if ($canDelete)
 		{
-			K2Response::addToolbarAction('remove', 'K2_DELETE', array('id' => 'appActionRemove'));
+			K2Response::addToolbarAction('remove', 'K2_DELETE', array('data-action' => 'remove'));
 		}
 	}
 
@@ -208,7 +208,7 @@ class K2ViewItems extends K2View
 
 		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/extrafields.php';
 		$form->extraFields = K2HelperExtraFields::getItemExtraFields($row->catid, $row->extra_fields);
-		
+
 	}
 
 	/**
@@ -222,11 +222,11 @@ class K2ViewItems extends K2View
 		$user = JFactory::getUser();
 		if ($user->authorise('k2.item.create', 'com_k2'))
 		{
-			K2Response::addAction('add', 'K2_ADD', array('class' => 'appAction', 'id' => 'appActionAdd'));
+			K2Response::addAction('add', 'K2_ADD', array('data-action' => 'add'));
 		}
 		if ($user->authorise('core.admin', 'com_k2'))
 		{
-			K2Response::addAction('import', 'K2_IMPORT', array('class' => 'appAction', 'id' => 'appActionImport'));
+			K2Response::addAction('import', 'K2_IMPORT', array('data-action' => 'import'));
 		}
 	}
 

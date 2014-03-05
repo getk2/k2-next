@@ -5,10 +5,10 @@ define(['marionette', 'text!layouts/toolbar.html', 'dispatcher', 'widgets/widget
 		template : _.template(template),
 
 		events : {
-			'click .appActionSetState' : 'setState',
-			'click #appActionRemove' : 'remove',
+			'click [data-action="set-state"]' : 'setState',
+			'click [data-action="remove"]' : 'remove',
 			'click [data-action="close"]' : 'closeToolbar',
-			'click #appActionBatch' : 'batch'
+			'click [data-action="batch"]' : 'batch'
 		},
 
 		modelEvents : {

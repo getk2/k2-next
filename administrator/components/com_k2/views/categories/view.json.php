@@ -51,7 +51,7 @@ class K2ViewCategories extends K2View
 
 		// Set Actions
 		$this->setListActions();
-		
+
 		// Set Batch Actions
 		$this->setBatchActions();
 
@@ -103,7 +103,7 @@ class K2ViewCategories extends K2View
 
 	protected function setFilters()
 	{
-				
+
 		// Root filter
 		K2Response::addFilter('root', JText::_('K2_ROOT'), K2HelperHTML::categories('root', null, 'K2_NONE'), true, 'header');
 
@@ -132,7 +132,6 @@ class K2ViewCategories extends K2View
 		// State filter
 		K2Response::addFilter('state', JText::_('K2_STATE'), K2HelperHTML::state('state', null, 'K2_ANY', true, 'radio'), true, 'sidebar');
 
-
 	}
 
 	protected function setToolbar()
@@ -154,29 +153,14 @@ class K2ViewCategories extends K2View
 		}
 		if ($canEditState)
 		{
-			K2Response::addToolbarAction('publish', 'K2_PUBLISH', array(
-				'data-state' => 'state',
-				'data-value' => '1',
-				'class' => 'appActionSetState',
-				'id' => 'appActionPublish'
-			));
-			K2Response::addToolbarAction('unpublish', 'K2_UNPUBLISH', array(
-				'data-state' => 'state',
-				'data-value' => '0',
-				'class' => 'appActionSetState',
-				'id' => 'appActionUnpublish'
-			));
-			K2Response::addToolbarAction('trash', 'K2_TRASH', array(
-				'data-state' => 'state',
-				'data-value' => '-1',
-				'class' => 'appActionSetState',
-				'id' => 'appActionTrash'
-			));
+			K2Response::addToolbarAction('publish', 'K2_PUBLISH', array('data-state' => 'state', 'data-value' => '1', 'data-action' => 'set-state'));
+			K2Response::addToolbarAction('unpublish', 'K2_UNPUBLISH', array('data-state' => 'state', 'data-value' => '0', 'data-action' => 'set-state'));
+			K2Response::addToolbarAction('trash', 'K2_TRASH', array('data-state' => 'state', 'data-value' => '-1', 'data-action' => 'set-state'));
 		}
-		K2Response::addToolbarAction('batch', 'K2_BATCH', array('id' => 'appActionBatch'));
+		K2Response::addToolbarAction('batch', 'K2_BATCH', array('data-action' => 'batch'));
 		if ($canDelete)
 		{
-			K2Response::addToolbarAction('remove', 'K2_DELETE', array('id' => 'appActionRemove'));
+			K2Response::addToolbarAction('remove', 'K2_DELETE', array('data-action' => 'remove'));
 		}
 	}
 
@@ -207,17 +191,14 @@ class K2ViewCategories extends K2View
 		$user = JFactory::getUser();
 		if ($user->authorise('k2.category.create', 'com_k2'))
 		{
-			K2Response::addAction('add', 'K2_ADD', array(
-				'class' => 'appAction',
-				'id' => 'appActionAdd'
-			));
+			K2Response::addAction('add', 'K2_ADD', array('data-action' => 'add'));
 		}
 	}
-
 
 	protected function setBatchActions()
 	{
 		K2Response::addBatchAction('access', 'K2_ACCESS', JHtml::_('access.level', 'access', null, '', array(JHtml::_('select.option', '', JText::_('K2_LEAVE_UNCHANGED')))));
 		K2Response::addBatchAction('language', 'K2_LANGUAGE', K2HelperHTML::language('language', '', 'K2_LEAVE_UNCHANGED'));
 	}
+
 }

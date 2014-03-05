@@ -4,8 +4,8 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/attachments/list.html', 't
 		tagName : 'div',
 		template : _.template(rowTemplate),
 		events : {
-			'click .appRemoveAttachment' : 'removeAttachment',
-			'click .appDownloadAttachment' : 'downloadAttachment'
+			'click [data-action="remove"]' : 'removeAttachment',
+			'click [data-action="download"]' : 'downloadAttachment'
 		},
 		modelEvents : {
 			'change' : 'render'
@@ -59,10 +59,10 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/attachments/list.html', 't
 
 	var K2ViewAttachments = Marionette.CompositeView.extend({
 		template : _.template(listTemplate),
-		itemViewContainer : '#appAttachments',
+		itemViewContainer : '[data-region="attachments"]',
 		itemView : K2ViewAttachmentsRow,
 		events : {
-			'click #appAddAttachment' : 'addAttachment'
+			'click [data-action="add"]' : 'addAttachment'
 		},
 		initialize : function(options) {
 			this.collection = new K2CollectionAttachments(options.data);

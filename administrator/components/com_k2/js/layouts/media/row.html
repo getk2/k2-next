@@ -1,4 +1,4 @@
-<div class="appMediaEntry">
+<div>
 	<% if(remove == 0) { %>
     <label><%= l('K2_FILE') %></label>
     <input type="file" name="file" data-widget="uploader" data-url="index.php?option=com_k2&task=media.upload&itemId=<%- itemId %>&upload=<%- upload %>&format=json" data-callback="media:upload:<%- cid %>" />
@@ -22,7 +22,7 @@
     <label><%= l('K2_MEDIA_CREDITS') %></label>
     <input type="text" name="media[<%- cid %>][credits]" value="<%- credits %>" />
 
-    <button class="appRemoveMedia">
+    <button data-action="remove">
         <%= l('K2_REMOVE') %>
     </button>
     <% } %>

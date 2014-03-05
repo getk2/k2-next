@@ -107,14 +107,7 @@ class K2ViewExtraFields extends K2View
 		K2Response::addFilter('group', JText::_('K2_GROUP'), K2HelperHTML::extraFieldsGroups('group', null, 'K2_ANY'), false, 'header');
 
 		// Sorting filter
-		$sortingOptions = array(
-			'K2_ID' => 'id',
-			'K2_NAME' => 'name',
-			'K2_GROUP' => 'group',
-			'K2_TYPE' => 'type',
-			'K2_ORDERING' => 'ordering',
-			'K2_STATE' => 'state'
-		);
+		$sortingOptions = array('K2_ID' => 'id', 'K2_NAME' => 'name', 'K2_GROUP' => 'group', 'K2_TYPE' => 'type', 'K2_ORDERING' => 'ordering', 'K2_STATE' => 'state');
 		K2Response::addFilter('sorting', JText::_('K2_SORT_BY'), K2HelperHTML::sorting($sortingOptions), false, 'header');
 
 		// Search filter
@@ -127,7 +120,7 @@ class K2ViewExtraFields extends K2View
 
 	protected function setToolbar()
 	{
-		K2Response::addToolbarAction('remove', 'K2_DELETE', array('id' => 'appActionRemove'));
+		K2Response::addToolbarAction('remove', 'K2_DELETE', array('data-action' => 'remove'));
 	}
 
 	protected function setFormFields(&$form, $row)
@@ -155,10 +148,7 @@ class K2ViewExtraFields extends K2View
 		$user = JFactory::getUser();
 		if ($user->authorise('k2.extrafields.manage', 'com_k2'))
 		{
-			K2Response::addAction('add', 'K2_ADD', array(
-				'class' => 'appAction',
-				'id' => 'appActionAdd'
-			));
+			K2Response::addAction('add', 'K2_ADD', array('data-action' => 'add'));
 		}
 	}
 

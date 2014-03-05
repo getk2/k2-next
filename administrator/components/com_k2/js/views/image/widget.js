@@ -44,7 +44,7 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 		tagName : 'div',
 		template : _.template(template),
 		events : {
-			'click #appRemoveImage' : 'removeImage',
+			'click [data-action="remove"]' : 'removeImage',
 			'input input[name="image[caption]"]' : 'updateCaption',
 			'input input[name="image[credits]"]' : 'updateCredits'
 		},

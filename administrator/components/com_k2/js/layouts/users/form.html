@@ -17,7 +17,7 @@
     <%= form.description %>
     
     <label><%= l('K2_USER_IMAGE_AVATAR') %></label>
-    <div id="appUserImage"></div>
+    <div data-region="user-image"></div>
     
     <label for="gender"><%= l('K2_GENDER') %></label>
     <%= form.gender %>
@@ -29,7 +29,7 @@
     <textarea name="notes"><%= row.notes %></textarea>
     
      <!-- Extra Fields -->
-    <div id="appUserExtraFields"></div>
+    <div data-region="user-extra-fields"></div>
     
     <% _.each(form.k2Plugins['users'], function(field) { %>
     	<%= field.label %>

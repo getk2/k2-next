@@ -23,7 +23,7 @@ define(['text!layouts/galleries/list.html', 'text!layouts/galleries/row.html', '
 		tagName : 'div',
 		template : _.template(rowTemplate),
 		events : {
-			'click .appRemoveGallery' : 'removeGallery'
+			'click [data-action="remove"]' : 'removeGallery'
 		},
 		modelEvents : {
 			'change' : 'render'
@@ -67,10 +67,10 @@ define(['text!layouts/galleries/list.html', 'text!layouts/galleries/row.html', '
 	// List view
 	var K2ViewGalleries = Marionette.CompositeView.extend({
 		template : _.template(listTemplate),
-		itemViewContainer : '#appGalleries',
+		itemViewContainer : '[data-region="galleries"]',
 		itemView : K2ViewGalleriesRow,
 		events : {
-			'click #appAddGallery' : 'addGallery'
+			'click [data-action="add"]' : 'addGallery'
 		},
 		initialize : function(options) {
 			this.collection = new Galleries(options.data);

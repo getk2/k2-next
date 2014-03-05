@@ -256,7 +256,7 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 			var minimumValue = element.find('input[name="' + column + '[]"]:first').val();
 			require(['widgets/sortable/jquery-sortable-min'], function() {
 				element.find('table').sortable({
-					handle : '.appOrderingHandle[data-column="' + column + '"]',
+					handle : '[data-role="ordering-handle"][data-column="' + column + '"]',
 					containerSelector : 'table',
 					itemPath : '> tbody',
 					itemSelector : 'tr',
@@ -279,11 +279,11 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 				if (enabled) {
 					element.find('table').sortable('enable');
 					element.find('input[name="' + column + '[]"]').prop('disabled', false);
-					element.find('.appActionSaveOrder[data-column="' + column + '"]').prop('disabled', false);
+					element.find('[data-action="save-ordering"][data-column="' + column + '"]').prop('disabled', false);
 				} else {
 					element.find('table').sortable('disable');
 					element.find('input[name="' + column + '[]"]').prop('disabled', true);
-					element.find('.appActionSaveOrder[data-column="' + column + '"]').prop('disabled', true);
+					element.find('[data-action="save-ordering"][data-column="' + column + '"]').prop('disabled', true);
 				}
 
 			});

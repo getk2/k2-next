@@ -97,19 +97,9 @@ class K2ViewSettings extends K2View
 	 */
 	protected function setFormActions()
 	{
-		K2Response::addAction('save', 'K2_SAVE', array(
-			'class' => 'appAction',
-			'id' => 'appActionSave',
-			'data-resource' => $this->getName()
-		));
-		K2Response::addAction('saveAndClose', 'K2_SAVE_AND_CLOSE', array(
-			'class' => 'appAction',
-			'id' => 'appActionSaveAndClose'
-		));
-		K2Response::addAction('close', 'K2_CLOSE', array(
-			'class' => 'appAction',
-			'id' => 'appActionClose'
-		));
+		K2Response::addAction('save', 'K2_SAVE', array('data-action' => 'save', 'data-resource' => $this->getName()));
+		K2Response::addAction('saveAndClose', 'K2_SAVE_AND_CLOSE', array('data-action' => 'save-and-close'));
+		K2Response::addAction('close', 'K2_CLOSE', array('data-action' => 'close'));
 	}
 
 }

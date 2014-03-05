@@ -23,7 +23,7 @@ define(['marionette', 'text!layouts/extrafieldsgroups/form.html', 'dispatcher'],
 			var form = this.model.getForm();
 			var assignments = form.get('assignments');
 			var scope = this.$el.find('#scope').val();
-			this.$el.find('#appExtraFieldGroupAssignments').html(assignments[scope]);
+			this.$('[data-region="extra-field-group-assignements"]').html(assignments[scope]);
 			if (this.model.get('scope') === scope) {
 				var assignmentsValue = this.model.get('assignments');
 				this.$el.find('input[name="assignments[mode]"]').val([assignmentsValue.mode]);
@@ -31,14 +31,15 @@ define(['marionette', 'text!layouts/extrafieldsgroups/form.html', 'dispatcher'],
 		},
 		updateAssignmentsSelection : function() {
 			var value = this.$el.find('input[name="assignments[mode]"]:checked').val();
+			var assignments = this.$('[data-region="extra-field-group-assignements"]');
 			if (value === 'all') {
-				this.$el.find('#appExtraFieldGroupAssignments select').prop('disabled', true);
-				this.$el.find('#appExtraFieldGroupAssignments select option').attr('selected', 'selected');
+				assignments.find('select').prop('disabled', true);
+				assignments.find('select option').attr('selected', 'selected');
 			} else if (value === 'none') {
-				this.$el.find('#appExtraFieldGroupAssignments select').prop('disabled', true);
-				this.$el.find('#appExtraFieldGroupAssignments select option').removeAttr('selected');
+				assignments.find('select').prop('disabled', true);
+				assignments.find('select option').removeAttr('selected');
 			} else {
-				this.$el.find('#appExtraFieldGroupAssignments select').prop('disabled', false);
+				assignments.find('select').prop('disabled', false);
 			}
 		}
 	});

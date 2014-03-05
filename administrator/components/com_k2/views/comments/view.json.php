@@ -100,16 +100,7 @@ class K2ViewComments extends K2View
 	{
 
 		// Sorting filter
-		$sortingOptions = array(
-			'K2_ID' => 'id',
-			'K2_NAME' => 'name',
-			'K2_EMAIL' => 'email',
-			'K2_URL' => 'url',
-			'K2_IP' => 'ip',
-			'K2_HOSTNAME' => 'hostname',
-			'K2_DATE' => 'date',
-			'K2_STATE' => 'state'
-		);
+		$sortingOptions = array('K2_ID' => 'id', 'K2_NAME' => 'name', 'K2_EMAIL' => 'email', 'K2_URL' => 'url', 'K2_IP' => 'ip', 'K2_HOSTNAME' => 'hostname', 'K2_DATE' => 'date', 'K2_STATE' => 'state');
 		K2Response::addFilter('sorting', JText::_('K2_SORT_BY'), K2HelperHTML::sorting($sortingOptions), false, 'header');
 
 		// Search filter
@@ -134,37 +125,17 @@ class K2ViewComments extends K2View
 	 */
 	protected function setFormActions()
 	{
-		K2Response::addAction('save', 'K2_SAVE', array(
-			'class' => 'appAction',
-			'id' => 'appActionSave',
-			'data-resource' => $this->getName()
-		));
-		K2Response::addAction('saveAndClose', 'K2_SAVE_AND_CLOSE', array(
-			'class' => 'appAction',
-			'id' => 'appActionSaveAndClose'
-		));
-		K2Response::addAction('close', 'K2_CLOSE', array(
-			'class' => 'appAction',
-			'id' => 'appActionClose'
-		));
+		K2Response::addAction('save', 'K2_SAVE', array('data-action' => 'save', 'data-resource' => $this->getName()));
+		K2Response::addAction('saveAndClose', 'K2_SAVE_AND_CLOSE', array('data-action' => 'save-and-close'));
+		K2Response::addAction('close', 'K2_CLOSE', array('data-action' => 'close'));
 	}
 
 	protected function setToolbar()
 	{
-		K2Response::addToolbarAction('publish', 'K2_PUBLISH', array(
-			'data-state' => 'state',
-			'data-value' => '1',
-			'class' => 'appActionSetState',
-			'id' => 'appActionPublish'
-		));
-		K2Response::addToolbarAction('unpublish', 'K2_UNPUBLISH', array(
-			'data-state' => 'state',
-			'data-value' => '0',
-			'class' => 'appActionSetState',
-			'id' => 'appActionUnpublish'
-		));
+		K2Response::addToolbarAction('publish', 'K2_PUBLISH', array('data-state' => 'state', 'data-value' => '1', 'data-action' => 'set-state'));
+		K2Response::addToolbarAction('unpublish', 'K2_UNPUBLISH', array('data-state' => 'state', 'data-value' => '0', 'data-action' => 'set-state'));
 
-		K2Response::addToolbarAction('remove', 'K2_DELETE', array('id' => 'appActionRemove'));
+		K2Response::addToolbarAction('remove', 'K2_DELETE', array('data-action' => 'remove'));
 	}
 
 }

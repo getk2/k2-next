@@ -30,7 +30,7 @@ define(['text!layouts/media/list.html', 'text!layouts/media/row.html', 'widgets/
 		tagName : 'div',
 		template : _.template(rowTemplate),
 		events : {
-			'click .appRemoveMedia' : 'removeMedia'
+			'click [data-action="remove"]' : 'removeMedia'
 		},
 		modelEvents : {
 			'change' : 'render'
@@ -78,10 +78,10 @@ define(['text!layouts/media/list.html', 'text!layouts/media/row.html', 'widgets/
 	// List view
 	var K2ViewMedia = Marionette.CompositeView.extend({
 		template : _.template(listTemplate),
-		itemViewContainer : '#appMedia',
+		itemViewContainer : '[data-region="media"]',
 		itemView : K2ViewMediaRow,
 		events : {
-			'click #appAddMedia' : 'addMedia'
+			'click [data-action="add"]' : 'addMedia'
 		},
 		initialize : function(options) {
 			this.collection = new MediaCollection(options.data);

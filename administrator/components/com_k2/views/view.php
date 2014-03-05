@@ -277,7 +277,7 @@ class K2View extends JViewLegacy
 
 		// Initialize form object
 		$_form = new stdClass;
-		
+
 		// Get the dispatcher.
 		$dispatcher = JDispatcher::getInstance();
 
@@ -404,10 +404,10 @@ class K2View extends JViewLegacy
 	 */
 	protected function setFormActions()
 	{
-		K2Response::addAction('save', 'K2_SAVE', array('class' => 'appAction', 'id' => 'appActionSave', 'data-resource' => $this->getName()));
-		K2Response::addAction('saveAndNew', 'K2_SAVE_AND_NEW', array('class' => 'appAction', 'id' => 'appActionSaveAndNew'));
-		K2Response::addAction('saveAndClose', 'K2_SAVE_AND_CLOSE', array('class' => 'appAction', 'id' => 'appActionSaveAndClose'));
-		K2Response::addAction('close', 'K2_CLOSE', array('class' => 'appAction', 'id' => 'appActionClose'));
+		K2Response::addAction('save', 'K2_SAVE', array('data-action' => 'save', 'data-resource' => $this->getName()));
+		K2Response::addAction('saveAndNew', 'K2_SAVE_AND_NEW', array('data-action' => 'save-and-new'));
+		K2Response::addAction('saveAndClose', 'K2_SAVE_AND_CLOSE', array('data-action' => 'save-and-close'));
+		K2Response::addAction('close', 'K2_CLOSE', array('data-action' => 'close'));
 	}
 
 	/**
@@ -435,42 +435,42 @@ class K2View extends JViewLegacy
 		// Set prmary menu only for listings
 		if ($mode != 'edit')
 		{
-			K2Response::addMenuLink('items', 'K2_ITEMS', array('href' => '#items', 'class' => 'appMenuLink', 'id' => 'k2ItemsLink'), 'primary');
-			K2Response::addMenuLink('categories', 'K2_CATEGORIES', array('href' => '#categories', 'class' => 'appMenuLink', 'id' => 'k2CategoriesLink'), 'primary');
+			K2Response::addMenuLink('items', 'K2_ITEMS', array('href' => '#items'), 'primary');
+			K2Response::addMenuLink('categories', 'K2_CATEGORIES', array('href' => '#categories'), 'primary');
 			if ($user->authorise('k2.tags.manage', 'com_k2'))
 			{
-				K2Response::addMenuLink('tags', 'K2_TAGS', array('href' => '#tags', 'class' => 'appMenuLink', 'id' => 'k2TagsLink'), 'primary');
+				K2Response::addMenuLink('tags', 'K2_TAGS', array('href' => '#tags'), 'primary');
 			}
 
 			if ($user->authorise('k2.comment.edit', 'com_k2'))
 			{
-				K2Response::addMenuLink('comments', 'K2_COMMENTS', array('href' => '#comments', 'class' => 'appMenuLink', 'id' => 'k2CommentsLink'), 'primary');
+				K2Response::addMenuLink('comments', 'K2_COMMENTS', array('href' => '#comments'), 'primary');
 			}
 
 			if ($user->authorise('k2.extrafields.manage', 'com_k2'))
 			{
-				K2Response::addMenuLink('extrafields', 'K2_EXTRA_FIELDS', array('href' => '#extrafields', 'class' => 'appMenuLink', 'id' => 'k2ExtraFieldsLink'), 'primary');
+				K2Response::addMenuLink('extrafields', 'K2_EXTRA_FIELDS', array('href' => '#extrafields'), 'primary');
 
-				K2Response::addMenuLink('extrafieldsgroups', 'K2_EXTRA_FIELD_GROUPS', array('href' => '#extrafieldsgroups', 'class' => 'appMenuLink', 'id' => 'k2ExtraFieldsGroupsLink'), 'primary');
+				K2Response::addMenuLink('extrafieldsgroups', 'K2_EXTRA_FIELD_GROUPS', array('href' => '#extrafieldsgroups'), 'primary');
 			}
 
-			K2Response::addMenuLink('usergroups', 'K2_USER_GROUPS', array('href' => '#usergroups', 'class' => 'appMenuLink', 'id' => 'k2UserGroupsLink'), 'primary');
-			K2Response::addMenuLink('users', 'K2_USERS', array('href' => '#users', 'class' => 'appMenuLink', 'id' => 'k2UsersLink'), 'primary');
-			K2Response::addMenuLink('media', 'K2_MEDIA_MANAGER', array('href' => '#media', 'class' => 'appMenuLink', 'id' => 'k2MediaManagerLink'), 'primary');
+			K2Response::addMenuLink('usergroups', 'K2_USER_GROUPS', array('href' => '#usergroups'), 'primary');
+			K2Response::addMenuLink('users', 'K2_USERS', array('href' => '#users'), 'primary');
+			K2Response::addMenuLink('media', 'K2_MEDIA_MANAGER', array('href' => '#media'), 'primary');
 
 		}
 
 		// Set secondary menu
 		if ($user->authorise('core.login.admin', 'com_k2'))
 		{
-			K2Response::addMenuLink('information', 'K2_INFORMATION', array('href' => '#information', 'class' => 'appMenuLink', 'id' => 'appInformationLink'), 'secondary');
+			K2Response::addMenuLink('information', 'K2_INFORMATION', array('href' => '#information'), 'secondary');
 		}
 
 		if ($user->authorise('core.admin', 'com_k2'))
 		{
-			K2Response::addMenuLink('settings', 'K2_SETTINGS', array('href' => '#settings', 'class' => 'appMenuLink', 'id' => 'appSettingsLink'), 'secondary');
+			K2Response::addMenuLink('settings', 'K2_SETTINGS', array('href' => '#settings'), 'secondary');
 		}
-		K2Response::addMenuLink('help', 'K2_HELP', array('href' => '#help', 'class' => 'appMenuLink', 'id' => 'appHelpLink'), 'secondary');
+		K2Response::addMenuLink('help', 'K2_HELP', array('href' => '#help'), 'secondary');
 
 	}
 

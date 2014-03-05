@@ -112,7 +112,7 @@ class K2HelperHTML
 
 	public static function search($name = 'search')
 	{
-		return '<input type="text" class="appActionSearch"  name="'.$name.'" />';
+		return '<input type="text" name="'.$name.'" />';
 	}
 
 	public static function template($name = 'template', $value = null)

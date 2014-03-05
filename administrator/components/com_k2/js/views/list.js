@@ -9,7 +9,7 @@ define(['marionette', 'text!layouts/list.html', 'dispatcher'], function(Marionet
 		events : {
 			'click [data-action="sort"]' : 'sort',
 			'click [data-action="toggle-state"]' : 'toggleState',
-			'click .appActionSaveOrder' : 'saveOrder',
+			'click [data-action="save-ordering"]' : 'saveOrder',
 			'change input[data-action="toggle-all"]' : 'toggleRowsSelection',
 			'change input[data-action="toggle"]' : 'toggleRowSelection'
 		},
