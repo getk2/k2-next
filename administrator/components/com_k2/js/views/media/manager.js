@@ -5,16 +5,18 @@ define(['marionette', 'dispatcher', 'text!layouts/media/manager.html', 'jqueryui
 			require(['widgets/elfinder/js/elfinder.min', 'css!//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/smoothness/jquery-ui.css', 'css!widgets/elfinder/css/theme.css', 'css!widgets/elfinder/css/elfinder.min.css'], _.bind(function() {
 				var callback = this.options.callback;
 				var modal = this.options.modal;
-				this.$el.elfinder({
-					url : 'index.php?option=com_k2&task=media.connector&format=json',
-					getFileCallback : function(path) {
-						var url = path.replace(K2SitePath + '/', '');
-						K2Dispatcher.trigger(callback, url);
+				var options = {
+					url : 'index.php?option=com_k2&task=media.connector&format=json'
+				};
+				if (modal) {
+					options.getFileCallback = function(data) {
+						K2Dispatcher.trigger(callback, data.path);
 						if (modal) {
 							jQuery.magnificPopup.close();
 						}
-					}
-				}).elfinder('instance');
+					};
+				}
+				this.$el.elfinder(options).elfinder('instance');
 			}, this));
 		},
 		onShow : function() {

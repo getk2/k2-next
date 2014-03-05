@@ -5,7 +5,7 @@ require.config({
 		backbone : 'lib/backbone-min',
 		underscore : 'lib/underscore-min',
 		jquery : 'lib/jquery.min',
-		jqueryui : 'lib/jquery-ui.min',
+		jqueryui : 'lib/jquery-ui.custom.min',
 		marionette : 'lib/backbone.marionette.min'
 	},
 	shim : {
