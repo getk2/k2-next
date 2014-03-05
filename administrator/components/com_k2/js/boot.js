@@ -6,7 +6,8 @@ require.config({
 		underscore : 'lib/underscore-min',
 		jquery : 'lib/jquery.min',
 		jqueryui : 'lib/jquery-ui.custom.min',
-		marionette : 'lib/backbone.marionette.min'
+		marionette : 'lib/backbone.marionette.min',
+		picker : 'widgets/pickadate/picker'
 	},
 	shim : {
 		jquery : {

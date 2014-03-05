@@ -51,7 +51,7 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 		},
 
 		datepicker : function(element) {
-			require(['widgets/pickadate/picker', 'widgets/pickadate/picker.date', 'css!widgets/pickadate/themes/default.css', 'css!widgets/pickadate/themes/default.date.css'], function() {
+			require(['widgets/pickadate/picker.date', 'css!widgets/pickadate/themes/default.css', 'css!widgets/pickadate/themes/default.date.css'], function(Picker) {
 				element.pickadate({
 					format : element.data('format') || 'yyyy-mm-dd'
 				});
@@ -59,7 +59,7 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 		},
 
 		timepicker : function(element) {
-			require(['widgets/pickadate/picker', 'widgets/pickadate/picker.time', 'css!widgets/pickadate/themes/default.css', 'css!widgets/pickadate/themes/default.time.css'], function() {
+			require(['widgets/pickadate/picker.time', 'css!widgets/pickadate/themes/default.css', 'css!widgets/pickadate/themes/default.time.css'], function(Picker) {
 				element.pickatime({
 					format : element.data('format') || 'HH:i'
 				});
