@@ -18,7 +18,7 @@ define(['marionette', 'text!layouts/extrafields/form.html', 'dispatcher', 'widge
 			this.renderExtraField();
 		},
 		renderExtraField : function() {
-			var type = this.$el.find('#type').val();
+			var type = this.$('#type').val();
 			var form = this.model.getForm();
 			var definitions = form.get('definitions');
 			this.$('[data-region="extra-field-definition"]').html(definitions[type]);

@@ -22,15 +22,15 @@ define(['marionette', 'text!layouts/extrafieldsgroups/form.html', 'dispatcher'],
 		updateAssignmentsField : function() {
 			var form = this.model.getForm();
 			var assignments = form.get('assignments');
-			var scope = this.$el.find('#scope').val();
+			var scope = this.$('#scope').val();
 			this.$('[data-region="extra-field-group-assignements"]').html(assignments[scope]);
 			if (this.model.get('scope') === scope) {
 				var assignmentsValue = this.model.get('assignments');
-				this.$el.find('input[name="assignments[mode]"]').val([assignmentsValue.mode]);
+				this.$('input[name="assignments[mode]"]').val([assignmentsValue.mode]);
 			}
 		},
 		updateAssignmentsSelection : function() {
-			var value = this.$el.find('input[name="assignments[mode]"]:checked').val();
+			var value = this.$('input[name="assignments[mode]"]:checked').val();
 			var assignments = this.$('[data-region="extra-field-group-assignements"]');
 			if (value === 'all') {
 				assignments.find('select').prop('disabled', true);

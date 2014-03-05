@@ -27,7 +27,7 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session'], fun
 
 		onRender : function() {
 			_.each(this.model.get('states'), _.bind(function(value, state) {
-				var filter = this.$el.find('[name="' + state + '"]');
+				var filter = this.$('[name="' + state + '"]');
 				if (filter.attr('type') === 'radio') {
 					filter.val([value]);
 				} else {

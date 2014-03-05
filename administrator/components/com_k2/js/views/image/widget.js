@@ -108,10 +108,10 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 			});
 		},
 		updateCaption : function() {
-			this.model.set('caption', this.$el.find('input[name="image[caption]"]').val());
+			this.model.set('caption', this.$('input[name="image[caption]"]').val());
 		},
 		updateCredits : function() {
-			this.model.set('credits', this.$el.find('input[name="image[credits]"]').val());
+			this.model.set('credits', this.$('input[name="image[credits]"]').val());
 		}
 	});
 

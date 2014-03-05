@@ -71,7 +71,7 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher', 'widget
 
 		updateExtraFields : function(event) {
 			event.preventDefault();
-			this.extraFieldsView.trigger('filter', this.$el.find('#parent_id').val());
+			this.extraFieldsView.trigger('filter', this.$('#parent_id').val());
 		},
 
 		// OnDomRefresh event ( Marionette.js build in event )

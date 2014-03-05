@@ -103,7 +103,7 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 
 		updateCategory : function(event) {
 			event.preventDefault();
-			var value = this.$el.find('#catid').val();
+			var value = this.$('#catid').val();
 			// Extra fields
 			this.extraFieldsView.trigger('filter', value);
 		},
