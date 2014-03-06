@@ -10,6 +10,7 @@ define(['marionette', 'text!layouts/pagination.html', 'dispatcher', 'session'], 
 			K2Dispatcher.on('app:pagination:mode', function(mode) {
 				this.model.set('mode', mode);
 				K2Session.set('view.mode', mode);
+				K2Dispatcher.trigger('app:controller:filter', 'page', 1);
 			}, this);
 		},
 
