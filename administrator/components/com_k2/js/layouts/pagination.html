@@ -1,4 +1,5 @@
 <div>
+	<% if(mode == 'pages') { %>
     <div>
         <label><%= l('K2_DISPLAY') %></label>
         <select name="limit">
@@ -42,4 +43,7 @@
     <div>
         <strong><%= total %></strong> <%= label %>
     </div>
+    <% } else { %>
+		<strong><%= total %></strong> <%= label %>
+    <% } %>
 </div>

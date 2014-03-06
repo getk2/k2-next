@@ -4,6 +4,10 @@ define(['marionette', 'text!layouts/pagination.html', 'dispatcher'], function(Ma
 
 		template : _.template(template),
 
+		initialize : function() {
+			this.model.set('mode', 'scroll');
+		},
+
 		modelEvents : {
 			'change' : 'render'
 		},
@@ -14,7 +18,18 @@ define(['marionette', 'text!layouts/pagination.html', 'dispatcher'], function(Ma
 		},
 
 		onRender : function() {
-			this.$('select[name="limit"]').val(this.model.get('limit'));
+			jQuery(window).off('scroll');
+			if (this.model.get('mode') == 'scroll') {
+				var limit = this.model.get('limit');
+				jQuery(window).scroll(function() {
+					if (jQuery(window).scrollTop() + jQuery(window).height() == jQuery(document).height()) {
+						jQuery(window).off('scroll');
+						K2Dispatcher.trigger('app:controller:filter', 'limit', limit + 10);
+					}
+				});
+			} else {
+				this.$('select[name="limit"]').val(this.model.get('limit'));
+			}
 		},
 
 		limit : function(event) {
