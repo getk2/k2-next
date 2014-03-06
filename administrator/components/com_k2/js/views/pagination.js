@@ -27,8 +27,9 @@ define(['marionette', 'text!layouts/pagination.html', 'dispatcher', 'session'], 
 			jQuery(window).off('scroll');
 			if (this.model.get('mode') == 'scroll') {
 				var page = this.model.get('pagesCurrent');
+				var total = this.model.get('pagesTotal');
 				jQuery(window).scroll(function() {
-					if (jQuery(window).scrollTop() + jQuery(window).height() == jQuery(document).height()) {
+					if (jQuery(window).scrollTop() + jQuery(window).height() == jQuery(document).height() && total > page) {
 						jQuery(window).off('scroll');
 						K2Dispatcher.trigger('app:controller:filter', 'page', page + 1, 'merge');
 					}
