@@ -212,7 +212,7 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 						results : function(data, page) {
 							var tags = [];
 							jQuery.each(data.rows, function(index, row) {
-								var tag = {}
+								var tag = {};
 								tags.push({
 									id : row.name,
 									text : row.name
