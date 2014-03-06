@@ -39,7 +39,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 			K2Dispatcher.on('app:controller:close', function() {
 				this.close();
 			}, this);
-			
+
 			// Listener for import event.
 			K2Dispatcher.on('app:controller:import', function() {
 				this.import(0);
@@ -56,8 +56,8 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 			}, this);
 
 			// Listener for filter event.
-			K2Dispatcher.on('app:controller:filter', function(state, value) {
-				this.filter(state, value);
+			K2Dispatcher.on('app:controller:filter', function(state, value, mode) {
+				this.filter(state, value, mode);
 			}, this);
 
 			// Listener for delete event.
@@ -294,12 +294,12 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 				});
 			}
 		},
-		
+
 		// Import function
 		import : function(id) {
 			var self = this;
-			jQuery.post('index.php?option=com_k2&task=' +this.resource + '.import&id='+id+'&format=json', K2SessionToken + '=1', function(data) {
-				if(data && data.lastId) {
+			jQuery.post('index.php?option=com_k2&task=' + this.resource + '.import&id=' + id + '&format=json', K2SessionToken + '=1', function(data) {
+				if (data && data.lastId) {
 					self.import(data.lastId);
 				}
 			});
@@ -307,7 +307,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 
 		// Toggle state function.
 		toggleState : function(id, state, model) {
-			if(typeof(model) == 'undefined') {
+			if ( typeof (model) == 'undefined') {
 				model = this.collection.get(id);
 			}
 			model.toggleState(state, {
@@ -346,13 +346,17 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 		},
 
 		// Filter function. Updates the collection states depending on the filters and renders the list again.
-		filter : function(state, value) {
+		filter : function(state, value, mode) {
 			this.collection.setState(state, value);
 			// Go to page 1 for new states except sorting and limit
 			if (state !== 'sorting' && state !== 'limit' && state !== 'page') {
 				this.collection.setState('page', 1);
 			}
-			this.resetCollection();
+			if (mode == 'merge') {
+				this.mergeCollection();
+			} else {
+				this.resetCollection();
+			}
 		},
 
 		// Reset collection.
@@ -362,6 +366,17 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 				success : _.bind(function() {
 					this.redirect(this.resource + '/page/' + this.collection.getState('page'), false);
 				}, this),
+				error : _.bind(function(model, xhr, options) {
+					this.enqueueMessage('error', xhr.responseText);
+				}, this)
+			});
+		},
+
+		// Reset collection.
+		mergeCollection : function() {
+			this.collection.fetch({
+				reset : false,
+				remove : false,
 				error : _.bind(function(model, xhr, options) {
 					this.enqueueMessage('error', xhr.responseText);
 				}, this)

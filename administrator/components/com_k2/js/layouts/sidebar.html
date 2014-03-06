@@ -22,5 +22,17 @@
     <% }); %>
 </div>
 <button data-action="reset"><%= l('K2_RESET') %></button>
+
+<div>
+	<span><%= l('K2_VIEW_MODE') %></span>
+	<label>
+		<span><%= l('K2_PAGINATION') %></span>
+		<input type="radio" name="viewMode" value="pagination" />
+	</label>
+	<label>
+		<span><%= l('K2_INFINITE_SCROLLING') %></span>
+		<input type="radio" name="viewMode" value="scroll" />
+	</label>
+</div>
 <% } %>
 

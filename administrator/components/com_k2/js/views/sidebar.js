@@ -12,7 +12,8 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session'], fun
 		events : {
 			'change [data-region="filters"] input' : 'filter',
 			'change [data-region="filters"] select' : 'filter',
-			'click [data-action="reset"]' : 'resetFilters'
+			'click [data-action="reset"]' : 'resetFilters',
+			'change input[name="viewMode"]' : 'setViewMode'
 		},
 
 		initialize : function() {
@@ -34,6 +35,8 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session'], fun
 					filter.val(value);
 				}
 			}, this));
+			var viewMode = K2Session.get('view.mode', 'pagination');
+			this.$('input[name="viewMode"][value="' + viewMode + '"]').prop('checked', true);
 		},
 
 		filter : function(event) {
@@ -65,6 +68,12 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session'], fun
 				K2Dispatcher.trigger('app:controller:setCollectionState', name, value);
 			});
 			K2Dispatcher.trigger('app:subheader:resetFilters');
+		},
+
+		setViewMode : function(event) {
+			event.preventDefault();
+			var mode = jQuery('input[name="viewMode"]:checked').val();
+			K2Dispatcher.trigger('app:pagination:mode', mode);
 		}
 	});
 

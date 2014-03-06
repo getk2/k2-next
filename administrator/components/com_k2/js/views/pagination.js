@@ -1,11 +1,16 @@
-define(['marionette', 'text!layouts/pagination.html', 'dispatcher'], function(Marionette, template, K2Dispatcher) {'use strict';
+define(['marionette', 'text!layouts/pagination.html', 'dispatcher', 'session'], function(Marionette, template, K2Dispatcher, K2Session) {'use strict';
 
 	var K2ViewPagination = Marionette.ItemView.extend({
 
 		template : _.template(template),
 
 		initialize : function() {
-			this.model.set('mode', 'scroll');
+			var viewMode = K2Session.get('view.mode', 'pagination');
+			this.model.set('mode', viewMode);
+			K2Dispatcher.on('app:pagination:mode', function(mode) {
+				this.model.set('mode', mode);
+				K2Session.set('view.mode', mode);
+			}, this);
 		},
 
 		modelEvents : {
@@ -20,11 +25,11 @@ define(['marionette', 'text!layouts/pagination.html', 'dispatcher'], function(Ma
 		onRender : function() {
 			jQuery(window).off('scroll');
 			if (this.model.get('mode') == 'scroll') {
-				var limit = this.model.get('limit');
+				var page = this.model.get('pagesCurrent');
 				jQuery(window).scroll(function() {
 					if (jQuery(window).scrollTop() + jQuery(window).height() == jQuery(document).height()) {
 						jQuery(window).off('scroll');
-						K2Dispatcher.trigger('app:controller:filter', 'limit', limit + 10);
+						K2Dispatcher.trigger('app:controller:filter', 'page', page + 1, 'merge');
 					}
 				});
 			} else {
