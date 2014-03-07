@@ -59,7 +59,7 @@ define(['text!layouts/galleries/list.html', 'text!layouts/galleries/row.html', '
 				self.model.set('upload', data);
 				self.model.set('path', '');
 			}).fail(function(xhr, status, error) {
-				K2Dispatcher.trigger('app:message', 'error', xhr.responseText);
+				K2Dispatcher.trigger('app:messages:add', 'error', xhr.responseText);
 			});
 		}
 	});

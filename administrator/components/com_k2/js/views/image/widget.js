@@ -104,7 +104,7 @@ define(['text!layouts/image/form.html', 'widgets/widget', 'dispatcher'], functio
 				self.model.set('flag', 1);
 				self.model.set('src', data.preview);
 			}).fail(function(xhr, status, error) {
-				K2Dispatcher.trigger('app:message', 'error', xhr.responseText);
+				K2Dispatcher.trigger('app:messages:add', 'error', xhr.responseText);
 			});
 		},
 		updateCaption : function() {

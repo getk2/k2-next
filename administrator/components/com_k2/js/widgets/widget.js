@@ -244,7 +244,7 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 						K2Dispatcher.trigger(element.data('callback'), e, data);
 					},
 					fail : function(e, data) {
-						K2Dispatcher.trigger('app:message', 'error', data.jqXHR.responseText);
+						K2Dispatcher.trigger('app:messages:add', 'error', data.jqXHR.responseText);
 					}
 				});
 			});

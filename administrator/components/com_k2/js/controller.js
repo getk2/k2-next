@@ -132,7 +132,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 
 		// Proxy function triggering the app:redirect event
 		enqueueMessage : function(type, text) {
-			K2Dispatcher.trigger('app:message', type, text);
+			K2Dispatcher.trigger('app:messages:add', type, text);
 		},
 
 		// Displays a listing page depending on the requested resource type
@@ -183,6 +183,9 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 
 						// Create the layout
 						var layout = new Layout();
+						
+						// Reset messages
+						K2Dispatcher.trigger('app:messages:reset');
 
 						// Render the layout to the page
 						K2Dispatcher.trigger('app:region:show', layout, 'content');
@@ -224,6 +227,9 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 						this.view = new View({
 							model : this.model
 						});
+						
+						// Reset messages
+						K2Dispatcher.trigger('app:messages:reset');
 
 						// Render the view
 						K2Dispatcher.trigger('app:region:show', this.view, 'content');
@@ -244,6 +250,9 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 
 		// Save function. Saves the model and redirects properly.
 		save : function(redirect, callback) {
+			
+			// Reset messages
+			K2Dispatcher.trigger('app:messages:reset');
 
 			// Trigger the onBeforeSave event if available
 			var onBeforeSave = true;
@@ -324,7 +333,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 			this.collection.batch(keys, values, column, {
 				success : _.bind(function(response) {
 					this.resetCollection();
-					K2Dispatcher.trigger('app:update:messages', response);
+					K2Dispatcher.trigger('app:messages:set', response);
 				}, this),
 				error : _.bind(function(xhr) {
 					this.enqueueMessage('error', xhr.responseText);
@@ -337,7 +346,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 			this.collection.destroy(rows, {
 				success : _.bind(function(response) {
 					this.list();
-					K2Dispatcher.trigger('app:update:messages', response);
+					K2Dispatcher.trigger('app:messages:set', response);
 				}, this),
 				error : _.bind(function(xhr) {
 					this.enqueueMessage('error', xhr.responseText);
@@ -394,7 +403,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 			this.collection.batch(keys, values, state, {
 				success : _.bind(function(response) {
 					this.list();
-					K2Dispatcher.trigger('app:update:messages', response);
+					K2Dispatcher.trigger('app:messages:set', response);
 				}, this),
 				error : _.bind(function(xhr) {
 					this.enqueueMessage('error', xhr.responseText);
@@ -411,7 +420,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 			this.collection.multibatch(keys, states, mode, {
 				success : _.bind(function(response) {
 					this.list();
-					K2Dispatcher.trigger('app:update:messages', response);
+					K2Dispatcher.trigger('app:messages:set', response);
 				}, this),
 				error : _.bind(function(xhr) {
 					this.enqueueMessage('error', xhr.responseText);

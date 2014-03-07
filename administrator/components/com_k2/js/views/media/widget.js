@@ -70,7 +70,7 @@ define(['text!layouts/media/list.html', 'text!layouts/media/row.html', 'widgets/
 				self.model.set('upload', data);
 				self.model.set('url', '');
 			}).fail(function(xhr, status, error) {
-				K2Dispatcher.trigger('app:message', 'error', xhr.responseText);
+				K2Dispatcher.trigger('app:messages:add', 'error', xhr.responseText);
 			});
 		}
 	});

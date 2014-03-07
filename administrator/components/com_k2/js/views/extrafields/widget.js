@@ -45,7 +45,7 @@ define(['marionette', 'text!layouts/extrafields/widget.html', 'widgets/widget', 
 				_.each(this.validationErrors, function(extraFieldId) {
 					jQuery('#k2ExtraField'+extraFieldId).addClass('k2ExtraFieldRequired');
 				});
-				K2Dispatcher.trigger('app:message', 'error', l('K2_EXTRA_FIELDS_REQUIRED'));
+				K2Dispatcher.trigger('app:messages:add', 'error', l('K2_EXTRA_FIELDS_REQUIRED'));
 				this.validationErrors = [];
 				result = false;
 			}

@@ -52,7 +52,7 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/attachments/list.html', 't
 				self.model.set('file', data);
 				self.model.set('path', '');
 			}).fail(function(xhr, status, error) {
-				K2Dispatcher.trigger('app:message', 'error', xhr.responseText);
+				K2Dispatcher.trigger('app:messages:add', 'error', xhr.responseText);
 			});
 		}
 	});
