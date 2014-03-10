@@ -6,7 +6,8 @@ define(['marionette', 'dispatcher', 'text!layouts/media/manager.html', 'jqueryui
 				var callback = this.options.callback;
 				var modal = this.options.modal;
 				var options = {
-					url : 'index.php?option=com_k2&task=media.connector&format=json'
+					url : 'index.php?option=com_k2&task=media.connector&format=json',
+					useBrowserHistory : false
 				};
 				if (modal) {
 					options.getFileCallback = function(data) {

@@ -521,8 +521,8 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 
 		browseServer : function(options) {
 			require(['views/media/manager'], _.bind(function(K2ViewMediaManager) {
-				this.view = new K2ViewMediaManager(options);
-				K2Dispatcher.trigger('app:region:show', this.view, 'modal');
+				var view = new K2ViewMediaManager(options);
+				K2Dispatcher.trigger('app:region:show', view, 'modal');
 			}, this));
 		},
 
