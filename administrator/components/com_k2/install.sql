@@ -259,8 +259,6 @@ CREATE TABLE IF NOT EXISTS `#__k2_users` (
   `gender` varchar(255) NOT NULL,
   `notes` text NOT NULL,
   `extra_fields` longtext NOT NULL,
-  `items` bigint(20) unsigned NOT NULL,
-  `comments` bigint(20) unsigned NOT NULL,
   `ip` varchar(255) NOT NULL,
   `hostname` varchar(255) NOT NULL,
   `plugins` text NOT NULL,
