@@ -12,6 +12,62 @@ defined('_JEXEC') or die ;
 
 class Com_K2InstallerScript
 {
+	public function preflight($type, $parent)
+    {
+    	$application = JFactory::getApplication();
+		$configuration = JFactory::getConfig();
+		$db = JFactory::getDbo();
+		
+		// Init the upgrade flag
+		$this->upgrade = false;
+		
+		// Proceed only if we are updating
+		if($type != 'install')
+		{
+			// Ensure that we are under Joomla! 3.2 or later
+			if(version_compare(JVERSION, '3.2', 'lt'))
+			{
+				$application->enqueueMessage('K2 requires Joomla! 3.2 or later', 'error');
+				return false;
+			}
+			
+			// Get installled version
+			$installedVersion = $this->getParam('version');
+			
+			// Detect if we need to perform an upgrade
+			if(version_compare($installedVersion, '3.0.0', 'lt'))
+			{
+				// Ensure that the installed K2 version is not very old. Otherwise the update will fail.
+				if(version_compare($installedVersion, '2.6.8', 'lt'))
+				{
+					$application->enqueueMessage('You cannot update from this version of K2. Please update first your current K2 installation to the latest 2.x series and try again', 'error');
+					return false;
+				}
+				
+				// User is required to put the site offline while upgrading
+				if(!$configuration->get('offline'))
+				{
+					$application->enqueueMessage('Your site is not offline. Please put your site offline and try again.', 'error');
+					return false;
+				}			
+				
+				// Since this is an upgrade rename all K2 2.x tables so the new ones will be created.
+				$oldTables = array('#__k2_attachments', '#__k2_categories', '#__k2_comments', '#__k2_extra_fields' , '#__k2_extra_fields_groups', '#__k2_items', '#__k2_rating', '#__k2_tags', '#__k2_tags_xref', '#__k2_users', '#__k2_user_groups');
+				foreach($oldTables as $oldTable)
+				{
+					$newTable = str_replace('#__k2_', '#__k2_v2_', $oldTable);
+					$db->setQuery('RENAME '.$db->quoteName($oldTable).' TO '.$db->quoteName($newTable));
+					$db->execute();
+				}
+				
+				// Set a flag that this is an upgrade
+				$this->upgrade = true;
+			}
+		}
+		
+    }
+	
+	
     public function postflight($type, $parent)
     {
     	// Get database
@@ -183,10 +239,41 @@ class Com_K2InstallerScript
 
     private function installationResults($status)
     {
+    	JHtml::_('jquery.framework');
         $language = JFactory::getLanguage();
         $language->load('com_k2');
         $rows = 0; ?>
         <img src="<?php echo JURI::root(true); ?>/media/k2/assets/images/system/K2_Logo_126x48_24.png" alt="K2" align="right" />
+        <?php if($this->upgrade): ?>
+        <h1>Upgrade in Progress. Don't leave this page until the process completes!</h1>
+        <span id="k2UpgradeStatus"></span>
+        <ul id="k2UpgradeErrorLog"></ul>
+        <script type="text/javascript">
+        	function K2Migrate(type, id) {
+        		jQuery.post('index.php?option=com_k2&task=migrator.run&type=' + type + '&id=' + id + '&format=json', '<?php echo JSession::getFormToken(); ?>=1')
+        		.done(function(response) {
+					if (response) {
+						jQuery.each(response.errors, function( index, error ) {
+							jQuery('#k2UpgradeErrorLog').append('<li>' + error + '</li>');
+						});
+						if(response.failed) {
+							jQuery('#k2UpgradeStatus').html('<?php echo JText::_('K2_UPGRADE_FAILED'); ?>');
+						} else if(response.completed) {
+							jQuery('#k2UpgradeStatus').html('<?php echo JText::_('K2_UPGRADE_COMPLETED'); ?>');
+						} else {
+							jQuery('#k2UpgradeStatus').html(response.status);
+							K2Migrate(response.type, response.id);
+						}
+					}
+				})
+				.fail(function(response) {
+					jQuery('#k2UpgradeStatus').html('<?php echo JText::_('K2_UPGRADE_FAILED'); ?>');
+				});
+        	}
+        	K2Migrate('attachments', 0);
+        </script>
+        <?php endif; ?>
+        
         <h2><?php echo JText::_('K2_INSTALLATION_STATUS'); ?></h2>
         <table class="adminlist table table-striped">
             <thead>
@@ -237,6 +324,7 @@ class Com_K2InstallerScript
         </table>
     <?php
 	}
+
 	private function uninstallationResults($status)
 	{
 	$language = JFactory::getLanguage();
