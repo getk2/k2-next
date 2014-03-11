@@ -8,6 +8,7 @@ define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categor
 		},
 		edit : function(event) {
 			event.preventDefault();
+			event.stopPropagation();
 			K2Dispatcher.trigger('app:controller:edit', this.model.get('id'));
 		},
 		initialize : function() {
