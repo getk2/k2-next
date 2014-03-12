@@ -777,7 +777,21 @@ class K2ControllerMigrator extends JControllerLegacy
 
 			$query = $db->getQuery(true);
 			$query->update($db->quoteName('#__k2_items'));
-			$query->set(array($db->quoteName('image').' = '.$db->quote($image), $db->quoteName('media').' = '.$db->quote($media), $db->quoteName('tags').' = '.$db->quote($tags), $db->quoteName('attachments').' = '.$db->quote($attachments), $db->quoteName('galleries').' = '.$db->quote($galleries), $db->quoteName('extra_fields').' = '.$db->quote($extraFields), $db->quoteName('created').' = '.$db->quote($item->created), $db->quoteName('created_by').' = '.$db->quote($item->created_by), $db->quoteName('modified').' = '.$db->quote($item->modified), $db->quoteName('modified_by').' = '.$db->quote($item->modified_by), $db->quoteName('plugins').' = '.$db->quote($item->plugins), $db->quoteName('params').' = '.$db->quote($item->params)))->where($db->quoteName('id').' = '.$lastInsertedId);
+			$query->set(array(
+			$db->quoteName('id').' = '.$item->id, 
+			$db->quoteName('image').' = '.$db->quote($image), 
+			$db->quoteName('media').' = '.$db->quote($media), 
+			$db->quoteName('tags').' = '.$db->quote($tags), 
+			$db->quoteName('attachments').' = '.$db->quote($attachments), 
+			$db->quoteName('galleries').' = '.$db->quote($galleries), 
+			$db->quoteName('extra_fields').' = '.$db->quote($extraFields), 
+			$db->quoteName('created').' = '.$db->quote($item->created), 
+			$db->quoteName('created_by').' = '.$db->quote($item->created_by), 
+			$db->quoteName('modified').' = '.$db->quote($item->modified), 
+			$db->quoteName('modified_by').' = '.$db->quote($item->modified_by), 
+			$db->quoteName('plugins').' = '.$db->quote($item->plugins), 
+			$db->quoteName('params').' = '.$db->quote($item->params)
+			))->where($db->quoteName('id').' = '.$lastInsertedId);
 			$db->setQuery($query);
 			$db->execute();
 
