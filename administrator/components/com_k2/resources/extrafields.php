@@ -111,16 +111,22 @@ class K2ExtraFields extends K2Resource
 
 	public function getOutput()
 	{
-		$input = '';
+		$output = '';
 		if (JFile::exists(JPATH_ADMINISTRATOR.'/components/com_k2/extrafields/'.$this->type.'/output.php'))
 		{
 			$field = new JRegistry($this->value);
 			ob_start();
 			include JPATH_ADMINISTRATOR.'/components/com_k2/extrafields/'.$this->type.'/output.php';
-			$input = ob_get_contents();
+			$output = ob_get_contents();
 			ob_end_clean();
 		}
-		return $input;
+		$item = new stdClass;
+		$item->text = $output;
+		$params = JComponentHelper::getParams('com_k2');
+		$dispatcher = JDispatcher::getInstance();
+		JPluginHelper::importPlugin('content');
+		$dispatcher->trigger('onContentPrepare', array('com_k2.extrafield', &$item, &$params, 0));
+		return $item->text;
 	}
 
 	private function escape($string)
