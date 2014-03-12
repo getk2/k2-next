@@ -584,19 +584,20 @@ class K2ControllerMigrator extends JControllerLegacy
 			$image->flag = JFile::exists(JPATH_SITE.'/media/k2/items/src/'.md5('Image'.$item->id)) ? 1 : 0;
 			$image = json_encode($image);
 
-			$media = new stdClass;
-			$media->url = '';
-			$media->provider = '';
-			$media->id = '';
-			$media->embed = '';
-			$media->caption = $item->video_caption;
-			$media->credits = $item->video_credits;
-			$media->upload = '';
+			$media = array();
+			$mediaEntry = new stdClass;
+			$mediaEntry->url = '';
+			$mediaEntry->provider = '';
+			$mediaEntry->id = '';
+			$mediaEntry->embed = '';
+			$mediaEntry->caption = $item->video_caption;
+			$mediaEntry->credits = $item->video_credits;
+			$mediaEntry->upload = '';
 			if (!empty($item->video))
 			{
 				if (substr($item->video, 0, 1) !== '{')
 				{
-					$media->embed = $item->video;
+					$mediaEntry->embed = $item->video;
 				}
 				else
 				{
@@ -606,8 +607,8 @@ class K2ControllerMigrator extends JControllerLegacy
 
 						if (substr($matches[1], 0, 4) != 'http')
 						{
-							$media->upload = basename($matches[1]);
-							if (JFile::exists(JPATH_SITE.'/media/k2/videos/'.$media->upload))
+							$mediaEntry->upload = basename($matches[1]);
+							if (JFile::exists(JPATH_SITE.'/media/k2/videos/'.$mediaEntry->upload))
 							{
 								if (!JFolder::exists(JPATH_SITE.'/media/k2/media'))
 								{
@@ -618,24 +619,27 @@ class K2ControllerMigrator extends JControllerLegacy
 								{
 									JFolder::create(JPATH_SITE.'/media/k2/media/'.$item->id);
 								}
-								JFile::move(JPATH_SITE.'/media/k2/videos/'.$media->upload, JPATH_SITE.'/media/k2/media/'.$item->id.'/'.$media->upload);
+								JFile::move(JPATH_SITE.'/media/k2/videos/'.$mediaEntry->upload, JPATH_SITE.'/media/k2/media/'.$item->id.'/'.$mediaEntry->upload);
 							}
 						}
 						else
 						{
-							$media->url = $matches[1];
+							$mediaEntry->url = $matches[1];
 						}
 					}
 					else
 					{
 						preg_match("#}(.*?){/#s", $item->video, $matches);
-						$media->id = $matches[1];
+						$mediaEntry->id = $matches[1];
 						$video = substr($item->video, 1);
-						$media->provider = substr($video, 0, strpos($video, '}'));
+						$mediaEntry->provider = substr($video, 0, strpos($video, '}'));
 					}
 				}
+
+				$media[] = $mediaEntry;
+
 			}
-			$media = json_encode(array($media));
+			$media = json_encode($media);
 
 			$tags = array();
 
