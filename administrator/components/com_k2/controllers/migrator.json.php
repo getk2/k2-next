@@ -72,12 +72,11 @@ class K2ControllerMigrator extends JControllerLegacy
 			$this->response->errors[] = JText::_('JINVALID_TOKEN');
 			$this->response->failed = 1;
 		}
-		var_dump($this->response);
-		die ;
+		echo json_encode($this->response);
 		return $this;
 	}
 
-	private function error($code, $description, $file, $line)
+	public function error($code, $description, $file, $line)
 	{
 		switch ($code)
 		{
@@ -105,13 +104,13 @@ class K2ControllerMigrator extends JControllerLegacy
 		$this->response->errors[] = $message;
 	}
 
-	private function exception($exception)
+	public function exception($exception)
 	{
 		$this->response->failed = 1;
 		$this->response->errors[] = $exception->getMessage();
 	}
 
-	private function attachments(Integer $id)
+	private function attachments($id)
 	{
 		$this->response->status = JText::_('COM_K2_PROCESSING_ATTACHMENTS');
 
@@ -146,7 +145,7 @@ class K2ControllerMigrator extends JControllerLegacy
 		}
 	}
 
-	private function categories(Integer $id)
+	private function categories($id)
 	{
 		$this->response->status = JText::_('COM_K2_PROCESSING_CATEGORIES');
 		$step = 1;
@@ -207,7 +206,7 @@ class K2ControllerMigrator extends JControllerLegacy
 		}
 	}
 
-	private function categoriestree(Integer $id)
+	private function categoriestree($id)
 	{
 		$this->response->status = JText::_('COM_K2_PROCESSING_CATEGORIES_TREE');
 		$db = JFactory::getDbo();
@@ -244,7 +243,7 @@ class K2ControllerMigrator extends JControllerLegacy
 		$this->response->type = 'comments';
 	}
 
-	private function comments(Integer $id)
+	private function comments($id)
 	{
 		$this->response->status = JText::_('COM_K2_PROCESSING_COMMENTS');
 		$db = JFactory::getDbo();
@@ -259,7 +258,7 @@ class K2ControllerMigrator extends JControllerLegacy
 		$this->response->type = 'extrafields';
 	}
 
-	private function extrafields(Integer $id)
+	private function extrafields($id)
 	{
 		$this->response->status = JText::_('COM_K2_PROCESSING_EXTRA_FIELDS');
 		$step = 1;
@@ -385,7 +384,7 @@ class K2ControllerMigrator extends JControllerLegacy
 		}
 	}
 
-	private function extrafieldsgroups(Integer $id)
+	private function extrafieldsgroups($id)
 	{
 		$this->response->status = JText::_('COM_K2_PROCESSING_EXTRA_FIELDS_GROUPS');
 		$step = 10;
@@ -422,7 +421,7 @@ class K2ControllerMigrator extends JControllerLegacy
 		}
 	}
 
-	private function tags(Integer $id)
+	private function tags($id)
 	{
 		$this->response->status = JText::_('COM_K2_PROCESSING_TAGS');
 		$step = 10;
@@ -468,7 +467,7 @@ class K2ControllerMigrator extends JControllerLegacy
 		}
 	}
 
-	private function tagsxref(Integer $id)
+	private function tagsxref($id)
 	{
 		$this->response->status = JText::_('COM_K2_PROCESSING_TAGS_REFFERENCE');
 		$db = JFactory::getDbo();
@@ -479,7 +478,7 @@ class K2ControllerMigrator extends JControllerLegacy
 		$this->response->type = 'items';
 	}
 
-	private function items(Integer $id)
+	private function items($id)
 	{
 		$this->response->status = JText::_('COM_K2_PROCESSING_ITEMS');
 		$step = 1;
@@ -756,7 +755,7 @@ class K2ControllerMigrator extends JControllerLegacy
 
 	}
 
-	private function users(Integer $id)
+	private function users($id)
 	{
 		$this->response->status = JText::_('COM_K2_PROCESSING_USERS');
 		$step = 5;

@@ -25,15 +25,20 @@ class Com_K2InstallerScript
 		if($type != 'install')
 		{
 			// Ensure that we are under Joomla! 3.2 or later
-			if(version_compare(JVERSION, '3.2', 'lt'))
+			if(version_compare(JVERSION, '3.2.3', 'lt'))
 			{
 				$application->enqueueMessage('K2 requires Joomla! 3.2 or later', 'error');
+				$application->redirect('index.php?option=com_installer&view=install');
 				return false;
 			}
-			
+						
 			// Get installled version
-			$installedVersion = $this->getParam('version');
-			
+			$query = $db->getQuery(true);
+			$query->select($db->quoteName('manifest_cache'))->from($db->quoteName('#__extensions'))->where($db->quoteName('name').' = '.$db->quote('com_k2'));
+			$db->setQuery($query);
+            $manifest = json_decode($db->loadResult());
+			$installedVersion = $manifest->version;
+						
 			// Detect if we need to perform an upgrade
 			if(version_compare($installedVersion, '3.0.0', 'lt'))
 			{
@@ -41,6 +46,7 @@ class Com_K2InstallerScript
 				if(version_compare($installedVersion, '2.6.8', 'lt'))
 				{
 					$application->enqueueMessage('You cannot update from this version of K2. Please update first your current K2 installation to the latest 2.x series and try again', 'error');
+					$application->redirect('index.php?option=com_installer&view=install');
 					return false;
 				}
 				
@@ -48,6 +54,7 @@ class Com_K2InstallerScript
 				if(!$configuration->get('offline'))
 				{
 					$application->enqueueMessage('Your site is not offline. Please put your site offline and try again.', 'error');
+					$application->redirect('index.php?option=com_installer&view=install');
 					return false;
 				}			
 				
@@ -56,9 +63,12 @@ class Com_K2InstallerScript
 				foreach($oldTables as $oldTable)
 				{
 					$newTable = str_replace('#__k2_', '#__k2_v2_', $oldTable);
-					$db->setQuery('RENAME '.$db->quoteName($oldTable).' TO '.$db->quoteName($newTable));
+					$db->setQuery('RENAME TABLE '.$db->quoteName($oldTable).' TO '.$db->quoteName($newTable));
 					$db->execute();
 				}
+				
+				// Force parsing of SQL file since Joomla! does that only in install mode, not in upgrades
+				$parent->getParent()->parseSQLFiles($parent->getParent()->manifest->install->sql);
 				
 				// Set a flag that this is an upgrade
 				$this->upgrade = true;

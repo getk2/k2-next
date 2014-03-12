@@ -262,9 +262,7 @@ CREATE TABLE IF NOT EXISTS `#__k2_users` (
   `ip` varchar(255) NOT NULL,
   `hostname` varchar(255) NOT NULL,
   `plugins` text NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `items` (`items`),
-  KEY `comments` (`comments`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
