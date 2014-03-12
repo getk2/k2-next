@@ -411,8 +411,63 @@ class K2ControllerMigrator extends JControllerLegacy
 		if (count($groups) == 0)
 		{
 			$this->response->id = 0;
-			$this->response->type = 'items';
+			$this->response->type = 'tags';
 		}
+	}
+
+	private function tags(Integer $id)
+	{
+		$step = 10;
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+		$query->select('*')->from($db->quoteName('#__k2_v2_tags'))->where($db->quoteName('id').' > '.$id)->order($db->quoteName('id'));
+		$db->setQuery($query, 0, $step);
+		$tags = $db->loadObjectList();
+		foreach ($tags as $tag)
+		{
+			$alias = $tag->name;
+			if (JFactory::getConfig()->get('unicodeslugs') == 1)
+			{
+				$alias = JFilterOutput::stringURLUnicodeSlug($alias);
+			}
+			else
+			{
+				$alias = JFilterOutput::stringURLSafe($alias);
+			}
+			if (trim($alias) == '')
+			{
+				$alias = uniqid();
+			}
+			$query = $db->getQuery(true);
+			$query->select($db->quoteName('id'))->from($db->quoteName('#__k2_tags'))->where($db->quoteName('alias').' = '.$db->quote($this->alias));
+			$db->setQuery($query);
+			if ($db->loadResult())
+			{
+				$alias .= '_'.uniqid();
+			}
+			$query = $db->getQuery(true);
+			$query->insert($db->quoteName('#__k2_tags'));
+			$query->values((int)$tag->id.','.$db->quote($tag->name).','.$db->quote($alias).','.(int)$tag->published.','.$db->quote(''));
+			$db->setQuery($query);
+			$db->execute();
+			$this->response->id = $tag->id;
+		}
+
+		if (count($tags) == 0)
+		{
+			$this->response->id = 0;
+			$this->response->type = 'tagsxref';
+		}
+	}
+
+	private function tagsxref(Integer $id)
+	{
+		$db = JFactory::getDbo();
+		$query = 'INSERT INTO '.$db->quoteName('#__k2_tags_xref').'('.$db->quoteName('tagId').','.$db->quoteName('itemId').') SELECT '.$db->quoteName('tagID').','.$db->quoteName('itemID').' FROM '.$db->quoteName('#__k2_v2_tags_xref');
+		$db->setQuery($query);
+		$db->execute();
+		$this->response->id = 0;
+		$this->response->type = 'items';
 	}
 
 	private function items(Integer $id)
@@ -532,13 +587,153 @@ class K2ControllerMigrator extends JControllerLegacy
 			}
 			$media = json_encode(array($media));
 
+			$tags = array();
+
 			$query = $db->getQuery(true);
-			$query->update($db->quoteName('#__k2_items'))->set(array($db->quoteName('image').' = '.$db->quote($image), $db->quoteName('media').' = '.$db->quote($media), $db->quoteName('params').' = '.$db->quote($category->params)))->where($db->quoteName('id').' = '.$category->id);
+			$query->select($db->quoteName('id'))->from($db->quoteName('#__k2_tags_xref'))->where($db->quoteName('itemId').' = '.$item->id);
+			$db->setQuery($query);
+			$tagIds = $db->loadColumn();
+
+			if (count($tagIds))
+			{
+				$query = $db->getQuery(true);
+				$query->select($db->quoteName('name').','.$db->quoteName('id'))->from($db->quoteName('#__k2_tags'))->where($db->quoteName('id').' IN('.implode(',', $tagIds).')')->where($db->quoteName('state').' = 1');
+				$db->setQuery($query);
+				$tags = $db->loadObjectList();
+			}
+			$tags = json_encode($tags);
+
+			$query = $db->getQuery(true);
+			$query->select($db->quoteName('id'))->from($db->quoteName('#__k2_attachments'))->where($db->quoteName('itemId').' = '.$item->id);
+			$db->setQuery($query);
+			$attachments = $db->loadColumn();
+			$attachments = json_encode($attachments);
+
+			$galleries = array();
+			if (strpos($item->gallery, '{gallery') !== false)
+			{
+				$gallery = new stdClass;
+				preg_match("#}(.*?){/#s", $item->gallery, $matches);
+				$value = $matches[1];
+				if (strpos($value, 'flickr.com') !== false)
+				{
+					$gallery->url = $value;
+					$gallery->upload = '';
+				}
+				else
+				{
+					$gallery->url = '';
+					$tmp = uniqid();
+					if (JFolder::exists(JPATH_SITE.'/media/k2/galleries/'.$item->id))
+					{
+						JFolder::move(JPATH_SITE.'/media/k2/galleries/'.$item->id, JPATH_SITE.'/media/k2/galleries/'.$tmp);
+						JFolder::create(JPATH_SITE.'/media/k2/galleries/'.$item->id);
+						JFolder::move(JPATH_SITE.'/media/k2/galleries/'.$tmp, JPATH_SITE.'/media/k2/galleries/'.$item->id.'/'.$tmp);
+					}
+					$gallery->upload = $tmp;
+				}
+				$galleries[] = $gallery;
+			}
+			$galleries = json_encode($galleries);
+
+			$extraFields = new stdClass;
+
+			$itemFields = json_decode($item->extra_fields);
+			foreach ($itemFields as $itemField)
+			{
+				$query = $db->getQuery(true);
+				$query->select('*')->from($db->quoteName('#__k2_extra_fields'))->where($db->quoteName('id').' = '.$itemField->id);
+				$db->setQuery($query);
+				$field = $db->loadObject();
+
+				$entry = new stdClass;
+				if ($field->type == 'text')
+				{
+					$entry->value = isset($itemField->value) ? $itemField->value : '';
+				}
+				else if ($field->type == 'textarea')
+				{
+					$entry->value = isset($itemField->value) ? $itemField->value : '';
+				}
+				else if ($field->type == 'date')
+				{
+					$entry->date = isset($itemField->value) ? $itemField->value : '';
+				}
+				else if ($field->type == 'image')
+				{
+					$entry->src = isset($itemField->value) ? $itemField->value : '';
+					$entry->alt = isset($itemField->value) ? $itemField->value : '';
+				}
+				else if ($field->type == 'labels')
+				{
+					$entry->value = isset($itemField->value) ? $itemField->value : '';
+				}
+				else if ($field->type == 'link')
+				{
+					$entry->name = isset($itemField->value) && is_array($itemField->value) && isset($itemField->value[0]) ? $itemField->value[0] : '';
+					$entry->url = isset($itemField->value) && is_array($itemField->value) && isset($itemField->value[1]) ? $itemField->value[1] : '';
+					$entry->target = isset($itemField->value) && is_array($itemField->value) && isset($itemField->value[2]) ? $itemField->value[2] : '';
+				}
+				else if ($field->type == 'radio')
+				{
+					$entry->value = '';
+					$json = json_decode($field->value);
+					if (isset($json->options) && is_array($json->options) && isset($itemField->value) && $itemField->value && isset($json->options[$itemField->value]))
+					{
+						$entry->value = $json->options[$itemField->value];
+					}
+				}
+				else if ($field->type == 'select')
+				{
+					$entry->value = '';
+					$json = json_decode($field->value);
+
+					if ($json->multiple)
+					{
+						$entry->value = array();
+						if (isset($itemField->value) && is_array($itemField->value) && isset($json->options) && is_array($json->options))
+						{
+							foreach ($itemField->value as $value)
+							{
+								if (isset($json->options[$value]))
+								{
+									$entry->value[] = $json->options[$value];
+								}
+							}
+						}
+					}
+					else
+					{
+						$entry->value = '';
+						if (isset($json->options) && is_array($json->options) && isset($itemField->value) && $itemField->value && isset($json->options[$itemField->value]))
+						{
+							$entry->value = $json->options[$itemField->value];
+						}
+					}
+
+				}
+				$property = $field->id;
+				$extraFields->$property = $entry;
+			}
+
+			$extraFields = json_encode($extraFields);
+
+			$query = $db->getQuery(true);
+			$query->update($db->quoteName('#__k2_items'));
+			$query->set(array($db->quoteName('image').' = '.$db->quote($image), $db->quoteName('media').' = '.$db->quote($media), $db->quoteName('tags').' = '.$db->quote($tags), $db->quoteName('attachments').' = '.$db->quote($attachments), $db->quoteName('galleries').' = '.$db->quote($galleries), $db->quoteName('extra_fields').' = '.$db->quote($extraFields), $db->quoteName('created').' = '.$db->quote($item->created), $db->quoteName('created_by').' = '.$db->quote($item->created_by), $db->quoteName('modified').' = '.$db->quote($item->modified), $db->quoteName('modified_by').' = '.$db->quote($item->modified_by), $db->quoteName('plugins').' = '.$db->quote($item->plugins), $db->quoteName('params').' = '.$db->quote($item->params)))->where($db->quoteName('id').' = '.$item->id);
 			$db->setQuery($query);
 			$db->execute();
-			$this->response->id = $category->id;
 
-			// TODO : Don't forget item stats!
+			$query = $db->getQuery(true);
+			$query->select('COUNT(*)')->from('#__k2_v2_comments')->where($db->quoteName('itemID').' = '.(int)$item->id)->where('published = 1');
+			$db->setQuery($query);
+			$comments = $db->loadResult();
+
+			$query = $db->getQuery(true);
+			$query->insert($db->quoteName('#__k2_items_stats'));
+			$query->values((int)$item->id.','.(int)$item->hits.','.(int)$comments);
+			$db->setQuery($query);
+			$db->execute();
 
 			$this->response->id = $item->id;
 		}
@@ -546,64 +741,9 @@ class K2ControllerMigrator extends JControllerLegacy
 		if (count($items) == 0)
 		{
 			$this->response->id = 0;
-			$this->response->type = 'tags';
+			$this->response->type = 'users';
 		}
 
-	}
-
-	private function tags(Integer $id)
-	{
-		$step = 10;
-		$db = JFactory::getDbo();
-		$query = $db->getQuery(true);
-		$query->select('*')->from($db->quoteName('#__k2_v2_tags'))->where($db->quoteName('id').' > '.$id)->order($db->quoteName('id'));
-		$db->setQuery($query, 0, $step);
-		$tags = $db->loadObjectList();
-		foreach ($tags as $tag)
-		{
-			$alias = $tag->name;
-			if (JFactory::getConfig()->get('unicodeslugs') == 1)
-			{
-				$alias = JFilterOutput::stringURLUnicodeSlug($alias);
-			}
-			else
-			{
-				$alias = JFilterOutput::stringURLSafe($alias);
-			}
-			if (trim($alias) == '')
-			{
-				$alias = uniqid();
-			}
-			$query = $db->getQuery(true);
-			$query->select($db->quoteName('id'))->from($db->quoteName('#__k2_tags'))->where($db->quoteName('alias').' = '.$db->quote($this->alias));
-			$db->setQuery($query);
-			if ($db->loadResult())
-			{
-				$alias .= '_'.uniqid();
-			}
-			$query = $db->getQuery(true);
-			$query->insert($db->quoteName('#__k2_tags'));
-			$query->values((int)$tag->id.','.$db->quote($tag->name).','.$db->quote($alias).','.(int)$tag->published.','.$db->quote(''));
-			$db->setQuery($query);
-			$db->execute();
-			$this->response->id = $tag->id;
-		}
-
-		if (count($tags) == 0)
-		{
-			$this->response->id = 0;
-			$this->response->type = 'tagsxref';
-		}
-	}
-
-	private function tagsxref(Integer $id)
-	{
-		$db = JFactory::getDbo();
-		$query = 'INSERT INTO '.$db->quoteName('#__k2_tags_xref').'('.$db->quoteName('tagId').','.$db->quoteName('itemId').') SELECT '.$db->quoteName('tagID').','.$db->quoteName('itemID').' FROM '.$db->quoteName('#__k2_v2_tags_xref');
-		$db->setQuery($query);
-		$db->execute();
-		$this->response->id = 0;
-		$this->response->type = 'users';
 	}
 
 	private function users(Integer $id)
