@@ -30,7 +30,7 @@ $editor = K2Editor::getInstance($config->get('editor'));
 		
 		<?php if($field->get('editor')) : ?>
 		
-		if(K2Editor.getContent(<?php echo $field->get('prefix'); ?>'[value]') == '') {
+		if(K2Editor.getContent('<?php echo $field->get('prefix'); ?>[value]') == '') {
 			K2ExtraFields.addValidationError(<?php echo $this->id; ?>);
 		}
 		
