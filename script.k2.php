@@ -247,12 +247,21 @@ class Com_K2InstallerScript
         <?php if($this->upgrade): ?>
         <h1>Upgrade in Progress. Don't leave this page until the process completes!</h1>
         <span id="k2UpgradeStatus"></span>
+        <span>Last updated before <span id="k2UpgradeLastUpdated">0</span> seconds</span>
         <ul id="k2UpgradeErrorLog"></ul>
         <script type="text/javascript">
         	function K2Migrate(type, id) {
         		jQuery.post('index.php?option=com_k2&task=migrator.run&type=' + type + '&id=' + id + '&format=json', '<?php echo JSession::getFormToken(); ?>=1')
         		.done(function(response) {
 					if (response) {
+						if(typeof(interval) != 'undefined') {
+							clearInterval(interval);
+						}
+						var counter = 0;
+						var interval = setInterval(function () {
+						  ++counter;
+						  jQuery('#k2UpgradeLastUpdated').text(counter);
+						}, 1000);
 						jQuery.each(response.errors, function( index, error ) {
 							jQuery('#k2UpgradeErrorLog').append('<li>' + error + '</li>');
 						});
@@ -267,6 +276,9 @@ class Com_K2InstallerScript
 					}
 				})
 				.fail(function(response) {
+					if(typeof(interval) != 'undefined') {
+						clearInterval(interval);
+					}
 					jQuery('#k2UpgradeStatus').html('<?php echo JText::_('K2_UPGRADE_FAILED'); ?>');
 				});
         	}
