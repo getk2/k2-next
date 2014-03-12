@@ -264,14 +264,7 @@ class Com_K2InstallerScript
         		jQuery.post('index.php?option=com_k2&task=migrator.run&type=' + type + '&id=' + id + '&format=json', '<?php echo JSession::getFormToken(); ?>=1')
         		.done(function(response) {
 					if (response) {
-						if(typeof(interval) != 'undefined') {
-							clearInterval(interval);
-						}
-						var counter = 0;
-						var interval = setInterval(function () {
-						  ++counter;
-						  jQuery('#k2UpgradeLastUpdated').text(counter);
-						}, 1000);
+						counter = 0;
 						jQuery.each(response.errors, function( index, error ) {
 							jQuery('#k2UpgradeErrorLog').append('<li>' + error + '</li>');
 						});
@@ -292,6 +285,13 @@ class Com_K2InstallerScript
 					jQuery('#k2UpgradeStatus').html('<?php echo JText::_('K2_UPGRADE_FAILED'); ?>');
 				});
         	}
+        	
+        	var counter = 0;
+			var interval = setInterval(function () {
+				 ++counter;
+				jQuery('#k2UpgradeLastUpdated').text(counter);
+			}, 1000);
+        	
         	K2Migrate('attachments', 0);
         </script>
         <?php endif; ?>

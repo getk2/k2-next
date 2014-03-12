@@ -159,6 +159,16 @@ class K2ControllerMigrator extends JControllerLegacy
 			$hasImage = false;
 			$newCategoryId = $category->id == 1 ? 99999 : $category->id;
 			$categoryParams = json_decode($category->params);
+
+			$query = $db->getQuery(true);
+			$query->select($db->quoteName('id'))->from($db->quoteName('#__k2_categories'))->where($db->quoteName('alias').' = '.$db->quote($category->alias));
+
+			$db->setQuery($query);
+			if ($db->loadResult())
+			{
+				$category->alias .= '-'.uniqid();
+			}
+
 			$data = array();
 			$data['id'] = '';
 			$data['title'] = $category->name;
@@ -174,6 +184,10 @@ class K2ControllerMigrator extends JControllerLegacy
 			}
 			$data['template'] = isset($categoryParams->theme) && $categoryParams->theme ? $categoryParams->theme : '';
 			$data['inheritance'] = isset($categoryParams->inheritFrom) && $categoryParams->inheritFrom ? $categoryParams->inheritFrom : 0;
+			if ($data['inheritance'] == 1)
+			{
+				$data['inheritance'] = 99999;
+			}
 			$data['metadata'] = array();
 			$data['metadata']['description'] = isset($categoryParams->catMetaDesc) && $categoryParams->catMetaDesc ? $categoryParams->catMetaDesc : '';
 			$data['metadata']['keywords'] = isset($categoryParams->catMetaKey) && $categoryParams->catMetaKey ? $categoryParams->catMetaKey : '';
@@ -189,11 +203,12 @@ class K2ControllerMigrator extends JControllerLegacy
 				$this->response->failed = 1;
 				return;
 			}
+			$lastInsertedId = $model->getState('id');
 			$image = new stdClass;
 			$image->flag = $hasImage ? 1 : 0;
 			$image = json_encode($image);
 			$query = $db->getQuery(true);
-			$query->update($db->quoteName('#__k2_categories'))->set(array($db->quoteName('id').' = '.$newCategoryId, $db->quoteName('image').' = '.$db->quote($image), $db->quoteName('plugins').' = '.$db->quote($category->plugins), $db->quoteName('params').' = '.$db->quote($category->params)))->where($db->quoteName('id').' = '.$category->id);
+			$query->update($db->quoteName('#__k2_categories'))->set(array($db->quoteName('id').' = '.$newCategoryId, $db->quoteName('image').' = '.$db->quote($image), $db->quoteName('plugins').' = '.$db->quote($category->plugins), $db->quoteName('params').' = '.$db->quote($category->params)))->where($db->quoteName('id').' = '.$lastInsertedId);
 			$db->setQuery($query);
 			$db->execute();
 			$this->response->id = $category->id;
@@ -211,12 +226,13 @@ class K2ControllerMigrator extends JControllerLegacy
 		$this->response->status = JText::_('COM_K2_PROCESSING_CATEGORIES_TREE');
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
-		$query->select('id, parent')->from($db->quoteName('#__k2_v2_categories'))->order($db->quoteName('parent, ordering'));
+		$query->select('id, parent')->from($db->quoteName('#__k2_v2_categories'))->order('parent, ordering');
 		$db->setQuery($query);
 		$categories = $db->loadObjectList();
 		foreach ($categories as $category)
 		{
 			$srcId = $category->id == 1 ? 99999 : $category->id;
+			JTable::addIncludePath(JPATH_SITE.'/administrator/components/com_k2/tables');
 			$table = JTable::getInstance('Categories', 'K2Table');
 			$table->load($srcId);
 			if ($category->parent)
@@ -400,6 +416,19 @@ class K2ControllerMigrator extends JControllerLegacy
 			$db->setQuery($query);
 			$categories = $db->loadColumn();
 
+			$newCategories = array();
+			foreach ($categories as $categoryId)
+			{
+				if ($categoryId == 1)
+				{
+					$newCategories[] = 99999;
+				}
+				else
+				{
+					$newCategories[] = $categoryId;
+				}
+			}
+
 			$assignments = new stdClass;
 			$assignments->mode = 'specific';
 			$assignments->categories = $categories;
@@ -446,11 +475,11 @@ class K2ControllerMigrator extends JControllerLegacy
 				$alias = uniqid();
 			}
 			$query = $db->getQuery(true);
-			$query->select($db->quoteName('id'))->from($db->quoteName('#__k2_tags'))->where($db->quoteName('alias').' = '.$db->quote($this->alias));
+			$query->select($db->quoteName('id'))->from($db->quoteName('#__k2_tags'))->where($db->quoteName('alias').' = '.$db->quote($alias));
 			$db->setQuery($query);
 			if ($db->loadResult())
 			{
-				$alias .= '_'.uniqid();
+				$alias .= '-'.uniqid();
 			}
 			$query = $db->getQuery(true);
 			$query->insert($db->quoteName('#__k2_tags'));
@@ -489,6 +518,16 @@ class K2ControllerMigrator extends JControllerLegacy
 		$items = $db->loadObjectList();
 		foreach ($items as $item)
 		{
+
+			$query = $db->getQuery(true);
+			$query->select($db->quoteName('id'))->from($db->quoteName('#__k2_items'))->where($db->quoteName('alias').' = '.$db->quote($item->alias));
+
+			$db->setQuery($query);
+			if ($db->loadResult())
+			{
+				$item->alias .= '-'.uniqid();
+			}
+
 			$data = array();
 			$data['id'] = '';
 			$data['title'] = $item->title;
@@ -536,6 +575,8 @@ class K2ControllerMigrator extends JControllerLegacy
 				$this->response->failed = 1;
 				return;
 			}
+
+			$lastInsertedId = $model->getState('id');
 
 			$image = new stdClass;
 			$image->caption = $item->image_caption;
@@ -599,7 +640,7 @@ class K2ControllerMigrator extends JControllerLegacy
 			$tags = array();
 
 			$query = $db->getQuery(true);
-			$query->select($db->quoteName('id'))->from($db->quoteName('#__k2_tags_xref'))->where($db->quoteName('itemId').' = '.$item->id);
+			$query->select($db->quoteName('tagId'))->from($db->quoteName('#__k2_tags_xref'))->where($db->quoteName('itemId').' = '.$item->id);
 			$db->setQuery($query);
 			$tagIds = $db->loadColumn();
 
@@ -648,88 +689,91 @@ class K2ControllerMigrator extends JControllerLegacy
 			$extraFields = new stdClass;
 
 			$itemFields = json_decode($item->extra_fields);
-			foreach ($itemFields as $itemField)
+			if (is_array($itemFields))
 			{
-				$query = $db->getQuery(true);
-				$query->select('*')->from($db->quoteName('#__k2_extra_fields'))->where($db->quoteName('id').' = '.$itemField->id);
-				$db->setQuery($query);
-				$field = $db->loadObject();
+				foreach ($itemFields as $itemField)
+				{
+					$query = $db->getQuery(true);
+					$query->select('*')->from($db->quoteName('#__k2_extra_fields'))->where($db->quoteName('id').' = '.$itemField->id);
+					$db->setQuery($query);
+					$field = $db->loadObject();
 
-				$entry = new stdClass;
-				if ($field->type == 'text')
-				{
-					$entry->value = isset($itemField->value) ? $itemField->value : '';
-				}
-				else if ($field->type == 'textarea')
-				{
-					$entry->value = isset($itemField->value) ? $itemField->value : '';
-				}
-				else if ($field->type == 'date')
-				{
-					$entry->date = isset($itemField->value) ? $itemField->value : '';
-				}
-				else if ($field->type == 'image')
-				{
-					$entry->src = isset($itemField->value) ? $itemField->value : '';
-					$entry->alt = isset($itemField->value) ? $itemField->value : '';
-				}
-				else if ($field->type == 'labels')
-				{
-					$entry->value = isset($itemField->value) ? $itemField->value : '';
-				}
-				else if ($field->type == 'link')
-				{
-					$entry->name = isset($itemField->value) && is_array($itemField->value) && isset($itemField->value[0]) ? $itemField->value[0] : '';
-					$entry->url = isset($itemField->value) && is_array($itemField->value) && isset($itemField->value[1]) ? $itemField->value[1] : '';
-					$entry->target = isset($itemField->value) && is_array($itemField->value) && isset($itemField->value[2]) ? $itemField->value[2] : '';
-				}
-				else if ($field->type == 'radio')
-				{
-					$entry->value = '';
-					$json = json_decode($field->value);
-					if (isset($json->options) && is_array($json->options) && isset($itemField->value) && $itemField->value && isset($json->options[$itemField->value]))
+					$entry = new stdClass;
+					if ($field->type == 'text')
 					{
-						$entry->value = $json->options[$itemField->value];
+						$entry->value = isset($itemField->value) ? $itemField->value : '';
 					}
-				}
-				else if ($field->type == 'select')
-				{
-					$entry->value = '';
-					$json = json_decode($field->value);
-
-					if ($json->multiple)
+					else if ($field->type == 'textarea')
 					{
-						$entry->value = array();
-						if (isset($itemField->value) && is_array($itemField->value) && isset($json->options) && is_array($json->options))
-						{
-							foreach ($itemField->value as $value)
-							{
-								if (isset($json->options[$value]))
-								{
-									$entry->value[] = $json->options[$value];
-								}
-							}
-						}
+						$entry->value = isset($itemField->value) ? $itemField->value : '';
 					}
-					else
+					else if ($field->type == 'date')
+					{
+						$entry->date = isset($itemField->value) ? $itemField->value : '';
+					}
+					else if ($field->type == 'image')
+					{
+						$entry->src = isset($itemField->value) ? $itemField->value : '';
+						$entry->alt = isset($itemField->value) ? $itemField->value : '';
+					}
+					else if ($field->type == 'labels')
+					{
+						$entry->value = isset($itemField->value) ? $itemField->value : '';
+					}
+					else if ($field->type == 'link')
+					{
+						$entry->name = isset($itemField->value) && is_array($itemField->value) && isset($itemField->value[0]) ? $itemField->value[0] : '';
+						$entry->url = isset($itemField->value) && is_array($itemField->value) && isset($itemField->value[1]) ? $itemField->value[1] : '';
+						$entry->target = isset($itemField->value) && is_array($itemField->value) && isset($itemField->value[2]) ? $itemField->value[2] : '';
+					}
+					else if ($field->type == 'radio')
 					{
 						$entry->value = '';
+						$json = json_decode($field->value);
 						if (isset($json->options) && is_array($json->options) && isset($itemField->value) && $itemField->value && isset($json->options[$itemField->value]))
 						{
 							$entry->value = $json->options[$itemField->value];
 						}
 					}
+					else if ($field->type == 'select')
+					{
+						$entry->value = '';
+						$json = json_decode($field->value);
 
+						if ($json->multiple)
+						{
+							$entry->value = array();
+							if (isset($itemField->value) && is_array($itemField->value) && isset($json->options) && is_array($json->options))
+							{
+								foreach ($itemField->value as $value)
+								{
+									if (isset($json->options[$value]))
+									{
+										$entry->value[] = $json->options[$value];
+									}
+								}
+							}
+						}
+						else
+						{
+							$entry->value = '';
+							if (isset($json->options) && is_array($json->options) && isset($itemField->value) && $itemField->value && isset($json->options[$itemField->value]))
+							{
+								$entry->value = $json->options[$itemField->value];
+							}
+						}
+
+					}
+					$property = $field->id;
+					$extraFields->$property = $entry;
 				}
-				$property = $field->id;
-				$extraFields->$property = $entry;
 			}
 
 			$extraFields = json_encode($extraFields);
 
 			$query = $db->getQuery(true);
 			$query->update($db->quoteName('#__k2_items'));
-			$query->set(array($db->quoteName('image').' = '.$db->quote($image), $db->quoteName('media').' = '.$db->quote($media), $db->quoteName('tags').' = '.$db->quote($tags), $db->quoteName('attachments').' = '.$db->quote($attachments), $db->quoteName('galleries').' = '.$db->quote($galleries), $db->quoteName('extra_fields').' = '.$db->quote($extraFields), $db->quoteName('created').' = '.$db->quote($item->created), $db->quoteName('created_by').' = '.$db->quote($item->created_by), $db->quoteName('modified').' = '.$db->quote($item->modified), $db->quoteName('modified_by').' = '.$db->quote($item->modified_by), $db->quoteName('plugins').' = '.$db->quote($item->plugins), $db->quoteName('params').' = '.$db->quote($item->params)))->where($db->quoteName('id').' = '.$item->id);
+			$query->set(array($db->quoteName('image').' = '.$db->quote($image), $db->quoteName('media').' = '.$db->quote($media), $db->quoteName('tags').' = '.$db->quote($tags), $db->quoteName('attachments').' = '.$db->quote($attachments), $db->quoteName('galleries').' = '.$db->quote($galleries), $db->quoteName('extra_fields').' = '.$db->quote($extraFields), $db->quoteName('created').' = '.$db->quote($item->created), $db->quoteName('created_by').' = '.$db->quote($item->created_by), $db->quoteName('modified').' = '.$db->quote($item->modified), $db->quoteName('modified_by').' = '.$db->quote($item->modified_by), $db->quoteName('plugins').' = '.$db->quote($item->plugins), $db->quoteName('params').' = '.$db->quote($item->params)))->where($db->quoteName('id').' = '.$lastInsertedId);
 			$db->setQuery($query);
 			$db->execute();
 
@@ -779,7 +823,7 @@ class K2ControllerMigrator extends JControllerLegacy
 			$image = json_encode($image);
 			$query = $db->getQuery(true);
 			$query->insert($db->quoteName('#__k2_users'));
-			$query->values((int)$author->userID.','.$db->quote($user->description).','.$db->quote($image).','.$db->quote($author->url).','.$db->quote($author->gender).','.$db->quote($author->notes).','.$db->quote('').','.$db->quote($author->ip).','.$db->quote($author->hostname).','.$db->quote($author->plugins));
+			$query->values((int)$author->userID.','.$db->quote($author->description).','.$db->quote($image).','.$db->quote($author->url).','.$db->quote($author->gender).','.$db->quote($author->notes).','.$db->quote('').','.$db->quote($author->ip).','.$db->quote($author->hostname).','.$db->quote($author->plugins));
 			$db->setQuery($query);
 			$db->execute();
 
