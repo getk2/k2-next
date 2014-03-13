@@ -211,30 +211,28 @@ class K2Items extends K2Resource
 		if ($this->id && is_array($tags) && count($tags))
 		{
 
+			/*foreach ($tags as $tag)
+			 {
+			 $instance = K2Tags::getInstance($tag->id);
+			 if ($instance->state)
+			 {
+			 $instances[] = $instance;
+			 }
+			 }*/
+
+			$tagIds = array();
 			foreach ($tags as $tag)
 			{
-				$instance = K2Tags::getInstance($tag->id);
-				if ($instance->state)
-				{
-					$instances[] = $instance;
-				}
+				$tagIds[] = (int)$tag->id;
 			}
-
-			/*
-			 $tagIds = array();
-			 foreach ($tags as $tag)
-			 {
-			 $tagIds[] = (int)$tag->id;
-			 }
-			 $application = JFactory::getApplication();
-			 $model = K2Model::getInstance('Tags');
-			 if ($application->isSite())
-			 {
-			 $model->setState('state', 1);
-			 }
-			 $model->setState('id', $tagIds);
-			 $tags = $model->getRows();
-			 */
+			$application = JFactory::getApplication();
+			$model = K2Model::getInstance('Tags');
+			if ($application->isSite())
+			{
+				$model->setState('state', 1);
+			}
+			$model->setState('id', $tagIds);
+			$instances = $model->getRows();
 		}
 		return $instances;
 	}
@@ -566,10 +564,10 @@ class K2Items extends K2Resource
 
 		// K2 plugins
 		if ($k2Plugins)
-		{			
+		{
 			// Import K2 plugins
 			JPluginHelper::importPlugin('k2');
-			
+
 			$dispatcher->trigger('onK2PluginInit', array($this));
 
 			$results = $dispatcher->trigger('onK2BeforeDisplay', array(&$this, &$params, $offset));
