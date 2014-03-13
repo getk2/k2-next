@@ -221,6 +221,18 @@ class K2ControllerMigrator extends JControllerLegacy
 				$this->response->failed = 1;
 				return;
 			}
+
+			// Update auto increment to avoid SQL errors
+			if ($newCategoryId != 99999)
+			{
+				$db->setQuery('ALTER TABLE '.$db->quoteName('#__k2_categories').' AUTO_INCREMENT='.((int)$newCategoryId + 1));
+				if (!$db->execute())
+				{
+					$this->response->errors[] = $db->getErrorMsg();
+					$this->response->failed = 1;
+					return;
+				}
+			}
 			$this->response->id = $category->id;
 		}
 
@@ -821,6 +833,15 @@ class K2ControllerMigrator extends JControllerLegacy
 				return;
 			}
 
+			// Update auto increment to avoid SQL errors
+			$db->setQuery('ALTER TABLE '.$db->quoteName('#__k2_items').' AUTO_INCREMENT='.((int)$item->id + 1));
+			if (!$db->execute())
+			{
+				$this->response->errors[] = $db->getErrorMsg();
+				$this->response->failed = 1;
+				return;
+			}
+
 			$query = $db->getQuery(true);
 			$query->select('COUNT(*)')->from('#__k2_v2_comments')->where($db->quoteName('itemID').' = '.(int)$item->id)->where('published = 1');
 			$db->setQuery($query);
@@ -854,7 +875,7 @@ class K2ControllerMigrator extends JControllerLegacy
 		$step = 5;
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
-		$query->select('*')->from($db->quoteName('#__k2_v2_users'))->where($db->quoteName('id').' > '.$id)->order($db->quoteName('id'));
+		$query->select('*')->from($db->quoteName('#__k2_v2_users'))->where($db->quoteName('userID').' > '.$id)->order($db->quoteName('userID'));
 		$db->setQuery($query, 0, $step);
 		$authors = $db->loadObjectList();
 		foreach ($authors as $author)
@@ -901,7 +922,7 @@ class K2ControllerMigrator extends JControllerLegacy
 				$this->response->failed = 1;
 				return;
 			}
-			$this->response->id = $author->id;
+			$this->response->id = $author->userID;
 		}
 
 		if (count($authors) == 0)
