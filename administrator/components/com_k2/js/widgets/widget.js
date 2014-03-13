@@ -172,7 +172,7 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 			});
 		},
 		tags : function(element) {
-			require(['widgets/select2/select2', 'css!widgets/select2/select2.css'], function() {
+			require(['widgets/select2/select2.min', 'css!widgets/select2/select2.css'], function() {
 				element.select2({
 					tags : element.val().split(','),
 					placeholder : element.data('placeholder') || l('K2_ENTER_SOME_TAGS'),
