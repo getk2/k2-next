@@ -16,6 +16,7 @@ class Com_K2InstallerScript
     {
     	$application = JFactory::getApplication();
 		$configuration = JFactory::getConfig();
+		$installer = $parent->getParent();
 		$db = JFactory::getDbo();
 		
 		// Init the upgrade flag
@@ -27,8 +28,7 @@ class Com_K2InstallerScript
 			// Ensure that we are under Joomla! 3.2 or later
 			if(version_compare(JVERSION, '3.2.3', 'lt'))
 			{
-				$application->enqueueMessage('K2 requires Joomla! 3.2 or later', 'error');
-				$application->redirect('index.php?option=com_installer&view=install');
+				$application->enqueueMessage('K2 requires Joomla! 3.2 or later.', 'error');
 				return false;
 			}
 						
@@ -45,8 +45,7 @@ class Com_K2InstallerScript
 				// Ensure that the installed K2 version is not very old. Otherwise the update will fail.
 				if(version_compare($installedVersion, '2.6.8', 'lt'))
 				{
-					$application->enqueueMessage('You cannot update from this version of K2. Please update first your current K2 installation to the latest 2.x series and try again', 'error');
-					$application->redirect('index.php?option=com_installer&view=install');
+					$application->enqueueMessage('You cannot update from this version of K2. Please update first your current K2 installation to the latest 2.x series and try again.', 'error');
 					return false;
 				}
 				
@@ -54,7 +53,6 @@ class Com_K2InstallerScript
 				if(!$configuration->get('offline'))
 				{
 					$application->enqueueMessage('Your site is not offline. Please put your site offline and try again.', 'error');
-					$application->redirect('index.php?option=com_installer&view=install');
 					return false;
 				}			
 				
@@ -64,19 +62,28 @@ class Com_K2InstallerScript
 				{
 					$newTable = str_replace('#__k2_', '#__k2_v2_', $oldTable);
 					$db->setQuery('RENAME TABLE '.$db->quoteName($oldTable).' TO '.$db->quoteName($newTable));
-					$db->execute();
+					if(!$db->execute())
+					{
+						$application->enqueueMessage(JText::sprintf('JLIB_INSTALLER_ABORT_COMP_INSTALL_SQL_ERROR', $db->stderr(true)), 'error');
+						return false;
+					}
 				}
 				
 				// Force parsing of SQL file since Joomla! does that only in install mode, not in upgrades
-				$parent->getParent()->parseSQLFiles($parent->getParent()->manifest->install->sql);
+				$result = $installer->parseSQLFiles($installer->manifest->install->sql);
+				if ($result === false)
+				{
+					// Install failed, rollback changes
+					$application->enqueueMessage(JText::sprintf('JLIB_INSTALLER_ABORT_COMP_INSTALL_SQL_ERROR', $db->stderr(true)), 'error');
+					return false;
+				}
 				
 				// Set a flag that this is an upgrade
 				$this->upgrade = true;
 			}
 		}
 		
-    }
-	
+    }	
 	
     public function postflight($type, $parent)
     {
