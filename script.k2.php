@@ -70,12 +70,20 @@ class Com_K2InstallerScript
 				}
 				
 				// Force parsing of SQL file since Joomla! does that only in install mode, not in upgrades
-				$result = $installer->parseSQLFiles($installer->manifest->install->sql);
-				if ($result === false)
+				$sql = $installer->getPath('source').'/administrator/components/com_k2/install.sql';
+				$queries = JDatabaseDriver::splitSql(file_get_contents($sql));
+				foreach ($queries as $query)
 				{
-					// Install failed, rollback changes
-					$application->enqueueMessage(JText::sprintf('JLIB_INSTALLER_ABORT_COMP_INSTALL_SQL_ERROR', $db->stderr(true)), 'error');
-					return false;
+					$query = trim($query);
+					if ($query != '' && $query{0} != '#')
+					{
+						$db->setQuery($query);
+						if (!$db->execute())
+						{
+							$application->enqueueMessage(JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)), 'error');
+							return false;
+						}
+					}
 				}
 				
 				// Set a flag that this is an upgrade
