@@ -70,7 +70,7 @@ define(['marionette', 'text!layouts/filters.html', 'dispatcher', 'widgets/widget
 				filter.val(value);
 			}, this));
 
-			require(['widgets/select2/select2', 'css!widgets/select2/select2.css'], _.bind(function() {
+			require(['widgets/select2/select2.min', 'css!widgets/select2/select2.css'], _.bind(function() {
 				this.$('[data-region="filters"] select').select2();
 				var states = this.model.get('states');
 				if (states.authorName !== undefined) {
