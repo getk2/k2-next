@@ -37,7 +37,6 @@ class K2ControllerMigrator extends JControllerLegacy
 		parent::__construct($config);
 
 		set_error_handler(array($this, 'error'));
-		set_exception_handler(array($this, 'exception'));
 
 		$this->response = new stdClass;
 		$this->response->type = '';
@@ -59,7 +58,16 @@ class K2ControllerMigrator extends JControllerLegacy
 			if (method_exists($this, $type))
 			{
 				$this->response->type = $type;
-				call_user_func(array($this, $type), $id);
+				try
+				{
+					call_user_func(array($this, $type), $id);
+				}
+				catch(Exception $exception)
+				{
+					$this->response->failed = 1;
+					$this->response->errors[] = $exception->getMessage();
+				}
+
 			}
 			else
 			{
@@ -104,12 +112,6 @@ class K2ControllerMigrator extends JControllerLegacy
 		$this->response->errors[] = $message;
 	}
 
-	public function exception($exception)
-	{
-		$this->response->failed = 1;
-		$this->response->errors[] = $exception->getMessage();
-	}
-
 	private function attachments($id)
 	{
 		$this->response->status = JText::_('COM_K2_PROCESSING_ATTACHMENTS');
@@ -134,12 +136,7 @@ class K2ControllerMigrator extends JControllerLegacy
 			$query->insert($db->quoteName('#__k2_attachments'));
 			$query->values((int)$attachment->id.','.(int)$attachment->itemID.','.$db->quote($attachment->title).','.$db->quote($attachment->titleAttribute).','.$db->quote($attachment->filename).','.$db->quote('').','.(int)$attachment->hits);
 			$db->setQuery($query);
-			if (!$db->execute())
-			{
-				$this->response->errors[] = $db->getErrorMsg();
-				$this->response->failed = 1;
-				return;
-			}
+			$db->execute();
 			$this->response->id = $attachment->id;
 		}
 
@@ -215,23 +212,13 @@ class K2ControllerMigrator extends JControllerLegacy
 			$query = $db->getQuery(true);
 			$query->update($db->quoteName('#__k2_categories'))->set(array($db->quoteName('id').' = '.$newCategoryId, $db->quoteName('image').' = '.$db->quote($image), $db->quoteName('plugins').' = '.$db->quote($category->plugins), $db->quoteName('params').' = '.$db->quote($category->params)))->where($db->quoteName('id').' = '.$lastInsertedId);
 			$db->setQuery($query);
-			if (!$db->execute())
-			{
-				$this->response->errors[] = $db->getErrorMsg();
-				$this->response->failed = 1;
-				return;
-			}
+			$db->execute();
 
 			// Update auto increment to avoid SQL errors
 			if ($newCategoryId != 99999)
 			{
 				$db->setQuery('ALTER TABLE '.$db->quoteName('#__k2_categories').' AUTO_INCREMENT='.((int)$newCategoryId + 1));
-				if (!$db->execute())
-				{
-					$this->response->errors[] = $db->getErrorMsg();
-					$this->response->failed = 1;
-					return;
-				}
+				$db->execute();
 			}
 			$this->response->id = $category->id;
 		}
@@ -291,12 +278,7 @@ class K2ControllerMigrator extends JControllerLegacy
 		'.$db->quoteName('id').','.$db->quoteName('itemID').','.$db->quoteName('userID').','.$db->quoteName('userName').','.$db->quoteName('commentDate').','.$db->quoteName('commentEmail').','.$db->quoteName('commentURL').','.$db->quote('').','.$db->quote('').','.$db->quoteName('commentText').','.$db->quoteName('published').' 
 		FROM '.$db->quoteName('#__k2_v2_comments');
 		$db->setQuery($query);
-		if (!$db->execute())
-		{
-			$this->response->errors[] = $db->getErrorMsg();
-			$this->response->failed = 1;
-			return;
-		}
+		$db->execute();
 		$this->response->id = 0;
 		$this->response->type = 'extrafields';
 	}
@@ -416,12 +398,7 @@ class K2ControllerMigrator extends JControllerLegacy
 			$query->insert($db->quoteName('#__k2_extra_fields'));
 			$query->values((int)$field->id.','.$db->quote($field->name).','.$db->quote($alias).','.$db->quote($value).','.(int)$required.','.$db->quote($type).','.(int)$field->group.','.(int)$field->published.','.(int)$field->ordering);
 			$db->setQuery($query);
-			if (!$db->execute())
-			{
-				$this->response->errors[] = $db->getErrorMsg();
-				$this->response->failed = 1;
-				return;
-			}
+			$db->execute();
 			$this->response->id = $field->id;
 		}
 
@@ -471,12 +448,7 @@ class K2ControllerMigrator extends JControllerLegacy
 			$query->insert($db->quoteName('#__k2_extra_fields_groups'));
 			$query->values((int)$group->id.','.$db->quote($group->name).','.$db->quote('item').','.$db->quote($assignments));
 			$db->setQuery($query);
-			if (!$db->execute())
-			{
-				$this->response->errors[] = $db->getErrorMsg();
-				$this->response->failed = 1;
-				return;
-			}
+			$db->execute();
 			$this->response->id = $group->id;
 		}
 
@@ -522,12 +494,7 @@ class K2ControllerMigrator extends JControllerLegacy
 			$query->insert($db->quoteName('#__k2_tags'));
 			$query->values((int)$tag->id.','.$db->quote($tag->name).','.$db->quote($alias).','.(int)$tag->published.','.$db->quote(''));
 			$db->setQuery($query);
-			if (!$db->execute())
-			{
-				$this->response->errors[] = $db->getErrorMsg();
-				$this->response->failed = 1;
-				return;
-			}
+			$db->execute();
 			$this->response->id = $tag->id;
 		}
 
@@ -544,12 +511,7 @@ class K2ControllerMigrator extends JControllerLegacy
 		$db = JFactory::getDbo();
 		$query = 'INSERT INTO '.$db->quoteName('#__k2_tags_xref').'('.$db->quoteName('tagId').','.$db->quoteName('itemId').') SELECT '.$db->quoteName('tagID').','.$db->quoteName('itemID').' FROM '.$db->quoteName('#__k2_v2_tags_xref');
 		$db->setQuery($query);
-		if (!$db->execute())
-		{
-			$this->response->errors[] = $db->getErrorMsg();
-			$this->response->failed = 1;
-			return;
-		}
+		$db->execute();
 		$this->response->id = 0;
 		$this->response->type = 'items';
 	}
@@ -826,21 +788,11 @@ class K2ControllerMigrator extends JControllerLegacy
 			$query->update($db->quoteName('#__k2_items'));
 			$query->set(array($db->quoteName('id').' = '.$item->id, $db->quoteName('image').' = '.$db->quote($image), $db->quoteName('media').' = '.$db->quote($media), $db->quoteName('tags').' = '.$db->quote($tags), $db->quoteName('attachments').' = '.$db->quote($attachments), $db->quoteName('galleries').' = '.$db->quote($galleries), $db->quoteName('extra_fields').' = '.$db->quote($extraFields), $db->quoteName('created').' = '.$db->quote($item->created), $db->quoteName('created_by').' = '.$db->quote($item->created_by), $db->quoteName('modified').' = '.$db->quote($item->modified), $db->quoteName('modified_by').' = '.$db->quote($item->modified_by), $db->quoteName('plugins').' = '.$db->quote($item->plugins), $db->quoteName('params').' = '.$db->quote($item->params)))->where($db->quoteName('id').' = '.$lastInsertedId);
 			$db->setQuery($query);
-			if (!$db->execute())
-			{
-				$this->response->errors[] = $db->getErrorMsg();
-				$this->response->failed = 1;
-				return;
-			}
+			$db->execute();
 
 			// Update auto increment to avoid SQL errors
 			$db->setQuery('ALTER TABLE '.$db->quoteName('#__k2_items').' AUTO_INCREMENT='.((int)$item->id + 1));
-			if (!$db->execute())
-			{
-				$this->response->errors[] = $db->getErrorMsg();
-				$this->response->failed = 1;
-				return;
-			}
+			$db->execute();
 
 			$query = $db->getQuery(true);
 			$query->select('COUNT(*)')->from('#__k2_v2_comments')->where($db->quoteName('itemID').' = '.(int)$item->id)->where('published = 1');
@@ -851,12 +803,7 @@ class K2ControllerMigrator extends JControllerLegacy
 			$query->insert($db->quoteName('#__k2_items_stats'));
 			$query->values((int)$item->id.','.(int)$item->hits.','.(int)$comments);
 			$db->setQuery($query);
-			if (!$db->execute())
-			{
-				$this->response->errors[] = $db->getErrorMsg();
-				$this->response->failed = 1;
-				return;
-			}
+			$db->execute();
 
 			$this->response->id = $item->id;
 		}
@@ -872,14 +819,38 @@ class K2ControllerMigrator extends JControllerLegacy
 	private function users($id)
 	{
 		$this->response->status = JText::_('COM_K2_PROCESSING_USERS');
+
 		$step = 5;
 		$db = JFactory::getDbo();
+
+		if ($id == 0)
+		{
+			$query = $db->getQuery(true);
+			$query->delete($db->quoteName('#__k2_users'));
+			$db->setQuery($query);
+			$db->execute();
+
+			$query = $db->getQuery(true);
+			$query->delete($db->quoteName('#__k2_users_stats'));
+			$db->setQuery($query);
+			$db->execute();
+		}
+
 		$query = $db->getQuery(true);
 		$query->select('*')->from($db->quoteName('#__k2_v2_users'))->where($db->quoteName('userID').' > '.$id)->order($db->quoteName('userID'));
 		$db->setQuery($query, 0, $step);
 		$authors = $db->loadObjectList();
 		foreach ($authors as $author)
 		{
+			$query = $db->getQuery(true);
+			$query->select('COUNT(*)')->from('#__k2_users')->where($db->quoteName('id').' = '.(int)$author->userID);
+			$db->setQuery($query);
+			$exists = $db->loadResult();
+			if ($exists)
+			{
+				continue;
+			}
+
 			$image = new stdClass;
 			$image->flag = 0;
 			if ($author->image)
@@ -895,12 +866,7 @@ class K2ControllerMigrator extends JControllerLegacy
 			$query->insert($db->quoteName('#__k2_users'));
 			$query->values((int)$author->userID.','.$db->quote($author->description).','.$db->quote($image).','.$db->quote($author->url).','.$db->quote($author->gender).','.$db->quote($author->notes).','.$db->quote('').','.$db->quote($author->ip).','.$db->quote($author->hostname).','.$db->quote($author->plugins));
 			$db->setQuery($query);
-			if (!$db->execute())
-			{
-				$this->response->errors[] = $db->getErrorMsg();
-				$this->response->failed = 1;
-				return;
-			}
+			$db->execute();
 
 			$query = $db->getQuery(true);
 			$query->select('COUNT(*)')->from('#__k2_v2_items')->where($db->quoteName('created_by').' = '.(int)$author->userID);
@@ -916,12 +882,8 @@ class K2ControllerMigrator extends JControllerLegacy
 			$query->insert($db->quoteName('#__k2_users_stats'));
 			$query->values((int)$author->userID.','.(int)$items.','.(int)$comments);
 			$db->setQuery($query);
-			if (!$db->execute())
-			{
-				$this->response->errors[] = $db->getErrorMsg();
-				$this->response->failed = 1;
-				return;
-			}
+			$db->execute();
+
 			$this->response->id = $author->userID;
 		}
 
