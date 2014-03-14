@@ -526,7 +526,7 @@ class K2ModelUsers extends K2Model
 		// Get the result
 		self::$groups = $db->loadObjectList('id');
 
-		return $this->groups;
+		return self::$groups;
 	}
 
 	public function checkSpoofing($name, $email)
