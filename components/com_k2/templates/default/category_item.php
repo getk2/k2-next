@@ -254,7 +254,7 @@ defined('_JEXEC') or die ;
   </div>
   <?php endif; ?>
 
-  <?php if($this->params->get('itemAuthorLatest') && !empty($this->item->author->latest)): ?>
+  <?php if($this->params->get('itemAuthorLatest') && count($this->item->author->latest)): ?>
   <!-- Latest items from author -->
 	<div class="itemAuthorLatest">
 		<h3><?php echo JText::_('K2_LATEST_FROM'); ?> <?php echo $this->item->author->name; ?></h3>
@@ -269,7 +269,7 @@ defined('_JEXEC') or die ;
 	</div>
 	<?php endif; ?>
 	
-  <?php if($this->params->get('itemRelated') && !empty($this->item->related)): ?>
+  <?php if($this->params->get('itemRelated') && count($this->item->related)): ?>
   <!-- Related items by tag -->
 	<div class="itemRelated">
 		<h3><?php echo JText::_("K2_RELATED_ITEMS_BY_TAG"); ?></h3>
@@ -301,7 +301,7 @@ defined('_JEXEC') or die ;
 				<div class="itemRelFulltext"><?php echo $item->fulltext; ?></div>
 				<?php endif; ?>
 
-				<?php if($this->params->get('itemRelatedMedia') && !empty($item->media)): ?>
+				<?php if($this->params->get('itemRelatedMedia') && count($item->media)): ?>
 				  <div class="itemRelMediaBlock">
 				  	<?php foreach ($item->media as $entry) : ?>
 					<div class="itemRelMedia">
@@ -312,7 +312,7 @@ defined('_JEXEC') or die ;
 				  </div>
 				<?php endif; ?>
 
-				<?php if($this->params->get('itemRelatedImageGallery') && !empty($item->galleries)): ?>
+				<?php if($this->params->get('itemRelatedImageGallery') && count($item->galleries)): ?>
 					<div class="itemRelImageGalleries">
 				  	<?php foreach ($item->galleries as $gallery): ?>
 				  		<div class="itemRelImageGallery">
@@ -331,7 +331,7 @@ defined('_JEXEC') or die ;
 
 	<div class="clr"></div>
 
-  <?php if(!empty($this->item->media)): ?>
+  <?php if(count($this->item->media)): ?>
   <!-- Item media -->
   <a name="itemMediaAnchor" id="itemMediaAnchor"></a>
   
