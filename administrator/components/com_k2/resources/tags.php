@@ -91,14 +91,6 @@ class K2Tags extends K2Resource
 
 		// URL
 		$this->url = $this->getUrl();
-
-		// Num of items per tag
-		$user = JFactory::getUser();
-		if ($user->authorise('k2.tags.manage', 'com_k2'))
-		{
-			$this->items = $this->getItems();
-		}
-
 	}
 
 	public function getItems()

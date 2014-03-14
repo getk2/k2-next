@@ -141,4 +141,12 @@ class K2ViewTags extends K2View
 		}
 	}
 
+
+	protected function prepareRows($rows)
+	{
+		foreach($rows as $row)
+		{
+			$row->items = $row->getItems();
+		}
+	}
 }

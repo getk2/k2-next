@@ -165,9 +165,21 @@ class K2View extends JViewLegacy
 		$model = $this->getModel();
 		$model->setState('id', false);
 		$rows = $model->getRows();
-
+		
+		// Prepare rows
+		$this->prepareRows($rows);
+		
 		// Set K2 response rows
 		K2Response::setRows($rows);
+	}
+	
+	/**
+	 * Hook to allow children view to attach extra data to the rows.
+	 *
+	 * @return void
+	 */
+	protected function prepareRows($rows)
+	{
 	}
 
 	/**
