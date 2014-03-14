@@ -126,6 +126,7 @@ class K2Categories extends K2Resource
 		$model = K2Model::getInstance('Categories');
 		$model->setState('site', true);
 		$model->setState('root', $this->id);
+		$model->setState('sorting', 'ordering');
 		$chidlren = $model->getRows();
 		foreach ($chidlren as $key => $child)
 		{
