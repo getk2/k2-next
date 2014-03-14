@@ -99,7 +99,7 @@ class K2HelperGalleries
 		$itemId = $item->id;
 
 		// Uploaded galleries
-		$uploadedGalleries = array();
+		$removedGalleries = array();
 
 		// Iterate over the galleries and transfer the new galleries from /tmp to /media/k2/galleries
 		foreach ($galleries as $gallery)
@@ -108,11 +108,7 @@ class K2HelperGalleries
 			if (!$gallery->remove && $gallery->upload)
 			{
 				$source = $application->getCfg('tmp_path').'/'.$gallery->upload;
-
 				$target = 'media/k2/galleries/'.$itemId.'/'.$gallery->upload;
-
-				// Push the gallery to uploaded galleries array
-				$uploadedGalleries[] = $target;
 
 				// Check if the gallery is new
 				if (JFolder::exists($source))
@@ -136,7 +132,11 @@ class K2HelperGalleries
 						$session->set('k2.galleries', $temp);
 					}
 				}
+			}
 
+			if ($gallery->remove)
+			{
+				$removedGalleries[] = $gallery->upload;
 			}
 		}
 
@@ -175,7 +175,7 @@ class K2HelperGalleries
 		}
 		foreach ($folders as $folder)
 		{
-			if (!in_array($folder, $uploadedGalleries))
+			if (in_array($folder, $removedGalleries))
 			{
 				$files = $filesystem->listKeys($folder);
 				$images = isset($files['keys']) ? $files['keys'] : $files;
