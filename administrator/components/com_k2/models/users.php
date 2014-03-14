@@ -15,7 +15,7 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/images.php';
 
 class K2ModelUsers extends K2Model
 {
-	var $groups = null;
+	static $groups;
 
 	public function getRows()
 	{
@@ -505,9 +505,9 @@ class K2ModelUsers extends K2Model
 
 	public function getGroups()
 	{
-		if (!is_null($this->groups))
+		if (isset(self::$groups))
 		{
-			return $this->groups;
+			return self::$groups;
 		}
 
 		$db = $this->getDBO();
@@ -516,10 +516,7 @@ class K2ModelUsers extends K2Model
 		$query = $db->getQuery(true);
 
 		// Select statement
-		$query->select(array(
-			$db->quoteName('id'),
-			$db->quoteName('title')
-		));
+		$query->select(array($db->quoteName('id'), $db->quoteName('title')));
 
 		$query->from($db->quoteName('#__usergroups'));
 
@@ -527,7 +524,7 @@ class K2ModelUsers extends K2Model
 		$db->setQuery($query);
 
 		// Get the result
-		$this->groups = $db->loadObjectList('id');
+		self::$groups = $db->loadObjectList('id');
 
 		return $this->groups;
 	}
