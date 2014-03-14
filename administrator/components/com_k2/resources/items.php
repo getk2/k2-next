@@ -137,12 +137,6 @@ class K2Items extends K2Resource
 			$this->canSort = $user->authorise('k2.item.edit', 'com_k2');
 		}
 
-		// Media
-		$this->media = $this->getMedia();
-
-		// Galleries
-		$this->galleries = $this->getGalleries();
-
 		// Hits
 		$this->hits = (int)$this->hits;
 
@@ -158,30 +152,23 @@ class K2Items extends K2Resource
 			$this->endTime = JHtml::_('date', $this->end_date, 'H:i');
 		}
 
-		// Tags
-		$this->tags = $this->getTags();
-		$tagsValue = array();
-		foreach ($this->tags as $tag)
-		{
-			$tagsValue[] = $tag->name;
-		}
-		$this->tagsValue = implode(',', $tagsValue);
-
 		// Images
 		$this->images = $this->getImages();
 		$this->image = $this->getImage();
 
-		// Attachments
-		$this->attachments = $this->getAttachments();
-
 		// Author
 		$this->author = $this->getAuthor();
 
-		// Revisions
-		if ($this->canEdit)
-		{
-			$this->revisions = $this->getRevisions();
-		}
+		// Unset some properties to allow lazy loading
+		$this->_attachments = $this->attachments;
+		unset($this->attachments);
+		$this->_tags = $this->tags;
+		unset($this->tags);
+		$this->_media = $this->media;
+		unset($this->media);
+		$this->_galleries = $this->galleries;
+		unset($this->galleries);
+
 	}
 
 	public function getCategory()
@@ -207,7 +194,7 @@ class K2Items extends K2Resource
 	public function getTags()
 	{
 		$instances = array();
-		$tags = json_decode($this->tags);
+		$tags = json_decode($this->_tags);
 		if ($this->id && is_array($tags) && count($tags))
 		{
 			$tagIds = array();
@@ -286,10 +273,10 @@ class K2Items extends K2Resource
 		$galleries = array();
 
 		// Process only if value is set
-		if ($this->galleries)
+		if ($this->_galleries)
 		{
 			// Decode the value
-			$galleries = json_decode($this->galleries);
+			$galleries = json_decode($this->_galleries);
 
 			// Get params
 			$params = JComponentHelper::getParams('com_k2');
@@ -324,10 +311,10 @@ class K2Items extends K2Resource
 		$media = array();
 
 		// Process only if value is set
-		if ($this->media)
+		if ($this->_media)
 		{
 			// Decode value
-			$media = json_decode($this->media);
+			$media = json_decode($this->_media);
 
 			// Get params
 			$params = JComponentHelper::getParams('com_k2');
@@ -384,7 +371,7 @@ class K2Items extends K2Resource
 	public function getAttachments()
 	{
 		$attachments = array();
-		$attachmentsIds = json_decode($this->attachments);
+		$attachmentsIds = json_decode($this->_attachments);
 		if (is_array($attachmentsIds) && count($attachmentsIds))
 		{
 
@@ -530,6 +517,7 @@ class K2Items extends K2Resource
 			$model->setState('site', 1);
 			$model->setState('limit', 10);
 			$tagIds = array();
+			$this->tags = $this->getTags();
 			foreach ($this->tags as $tag)
 			{
 				$tagIds[] = $tag->id;

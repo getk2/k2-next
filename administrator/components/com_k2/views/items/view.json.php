@@ -238,4 +238,32 @@ class K2ViewItems extends K2View
 		K2Response::addBatchAction('language', 'K2_LANGUAGE', K2HelperHTML::language('language', '', 'K2_LEAVE_UNCHANGED'));
 	}
 
+	protected function prepareRow($row)
+	{
+		// Tags
+		$row->tags = $row->getTags();
+		$tagsValue = array();
+		foreach ($row->tags as $tag)
+		{
+			$tagsValue[] = $tag->name;
+		}
+		$row->tagsValue = implode(',', $tagsValue);
+
+		// Attachments
+		$row->attachments = $row->getAttachments();
+
+		// Revisions
+		if ($row->canEdit)
+		{
+			$row->revisions = $row->getRevisions();
+		}
+		
+		// Media
+		$row->media = $row->getMedia();
+
+		// Galleries
+		$row->galleries = $row->getGalleries();
+		
+	}
+
 }
