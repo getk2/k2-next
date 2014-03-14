@@ -72,11 +72,11 @@ class K2ModelComments extends K2Model
 		// Select statement
 		$query->select('COUNT(*)')->from($db->quoteName('#__k2_comments', 'comment'));
 
-		// Join with items
-		$query->leftJoin($db->quoteName('#__k2_items', 'item').' ON '.$db->quoteName('comment.itemId').' = '.$db->quoteName('item.id'));
-
-		// Join with categories
-		$query->leftJoin($db->quoteName('#__k2_categories', 'category').' ON '.$db->quoteName('category.id').' = '.$db->quoteName('item.catid'));
+		// Join with items if needed
+		if ($this->getState('filter.items'))
+		{
+			$query->leftJoin($db->quoteName('#__k2_items', 'item').' ON '.$db->quoteName('comment.itemId').' = '.$db->quoteName('item.id'));
+		}
 
 		// Set query conditions
 		$this->setQueryConditions($query);
