@@ -361,7 +361,6 @@ defined('_JEXEC') or die ;
   <?php if(count($this->item->galleries)): ?>
   <!-- Item image galleries -->
   <a name="itemImageGalleriesAnchor" id="itemImageGalleriesAnchor"></a>
-  
   <div class="itemImageGalleries">
   	<h3><?php echo JText::_('K2_IMAGE_GALLERIES'); ?></h3>
   	<?php foreach ($this->item->galleries as $gallery): ?>
@@ -370,34 +369,10 @@ defined('_JEXEC') or die ;
   		</div>
   	<?php endforeach; ?>
   </div>
-  
-
-
-  <?php endif; ?>
-
-  <?php if($this->params->get('tagItemNavigation') && !$this->print && ($this->item->next || $this->item->previous)): ?>
-  <!-- Item navigation -->
-  <div class="itemNavigation">
-  	<span class="itemNavigationTitle"><?php echo JText::_('K2_MORE_IN_THIS_CATEGORY'); ?></span>
-
-		<?php if($this->item->previous): ?>
-		<a class="itemPrevious" href="<?php echo $this->item->previous->link; ?>">
-			&laquo; <?php echo $this->item->previous->title; ?>
-		</a>
-		<?php endif; ?>
-
-		<?php if($this->item->next): ?>
-		<a class="itemNext" href="<?php echo $this->item->next->link; ?>">
-			<?php echo $this->item->next->title; ?> &raquo;
-		</a>
-		<?php endif; ?>
-
-  </div>
   <?php endif; ?>
 
   <!-- K2 Plugins: K2AfterDisplay -->
   <?php echo $this->item->events->K2AfterDisplay; ?>
-  
   
 
 <div class="clr"></div>

@@ -40,9 +40,9 @@ class K2Tags extends K2Resource
 	}
 
 	/**
-	 * Gets an item instance.
+	 * Gets a tag instance.
 	 *
-	 * @param integer $id	The id of the item to get.
+	 * @param integer $id	The id of the tag to get.
 	 *
 	 * @return K2Tag The tag object.
 	 */
@@ -57,6 +57,18 @@ class K2Tags extends K2Resource
 			self::$instances[$id] = $item;
 		}
 		return self::$instances[$id];
+	}
+	
+	/**
+	 * Check if an instance is loaded.
+	 *
+	 * @param integer $id	The id of the tag to get.
+	 *
+	 * @return boolean 		Instance loaded flag.
+	 */
+	public static function loaded($id)
+	{
+		return isset(self::$instances[$id]);
 	}
 
 	/**

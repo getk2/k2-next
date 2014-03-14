@@ -210,20 +210,21 @@ class K2Items extends K2Resource
 		$tags = json_decode($this->tags);
 		if ($this->id && is_array($tags) && count($tags))
 		{
-
-			/*foreach ($tags as $tag)
-			 {
-			 $instance = K2Tags::getInstance($tag->id);
-			 if ($instance->state)
-			 {
-			 $instances[] = $instance;
-			 }
-			 }*/
-
 			$tagIds = array();
 			foreach ($tags as $tag)
 			{
-				$tagIds[] = (int)$tag->id;
+				if (K2Tags::loaded($tag->id))
+				{
+					$instance = K2Tags::getInstance($tag->id);
+					if ($instance->state)
+					{
+						$instances[] = $instance;
+					}
+				}
+				else
+				{
+					$tagIds[] = (int)$tag->id;
+				}
 			}
 			$application = JFactory::getApplication();
 			$model = K2Model::getInstance('Tags');
@@ -232,9 +233,10 @@ class K2Items extends K2Resource
 				$model->setState('state', 1);
 			}
 			$model->setState('id', $tagIds);
-			$instances = $model->getRows();
+			$rows = $model->getRows();
+			$tags = array_merge($instances, $rows);
 		}
-		return $instances;
+		return $tags;
 	}
 
 	public function getAuthor()
