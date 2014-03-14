@@ -153,7 +153,7 @@ class ModK2ToolsHelper
 					// Handle depending on matches
 					if ($matchItem)
 					{
-						$breadcrumbs->title =  end($pathwayItems)->name;
+						$breadcrumbs->title =   end($pathwayItems)->name;
 						foreach ($pathwayItems as $pathwayItem)
 						{
 							$breadcrumbs->path[] = $pathwayItem;
@@ -187,7 +187,7 @@ class ModK2ToolsHelper
 					// Handle depending on matches
 					if ($matchCategory)
 					{
-						$breadcrumbs->title =  end($pathwayItems)->name;
+						$breadcrumbs->title =   end($pathwayItems)->name;
 						foreach ($pathwayItems as $pathwayItem)
 						{
 							$breadcrumbs->path[] = $pathwayItem;
@@ -210,7 +210,7 @@ class ModK2ToolsHelper
 		else
 		{
 
-			$breadcrumbs->title =  end($pathwayItems)->name;
+			$breadcrumbs->title = count($pathwayItems) ?  end($pathwayItems)->name : '';
 			foreach ($pathwayItems as $pathwayItem)
 			{
 				$pathwayItem->title = $pathwayItem->name;
