@@ -86,6 +86,18 @@ class Com_K2InstallerScript
 					}
 				}
 				
+				// Rename component files to get rid of files we don't need
+				if(JFolder::exists(JPATH_SITE.'/components/com_k2'));
+				{
+					JFolder::move(JPATH_SITE.'/components/com_k2', JPATH_SITE.'/components/com_k2_v2');
+					JFolder::create(JPATH_SITE.'/components/com_k2');
+					JFolder::move(JPATH_SITE.'/components/com_k2_v2/templates', JPATH_SITE.'/components/com_k2/templates');
+				}
+				if(JFolder::exists(JPATH_ADMINISTRATOR.'/components/com_k2'));
+				{
+					JFolder::move(JPATH_ADMINISTRATOR.'/components/com_k2', JPATH_ADMINISTRATOR.'/components/com_k2_v2');
+				}
+
 				// Set a flag that this is an upgrade
 				$this->upgrade = true;
 			}
