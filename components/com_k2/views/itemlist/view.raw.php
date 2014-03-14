@@ -38,6 +38,13 @@ class K2ViewItemlist extends K2View
 			return JError::raiseError(404, JText::_('K2_NOT_FOUND'));
 		}
 
+		// Load the comments counters in a single query for all items
+		$params = JComponentHelper::getParams('com_k2');
+		if ($params->get('comments'))
+		{
+			K2Items::countComments($this->items);
+		}
+
 		// Plugins
 		foreach ($this->items as $item)
 		{

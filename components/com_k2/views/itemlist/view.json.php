@@ -44,6 +44,13 @@ class K2ViewItemlist extends K2View
 		$response->site->name = $application->getCfg('sitename');
 		$response->items = array();
 
+		// Load the comments counters in a single query for all items
+		$params = JComponentHelper::getParams('com_k2');
+		if ($params->get('comments'))
+		{
+			K2Items::countComments($this->items);
+		}
+
 		// Add items to JSON
 		foreach ($this->items as $item)
 		{

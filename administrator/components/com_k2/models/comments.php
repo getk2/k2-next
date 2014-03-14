@@ -94,13 +94,53 @@ class K2ModelComments extends K2Model
 		return (int)$total;
 	}
 
+	public function batchCountRows()
+	{
+		// Get database
+		$db = $this->getDBO();
+
+		// Get query
+		$query = $db->getQuery(true);
+
+		// Select statement
+		$query->select($db->quoteName('itemId'));
+		$query->select('COUNT(*) AS '.$db->quoteName('numOfComments'));
+		$query->from($db->quoteName('#__k2_comments', 'comment'));
+
+		// Set query conditions
+		$this->setQueryConditions($query);
+
+		// Group
+		$query->group($db->quoteName('itemId'));
+
+		// Hook for plugins
+		$this->onBeforeSetQuery($query, 'com_k2.comments.count');
+
+		// Set the query
+		$db->setQuery($query);
+
+		// Get the result
+		$rows = $db->loadObjectList();
+
+		// Return the result
+		return $rows;
+	}
+
 	private function setQueryConditions(&$query)
 	{
 		$db = $this->getDBO();
 
-		if ($this->getState('itemId'))
+		if ($itemId = $this->getState('itemId'))
 		{
-			$query->where($db->quoteName('comment.itemId').' = '.(int)$this->getState('itemId'));
+			if (is_array($itemId))
+			{
+				$query->where($db->quoteName('comment.itemId').' IN ('.implode(',', $itemId).')');
+			}
+			else
+			{
+				$query->where($db->quoteName('comment.itemId').' = '.(int)$itemId);
+			}
+
 		}
 		if (is_numeric($this->getState('state')))
 		{

@@ -457,6 +457,36 @@ class K2Items extends K2Resource
 		return $result;
 	}
 
+	public static function countComments(&$items)
+	{
+		$itemIds = array();
+		foreach ($items as $item)
+		{
+			$itemIds[] = $item->id;
+		}
+		if (count($itemIds))
+		{
+			$model = K2Model::getInstance('Comments');
+			$model->setState('itemId', $itemIds);
+			$model->setState('state', 1);
+			$rows = $model->batchCountRows();
+		}
+		foreach ($items as $item)
+		{
+			foreach ($rows as $row)
+			{
+				if ($item->id == $row->itemId)
+				{
+					$item->numOfComments = $row->numOfComments;
+				}
+			}
+			if (!isset($item->numOfComments))
+			{
+				$item->numOfComments = 0;
+			}
+		}
+	}
+
 	public function getPrevious()
 	{
 		if ($this->ordering == 1)

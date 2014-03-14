@@ -19,6 +19,9 @@ class ModK2ContentHelper
 {
 	public static function getItems($params)
 	{
+		// Component params
+		$componentParams = JComponentHelper::getParams('com_k2');
+
 		// Get model
 		$model = K2Model::getInstance('Items');
 
@@ -114,7 +117,7 @@ class ModK2ContentHelper
 		foreach ($items as $item)
 		{
 			// Plugins
-			$item->events  = $item->getEvents('mod_k2_content', $params, 0, $params->get('k2Plugins'), $params->get('jPlugins'));
+			$item->events = $item->getEvents('mod_k2_content', $params, 0, $params->get('k2Plugins'), $params->get('jPlugins'));
 
 			// Introtext word limit
 			if ($params->get('itemIntroTextWordLimit'))
@@ -126,10 +129,15 @@ class ModK2ContentHelper
 			$item->image = $item->getImage($params->get('itemImgSize'));
 		}
 
+		// Load the comments counters in a single query for all items
+		if ($params->get('itemCommentsCounter') && $componentParams->get('comments'))
+		{
+			K2Items::countComments($items);
+		}
+
 		// Set the avatar width if it's inherited from component settings
 		if ($params->get('itemAuthorAvatarWidthSelect') == 'custom')
 		{
-			$componentParams = JComponentHelper::getParams('com_k2');
 			$params->set('itemAuthorAvatarWidth', $componentParams->get('userImageWidth'));
 		}
 
