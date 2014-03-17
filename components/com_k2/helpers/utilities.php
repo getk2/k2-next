@@ -102,4 +102,9 @@ class K2HelperUtilities
 
 	}
 
+	public static function cleanHtml($text)
+	{
+		return htmlspecialchars(strip_tags($text), ENT_QUOTES, 'UTF-8');
+	}
+
 }

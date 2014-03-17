@@ -86,6 +86,9 @@ class K2Categories extends K2Resource
 		// Link
 		$this->link = $this->getLink();
 
+		// Feed
+		$this->feedLink = $this->getFeedLink();
+
 		// Permisisons
 		$user = JFactory::getUser();
 		if ($user->guest)
@@ -113,6 +116,11 @@ class K2Categories extends K2Resource
 	public function getLink()
 	{
 		return JRoute::_(K2HelperRoute::getCategoryRoute($this->id.':'.$this->alias));
+	}
+
+	public function getFeedLink()
+	{
+		return JRoute::_(K2HelperRoute::getCategoryRoute($this->id.':'.$this->alias).'&format=feed');
 	}
 
 	public function getImage()
@@ -148,7 +156,7 @@ class K2Categories extends K2Resource
 		$numOfItems = $model->countRows();
 		return $numOfItems;
 	}
-	
+
 	public function getExtraFields()
 	{
 		$extraFields = array();
@@ -198,7 +206,7 @@ class K2Categories extends K2Resource
 		{
 			// Import K2 plugins
 			JPluginHelper::importPlugin('k2');
-			
+
 			$dispatcher->trigger('onK2PluginInit', array($this));
 
 			$results = $dispatcher->trigger('onK2CategoryDisplay', array(&$this, &$params, $offset));

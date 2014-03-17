@@ -131,7 +131,7 @@ class K2ModelCategories extends K2Model
 			if (is_array($id))
 			{
 				JArrayHelper::toInteger($id);
-				$query->where($db->quoteName('category.id').' IN '.$id);
+				$query->where($db->quoteName('category.id').' IN ('.implode(',', $id).')');
 			}
 			else
 			{
