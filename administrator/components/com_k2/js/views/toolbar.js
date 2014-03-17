@@ -16,7 +16,7 @@ define(['marionette', 'text!layouts/toolbar.html', 'dispatcher', 'widgets/widget
 		},
 
 		initialize : function() {
-			
+
 			// Model
 			this.model = new Backbone.Model({
 				toolbar : [],
@@ -52,8 +52,10 @@ define(['marionette', 'text!layouts/toolbar.html', 'dispatcher', 'widgets/widget
 
 		remove : function(event) {
 			event.preventDefault();
-			var rows = jQuery('input[data-action="toggle"]:checked').serializeArray();
-			K2Dispatcher.trigger('app:controller:batchDelete', rows);
+			if (confirm(l('K2_ARE_YOU_SURE'))) {
+				var rows = jQuery('input[data-action="toggle"]:checked').serializeArray();
+				K2Dispatcher.trigger('app:controller:batchDelete', rows);
+			}
 		},
 
 		setState : function(event) {
