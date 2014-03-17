@@ -17,6 +17,44 @@ defined('_JEXEC') or die ;
 class PlgSystemK2 extends JPlugin
 {
 
+	public function onAfterInitialise()
+	{
+		// Get user
+		$user = JFactory::getUser();
+
+		// Load Joomla! classes
+		jimport('joomla.filesystem.file');
+
+		// Load the K2 classes
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/plugin.php';
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/tables/table.php';
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/model.php';
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/attachments.php';
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/categories.php';
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/comments.php';
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/extrafields.php';
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/extrafieldsgroups.php';
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/items.php';
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/tags.php';
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/users.php';
+		K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
+
+		// Load K2 language
+		$language = JFactory::getLanguage();
+		$language->load('com_k2');
+
+		// Use K2 to make Joomla! Varnish-friendly. For more checkout: https://snipt.net/fevangelou/the-perfect-varnish-configuration-for-joomla-websites/
+		if (!$user->guest)
+		{
+			JResponse::setHeader('X-Logged-In', 'True', true);
+		}
+		else
+		{
+			JResponse::setHeader('X-Logged-In', 'False', true);
+		}
+
+	}
+
 	public function onAfterRoute()
 	{
 		// Get application
@@ -39,7 +77,7 @@ class PlgSystemK2 extends JPlugin
 			$application->redirect('index.php?option=com_k2#settings');
 		}
 
-		// Front-end
+		// Front-end only check
 		if ($application->isSite())
 		{
 			// Enforce system template for editing
@@ -48,9 +86,40 @@ class PlgSystemK2 extends JPlugin
 				$application->input->set('template', 'system');
 			}
 
-			// jQuery and K2 JS loading
-			JHtml::_('jquery.framework');
-			$document->addScript(JURI::root(true).'/components/com_k2/js/site.k2.js?v3.0.0&amp;sitepath='.JURI::root(true).'/');
+			// Load head data if document type is HTML
+			if ($document->getType() == 'html')
+			{
+				// Javascript files
+				JHtml::_('jquery.framework');
+				$document->addScript(JURI::root(true).'/components/com_k2/js/site.k2.js?v3.0.0&amp;sitepath='.JURI::root(true).'/');
+
+				// CSS files. Check first that K2 CSS is enabled in component settings
+				if ($params->get('enable_css'))
+				{
+					// Load k2.css. Check for overrides in template's css directory
+					if (JFile::exists(JPATH_SITE.'/templates/'.$application->getTemplate().'/css/k2.css'))
+					{
+						$document->addStyleSheet(JURI::root(true).'/templates/'.$application->getTemplate().'/css/k2.css');
+					}
+					else
+					{
+						$document->addStyleSheet(JURI::root(true).'/components/com_k2/css/site.k2.css');
+					}
+
+					// Load k2.print.css if we are in print mode. Check for overrides in template's css directory
+					if ($application->input->get('print', false, 'bool'))
+					{
+						if (JFile::exists(JPATH_SITE.'/templates/'.$application->getTemplate().'/css/k2.print.css'))
+						{
+							$document->addStyleSheet(JURI::root(true).'/templates/'.$application->getTemplate().'/css/k2.print.css', 'text/css', 'print');
+						}
+						else
+						{
+							$document->addStyleSheet(JURI::root(true).'/components/com_k2/css/k2.print.css', 'text/css', 'print');
+						}
+					}
+				}
+			}
 
 			// Google search integration
 			if ($view == 'itemlist' && $task == 'search' && $params->get('googleSearch'))
@@ -85,37 +154,6 @@ class PlgSystemK2 extends JPlugin
 				//]]>
 	 			';
 				$document->addScriptDeclaration($js);
-			}
-
-			// Add base CSS
-			if ($document->getType() == 'html' && $params->get('enable_css'))
-			{
-				// Import filesystem
-				jimport('joomla.filesystem.file');
-
-				// k2.css
-				if (JFile::exists(JPATH_SITE.'/templates/'.$application->getTemplate().'/css/k2.css'))
-				{
-					$document->addStyleSheet(JURI::root(true).'/templates/'.$application->getTemplate().'/css/k2.css');
-				}
-				else
-				{
-					$document->addStyleSheet(JURI::root(true).'/components/com_k2/css/site.k2.css');
-				}
-
-				// k2.print.css
-				$print = $application->input->get('print', false, 'bool');
-				if ($print)
-				{
-					if (JFile::exists(JPATH_SITE.'/templates/'.$application->getTemplate().'/css/k2.print.css'))
-					{
-						$document->addStyleSheet(JURI::root(true).'/templates/'.$application->getTemplate().'/css/k2.print.css', 'text/css', 'print');
-					}
-					else
-					{
-						$document->addStyleSheet(JURI::root(true).'/components/com_k2/css/k2.print.css', 'text/css', 'print');
-					}
-				}
 			}
 		}
 	}
@@ -320,41 +358,6 @@ class PlgSystemK2 extends JPlugin
 
 			}
 
-		}
-
-	}
-
-	public function onAfterInitialise()
-	{
-		// Get user
-		$user = JFactory::getUser();
-
-		// Load the K2 classes
-		require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/plugin.php';
-		require_once JPATH_ADMINISTRATOR.'/components/com_k2/tables/table.php';
-		require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/model.php';
-		require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/attachments.php';
-		require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/categories.php';
-		require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/comments.php';
-		require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/extrafields.php';
-		require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/extrafieldsgroups.php';
-		require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/items.php';
-		require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/tags.php';
-		require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/users.php';
-		K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
-
-		// Load K2 language
-		$language = JFactory::getLanguage();
-		$language->load('com_k2');
-
-		// Use K2 to make Joomla! Varnish-friendly. For more checkout: https://snipt.net/fevangelou/the-perfect-varnish-configuration-for-joomla-websites/
-		if (!$user->guest)
-		{
-			JResponse::setHeader('X-Logged-In', 'True', true);
-		}
-		else
-		{
-			JResponse::setHeader('X-Logged-In', 'False', true);
 		}
 
 	}
