@@ -21,6 +21,7 @@ class JFormFieldK2ImageSizes extends JFormField
 		// Get the rendering mode.
 		$this->mode = (string)$this->element['k2mode'];
 		$this->inheritance = (string)$this->element['k2inheritance'];
+		$this->none = (string)$this->element['k2none'];
 
 		// Initialize output variable
 		$output = '';
@@ -119,6 +120,13 @@ class JFormFieldK2ImageSizes extends JFormField
 		{
 			$params = JComponentHelper::getParams('com_k2');
 			$sizes = (array)$params->get('imageSizes');
+			if ($this->none)
+			{
+				$option = new stdClass;
+				$option->id = '';
+				$option->name = JText::_('K2_NONE');
+				array_unshift($sizes, $option);
+			}
 			if ($this->inheritance)
 			{
 				$option = new stdClass;

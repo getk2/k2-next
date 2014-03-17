@@ -251,7 +251,11 @@
 		<!-- ######################### Social Settings ######################### -->
 		<field menu="hide" name="socialButtonCode" type="textarea" default="" filter="raw" label="K2_SOCIAL_BUTTON_CODE" description="K2_PASTE_HTML_CODE_HERE_TO_INTEGRATE_SERVICES_LIKE_ADD_THIS_OR_SHARE_THIS_IN_THE_ITEM_PAGE" rows="8" cols="40" />
 		<field menu="hide" name="twitterUsername" type="text" default="" label="K2_YOUR_TWITTER_USERNAME" description="K2_ENTER_YOUR_TWITTER_USERNAME_ACCOUNT_TO_ENABLE_TWITTER_BUTTON_PERSONALIZATION" />
-		<field menu="hide" name="facebookImage" type="k2ImageSizes" label="K2_FACEBOOK_IMAGE_SIZE" description="K2_FACEBOOK_IMAGE_SIZE_DESC" />
+		<field menu="hide" name="facebookMetadata" type="list" default="1" label="K2_ENABLE_FACEBOOK_METADATA_TAGS" description="">
+			<option value="0">K2_DISABLED</option>
+			<option value="1">K2_ENABLED</option>
+		</field>
+		<field menu="hide" name="facebookMetadataImageSize" type="k2ImageSizes" label="K2_FACEBOOK_IMAGE_SIZE" description="K2_FACEBOOK_IMAGE_SIZE_DESC" />
 	</fieldset>
 	<fieldset name="COM_K2_COMMENTS_OPTIONS" label="K2_COMMENTS" addfieldpath="/administrator/components/com_k2/fields">
 		<!-- ######################### Comments ######################### -->
