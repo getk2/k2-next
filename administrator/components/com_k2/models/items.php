@@ -105,6 +105,38 @@ class K2ModelItems extends K2Model
 		return (int)$total;
 	}
 
+	public function batchCountRows()
+	{
+		// Get database
+		$db = $this->getDBO();
+
+		// Get query
+		$query = $db->getQuery(true);
+
+		// Select statement
+		$query->select($db->quoteName('catid'));
+		$query->select('COUNT(*) AS '.$db->quoteName('numOfItems'));
+		$query->from($db->quoteName('#__k2_items', 'item'));
+
+		// Set query conditions
+		$this->setQueryConditions($query);
+
+		// Group
+		$query->group($db->quoteName('catid'));
+
+		// Hook for plugins
+		$this->onBeforeSetQuery($query, 'com_k2.categories.count');
+
+		// Set the query
+		$db->setQuery($query);
+
+		// Get the result
+		$rows = $db->loadObjectList();
+
+		// Return the result
+		return $rows;
+	}
+
 	private function setQueryConditions(&$query)
 	{
 		$db = $this->getDBO();

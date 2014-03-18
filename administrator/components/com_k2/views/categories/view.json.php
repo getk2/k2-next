@@ -201,4 +201,10 @@ class K2ViewCategories extends K2View
 		K2Response::addBatchAction('language', 'K2_LANGUAGE', K2HelperHTML::language('language', '', 'K2_LEAVE_UNCHANGED'));
 	}
 
+	protected function prepareRows($rows)
+	{
+		// Load items counter in just two queries
+		K2Categories::countItems($rows);
+	}
+
 }

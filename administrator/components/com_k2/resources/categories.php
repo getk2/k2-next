@@ -157,6 +157,50 @@ class K2Categories extends K2Resource
 		return $numOfItems;
 	}
 
+	public static function countItems(&$categories)
+	{
+		$categoryIds = array();
+		foreach ($categories as $category)
+		{
+			$categoryIds[] = $category->id;
+		}
+		if (count($categoryIds))
+		{
+			$model = K2Model::getInstance('Items');
+			$model->setState('catid', $categoryIds);
+
+			$total = $model->batchCountRows();
+
+			$model->setState('state', -1);
+			$trashed = $model->batchCountRows();
+		}
+		foreach ($categories as $category)
+		{
+			foreach ($total as $row)
+			{
+				if ($category->id == $row->catid)
+				{
+					$category->totalItems = $row->numOfItems;
+				}
+			}
+			foreach ($trashed as $row)
+			{
+				if ($category->id == $row->catid)
+				{
+					$category->trashedItems = $row->numOfItems;
+				}
+			}
+			if (!isset($category->totalItems))
+			{
+				$category->totalItems = 0;
+			}
+			if (!isset($category->trashedItems))
+			{
+				$category->trashedItems = 0;
+			}
+		}
+	}
+
 	public function getExtraFields()
 	{
 		$extraFields = array();
