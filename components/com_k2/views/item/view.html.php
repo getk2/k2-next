@@ -89,7 +89,11 @@ class K2ViewItem extends K2View
 			$this->document->setMetaData('og:type', 'article');
 			$this->document->setMetaData('og:description', $this->document->getDescription());
 			$facebookImage = $this->item->getImage($this->params->get('facebookMetadataImageSize'));
-			$this->document->setMetaData('og:image', $facebookImage->url);
+			if ($facebookImage)
+			{
+				$this->document->setMetaData('og:image', $facebookImage->url);
+			}
+
 		}
 
 		// Set the layout
