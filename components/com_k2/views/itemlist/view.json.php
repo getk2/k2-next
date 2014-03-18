@@ -193,16 +193,24 @@ class K2ViewItemlist extends K2View
 		$application = JFactory::getApplication();
 
 		// Get input
-		$search = $application->input->get('searchword', '', 'string');
+		$search = trim($application->input->get('searchword', '', 'string'));
 		$limit = $this->params->get('feedLimit', 10, 'int');
 
 		// Get items
-		$model = K2Model::getInstance('Items');
-		$model->setState('site', true);
-		$model->setState('search', $search);
-		$model->setState('limit', $limit);
-		$model->setState('limitstart', 0);
-		$this->items = $model->getRows();
+		if ($search)
+		{
+			$model = K2Model::getInstance('Items');
+			$model->setState('site', true);
+			$model->setState('search', $search);
+			$model->setState('limit', $limit);
+			$model->setState('limitstart', 0);
+			$this->items = $model->getRows();
+		}
+		else
+		{
+			$this->items = array();
+		}
+
 	}
 
 	private function module()

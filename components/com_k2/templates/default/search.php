@@ -33,12 +33,16 @@ defined('_JEXEC') or die; ?>
 		<div class="clr"></div>
 	</div>
 	<?php endif; ?>
-	
+		
 	<?php if(count($this->items)): ?>
 	<div class="itemList">
 		<?php foreach($this->items as $item): ?>
 			<?php $this->item = $item; echo $this->loadTemplate('item'); ?>
 		<?php endforeach; ?>
+	</div>
+	<?php else: ?>
+	<div id="genericItemListNothingFound">
+		<p><?php echo JText::_('K2_NO_RESULTS_FOUND'); ?></p>
 	</div>
 	<?php endif; ?>	
 	

@@ -240,7 +240,7 @@ class K2ViewItemlist extends K2View
 		$this->feedLinkToHead = $this->params->get('genericFeedLink');
 
 		// Set the layout
-		$this->setLayout('search');
+		$this->setLayout('date');
 
 	}
 
@@ -250,26 +250,36 @@ class K2ViewItemlist extends K2View
 		$application = JFactory::getApplication();
 
 		// Get input
-		$search = $application->input->get('searchword', '', 'string');
+		$search = trim($application->input->get('searchword', '', 'string'));
 		$offset = $application->input->get('limitstart', 0, 'int');
 		$limit = $application->input->get('limit', 10, 'int');
 
 		// Get items
-		$model = K2Model::getInstance('Items');
-		$model->setState('site', true);
-		$model->setState('search', $search);
-		$model->setState('limit', $limit);
-		$model->setState('limitstart', $offset);
-		$this->items = $model->getRows();
+		if ($search)
+		{
+			$model = K2Model::getInstance('Items');
+			$model->setState('site', true);
+			$model->setState('search', $search);
+			$model->setState('limit', $limit);
+			$model->setState('limitstart', $offset);
+			$this->items = $model->getRows();
 
-		// Count items
-		$this->total = $model->countRows();
+			// Count items
+			$this->total = $model->countRows();
 
-		// Set the flag for sending feed links to head
-		$this->feedLinkToHead = $this->params->get('genericFeedLink');
+			// Set the flag for sending feed links to head
+			$this->feedLinkToHead = $this->params->get('genericFeedLink');
+		}
+		else
+		{
+			$this->items = array();
+			$this->total = 0;
+			$this->feedLinkToHead = false;
+			$this->params->set('genericFeedIcon', false);
+		}
 
 		// Set the layout
-		$this->setLayout('date');
+		$this->setLayout('search');
 
 	}
 

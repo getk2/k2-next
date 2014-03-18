@@ -191,7 +191,7 @@ class K2Users extends K2Resource
 	public function checkSiteAccess()
 	{
 		// State check
-		if ((int)$this->block > 0)
+		if ((int)$this->block > 0 || (int)$this->id < 1)
 		{
 			JError::raiseError(404, JText::_('K2_NOT_FOUND'));
 			return false;
