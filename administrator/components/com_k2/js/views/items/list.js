@@ -130,7 +130,7 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 					handle : '[data-role="ordering-handle"]',
 					onDrop : function(item, container, _super) {
 						var id = item.find('input[name="ordering[]"]').data('id');
-						var catid = item.data('id');
+						var catid = item.data('category');
 						var parent = item.parent();
 						var newCategory = parent.data('category');
 						if (catid != newCategory) {
