@@ -76,165 +76,32 @@ class K2ViewItemlist extends K2View
 
 	private function category()
 	{
-		// Get application
-		$application = JFactory::getApplication();
-
-		// Get input
-		$id = $application->input->get('id', 0, 'int');
-		$categories = $this->params->get('categories');
-		$limit = $this->params->get('feedLimit', 10, 'int');
-
-		// Get model
-		$model = K2Model::getInstance('Items');
-		$model->setState('site', true);
-
-		// Single category
-		if ($id)
-		{
-			// Get category
-			$this->category = K2Categories::getInstance($id);
-
-			// Check access
-			$this->category->checkSiteAccess();
-
-			// Set model state
-			$model->setState('category', $id);
-
-		}
-		// Multiple categories from menu item parameters
-		else if ($categories)
-		{
-			$model->setState('category.filter', $categories);
-		}
-
-		// @TODO Apply menu settings. Since they will be common all tasks we need to wait
-
-		// Get items
-		$model->setState('limit', $limit);
-		$model->setState('limitstart', 0);
-		$this->items = $model->getRows();
+		$this->getCategoryItems();
 	}
 
 	private function user()
 	{
-		// Get application
-		$application = JFactory::getApplication();
-
-		// Get input
-		$id = $application->input->get('id', 0, 'int');
-		$limit = $this->params->get('feedLimit', 10, 'int');
-
-		// Get user
-		$this->author = K2Users::getInstance($id);
-
-		// Check access
-		$this->author->checkSiteAccess();
-
-		// Get items
-		$model = K2Model::getInstance('Items');
-		$model->setState('site', true);
-		$model->setState('author', $id);
-		$model->setState('limit', $limit);
-		$model->setState('limitstart', 0);
-		$this->items = $model->getRows();
+		$this->getUserItems();
 	}
 
 	private function tag()
 	{
-		// Get application
-		$application = JFactory::getApplication();
-
-		// Get input
-		$id = $application->input->get('id', 0, 'int');
-		$limit = $this->params->get('feedLimit', 10, 'int');
-
-		// Get tag
-		$this->tag = K2Tags::getInstance($id);
-
-		// Check access and publishing state
-		$this->tag->checkSiteAccess();
-
-		// Get items
-		$model = K2Model::getInstance('Items');
-		$model->setState('site', true);
-		$model->setState('tag', $id);
-		$model->setState('limit', $limit);
-		$model->setState('limitstart', 0);
-		$this->items = $model->getRows();
+		$this->getTagItems();
 	}
 
 	private function date()
 	{
-		// Get application
-		$application = JFactory::getApplication();
-
-		// Get input
-		$year = $application->input->get('year', 0, 'int');
-		$month = $application->input->get('month', 0, 'int');
-		$day = $application->input->get('day', 0, 'int');
-		$category = $application->input->get('category', 0, 'int');
-		$limit = $this->params->get('feedLimit', 10, 'int');
-
-		// Get items
-		$model = K2Model::getInstance('Items');
-		$model->setState('site', true);
-		$model->setState('year', $year);
-		$model->setState('month', $month);
-		$model->setState('day', $day);
-		$model->setState('category', $category);
-		$model->setState('limit', $limit);
-		$model->setState('limitstart', 0);
-		$this->items = $model->getRows();
+		$this->getDateItems();
 	}
 
 	private function search()
 	{
-		// Get application
-		$application = JFactory::getApplication();
-
-		// Get input
-		$search = trim($application->input->get('searchword', '', 'string'));
-		$limit = $this->params->get('feedLimit', 10, 'int');
-
-		// Get items
-		if ($search)
-		{
-			$model = K2Model::getInstance('Items');
-			$model->setState('site', true);
-			$model->setState('search', $search);
-			$model->setState('limit', $limit);
-			$model->setState('limitstart', 0);
-			$this->items = $model->getRows();
-		}
-		else
-		{
-			$this->items = array();
-		}
-
+		$this->getSearchItems();
 	}
 
 	private function module()
 	{
-		// Import module helper
-		jimport('joomla.application.module.helper');
-
-		// Get application
-		$application = JFactory::getApplication();
-
-		// Get input
-		$id = $application->input->get('id', 0, 'int');
-		$offset = $application->input->get('offset', 0, 'int');
-		$limit = $application->input->get('limit', 10, 'int');
-
-		if ($id)
-		{
-			$module = K2HelperUtilities::getModule($id);
-			if ($module)
-			{
-				require_once JPATH_SITE.'/modules/mod_k2_content/helper.php';
-				$this->items = ModK2ContentHelper::getItems($module->params);
-			}
-		}
+		$this->getModuleItems();
 	}
 
 }

@@ -62,7 +62,7 @@ class K2Categories extends K2Resource
 				$model->setState('alias', $id);
 			}
 			$item = $model->getRow();
-			self::$instances[$item->id] = $item;
+			self::$instances[$id] = $item;
 			self::$instances[$item->alias] = $item;
 		}
 		return self::$instances[$id];

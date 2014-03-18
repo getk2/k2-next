@@ -18,6 +18,7 @@ class K2View extends JViewLegacy
 {
 	protected $isActive = true;
 	protected $feedLinkToHead = false;
+	protected $type = 'html';
 
 	public function __construct($config = array())
 	{
@@ -42,8 +43,11 @@ class K2View extends JViewLegacy
 		// Get document
 		$document = JFactory::getDocument();
 
+		// Set view type
+		$this->type = $document->getType();
+
 		// Add CSS
-		if ($document->getType() == 'html')
+		if ($this->type == 'html')
 		{
 			$document->addStyleSheet(JURI::root(true).'/components/com_k2/css/site.k2.css');
 			JHtml::_('jquery.framework');
@@ -197,7 +201,7 @@ class K2View extends JViewLegacy
 			{
 				$description = $resource->description;
 			}
-			if(isset($description))
+			if (isset($description))
 			{
 				$description = strip_tags($description);
 				$description = K2HelperUtilities::characterLimit($description, $params->get('metaDescLimit', 150));
@@ -370,6 +374,261 @@ class K2View extends JViewLegacy
 
 		// Return feed item
 		return $entry;
+	}
+
+	protected function getCategoryItems($count = false)
+	{
+		// Get application
+		$application = JFactory::getApplication();
+
+		// Get input
+		$id = $application->input->get('id', 0, 'int');
+		$categories = $this->params->get('categories');
+
+		// Determine offset and limit based on document type
+		if ($this->type == 'html' || $this->type == 'raw')
+		{
+			$offset = $application->input->get('limitstart', 0, 'int');
+			$limit = $application->input->get('limit', 10, 'int');
+		}
+		else
+		{
+			$offset = 0;
+			$this->params->get('feedLimit', 10, 'int');
+		}
+
+		// Get model
+		$model = K2Model::getInstance('Items');
+		$model->setState('site', true);
+
+		// Single category
+		if ($id)
+		{
+			// Get category
+			$this->category = K2Categories::getInstance($id);
+
+			// Check access
+			$this->category->checkSiteAccess();
+
+			// Set model state
+			$model->setState('category', $id);
+
+		}
+		// Multiple categories from menu item parameters
+		else if ($categories)
+		{
+			$model->setState('category.filter', $categories);
+		}
+
+		// @TODO Apply menu settings. Since they will be common all tasks we need to wait
+
+		// Get items
+		$model->setState('limit', $limit);
+		$model->setState('limitstart', $offset);
+		$this->items = $model->getRows();
+
+		// Count items
+		if ($count)
+		{
+			$this->total = $model->countRows();
+		}
+
+	}
+
+	protected function getUserItems($count = false)
+	{
+		// Get application
+		$application = JFactory::getApplication();
+
+		// Get input
+		$id = $application->input->get('id', 0, 'int');
+
+		// Determine offset and limit based on document type
+		if ($this->type == 'html' || $this->type == 'raw')
+		{
+			$offset = $application->input->get('limitstart', 0, 'int');
+			$limit = $application->input->get('limit', 10, 'int');
+		}
+		else
+		{
+			$offset = 0;
+			$this->params->get('feedLimit', 10, 'int');
+		}
+
+		// Get user
+		$this->author = K2Users::getInstance($id);
+
+		// Check access
+		$this->author->checkSiteAccess();
+
+		// @TODO Apply menu settings. Since they will be common all tasks we need to wait
+
+		// Get items
+		$model = K2Model::getInstance('Items');
+		$model->setState('site', true);
+		$model->setState('author', $id);
+		$model->setState('limit', $limit);
+		$model->setState('limitstart', $offset);
+		$this->items = $model->getRows();
+
+		// Count items
+		if ($count)
+		{
+			$this->total = $model->countRows();
+		}
+
+	}
+
+	protected function getTagItems($count = false)
+	{
+		// Get application
+		$application = JFactory::getApplication();
+
+		// Get input
+		$id = $application->input->get('id', 0, 'int');
+
+		// Determine offset and limit based on document type
+		if ($this->type == 'html' || $this->type == 'raw')
+		{
+			$offset = $application->input->get('limitstart', 0, 'int');
+			$limit = $application->input->get('limit', 10, 'int');
+		}
+		else
+		{
+			$offset = 0;
+			$this->params->get('feedLimit', 10, 'int');
+		}
+
+		// Get tag
+		$this->tag = K2Tags::getInstance($id);
+
+		// Check access and publishing state
+		$this->tag->checkSiteAccess();
+
+		// @TODO Apply menu settings. Since they will be common all tasks we need to wait
+
+		// Get items
+		$model = K2Model::getInstance('Items');
+		$model->setState('site', true);
+		$model->setState('tag', $id);
+		$model->setState('limit', $limit);
+		$model->setState('limitstart', $offset);
+		$this->items = $model->getRows();
+
+		// Count items
+		if ($count)
+		{
+			$this->total = $model->countRows();
+		}
+	}
+
+	protected function getDateItems($count = false)
+	{
+		// Get application
+		$application = JFactory::getApplication();
+
+		// Get input
+		$year = $application->input->get('year', 0, 'int');
+		$month = $application->input->get('month', 0, 'int');
+		$day = $application->input->get('day', 0, 'int');
+		$category = $application->input->get('category', 0, 'int');
+
+		// Determine offset and limit based on document type
+		if ($this->type == 'html' || $this->type == 'raw')
+		{
+			$offset = $application->input->get('limitstart', 0, 'int');
+			$limit = $application->input->get('limit', 10, 'int');
+		}
+		else
+		{
+			$offset = 0;
+			$this->params->get('feedLimit', 10, 'int');
+		}
+
+		// Get items
+		$model = K2Model::getInstance('Items');
+		$model->setState('site', true);
+		$model->setState('year', $year);
+		$model->setState('month', $month);
+		$model->setState('day', $day);
+		$model->setState('category', $category);
+		$model->setState('limit', $limit);
+		$model->setState('limitstart', $offset);
+		$this->items = $model->getRows();
+
+		// Count items
+		if ($count)
+		{
+			$this->total = $model->countRows();
+		}
+
+	}
+
+	protected function getSearchItems($count = false)
+	{
+		// Get application
+		$application = JFactory::getApplication();
+
+		// Get input
+		$search = trim($application->input->get('searchword', '', 'string'));
+
+		// Determine offset and limit based on document type
+		if ($this->type == 'html' || $this->type == 'raw')
+		{
+			$offset = $application->input->get('limitstart', 0, 'int');
+			$limit = $application->input->get('limit', 10, 'int');
+		}
+		else
+		{
+			$offset = 0;
+			$this->params->get('feedLimit', 10, 'int');
+		}
+
+		// Get items
+		if ($search)
+		{
+			$model = K2Model::getInstance('Items');
+			$model->setState('site', true);
+			$model->setState('search', $search);
+			$model->setState('limit', $limit);
+			$model->setState('limitstart', $offset);
+			$this->items = $model->getRows();
+
+			// Count items
+			if ($count)
+			{
+				$this->total = $model->countRows();
+			}
+
+		}
+		else
+		{
+			$this->items = array();
+			$this->total = 0;
+		}
+
+	}
+
+	protected function getModuleItems()
+	{
+		// Import module helper
+		jimport('joomla.application.module.helper');
+
+		// Get application
+		$application = JFactory::getApplication();
+
+		// Get input
+		$id = $application->input->get('id', 0, 'int');
+
+		if ($id)
+		{
+			$module = K2HelperUtilities::getModule($id);
+			if ($module)
+			{
+				require_once JPATH_SITE.'/modules/mod_k2_content/helper.php';
+				$this->items = ModK2ContentHelper::getItems($module->params);
+			}
+		}
 	}
 
 }

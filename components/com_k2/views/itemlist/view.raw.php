@@ -61,51 +61,16 @@ class K2ViewItemlist extends K2View
 
 	private function category()
 	{
-		// Get application
-		$application = JFactory::getApplication();
+		// Get and count items using parent function
+		$this->getCategoryItems(true);
 
-		// Get input
-		$id = $application->input->get('id', 0, 'int');
-		$categories = $this->params->get('categories');
-		$offset = $application->input->get('limitstart', 0, 'int');
-		$limit = $application->input->get('limit', 10, 'int');
-
-		// Get model
-		$model = K2Model::getInstance('Items');
-		$model->setState('site', true);
-
-		// Single category
-		if ($id)
+		// If we have a single category, merge the params and set metadata
+		if (isset($this->category))
 		{
-			// Get category
-			$this->category = K2Categories::getInstance($id);
-
-			// Check access
-			$this->category->checkSiteAccess();
-
 			// Merge menu params with category params
 			$effectiveParams = $this->category->getEffectiveParams();
 			$this->params->merge($effectiveParams);
-
-			// Set model state
-			$model->setState('category', $id);
-
 		}
-		// Multiple categories from menu item parameters
-		else if ($categories)
-		{
-			$model->setState('category.filter', $categories);
-		}
-
-		// @TODO Apply menu settings. Since they will be common all tasks we need to wait
-
-		// Get items
-		$model->setState('limit', $limit);
-		$model->setState('limitstart', $offset);
-		$this->items = $model->getRows();
-
-		// Count items
-		$this->total = $model->countRows();
 
 		// Set the layout
 		$this->setLayout('category');
@@ -113,66 +78,17 @@ class K2ViewItemlist extends K2View
 
 	private function user()
 	{
-		// Get application
-		$application = JFactory::getApplication();
-
-		// Get input
-		$id = $application->input->get('id', 0, 'int');
-		$offset = $application->input->get('limitstart', 0, 'int');
-		$limit = $application->input->get('limit', 10, 'int');
-
-		// Get user
-		$this->author = K2Users::getInstance($id);
-
-		// Check access
-		$this->author->checkSiteAccess();
-
-		// @TODO Apply menu settings. Since they will be common all tasks we need to wait
-
-		// Get items
-		$model = K2Model::getInstance('Items');
-		$model->setState('site', true);
-		$model->setState('author', $id);
-		$model->setState('limit', $limit);
-		$model->setState('limitstart', $offset);
-		$this->items = $model->getRows();
-
-		// Count items
-		$this->total = $model->countRows();
+		// Get and count items using parent function
+		$this->getUserItems(true);
 
 		// Set the layout
 		$this->setLayout('user');
-
 	}
 
 	private function tag()
 	{
-		// Get application
-		$application = JFactory::getApplication();
-
-		// Get input
-		$id = $application->input->get('id', 0, 'int');
-		$offset = $application->input->get('limitstart', 0, 'int');
-		$limit = $application->input->get('limit', 10, 'int');
-
-		// Get tag
-		$this->tag = K2Tags::getInstance($id);
-
-		// Check access and publishing state
-		$this->tag->checkSiteAccess();
-
-		// @TODO Apply menu settings. Since they will be common all tasks we need to wait
-
-		// Get items
-		$model = K2Model::getInstance('Items');
-		$model->setState('site', true);
-		$model->setState('tag', $id);
-		$model->setState('limit', $limit);
-		$model->setState('limitstart', $offset);
-		$this->items = $model->getRows();
-
-		// Count items
-		$this->total = $model->countRows();
+		// Get and count items using parent function
+		$this->getTagItems(true);
 
 		// Set the layout
 		$this->setLayout('tag');
@@ -181,30 +97,8 @@ class K2ViewItemlist extends K2View
 
 	private function date()
 	{
-		// Get application
-		$application = JFactory::getApplication();
-
-		// Get input
-		$year = $application->input->get('year', 0, 'int');
-		$month = $application->input->get('month', 0, 'int');
-		$day = $application->input->get('day', 0, 'int');
-		$category = $application->input->get('category', 0, 'int');
-		$offset = $application->input->get('limitstart', 0, 'int');
-		$limit = $application->input->get('limit', 10, 'int');
-
-		// Get items
-		$model = K2Model::getInstance('Items');
-		$model->setState('site', true);
-		$model->setState('year', $year);
-		$model->setState('month', $month);
-		$model->setState('day', $day);
-		$model->setState('category', $category);
-		$model->setState('limit', $limit);
-		$model->setState('limitstart', $offset);
-		$this->items = $model->getRows();
-
-		// Count items
-		$this->total = $model->countRows();
+		// Get and count items using parent function
+		$this->getDateItems(true);
 
 		// Set the layout
 		$this->setLayout('date');
@@ -213,37 +107,11 @@ class K2ViewItemlist extends K2View
 
 	private function search()
 	{
-		// Get application
-		$application = JFactory::getApplication();
-
-		// Get input
-		$search = trim($application->input->get('searchword', '', 'string'));
-		$offset = $application->input->get('limitstart', 0, 'int');
-		$limit = $application->input->get('limit', 10, 'int');
-
-		// Get items
-		if ($search)
-		{
-			$model = K2Model::getInstance('Items');
-			$model->setState('site', true);
-			$model->setState('search', $search);
-			$model->setState('limit', $limit);
-			$model->setState('limitstart', $offset);
-			$this->items = $model->getRows();
-
-			// Count items
-			$this->total = $model->countRows();
-		}
-		else
-		{
-			$this->items = array();
-			$this->total = 0;
-			$this->params->set('genericFeedIcon', false);
-		}
+		// Get and count items using parent function
+		$this->getSearchItems(true);
 
 		// Set the layout
 		$this->setLayout('search');
-
 	}
 
 }
