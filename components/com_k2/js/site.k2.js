@@ -1,5 +1,19 @@
 jQuery(document).ready(function() {
 
+	jQuery('.k2ClassicPopUp').click(function(event) {
+		event.preventDefault();
+		var href = jQuery(this).attr('href');
+		var width = parseInt(jQuery(this).data('width'));
+		var height = parseInt(jQuery(this).data('height'));
+		if (!width) {
+			width = 900;
+		}
+		if (!height) {
+			height = 600;
+		}
+		window.open(href, 'K2PopUpWindow', 'width=' + width + ',height=' + height + ',menubar=yes,resizable=yes');
+	});
+
 	jQuery('.k2CalendarBlock').on('click', '.calendarNavLink', function(event) {
 		event.preventDefault();
 		var parentElement = jQuery(this).parent().parent().parent().parent();
@@ -215,8 +229,7 @@ jQuery(document).ready(function() {
 			sendReport : function(event) {
 				event.preventDefault();
 				var form = this.$('form[data-form="report"]');
-				jQuery.post( form.attr('action'), form.serializeArray())
-				.success(function(data) {
+				jQuery.post(form.attr('action'), form.serializeArray()).success(function(data) {
 					form.hide();
 				}).error(function(data) {
 					form.find('[data-role="log"]').text(data.responseText);
@@ -225,9 +238,8 @@ jQuery(document).ready(function() {
 			reportUser : function(event) {
 				event.preventDefault();
 				var el = jQuery(event.currentTarget);
-				var data = 'id='+el.data('id')+'&'+K2SessionToken + '=1';
-				jQuery.post( K2CommentsSite + '/index.php?option=com_k2&task=users.report&format=json', data)
-				.success(function(data) {
+				var data = 'id=' + el.data('id') + '&' + K2SessionToken + '=1';
+				jQuery.post(K2CommentsSite + '/index.php?option=com_k2&task=users.report&format=json', data).success(function(data) {
 					el.hide();
 				}).error(function(data) {
 					el.parent().append('<span>' + data.responseText + '</span>');
@@ -253,8 +265,7 @@ jQuery(document).ready(function() {
 			message : function(message) {
 				this.$('form[data-form="comments"] [data-role="log"]').html(message);
 			},
-			scrollTo : function(selector)
-			{
+			scrollTo : function(selector) {
 				var html = jQuery('html');
 				var element = jQuery(selector);
 				html.scrollTop(element.offset().top);
@@ -287,7 +298,7 @@ jQuery(document).ready(function() {
 				});
 			},
 			comment : function(id) {
-				
+
 				if (!this.collection.get(id)) {
 					this.collection.states.set('id', id);
 					this.list();

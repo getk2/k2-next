@@ -22,11 +22,11 @@ switch ($field->get('target'))
 		break;
 
 	case 'popup' :
-		$attributes = 'class="classicPopup"';
+		$attributes = 'class="k2ClassicPopUp" data-width="'.(int)$field->get('popupWidth', 900).'" data-height="'.(int)$field->get('popupWidth', 600).'"';
 		break;
 
 	case 'lightbox' :
-		$attributes = 'class="modal"';
+		$attributes = 'class="k2Modal"';
 		break;
 }
 ?>

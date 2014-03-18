@@ -21,6 +21,10 @@ defined('_JEXEC') or die ;
     <option value="popup"><?php echo JText::_('K2_CLASSIC_JAVASCRIPT_POPUP'); ?></option>
     <option value="lightbox"><?php echo JText::_('K2_LIGHTBOX_POPUP'); ?></option>
 </select>
+<label><?php echo JText::_('K2_POPUP_WIDTH_FOR_LINKS'); ?></label>
+<input type="text" name="<?php echo $field->get('prefix'); ?>[popupWidth]" value="<?php echo htmlspecialchars($field->get('popupWidth'), ENT_QUOTES, 'UTF-8'); ?>" />
+<label><?php echo JText::_('K2_POPUP_HEIGHT_FOR_LINKS'); ?></label>
+<input type="text" name="<?php echo $field->get('prefix'); ?>[popupHeight]" value="<?php echo htmlspecialchars($field->get('popupHeight'), ENT_QUOTES, 'UTF-8'); ?>" />
 <script type="text/javascript">
 	jQuery(document).on('K2ExtraFieldsRender', function() {
 		jQuery('#extraFieldLinkTarget').val(<?php echo json_encode($field->get('target')); ?>);
