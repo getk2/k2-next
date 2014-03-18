@@ -4,6 +4,7 @@
 		<action name="core.admin" title="JACTION_ADMIN" description="JACTION_ADMIN_COMPONENT_DESC" />
 		<action name="core.manage" title="JACTION_MANAGE" description="JACTION_MANAGE_COMPONENT_DESC" />
 		<action name="k2.tags.manage" title="K2_MANAGE_TAGS" description="K2_MANAGE_TAGS_DESC"  />
+		<action name="k2.tags.create" title="K2_CREATE_TAGS" description="K2_CREATE_TAGS_DESC"  />
 		<action name="k2.extrafields.manage" title="K2_MANAGE_EXTRA_FIELDS" description="K2_MANAGE_EXTRA_FIELDS_DESC"  />
 		<action name="k2.category.create" title="K2_ADD_CATEGORIES" description="K2_ADD_CATEGORIES_DESC" />
 		<action name="k2.category.edit" title="K2_EDIT_ANY_CATEGORY" description="K2_EDIT_ANY_CATEGORY_DESC" />

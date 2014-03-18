@@ -248,6 +248,9 @@ class K2ViewItems extends K2View
 			$tagsValue[] = $tag->name;
 		}
 		$row->tagsValue = implode(',', $tagsValue);
+		$user = JFactory::getUser();
+		$canCreateTag = $user->authorise('k2.tags.create', 'com_k2') || $user->authorise('k2.tags.manage', 'com_k2');
+		$row->canCreateTag = $canCreateTag ? '1' : '';
 
 		// Attachments
 		$row->attachments = $row->getAttachments();
@@ -257,13 +260,13 @@ class K2ViewItems extends K2View
 		{
 			$row->revisions = $row->getRevisions();
 		}
-		
+
 		// Media
 		$row->media = $row->getMedia();
 
 		// Galleries
 		$row->galleries = $row->getGalleries();
-		
+
 	}
 
 }

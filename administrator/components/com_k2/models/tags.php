@@ -224,6 +224,9 @@ class K2ModelTags extends K2Model
 
 	public function addTag($name)
 	{
+		// Get user
+		$user = JFactory::getUser();
+
 		// Get database
 		$db = $this->getDBO();
 
@@ -247,10 +250,13 @@ class K2ModelTags extends K2Model
 		// If it does not exist, add it
 		if (!$id)
 		{
-			$data = array(
-				'name' => $name,
-				'state' => 1
-			);
+			// Ensure that tags creation is not locked
+			if (!$user->authorise('k2.tags.create', 'com_k2') && !$user->authorise('k2.tags.manage', 'com_k2'))
+			{
+				return false;
+			}
+
+			$data = array('name' => $name, 'state' => 1);
 			$this->setState('data', $data);
 			if (!$this->save())
 			{

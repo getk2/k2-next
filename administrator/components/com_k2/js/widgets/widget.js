@@ -173,6 +173,7 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 		},
 		tags : function(element) {
 			require(['widgets/select2/select2.min', 'css!widgets/select2/select2.css'], function() {
+				var canCreateTag = element.data('create');
 				element.select2({
 					tags : element.val().split(','),
 					placeholder : element.data('placeholder') || l('K2_ENTER_SOME_TAGS'),
@@ -191,10 +192,14 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 						if (jQuery(data).filter(function() {
 							return this.text.localeCompare(term) === 0;
 						}).length === 0) {
-							return {
-								id : term,
-								text : term
-							};
+							if (canCreateTag) {
+								return {
+									id : term,
+									text : term
+								};
+							} else {
+								return null;
+							}
 						}
 					},
 					ajax : {

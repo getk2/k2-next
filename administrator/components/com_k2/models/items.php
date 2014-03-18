@@ -33,7 +33,7 @@ class K2ModelItems extends K2Model
 		$query->select($db->quoteName('item').'.*')->from($db->quoteName('#__k2_items', 'item'));
 
 		// Join over the categories if required
-		if($this->getState('sorting') == 'ordering' || $this->getState('sorting') == 'ordering.reverse' || $this->getState('sorting') == 'category')
+		if ($this->getState('sorting') == 'ordering' || $this->getState('sorting') == 'ordering.reverse' || $this->getState('sorting') == 'category')
 		{
 			$query->leftJoin($db->quoteName('#__k2_categories', 'category').' ON '.$db->quoteName('category.id').' = '.$db->quoteName('item.catid'));
 		}
@@ -710,10 +710,13 @@ class K2ModelItems extends K2Model
 				$tag = trim($tag);
 				if ($tag)
 				{
-					$entry = new stdClass;
-					$entry->name = $tag;
-					$entry->id = $model->addTag($tag);
-					$data['tags'][] = $entry;
+					if ($tagId = $model->addTag($tag))
+					{
+						$entry = new stdClass;
+						$entry->name = $tag;
+						$entry->id = $tagId;
+						$data['tags'][] = $entry;
+					}
 				}
 			}
 			$data['tags'] = json_encode($data['tags']);
