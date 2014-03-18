@@ -85,6 +85,12 @@ class K2ViewItemlist extends K2View
 
 			// Set metadata
 			$this->setMetadata($this->category);
+
+			// Get children
+			if ($this->params->get('subCategories'))
+			{
+				$this->category->children = $this->category->getChildren();
+			}
 		}
 
 		// Set the flag for sending feed links to head

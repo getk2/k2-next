@@ -92,11 +92,11 @@ defined('_JEXEC') or die; ?>
 		<div class="itemListSubCategories">
 			<h3><?php echo JText::_('K2_CHILDREN_CATEGORIES'); ?></h3>
 
-			<?php foreach($this->category->children as $key => $child): ?>
+			<?php $counter = 0; foreach($this->category->children as $child): ?>
 
 			<?php
 			// Define a CSS class for the last container on each row
-			if( (($key+1)%($this->params->get('subCatColumns'))==0))
+			if( (($counter+1)%($this->params->get('subCatColumns'))==0))
 				$lastContainer= ' subCategoryContainerLast';
 			else
 				$lastContainer='';
@@ -133,10 +133,10 @@ defined('_JEXEC') or die; ?>
 					<div class="clr"></div>
 				</div>
 			</div>
-			<?php if(($key+1)%($this->params->get('subCatColumns'))==0): ?>
+			<?php if(($counter+1)%($this->params->get('subCatColumns'))==0): ?>
 			<div class="clr"></div>
 			<?php endif; ?>
-			<?php endforeach; ?>
+			<?php $counter++; endforeach; ?>
 
 			<div class="clr"></div>
 		</div>

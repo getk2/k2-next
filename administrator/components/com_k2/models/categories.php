@@ -161,6 +161,10 @@ class K2ModelCategories extends K2Model
 			$query->where($db->quoteName('category.lft').' >= '.(int)$root->lft);
 			$query->where($db->quoteName('category.rgt').' <= '.(int)$root->rgt);
 		}
+		if ($this->getState('parent'))
+		{
+			$query->where($db->quoteName('category.parent_id').' = '.(int)$this->getState('parent'));
+		}
 	}
 
 	private function setQuerySorting(&$query)
