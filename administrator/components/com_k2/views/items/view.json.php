@@ -221,11 +221,12 @@ class K2ViewItems extends K2View
 	protected function setListActions()
 	{
 		$user = JFactory::getUser();
+		$params = JComponentHelper::getParams('com_k2');
 		if ($user->authorise('k2.item.create', 'com_k2'))
 		{
 			K2Response::addAction('add', 'K2_ADD', array('data-action' => 'add'));
 		}
-		if ($user->authorise('core.admin', 'com_k2'))
+		if ($user->authorise('core.admin', 'com_k2') && !$params->get('hideImportButton'))
 		{
 			K2Response::addAction('import', 'K2_IMPORT', array('data-action' => 'import'));
 		}
