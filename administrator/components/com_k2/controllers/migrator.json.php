@@ -889,8 +889,283 @@ class K2ControllerMigrator extends JControllerLegacy
 
 		if (count($authors) == 0)
 		{
-			$this->response->completed = 1;
+			$this->response->id = 0;
+			$this->response->type = 'setup';
 		}
+
+	}
+
+	private function setup()
+	{
+		$this->response->status = JText::_('COM_K2_PROCESSING_SETUP');
+
+		$db = JFactory::getDbo();
+
+		// Component parameters
+
+		// Modules
+		$modules = array('comments', 'content', 'tools', 'user', 'users');
+		foreach ($modules as $module)
+		{
+			$query = $db->getQuery(true);
+			$query->select('*')->from($db->quoteNane('#__modules'))->where($db->quoteName('module').' = '.$db->quote('mod_k2_'.$module));
+			$db->setQuery($query);
+			$rows = $db->loadObjectList();
+
+			foreach ($rows as $row)
+			{
+				$newParams = $this->upgradeParams($row->module, $row->params);
+				$query = $db->getQuery(true);
+				$query->update($db->quoteNane('#__modules'))->set($db->quoteName('params').' = '.$db->quote($newParams))->where($db->quoteName('id').' = '.(int)$row->id);
+				$db->setQuery($query);
+				$db->execute();
+
+			}
+
+		}
+		// Menus
+		$query = $db->getQuery(true);
+		$query->select('*')->from($db->quoteNane('#__menu'))->where($db->quoteName('link').' LIKE '.$db->quote('%com_k2&view=itemlist&layout=category%', false));
+		$db->setQuery($query);
+		$rows = $db->loadObjectList();
+
+		foreach ($rows as $row)
+		{
+			$params = new JRegistry($row->params);
+			$categories = $params->get('categories');
+			$exists = array_search('1', $categories);
+			if ($exists !== false)
+			{
+				$categories[$exists] = 99999;
+			}
+			$params->set('categories', $categories);
+			$query = $db->getQuery(true);
+			$query->update($db->quoteNane('#__menu'))->set($db->quoteName('params').' = '.$db->quote($params->toString()))->where($db->quoteName('id').' = '.(int)$row->id);
+			$db->setQuery($query);
+			$db->execute();
+		}
+
+		$this->response->completed = 1;
+	}
+
+	private function upgradeParams($extension, $legacyParams)
+	{
+		$params = new JRegistry($legacyParams);
+
+		switch($extension)
+		{
+			case 'mod_k2_comments' :
+				// Usage
+				$usage = $params->get('usage') == 0 ? 'comments' : 'commenters';
+				$params->set('usage', $usage);
+
+				// Categories filter
+				$filter = new stdClass;
+				$filter->enabled = $params->get('catfilter');
+				$filter->categories = (array)$params->get('category_id');
+				$exists = array_search('1', $filter->categories);
+				if ($exists !== false)
+				{
+					$filter->categories[$exists] = 99999;
+				}
+				$filter->recursive = '';
+				$params->set('catfilter', $filter);
+				break;
+
+			case 'mod_k2_content' :
+				$template = $params->get('getTemplate');
+				$params->set('template', $template);
+
+				// Categories filter
+				$filter = new stdClass;
+				$filter->enabled = $params->get('catfilter');
+				$filter->categories = (array)$params->get('category_id');
+				$exists = array_search('1', $filter->categories);
+				if ($exists !== false)
+				{
+					$filter->categories[$exists] = 99999;
+				}
+				$filter->recursive = $params->get('getChildren');
+				$params->set('filter', $filter);
+
+				$limit = $params->get('itemCount');
+				$params->set('limit', $limit);
+
+				$ordering = $params->get('itemsOrdering');
+
+				if ($ordering == '')
+				{
+					$params->set('sorting', 'id');
+				}
+				else if ($ordering == 'date')
+				{
+					$params->set('sorting', 'created.reverse');
+				}
+				else if ($ordering == 'rdate')
+				{
+					$params->set('sorting', 'created');
+				}
+				else if ($ordering == 'alpha')
+				{
+					$params->set('sorting', 'title');
+				}
+				else if ($ordering == 'ralpha')
+				{
+					$params->set('sorting', 'title.reverse');
+				}
+				else if ($ordering == 'order')
+				{
+					$params->set('sorting', 'ordering');
+				}
+				else if ($ordering == 'rorder')
+				{
+					$params->set('sorting', 'ordering.reverse');
+				}
+				else if ($ordering == 'rand')
+				{
+					$params->set('sorting', 'random');
+				}
+				else
+				{
+					$params->set('sorting', $ordering);
+				}
+
+				$params->set('featured', $params->get('FeaturedItems'));
+				$params->set('timeRange', $params->get('popularityRange'));
+				$params->set('media', $params->get('videosOnly'));
+				$params->set('jPlugins', $params->get('JPlugins'));
+				$params->set('k2Plugins', $params->get('K2Plugins'));
+				break;
+
+			case 'mod_k2_tools' :
+				$usage = $params->get('module_usage');
+				switch($usage)
+				{
+					case '0' :
+						$params->set('usage', 'archive');
+						break;
+					case '1' :
+						$params->set('usage', 'authors');
+						break;
+					case '2' :
+						$params->set('usage', 'calendar');
+						break;
+					case '3' :
+						$params->set('usage', 'breadcrumbs');
+						break;
+					case '4' :
+						$params->set('usage', 'categories');
+						break;
+					case '5' :
+						$params->set('usage', 'categoriesList');
+						break;
+					case '6' :
+						$params->set('usage', 'search');
+						break;
+					case '7' :
+						$params->set('usage', 'tags');
+						break;
+					case '8' :
+						$params->set('usage', 'custom');
+						break;
+				}
+
+				$filter = new stdClass;
+				$filter->enabled = $params->get('archiveCategory') ? '1' : '';
+				$filter->categories = $params->get('archiveCategory') ? array($params->get('archiveCategory')) : array();
+				$exists = array_search('1', $filter->categories);
+				if ($exists !== false)
+				{
+					$filter->categories[$exists] = 99999;
+				}
+				$filter->recursive = '';
+				$params->set('archiveCategory', $filter);
+
+				$filter = new stdClass;
+				$filter->enabled = $params->get('authors_module_category') ? '1' : '';
+				$filter->categories = $params->get('authors_module_category') ? array($params->get('authors_module_category')) : array();
+				$exists = array_search('1', $filter->categories);
+				if ($exists !== false)
+				{
+					$filter->categories[$exists] = 99999;
+				}
+				$filter->recursive = '1';
+				$params->set('authors_module_category', $filter);
+
+				$filter = new stdClass;
+				$filter->enabled = $params->get('calendarCategory') ? '1' : '';
+				$filter->categories = $params->get('calendarCategory') ? array($params->get('calendarCategory')) : array();
+				$exists = array_search('1', $filter->categories);
+				if ($exists !== false)
+				{
+					$filter->categories[$exists] = 99999;
+				}
+				$filter->recursive = '';
+				$params->set('calendarCategory', $filter);
+
+				$filter = new stdClass;
+				$filter->enabled = $params->get('root_id') ? '1' : '';
+				$filter->categories = $params->get('root_id') ? array($params->get('root_id')) : array();
+				$exists = array_search('1', $filter->categories);
+				if ($exists !== false)
+				{
+					$filter->categories[$exists] = 99999;
+				}
+				$filter->recursive = '';
+				$params->set('root_id', $filter);
+
+				$filter = new stdClass;
+				$filter->enabled = $params->get('root_id2') ? '1' : '';
+				$filter->categories = $params->get('root_id2') ? array($params->get('root_id2')) : array();
+				$exists = array_search('1', $filter->categories);
+				if ($exists !== false)
+				{
+					$filter->categories[$exists] = 99999;
+				}
+				$filter->recursive = '';
+				$params->set('root_id2', $filter);
+
+				$filter = new stdClass;
+				$filter->enabled = $params->get('catfilter');
+				$filter->categories = (array)$params->get('category_id');
+				$exists = array_search('1', $filter->categories);
+				if ($exists !== false)
+				{
+					$filter->categories[$exists] = 99999;
+				}
+				$filter->recursive = $params->get('getChildren');
+				$params->set('category_id', $filter);
+
+				$filter = new stdClass;
+				$filter->enabled = $params->get('cloud_category') ? '1' : '';
+				$filter->categories = (array)$params->get('cloud_category');
+				$exists = array_search('1', $filter->categories);
+				if ($exists !== false)
+				{
+					$filter->categories[$exists] = 99999;
+				}
+				$filter->recursive = $params->get('cloud_category_recursive');
+				$params->set('cloud_category', $filter);
+				break;
+
+			case 'mod_k2_users' :
+				$filter = $params->get('filter');
+				switch($filter)
+				{
+					case '1' :
+						$params->set('filter', 'mostItems');
+						break;
+					case '2' :
+						$params->set('filter', 'mostPopularItems');
+						break;
+					case '3' :
+						$params->set('filter', 'mostCommentedItems');
+						break;
+				}
+				break;
+		}
+
+		return $params->toString();
 
 	}
 
