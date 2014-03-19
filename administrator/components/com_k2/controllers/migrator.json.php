@@ -902,6 +902,55 @@ class K2ControllerMigrator extends JControllerLegacy
 		$db = JFactory::getDbo();
 
 		// Component parameters
+		$componentParams = JComponentHelper::getParams('com_k2');
+		$imageSizes = new stdClass;
+
+		$index = 1;
+		$imageSizeXSmall = new stdClass;
+		$imageSizeXSmall->id = 'XS';
+		$imageSizeXSmall->name = 'XSmall';
+		$imageSizeXSmall->width = $componentParams->get('itemImageXS', 100);
+		$imageSizeXSmall->quality = $componentParams->get('imagesQuality', 100);
+		$imageSizes->$index = $imageSizeXSmall;
+
+		$index = 2;
+		$imageSizeSmall = new stdClass;
+		$imageSizeSmall->id = 'S';
+		$imageSizeSmall->name = 'Small';
+		$imageSizeSmall->width = $componentParams->get('itemImageS', 200);
+		$imageSizeSmall->quality = $componentParams->get('imagesQuality', 100);
+		$imageSizes->$index = $imageSizeSmall;
+
+		$index = 3;
+		$imageSizeMedium = new stdClass;
+		$imageSizeMedium->id = 'M';
+		$imageSizeMedium->name = 'Medium';
+		$imageSizeMedium->width = $componentParams->get('itemImageM', 400);
+		$imageSizeMedium->quality = $componentParams->get('imagesQuality', 100);
+		$imageSizes->$index = $imageSizeMedium;
+
+		$index = 4;
+		$imageSizeLarge = new stdClass;
+		$imageSizeLarge->id = 'L';
+		$imageSizeLarge->name = 'Large';
+		$imageSizeLarge->width = $componentParams->get('itemImageL', 600);
+		$imageSizeLarge->quality = $componentParams->get('imagesQuality', 100);
+		$imageSizes->$index = $imageSizeLarge;
+
+		$index = 5;
+		$imageSizeXLarge = new stdClass;
+		$imageSizeXLarge->id = 'XL';
+		$imageSizeXLarge->name = 'XLarge';
+		$imageSizeXLarge->width = $componentParams->get('itemImageXL', 900);
+		$imageSizeXLarge->quality = $componentParams->get('imagesQuality', 100);
+		$imageSizes->$index = $imageSizeXLarge;
+
+		$componentParams->set('imageSizes', $imageSizes);
+
+		$query = $db->getQuery(true);
+		$query->update($db->quoteNane('#__extensions'))->set($db->quoteName('params').' = '.$db->quote($componentParams->toString()))->where($db->quoteName('element').' = '.$db->quote('com_k2'));
+		$db->setQuery($query);
+		$row = $db->loadObject();
 
 		// Modules
 		$modules = array('comments', 'content', 'tools', 'user', 'users');
