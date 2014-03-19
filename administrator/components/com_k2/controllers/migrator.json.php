@@ -932,13 +932,17 @@ class K2ControllerMigrator extends JControllerLegacy
 		foreach ($rows as $row)
 		{
 			$params = new JRegistry($row->params);
-			$categories = $params->get('categories');
-			$exists = array_search('1', $categories);
+			$filter = new stdClass;
+			$filter->categories = (array)$params->get('categories');
+			$filter->enabled = count($filter->categories) ? '1' : '';
+			$exists = array_search('1', $filter->categories);
 			if ($exists !== false)
 			{
-				$categories[$exists] = 99999;
+				$filter->categories[$exists] = 99999;
 			}
-			$params->set('categories', $categories);
+			$filter->recursive = $params->get('catCatalogMode');
+			$params->set('categories', $filter);
+
 			$query = $db->getQuery(true);
 			$query->update($db->quoteNane('#__menu'))->set($db->quoteName('params').' = '.$db->quote($params->toString()))->where($db->quoteName('id').' = '.(int)$row->id);
 			$db->setQuery($query);
