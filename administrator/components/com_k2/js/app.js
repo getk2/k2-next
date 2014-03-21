@@ -143,10 +143,13 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'vie
 	// Update event listener. Triggered when the server response is parsed.
 	K2Dispatcher.on('app:update', function(response) {
 		if (response.method === 'GET') {
+			// Update the application regions/views
 			K2Dispatcher.trigger('app:update:messages', response);
 			K2Dispatcher.trigger('app:update:header', response);
 			K2Dispatcher.trigger('app:update:subheader', response);
 			K2Dispatcher.trigger('app:update:sidebar', response);
+			// Add scripts and styles
+			require(_.union(response.styles, response.scripts));
 		}
 	});
 

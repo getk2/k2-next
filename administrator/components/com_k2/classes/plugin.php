@@ -10,6 +10,8 @@
 // no direct access
 defined('_JEXEC') or die ;
 
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/response.php';
+
 /**
  * K2 Plugin class.
  */
@@ -27,7 +29,7 @@ class K2Plugin extends JPlugin
 		jimport('joomla.form.form');
 		$manifest = JPATH_SITE.'/plugins/k2/'.$this->_name.'/'.$this->_name.'.xml';
 		$jform = JForm::getInstance('plg_k2_'.$this->_name.'_'.$type, $manifest, array(), true, 'fieldset[starts-with(@name, "'.$type.'")]');
-		
+
 		foreach ($jform->getFieldsets() as $fieldset)
 		{
 
@@ -71,6 +73,16 @@ class K2Plugin extends JPlugin
 	protected function getParam($name, $default = null)
 	{
 		return $this->params->get($name, $default);
+	}
+
+	protected function addScript($url)
+	{
+		K2Response::addScript($url);
+	}
+
+	protected function addStyle($url)
+	{
+		K2Response::addStyle($url);
 	}
 
 }

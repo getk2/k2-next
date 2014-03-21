@@ -117,6 +117,20 @@ class K2Response
 	public static $messages = array();
 
 	/**
+	 * Array containing the the scripts enqueued by the application.
+	 *
+	 * @var array $scripts
+	 */
+	public static $scripts = array();
+
+	/**
+	 * Array containing the the styles enqueued by the application.
+	 *
+	 * @var array $styles
+	 */
+	public static $styles = array();
+
+	/**
 	 * Setter function for the response variable.
 	 *
 	 * @param mixed $response
@@ -641,6 +655,30 @@ class K2Response
 	}
 
 	/**
+	 * Adds a script to the scripts array.
+	 *
+	 * @param string $url	The url of the script.
+	 *
+	 * @return void
+	 */
+	public static function addScript($url)
+	{
+		self::$scripts[] = $url;
+	}
+
+	/**
+	 * Adds a stylesheet to the styles array.
+	 *
+	 * @param string $url	The url of the stylesheet.
+	 *
+	 * @return void
+	 */
+	public static function addStyle($url)
+	{
+		self::$styles[] = 'css!'.$url;
+	}
+
+	/**
 	 * Builds the whole response object.
 	 *
 	 * @return  object $response.
@@ -652,6 +690,8 @@ class K2Response
 			self::$response = new stdClass;
 		}
 		self::$response->title = self::getTitle();
+		self::$response->scripts = array_unique(self::$scripts);
+		self::$response->styles = array_unique(self::$styles);
 		self::$response->states = self::getStates();
 		self::$response->menu = self::getMenu();
 		self::$response->actions = self::getActions();
