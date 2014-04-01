@@ -181,7 +181,7 @@ class K2ControllerMigrator extends JControllerLegacy
 			$data['parent_id'] = 1;
 			if ($category->image && JFile::exists(JPATH_SITE.'/media/k2/categories/'.$category->image))
 			{
-				JFile::move(JPATH_SITE.'/media/k2/categories/'.$category->image, JPATH_SITE.'/media/k2/categories/'.md5('Image'.$newCategoryId->id));
+				JFile::move(JPATH_SITE.'/media/k2/categories/'.$category->image, JPATH_SITE.'/media/k2/categories/'.md5('Image'.$newCategoryId));
 				$hasImage = true;
 			}
 			$data['template'] = isset($categoryParams->theme) && $categoryParams->theme ? $categoryParams->theme : '';
@@ -948,7 +948,9 @@ class K2ControllerMigrator extends JControllerLegacy
 		$componentParams->set('imageSizes', $imageSizes);
 
 		$query = $db->getQuery(true);
-		$query->update($db->quoteNane('#__extensions'))->set($db->quoteName('params').' = '.$db->quote($componentParams->toString()))->where($db->quoteName('element').' = '.$db->quote('com_k2'));
+		$query->update($db->quoteName('#__extensions'));
+		$query->set($db->quoteName('params').' = '.$db->quote($componentParams->toString()));
+		$query->where($db->quoteName('element').' = '.$db->quote('com_k2'));
 		$db->setQuery($query);
 		$row = $db->loadObject();
 
