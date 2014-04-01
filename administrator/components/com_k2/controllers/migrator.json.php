@@ -952,14 +952,14 @@ class K2ControllerMigrator extends JControllerLegacy
 		$query->set($db->quoteName('params').' = '.$db->quote($componentParams->toString()));
 		$query->where($db->quoteName('element').' = '.$db->quote('com_k2'));
 		$db->setQuery($query);
-		$row = $db->loadObject();
+		$db->execute();
 
 		// Modules
 		$modules = array('comments', 'content', 'tools', 'user', 'users');
 		foreach ($modules as $module)
 		{
 			$query = $db->getQuery(true);
-			$query->select('*')->from($db->quoteNane('#__modules'))->where($db->quoteName('module').' = '.$db->quote('mod_k2_'.$module));
+			$query->select('*')->from($db->quoteName('#__modules'))->where($db->quoteName('module').' = '.$db->quote('mod_k2_'.$module));
 			$db->setQuery($query);
 			$rows = $db->loadObjectList();
 
@@ -967,7 +967,7 @@ class K2ControllerMigrator extends JControllerLegacy
 			{
 				$newParams = $this->upgradeParams($row->module, $row->params);
 				$query = $db->getQuery(true);
-				$query->update($db->quoteNane('#__modules'))->set($db->quoteName('params').' = '.$db->quote($newParams))->where($db->quoteName('id').' = '.(int)$row->id);
+				$query->update($db->quoteName('#__modules'))->set($db->quoteName('params').' = '.$db->quote($newParams))->where($db->quoteName('id').' = '.(int)$row->id);
 				$db->setQuery($query);
 				$db->execute();
 
@@ -976,7 +976,7 @@ class K2ControllerMigrator extends JControllerLegacy
 		}
 		// Menus
 		$query = $db->getQuery(true);
-		$query->select('*')->from($db->quoteNane('#__menu'))->where($db->quoteName('link').' LIKE '.$db->quote('%com_k2&view=itemlist&layout=category%', false));
+		$query->select('*')->from($db->quoteName('#__menu'))->where($db->quoteName('link').' LIKE '.$db->quote('%com_k2&view=itemlist&layout=category%', false));
 		$db->setQuery($query);
 		$rows = $db->loadObjectList();
 
@@ -995,7 +995,7 @@ class K2ControllerMigrator extends JControllerLegacy
 			$params->set('categories', $filter);
 
 			$query = $db->getQuery(true);
-			$query->update($db->quoteNane('#__menu'))->set($db->quoteName('params').' = '.$db->quote($params->toString()))->where($db->quoteName('id').' = '.(int)$row->id);
+			$query->update($db->quoteName('#__menu'))->set($db->quoteName('params').' = '.$db->quote($params->toString()))->where($db->quoteName('id').' = '.(int)$row->id);
 			$db->setQuery($query);
 			$db->execute();
 		}
