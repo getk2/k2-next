@@ -12,6 +12,7 @@
 	<files>
 		<filename module="mod_k2_user">mod_k2_user.php</filename>
 		<filename>helper.php</filename>
+		<filename>legacy.php</filename>
 		<folder>tmpl</folder>
 	</files>
 	<config>

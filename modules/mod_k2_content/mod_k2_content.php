@@ -11,6 +11,11 @@
 defined('_JEXEC') or die ;
 
 require_once dirname(__FILE__).'/helper.php';
+include dirname(__FILE__).'/legacy.php';
+
 $items = ModK2ContentHelper::getItems($params);
 $componentParams = JComponentHelper::getParams('com_k2');
-require JModuleHelper::getLayoutPath('mod_k2_content', $params->get('template', 'Default').'/default');
+if (count($items))
+{
+	require JModuleHelper::getLayoutPath('mod_k2_content', $params->get('template', 'Default').'/default');
+}

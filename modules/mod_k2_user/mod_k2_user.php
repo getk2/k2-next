@@ -11,6 +11,7 @@
 defined('_JEXEC') or die ;
 
 require_once dirname(__FILE__).'/helper.php';
+include dirname(__FILE__).'/legacy.php';
 
 $user = JFactory::getUser();
 
