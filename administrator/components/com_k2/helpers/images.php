@@ -12,6 +12,7 @@ defined('_JEXEC') or die ;
 
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/filesystem.php';
 require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/imageprocessor.php';
+require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/image.php';
 
 /**
  * K2 images helper class.
@@ -400,7 +401,7 @@ class K2HelperImages
 			// Add resized images to the array
 			foreach ($sizes as $size)
 			{
-				$image = new stdClass;
+				$image = new K2Image;
 				$image->id = $id;
 				$image->src = K2Filesystem::getURIRoot(true).$savepath.'/cache/'.$id.'_'.$size->id.'.jpg';
 				$image->url = K2Filesystem::getURIRoot(false).$savepath.'/cache/'.$id.'_'.$size->id.'.jpg';
@@ -418,7 +419,7 @@ class K2HelperImages
 			}
 
 			// Add the source image to the array
-			$image = new stdClass;
+			$image = new K2Image;
 			$image->id = $id;
 			$image->src = K2Filesystem::getURIRoot(true).$savepath.'/src/'.$id.'.jpg';
 			$image->url = K2Filesystem::getURIRoot(false).$savepath.'/src/'.$id.'.jpg';
@@ -479,7 +480,7 @@ class K2HelperImages
 
 		if (isset($value->flag) && $value->flag)
 		{
-			$image = new stdClass;
+			$image = new K2Image;
 			$image->id = md5('Image'.$category->id);
 			$image->src = K2FileSystem::getUriRoot(true).$savepath.'/'.$image->id.'.jpg';
 			$image->url = K2FileSystem::getUriRoot().$savepath.'/'.$image->id.'.jpg';
@@ -497,7 +498,7 @@ class K2HelperImages
 		else if ($params->get('catImageDefault'))
 		{
 			$placeholder = self::getPlaceholder('category');
-			$image = new stdClass;
+			$image = new K2Image;
 			$image->src = JURI::root(true).$placeholder;
 			$image->url = JURI::root(false).$placeholder;
 			$image->alt = $category->title;
@@ -524,7 +525,7 @@ class K2HelperImages
 
 		if (isset($value->flag) && $value->flag)
 		{
-			$image = new stdClass;
+			$image = new K2Image;
 			$image->id = md5('Image'.$user->id);
 			$image->src = K2Filesystem::getURIRoot(true).$savepath.'/'.$image->id.'.jpg';
 			$image->url = K2Filesystem::getURIRoot(false).$savepath.'/'.$image->id.'.jpg';
@@ -534,7 +535,7 @@ class K2HelperImages
 		else if ($params->get('userImageDefault'))
 		{
 			$placeholder = self::getPlaceholder('user');
-			$image = new stdClass;
+			$image = new K2Image;
 			$image->src = JURI::root(true).$placeholder;
 			$image->url = JURI::root(false).$placeholder;
 			$image->alt = $user->name;
@@ -544,7 +545,7 @@ class K2HelperImages
 		{
 			if (is_null($image))
 			{
-				$image = new stdClass;
+				$image = new K2Image;
 			}
 			$image->src = '//www.gravatar.com/avatar/'.md5($user->email);
 			if (isset($image->url))

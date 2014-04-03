@@ -232,6 +232,7 @@ class K2Items extends K2Resource
 		if ($this->id)
 		{
 			$author = K2Users::getInstance($this->created_by);
+			$this->authorLink = $author->link;
 		}
 		return $author;
 	}
@@ -706,6 +707,40 @@ class K2Items extends K2Resource
 
 		return true;
 
+	}
+
+	// Legacy
+	public function getEvent()
+	{
+		$events = $this->events;
+		$events->BeforeDisplay = '';
+		$events->AfterDisplay = '';
+		return $events;
+	}
+
+	public function getCategoryName()
+	{
+		return $this->category->title;
+	}
+
+	public function getCategoryLink()
+	{
+		return $this->category->link;
+	}
+
+	public function getVideo()
+	{
+		return count($this->media) ? $this->media[0]->output : '';
+	}
+
+	public function getAuthorLink()
+	{
+		return $this->author->link;
+	}
+	
+	public function getAuthorAvatar()
+	{
+		return $this->author->image->src;
 	}
 
 }

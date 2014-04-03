@@ -237,12 +237,17 @@ class ModK2ToolsHelper
 		$model->setState('site', true);
 		$model->setState('root', $root);
 		$model->setState('sorting', 'ordering');
-
-		$categories = $model->getRows();
-		$model = K2Model::getInstance('Items');
-		foreach ($categories as $category)
+		$rows = $model->getRows();
+		
+		$categories = array();
+		foreach ($rows as $row)
 		{
-			$category->active = ($option == 'com_k2' && $view == 'itemlist' && $task == 'category' && $id == $category->id);
+			if($row->id != $root)
+			{
+				$row->active = ($option == 'com_k2' && $view == 'itemlist' && $task == 'category' && $id == $row->id);
+				$categories[] = $row;
+			}
+			
 		}
 
 		return $categories;

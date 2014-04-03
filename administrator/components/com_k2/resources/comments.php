@@ -127,10 +127,7 @@ class K2Comments extends K2Resource
 				$link->setAttribute('rel', 'nofollow');
 			}
 			$this->text = $document->saveHTML($document->getElementsByTagName('body')->item(0));
-			$this->text = str_replace(array(
-				'<body>',
-				'</body>'
-			), '', $this->text);
+			$this->text = str_replace(array('<body>', '</body>'), '', $this->text);
 
 			// Item link
 			$this->itemLink = $this->getItemLink();
@@ -145,13 +142,12 @@ class K2Comments extends K2Resource
 			$this->isAuthorResponse = $this->getIsAuthorResponse();
 
 			// Unset sensitive data if user is not authorised to edit the comment
-			if(!$this->canEdit)
+			if (!$this->canEdit)
 			{
 				unset($this->email);
 				unset($this->ip);
 				unset($this->hostname);
 			}
-
 
 		}
 
@@ -255,6 +251,62 @@ class K2Comments extends K2Resource
 			$relativeDate = $this->createdOn;
 		}
 		return $relativeDate;
+	}
+
+	// Legacy
+	public function getUserName()
+	{
+		return ($this->userId) ? $this->user->name : $this->name;
+	}
+
+	public function getCommentDate()
+	{
+		return $this->date;
+	}
+
+	public function getCommentText()
+	{
+		return $this->text;
+	}
+
+	public function getCommentEmail()
+	{
+		return $this->email;
+	}
+
+	public function getCommentUrl()
+	{
+		return $this->url;
+	}
+
+	public function getPublished()
+	{
+		return $this->state;
+	}
+
+	public function getTitle()
+	{
+		return $this->itemTitle;
+	}
+
+	public function getCategoryName()
+	{
+		return $this->categoryTitle;
+	}
+
+	public function getCatLink()
+	{
+		return $this->categoryLink;
+	}
+
+	public function getUserImage()
+	{
+		return $this->user->image->src;
+	}
+
+	public function getUserLink()
+	{
+		return $this->user->link;
 	}
 
 }

@@ -590,7 +590,7 @@ class K2ControllerMigrator extends JControllerLegacy
 			$image = new stdClass;
 			$image->caption = $item->image_caption;
 			$image->credits = $item->image_credits;
-			$image->flag = JFile::exists(JPATH_SITE.'/media/k2/items/src/'.md5('Image'.$item->id)) ? 1 : 0;
+			$image->flag = JFile::exists(JPATH_SITE.'/media/k2/items/src/'.md5('Image'.$item->id).'.jpg') ? 1 : 0;
 			$image = json_encode($image);
 
 			$media = array();
@@ -1011,7 +1011,7 @@ class K2ControllerMigrator extends JControllerLegacy
 		{
 			case 'mod_k2_comments' :
 				// Usage
-				$usage = $params->get('usage') == 0 ? 'comments' : 'commenters';
+				$usage = $params->get('module_usage') ? 'commenters' : 'comments';
 				$params->set('usage', $usage);
 
 				// Categories filter
@@ -1042,6 +1042,28 @@ class K2ControllerMigrator extends JControllerLegacy
 				}
 				$filter->recursive = $params->get('getChildren');
 				$params->set('filter', $filter);
+
+				$image = $params->get('itemImgSize', 'Small');
+				if ($image == 'XSmall')
+				{
+					$params->set('itemImgSize', 'XS');
+				}
+				else if ($image == 'Small')
+				{
+					$params->set('itemImgSize', 'S');
+				}
+				else if ($image == 'Medium')
+				{
+					$params->set('itemImgSize', 'M');
+				}
+				else if ($image == 'Large')
+				{
+					$params->set('itemImgSize', 'L');
+				}
+				else if ($image == 'XLarge')
+				{
+					$params->set('itemImgSize', 'XL');
+				}
 
 				$limit = $params->get('itemCount');
 				$params->set('limit', $limit);

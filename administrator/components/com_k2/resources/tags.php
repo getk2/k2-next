@@ -91,6 +91,9 @@ class K2Tags extends K2Resource
 
 		// URL
 		$this->url = $this->getUrl();
+		
+		// Legacy
+		$this->tag = $this->name;
 	}
 
 	public function getItems()
@@ -133,6 +136,12 @@ class K2Tags extends K2Resource
 			return false;
 		}
 		return true;
+	}
+	
+	// Legacy
+	public function getTag()
+	{
+		return $this->name;
 	}
 
 }

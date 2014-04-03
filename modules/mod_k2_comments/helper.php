@@ -62,7 +62,8 @@ class ModK2CommentsHelper
 					$model->setState('state', 1);
 					$model->setState('limit', 1);
 					$model->setState('sorting', 'id');
-					$commenter->comment = $model->getRow();
+					$comments = $model->getRows();
+					$commenter->comment = $comments[0];
 				}
 				$commenters[] = $commenter;
 			}

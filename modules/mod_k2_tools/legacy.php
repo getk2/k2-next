@@ -23,3 +23,12 @@ $maxlength = $width > 20 ? $width : 20;
 $text = $params->get('text', JText::_('K2_SEARCH'));
 $document = JFactory::getDocument();
 $app = JFactory::getApplication();
+
+/*if($params->get('usage') == 'categories')
+{
+	ob_start();
+	$categories = ModK2ToolsHelper::getCategories($params, 'default');
+	require JPATH_SITE.'/modules/mod_k2_tools/tmpl/categories.php';
+	$output = ob_get_contents();
+	ob_end_clean();
+}*/

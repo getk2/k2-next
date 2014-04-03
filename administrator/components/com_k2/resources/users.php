@@ -92,6 +92,9 @@ class K2Users extends K2Resource
 			
 			// Unset password
 			$this->password = '';
+			
+			// Legacy
+			$this->avatar = $this->image->src;
 		}
 
 	}
@@ -197,6 +200,52 @@ class K2Users extends K2Resource
 			return false;
 		}
 		return true;
+	}
+	
+	// Legacy
+	public function getProfile()
+	{
+		return $this;
+	}
+	
+	public function __toString()
+    {
+        return JFactory::getUser($this->id)->name;
+    }
+	
+	public function getUserImage()
+	{
+		return $this->image->src;
+	}
+	
+	public function getFeed()
+	{
+		return $this->feedLink;
+	}
+	
+	public function getUserName()
+	{
+		return $this->name;
+	}
+	
+	public function getCounter()
+	{
+		return $this->comments;
+	}
+	
+	public function getLatestCommentLink()
+	{
+		return $this->comment->link;
+	}
+	
+	public function getLatestCommentText()
+	{
+		return $this->comment->text;
+	}
+	
+	public function getLatestCommentDate()
+	{
+		return $this->comment->date;
 	}
 
 }

@@ -82,7 +82,7 @@ class K2Resource
 	 *
 	 * @param string $name	The name of the requested property.
 	 *
-	 * @return boolean	True if the requested propery is loaded. False if the requested property is invalid.
+	 * @return mixed 	The property if it is available. Null if the requested property is invalid.
 	 */
 	public function __get($name)
 	{
@@ -95,9 +95,8 @@ class K2Resource
 		}
 		else
 		{
-			$application = JFactory::getApplication();
-			$application->enqueueMessage('Invalid property: '.get_called_class().': '.$name, 'error');
-			return false;
+			trigger_error('Undefined property: '.get_called_class().': '.$name);
+			return null;
 		}
 	}
 

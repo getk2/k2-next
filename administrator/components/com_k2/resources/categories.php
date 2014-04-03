@@ -331,4 +331,13 @@ class K2Categories extends K2Resource
 
 	}
 
+	// Legacy
+	public function getEvent()
+	{
+		$events = $this->events;
+		$events->BeforeDisplay = '';
+		$events->AfterDisplay = '';
+		return $events;
+	}
+
 }
