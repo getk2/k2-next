@@ -46,13 +46,6 @@ class K2View extends JViewLegacy
 		// Set view type
 		$this->type = $document->getType();
 
-		// Add CSS
-		if ($this->type == 'html')
-		{
-			$document->addStyleSheet(JURI::root(true).'/components/com_k2/css/site.k2.css');
-			JHtml::_('jquery.framework');
-		}
-
 		// Add template paths
 		$template = $application->getTemplate();
 		$this->addTemplatePath(JPATH_SITE.'/components/com_k2/templates/default');
@@ -99,6 +92,20 @@ class K2View extends JViewLegacy
 				$document->setMetadata('robots', $this->params->get('robots'));
 			}
 		}
+	}
+
+	public function display($tpl = null)
+	{
+		$dispatcher = JDispatcher::getInstance();
+		JPluginHelper::importPlugin('k2');
+		$application = JFactory::getApplication();
+		$context = $application->input->get('option', '', 'cmd').'.'.$application->input->get('view', '', 'cmd');
+		if ($task = $application->input->get('task', '', 'cmd'))
+		{
+			$context .= '.'.$task;
+		}
+		$dispatcher->trigger('onBeforeDisplayView', array($context, &$this));
+		parent::display($tpl);
 	}
 
 	private function setActive()

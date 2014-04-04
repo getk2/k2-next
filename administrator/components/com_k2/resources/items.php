@@ -193,6 +193,7 @@ class K2Items extends K2Resource
 
 	public function getTags()
 	{
+		$result = array();
 		$instances = array();
 		$tags = json_decode($this->_tags);
 		if ($this->id && is_array($tags) && count($tags))
@@ -213,17 +214,25 @@ class K2Items extends K2Resource
 					$tagIds[] = (int)$tag->id;
 				}
 			}
-			$application = JFactory::getApplication();
-			$model = K2Model::getInstance('Tags');
-			if ($application->isSite())
+			if (count($tagIds))
 			{
-				$model->setState('state', 1);
+				$application = JFactory::getApplication();
+				$model = K2Model::getInstance('Tags');
+				if ($application->isSite())
+				{
+					$model->setState('state', 1);
+				}
+				$model->setState('id', $tagIds);
+				$rows = $model->getRows();
+				$result = array_merge($instances, $rows);
 			}
-			$model->setState('id', $tagIds);
-			$rows = $model->getRows();
-			$tags = array_merge($instances, $rows);
+			else
+			{
+				$result = $instances;
+			}
+
 		}
-		return $tags;
+		return $result;
 	}
 
 	public function getAuthor()
@@ -715,6 +724,7 @@ class K2Items extends K2Resource
 		$events = $this->events;
 		$events->BeforeDisplay = '';
 		$events->AfterDisplay = '';
+		$events->K2UserDisplay = $this->user->events->K2UserDisplay;
 		return $events;
 	}
 
@@ -733,14 +743,54 @@ class K2Items extends K2Resource
 		return count($this->media) ? $this->media[0]->output : '';
 	}
 
+	public function getVideoType()
+	{
+		return '';
+	}
+
+	public function getGallery()
+	{
+		return count($this->galleries) ? $this->galleries[0]->output : '';
+	}
+
 	public function getAuthorLink()
 	{
 		return $this->author->link;
 	}
-	
+
 	public function getAuthorAvatar()
 	{
 		return $this->author->image->src;
+	}
+
+	public function getextra_fields()
+	{
+		$this->getExtraFields();
+		$extraFields = array();
+		foreach ($this->extrafields as $extraFieldGroup)
+		{
+			foreach ($extraFieldGroup->fields as $key => $extraField)
+			{
+				$extraField->value = $extraField->output;
+				$extraFields[] = $extraField;
+			}
+		}
+		return $extraFields;
+	}
+
+	public function getNumOfVotes()
+	{
+		return 0;
+	}
+
+	public function getUser()
+	{
+		return $this->author;
+	}
+
+	public function getPublished()
+	{
+		return $this->state;
 	}
 
 }

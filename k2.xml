@@ -21,8 +21,10 @@
 		</sql>
 	</uninstall>
 	<files folder="components/com_k2">
+		<folder>css</folder>
 		<folder>helpers</folder>
 		<folder>images</folder>
+		<folder>js</folder>
 		<folder>templates</folder>
 		<folder>views</folder>
 		<filename>controller.php</filename>

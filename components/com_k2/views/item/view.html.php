@@ -72,7 +72,7 @@ class K2ViewItem extends K2View
 		// Get latest from same author. We need to do this here since the parameter is related with the view
 		if ($this->params->get('itemAuthorLatest'))
 		{
-			$this->item->author->latest = $this->item->getLatestByAuthor($this->params->get('itemAuthorLatestLimit'), $this->item->id);
+			$this->item->author->latest = $this->item->getLatestByAuthor($this->params->get('itemAuthorLatestLimit'));
 		}
 
 		// Increase hits counter

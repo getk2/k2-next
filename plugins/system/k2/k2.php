@@ -387,4 +387,72 @@ class PlgSystemK2 extends JPlugin
 
 	}
 
+	// Legacy
+	public function onBeforeDisplayView($context, $view)
+	{
+		// Get application
+		$application = JFactory::getApplication();
+
+		// Switch context
+		switch($context)
+		{
+			// Item view
+			case 'com_k2.item' :
+				$view->item->params = $view->params;
+				$view->item->params->set('itemRating', false);
+				jimport('joomla.html.pagination');
+				$view->pagination = new JPagination($view->item->comments, $application->input->get('limitstart'), $view->params->get('commentsLimit'));
+				$view->item->author->profile->url = $view->item->author->site;
+				$view->inlineCommentsModeration = true;
+				$view->authorLatestItems = $view->item->author->latest;
+				$view->item->video = $view->item->getVideo();
+				$view->item->gallery = $view->item->getGallery();
+				$view->item->extra_fields = $view->item->getextra_fields();
+				break;
+				
+			// Item view
+			case 'com_k2.itemlist.user' :
+				$view->user = $view->author;
+				$view->user->profile->url = $view->user->profile->site;
+				foreach($view->items as &$item)
+				{
+					$item->params = $view->params;
+				}
+				$db = JFactory::getDbo();
+				$view->nullDate = $db->getNullDate();
+				$view->now = JFactory::getDate()->toSql();
+				$view->user->avatar = $view->user->image->src;
+				$view->feed = $view->user->feedLink;
+				break;
+				
+			// Item view
+			case 'com_k2.itemlist.category' :
+				if(isset($view->category))
+				{
+					$view->feed = $view->category->feedLink;
+					$view->subCategories = $view->category->children;
+				}
+				foreach($view->items as &$item)
+				{
+					$item->params = $view->params;
+				}
+				// TODO: Change this later when we will have the final options for the grid...
+				$view->leading = $view->items;
+				break;
+		}
+
+	}
+
+}
+
+// Legacy
+class K2HelperPermissions
+{
+	public static function canAddComment($categoryId)
+	{
+		$user = JFactory::getUser();
+		return $user->authorise('k2.comment.create', 'com_k2.category.'.$categoryId);
+
+	}
+
 }

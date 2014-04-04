@@ -107,4 +107,9 @@ class K2HelperUtilities
 		return htmlspecialchars(strip_tags($text), ENT_QUOTES, 'UTF-8');
 	}
 
+	// Legacy
+	public static function setDefaultImage(&$item, $view, $params = NULL)
+	{
+		return;
+	}
 }

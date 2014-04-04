@@ -37,6 +37,8 @@ class ModK2ToolsHelper
 			}
 			$row->name = $months[($row->month) - 1];
 			$row->link = JRoute::_(K2HelperRoute::getDateRoute($row->year, $row->month, null, $root));
+			// Legacy
+			$row->y = $row->year;
 			$archives[] = $row;
 		}
 		return $archives;
@@ -153,7 +155,7 @@ class ModK2ToolsHelper
 					// Handle depending on matches
 					if ($matchItem)
 					{
-						$breadcrumbs->title =   end($pathwayItems)->name;
+						$breadcrumbs->title =     end($pathwayItems)->name;
 						foreach ($pathwayItems as $pathwayItem)
 						{
 							$breadcrumbs->path[] = $pathwayItem;
@@ -187,7 +189,7 @@ class ModK2ToolsHelper
 					// Handle depending on matches
 					if ($matchCategory)
 					{
-						$breadcrumbs->title =   end($pathwayItems)->name;
+						$breadcrumbs->title =     end($pathwayItems)->name;
 						foreach ($pathwayItems as $pathwayItem)
 						{
 							$breadcrumbs->path[] = $pathwayItem;
@@ -210,7 +212,7 @@ class ModK2ToolsHelper
 		else
 		{
 
-			$breadcrumbs->title = count($pathwayItems) ?  end($pathwayItems)->name : '';
+			$breadcrumbs->title = count($pathwayItems) ?    end($pathwayItems)->name : '';
 			foreach ($pathwayItems as $pathwayItem)
 			{
 				$pathwayItem->title = $pathwayItem->name;
@@ -238,16 +240,16 @@ class ModK2ToolsHelper
 		$model->setState('root', $root);
 		$model->setState('sorting', 'ordering');
 		$rows = $model->getRows();
-		
+
 		$categories = array();
 		foreach ($rows as $row)
 		{
-			if($row->id != $root)
+			if ($row->id != $root)
 			{
 				$row->active = ($option == 'com_k2' && $view == 'itemlist' && $task == 'category' && $id == $row->id);
 				$categories[] = $row;
 			}
-			
+
 		}
 
 		return $categories;
@@ -308,7 +310,7 @@ class ModK2ToolsHelper
 			return $tags;
 		}
 
-		usort($tags, 'self::sortTags');
+		usort($tags, 'self::sortTagsByCounter');
 		$limit = (int)$params->get('cloud_limit');
 		if ($limit)
 		{
@@ -343,16 +345,23 @@ class ModK2ToolsHelper
 			$size = $minimumFontSize + (($entry->counter - $minimumOccurencies) * $step);
 			$entry->size = ceil($size);
 		}
+
+		usort($cloud, 'self::sortTagsByName');
 		return $cloud;
 	}
 
-	private static function sortTags($a, $b)
+	private static function sortTagsByCounter($a, $b)
 	{
 		if ((int)$a->counter == (int)$b->counter)
 		{
 			return 0;
 		}
 		return ((int)$a->counter > (int)$b->counter) ? -1 : 1;
+	}
+
+	private static function sortTagsByName($a, $b)
+	{
+		return strcmp($a->name, $b->name);
 	}
 
 	public static function getCustomCode($params)

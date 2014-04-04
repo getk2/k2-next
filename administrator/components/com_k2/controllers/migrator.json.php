@@ -994,8 +994,23 @@ class K2ControllerMigrator extends JControllerLegacy
 			$filter->recursive = $params->get('catCatalogMode');
 			$params->set('categories', $filter);
 
+			$url = array();
+			parse_str($row->link, $url);
+			$link = false;
+			if (!isset($url['task']) || $url['task'] == '')
+			{
+				$url['task'] = 'category';
+				$link = 'index.php?'.http_build_query($url);
+			}
+
 			$query = $db->getQuery(true);
-			$query->update($db->quoteName('#__menu'))->set($db->quoteName('params').' = '.$db->quote($params->toString()))->where($db->quoteName('id').' = '.(int)$row->id);
+			$query->update($db->quoteName('#__menu'));
+			$query->set($db->quoteName('params').' = '.$db->quote($params->toString()));
+			if ($link)
+			{
+				$query->set($db->quoteName('link').' = '.$db->quote($link));
+			}
+			$query->where($db->quoteName('id').' = '.(int)$row->id);
 			$db->setQuery($query);
 			$db->execute();
 		}

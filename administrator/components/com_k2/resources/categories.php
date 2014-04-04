@@ -339,5 +339,10 @@ class K2Categories extends K2Resource
 		$events->AfterDisplay = '';
 		return $events;
 	}
+	
+	public function getName()
+	{
+		return $this->title;
+	}
 
 }

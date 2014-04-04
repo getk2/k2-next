@@ -92,9 +92,6 @@ class K2Users extends K2Resource
 			
 			// Unset password
 			$this->password = '';
-			
-			// Legacy
-			$this->avatar = $this->image->src;
 		}
 
 	}
@@ -185,7 +182,7 @@ class K2Users extends K2Resource
 		{
 			$model->setState('exclude', $exclude);
 		}
-		$model->setState('limit', 0);
+		$model->setState('limit', $limit);
 		$model->setState('limitstart', 0);
 		$rows = $model->getRows();
 		return $rows;
@@ -246,6 +243,10 @@ class K2Users extends K2Resource
 	public function getLatestCommentDate()
 	{
 		return $this->comment->date;
+	}
+	public function getEvent()
+	{
+		return $this->events;
 	}
 
 }

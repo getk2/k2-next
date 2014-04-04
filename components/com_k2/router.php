@@ -345,7 +345,7 @@ function K2AdvancedSEFBuild(&$segments)
 function K2AdvancedSEFParse(&$vars, $segments)
 {
 	$params = JComponentHelper::getParams('com_k2');
-	$reservedViews = array('item', 'itemlist');
+	$reservedViews = array('attachments', 'calendar', 'item', 'itemlist', 'latest');
 
 	if (!in_array($segments[0], $reservedViews))
 	{
@@ -371,14 +371,14 @@ function K2AdvancedSEFParse(&$vars, $segments)
 		{
 			$vars['view'] = 'itemlist';
 			$vars['task'] = 'tag';
-			$vars['id'] = $segments[2];
+			$vars['id'] = $segments[1];
 		}
 		// User view
 		elseif ($segments[0] == $params->get('k2SefLabelUser', 'author'))
 		{
 			$vars['view'] = 'itemlist';
 			$vars['task'] = 'user';
-			$vars['id'] = $segments[2];
+			$vars['id'] = $segments[1];
 		}
 		// Date view
 		elseif ($segments[0] == $params->get('k2SefLabelDate', 'date'))
