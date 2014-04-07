@@ -398,7 +398,12 @@ class PlgSystemK2 extends JPlugin
 		{
 			// Item view
 			case 'com_k2.item' :
-				$view->item->params = $view->params;
+				$params = clone($view->params);
+				$itemParams = $view->item->params;
+				$categoryParams = $view->item->category->getEffectiveParams();
+				$view->item->params = clone($view->params);
+				$view->item->params->merge($categoryParams);
+				$view->item->params->merge($itemParams);
 				$view->item->params->set('itemRating', false);
 				jimport('joomla.html.pagination');
 				$view->pagination = new JPagination($view->item->comments, $application->input->get('limitstart'), $view->params->get('commentsLimit'));
@@ -408,6 +413,7 @@ class PlgSystemK2 extends JPlugin
 				$view->item->video = $view->item->getVideo();
 				$view->item->gallery = $view->item->getGallery();
 				$view->item->extra_fields = $view->item->getextra_fields();
+				$view->item->author->avatar = $view->item->author->image->src;
 				break;
 
 			// User view

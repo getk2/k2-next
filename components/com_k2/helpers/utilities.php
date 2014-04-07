@@ -112,4 +112,9 @@ class K2HelperUtilities
 	{
 		return;
 	}
+	public static function getAvatar($id, $email)
+	{
+		$user = K2Users::getInstance($id);
+		return $user->image->src;
+	}
 }

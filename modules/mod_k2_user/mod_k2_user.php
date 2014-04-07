@@ -11,19 +11,21 @@
 defined('_JEXEC') or die ;
 
 require_once dirname(__FILE__).'/helper.php';
-include dirname(__FILE__).'/legacy.php';
 
 $user = JFactory::getUser();
 
 if ($user->guest)
 {
 	$login = ModK2UserHelper::getLogin($params);
-	require JModuleHelper::getLayoutPath('mod_k2_user', 'login');
+	$layout = 'login';
 }
 else
 {
 	$user = K2Users::getInstance($user->id);
 	$user->numOfComments = $user->getNumOfComments();
 	$logout = ModK2UserHelper::getLogout($params);
-	require JModuleHelper::getLayoutPath('mod_k2_user', 'userblock');
+	$layout = 'userblock';
 }
+
+include dirname(__FILE__).'/legacy.php';
+require JModuleHelper::getLayoutPath('mod_k2_user', $layout);
