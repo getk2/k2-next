@@ -974,7 +974,7 @@ class K2ControllerMigrator extends JControllerLegacy
 			}
 
 		}
-		// Menus
+		// Category view menu links
 		$query = $db->getQuery(true);
 		$query->select('*')->from($db->quoteName('#__menu'))->where($db->quoteName('link').' LIKE '.$db->quote('%com_k2&view=itemlist&layout=category%', false));
 		$db->setQuery($query);
@@ -1010,6 +1010,81 @@ class K2ControllerMigrator extends JControllerLegacy
 			{
 				$query->set($db->quoteName('link').' = '.$db->quote($link));
 			}
+			$query->where($db->quoteName('id').' = '.(int)$row->id);
+			$db->setQuery($query);
+			$db->execute();
+		}
+
+		// Tag view menu links
+		$query = $db->getQuery(true);
+		$query->select('*')->from($db->quoteName('#__menu'))->where($db->quoteName('link').' LIKE '.$db->quote('%com_k2&view=itemlist&layout=tag%', false));
+		$db->setQuery($query);
+		$rows = $db->loadObjectList();
+		foreach ($rows as $row)
+		{
+			$params = new JRegistry($row->params);
+			$filter = new stdClass;
+			$filter->categories = (array)$params->get('categoriesFilter');
+			$filter->enabled = count($filter->categories) ? '1' : '';
+			$exists = array_search('1', $filter->categories);
+			if ($exists !== false)
+			{
+				$filter->categories[$exists] = 99999;
+			}
+			$filter->recursive = 0;
+			$params->set('categoriesFilter', $filter);
+
+			$url = array();
+			parse_str($row->link, $url);
+			$tag = $url['tag'];
+
+			$query = $db->getQuery(true);
+			$query->select($db->quoteName('id'))->from($db->quoteName('#__k2_tags'))->where($db->quoteName('name').' = '.$db->quote($tag));
+			$db->setQuery($query);
+			$tagId = $db->loadResult();
+			$url['id'] = $tagId;
+			$link = 'index.php?'.http_build_query($url);
+
+			$query = $db->getQuery(true);
+			$query->update($db->quoteName('#__menu'));
+			$query->set($db->quoteName('params').' = '.$db->quote($params->toString()));
+			$query->set($db->quoteName('link').' = '.$db->quote($link));
+			$query->where($db->quoteName('id').' = '.(int)$row->id);
+			$db->setQuery($query);
+			$db->execute();
+		}
+
+		// Latest view menu links
+		$query = $db->getQuery(true);
+		$query->select('*')->from($db->quoteName('#__menu'))->where($db->quoteName('link').' LIKE '.$db->quote('%com_k2&view=latest%', false));
+		$db->setQuery($query);
+		$rows = $db->loadObjectList();
+		foreach ($rows as $row)
+		{
+			$params = new JRegistry($row->params);
+
+			if ($params->get('source') == 1)
+			{
+				$filter = new stdClass;
+				$filter->categories = (array)$params->get('categoryIDs');
+				$filter->enabled = count($filter->categories) ? '1' : '';
+				$exists = array_search('1', $filter->categories);
+				if ($exists !== false)
+				{
+					$filter->categories[$exists] = 99999;
+				}
+				$filter->recursive = 0;
+				$params->set('categoryIDs', $filter);
+				$params->set('source', 'categories');
+			}
+			else
+			{
+				$params->set('source', 'users');
+			}
+
+			$query = $db->getQuery(true);
+			$query->update($db->quoteName('#__menu'));
+			$query->set($db->quoteName('params').' = '.$db->quote($params->toString()));
 			$query->where($db->quoteName('id').' = '.(int)$row->id);
 			$db->setQuery($query);
 			$db->execute();

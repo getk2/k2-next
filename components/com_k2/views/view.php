@@ -391,19 +391,7 @@ class K2View extends JViewLegacy
 		// Get input
 		$id = $application->input->get('id', 0, 'int');
 		$categories = $this->params->get('categories');
-
-		// Determine offset and limit based on document type
-		if ($this->type == 'html' || $this->type == 'raw')
-		{
-			$offset = $application->input->get('limitstart', 0, 'int');
-			$limit = $application->input->get('limit', 10, 'int');
-		}
-		else
-		{
-			$offset = 0;
-			$this->params->get('feedLimit', 10, 'int');
-		}
-
+		
 		// Get model
 		$model = K2Model::getInstance('Items');
 		$model->setState('site', true);
@@ -417,8 +405,17 @@ class K2View extends JViewLegacy
 			// Check access
 			$this->category->checkSiteAccess();
 
+			// Merge menu params with category params
+			$effectiveParams = $this->category->getEffectiveParams();
+			$this->params->merge($effectiveParams);
+
 			// Set model state
 			$model->setState('category', $id);
+			
+			if(!$this->params->get('catCatalogMode'))
+			{
+				$model->setState('recursive', 1);
+			}
 
 		}
 		// Multiple categories from menu item parameters
@@ -427,11 +424,21 @@ class K2View extends JViewLegacy
 			$model->setState('category.filter', $categories);
 		}
 
+		// Determine offset and limit based on document type
+		if ($this->type == 'html' || $this->type == 'raw')
+		{
+			$this->limit = (int)($this->params->get('num_leading_items') + $this->params->get('num_primary_items') + $this->params->get('num_secondary_items') + $this->params->get('num_links'));
+		}
+		else
+		{
+			$this->limit = $this->params->get('feedLimit', 10, 'int');
+		}
+
 		// @TODO Apply menu settings. Since they will be common all tasks we need to wait
 
 		// Get items
-		$model->setState('limit', $limit);
-		$model->setState('limitstart', $offset);
+		$model->setState('limit', $this->limit);
+		$model->setState('limitstart', $this->offset);
 		$this->items = $model->getRows();
 
 		// Count items

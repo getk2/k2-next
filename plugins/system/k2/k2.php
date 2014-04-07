@@ -409,12 +409,12 @@ class PlgSystemK2 extends JPlugin
 				$view->item->gallery = $view->item->getGallery();
 				$view->item->extra_fields = $view->item->getextra_fields();
 				break;
-				
-			// Item view
+
+			// User view
 			case 'com_k2.itemlist.user' :
 				$view->user = $view->author;
 				$view->user->profile->url = $view->user->profile->site;
-				foreach($view->items as &$item)
+				foreach ($view->items as &$item)
 				{
 					$item->params = $view->params;
 				}
@@ -424,20 +424,47 @@ class PlgSystemK2 extends JPlugin
 				$view->user->avatar = $view->user->image->src;
 				$view->feed = $view->user->feedLink;
 				break;
-				
-			// Item view
+
+			// Category view
 			case 'com_k2.itemlist.category' :
-				if(isset($view->category))
+				if (isset($view->category))
 				{
 					$view->feed = $view->category->feedLink;
 					$view->subCategories = $view->category->children;
 				}
-				foreach($view->items as &$item)
+				else
 				{
-					$item->params = $view->params;
+					$view->feed = JRoute::_('&format=feed&limitstart=');
 				}
-				// TODO: Change this later when we will have the final options for the grid...
-				$view->leading = $view->items;
+				foreach ($view->items as &$item)
+				{
+					if (isset($view->category))
+					{
+						$item->params = $view->params;
+					}
+					else
+					{
+						$params = clone($view->params);
+						$itemParams = $item->params;
+						$categoryParams = $item->category->getEffectiveParams();
+						$item->params = clone($view->params);
+						$item->params->merge($categoryParams);
+						$item->params->merge($itemParams);
+					}
+					$item->extra_fields = $item->getextra_fields();
+				}
+				break;
+				
+			// Category view
+			case 'com_k2.latest' :
+				$view->source = $view->params->get('source');
+				foreach ($view->blocks as $block)
+				{
+					foreach($block->items as &$item)
+					{
+						$item->params = $view->params;
+					}
+				}
 				break;
 		}
 

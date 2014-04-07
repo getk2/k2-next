@@ -25,8 +25,8 @@ class K2ViewItemlist extends K2View
 
 		// Get input
 		$task = $application->input->get('task', '', 'cmd');
-		$offset = $application->input->get('limitstart', 0, 'int');
-		$limit = $application->input->get('limit', 10, 'int');
+		$this->offset = $application->input->get('limitstart', 0, 'int');
+		$this->limit = $application->input->get('limit', 10, 'int');
 
 		// Trigger the corresponding method
 		if (method_exists($this, $task))
@@ -53,7 +53,7 @@ class K2ViewItemlist extends K2View
 
 		// Pagination
 		jimport('joomla.html.pagination');
-		$this->pagination = new JPagination($this->total, $offset, $limit);
+		$this->pagination = new JPagination($this->total, $this->offset, $this->limit);
 
 		// Display
 		parent::display($tpl);

@@ -25,8 +25,8 @@ class K2ViewItemlist extends K2View
 
 		// Get input
 		$task = $application->input->get('task', '', 'cmd');
-		$offset = $application->input->get('limitstart', 0, 'int');
-		$limit = $application->input->get('limit', 10, 'int');
+		$this->offset = $application->input->get('limitstart', 0, 'int');
+		$this->limit = $application->input->get('limit', 10, 'int');
 
 		// Trigger the corresponding method
 		if (method_exists($this, $task))
@@ -48,7 +48,7 @@ class K2ViewItemlist extends K2View
 		// Plugins
 		foreach ($this->items as $item)
 		{
-			$item->events = $item->getEvents('com_k2.itemlist.'.$task, $this->params, $offset);
+			$item->events = $item->getEvents('com_k2.itemlist.'.$task, $this->params, $this->offset);
 		}
 
 		// Add feed link
@@ -65,7 +65,7 @@ class K2ViewItemlist extends K2View
 
 		// Pagination
 		jimport('joomla.html.pagination');
-		$this->pagination = new JPagination($this->total, $offset, $limit);
+		$this->pagination = new JPagination($this->total, $this->offset, $this->limit);
 
 		// Display
 		parent::display($tpl);
@@ -79,10 +79,6 @@ class K2ViewItemlist extends K2View
 		// If we have a single category, merge the params and set metadata
 		if (isset($this->category))
 		{
-			// Merge menu params with category params
-			$effectiveParams = $this->category->getEffectiveParams();
-			$this->params->merge($effectiveParams);
-
 			// Set metadata
 			$this->setMetadata($this->category);
 
@@ -91,6 +87,42 @@ class K2ViewItemlist extends K2View
 			{
 				$this->category->children = $this->category->getChildren();
 			}
+		}
+
+		// Leading items
+		$offset = 0;
+		$length = (int)$this->params->get('num_leading_items');
+		$this->leading = array_slice($this->items, $offset, $length);
+		foreach ($this->leading as &$item)
+		{
+			$item->itemGroup = 'leading';
+		}
+
+		// Primary
+		$offset = (int)$this->params->get('num_leading_items');
+		$length = (int)$this->params->get('num_primary_items');
+		$this->primary = array_slice($this->items, $offset, $length);
+		foreach ($this->primary as &$item)
+		{
+			$item->itemGroup = 'primary';
+		}
+
+		// Secondary
+		$offset = (int)($this->params->get('num_leading_items') + $this->params->get('num_primary_items'));
+		$length = (int)$this->params->get('num_secondary_items');
+		$this->secondary = array_slice($this->items, $offset, $length);
+		foreach ($this->secondary as &$item)
+		{
+			$item->itemGroup = 'secondary';
+		}
+
+		// Links
+		$offset = (int)($this->params->get('num_leading_items') + $this->params->get('num_primary_items') + $this->params->get('num_secondary_items'));
+		$length = (int)$this->params->get('num_links');
+		$this->links = array_slice($this->items, $offset, $length);
+		foreach ($this->links as &$item)
+		{
+			$item->itemGroup = 'links';
 		}
 
 		// Set the flag for sending feed links to head
