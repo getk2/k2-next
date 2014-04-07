@@ -11,8 +11,8 @@
 defined('_JEXEC') or die ; ?>
 
 <div id="k2ModuleBox<?php echo $module->id; ?>" class="k2CategoriesListBlock<?php if($params->get('moduleclass_sfx')) echo ' '.$params->get('moduleclass_sfx'); ?>">
-	<ul>
-	<?php foreach ($categories as $key => $category): ?>
+	<ul class="level0">
+	<?php $level = 0; foreach ($categories as $key => $category): ?>
 		<li <?php if($category->active) echo 'class="activeCategory"'; ?>>
 			<a href="<?php echo $category->link ; ?>">
 				<span class="catTitle"><?php echo $category->title; ?></span>
@@ -21,11 +21,11 @@ defined('_JEXEC') or die ; ?>
 				<?php endif; ?>
 			</a>
 			
-		<?php if(isset($categories[$key+1]) && $categories[$key]->level < $categories[$key+1]->level): ?>
-			<ul>
+		<?php if(isset($categories[$key+1]) && $categories[$key]->level < $categories[$key+1]->level): $level++; ?>
+			<ul class="level<?php echo $level; ?>">
 		<?php endif; ?>
 	
-		<?php if(isset($categories[$key+1]) && $categories[$key]->level > $categories[$key+1]->level): ?>
+		<?php if(isset($categories[$key+1]) && $categories[$key]->level > $categories[$key+1]->level): $level--; ?>
 		<?php echo str_repeat('</li></ul>', $categories[$key]->level - $categories[$key+1]->level); ?>
 		<?php endif; ?>
 	

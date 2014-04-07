@@ -391,7 +391,7 @@ class K2View extends JViewLegacy
 		// Get input
 		$id = $application->input->get('id', 0, 'int');
 		$categories = $this->params->get('categories');
-		
+
 		// Get model
 		$model = K2Model::getInstance('Items');
 		$model->setState('site', true);
@@ -411,8 +411,8 @@ class K2View extends JViewLegacy
 
 			// Set model state
 			$model->setState('category', $id);
-			
-			if(!$this->params->get('catCatalogMode'))
+
+			if (!$this->params->get('catCatalogMode'))
 			{
 				$model->setState('recursive', 1);
 			}
@@ -460,13 +460,11 @@ class K2View extends JViewLegacy
 		// Determine offset and limit based on document type
 		if ($this->type == 'html' || $this->type == 'raw')
 		{
-			$offset = $application->input->get('limitstart', 0, 'int');
-			$limit = $application->input->get('limit', 10, 'int');
+			$this->limit = $application->input->get('limit', 10, 'int');
 		}
 		else
 		{
-			$offset = 0;
-			$this->params->get('feedLimit', 10, 'int');
+			$this->limit = $this->params->get('feedLimit', 10, 'int');
 		}
 
 		// Get user
@@ -481,8 +479,8 @@ class K2View extends JViewLegacy
 		$model = K2Model::getInstance('Items');
 		$model->setState('site', true);
 		$model->setState('author', $id);
-		$model->setState('limit', $limit);
-		$model->setState('limitstart', $offset);
+		$model->setState('limit', $this->limit);
+		$model->setState('limitstart', $this->offset);
 		$this->items = $model->getRows();
 
 		// Count items
@@ -504,13 +502,11 @@ class K2View extends JViewLegacy
 		// Determine offset and limit based on document type
 		if ($this->type == 'html' || $this->type == 'raw')
 		{
-			$offset = $application->input->get('limitstart', 0, 'int');
-			$limit = $application->input->get('limit', 10, 'int');
+			$this->limit = $application->input->get('limit', 10, 'int');
 		}
 		else
 		{
-			$offset = 0;
-			$this->params->get('feedLimit', 10, 'int');
+			$this->limit = $this->params->get('feedLimit', 10, 'int');
 		}
 
 		// Get tag
@@ -525,8 +521,8 @@ class K2View extends JViewLegacy
 		$model = K2Model::getInstance('Items');
 		$model->setState('site', true);
 		$model->setState('tag', $id);
-		$model->setState('limit', $limit);
-		$model->setState('limitstart', $offset);
+		$model->setState('limit', $this->limit);
+		$model->setState('limitstart', $this->offset);
 		$this->items = $model->getRows();
 
 		// Count items
@@ -550,13 +546,11 @@ class K2View extends JViewLegacy
 		// Determine offset and limit based on document type
 		if ($this->type == 'html' || $this->type == 'raw')
 		{
-			$offset = $application->input->get('limitstart', 0, 'int');
-			$limit = $application->input->get('limit', 10, 'int');
+			$this->limit = $application->input->get('limit', 10, 'int');
 		}
 		else
 		{
-			$offset = 0;
-			$this->params->get('feedLimit', 10, 'int');
+			$this->limit = $this->params->get('feedLimit', 10, 'int');
 		}
 
 		// Get items
@@ -566,8 +560,8 @@ class K2View extends JViewLegacy
 		$model->setState('month', $month);
 		$model->setState('day', $day);
 		$model->setState('category', $category);
-		$model->setState('limit', $limit);
-		$model->setState('limitstart', $offset);
+		$model->setState('limit', $this->limit);
+		$model->setState('limitstart', $this->offset);
 		$this->items = $model->getRows();
 
 		// Count items
@@ -589,13 +583,11 @@ class K2View extends JViewLegacy
 		// Determine offset and limit based on document type
 		if ($this->type == 'html' || $this->type == 'raw')
 		{
-			$offset = $application->input->get('limitstart', 0, 'int');
-			$limit = $application->input->get('limit', 10, 'int');
+			$this->limit = $application->input->get('limit', 10, 'int');
 		}
 		else
 		{
-			$offset = 0;
-			$this->params->get('feedLimit', 10, 'int');
+			$this->limit = $this->params->get('feedLimit', 10, 'int');
 		}
 
 		// Get items
@@ -604,8 +596,8 @@ class K2View extends JViewLegacy
 			$model = K2Model::getInstance('Items');
 			$model->setState('site', true);
 			$model->setState('search', $search);
-			$model->setState('limit', $limit);
-			$model->setState('limitstart', $offset);
+			$model->setState('limit', $this->limit);
+			$model->setState('limitstart', $this->offset);
 			$this->items = $model->getRows();
 
 			// Count items
