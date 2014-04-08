@@ -991,7 +991,7 @@ class K2ControllerMigrator extends JControllerLegacy
 			{
 				$filter->categories[$exists] = 99999;
 			}
-			$filter->recursive = $params->get('catCatalogMode');
+			$filter->recursive = $params->get('catCatalogMode') == 1 ? 0 : 1;
 			$params->set('categories', $filter);
 
 			$url = array();
