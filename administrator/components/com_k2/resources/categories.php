@@ -117,6 +117,11 @@ class K2Categories extends K2Resource
 	{
 		return JRoute::_(K2HelperRoute::getCategoryRoute($this->id.':'.$this->alias));
 	}
+	
+	public function getUrl()
+	{
+		return JRoute::_(K2HelperRoute::getCategoryRoute($this->id.':'.$this->alias), true, -1);
+	}
 
 	public function getFeedLink()
 	{

@@ -43,7 +43,7 @@ defined('_JEXEC') or die ;
 		</li>
 		<?php if($logout->K2CommentsEnabled): ?>
 		<li>
-			<a class="modal" rel="{handler:'iframe',size:{x:990,y:550}}" href="<?php echo JRoute::_('index.php?option=com_k2&view=comments&tmpl=component'); ?>"><?php echo JText::_('K2_MODERATE_COMMENTS_TO_MY_PUBLISHED_ITEMS'); ?></a>
+			<a class="modal" rel="{handler:'iframe',size:{x:990,y:550}}" href="<?php echo JRoute::_('index.php?option=com_k2&view=admin#comments'); ?>"><?php echo JText::_('K2_MODERATE_COMMENTS_TO_MY_PUBLISHED_ITEMS'); ?></a>
 		</li>
 		<?php endif; ?>
 	</ul>

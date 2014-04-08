@@ -208,6 +208,8 @@ class K2ControllerMigrator extends JControllerLegacy
 			$lastInsertedId = $model->getState('id');
 			$image = new stdClass;
 			$image->flag = $hasImage ? 1 : 0;
+			$image->caption = '';
+			$image->credits = '';
 			$image = json_encode($image);
 
 			$updatedParams = new JRegistry($category->params);

@@ -86,6 +86,8 @@ class K2Users extends K2Resource
 			$this->enabled = (int)!$this->block;
 			$this->activated = (int)!$this->activation;
 			$this->groupsValue = isset($this->groups) ? implode(', ', $this->groups) : '';
+			$this->canAdd = JFactory::getUser($this->id)->authorise('k2.item.create', 'com_k2');
+			$this->addLink = JRoute::_('index.php?option=com_k2&view=admin#items/add');
 
 			// Image
 			$this->image = $this->getImage();

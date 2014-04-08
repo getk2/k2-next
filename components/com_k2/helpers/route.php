@@ -249,6 +249,7 @@ class K2HelperRoute
 		{
 			$route .= '&category='.$category;
 		}
+		$route .= '&Itemid=';
 		return $route;
 	}
 
