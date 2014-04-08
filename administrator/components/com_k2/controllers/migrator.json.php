@@ -209,8 +209,17 @@ class K2ControllerMigrator extends JControllerLegacy
 			$image = new stdClass;
 			$image->flag = $hasImage ? 1 : 0;
 			$image = json_encode($image);
+
+			$updatedParams = new JRegistry($category->params);
+			$this->updateImageSizeParam($updatedParams, 'leadingImgSize', 'Large');
+			$this->updateImageSizeParam($updatedParams, 'primaryImgSize', 'Medium');
+			$this->updateImageSizeParam($updatedParams, 'secondaryImgSize', 'Small');
+			$this->updateImageSizeParam($updatedParams, 'linksImgSize', 'XSmall');
+			$this->updateImageSizeParam($updatedParams, 'itemImgSize', 'Large');
+			$this->updateImageSizeParam($updatedParams, 'itemRelatedImageSize', '0');
+
 			$query = $db->getQuery(true);
-			$query->update($db->quoteName('#__k2_categories'))->set(array($db->quoteName('id').' = '.$newCategoryId, $db->quoteName('image').' = '.$db->quote($image), $db->quoteName('plugins').' = '.$db->quote($category->plugins), $db->quoteName('params').' = '.$db->quote($category->params)))->where($db->quoteName('id').' = '.$lastInsertedId);
+			$query->update($db->quoteName('#__k2_categories'))->set(array($db->quoteName('id').' = '.$newCategoryId, $db->quoteName('image').' = '.$db->quote($image), $db->quoteName('plugins').' = '.$db->quote($category->plugins), $db->quoteName('params').' = '.$db->quote($updatedParams->toString())))->where($db->quoteName('id').' = '.$lastInsertedId);
 			$db->setQuery($query);
 			$db->execute();
 
@@ -784,9 +793,13 @@ class K2ControllerMigrator extends JControllerLegacy
 
 			$extraFields = json_encode($extraFields);
 
+			$updatedParams = new JRegistry($item->params);
+			$this->updateImageSizeParam($updatedParams, 'itemImgSize', '');
+			$this->updateImageSizeParam($updatedParams, 'itemRelatedImageSize', '');
+
 			$query = $db->getQuery(true);
 			$query->update($db->quoteName('#__k2_items'));
-			$query->set(array($db->quoteName('id').' = '.$item->id, $db->quoteName('image').' = '.$db->quote($image), $db->quoteName('media').' = '.$db->quote($media), $db->quoteName('tags').' = '.$db->quote($tags), $db->quoteName('attachments').' = '.$db->quote($attachments), $db->quoteName('galleries').' = '.$db->quote($galleries), $db->quoteName('extra_fields').' = '.$db->quote($extraFields), $db->quoteName('created').' = '.$db->quote($item->created), $db->quoteName('created_by').' = '.$db->quote($item->created_by), $db->quoteName('modified').' = '.$db->quote($item->modified), $db->quoteName('modified_by').' = '.$db->quote($item->modified_by), $db->quoteName('plugins').' = '.$db->quote($item->plugins), $db->quoteName('params').' = '.$db->quote($item->params)))->where($db->quoteName('id').' = '.$lastInsertedId);
+			$query->set(array($db->quoteName('id').' = '.$item->id, $db->quoteName('image').' = '.$db->quote($image), $db->quoteName('media').' = '.$db->quote($media), $db->quoteName('tags').' = '.$db->quote($tags), $db->quoteName('attachments').' = '.$db->quote($attachments), $db->quoteName('galleries').' = '.$db->quote($galleries), $db->quoteName('extra_fields').' = '.$db->quote($extraFields), $db->quoteName('created').' = '.$db->quote($item->created), $db->quoteName('created_by').' = '.$db->quote($item->created_by), $db->quoteName('modified').' = '.$db->quote($item->modified), $db->quoteName('modified_by').' = '.$db->quote($item->modified_by), $db->quoteName('plugins').' = '.$db->quote($item->plugins), $db->quoteName('params').' = '.$db->quote($updatedParams->toString())))->where($db->quoteName('id').' = '.$lastInsertedId);
 			$db->setQuery($query);
 			$db->execute();
 
@@ -947,6 +960,8 @@ class K2ControllerMigrator extends JControllerLegacy
 
 		$componentParams->set('imageSizes', $imageSizes);
 
+		$this->updateImageSizeParam($componentParams, 'facebookImage', 'Medium');
+
 		$query = $db->getQuery(true);
 		$query->update($db->quoteName('#__extensions'));
 		$query->set($db->quoteName('params').' = '.$db->quote($componentParams->toString()));
@@ -1005,6 +1020,11 @@ class K2ControllerMigrator extends JControllerLegacy
 				$link = 'index.php?'.http_build_query($url);
 				$flag = true;
 			}
+
+			$this->updateImageSizeParam($params, 'leadingImgSize', 'Large');
+			$this->updateImageSizeParam($params, 'primaryImgSize', 'Medium');
+			$this->updateImageSizeParam($params, 'secondaryImgSize', 'Small');
+			$this->updateImageSizeParam($params, 'linksImgSize', 'XSmall');
 
 			$query = $db->getQuery(true);
 			$query->update($db->quoteName('#__menu'));
@@ -1086,6 +1106,8 @@ class K2ControllerMigrator extends JControllerLegacy
 				$params->set('source', 'users');
 			}
 
+			$this->updateImageSizeParam($params, 'latestItemImageSize', 'Medium');
+
 			$query = $db->getQuery(true);
 			$query->update($db->quoteName('#__menu'));
 			$query->set($db->quoteName('params').' = '.$db->quote($params->toString()));
@@ -1137,27 +1159,7 @@ class K2ControllerMigrator extends JControllerLegacy
 				$filter->recursive = $params->get('getChildren');
 				$params->set('filter', $filter);
 
-				$image = $params->get('itemImgSize', 'Small');
-				if ($image == 'XSmall')
-				{
-					$params->set('itemImgSize', 'XS');
-				}
-				else if ($image == 'Small')
-				{
-					$params->set('itemImgSize', 'S');
-				}
-				else if ($image == 'Medium')
-				{
-					$params->set('itemImgSize', 'M');
-				}
-				else if ($image == 'Large')
-				{
-					$params->set('itemImgSize', 'L');
-				}
-				else if ($image == 'XLarge')
-				{
-					$params->set('itemImgSize', 'XL');
-				}
+				$this->updateImageSizeParam($params, 'itemImgSize', 'Small');
 
 				$limit = $params->get('itemCount');
 				$params->set('limit', $limit);
@@ -1338,6 +1340,31 @@ class K2ControllerMigrator extends JControllerLegacy
 
 		return $params->toString();
 
+	}
+
+	private function updateImageSizeParam(&$params, $name, $default = 'Small')
+	{
+		$image = $params->get($name, $default);
+		if ($image == 'XSmall')
+		{
+			$params->set('itemImgSize', 'XS');
+		}
+		else if ($image == 'Small')
+		{
+			$params->set('itemImgSize', 'S');
+		}
+		else if ($image == 'Medium')
+		{
+			$params->set('itemImgSize', 'M');
+		}
+		else if ($image == 'Large')
+		{
+			$params->set('itemImgSize', 'L');
+		}
+		else if ($image == 'XLarge')
+		{
+			$params->set('itemImgSize', 'XL');
+		}
 	}
 
 }
