@@ -181,7 +181,7 @@ class K2ControllerMigrator extends JControllerLegacy
 			$data['parent_id'] = 1;
 			if ($category->image && JFile::exists(JPATH_SITE.'/media/k2/categories/'.$category->image))
 			{
-				JFile::move(JPATH_SITE.'/media/k2/categories/'.$category->image, JPATH_SITE.'/media/k2/categories/'.md5('Image'.$newCategoryId));
+				JFile::move(JPATH_SITE.'/media/k2/categories/'.$category->image, JPATH_SITE.'/media/k2/categories/'.md5('Image'.$newCategoryId).'.jpg');
 				$hasImage = true;
 			}
 			$data['template'] = isset($categoryParams->theme) && $categoryParams->theme ? $categoryParams->theme : '';
