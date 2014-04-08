@@ -995,18 +995,21 @@ class K2ControllerMigrator extends JControllerLegacy
 			$params->set('categories', $filter);
 
 			$url = array();
-			parse_str($row->link, $url);
-			$link = false;
+			$link = str_replace('index.php?', '', $row->link);
+
+			parse_str($link, $url);
+			$flag = false;
 			if (!isset($url['task']) || $url['task'] == '')
 			{
 				$url['task'] = 'category';
 				$link = 'index.php?'.http_build_query($url);
+				$flag = true;
 			}
 
 			$query = $db->getQuery(true);
 			$query->update($db->quoteName('#__menu'));
 			$query->set($db->quoteName('params').' = '.$db->quote($params->toString()));
-			if ($link)
+			if ($flag)
 			{
 				$query->set($db->quoteName('link').' = '.$db->quote($link));
 			}
@@ -1034,8 +1037,9 @@ class K2ControllerMigrator extends JControllerLegacy
 			$filter->recursive = 0;
 			$params->set('categoriesFilter', $filter);
 
+			$link = str_replace('index.php?', '', $row->link);
 			$url = array();
-			parse_str($row->link, $url);
+			parse_str($link, $url);
 			$tag = $url['tag'];
 
 			$query = $db->getQuery(true);
