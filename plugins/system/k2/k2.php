@@ -412,7 +412,6 @@ class PlgSystemK2 extends JPlugin
 				$view->authorLatestItems = $view->item->author->latest;
 				$view->item->video = $view->item->getVideo();
 				$view->item->gallery = $view->item->getGallery();
-				$view->item->extra_fields = $view->item->getextra_fields();
 				$view->item->author->avatar = $view->item->author->image->src;
 				break;
 
@@ -457,16 +456,15 @@ class PlgSystemK2 extends JPlugin
 						$item->params->merge($categoryParams);
 						$item->params->merge($itemParams);
 					}
-					$item->extra_fields = $item->getextra_fields();
 				}
 				break;
-				
+
 			// Category view
 			case 'com_k2.latest' :
 				$view->source = $view->params->get('source');
 				foreach ($view->blocks as $block)
 				{
-					foreach($block->items as &$item)
+					foreach ($block->items as &$item)
 					{
 						$item->params = $view->params;
 					}
