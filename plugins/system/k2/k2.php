@@ -413,6 +413,7 @@ class PlgSystemK2 extends JPlugin
 				$view->item->video = $view->item->getVideo();
 				$view->item->gallery = $view->item->getGallery();
 				$view->item->author->avatar = $view->item->author->image->src;
+				$view->item->extra_fields = $view->item->getextra_fields();
 				break;
 
 			// User view

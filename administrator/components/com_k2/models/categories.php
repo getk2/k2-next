@@ -20,6 +20,7 @@ class K2ModelCategories extends K2Model
 {
 
 	private static $authorised = null;
+	private static $cache = array('roots' => array(), 'trees' => array());
 
 	public function getRows()
 	{
@@ -156,8 +157,18 @@ class K2ModelCategories extends K2Model
 		}
 		if ($this->getState('root'))
 		{
-			$root = $this->getTable();
-			$root->load((int)$this->getState('root'));
+			$rootId = (int)$this->getState('root');
+			if (!isset(self::$cache['roots'][$rootId]))
+			{
+				$root = $this->getTable();
+				$root->load($rootId);
+				self::$cache['roots'][$rootId] = $root;
+			}
+			else
+			{
+				$root = self::$cache['roots'][$rootId];
+			}
+
 			$query->where($db->quoteName('category.lft').' >= '.(int)$root->lft);
 			$query->where($db->quoteName('category.rgt').' <= '.(int)$root->rgt);
 		}
@@ -280,9 +291,19 @@ class K2ModelCategories extends K2Model
 					$model = K2Model::getInstance('Categories');
 					foreach ($categories as $categoryId)
 					{
-						$model->setState('site', $access);
-						$model->setState('root', $categoryId);
-						$rows = $model->getRows();
+						$key = (string)$access.'|'.(string)$categoryId;
+						if (!isset(self::$cache['trees'][$key]))
+						{
+							$model->setState('site', $access);
+							$model->setState('root', $categoryId);
+							$rows = $model->getRows();
+							self::$cache['trees'][$key] = $rows;
+						}
+						else
+						{
+							$rows = self::$cache['trees'][$key];
+						}
+
 						foreach ($rows as $row)
 						{
 							$children[] = $row->id;

@@ -743,6 +743,16 @@ class K2Items extends K2Resource
 		return count($this->media) ? $this->media[0]->output : '';
 	}
 
+	public function getVideo_caption()
+	{
+		return count($this->media) ? $this->media[0]->caption : '';
+	}
+
+	public function getVideo_credits()
+	{
+		return count($this->media) ? $this->media[0]->credits : '';
+	}
+
 	public function getVideoType()
 	{
 		return '';
@@ -761,6 +771,16 @@ class K2Items extends K2Resource
 	public function getAuthorAvatar()
 	{
 		return $this->author->image->src;
+	}
+
+	public function getAuthorGender()
+	{
+		return $this->author->gender;
+	}
+
+	public function getAuthorDescription()
+	{
+		return $this->author->description;
 	}
 
 	public function getextra_fields()
