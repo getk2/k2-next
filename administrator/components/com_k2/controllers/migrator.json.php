@@ -402,6 +402,11 @@ class K2ControllerMigrator extends JControllerLegacy
 				$value->src = isset($object->value) ? $object->value : '';
 				$value->alt = '';
 			}
+			// This skips header and CSV data fields. TODO: Update it to migrate those fields also.
+			else
+			{
+				continue;
+			}
 
 			$value = json_encode($value);
 
@@ -764,7 +769,7 @@ class K2ControllerMigrator extends JControllerLegacy
 						$entry->value = '';
 						$json = json_decode($field->value);
 
-						if ($json->multiple)
+						if (isset($json->multiple) && $json->multiple)
 						{
 							$entry->value = array();
 							if (isset($itemField->value) && is_array($itemField->value) && isset($json->options) && is_array($json->options))
