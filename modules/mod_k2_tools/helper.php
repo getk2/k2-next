@@ -139,6 +139,11 @@ class ModK2ToolsHelper
 		$pathway = $application->getPathway();
 		$pathwayItems = $pathway->getPathWay();
 
+		foreach ($pathwayItems as $pathwayItem)
+		{
+			$pathwayItem->title = $pathwayItem->name;
+		}
+
 		if ($option == 'com_k2' && $view == 'item' || ($view == 'itemlist' && $task == 'category'))
 		{
 
@@ -155,7 +160,7 @@ class ModK2ToolsHelper
 					// Handle depending on matches
 					if ($matchItem)
 					{
-						$breadcrumbs->title =     end($pathwayItems)->name;
+						$breadcrumbs->title = end($pathwayItems)->title;
 						foreach ($pathwayItems as $pathwayItem)
 						{
 							$breadcrumbs->path[] = $pathwayItem;
@@ -169,6 +174,7 @@ class ModK2ToolsHelper
 						{
 							$breadcrumbs->path[] = $pathwayItem;
 						}
+						array_pop($breadcrumbs->path);
 					}
 					else
 					{
@@ -189,7 +195,7 @@ class ModK2ToolsHelper
 					// Handle depending on matches
 					if ($matchCategory)
 					{
-						$breadcrumbs->title =     end($pathwayItems)->name;
+						$breadcrumbs->title = end($pathwayItems)->title;
 						foreach ($pathwayItems as $pathwayItem)
 						{
 							$breadcrumbs->path[] = $pathwayItem;
@@ -212,10 +218,9 @@ class ModK2ToolsHelper
 		else
 		{
 
-			$breadcrumbs->title = count($pathwayItems) ?    end($pathwayItems)->name : '';
+			$breadcrumbs->title = count($pathwayItems) ? end($pathwayItems)->title : '';
 			foreach ($pathwayItems as $pathwayItem)
 			{
-				$pathwayItem->title = $pathwayItem->name;
 				$breadcrumbs->path[] = $pathwayItem;
 			}
 			array_pop($breadcrumbs->path);

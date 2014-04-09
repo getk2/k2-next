@@ -33,7 +33,11 @@ switch ($params->get('usage'))
 	case 'breadcrumbs' :
 		$breadcrumbs = ModK2ToolsHelper::getBreadcrumbs($params);
 		// Legacy
-		$path = $breadcrumbs->path;
+		$path = array();
+		foreach ($breadcrumbs->path as $entry)
+		{
+			$path[] = '<a href="'.$entry->link.'">'.$entry->title.'</a>';
+		}
 		$title = $breadcrumbs->title;
 		require JModuleHelper::getLayoutPath('mod_k2_tools', 'breadcrumbs');
 		break;
