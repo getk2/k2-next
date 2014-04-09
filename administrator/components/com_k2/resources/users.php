@@ -217,6 +217,11 @@ class K2Users extends K2Resource
 		return $this->image->src;
 	}
 	
+	public function getAvatar()
+	{
+		return $this->image->src;
+	}
+	
 	public function getFeed()
 	{
 		return $this->feedLink;

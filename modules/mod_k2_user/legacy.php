@@ -41,6 +41,7 @@ if ($jUser->guest)
 	$registrationLink = $login->registrationLink;
 	$option = $login->option;
 	$task = $login->task;
+	$return = $login->return;
 }
 else
 {
@@ -48,4 +49,5 @@ else
     $profileLink = $logout->profileLink;
 	$option = $logout->option;
 	$task = $logout->task;
+	$return = $logout->return;
 }

@@ -413,7 +413,11 @@ class PlgSystemK2 extends JPlugin
 				$view->item->video = $view->item->getVideo();
 				$view->item->gallery = $view->item->getGallery();
 				$view->item->author->avatar = $view->item->author->image->src;
-				$view->item->extra_fields = $view->item->getextra_fields();
+				if (is_string($view->item->extra_fields))
+				{
+					$view->item->extraFields = $view->item->getExtraFields();
+					$view->item->extra_fields = $view->item->getextra_fields();
+				}
 				break;
 
 			// User view
@@ -429,6 +433,11 @@ class PlgSystemK2 extends JPlugin
 				$view->now = JFactory::getDate()->toSql();
 				$view->user->avatar = $view->user->image->src;
 				$view->feed = $view->user->feedLink;
+				break;
+				
+			// Tag view
+			case 'com_k2.itemlist.tag' :
+				$view->feed = $view->tag->feedLink;
 				break;
 
 			// Category view

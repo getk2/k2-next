@@ -38,7 +38,11 @@ else
 	$avatarWidth = $itemAuthorAvatarWidth;
 }
 
-foreach($items as &$item)
+foreach ($items as $item)
 {
-	$item->extra_fields = $item->getextra_fields();
+	if (is_string($item->extra_fields))
+	{
+		$item->extraFields = $item->getExtraFields();
+		$item->extra_fields = $item->getextra_fields();
+	}
 }

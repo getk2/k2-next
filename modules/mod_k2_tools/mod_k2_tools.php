@@ -43,7 +43,15 @@ switch ($params->get('usage'))
 		break;
 
 	case 'categories' :
+	
 		$categories = ModK2ToolsHelper::getCategories($params, 'default');
+		
+		// Legacy
+		ob_start();
+		require JPATH_SITE.'/modules/mod_k2_tools/tmpl/categories.php';
+		$output = ob_get_contents();
+		ob_end_clean();
+		
 		require JModuleHelper::getLayoutPath('mod_k2_tools', 'categories');
 		break;
 
@@ -54,6 +62,9 @@ switch ($params->get('usage'))
 
 	case 'search' :
 		$search = ModK2ToolsHelper::getSearch($params);
+		// Legacy
+		$action = $search->action;
+		$categoryFilter = $search->filter;
 		require JModuleHelper::getLayoutPath('mod_k2_tools', 'search');
 		break;
 

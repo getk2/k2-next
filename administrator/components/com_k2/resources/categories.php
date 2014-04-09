@@ -349,5 +349,10 @@ class K2Categories extends K2Resource
 	{
 		return $this->title;
 	}
+	
+	public function getFeed()
+	{
+		return $this->feedLink;
+	}
 
 }

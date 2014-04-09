@@ -432,6 +432,7 @@ class K2HelperImages
 			$image->caption = $value->caption;
 			$image->credits = $value->credits;
 			$image->flag = 1;
+			$image->width = null;
 			$images['src'] = $image;
 
 			// Preview image when editing items

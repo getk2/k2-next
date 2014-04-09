@@ -117,6 +117,11 @@ class K2Tags extends K2Resource
 		return JRoute::_(K2HelperRoute::getTagRoute($this->id.':'.$this->alias), true, -1);
 	}
 	
+	public function getFeedLink()
+	{
+		return JRoute::_(K2HelperRoute::getTagRoute($this->id.':'.$this->alias).'&format=feed');
+	}
+	
 	public function getExtraFields()
 	{
 		$extraFields = array();

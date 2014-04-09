@@ -349,6 +349,8 @@ class ModK2ToolsHelper
 			$entry->counter = $rows[$entry->id];
 			$size = $minimumFontSize + (($entry->counter - $minimumOccurencies) * $step);
 			$entry->size = ceil($size);
+			// Legacy
+			$entry->count = $entry->counter;
 		}
 
 		usort($cloud, 'self::sortTagsByName');

@@ -785,9 +785,8 @@ class K2Items extends K2Resource
 
 	public function getextra_fields()
 	{
-		$this->getExtraFields();
 		$extraFields = array();
-		foreach ($this->extrafields as $extraFieldGroup)
+		foreach ($this->extraFields as $extraFieldGroup)
 		{
 			foreach ($extraFieldGroup->fields as $key => $extraField)
 			{
@@ -811,6 +810,16 @@ class K2Items extends K2Resource
 	public function getPublished()
 	{
 		return $this->state;
+	}
+	
+	public function getImageXLarge()
+	{
+		return isset($this->images['XL']) ? $this->images['XL']->src : null;
+	}
+	
+	public function getImageWidth()
+	{
+		return isset($this->image) ? $this->image->width : null;
 	}
 
 }
