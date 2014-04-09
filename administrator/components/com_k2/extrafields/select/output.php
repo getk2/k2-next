@@ -18,7 +18,7 @@ defined('_JEXEC') or die ; ?>
 	
 <?php else : ?>
 
-	<?php echo $value ?>
+	<?php echo $field->get('value'); ?>
 	
 <?php endif; ?>
 </div>

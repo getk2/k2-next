@@ -89,6 +89,7 @@ class K2ExtraFieldsGroups extends K2Resource
 			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
 			$model = K2Model::getInstance('ExtraFields', 'K2Model');
 			$model->setState('group', $this->id);
+			$model->setState('sorting', 'ordering');
 			$fields = $model->getRows();
 		}
 		return $fields;

@@ -751,7 +751,7 @@ class K2ControllerMigrator extends JControllerLegacy
 					}
 					else if ($field->type == 'link')
 					{
-						$entry->name = isset($itemField->value) && is_array($itemField->value) && isset($itemField->value[0]) ? $itemField->value[0] : '';
+						$entry->text = isset($itemField->value) && is_array($itemField->value) && isset($itemField->value[0]) ? $itemField->value[0] : '';
 						$entry->url = isset($itemField->value) && is_array($itemField->value) && isset($itemField->value[1]) ? $itemField->value[1] : '';
 						$entry->target = isset($itemField->value) && is_array($itemField->value) && isset($itemField->value[2]) ? $itemField->value[2] : '';
 					}
@@ -776,9 +776,9 @@ class K2ControllerMigrator extends JControllerLegacy
 							{
 								foreach ($itemField->value as $value)
 								{
-									if (isset($json->options[$value]))
+									if (isset($json->options[($value - 1)]))
 									{
-										$entry->value[] = $json->options[$value];
+										$entry->value[] = $json->options[($value - 1)];
 									}
 								}
 							}
@@ -786,9 +786,9 @@ class K2ControllerMigrator extends JControllerLegacy
 						else
 						{
 							$entry->value = '';
-							if (isset($json->options) && is_array($json->options) && isset($itemField->value) && $itemField->value && isset($json->options[$itemField->value]))
+							if (isset($json->options) && is_array($json->options) && isset($itemField->value) && $itemField->value && isset($json->options[($itemField->value - 1)]))
 							{
-								$entry->value = $json->options[$itemField->value];
+								$entry->value = $json->options[($itemField->value - 1)];
 							}
 						}
 

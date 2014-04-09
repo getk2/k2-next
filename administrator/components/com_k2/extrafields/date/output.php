@@ -11,5 +11,5 @@
 defined('_JEXEC') or die ; ?>
 
 <?php if($value = $field->get('date')): ?>
-<span><?php echo JHtml::_('date', $value, JText::_('K2_DATE_FORMAT')); ?></span>
+<span><?php echo JHtml::_('date', $value, JText::_('DATE_FORMAT_LC1')); ?></span>
 <?php endif; ?>
