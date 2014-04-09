@@ -48,7 +48,7 @@ $uniqueId = uniqid('k2ExtraField');
 		jQuery('#<?php echo $uniqueId; ?> input[type="hidden"]').val('');
 		
 		var file = jQuery(this).get(0).files[0];
-		if (file.type == 'text/comma-separated-values') {
+		if (file.type == 'text/comma-separated-values' || file.type == 'text/csv') {
 			var reader = new FileReader();
 			reader.onload = function(event) {
 				var data = [];
