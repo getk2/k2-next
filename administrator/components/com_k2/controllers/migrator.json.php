@@ -402,7 +402,13 @@ class K2ControllerMigrator extends JControllerLegacy
 				$value->src = isset($object->value) ? $object->value : '';
 				$value->alt = '';
 			}
-			// This skips header and CSV data fields. TODO: Update it to migrate those fields also.
+			else if ($field->type == 'csv')
+			{
+				$type = 'csv';
+				$value = new stdClass;
+				$value->value = isset($object->value) ? $object->value : '';
+			}
+			// This skips header fields. TODO: Update it to migrate those fields also.
 			else
 			{
 				continue;
@@ -792,6 +798,10 @@ class K2ControllerMigrator extends JControllerLegacy
 							}
 						}
 
+					}
+					else if ($field->type == 'csv')
+					{
+						$entry->value = isset($itemField->value) ? $itemField->value : '';
 					}
 					$property = $field->id;
 					$extraFields->$property = $entry;
