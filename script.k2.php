@@ -28,7 +28,7 @@ class Com_K2InstallerScript
 			// Ensure that we are under Joomla! 3.2 or later
 			if(version_compare(JVERSION, '3.2.3', 'lt'))
 			{
-				$application->enqueueMessage('K2 requires Joomla! 3.2 or later.', 'error');
+				$application->enqueueMessage('K2 requires Joomla! 3.2.3 or later.', 'error');
 				return false;
 			}
 						
@@ -54,7 +54,28 @@ class Com_K2InstallerScript
 				{
 					$application->enqueueMessage('Your site is not offline. Please put your site offline and try again.', 'error');
 					return false;
-				}			
+				}
+				
+				// User is required to disable Joomla! system debugger while upgrading
+				if($configuration->get('debug'))
+				{
+					$application->enqueueMessage('You have the Joomla! system debugger enabled. Please disable it and try again.', 'error');
+					return false;
+				}
+				
+				// User is required to disable Joomla! language debugger while upgrading
+				if($configuration->get('debug_lang'))
+				{
+					$application->enqueueMessage('You have the Joomla! language debugger enabled. Please disable it and try again.', 'error');
+					return false;
+				}
+				
+				// User is required to set error reporting to "None" while upgrading to avoid breaking JSON response
+				if($configuration->get('error_reporting') != 'none')
+				{
+					$application->enqueueMessage('You have the Joomla! error reporting enabled. Please set it to "None" and try again.', 'error');
+					return false;
+				}
 				
 				// Since this is an upgrade rename all K2 2.x tables so the new ones will be created.
 				$oldTables = array('#__k2_attachments', '#__k2_categories', '#__k2_comments', '#__k2_extra_fields' , '#__k2_extra_fields_groups', '#__k2_items', '#__k2_rating', '#__k2_tags', '#__k2_tags_xref', '#__k2_users', '#__k2_user_groups');
