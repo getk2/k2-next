@@ -406,7 +406,7 @@ class K2ControllerMigrator extends JControllerLegacy
 			{
 				$type = 'csv';
 				$value = new stdClass;
-				$value->value = isset($object->value) ? $object->value : '';
+				$value->value = isset($object->value) ? json_encode($object->value) : '';
 			}
 			else if ($field->type == 'header')
 			{
@@ -802,7 +802,7 @@ class K2ControllerMigrator extends JControllerLegacy
 					}
 					else if ($field->type == 'csv')
 					{
-						$entry->value = isset($itemField->value) ? $itemField->value : '';
+						$entry->value = isset($itemField->value) ? json_encode($itemField->value) : '';
 					}
 					else if ($field->type == 'header')
 					{
