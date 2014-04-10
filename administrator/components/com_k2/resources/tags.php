@@ -58,7 +58,7 @@ class K2Tags extends K2Resource
 		}
 		return self::$instances[$id];
 	}
-	
+
 	/**
 	 * Check if an instance is loaded.
 	 *
@@ -91,7 +91,7 @@ class K2Tags extends K2Resource
 
 		// URL
 		$this->url = $this->getUrl();
-		
+
 		// Legacy
 		$this->tag = $this->name;
 	}
@@ -116,20 +116,34 @@ class K2Tags extends K2Resource
 	{
 		return JRoute::_(K2HelperRoute::getTagRoute($this->id.':'.$this->alias), true, -1);
 	}
-	
+
 	public function getFeedLink()
 	{
 		return JRoute::_(K2HelperRoute::getTagRoute($this->id.':'.$this->alias).'&format=feed');
 	}
-	
+
 	public function getExtraFields()
 	{
-		$extraFields = array();
-		if ($this->id)
+		$extraFields = new stdClass;
+		foreach ($this->extraFieldsGroups as $extraFieldsGroup)
 		{
-			$extraFields = K2HelperExtraFields::getTagExtraFields($this->id, $this->extra_fields);
+			foreach ($extraFieldsGroup->fields as $extraField)
+			{
+				$property = $extraField->alias;
+				$extraFields->$property = $extraField;
+			}
 		}
 		return $extraFields;
+	}
+
+	public function getExtraFieldsGroups()
+	{
+		$groups = array();
+		if ($this->id)
+		{
+			$groups = K2HelperExtraFields::getTagExtraFieldsGroups($this->id, $this->extra_fields);
+		}
+		return $groups;
 	}
 
 	public function checkSiteAccess()
@@ -142,7 +156,7 @@ class K2Tags extends K2Resource
 		}
 		return true;
 	}
-	
+
 	// Legacy
 	public function getTag()
 	{

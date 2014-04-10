@@ -117,7 +117,7 @@ class K2Categories extends K2Resource
 	{
 		return JRoute::_(K2HelperRoute::getCategoryRoute($this->id.':'.$this->alias));
 	}
-	
+
 	public function getUrl()
 	{
 		return JRoute::_(K2HelperRoute::getCategoryRoute($this->id.':'.$this->alias), true, -1);
@@ -209,12 +209,26 @@ class K2Categories extends K2Resource
 
 	public function getExtraFields()
 	{
-		$extraFields = array();
-		if ($this->id)
+		$extraFields = new stdClass;
+		foreach ($this->extraFieldsGroups as $extraFieldsGroup)
 		{
-			$extraFields = K2HelperExtraFields::getCategoryExtraFields($this->id, $this->extra_fields);
+			foreach ($extraFieldsGroup->fields as $extraField)
+			{
+				$property = $extraField->alias;
+				$extraFields->$property = $extraField;
+			}
 		}
 		return $extraFields;
+	}
+
+	public function getExtraFieldsGroups()
+	{
+		$groups = array();
+		if ($this->id)
+		{
+			$groups = K2HelperExtraFields::getCategoryExtraFieldsGroups($this->id, $this->extra_fields);
+		}
+		return $groups;
 	}
 
 	public function getEvents($context = 'com_k2.category', &$params = null, $offset = 0, $k2Plugins = true, $jPlugins = true)
@@ -344,12 +358,12 @@ class K2Categories extends K2Resource
 		$events->AfterDisplay = '';
 		return $events;
 	}
-	
+
 	public function getName()
 	{
 		return $this->title;
 	}
-	
+
 	public function getFeed()
 	{
 		return $this->feedLink;

@@ -77,11 +77,11 @@ defined('_JEXEC') or die ; ?>
       </div>
       <?php endif; ?>
 
-      <?php if($params->get('itemExtraFields') && count($item->extraFields)): ?>
+      <?php if($params->get('itemExtraFields') && count($item->extraFieldsGroups)): ?>
       <div class="moduleItemExtraFields">
 	      <b><?php echo JText::_('K2_ADDITIONAL_INFO'); ?></b>
 	      
-		  <?php foreach ($item->extraFields as $extraFieldGroup): ?>
+		  <?php foreach ($item->extraFieldsGroups as $extraFieldGroup): ?>
 		  <h4><?php echo $extraFieldGroup->name; ?></h4>
 		  <ul>
 			<?php foreach ($extraFieldGroup->fields as $key=>$extraField): ?>

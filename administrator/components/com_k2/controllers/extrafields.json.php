@@ -36,25 +36,28 @@ class K2ControllerExtraFields extends K2Controller
 			require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/items.php';
 			$item = K2Items::getInstance($resourceId);
 			$values = $item->extra_fields;
-			$fields = K2HelperExtraFields::getItemExtraFields($filterId, $values);
+			$fields = K2HelperExtraFields::getItemExtraFieldsGroups($filterId, $values);
 		}
 		else if ($scope == 'category')
 		{
 			require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/categories.php';
 			$category = K2Categories::getInstance($resourceId);
 			$values = $category->extra_fields;
-			$fields = K2HelperExtraFields::getCategoryExtraFields($filterId, $values);
+			$fields = K2HelperExtraFields::getCategoryExtraFieldsGroups($filterId, $values);
 		}
 		else if ($scope == 'user')
 		{
-			$fields = K2HelperExtraFields::getUserExtraFields($filterId, null);
+			require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/users.php';
+			$user = K2Users::getInstance($resourceId);
+			$values = $user->extra_fields;
+			$fields = K2HelperExtraFields::getUserExtraFieldsGroups($filterId, $values);
 		}
 		else if ($scope == 'tag')
 		{
 			require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/tags.php';
 			$tag = K2Tags::getInstance($resourceId);
 			$values = $tag->extra_fields;
-			$fields = K2HelperExtraFields::getTagExtraFields($filterId, $values);
+			$fields = K2HelperExtraFields::getTagExtraFieldsGroups($filterId, $values);
 		}
 		echo json_encode($fields);
 		return $this;

@@ -61,11 +61,11 @@ defined('_JEXEC') or die; ?>
 			<p><?php echo $this->category->description; ?></p>
 			<?php endif; ?>
 			
-			<?php if($this->params->get('catExtraFields') && count($this->category->extraFields)): ?>
+			<?php if($this->params->get('catExtraFields') && count($this->category->extraFieldsGroups)): ?>
 			<!-- Category extra fields -->
 			<div class="catExtraFields">
 				<h3><?php echo JText::_('K2_ADDITIONAL_INFO'); ?></h3>
-				<?php foreach ($this->category->extraFields as $extraFieldGroup): ?>
+				<?php foreach ($this->category->extraFieldsGroups as $extraFieldGroup): ?>
 				<h4><?php echo $extraFieldGroup->name; ?></h4>
 				<ul>
 				<?php foreach ($extraFieldGroup->fields as $key=>$extraField): ?>

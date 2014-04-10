@@ -91,7 +91,7 @@ class K2Users extends K2Resource
 
 			// Image
 			$this->image = $this->getImage();
-			
+
 			// Unset password
 			$this->password = '';
 		}
@@ -151,15 +151,29 @@ class K2Users extends K2Resource
 		$numOfComments = $model->countRows();
 		return $numOfComments;
 	}
-	
+
 	public function getExtraFields()
 	{
-		$extraFields = array();
-		if ($this->id)
+		$extraFields = new stdClass;
+		foreach ($this->extraFieldsGroups as $extraFieldsGroup)
 		{
-			$extraFields = K2HelperExtraFields::getUserExtraFields($this->id, $this->extra_fields);
+			foreach ($extraFieldsGroup->fields as $extraField)
+			{
+				$property = $extraField->alias;
+				$extraFields->$property = $extraField;
+			}
 		}
 		return $extraFields;
+	}
+
+	public function getExtraFieldsGroups()
+	{
+		$groups = array();
+		if ($this->id)
+		{
+			$groups = K2HelperExtraFields::getUserExtraFieldsGroups($this->id, $this->extra_fields);
+		}
+		return $groups;
 	}
 
 	public function getEvents()
@@ -200,57 +214,58 @@ class K2Users extends K2Resource
 		}
 		return true;
 	}
-	
+
 	// Legacy
 	public function getProfile()
 	{
 		return $this;
 	}
-	
+
 	public function __toString()
-    {
-        return JFactory::getUser($this->id)->name;
-    }
-	
+	{
+		return JFactory::getUser($this->id)->name;
+	}
+
 	public function getUserImage()
 	{
 		return $this->image->src;
 	}
-	
+
 	public function getAvatar()
 	{
 		return $this->image->src;
 	}
-	
+
 	public function getFeed()
 	{
 		return $this->feedLink;
 	}
-	
+
 	public function getUserName()
 	{
 		return $this->name;
 	}
-	
+
 	public function getCounter()
 	{
 		return $this->comments;
 	}
-	
+
 	public function getLatestCommentLink()
 	{
 		return $this->comment->link;
 	}
-	
+
 	public function getLatestCommentText()
 	{
 		return $this->comment->text;
 	}
-	
+
 	public function getLatestCommentDate()
 	{
 		return $this->comment->date;
 	}
+
 	public function getEvent()
 	{
 		return $this->events;

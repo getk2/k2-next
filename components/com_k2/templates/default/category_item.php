@@ -124,11 +124,11 @@ defined('_JEXEC') or die ;
 
 		<div class="clr"></div>
 
-	  <?php if($this->params->get('itemExtraFields') && count($this->item->extraFields)): ?>
+	  <?php if($this->params->get('itemExtraFields') && count($this->item->extraFieldsGroups)): ?>
 	  <!-- Item extra fields -->
 	  <div class="itemExtraFields">
 	  	<h3><?php echo JText::_('K2_ADDITIONAL_INFO'); ?></h3>
-	  	<?php foreach ($this->item->extraFields as $extraFieldGroup): ?>
+	  	<?php foreach ($this->item->extraFieldsGroups as $extraFieldGroup): ?>
 	  	<h4><?php echo $extraFieldGroup->name; ?></h4>
 	  	<ul>
 			<?php foreach ($extraFieldGroup->fields as $key=>$extraField): ?>

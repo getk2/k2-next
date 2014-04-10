@@ -183,12 +183,26 @@ class K2Items extends K2Resource
 
 	public function getExtraFields()
 	{
-		$extraFields = array();
-		if ($this->id)
+		$extraFields = new stdClass;
+		foreach ($this->extraFieldsGroups as $extraFieldsGroup)
 		{
-			$extraFields = K2HelperExtraFields::getItemExtraFields($this->catid, $this->extra_fields);
+			foreach ($extraFieldsGroup->fields as $extraField)
+			{
+				$property = $extraField->alias;
+				$extraFields->$property = $extraField;
+			}
 		}
 		return $extraFields;
+	}
+
+	public function getExtraFieldsGroups()
+	{
+		$groups = array();
+		if ($this->id)
+		{
+			$groups = K2HelperExtraFields::getItemExtraFieldsGroups($this->catid, $this->extra_fields);
+		}
+		return $groups;
 	}
 
 	public function getTags()
@@ -786,7 +800,7 @@ class K2Items extends K2Resource
 	public function getextra_fields()
 	{
 		$extraFields = array();
-		foreach ($this->extraFields as $extraFieldGroup)
+		foreach ($this->extraFieldsGroups as $extraFieldGroup)
 		{
 			foreach ($extraFieldGroup->fields as $key => $extraField)
 			{
@@ -811,12 +825,12 @@ class K2Items extends K2Resource
 	{
 		return $this->state;
 	}
-	
+
 	public function getImageXLarge()
 	{
 		return isset($this->images['XL']) ? $this->images['XL']->src : null;
 	}
-	
+
 	public function getImageWidth()
 	{
 		return isset($this->image) ? $this->image->width : null;

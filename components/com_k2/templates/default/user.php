@@ -69,11 +69,11 @@ defined('_JEXEC') or die; ?>
 		</div>
 		<?php endif; ?>
 		
-		<?php if($this->params->get('userExtraFields') && count($this->author->extraFields)): ?>
+		<?php if($this->params->get('userExtraFields') && count($this->author->extraFieldsGroups)): ?>
 		<!-- Tag extra fields -->
 		<div class="userExtraFields">
 			<h3><?php echo JText::_('K2_ADDITIONAL_INFO'); ?></h3>
-			<?php foreach ($this->author->extraFields as $extraFieldGroup): ?>
+			<?php foreach ($this->author->extraFieldsGroups as $extraFieldGroup): ?>
 			<h4><?php echo $extraFieldGroup->name; ?></h4>
 			<ul>
 			<?php foreach ($extraFieldGroup->fields as $key=>$extraField): ?>

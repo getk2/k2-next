@@ -29,12 +29,7 @@ class K2HelperExtraFields
 	 *
 	 * @var array $types
 	 */
-	public static $scopes = array(
-		'item',
-		'category',
-		'user',
-		'tag'
-	);
+	public static $scopes = array('item', 'category', 'user', 'tag');
 
 	/**
 	 * Holds the available extra fields groups per scope.
@@ -101,7 +96,7 @@ class K2HelperExtraFields
 		return self::$definitions;
 	}
 
-	public static function getItemExtraFields($categoryId, $values)
+	public static function getItemExtraFieldsGroups($categoryId, $values)
 	{
 		$groups = array();
 		$values = json_decode($values);
@@ -133,7 +128,7 @@ class K2HelperExtraFields
 		return $groups;
 	}
 
-	public static function getCategoryExtraFields($parentId, $values)
+	public static function getCategoryExtraFieldsGroups($parentId, $values)
 	{
 		$groups = array();
 		$values = json_decode($values);
@@ -164,7 +159,7 @@ class K2HelperExtraFields
 		return $groups;
 	}
 
-	public static function getUserExtraFields($userId, $values)
+	public static function getUserExtraFieldsGroups($userId, $values)
 	{
 		$groups = array();
 		$values = json_decode($values);
@@ -181,7 +176,7 @@ class K2HelperExtraFields
 		return $groups;
 	}
 
-	public static function getTagExtraFields($tagId, $values)
+	public static function getTagExtraFieldsGroups($tagId, $values)
 	{
 		$groups = array();
 		$values = json_decode($values);
@@ -198,7 +193,7 @@ class K2HelperExtraFields
 
 	private static function renderGroup($group, $values)
 	{
-		if(is_null($values))
+		if (is_null($values))
 		{
 			$values = new stdClass;
 		}

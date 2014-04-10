@@ -26,6 +26,14 @@ class K2ViewItemlist extends K2View
 		// Get document
 		$document = JFactory::getDocument();
 
+		// Legacy
+		$moduleId = $application->input->get('moduleID', 0, 'int');
+		if ($moduleId)
+		{
+			$application->input->set('task', 'module');
+			$application->input->set('id', $moduleId);
+		}
+
 		// Get input
 		$task = $application->input->get('task', '', 'cmd');
 
