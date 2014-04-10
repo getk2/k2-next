@@ -214,8 +214,10 @@ class K2Categories extends K2Resource
 		{
 			foreach ($extraFieldsGroup->fields as $extraField)
 			{
-				$property = $extraField->alias;
-				$extraFields->$property = $extraField;
+				$field = clone($extraField);
+				$field->value = $extraField->output;
+				$property = $field->alias;
+				$extraFields->$property = $field;
 			}
 		}
 		return $extraFields;
