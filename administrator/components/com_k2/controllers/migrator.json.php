@@ -411,7 +411,7 @@ class K2ControllerMigrator extends JControllerLegacy
 			// This skips header fields. TODO: Update it to migrate those fields also.
 			else
 			{
-				continue;
+				$value = '';
 			}
 
 			$value = json_encode($value);
