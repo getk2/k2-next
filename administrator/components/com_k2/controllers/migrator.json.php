@@ -410,7 +410,7 @@ class K2ControllerMigrator extends JControllerLegacy
 			}
 			else if ($field->type == 'header')
 			{
-				$type = 'csv';
+				$type = 'header';
 				$value = new stdClass;
 				$value->value = isset($object->value) ? $object->value : '';
 			}
@@ -766,9 +766,9 @@ class K2ControllerMigrator extends JControllerLegacy
 					{
 						$entry->value = '';
 						$json = json_decode($field->value);
-						if (isset($json->options) && is_array($json->options) && isset($itemField->value) && $itemField->value && isset($json->options[$itemField->value]))
+						if (isset($json->options) && is_array($json->options) && isset($itemField->value) && $itemField->value && isset($json->options[($itemField->value - 1)]))
 						{
-							$entry->value = $json->options[$itemField->value];
+							$entry->value = $json->options[($itemField->value - 1)];
 						}
 					}
 					else if ($field->type == 'select')
@@ -801,6 +801,10 @@ class K2ControllerMigrator extends JControllerLegacy
 
 					}
 					else if ($field->type == 'csv')
+					{
+						$entry->value = isset($itemField->value) ? $itemField->value : '';
+					}
+					else if ($field->type == 'header')
 					{
 						$entry->value = isset($itemField->value) ? $itemField->value : '';
 					}
