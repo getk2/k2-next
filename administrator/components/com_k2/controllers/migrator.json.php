@@ -408,10 +408,11 @@ class K2ControllerMigrator extends JControllerLegacy
 				$value = new stdClass;
 				$value->value = isset($object->value) ? $object->value : '';
 			}
-			// This skips header fields. TODO: Update it to migrate those fields also.
-			else
+			else if ($field->type == 'header')
 			{
-				$value = '';
+				$type = 'csv';
+				$value = new stdClass;
+				$value->value = isset($object->value) ? $object->value : '';
 			}
 
 			$value = json_encode($value);
