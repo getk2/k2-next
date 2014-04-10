@@ -50,8 +50,7 @@ class K2TableTags extends K2Table
 		$db->setQuery($query);
 		if ($db->loadResult())
 		{
-			$this->setError(JText::_('K2_DUPLICATE_ALIAS'));
-			return false;
+			$this->alias .= '-'.uniqid();
 		}
 
 		return true;
