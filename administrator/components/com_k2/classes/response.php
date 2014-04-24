@@ -606,7 +606,7 @@ class K2Response
 	{
 		$action = new stdClass;
 		$action->id = 'appBatch'.JString::ucfirst($id);
-		$action->label = $label;
+		$action->label = JText::_($label);
 		$action->input = $input;
 		self::$batch[$id] = $action;
 	}

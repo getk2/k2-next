@@ -146,6 +146,9 @@ class K2ViewUsers extends K2View
 	protected function setFormFields(&$_form, $row)
 	{
 
+		$language = JFactory::getLanguage();
+		$language->load('com_users');
+
 		// Import JForm
 		jimport('joomla.form.form');
 
