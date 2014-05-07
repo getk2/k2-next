@@ -164,7 +164,7 @@ class K2Controller extends JControllerLegacy
 	public function sync()
 	{
 		$user = JFactory::getUser();
-		if ($user->guest)
+		if ($this->resourceType != 'comments' && $user->guest)
 		{
 			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'), 403);
 		}
