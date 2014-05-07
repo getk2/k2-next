@@ -385,6 +385,13 @@ function K2AdvancedSEFParse(&$vars, $segments)
 		{
 			$vars['view'] = 'itemlist';
 			$vars['task'] = 'date';
+			$vars['year'] = $segments[1];
+			$vars['month'] = $segments[2];
+			if (isset($segments[3]))
+			{
+				$vars['day'] = $segments[3];
+			}
+
 		}
 		// Search view
 		elseif ($segments[0] == $params->get('k2SefLabelSearch', 'search'))
