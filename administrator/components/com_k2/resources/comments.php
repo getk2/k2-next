@@ -254,6 +254,11 @@ class K2Comments extends K2Resource
 	}
 
 	// Legacy
+	public function getUserId()
+	{
+		return $this->userId;
+	}
+
 	public function getUserName()
 	{
 		return ($this->userId) ? $this->user->name : $this->name;

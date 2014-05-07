@@ -1,4 +1,56 @@
 jQuery(document).ready(function() {
+	
+	// Legacy code START
+  	// Generic function to get URL params passed in .js script include
+	function getUrlParams(targetScript, varName) {
+		var scripts = document.getElementsByTagName('script');
+		var scriptCount = scripts.length;
+		for (var a = 0; a < scriptCount; a++) {
+			var scriptSrc = scripts[a].src;
+			if (scriptSrc.indexOf(targetScript) >= 0) {
+				varName = varName.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+				var re = new RegExp("[\\?&]" + varName + "=([^&#]*)");
+				var parsedVariables = re.exec(scriptSrc);
+				if (parsedVariables !== null) {
+					return parsedVariables[1];
+				}
+			}
+		}
+	}
+	// comments
+	jQuery('#comment-form').submit(function(event){
+		event.preventDefault();
+		var form = jQuery(this);
+		var k2SitePath = getUrlParams('k2.js', 'sitepath');
+		form.find('input[name="view"]').remove();
+		form.find('input[name="task"]').remove();
+		form.find('input[name="option"]').attr('name', '_method').val('POST');
+		form.find('input[name="itemID"]').attr('name', 'itemId');
+		form.find('textarea[name="commentText"]').attr('name', 'text');
+		form.find('input[name="userName"]').attr('name', 'name');
+		form.find('input[name="commentEmail"]').attr('name', 'email');
+		form.find('input[name="commentURL"]').attr('name', 'url');
+		jQuery('#formLog').empty().addClass('formLogLoading');
+		jQuery.ajax({
+			url: k2SitePath + 'index.php?option=com_k2&task=comments.sync&format=json&id=null',
+			type: 'post',
+			dataType: 'json',
+			data: jQuery('#comment-form').serialize(),
+			success: function(response){
+				jQuery('#formLog').removeClass('formLogLoading').html(response.message);
+				if(typeof(Recaptcha) != "undefined"){
+					Recaptcha.reload();
+				}
+				if (response.status) {
+					window.location.reload();
+				}
+			},
+			error : function(response) {
+				jQuery('#formLog').removeClass('formLogLoading').html(response.responseText);
+			}
+		});
+	});	
+	// Legacy code END
 
 	jQuery('.k2ClassicPopUp').click(function(event) {
 		event.preventDefault();
@@ -53,7 +105,7 @@ jQuery(document).ready(function() {
 			parentElement.find('.k2LiveSearchResults').css('display', 'none').empty();
 		}
 	});
-
+	
 	var K2CommentsWidget = jQuery('div[data-widget="k2comments"]');
 	var K2CommentsItemId = K2CommentsWidget.data('itemid');
 	var K2CommentsSite = K2CommentsWidget.data('site');

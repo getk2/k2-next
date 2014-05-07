@@ -405,10 +405,12 @@ class PlgSystemK2 extends JPlugin
 				$view->item->params->merge($categoryParams);
 				$view->item->params->merge($itemParams);
 				$view->item->params->set('itemRating', false);
+				$offset = $application->input->get('limitstart');
+				$view->item->comments = $view->item->getComments($offset);
 				jimport('joomla.html.pagination');
-				$view->pagination = new JPagination($view->item->comments, $application->input->get('limitstart'), $view->params->get('commentsLimit'));
+				$view->pagination = new JPagination($view->item->numOfComments, $offset, $view->params->get('commentsLimit'));
 				$view->item->author->profile->url = $view->item->author->site;
-				$view->inlineCommentsModeration = true;
+				$view->inlineCommentsModeration = false;
 				$view->authorLatestItems = $view->item->author->latest;
 				$view->item->video = $view->item->getVideo();
 				$view->item->gallery = $view->item->getGallery();
