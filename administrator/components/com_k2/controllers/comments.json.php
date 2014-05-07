@@ -18,7 +18,7 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/controller.php';
 
 class K2ControllerComments extends K2Controller
 {
-	
+
 	protected function onBeforeRead($mode, $id)
 	{
 		$user = JFactory::getUser();
@@ -58,6 +58,12 @@ class K2ControllerComments extends K2Controller
 
 		// Get params
 		$params = JComponentHelper::getParams('com_k2');
+
+		// Check that comments are enabled
+		if (!$params->get('comments'))
+		{
+			K2Response::throwError(JText::_('K2_ALERTNOTAUTH'), 404);
+		}
 
 		// Get input
 		$itemId = $application->input->get('itemId', 0, 'int');
