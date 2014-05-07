@@ -500,7 +500,7 @@ class K2HelperImages
 		{
 			$placeholder = self::getPlaceholder('category');
 			$image = new K2Image;
-			$image->src = JURI::root(true).$placeholder;
+			$image->src = JURI::root(true).'/'.$placeholder;
 			$image->url = JURI::root(false).$placeholder;
 			$image->alt = $category->title;
 			$image->caption = '';
@@ -537,7 +537,7 @@ class K2HelperImages
 		{
 			$placeholder = self::getPlaceholder('user');
 			$image = new K2Image;
-			$image->src = JURI::root(true).$placeholder;
+			$image->src = JURI::root(true).'/'.$placeholder;
 			$image->url = JURI::root(false).$placeholder;
 			$image->alt = $user->name;
 			$image->flag = 0;
