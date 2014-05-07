@@ -276,6 +276,13 @@ class K2ModelComments extends K2Model
 				return false;
 			}
 
+			// Don't allow new comments if comments are disabled
+			if (!$params->get('comments'))
+			{
+				$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
+				return false;
+			}
+
 			// Get the item to check permissions
 			$model = K2Model::getInstance('Items');
 			$model->setState('id', $data['itemId']);
