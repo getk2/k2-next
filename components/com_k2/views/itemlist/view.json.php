@@ -25,6 +25,8 @@ class K2ViewItemlist extends K2View
 
 		// Get input
 		$task = $application->input->get('task', '', 'cmd');
+		$this->offset = $application->input->get('limitstart', 0, 'int');
+		$this->limit = $application->input->get('limit', 10, 'int');
 		$callback = $application->input->get('callback', '', 'cmd');
 
 		// Trigger the corresponding subview
