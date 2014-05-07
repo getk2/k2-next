@@ -50,6 +50,26 @@ jQuery(document).ready(function() {
 			}
 		});
 	});	
+	// Text Resizer
+	jQuery('#fontDecrease').click(function(event){
+		event.preventDefault();
+		jQuery('.itemFullText').removeClass('largerFontSize');
+		jQuery('.itemFullText').addClass('smallerFontSize');
+	});
+	jQuery('#fontIncrease').click(function(event){
+		event.preventDefault();
+		jQuery('.itemFullText').removeClass('smallerFontSize');
+		jQuery('.itemFullText').addClass('largerFontSize');
+	});
+
+	// Smooth Scroll
+	jQuery('.k2Anchor').click(function(event){
+		event.preventDefault();
+		var target = this.hash;
+		jQuery('html, body').stop().animate({
+			scrollTop: jQuery(target).offset().top
+		}, 500);
+	});
 	// Legacy code END
 
 	jQuery('.k2ClassicPopUp').click(function(event) {
