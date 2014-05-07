@@ -418,6 +418,19 @@ class PlgSystemK2 extends JPlugin
 					$view->item->extraFields = $view->item->getExtraFields();
 					$view->item->extra_fields = $view->item->getextra_fields();
 				}
+
+				if ($params->get('comments'))
+				{
+					$user = JFactory::getUser();
+					if ($user->guest && $user->authorise('k2.comment.add', 'com_k2'))
+					{
+						$view->item->params->set('comments', 1);
+					}
+					else
+					{
+						$view->item->params->set('comments', 2);
+					}
+				}
 				break;
 
 			// User view
@@ -434,7 +447,7 @@ class PlgSystemK2 extends JPlugin
 				$view->user->avatar = $view->user->image->src;
 				$view->feed = $view->user->feedLink;
 				break;
-				
+
 			// Tag view
 			case 'com_k2.itemlist.tag' :
 				$view->feed = $view->tag->feedLink;
