@@ -249,28 +249,21 @@ class K2ModelItems extends K2Model
 
 		if ($tag = $this->getState('tag'))
 		{
-			$subquery = $db->getQuery(true);
-			$subquery->select($db->quoteName('itemId'));
-			$subquery->from($db->quoteName('#__k2_tags_xref'));
 			if ($excludeItemId = $this->getState('tag.exclude.item'))
 			{
-				$subquery->where($db->quoteName('itemId').' != '.(int)$excludeItemId);
+				$query->where($db->quoteName('item.id').' != '.(int)$excludeItemId);
 			}
-			else
-			{
-				$subquery->where($db->quoteName('itemId').' != 0');
-			}
+			$query->leftJoin($db->quoteName('#__k2_tags_xref', 'xref').' ON '.$db->quoteName('xref.itemId').' = '.$db->quoteName('item.id'));
 			if (is_array($tag))
 			{
 				JArrayHelper::toInteger($tag);
-				$subquery->where($db->quoteName('tagId').' IN ('.implode(',', $tag).')');
+				$query->where($db->quoteName('xref.tagId').' IN ('.implode(',', $tag).')');
 			}
 			else
 			{
-				$subquery->where($db->quoteName('tagId').' = '.(int)$tag);
+				$query->where($db->quoteName('xref.tagId').' = '.(int)$tag);
 			}
-			$subquery->group($db->quoteName('itemId'));
-			$query->innerJoin('('.$subquery->__toString().') AS '.$db->quoteName('xref').' ON '.$db->quoteName('xref.itemId').' = '.$db->quoteName('item.id'));
+			$query->group($db->quoteName('xref.itemId'));
 		}
 
 		if ($this->getState('publish_up'))
@@ -370,7 +363,7 @@ class K2ModelItems extends K2Model
 		{
 			default :
 			case 'id' :
-				$ordering = 'item.id';
+				$ordering = $this->getState('tag') ? 'xref.itemId' : 'item.id';
 				$direction = 'DESC';
 				break;
 			case 'title' :
