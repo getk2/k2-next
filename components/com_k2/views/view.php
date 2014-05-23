@@ -60,7 +60,7 @@ class K2View extends JViewLegacy
 		$this->setActive();
 
 		// Set page metadata and options correctly since Joomla! does not take care of it
-		if ($this->isActive)
+		if ($this->isActive && $this->type == 'html')
 		{
 			// Get menu
 			$menu = $application->getMenu();
