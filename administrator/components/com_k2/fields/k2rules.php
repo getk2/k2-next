@@ -34,7 +34,7 @@ class JFormFieldK2Rules extends JFormFieldRules
 		$assetField = $this->assetField;
 
 		// Get the actions for the asset.
-		$actions = JAccess::getActions($component, $section);
+		$actions = JAccess::getActionsFromFile(JPATH_ADMINISTRATOR . '/components/' . $component . '/access.xml', "/access/section[@name='" . $section . "']/");
 
 		// Iterate over the children and add to the actions.
 		foreach ($this->element->children() as $el)

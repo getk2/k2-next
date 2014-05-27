@@ -202,7 +202,7 @@ class K2ModelUserGroups extends K2Model
 	public function getGroupPermissions()
 	{
 		// Get actions
-		$actions = JAccess::getActionsFromFile(JPATH_ADMINISTRATOR.'/components/com_k2/access.xml', $xpath = "/access/section[@name='category']/");
+		$actions = JAccess::getActionsFromFile(JPATH_ADMINISTRATOR.'/components/com_k2/access.xml', "/access/section[@name='category']/");
 
 		// Get database
 		$db = $this->getDBO();
