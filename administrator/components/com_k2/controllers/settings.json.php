@@ -67,7 +67,7 @@ class K2ControllerSettings extends K2Controller
 		require_once JPATH_SITE.'/components/com_config/model/cms.php';
 		require_once JPATH_SITE.'/components/com_config/model/form.php';
 
-		JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_config/models');
+		JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_config/model');
 		$model = JModelLegacy::getInstance('Component', 'ConfigModel');
 
 		// Get form
