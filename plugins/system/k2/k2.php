@@ -19,6 +19,9 @@ class PlgSystemK2 extends JPlugin
 
 	public function onAfterInitialise()
 	{
+		// Get application
+		$application = JFactory::getApplication();
+
 		// Get user
 		$user = JFactory::getUser();
 
@@ -46,11 +49,11 @@ class PlgSystemK2 extends JPlugin
 		// Use K2 to make Joomla! Varnish-friendly. For more checkout: https://snipt.net/fevangelou/the-perfect-varnish-configuration-for-joomla-websites/
 		if (!$user->guest)
 		{
-			JResponse::setHeader('X-Logged-In', 'True', true);
+			$application->setHeader('X-Logged-In', 'True', true);
 		}
 		else
 		{
-			JResponse::setHeader('X-Logged-In', 'False', true);
+			$application->setHeader('X-Logged-In', 'False', true);
 		}
 
 	}
