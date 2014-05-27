@@ -105,15 +105,15 @@ class K2ViewAttachments extends K2View
 		$finfo = new finfo(FILEINFO_MIME);
 		$mime = $finfo->buffer($content);
 		ob_end_clean();
-		JResponse::clearHeaders();
-		JResponse::setHeader('Pragma', 'public', true);
-		JResponse::setHeader('Expires', '0', true);
-		JResponse::setHeader('Cache-Control', 'must-revalidate, post-check=0, pre-check=0', true);
-		JResponse::setHeader('Content-Type', $mime, true);
-		JResponse::setHeader('Content-Disposition', 'attachment; filename='.$filename.';', true);
-		JResponse::setHeader('Content-Transfer-Encoding', 'binary', true);
-		JResponse::setHeader('Content-Length', $size, true);
-		JResponse::sendHeaders();
+		$application->clearHeaders();
+		$application->setHeader('Pragma', 'public', true);
+		$application->setHeader('Expires', '0', true);
+		$application->setHeader('Cache-Control', 'must-revalidate, post-check=0, pre-check=0', true);
+		$application->setHeader('Content-Type', $mime, true);
+		$application->setHeader('Content-Disposition', 'attachment; filename='.$filename.';', true);
+		$application->setHeader('Content-Transfer-Encoding', 'binary', true);
+		$application->setHeader('Content-Length', $size, true);
+		$application->sendHeaders();
 		echo $content;
 		$application->close();
 	}
