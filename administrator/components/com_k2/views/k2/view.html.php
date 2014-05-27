@@ -39,8 +39,7 @@ class K2ViewK2 extends JViewLegacy
 				}
 				else
 				{
-					JError::raiseError(403, JText::_('K2_NOT_AUTHORISED'));
-					return false;
+					throw new Exception(JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 				}
 			}
 		}

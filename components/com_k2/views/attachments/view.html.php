@@ -28,17 +28,17 @@ class K2ViewAttachments extends K2View
 		$input = $application->input;
 		$id = $input->get('id', 0, 'int');
 		$hash = $input->get('hash', '', 'string');
-
+		
 		// Both input fields are required
 		if (!$id || empty($hash))
 		{
-			JError::raiseError(404, JText::_('K2_NOT_FOUND'));
+			throw new Exception(JText::_('K2_NOT_FOUND'), 404);
 		}
 
 		// Check hash
 		if (JApplication::getHash($id) != $hash)
 		{
-			JError::raiseError(404, JText::_('K2_NOT_FOUND'));
+			throw new Exception(JText::_('K2_NOT_FOUND'), 404);
 		}
 
 		// Get model
@@ -85,7 +85,7 @@ class K2ViewAttachments extends K2View
 		// Check if file exists
 		if (!$filesystem->has($key))
 		{
-			JError::raiseError(404, JText::_('K2_NOT_FOUND'));
+			throw new Exception(JText::_('K2_NOT_FOUND'), 404);
 		}
 
 		// Update downloads counter

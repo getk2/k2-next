@@ -310,8 +310,7 @@ class K2Categories extends K2Resource
 		// State check
 		if ($this->state < 1 || (int)$this->id < 1)
 		{
-			JError::raiseError(404, JText::_('K2_NOT_FOUND'));
-			return false;
+			throw new Exception(JText::_('K2_NOT_FOUND'), 404);
 		}
 
 		// Get user
@@ -343,8 +342,7 @@ class K2Categories extends K2Resource
 			}
 			else
 			{
-				JError::raiseError(403, JText::_('K2_NOT_AUTHORISED'));
-				return false;
+				throw new Exception(JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 			}
 		}
 

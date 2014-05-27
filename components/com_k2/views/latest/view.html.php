@@ -30,7 +30,7 @@ class K2ViewLatest extends K2View
 		}
 		else
 		{
-			return JError::raiseError(404, JText::_('K2_NOT_FOUND'));
+			throw new Exception(JText::_('K2_NOT_FOUND'), 404);
 		}
 
 		// Plugins

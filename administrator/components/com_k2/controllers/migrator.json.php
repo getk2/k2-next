@@ -32,7 +32,7 @@ class K2ControllerMigrator extends JControllerLegacy
 		$user = JFactory::getUser();
 		if ($application->isSite() || !$user->authorise('core.manage', 'com_installer'))
 		{
-			return JError::raiseWarning(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			throw new Exception(JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 		}
 		parent::__construct($config);
 
@@ -71,7 +71,7 @@ class K2ControllerMigrator extends JControllerLegacy
 			}
 			else
 			{
-				return JError::raiseError(404);
+				throw new Exception(JText::_('K2_NOT_FOUND'), 404);
 			}
 
 		}

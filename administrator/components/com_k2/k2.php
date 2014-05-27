@@ -14,7 +14,7 @@ defined('_JEXEC') or die ;
 $user = JFactory::getUser();
 if (!$user->authorise('core.manage', 'com_k2'))
 {
-	return JError::raiseWarning(403, JText::_('JERROR_ALERTNOAUTHOR'));
+	throw new Exception(JText::_('JLIB_APPLICATION_ERROR_ACCESS_FORBIDDEN'), 403);
 }
 
 // Bootstrap K2
