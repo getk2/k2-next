@@ -48,7 +48,7 @@ class K2HelperGalleries
 		else if ($url)
 		{
 			// Download the file to the temporary folder
-			$buffer = JFile::read($url);
+			$buffer = file_get_contents($url);
 			$name = basename($url);
 			JFile::write($newTempGalleryPath.'/'.$name, $buffer);
 		}
@@ -117,7 +117,7 @@ class K2HelperGalleries
 					$files = JFolder::files($source);
 					foreach ($files as $file)
 					{
-						$buffer = JFile::read($source.'/'.$file);
+						$buffer = file_get_contents($source.'/'.$file);
 						$result = $filesystem->write($target.'/'.$file, $buffer, true);
 					}
 

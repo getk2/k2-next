@@ -45,7 +45,7 @@ class K2HelperMedia
 			$name = uniqid().'.'.JFile::getExt(basename($url));
 
 			// Download the file to the temporary folder
-			$buffer = JFile::read($url);
+			$buffer = file_get_contents($url);
 			JFile::write($application->getCfg('tmp_path').'/'.$name, $buffer);
 		}
 
@@ -108,7 +108,7 @@ class K2HelperMedia
 				if (JFile::exists($source))
 				{
 					// Transfer the file from the temporary folder to the current file system
-					$buffer = JFile::read($source);
+					$buffer = file_get_contents($source);
 					$filesystem->write($target, $buffer, true);
 
 					// Delete the temporary file

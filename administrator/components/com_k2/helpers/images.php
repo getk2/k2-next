@@ -83,11 +83,11 @@ class K2HelperImages
 			// Local or remote
 			if (strpos($path, 'http') === 0)
 			{
-				$buffer = JFile::read($path);
+				$buffer = file_get_contents($path);
 			}
 			else
 			{
-				$buffer = JFile::read(JPATH_SITE.'/'.$path);
+				$buffer = file_get_contents(JPATH_SITE.'/'.$path);
 			}
 			$imageResource = $processor->load($buffer);
 		}
@@ -231,7 +231,7 @@ class K2HelperImages
 				if (JFile::exists(JPATH_SITE.'/tmp/'.$tempImageId.'/src/'.$tempImageId.'.jpg'))
 				{
 					// Src image
-					$srcImageBuffer = JFile::read(JPATH_SITE.'/tmp/'.$tempImageId.'/src/'.$tempImageId.'.jpg');
+					$srcImageBuffer = file_get_contents(JPATH_SITE.'/tmp/'.$tempImageId.'/src/'.$tempImageId.'.jpg');
 					K2FileSystem::writeImageFile($savepath.'/src/'.$currentImageId.'.jpg', $srcImageBuffer);
 
 					// Get sizes from global settings
@@ -277,7 +277,7 @@ class K2HelperImages
 				// Copy the temporary image to the filesystem
 				if (JFile::exists(JPATH_SITE.'/tmp/'.$tempImageId.'.jpg'))
 				{
-					$buffer = JFile::read(JPATH_SITE.'/tmp/'.$tempImageId.'.jpg');
+					$buffer = file_get_contents(JPATH_SITE.'/tmp/'.$tempImageId.'.jpg');
 					K2FileSystem::writeImageFile($savepath.'/'.$currentImageId.'.jpg', $buffer);
 					JFile::delete(JPATH_SITE.'/tmp/'.$tempImageId.'.jpg');
 				}
