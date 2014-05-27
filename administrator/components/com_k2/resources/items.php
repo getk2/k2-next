@@ -715,7 +715,7 @@ class K2Items extends K2Resource
 				if ($application->isSite() && $document->getType() == 'html')
 				{
 					require_once JPATH_SITE.'/components/com_users/helpers/route.php';
-					$uri = JFactory::getURI();
+					$uri = JUri::getInstance();
 					$url = 'index.php?option=com_users&view=login&return='.base64_encode($uri->toString()).'&Itemid='.UsersHelperRoute::getLoginRoute();
 					$application->redirect(JRoute::_($url, false), JText::_('K2_YOU_NEED_TO_LOGIN_FIRST'));
 				}

@@ -53,7 +53,7 @@ class ModK2UserHelper
 		else
 		{
 			// stay on the same page
-			$uri = JFactory::getURI();
+			$uri = JUri::getInstance();
 			$url = $uri->toString(array(
 				'path',
 				'query',
