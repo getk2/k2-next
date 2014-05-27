@@ -114,6 +114,11 @@ class K2TableCategories extends K2TableNested
 		{
 			$autoAlias = false;
 		}
+		
+		if(JFactory::getApplication()->input->get('task') == 'run')
+		{
+			$autoAlias = true;
+		}
 
 		if (!$this->parent_id)
 		{

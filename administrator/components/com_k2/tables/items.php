@@ -102,6 +102,11 @@ class K2TableItems extends K2Table
 		{
 			$autoAlias = false;
 		}
+		
+		if(JFactory::getApplication()->input->get('task') == 'run')
+		{
+			$autoAlias = true;
+		}
 
 		if (JFactory::getConfig()->get('unicodeslugs') == 1)
 		{
