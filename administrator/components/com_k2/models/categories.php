@@ -184,17 +184,17 @@ class K2ModelCategories extends K2Model
 		switch($sorting)
 		{
 			default :
-			case 'id' :
-				$ordering = 'category.id';
-				$direction = 'DESC';
+			case 'ordering' :
+				$ordering = 'category.lft';
+				$direction = 'ASC';
 				break;
 			case 'title' :
 				$ordering = 'category.title';
 				$direction = 'ASC';
 				break;
-			case 'ordering' :
-				$ordering = 'category.lft';
-				$direction = 'ASC';
+			case 'id' :
+				$ordering = 'category.id';
+				$direction = 'DESC';
 				break;
 			case 'state' :
 				$ordering = 'category.state';
