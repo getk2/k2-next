@@ -181,6 +181,10 @@ class K2ModelItems extends K2Model
 		{
 			$categories = (array)$this->getState('category');
 			$filter = K2ModelCategories::getCategoryFilter($categories, $this->getState('recursive'), $this->getState('site'));
+			if (!count($filter))
+			{
+				$filter[] = 1;
+			}
 			$query->where($db->quoteName('item.catid').' IN ('.implode(',', $filter).')');
 		}
 		else if ($this->getState('site'))
