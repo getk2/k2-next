@@ -18,8 +18,7 @@ class ModK2StatsHelper
 	public static function getLatestItems()
 	{
 		$model = K2Model::getInstance('Items');
-		$model->setState('state', -1);
-		$model->setState('state.operator', '!=');
+		$model->setState('state', 1);
 		$model->setState('limit', 10);
 		$rows = $model->getRows();
 		return $rows;
@@ -28,8 +27,7 @@ class ModK2StatsHelper
 	public static function getPopularItems()
 	{
 		$model = K2Model::getInstance('Items');
-		$model->setState('state', -1);
-		$model->setState('state.operator', '!=');
+		$model->setState('state', 1);
 		$model->setState('sorting', 'hits');
 		$model->setState('limit', 10);
 		$rows = $model->getRows();
@@ -39,8 +37,7 @@ class ModK2StatsHelper
 	public static function getMostCommentedItems()
 	{
 		$model = K2Model::getInstance('Items');
-		$model->setState('state', -1);
-		$model->setState('state.operator', '!=');
+		$model->setState('state', 1);
 		$model->setState('sorting', 'comments');
 		$model->setState('limit', 10);
 		$rows = $model->getRows();

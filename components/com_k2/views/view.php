@@ -435,6 +435,7 @@ class K2View extends JViewLegacy
 		}
 
 		// @TODO Apply menu settings. Since they will be common all tasks we need to wait
+		//$model->setState('sorting', 'ordering');
 
 		// Get items
 		$model->setState('limit', $this->limit);

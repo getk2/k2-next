@@ -89,6 +89,7 @@ CREATE TABLE IF NOT EXISTS `#__k2_comments` (
   PRIMARY KEY (`id`),
   KEY `itemId` (`itemId`),
   KEY `userId` (`userId`),
+  KEY `date` (`date`),
   KEY `state` (`state`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
@@ -171,15 +172,21 @@ CREATE TABLE IF NOT EXISTS `#__k2_items` (
   `params` text NOT NULL,
   `language` char(7) NOT NULL,
   PRIMARY KEY (`id`),
+  KEY `title` (`title`),
   UNIQUE KEY `alias` (`alias`),
-  KEY `published` (`state`),
-  KEY `catid` (`catid`),
-  KEY `language` (`language`),
+  KEY `state` (`state`),
+  KEY `featured` (`featured`),
   KEY `access` (`access`),
+  KEY `catid` (`catid`),
+  KEY `ordering` (`ordering`),
+  KEY `featured_ordering` (`featured_ordering`),
+  KEY `created` (`created`),
   KEY `created_by` (`created_by`),
+  KEY `modified` (`modified`),
   KEY `modified_by` (`modified_by`),
   KEY `checked_out` (`checked_out`),
-  KEY `ordering` (`ordering`)
+  KEY `publish_up` (`publish_up`),
+  KEY `language` (`language`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
