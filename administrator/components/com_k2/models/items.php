@@ -192,6 +192,7 @@ class K2ModelItems extends K2Model
 			{
 				$filter[] = 1;
 			}
+			$this->setState('categories.applied', $filter);
 			$query->where($db->quoteName('item.catid').' IN ('.implode(',', $filter).')');
 		}
 		else if ($this->getState('site'))
@@ -201,6 +202,7 @@ class K2ModelItems extends K2Model
 			{
 				$authorised[] = 1;
 			}
+			$this->setState('categories.applied', $authorised);
 			$query->where($db->quoteName('item.catid').' IN ('.implode(',', $authorised).')');
 		}
 
@@ -386,12 +388,10 @@ class K2ModelItems extends K2Model
 				$direction = 'DESC';
 				break;
 			case 'ordering' :
-				$ordering = array('category.lft', 'item.ordering');
-				$direction = 'ASC';
-				break;
 			case 'ordering.reverse' :
-				$ordering = array('category.lft', 'item.ordering');
-				$direction = 'DESC';
+				$categories = $this->getState('categories.applied');
+				$ordering = count($categories) == 1 ? 'item.ordering' : array('category.lft', 'item.ordering');
+				$direction = $sorting == 'ordering' ? 'ASC' : 'DESC';
 				break;
 			case 'featured_ordering' :
 				$ordering = 'item.featured_ordering';
