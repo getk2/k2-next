@@ -59,7 +59,9 @@ CREATE TABLE IF NOT EXISTS `#__k2_categories` (
   UNIQUE KEY `alias` (`alias`),
   KEY `state` (`state`),
   KEY `access` (`access`),
+  KEY `created` (`created`),
   KEY `created_by` (`created_by`),
+  KEY `modified` (`modified`),
   KEY `modified_by` (`modified_by`),
   KEY `checked_out` (`checked_out`),
   KEY `language` (`language`),
@@ -236,8 +238,9 @@ CREATE TABLE IF NOT EXISTS `#__k2_tags` (
   `state` tinyint(1) NOT NULL,
   `extra_fields` longtext NOT NULL,
   PRIMARY KEY (`id`),
+  KEY `name` (`name`)
   UNIQUE KEY `alias` (`alias`),
-  KEY `published` (`state`)
+  KEY `state` (`state`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
