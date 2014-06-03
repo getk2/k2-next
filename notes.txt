@@ -1,2 +1,2 @@
-1. Sorting items by ordering when multiple categories are used causes a performance overhaul since we have to order by two columns of two tables.
-2. Sorting items by author name or moderator name causes performance issues since we cannot add indexes to core #__users table.
+1. Sorting items list by ordering when multiple categories are used causes a performance overhaul since we have to order by two columns of two tables.
+2. Sorting items list by author name or moderator name causes performance issues since we cannot add indexes to core #__users table.

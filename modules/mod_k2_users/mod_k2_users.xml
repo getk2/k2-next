@@ -28,7 +28,7 @@
 					<option value="specific">K2_RETRIEVE_SPECIFIC_USERS</option>
 				</field>
 			</fieldset>
-			<fieldset label="K2_RETRIEVE_USERS_USING_FILTERS" name="K2GROUP_filters">
+			<fieldset label="K2_RETRIEVE_USERS_USING_FILTERS" name="K2GROUP_filter">
 				<field name="" type="k2header" default="K2_RETRIEVE_USERS_USING_FILTERS" label="" description=""/>
 				<field name="filter" type="list" default="mostItems" label="K2_FETCH_USERS" description="">
 					<option value="mostItems">K2_WITH_MOST_ITEMS</option>

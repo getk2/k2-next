@@ -57,21 +57,13 @@ class ModK2UsersHelper
 					$query = $db->getQuery(true);
 
 					// Select statement
-					$query->select($db->quoteName('user.id'));
-					$query->from($db->quoteName('#__users', 'user'));
-					$query->where($db->quoteName('user.block').' = 0');
-
-					// Join with items
-					$query->leftJoin($db->quoteName('#__k2_items', 'item').' ON '.$db->quoteName('item.created_by').' = '.$db->quoteName('user.id'));
+					$query->select('DISTINCT('.$db->quoteName('item.created_by').')');
+					$query->from($db->quoteName('#__k2_items', 'item'));
 					$query->where($db->quoteName('item.created_by_alias').' = '.$db->quote(''));
-
 					$query->rightJoin($db->quoteName('#__k2_items_stats', 'stats').' ON '.$db->quoteName('stats.itemId').' = '.$db->quoteName('item.id'));
-					$query->select('MAX('.$db->quoteName('stats.hits').') AS '.$db->quoteName('counter'));
-
-					$query->group($db->quoteName('user.id'));
 
 					// Sorting
-					$query->order($db->quoteName('counter').' DESC');
+					$query->order($db->quoteName('stats.hits').' DESC');
 
 					// Set the query
 					$db->setQuery($query, 0, (int)$params->get('limit', 4));
@@ -81,7 +73,7 @@ class ModK2UsersHelper
 
 					foreach ($rows as $row)
 					{
-						$users[] = K2Users::getInstance($row->id);
+						$users[] = K2Users::getInstance($row->created_by);
 					}
 
 					break;
@@ -94,21 +86,13 @@ class ModK2UsersHelper
 					$query = $db->getQuery(true);
 
 					// Select statement
-					$query->select($db->quoteName('user.id'));
-					$query->from($db->quoteName('#__users', 'user'));
-					$query->where($db->quoteName('user.block').' = 0');
-
-					// Join with items
-					$query->leftJoin($db->quoteName('#__k2_items', 'item').' ON '.$db->quoteName('item.created_by').' = '.$db->quoteName('user.id'));
+					$query->select('DISTINCT('.$db->quoteName('item.created_by').')');
+					$query->from($db->quoteName('#__k2_items', 'item'));
 					$query->where($db->quoteName('item.created_by_alias').' = '.$db->quote(''));
-
 					$query->rightJoin($db->quoteName('#__k2_items_stats', 'stats').' ON '.$db->quoteName('stats.itemId').' = '.$db->quoteName('item.id'));
-					$query->select('MAX('.$db->quoteName('stats.comments').') AS '.$db->quoteName('counter'));
-
-					$query->group($db->quoteName('user.id'));
 
 					// Sorting
-					$query->order($db->quoteName('counter').' DESC');
+					$query->order($db->quoteName('stats.comments').' DESC');
 
 					// Set the query
 					$db->setQuery($query, 0, (int)$params->get('limit', 4));
@@ -118,7 +102,7 @@ class ModK2UsersHelper
 
 					foreach ($rows as $row)
 					{
-						$users[] = K2Users::getInstance($row->id);
+						$users[] = K2Users::getInstance($row->created_by);
 					}
 					break;
 			}
