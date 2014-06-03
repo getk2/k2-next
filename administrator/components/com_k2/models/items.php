@@ -337,18 +337,31 @@ class K2ModelItems extends K2Model
 
 			}
 		}
-		if ($this->getState('day'))
+
+		if ($this->getState('year') && $this->getState('month') && $this->getState('day'))
 		{
-			$query->where('DAY('.$db->quoteName('item.created').') = '.(int)$this->getState('day'));
+			$startDate = JFactory::getDate($this->getState('year').'-'.$this->getState('month').'-'.$this->getState('day'))->toSql();
+			$endDate = JFactory::getDate($this->getState('year').'-'.$this->getState('month').'-'.$this->getState('day').' 23:59:59')->toSql();
 		}
-		if ($this->getState('month'))
+		else if ($this->getState('year') && $this->getState('month'))
 		{
-			$query->where('MONTH('.$db->quoteName('item.created').') = '.(int)$this->getState('month'));
+			$startDate = JFactory::getDate($this->getState('year').'-'.$this->getState('month').'-01')->toSql();
+			$endDate = JFactory::getDate($this->getState('year').'-'.$this->getState('month').'-31 23:59:59')->toSql();
 		}
-		if ($this->getState('year'))
+		else if ($this->getState('year'))
 		{
-			$query->where('YEAR('.$db->quoteName('item.created').') = '.(int)$this->getState('year'));
+			$startDate = JFactory::getDate($this->getState('year').'-01-01')->toSql();
+			$endDate = JFactory::getDate($this->getState('year').'-12-31 23:59:59')->toSql();
 		}
+		if (isset($startDate))
+		{
+			$query->where($db->quoteName('item.created').' >= '.$db->quote($startDate));
+		}
+		if (isset($endDate))
+		{
+			$query->where($db->quoteName('item.created').' <= '.$db->quote($endDate));
+		}
+
 		if ($this->getState('media'))
 		{
 			$query->where($db->quoteName('item.media').' != '.$db->quote('[]'));
