@@ -43,7 +43,7 @@ class K2Table extends JTable
 		{
 			$this->modified = $date->toSql();
 		}
-		if ($this->id && property_exists($this, 'modified_by'))
+		if (property_exists($this, 'modified_by'))
 		{
 			$this->modified_by = $user->get('id');
 		}

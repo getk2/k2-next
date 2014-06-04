@@ -580,7 +580,7 @@ class K2ControllerMigrator extends JControllerLegacy
 			$data['created_by'] = $item->created_by;
 			$data['created_by_alias'] = $item->created_by_alias;
 			$data['modified'] = $item->modified;
-			$data['modified_by'] = $item->modified_by;
+			$data['modified_by'] = $item->modified_by ? $item->modified_by : $item->created_by;
 			$data['publish_up'] = $item->publish_up;
 			$data['publish_down'] = $item->publish_down;
 			$data['metadata'] = array();

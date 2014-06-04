@@ -35,27 +35,23 @@ class K2ModelItems extends K2Model
 		// Join over the categories if required
 		if ($this->getState('sorting') == 'ordering' || $this->getState('sorting') == 'ordering.reverse' || $this->getState('sorting') == 'category')
 		{
-			$query->leftJoin($db->quoteName('#__k2_categories', 'category').' ON '.$db->quoteName('category.id').' = '.$db->quoteName('item.catid'));
+			$query->rightJoin($db->quoteName('#__k2_categories', 'category').' ON '.$db->quoteName('category.id').' = '.$db->quoteName('item.catid'));
 		}
 
 		// Join over the author
 		$query->select($db->quoteName('author.name', 'authorName'));
-		$query->leftJoin($db->quoteName('#__users', 'author').' ON '.$db->quoteName('author.id').' = '.$db->quoteName('item.created_by'));
+		$joinType = $this->getState('sorting') == 'author' ? 'RIGHT' : 'LEFT';
+		$query->join($joinType, $db->quoteName('#__users', 'author').' ON '.$db->quoteName('author.id').' = '.$db->quoteName('item.created_by'));
 
 		// Join over the moderator
 		$query->select($db->quoteName('moderator.name', 'moderatorName'));
-		$query->leftJoin($db->quoteName('#__users', 'moderator').' ON '.$db->quoteName('moderator.id').' = '.$db->quoteName('item.modified_by'));
+		$joinType = $this->getState('sorting') == 'moderator' ? 'RIGHT' : 'LEFT';
+		$query->join($joinType, $db->quoteName('#__users', 'moderator').' ON '.$db->quoteName('moderator.id').' = '.$db->quoteName('item.modified_by'));
 
 		// Join over the hits
 		$query->select($db->quoteName('stats.hits', 'hits'));
-		if ($this->getState('sorting') == 'hits' || $this->getState('sorting') == 'comments')
-		{
-			$query->rightJoin($db->quoteName('#__k2_items_stats', 'stats').' ON '.$db->quoteName('stats.itemId').' = '.$db->quoteName('item.id'));
-		}
-		else
-		{
-			$query->leftJoin($db->quoteName('#__k2_items_stats', 'stats').' ON '.$db->quoteName('stats.itemId').' = '.$db->quoteName('item.id'));
-		}
+		$joinType = $this->getState('sorting') == 'hits' || $this->getState('sorting') == 'comments' ? 'RIGHT' : 'LEFT';
+		$query->join($joinType, $db->quoteName('#__k2_items_stats', 'stats').' ON '.$db->quoteName('stats.itemId').' = '.$db->quoteName('item.id'));
 
 		// Set query conditions
 		$this->setQueryConditions($query);
@@ -419,7 +415,7 @@ class K2ModelItems extends K2Model
 				$direction = 'DESC';
 				break;
 			case 'category' :
-				$ordering = array('category.title', 'item.title');
+				$ordering = 'category.title';
 				$direction = 'ASC';
 				break;
 			case 'author' :
@@ -1118,8 +1114,8 @@ class K2ModelItems extends K2Model
 		$query = $db->getQuery(true);
 
 		// Select rows
-		$query->select('DISTINCT MONTH('.$db->quoteName('item.created').') AS '.$db->quoteName('month'));
-		$query->select('YEAR('.$db->quoteName('item.created').') AS '.$db->quoteName('year'));
+		$query->select('DISTINCT '.$query->month($db->quoteName('item.created')).' AS '.$db->quoteName('month'));
+		$query->select($query->year($db->quoteName('item.created')).' AS '.$db->quoteName('year'));
 		$query->from($db->quoteName('#__k2_items', 'item'));
 
 		// Join over the categories
