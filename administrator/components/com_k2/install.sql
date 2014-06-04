@@ -64,8 +64,7 @@ CREATE TABLE IF NOT EXISTS `#__k2_categories` (
   KEY `modified` (`modified`),
   KEY `modified_by` (`modified_by`),
   KEY `checked_out` (`checked_out`),
-  KEY `language` (`language`),
-  KEY `auth` (`state`,`access`)
+  KEY `language` (`language`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
