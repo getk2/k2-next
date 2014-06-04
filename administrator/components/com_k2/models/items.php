@@ -35,7 +35,8 @@ class K2ModelItems extends K2Model
 		// Join over the categories if required
 		if ($this->getState('sorting') == 'ordering' || $this->getState('sorting') == 'ordering.reverse' || $this->getState('sorting') == 'category')
 		{
-			$query->rightJoin($db->quoteName('#__k2_categories', 'category').' ON '.$db->quoteName('category.id').' = '.$db->quoteName('item.catid'));
+			$joinType = $this->getState('sorting') == 'category' ? 'RIGHT' : 'LEFT';
+			$query->join($joinType, $db->quoteName('#__k2_categories', 'category').' ON '.$db->quoteName('category.id').' = '.$db->quoteName('item.catid'));
 		}
 
 		// Join over the author
@@ -172,7 +173,7 @@ class K2ModelItems extends K2Model
 		// Shortcut method for setting the categoy filter
 		if ($this->getState('category.filter'))
 		{
-			$filter = $this->getState('category.filter');
+			$filter = (object)$this->getState('category.filter');
 			if (isset($filter->enabled) && $filter->enabled)
 			{
 				$this->setState('category', $filter->categories);
