@@ -516,14 +516,16 @@ class K2View extends JViewLegacy
 		// Check access and publishing state
 		$this->tag->checkSiteAccess();
 
-		// @TODO Apply menu settings. Since they will be common all tasks we need to wait
-
 		// Get items
 		$model = K2Model::getInstance('Items');
 		$model->setState('site', true);
 		$model->setState('tag', $id);
 		$model->setState('limit', $this->limit);
 		$model->setState('limitstart', $this->offset);
+
+		// @TODO Apply menu settings. Since they will be common all tasks we need to wait
+		//$model->setState('sorting', 'created');
+
 		$this->items = $model->getRows();
 
 		// Count items
