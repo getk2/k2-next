@@ -366,25 +366,25 @@ class K2ModelTags extends K2Model
 		$query = $db->getQuery(true);
 
 		// Select tag id
-		$query->select($db->quoteName('tag.id'));
+		$query->select($db->quoteName('tag').'.*');
 
 		// counter
-		$query->select('COUNT('.$db->quoteName('xref.itemId').') AS '.$db->quoteName('counter'));
+		$query->select('COUNT('.$db->quoteName('tag.id').') AS '.$db->quoteName('counter'));
 
 		// From statement
 		$query->from($db->quoteName('#__k2_tags', 'tag'));
 
-		// Join over the reference table
-		$query->rightJoin($db->quoteName('#__k2_tags_xref', 'xref').' ON '.$db->quoteName('xref.tagId').' = '.$db->quoteName('tag.id'));
-
-		// Join over the items table
-		$query->rightJoin($db->quoteName('#__k2_items', 'item').' ON '.$db->quoteName('item.id').' = '.$db->quoteName('xref.itemId'));
-
 		// Tags should be published
 		$query->where($db->quoteName('tag.state').' = 1');
 
+		// Join over the reference table
+		$query->leftJoin($db->quoteName('#__k2_tags_xref', 'xref').' ON '.$db->quoteName('xref.tagId').' = '.$db->quoteName('tag.id'));
+
+		// Join over the items table
+		$query->leftJoin($db->quoteName('#__k2_items', 'item').' ON '.$db->quoteName('item.id').' = '.$db->quoteName('xref.itemId'));
+
 		// Items should be published
-		$query->where($db->quoteName('item.state').' > 0');
+		$query->where($db->quoteName('item.state').' = 1');
 
 		// Handle categories
 		$categories = K2ModelCategories::getCategoryFilter($this->getState('categories'), $this->getState('recursive'), true);
@@ -408,10 +408,13 @@ class K2ModelTags extends K2Model
 		$query->where('('.$db->quoteName('item.publish_down').' = '.$db->Quote($db->getNullDate()).' OR '.$db->quoteName('item.publish_down').' >= '.$db->Quote($date).')');
 
 		// Group by tag Id
+		$query->order($db->quoteName('counter').' DESC');
+
+		// Group by tag Id
 		$query->group($db->quoteName('tag.id'));
 
 		// Set query
-		$db->setQuery($query);
+		$db->setQuery($query, 0, (int)$this->getState('limit'));
 
 		// Get rows
 		$rows = $db->loadObjectList();

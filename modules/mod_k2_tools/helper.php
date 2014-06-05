@@ -160,7 +160,7 @@ class ModK2ToolsHelper
 					// Handle depending on matches
 					if ($matchItem)
 					{
-						$breadcrumbs->title = end($pathwayItems)->title;
+						$breadcrumbs->title =  end($pathwayItems)->title;
 						foreach ($pathwayItems as $pathwayItem)
 						{
 							$breadcrumbs->path[] = $pathwayItem;
@@ -195,7 +195,7 @@ class ModK2ToolsHelper
 					// Handle depending on matches
 					if ($matchCategory)
 					{
-						$breadcrumbs->title = end($pathwayItems)->title;
+						$breadcrumbs->title =  end($pathwayItems)->title;
 						foreach ($pathwayItems as $pathwayItem)
 						{
 							$breadcrumbs->path[] = $pathwayItem;
@@ -218,7 +218,7 @@ class ModK2ToolsHelper
 		else
 		{
 
-			$breadcrumbs->title = count($pathwayItems) ? end($pathwayItems)->title : '';
+			$breadcrumbs->title = count($pathwayItems) ?  end($pathwayItems)->title : '';
 			foreach ($pathwayItems as $pathwayItem)
 			{
 				$breadcrumbs->path[] = $pathwayItem;
@@ -308,18 +308,12 @@ class ModK2ToolsHelper
 			$model->setState('categories', $filter->categories);
 			$model->setState('recursive', $filter->recursive);
 		}
+		$model->setState('limit', $params->get('cloud_limit'));
 		$tags = $model->getTagCloud();
 
 		if (!count($tags))
 		{
 			return $tags;
-		}
-
-		usort($tags, 'self::sortTagsByCounter');
-		$limit = (int)$params->get('cloud_limit');
-		if ($limit)
-		{
-			$tags = array_slice($tags, 0, $params->get('cloud_limit'));
 		}
 
 		$maximumFontSize = $params->get('max_size');
@@ -333,37 +327,16 @@ class ModK2ToolsHelper
 		}
 		$step = ($maximumFontSize - $minimumFontSize) / ($spread);
 
-		$rows = array();
 		foreach ($tags as $tag)
 		{
-			$rows[$tag->id] = $tag->counter;
-		}
-
-		$model = K2Model::getInstance('Tags');
-		$model->setState('site', true);
-		$model->setState('id', array_keys($rows));
-		$cloud = $model->getRows();
-
-		foreach ($cloud as $entry)
-		{
-			$entry->counter = $rows[$entry->id];
-			$size = $minimumFontSize + (($entry->counter - $minimumOccurencies) * $step);
-			$entry->size = ceil($size);
+			$size = $minimumFontSize + (($tag->counter - $minimumOccurencies) * $step);
+			$tag->size = ceil($size);
 			// Legacy
-			$entry->count = $entry->counter;
+			$tag->count = $tag->counter;
 		}
 
-		usort($cloud, 'self::sortTagsByName');
-		return $cloud;
-	}
-
-	private static function sortTagsByCounter($a, $b)
-	{
-		if ((int)$a->counter == (int)$b->counter)
-		{
-			return 0;
-		}
-		return ((int)$a->counter > (int)$b->counter) ? -1 : 1;
+		usort($tags, 'self::sortTagsByName');
+		return $tags;
 	}
 
 	private static function sortTagsByName($a, $b)
