@@ -2,3 +2,5 @@
 2. Tag cloud has performance issue since we need to check the items category and the item access/publish status. 
 3. Archive has performance issue since we need to compute the month (MONTH() SQL) for every item in order to get the last 12 months that there are items. Probably we need to change the way the archive works to be like "x" months back from now.
 4. Authors list has performance issue since we need to also filter by category, item state/access etc.
+5. Latest comments also has small performance issue since we need to also filter by category, item state/access etc.
+6. Users with most popular items and most commented items need a lot of time. Both of them are using temporary.
