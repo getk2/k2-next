@@ -16,33 +16,56 @@ class K2Calendar extends Calendar
 {
 
 	var $category = null;
+	var $cache = array();
 
 	function getDateLink($day, $month, $year)
 	{
-		$model = K2Model::getInstance('Items');
-		$model->setState('site', true);
-		$model->setState('day', $day);
-		$model->setState('month', $month);
-		$model->setState('year', $year);
-		if ($this->category)
+		$key = $year.'-'.$month;
+		if (!isset($this->cache[$key]))
 		{
-			$model->setState('category', $this->category);
+			$model = K2Model::getInstance('Items');
+			$model->setState('site', true);
+			$model->setState('month', $month);
+			$model->setState('year', $year);
+			if ($this->category)
+			{
+				$model->setState('category', $this->category);
+			}
+			$this->cache[$key] = $model->countRows();
 		}
-		$result = $model->countRows();
-		if ($result > 0)
+
+		if ($this->cache[$key] > 0)
 		{
-			return JRoute::_(K2HelperRoute::getDateRoute($year, $month, $day, $this->category));
+			$model = K2Model::getInstance('Items');
+			$model->setState('site', true);
+			$model->setState('day', $day);
+			$model->setState('month', $month);
+			$model->setState('year', $year);
+			if ($this->category)
+			{
+				$model->setState('category', $this->category);
+			}
+			$result = $model->countRows();
+			if ($result > 0)
+			{
+				return JRoute::_(K2HelperRoute::getDateRoute($year, $month, $day, $this->category));
+			}
+			else
+			{
+				return false;
+			}
 		}
 		else
 		{
 			return false;
 		}
+
 	}
 
 	function getCalendarLink($month, $year)
 	{
 		$application = JFactory::getApplication();
-		return JRoute::_('index.php?option=com_k2&view=calendar&year='.$year.'&month='.$month.'&category='.$this->category.'&format=raw');
+		return JRoute::_('index.php?option=com_k2&view=calendar&year='.$year.'&month='.$month.'&category='.$this->category.'&format=raw&Itemid=');
 	}
 
 }

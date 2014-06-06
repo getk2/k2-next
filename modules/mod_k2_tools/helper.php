@@ -95,9 +95,8 @@ class ModK2ToolsHelper
 	{
 		require_once dirname(__FILE__).'/includes/k2calendar.php';
 
-		$application = JFactory::getApplication();
-		$month = $application->input->get('month', 0, 'int');
-		$year = $application->input->get('year', 0, 'int');
+		$month = $params->get('month');
+		$year = $params->get('year');
 		$filter = $params->get('calendarCategory');
 
 		$months = array(JText::_('K2_JANUARY'), JText::_('K2_FEBRUARY'), JText::_('K2_MARCH'), JText::_('K2_APRIL'), JText::_('K2_MAY'), JText::_('K2_JUNE'), JText::_('K2_JULY'), JText::_('K2_AUGUST'), JText::_('K2_SEPTEMBER'), JText::_('K2_OCTOBER'), JText::_('K2_NOVEMBER'), JText::_('K2_DECEMBER'), );
@@ -160,7 +159,7 @@ class ModK2ToolsHelper
 					// Handle depending on matches
 					if ($matchItem)
 					{
-						$breadcrumbs->title =  end($pathwayItems)->title;
+						$breadcrumbs->title =   end($pathwayItems)->title;
 						foreach ($pathwayItems as $pathwayItem)
 						{
 							$breadcrumbs->path[] = $pathwayItem;
@@ -195,7 +194,7 @@ class ModK2ToolsHelper
 					// Handle depending on matches
 					if ($matchCategory)
 					{
-						$breadcrumbs->title =  end($pathwayItems)->title;
+						$breadcrumbs->title =   end($pathwayItems)->title;
 						foreach ($pathwayItems as $pathwayItem)
 						{
 							$breadcrumbs->path[] = $pathwayItem;
@@ -218,7 +217,7 @@ class ModK2ToolsHelper
 		else
 		{
 
-			$breadcrumbs->title = count($pathwayItems) ?  end($pathwayItems)->title : '';
+			$breadcrumbs->title = count($pathwayItems) ?   end($pathwayItems)->title : '';
 			foreach ($pathwayItems as $pathwayItem)
 			{
 				$breadcrumbs->path[] = $pathwayItem;

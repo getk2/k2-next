@@ -347,7 +347,7 @@ class K2ModelItems extends K2Model
 		else if ($this->getState('year') && $this->getState('month'))
 		{
 			$startDate = JFactory::getDate($this->getState('year').'-'.$this->getState('month').'-01')->toSql();
-			$endDate = JFactory::getDate($this->getState('year').'-'.$this->getState('month').'-31 23:59:59')->toSql();
+			$endDate = JFactory::getDate($this->getState('year').'-'.$this->getState('month').'-'.date('t', strtotime('last day of '.$this->getState('year').'-'.$this->getState('month').'-01')).' 23:59:59')->toSql();
 		}
 		else if ($this->getState('year'))
 		{
@@ -1157,20 +1157,15 @@ class K2ModelItems extends K2Model
 		$query = $db->getQuery(true);
 
 		// Select rows
-		$query->select('DISTINCT ('.$db->quoteName('item.created_by').')');
+		$query->select($db->quoteName('item.created_by'));
 		$query->from($db->quoteName('#__k2_items', 'item'));
-
-		// Join over the categories
-		$query->leftJoin($db->quoteName('#__k2_categories', 'category').' ON '.$db->quoteName('category.id').' = '.$db->quoteName('item.catid'));
+		$query->group($db->quoteName('item.created_by'));
 
 		// Set state for site
 		$this->setState('site', true);
 
 		// Set query conditions
 		$this->setQueryConditions($query);
-
-		// Set query sorting
-		$this->setQuerySorting($query);
 
 		// Hook for plugins
 		$this->onBeforeSetQuery($query, 'com_k2.authors');

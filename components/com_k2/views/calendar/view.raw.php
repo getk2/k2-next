@@ -24,6 +24,8 @@ class K2ViewCalendar extends K2View
 		$application = JFactory::getApplication();
 		$params = new JRegistry();
 		$params->def('calendarCategory', $application->input->get('category', 0, 'int'));
+		$params->def('month', $application->input->get('month', 0, 'int'));
+		$params->def('year', $application->input->get('year', 0, 'int'));
 		echo ModK2ToolsHelper::getCalendar($params);
 	}
 
