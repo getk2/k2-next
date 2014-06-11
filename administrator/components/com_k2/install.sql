@@ -237,7 +237,7 @@ CREATE TABLE IF NOT EXISTS `#__k2_tags` (
   `state` tinyint(1) NOT NULL,
   `extra_fields` longtext NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `name` (`name`)
+  KEY `name` (`name`),
   UNIQUE KEY `alias` (`alias`),
   KEY `state` (`state`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
