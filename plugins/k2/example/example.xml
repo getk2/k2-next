@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.3" type="plugin" group="k2" method="upgrade">
+	<name>Example K2 Plugin</name>
+	<author>JoomlaWorks</author>
+	<creationDate>September 24th, 2013</creationDate>
+	<copyright>Copyright (c) 2006 - 2013 JoomlaWorks Ltd. All rights reserved.</copyright>
+	<authorEmail>contact@joomlaworks.net</authorEmail>
+	<authorUrl>www.joomlaworks.net</authorUrl>
+	<version>3.0.0</version>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<description>An example K2 plugin to extend item, category and user forms in K2 with a URL inputbox for YouTube videos. The plugin will convert the YouTube URL you enter in K2 backends forms into a functional video player in the frontend.</description>
+	<files>
+		<filename plugin="example">example.php</filename>
+	</files>
+	<!-- Standard Joomla! plugin parameters to setup the K2 plugin once -->
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="width" type="text" default="425" label="Video width" description="" />
+				<field name="height" type="text" default="344" label="Video height" description="" />
+			</fieldset>
+		</fields>
+	</config>
+	<!-- K2 plugin parameters which extend K2 backend forms are defined here -->
+	<fieldset name="items-media">
+		<field name="videoURL_item" type="text" size="80" default="" label="YouTube URL (for item forms)" description="" />
+	</fieldset>
+	<fieldset name="categories">
+		<field name="videoURL_cat" type="text" size="80" default="" label="YouTube URL (for category forms)" description="" />
+	</fieldset>
+	<fieldset name="users">
+		<field name="videoURL_user" type="text" size="80" default="" label="YouTube URL (for user forms)" description="" />
+	</fieldset>
+</extension>
