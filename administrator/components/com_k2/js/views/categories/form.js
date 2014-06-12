@@ -62,16 +62,24 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher', 'widget
 
 			// Update form from editor contents
 			K2Editor.save('description');
-			
+
 			// Validate extra fields
 			var result = this.extraFieldsView.validate();
-			
+
 			return result;
 		},
 
 		updateExtraFields : function(event) {
 			event.preventDefault();
 			this.extraFieldsView.trigger('filter', this.$('#parent_id').val());
+		},
+
+		// OnBeforeClose event ( Marionette.js build in event )
+		onBeforeClose : function() {
+			// Destroy the editor. This is required by TinyMCE in order to be able to re-initialize with out page refresh.
+			if ( typeof (tinymce) != 'undefined') {
+				tinymce.remove();
+			}
 		},
 
 		// OnDomRefresh event ( Marionette.js build in event )

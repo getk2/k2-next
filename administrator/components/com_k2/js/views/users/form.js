@@ -68,6 +68,13 @@ define(['marionette', 'text!layouts/users/form.html', 'dispatcher', 'widgets/wid
 			var result = this.extraFieldsView.validate();
 			
 			return result;
+		},
+		// OnBeforeClose event ( Marionette.js build in event )
+		onBeforeClose : function() {
+			// Destroy the editor. This is required by TinyMCE in order to be able to re-initialize with out page refresh.
+			if ( typeof (tinymce) != 'undefined') {
+				tinymce.remove();
+			}
 		}
 	});
 	return K2ViewUser;
