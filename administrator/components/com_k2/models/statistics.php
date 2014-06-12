@@ -56,12 +56,6 @@ class K2ModelStatistics extends K2Model
 
 	public function increaseItemCommentsCounter($itemId)
 	{
-		// If the entry does not exist, create it
-		if (!$this->itemEntryExists($itemId))
-		{
-			$this->createItemEntry($itemId);
-		}
-
 		// Get database
 		$db = $this->getDBO();
 
@@ -137,12 +131,6 @@ class K2ModelStatistics extends K2Model
 
 	public function increaseItemHitsCounter($itemId)
 	{
-		// If the entry does not exist, create it
-		if (!$this->itemEntryExists($itemId))
-		{
-			$this->createItemEntry($itemId);
-		}
-
 		// Get database
 		$db = $this->getDBO();
 

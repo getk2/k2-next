@@ -836,6 +836,10 @@ class K2ModelItems extends K2Model
 
 		// Handle statistics
 		$statistics = K2Model::getInstance('Statistics', 'K2Model');
+
+		// Create item entry in statistics
+		$statistics->createItemEntry();
+
 		if ($this->getState('isNew'))
 		{
 			$statistics->increaseUserItemsCounter($table->created_by);
