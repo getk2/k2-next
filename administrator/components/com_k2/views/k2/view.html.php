@@ -50,6 +50,9 @@ class K2ViewK2 extends JViewLegacy
 		// Load jQuery
 		JHtml::_('jquery.framework');
 
+		// Keep alive the session
+		JHtml::_('behavior.keepalive');
+
 		// Load the CSS
 		$document->addStyleSheet(JURI::root(true).'/administrator/components/com_k2/css/admin.k2.css');
 
@@ -66,16 +69,6 @@ class K2ViewK2 extends JViewLegacy
 			// Load DropBox script
 			$document->addCustomTag('<script data-app-key="'.$dropBoxAppKey.'" id="dropboxjs" src="https://www.dropbox.com/static/api/2/dropins.js"></script>');
 		}
-
-		// Calculate session lifetime
-		$config = JFactory::getConfig();
-		$lifetime = ($config->get('lifetime') * 60000);
-		$refreshTime = ($lifetime <= 60000) ? 30000 : $lifetime - 60000;
-		if ($refreshTime > 3600000 || $refreshTime <= 0)
-		{
-			$refreshTime = 3600000;
-		}
-		$document->addScriptDeclaration('var K2SessionTimeout = '.$refreshTime.';');
 
 		// Load the application
 		$document->addCustomTag('<script data-main="'.JURI::root(true).'/administrator/components/com_k2/js/boot" src="'.JURI::root(true).'/administrator/components/com_k2/js/require.js"></script>');
