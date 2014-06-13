@@ -10,7 +10,7 @@ define(['backbone', 'model'], function(Backbone, K2Model) {'use strict';
 		},
 
 		urlRoot : function() {
-			return 'index.php?option=com_k2&task=tags.sync&format=json'
+			return 'index.php?option=com_k2&task=tags.sync&format=json';
 		},
 	});
 

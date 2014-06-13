@@ -3,6 +3,13 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'vie
 	// Override the default Backbone.Sync implementation
 	require(['sync']);
 
+	// Bind all jQuery AJAX requests so we can add a class for loading.
+	jQuery(document).bind('ajaxSend', function() {
+		jQuery('div[data-application="k2"]').addClass('k2-loading');
+	}).bind('ajaxComplete', function() {
+		jQuery('div[data-application="k2"]').removeClass('k2-loading');
+	});
+
 	// Initialize the application
 	var K2 = new Marionette.Application();
 
