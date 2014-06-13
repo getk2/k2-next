@@ -838,7 +838,7 @@ class K2ModelItems extends K2Model
 		$statistics = K2Model::getInstance('Statistics', 'K2Model');
 
 		// Create item entry in statistics
-		$statistics->createItemEntry();
+		$statistics->createItemEntry($table->id);
 
 		if ($this->getState('isNew'))
 		{
