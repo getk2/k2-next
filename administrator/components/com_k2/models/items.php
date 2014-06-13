@@ -21,6 +21,9 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/attachments.php';
 
 class K2ModelItems extends K2Model
 {
+
+	private static $cache = array();
+
 	public function getRows()
 	{
 		// Get database
@@ -259,25 +262,56 @@ class K2ModelItems extends K2Model
 
 		if ($tag = $this->getState('tag'))
 		{
+
 			if ($excludeItemId = $this->getState('tag.exclude.item'))
 			{
 				$query->where($db->quoteName('item.id').' != '.(int)$excludeItemId);
 			}
 
-			$subquery = $db->getQuery(true);
-			$subquery->select($db->quoteName('itemId'))->from($db->quoteName('#__k2_tags_xref'));
-			if (is_array($tag))
+			// Cast to integer and generate the query string
+			$tag = (array)$tag;
+			JArrayHelper::toInteger($tag);
+			sort($tag, SORT_NUMERIC);
+			$condition = implode(',', $tag);
+
+			// Optimize query depending on data amount. Use cache to avoid duplicate queries
+			if (!isset(self::$cache[$condition]['count']))
 			{
-				JArrayHelper::toInteger($tag);
-				$subquery->where($db->quoteName('tagId').' IN ('.implode(',', $tag).')');
+				$subquery = $db->getQuery(true);
+				$subquery->select('COUNT('.$db->quoteName('itemId').')')->from($db->quoteName('#__k2_tags_xref'));
+				$subquery->where($db->quoteName('tagId').' IN ('.$condition.')');
+				$db->setQuery($subquery);
+				self::$cache[$condition]['count'] = (int)$db->loadResult();
+			}
+
+			$numOfTaggedItems = self::$cache[$condition]['count'];
+
+			if ($numOfTaggedItems == 0 || ($numOfTaggedItems == 1 && $this->getState('tag.exclude.item')))
+			{
+				// No results should be returned
+				$query->where($db->quoteName('item.id').' IN(0)');
+			}
+			else if ($numOfTaggedItems <= 50)
+			{
+				if (!isset(self::$cache[$condition]['itemIds']))
+				{
+					$subquery = $db->getQuery(true);
+					$subquery->select($db->quoteName('itemId'))->from($db->quoteName('#__k2_tags_xref'));
+					$subquery->where($db->quoteName('tagId').' IN ('.$condition.')');
+					$db->setQuery($subquery);
+					self::$cache[$condition]['itemIds'] = $db->loadColumn();
+				}
+				$query->where($db->quoteName('item.id').' IN ('.implode(',', self::$cache[$condition]['itemIds']).')');
 			}
 			else
 			{
-				$subquery->where($db->quoteName('tagId').' = '.(int)$tag);
+				$subquery = $db->getQuery(true);
+				$subquery->select($db->quoteName('itemId'))->from($db->quoteName('#__k2_tags_xref'));
+				$subquery->where($db->quoteName('tagId').' IN ('.$condition.')');
+				$subquery->group($db->quoteName('itemId'));
+				$query->leftJoin('('.$subquery->__toString().') AS '.$db->quoteName('xref').' ON '.$db->quoteName('item.id').' = '.$db->quoteName('xref.itemId'));
 			}
-			$subquery->group($db->quoteName('itemId'));
 
-			$query->leftJoin('('.$subquery->__toString().') AS '.$db->quoteName('xref').' ON '.$db->quoteName('item.id').' = '.$db->quoteName('xref.itemId'));
 		}
 
 		if ($this->getState('publish_up'))
