@@ -47,7 +47,7 @@ class K2ModelStatistics extends K2Model
 
 		// Update
 		$query->update('#__k2_users_stats');
-		$query->set($db->quoteName('items').' = ('.$db->quoteName('items').' - 1)');
+		$query->set($db->quoteName('items').' = CASE WHEN '.$db->quoteName('items').' > 0 THEN ('.$db->quoteName('items').' - 1) ELSE 0 END');
 		$query->where($db->quoteName('userId').' = '.(int)$userId);
 		$db->setQuery($query);
 		$db->execute();
@@ -81,7 +81,7 @@ class K2ModelStatistics extends K2Model
 
 		// Update
 		$query->update('#__k2_items_stats');
-		$query->set($db->quoteName('comments').' = ('.$db->quoteName('comments').' - 1)');
+		$query->set($db->quoteName('comments').' = CASE WHEN '.$db->quoteName('comments').' > 0 THEN ('.$db->quoteName('comments').' - 1) ELSE 0 END');
 		$query->where($db->quoteName('itemId').' = '.(int)$itemId);
 		$db->setQuery($query);
 		$db->execute();
@@ -122,7 +122,7 @@ class K2ModelStatistics extends K2Model
 
 		// Update
 		$query->update('#__k2_users_stats');
-		$query->set($db->quoteName('comments').' = ('.$db->quoteName('comments').' - 1)');
+		$query->set($db->quoteName('comments').' = CASE WHEN '.$db->quoteName('comments').' > 0 THEN ('.$db->quoteName('comments').' - 1) ELSE 0 END');
 		$query->where($db->quoteName('userId').' = '.(int)$userId);
 		$db->setQuery($query);
 		$db->execute();
@@ -156,7 +156,7 @@ class K2ModelStatistics extends K2Model
 
 		// Update
 		$query->update('#__k2_items_stats');
-		$query->set($db->quoteName('hits').' = ('.$db->quoteName('hits').' - 1)');
+		$query->set($db->quoteName('hits').' = CASE WHEN '.$db->quoteName('hits').' > 0 THEN ('.$db->quoteName('hits').' - 1) ELSE 0 END');
 		$query->where($db->quoteName('itemId').' = '.(int)$itemId);
 		$db->setQuery($query);
 		$db->execute();

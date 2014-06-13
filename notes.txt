@@ -1,5 +1,9 @@
-1. Sorting items list by ordering when multiple categories are used causes a performance overhaul since we have to order by two columns of two tables.
+1. Sorting items list by ordering when multiple categories has performance issues since we have to order by two columns of two different tables.
+We can disable sorting by ordering when multiple categories are selected. After all ordering is only available in the same category.
+Alternatively we can make the ordering global and not relate it with categories.
+
 2. Tag cloud has performance issue since we need to check the items category and the item access/publish status. 
+We can 
 3. Archive has performance issue since we need to compute the month (MONTH() SQL) for every item in order to get the last 12 months that there are items. Probably we need to change the way the archive works to be like "x" months back from now.
 4. Authors list has performance issue since we need to also filter by category, item state/access etc.
 5. Latest comments also has small performance issue since we need to also filter by category, item state/access etc.
