@@ -13,3 +13,5 @@ Probably we need to change the way the archive works to be like "x" months back 
 5. Latest comments also has small performance issue since we need to also filter by category, item state/access etc.
 
 6. Users with most popular items and most commented items need a lot of time. Both of them are using temporary table.
+
+7. The Google Web Search API has been officially deprecated. For more information on its deprecation, see https://developers.google.com/web-search/. We suggest you migrate to the Google Custom Search API. (see https://developers.google.com/custom-search/).

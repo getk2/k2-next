@@ -52,16 +52,13 @@ class K2ControllerSettings extends K2Controller
 			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
 		}
 
-		// Data
-		$input = $this->getInputData();
-
 		// Get extension
 		$component = JComponentHelper::getComponent('com_k2');
 
 		// Prepare data for model
 		$id = $component->id;
 		$option = 'com_k2';
-		$data = $input['jform'];
+		$data = $this->input->get('jform', array(), 'array');
 
 		// Use Joomla! model for saving settings
 		require_once JPATH_SITE.'/components/com_config/model/cms.php';
