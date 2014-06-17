@@ -232,6 +232,9 @@ jQuery(document).ready(function() {
 					var href = jQuery(this).data('user-link');
 					jQuery(this).attr('href', href);
 				});
+				if(typeof(K2ShowRecaptcha) === 'function') {
+					K2ShowRecaptcha();
+				}
 			},
 			create : function(event) {
 				event.preventDefault();
@@ -245,6 +248,9 @@ jQuery(document).ready(function() {
 					}, this),
 					error : _.bind(function(model, xhr, options) {
 						this.message(xhr.responseText);
+						if(typeof(Recaptcha) !== 'undefined'){
+							Recaptcha.reload();
+						}
 					}, this)
 				});
 			},

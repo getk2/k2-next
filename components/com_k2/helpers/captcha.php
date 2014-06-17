@@ -29,10 +29,7 @@ class K2HelperCaptcha
 				Recaptcha.create("'.$params->get('recaptcha_public_key').'", "K2Recaptcha", {
 					theme: "'.$params->get('recaptcha_theme', 'clean').'"
 				});
-			}
-			jQuery(window).load(function() {
-				K2ShowRecaptcha();
-			});';
+			}';
 			$document->addScriptDeclaration($js);
 		}
 
