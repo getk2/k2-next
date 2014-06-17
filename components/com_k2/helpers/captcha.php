@@ -64,8 +64,8 @@ class K2HelperCaptcha
 				$data = array();
 				$data['privatekey'] = $params->get('recaptcha_private_key');
 				$data['remoteip'] = $_SERVER["REMOTE_ADDR"];
-				$data['challenge'] = $application->input->post('recaptcha_challenge_field', '', 'raw');
-				$data['response'] = $application->input->post('recaptcha_response_field', '', 'raw');
+				$data['challenge'] = $application->input->post->get('recaptcha_challenge_field', '', 'raw');
+				$data['response'] = $application->input->post->get('recaptcha_response_field', '', 'raw');
 
 				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_URL, 'http://www.google.com/recaptcha/api/verify');
