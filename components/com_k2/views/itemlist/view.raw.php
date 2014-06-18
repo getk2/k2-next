@@ -48,7 +48,7 @@ class K2ViewItemlist extends K2View
 		// Plugins
 		foreach ($this->items as $item)
 		{
-			$item->events = $item->getEvents('com_k2.itemlist.'.$task, $this->params, $offset);
+			$item->events = $item->getEvents('com_k2.itemlist.'.$task, $this->params, $this->offset);
 		}
 
 		// Pagination
