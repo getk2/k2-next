@@ -202,7 +202,7 @@ class PlgSystemK2 extends JPlugin
 							theme: "'.$params->get('recaptcha_theme', 'clean').'"
 						});
 					}
-					$K2(document).ready(function() {
+					jQuery(document).ready(function() {
 						showRecaptcha();
 					});';
 					$document->addScriptDeclaration($js);

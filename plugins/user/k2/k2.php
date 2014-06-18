@@ -34,12 +34,7 @@ class PlgUserK2 extends JPlugin
 		$application = JFactory::getApplication();
 
 		// Valid contexts
-		$contexts = array(
-			'com_users.profile',
-			'com_users.user',
-			'com_users.registration',
-			'com_admin.profile'
-		);
+		$contexts = array('com_users.profile', 'com_users.user', 'com_users.registration', 'com_admin.profile');
 
 		// Condition
 		if ($application->isSite() && in_array($context, $contexts) && is_object($data))
@@ -81,12 +76,7 @@ class PlgUserK2 extends JPlugin
 		$name = $form->getName();
 
 		// Valid forms
-		$forms = array(
-			'com_admin.profile',
-			'com_users.user',
-			'com_users.profile',
-			'com_users.registration'
-		);
+		$forms = array('com_admin.profile', 'com_users.user', 'com_users.profile', 'com_users.registration');
 
 		// Rendering condition
 		if ($application->isSite() && $params->get('K2UserProfile') == 'native' && in_array($name, $forms))
@@ -335,20 +325,37 @@ class PlgUserK2 extends JPlugin
 		// Process only in front-end. Check all conditions
 		if ($params->get('K2UserProfile') && $isNew && $params->get('recaptchaOnRegistration') && $application->isSite() && $isK2UserForm)
 		{
-			// @TODO Implement captcha based on the new settings....
-			if (!function_exists('_recaptcha_qsencode'))
+			$data = array();
+			$data['privatekey'] = $params->get('recaptcha_private_key');
+			$data['remoteip'] = $_SERVER["REMOTE_ADDR"];
+			$data['challenge'] = $application->input->post->get('recaptcha_challenge_field', '', 'raw');
+			$data['response'] = $application->input->post->get('recaptcha_response_field', '', 'raw');
+
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, 'http://www.google.com/recaptcha/api/verify');
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+			$response = curl_exec($ch);
+			$error = curl_error($ch);
+			curl_close($ch);
+
+			require_once JPATH_SITE.'/components/com_users/helpers/route.php';
+			$url = JRoute::_('index.php?option=com_users&view=registration&Itemid='.UsersHelperRoute::getRegistrationRoute());
+
+			if ($response === false)
 			{
-				require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_k2'.DS.'lib'.DS.'recaptchalib.php');
+				$application->enqueueMessage($error, 'error');
+				$application->redirect($url);
+				return false;
 			}
-			$privatekey = $params->get('recaptcha_private_key');
-			$recaptcha_challenge_field = isset($_POST["recaptcha_challenge_field"]) ? $_POST["recaptcha_challenge_field"] : '';
-			$recaptcha_response_field = isset($_POST["recaptcha_response_field"]) ? $_POST["recaptcha_response_field"] : '';
-			$resp = recaptcha_check_answer($privatekey, $_SERVER["REMOTE_ADDR"], $recaptcha_challenge_field, $recaptcha_response_field);
-			if (!$resp->is_valid)
+
+			$lines = explode("\n", $response);
+			if (trim($lines[0]) != 'true')
 			{
-				$url = 'index.php?option=com_users&view=registration';
 				$application->enqueueMessage(JText::_('K2_THE_WORDS_YOU_TYPED_DID_NOT_MATCH_THE_ONES_DISPLAYED_PLEASE_TRY_AGAIN'), 'error');
 				$application->redirect($url);
+				return false;
 			}
 		}
 	}
