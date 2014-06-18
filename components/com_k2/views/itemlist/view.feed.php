@@ -64,16 +64,23 @@ class K2ViewItemlist extends K2View
 	private function category()
 	{
 		$this->getCategoryItems();
+		if (isset($this->category))
+		{
+			$this->setMetadata($this->category);
+		}
+
 	}
 
 	private function user()
 	{
 		$this->getUserItems();
+		$this->setMetadata($this->author);
 	}
 
 	private function tag()
 	{
 		$this->getTagItems();
+		$this->setMetadata($this->tag);
 	}
 
 	private function date()
