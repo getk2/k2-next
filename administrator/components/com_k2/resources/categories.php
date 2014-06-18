@@ -83,12 +83,6 @@ class K2Categories extends K2Resource
 		// Edit link
 		$this->editLink = '#categories/edit/'.$this->id;
 
-		// Link
-		$this->link = $this->getLink();
-
-		// Feed
-		$this->feedLink = $this->getFeedLink();
-
 		// Permisisons
 		$user = JFactory::getUser();
 		if ($user->guest)
@@ -115,17 +109,30 @@ class K2Categories extends K2Resource
 
 	public function getLink()
 	{
-		return JRoute::_(K2HelperRoute::getCategoryRoute($this->id.':'.$this->alias));
+		if (!isset($this->link))
+		{
+			$this->link = JRoute::_(K2HelperRoute::getCategoryRoute($this->id.':'.$this->alias));
+		}
+		return $this->link;
+
 	}
 
 	public function getUrl()
 	{
-		return JRoute::_(K2HelperRoute::getCategoryRoute($this->id.':'.$this->alias), true, -1);
+		if (!isset($this->url))
+		{
+			$this->url = JRoute::_(K2HelperRoute::getCategoryRoute($this->id.':'.$this->alias), true, -1);
+		}
+		return $this->url;
 	}
 
 	public function getFeedLink()
 	{
-		return JRoute::_(K2HelperRoute::getCategoryRoute($this->id.':'.$this->alias).'&format=feed');
+		if (!isset($this->feedLink))
+		{
+			$this->feedLink = JRoute::_(K2HelperRoute::getCategoryRoute($this->id.':'.$this->alias).'&format=feed');
+		}
+		return $this->feedLink;
 	}
 
 	public function getImage()

@@ -399,25 +399,41 @@ class K2Items extends K2Resource
 
 	public function getLink()
 	{
-		return JRoute::_(K2HelperRoute::getItemRoute($this->id.':'.$this->alias, $this->catid));
+		if (!isset($this->link))
+		{
+			$this->link = JRoute::_(K2HelperRoute::getItemRoute($this->id.':'.$this->alias, $this->catid));
+		}
+		return $this->link;
 	}
 
 	public function getUrl()
 	{
-		return JRoute::_(K2HelperRoute::getItemRoute($this->id.':'.$this->alias, $this->catid), true, -1);
+		if (!isset($this->url))
+		{
+			$this->url = JRoute::_(K2HelperRoute::getItemRoute($this->id.':'.$this->alias, $this->catid), true, -1);
+		}
+		return $this->url;
 	}
 
 	public function getPrintLink()
 	{
-		JRoute::_(K2HelperRoute::getItemRoute($this->id.':'.$this->alias, $this->catid).'&print=1');
+		if (!isset($this->printLink))
+		{
+			$this->printLink = JRoute::_(K2HelperRoute::getItemRoute($this->id.':'.$this->alias, $this->catid).'&print=1');
+		}
+		return $this->printLink;
 	}
 
 	public function getEmailLink()
 	{
-		require_once JPATH_SITE.'/components/com_mailto/helpers/mailto.php';
-		$application = JFactory::getApplication();
-		$template = $application->getTemplate();
-		return JRoute::_('index.php?option=com_mailto&tmpl=component&template='.$template.'&link='.MailToHelper::addLink($this->url));
+		if (!isset($this->emailLink))
+		{
+			require_once JPATH_SITE.'/components/com_mailto/helpers/mailto.php';
+			$application = JFactory::getApplication();
+			$template = $application->getTemplate();
+			$this->emailLink = JRoute::_('index.php?option=com_mailto&tmpl=component&template='.$template.'&link='.MailToHelper::addLink($this->url));
+		}
+		return $this->emailLink;
 	}
 
 	public function getComments($offset = 0)
