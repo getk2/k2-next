@@ -138,14 +138,18 @@ class K2View extends JViewLegacy
 		{
 			$title = $application->getCfg('sitename');
 		}
-		elseif ($application->getCfg('sitename_pagetitles', 0) == 1)
+		if ($document->getType() == 'html')
 		{
-			$title = JText::sprintf('JPAGETITLE', $application->getCfg('sitename'), $title);
+			if ($application->getCfg('sitename_pagetitles', 0) == 1)
+			{
+				$title = JText::sprintf('JPAGETITLE', $application->getCfg('sitename'), $title);
+			}
+			elseif ($application->getCfg('sitename_pagetitles', 0) == 2)
+			{
+				$title = JText::sprintf('JPAGETITLE', $title, $application->getCfg('sitename'));
+			}
 		}
-		elseif ($application->getCfg('sitename_pagetitles', 0) == 2)
-		{
-			$title = JText::sprintf('JPAGETITLE', $title, $application->getCfg('sitename'));
-		}
+
 		$document->setTitle($title);
 	}
 
