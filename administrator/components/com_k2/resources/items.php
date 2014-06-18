@@ -106,18 +106,6 @@ class K2Items extends K2Resource
 		// Edit link
 		$this->editLink = '#items/edit/'.$this->id;
 
-		// Link
-		$this->link = $this->getLink();
-
-		// URL (absolute link)
-		$this->url = $this->getUrl();
-
-		// PrintLink
-		$this->printLink = $this->getPrintLink();
-
-		// Email link
-		$this->emailLink = $this->getEmailLink();
-
 		// Permisisons
 		$user = JFactory::getUser();
 		if ($user->guest)

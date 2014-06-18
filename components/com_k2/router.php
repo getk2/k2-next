@@ -17,7 +17,7 @@ class K2Router extends JComponentRouterBase
 {
 
 	/**
-	 * Build the route for the com_content component
+	 * Build the route for the K2 component
 	 *
 	 * @param   array  &$query  An array of URL arguments
 	 *
@@ -28,61 +28,43 @@ class K2Router extends JComponentRouterBase
 
 	public function build(&$query)
 	{
-
 		// Initialize segments
 		$segments = array();
 
-		// Get application
-		$application = JFactory::getApplication();
-
-		// Get menu
-		$menu = $application->getMenu();
-
-		// Get the associated menu item id and detect if it was found by K2 route helper or is inherited
+		// Handle the matched menu item ( if any )
 		if (empty($query['Itemid']))
 		{
-			$item = $menu->getActive();
-			$match = false;
+			unset($query['Itemid']);
 		}
 		else
 		{
-			$item = $menu->getItem($query['Itemid']);
-			$match = true;
-		}
+			// Get application
+			$application = JFactory::getApplication();
 
-		// If the menu item is verified unset the common query variables
-		if ($match)
-		{
-			// Special case for multiple categories match
-			if (isset($query['task']) && $query['task'] == 'category' && !isset($item->query['id']))
+			// Get menu
+			$menu = $application->getMenu();
+
+			// Get the matched menu item
+			$item = $menu->getItem($query['Itemid']);
+
+			// Itemlist
+			if (isset($query['view']) && $query['view'] == 'itemlist')
 			{
+				unset($query['view']);
+				unset($query['task']);
+				if (isset($query['id']))
+				{
+					unset($query['id']);
+				}
+			}
+
+			// Item
+			if (isset($query['view']) && $query['view'] == 'item' && isset($item->query['view']) && $item->query['view'] == 'item')
+			{
+				unset($query['view']);
 				unset($query['id']);
 			}
 
-			foreach ($query as $key => $value)
-			{
-				// Don't unset the option
-				if ($key == 'option')
-				{
-					continue;
-				}
-
-				if (isset($item->query[$key]))
-				{
-					// Handle numeric values. For example when id contains alias
-					$value = is_numeric($item->query[$key]) ? (int)$query[$key] : $query[$key];
-
-					// If the variable exists in our menu, unset it
-					if ($item->query[$key] == $value)
-					{
-						unset($query[$key]);
-					}
-				}
-			}
-		}
-		else
-		{
-			unset($query['Itemid']);
 		}
 
 		if (isset($query['view']))
@@ -136,7 +118,7 @@ class K2Router extends JComponentRouterBase
 		$params = JComponentHelper::getParams('com_k2');
 		if ($params->get('k2Sef') && count($segments))
 		{
-			$this->advacedBuild($segments);
+			$segments = $this->advacedBuild($segments);
 		}
 
 		return $segments;
@@ -210,7 +192,7 @@ class K2Router extends JComponentRouterBase
 		$params = JComponentHelper::getParams('com_k2');
 		if ($params->get('k2Sef') && count($vars))
 		{
-			$this->advancedParse($vars, $segments);
+			$vars = $this->advancedParse($vars, $segments);
 		}
 
 		return $vars;
@@ -223,7 +205,7 @@ class K2Router extends JComponentRouterBase
 	 * @return  void
 	 */
 
-	private function advacedBuild(&$segments)
+	private function advacedBuild($segments)
 	{
 		$params = JComponentHelper::getParams('com_k2');
 		$view = $segments[0];
@@ -252,7 +234,8 @@ class K2Router extends JComponentRouterBase
 								// If the desired separator is slash, then apply it
 								if ($params->get('k2SefCatIdTitleAliasSep') == 'slash')
 								{
-									$segments[2] = str_replace(':', '/', $segments[2]);
+									list($id, $alias) = explode('-', $segments[2], 2);
+									$segments[2] = $id.'/'.$alias;
 								}
 							}
 							// Category alias is not used in the URL. Keep only the numeric Id
@@ -265,7 +248,7 @@ class K2Router extends JComponentRouterBase
 						else
 						{
 							// Try to split the slug
-							list($id, $alias) = explode(':', $segments[2]);
+							list($id, $alias) = explode('-', $segments[2], 2);
 
 							// Use only alias
 							$segments[2] = $alias;
@@ -299,7 +282,7 @@ class K2Router extends JComponentRouterBase
 				// Replace the item with the category slug
 				if ($params->get('k2SefLabelItem') == '1')
 				{
-					$item = K2Items::getInstance($segments[1]);
+					$item = K2Items::getInstance((int)$segments[1]);
 					$segments[0] = $item->category->alias;
 				}
 				else
@@ -318,9 +301,10 @@ class K2Router extends JComponentRouterBase
 			{
 				if ($params->get('k2SefUseItemTitleAlias'))
 				{
-					if ($params->get('k2SefItemIdTitleAliasSep') == 'slash')
+					if ($params->get('k2SefItemIdTitleAliasSep') == 'slash' && strpos($segments[1], '-') !== false)
 					{
-						$segments[1] = str_replace(':', '/', $segments[1]);
+						list($id, $alias) = explode('-', $segments[1], 2);
+						$segments[1] = $id.'/'.$alias;
 					}
 				}
 				else
@@ -332,7 +316,7 @@ class K2Router extends JComponentRouterBase
 			else
 			{
 				// Try to split the slug
-				list($id, $alias) = explode(':', $segments[1]);
+				list($id, $alias) = explode('-', $segments[1], 2);
 
 				// Use only alias
 				$segments[1] = $alias;
@@ -342,6 +326,8 @@ class K2Router extends JComponentRouterBase
 
 		// Reorder segments array
 		$segments = array_values($segments);
+
+		return $segments;
 
 	}
 
@@ -353,7 +339,7 @@ class K2Router extends JComponentRouterBase
 	 *
 	 * @return  void
 	 */
-	private function advancedParse(&$vars, $segments)
+	private function advancedParse($vars, $segments)
 	{
 		$params = JComponentHelper::getParams('com_k2');
 		$reservedViews = array('attachments', 'calendar', 'item', 'itemlist', 'latest');
@@ -424,10 +410,20 @@ class K2Router extends JComponentRouterBase
 				}
 				else
 				{
-					$vars['id'] = $segments[1];
+					if ($params->get('k2SefLabelItem'))
+					{
+						$vars['id'] = $segments[1];
+					}
+					else
+					{
+						$vars['id'] = $segments[0];
+					}
+
 				}
 			}
 		}
+
+		return $vars;
 	}
 
 }
