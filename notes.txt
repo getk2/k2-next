@@ -15,3 +15,13 @@ Probably we need to change the way the archive works to be like "x" months back 
 6. Users with most popular items and most commented items need a lot of time. Both of them are using temporary table.
 
 7. The Google Web Search API has been officially deprecated. For more information on its deprecation, see https://developers.google.com/web-search/. We suggest you migrate to the Google Custom Search API. (see https://developers.google.com/custom-search/).
+
+8. We can improve the advanced SEF options and make them much more better. We need to replace the prefix with a menu link selection. 
+This way we will get rid of 'component/k2' in URLs and we will get rid of the duplicate URLs issue. 
+Actually this will do what the generic K2 link to all categories does for v2 but it will be specific to each content type.
+
+9. "Change root attachments folder" is not implemented yet. We need to see how this will work since we can have attachments stored at the cloud.
+
+10. Revisions interface is not implemented. However the server side code exists.
+
+11. "Front-end editing options" are not implemented (the swicthes for hiding/showing the tabs) . 
