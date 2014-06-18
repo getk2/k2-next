@@ -11,5 +11,6 @@
 	<description>K2_A_USER_SYNCHRONIZATION_PLUGIN_FOR_K2</description>
 	<files>
 		<filename plugin="k2">k2.php</filename>
+		<folder>forms</folder>
 	</files>
 </extension>
