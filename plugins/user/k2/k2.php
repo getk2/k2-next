@@ -126,11 +126,11 @@ class PlgUserK2 extends JPlugin
 		{
 			if (substr($value, 0, 4) == "http")
 			{
-				return '<a href="'.$value.'">'.$value.'</a>';
+				return '<a href="'.$value.'" target="_blank"">'.$value.'</a>';
 			}
 			else
 			{
-				return '<a href="http://'.$value.'">'.$value.'</a>';
+				return '<a href="http://'.$value.'" target="_blank"">'.$value.'</a>';
 			}
 		}
 	}
