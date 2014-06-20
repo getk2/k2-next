@@ -6,11 +6,6 @@
 	<fields name="params">
 		<fieldset name="listingOptions" addfieldpath="/administrator/components/com_k2/fields">
 			<field type="k2language"/>
-			<field name="catItemDateCreated" type="radio" default="" label="K2_ITEM_CREATED_DATE_AND_TIME" description="">
-				<option value="">K2_INHERIT_FROM_CATEGORY</option>
-				<option value="0">K2_HIDE</option>
-				<option value="1">K2_SHOW</option>
-			</field>
 			<field name="catItemTitle" type="radio" default="" label="K2_TITLE" description="">
 				<option value="">K2_INHERIT_FROM_CATEGORY</option>
 				<option value="0">K2_HIDE</option>
@@ -53,6 +48,11 @@
 				<option value="1">K2_SHOW</option>
 			</field>
 			<field name="catItemExtraFields" type="radio" default="" label="K2_EXTRA_FIELDS" description="">
+				<option value="">K2_INHERIT_FROM_CATEGORY</option>
+				<option value="0">K2_HIDE</option>
+				<option value="1">K2_SHOW</option>
+			</field>
+			<field name="catItemDateCreated" type="radio" default="" label="K2_ITEM_CREATED_DATE_AND_TIME" description="">
 				<option value="">K2_INHERIT_FROM_CATEGORY</option>
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
@@ -114,7 +114,12 @@
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="catItemNavigation" type="radio" default="" label="K2_ITEM_NAVIGATION" description="">
+			<field name="catItemReadMore" type="radio" default="1" label="K2_READ_MORE_LINK" description="">
+				<option value="">K2_INHERIT_FROM_CATEGORY</option>
+				<option value="0">K2_HIDE</option>
+				<option value="1">K2_SHOW</option>
+			</field>
+			<field name="catItemCommentsAnchor" type="radio" default="1" label="K2_ANCHOR_LINK_WITH_COMMENTS_COUNTER_TO_ITEMS_COMMENT_FORM" description="">
 				<option value="">K2_INHERIT_FROM_CATEGORY</option>
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
