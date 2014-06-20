@@ -132,11 +132,6 @@
 			</field>
 		</fieldset>
 		<fieldset name="itemOptions" addfieldpath="/administrator/components/com_k2/fields">
-			<field name="itemDateCreated" type="radio" default="" label="K2_ITEM_CREATED_DATE_AND_TIME" description="">
-				<option value="">K2_INHERIT_FROM_CATEGORY</option>
-				<option value="0">K2_HIDE</option>
-				<option value="1">K2_SHOW</option>
-			</field>
 			<field name="itemTitle" type="radio" default="" label="K2_TITLE" description="">
 				<option value="">K2_INHERIT_FROM_CATEGORY</option>
 				<option value="0">K2_HIDE</option>
@@ -189,6 +184,11 @@
 				<option value="1">K2_SHOW</option>
 			</field>
 			<field name="itemExtraFields" type="radio" default="" label="K2_EXTRA_FIELDS" description="">
+				<option value="">K2_INHERIT_FROM_CATEGORY</option>
+				<option value="0">K2_HIDE</option>
+				<option value="1">K2_SHOW</option>
+			</field>
+			<field name="itemDateCreated" type="radio" default="" label="K2_ITEM_CREATED_DATE_AND_TIME" description="">
 				<option value="">K2_INHERIT_FROM_CATEGORY</option>
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>

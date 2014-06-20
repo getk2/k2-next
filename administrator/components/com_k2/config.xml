@@ -18,10 +18,6 @@
 			<option value="0">K2_HIDE</option>
 			<option value="1">K2_SHOW</option>
 		</field>
-		<field name="catItemDateCreated" type="radio" default="1" label="K2_ITEM_CREATED_DATE_AND_TIME" description="">
-			<option value="0">K2_HIDE</option>
-			<option value="1">K2_SHOW</option>
-		</field>
 		<field name="catItemTitle" type="radio" default="1" label="K2_TITLE" description="">
 			<option value="0">K2_HIDE</option>
 			<option value="1">K2_SHOW</option>
@@ -56,6 +52,10 @@
 			<option value="1">K2_SHOW</option>
 		</field>
 		<field name="catItemExtraFields" type="radio" default="0" label="K2_EXTRA_FIELDS" description="">
+			<option value="0">K2_HIDE</option>
+			<option value="1">K2_SHOW</option>
+		</field>
+		<field name="catItemDateCreated" type="radio" default="1" label="K2_ITEM_CREATED_DATE_AND_TIME" description="">
 			<option value="0">K2_HIDE</option>
 			<option value="1">K2_SHOW</option>
 		</field>
@@ -105,7 +105,11 @@
 			<option value="0">K2_HIDE</option>
 			<option value="1">K2_SHOW</option>
 		</field>
-		<field name="catItemNavigation" type="radio" default="0" label="K2_ITEM_NAVIGATION" description="">
+		<field name="catItemReadMore" type="radio" default="1" label="K2_READ_MORE_LINK" description="">
+			<option value="0">K2_HIDE</option>
+			<option value="1">K2_SHOW</option>
+		</field>
+		<field name="catItemCommentsAnchor" type="radio" default="1" label="K2_ANCHOR_LINK_WITH_COMMENTS_COUNTER_TO_ITEMS_COMMENT_FORM" description="">
 			<option value="0">K2_HIDE</option>
 			<option value="1">K2_SHOW</option>
 		</field>
@@ -145,10 +149,6 @@
 			<option value="1">K2_SHOW</option>
 		</field>
 		<field menu="hide" name="userItemCount" type="text" default="10" size="4" label="K2_ITEM_COUNT_ON_USER_PAGES" description="" />
-		<field name="userItemDateCreated" type="radio" default="1" label="K2_ITEM_CREATED_DATE_AND_TIME" description="">
-			<option value="0">K2_HIDE</option>
-			<option value="1">K2_SHOW</option>
-		</field>
 		<field name="userItemTitle" type="radio" default="1" label="K2_TITLE" description="">
 			<option value="0">K2_HIDE</option>
 			<option value="1">K2_SHOW</option>
@@ -183,6 +183,10 @@
 			<option value="1">K2_SHOW</option>
 		</field>
 		<field name="userItemExtraFields" type="radio" default="0" label="K2_EXTRA_FIELDS" description="">
+			<option value="0">K2_HIDE</option>
+			<option value="1">K2_SHOW</option>
+		</field>
+		<field name="userItemDateCreated" type="radio" default="1" label="K2_ITEM_CREATED_DATE_AND_TIME" description="">
 			<option value="0">K2_HIDE</option>
 			<option value="1">K2_SHOW</option>
 		</field>
@@ -232,6 +236,14 @@
 			<option value="0">K2_HIDE</option>
 			<option value="1">K2_SHOW</option>
 		</field>
+		<field name="userItemReadMore" type="radio" default="1" label="K2_READ_MORE_LINK" description="">
+			<option value="0">K2_HIDE</option>
+			<option value="1">K2_SHOW</option>
+		</field>
+		<field name="userItemCommentsAnchor" type="radio" default="1" label="K2_ANCHOR_LINK_WITH_COMMENTS_COUNTER_TO_ITEMS_COMMENT_FORM" description="">
+			<option value="0">K2_HIDE</option>
+			<option value="1">K2_SHOW</option>
+		</field>
 		<field name="" type="k2header" default="K2_ADVANCED" label="" description=""/>
 		<field name="userItemK2Plugins" type="radio" default="" label="K2_ENABLE_K2_PLUGINS" description="">
 			<option value="0">K2_NO</option>
@@ -245,10 +257,6 @@
 			<option value="1">K2_SHOW</option>
 		</field>
 		<field menu="hide" name="tagFeedIcon" type="radio" default="1" label="K2_RSS_FEED_ICON" description="">
-			<option value="0">K2_HIDE</option>
-			<option value="1">K2_SHOW</option>
-		</field>
-		<field name="tagItemDateCreated" type="radio" default="1" label="K2_ITEM_CREATED_DATE_AND_TIME" description="">
 			<option value="0">K2_HIDE</option>
 			<option value="1">K2_SHOW</option>
 		</field>
@@ -286,6 +294,10 @@
 			<option value="1">K2_SHOW</option>
 		</field>
 		<field name="tagItemExtraFields" type="radio" default="0" label="K2_EXTRA_FIELDS" description="">
+			<option value="0">K2_HIDE</option>
+			<option value="1">K2_SHOW</option>
+		</field>
+		<field name="tagItemDateCreated" type="radio" default="1" label="K2_ITEM_CREATED_DATE_AND_TIME" description="">
 			<option value="0">K2_HIDE</option>
 			<option value="1">K2_SHOW</option>
 		</field>
@@ -335,6 +347,14 @@
 			<option value="0">K2_HIDE</option>
 			<option value="1">K2_SHOW</option>
 		</field>
+		<field name="tagItemReadMore" type="radio" default="1" label="K2_READ_MORE_LINK" description="">
+			<option value="0">K2_HIDE</option>
+			<option value="1">K2_SHOW</option>
+		</field>
+		<field name="tagItemCommentsAnchor" type="radio" default="1" label="K2_ANCHOR_LINK_WITH_COMMENTS_COUNTER_TO_ITEMS_COMMENT_FORM" description="">
+			<option value="0">K2_HIDE</option>
+			<option value="1">K2_SHOW</option>
+		</field>
 		<field name="" type="k2header" default="K2_ADVANCED" label="" description=""/>
 		<field name="tagItemK2Plugins" type="radio" default="1" label="K2_ENABLE_K2_PLUGINS" description="">
 			<option value="0">K2_NO</option>
@@ -348,10 +368,6 @@
 			<option value="1">K2_SHOW</option>
 		</field>
 		<field menu="hide" name="dateFeedIcon" type="radio" default="1" label="K2_RSS_FEED_ICON" description="">
-			<option value="0">K2_HIDE</option>
-			<option value="1">K2_SHOW</option>
-		</field>
-		<field name="dateItemDateCreated" type="radio" default="1" label="K2_ITEM_CREATED_DATE_AND_TIME" description="">
 			<option value="0">K2_HIDE</option>
 			<option value="1">K2_SHOW</option>
 		</field>
@@ -389,6 +405,10 @@
 			<option value="1">K2_SHOW</option>
 		</field>
 		<field name="dateItemExtraFields" type="radio" default="0" label="K2_EXTRA_FIELDS" description="">
+			<option value="0">K2_HIDE</option>
+			<option value="1">K2_SHOW</option>
+		</field>
+		<field name="dateItemDateCreated" type="radio" default="1" label="K2_ITEM_CREATED_DATE_AND_TIME" description="">
 			<option value="0">K2_HIDE</option>
 			<option value="1">K2_SHOW</option>
 		</field>
@@ -438,6 +458,14 @@
 			<option value="0">K2_HIDE</option>
 			<option value="1">K2_SHOW</option>
 		</field>
+		<field name="dateItemReadMore" type="radio" default="1" label="K2_READ_MORE_LINK" description="">
+			<option value="0">K2_HIDE</option>
+			<option value="1">K2_SHOW</option>
+		</field>
+		<field name="dateItemCommentsAnchor" type="radio" default="1" label="K2_ANCHOR_LINK_WITH_COMMENTS_COUNTER_TO_ITEMS_COMMENT_FORM" description="">
+			<option value="0">K2_HIDE</option>
+			<option value="1">K2_SHOW</option>
+		</field>
 		<field name="" type="k2header" default="K2_ADVANCED" label="" description=""/>
 		<field name="dateItemK2Plugins" type="radio" default="1" label="K2_ENABLE_K2_PLUGINS" description="">
 			<option value="0">K2_NO</option>
@@ -451,10 +479,6 @@
 			<option value="1">K2_SHOW</option>
 		</field>
 		<field menu="hide" name="searchFeedIcon" type="radio" default="1" label="K2_RSS_FEED_ICON" description="">
-			<option value="0">K2_HIDE</option>
-			<option value="1">K2_SHOW</option>
-		</field>
-		<field name="searchItemDateCreated" type="radio" default="1" label="K2_ITEM_CREATED_DATE_AND_TIME" description="">
 			<option value="0">K2_HIDE</option>
 			<option value="1">K2_SHOW</option>
 		</field>
@@ -492,6 +516,10 @@
 			<option value="1">K2_SHOW</option>
 		</field>
 		<field name="searchItemExtraFields" type="radio" default="0" label="K2_EXTRA_FIELDS" description="">
+			<option value="0">K2_HIDE</option>
+			<option value="1">K2_SHOW</option>
+		</field>
+		<field name="searchItemDateCreated" type="radio" default="1" label="K2_ITEM_CREATED_DATE_AND_TIME" description="">
 			<option value="0">K2_HIDE</option>
 			<option value="1">K2_SHOW</option>
 		</field>
@@ -538,6 +566,14 @@
 			<option value="1">K2_SHOW</option>
 		</field>
 		<field name="searchItemImageGalleries" type="radio" default="0" label="K2_IMAGE_GALLERIES" description="">
+			<option value="0">K2_HIDE</option>
+			<option value="1">K2_SHOW</option>
+		</field>
+		<field name="searchItemReadMore" type="radio" default="1" label="K2_READ_MORE_LINK" description="">
+			<option value="0">K2_HIDE</option>
+			<option value="1">K2_SHOW</option>
+		</field>
+		<field name="searchItemCommentsAnchor" type="radio" default="1" label="K2_ANCHOR_LINK_WITH_COMMENTS_COUNTER_TO_ITEMS_COMMENT_FORM" description="">
 			<option value="0">K2_HIDE</option>
 			<option value="1">K2_SHOW</option>
 		</field>
