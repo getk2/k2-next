@@ -38,9 +38,11 @@ class K2ViewItemlist extends K2View
 			throw new Exception(JText::_('K2_NOT_FOUND'), 404);
 		}
 
+		// Generate the view params depedning on the task prefix. This let's us have one common layout file for listing items
+		$this->generateItemlistParams($task);
+
 		// Load the comments counters in a single query for all items
-		$params = JComponentHelper::getParams('com_k2');
-		if ($params->get('comments'))
+		if ($this->params->get('comments'))
 		{
 			K2Items::countComments($this->items);
 		}

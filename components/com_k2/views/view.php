@@ -650,4 +650,18 @@ class K2View extends JViewLegacy
 		}
 	}
 
+	protected function generateItemlistParams($task)
+	{
+		$prefix = $task == 'category' ? 'cat' : $task;
+		$prefix .= 'Item';
+		$prefixLength = strlen($prefix);
+		foreach ($this->params->toObject() as $key => $value)
+		{
+			if (strpos($key, $prefix) === 0)
+			{
+				$newKey = substr_replace($key, 'listItem', 0, $prefixLength);
+				$this->params->set($newKey, $value);
+			}
+		}
+	}
 }
