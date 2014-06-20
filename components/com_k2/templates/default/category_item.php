@@ -17,14 +17,14 @@ defined('_JEXEC') or die ;
 	
 	<div class="itemHeader">
 
-		<?php if($this->params->get('itemDateCreated')): ?>
+		<?php if($this->params->get('listItemDateCreated')): ?>
 		<!-- Date created -->
 		<span class="itemDateCreated">
 			<?php echo JHtml::_('date', $this->item->created, JText::_('K2_DATE_FORMAT_LC2')); ?>
 		</span>
 		<?php endif; ?>
 
-	  <?php if($this->params->get('itemTitle')): ?>
+	  <?php if($this->params->get('listItemTitle')): ?>
 	  <!-- Item title -->
 	  <h2 class="itemTitle">
 			<?php if($this->item->canEdit): ?>
@@ -38,7 +38,7 @@ defined('_JEXEC') or die ;
 
 	  	<?php echo $this->item->title; ?>
 
-	  	<?php if($this->params->get('itemFeaturedNotice') && $this->item->featured): ?>
+	  	<?php if($this->params->get('listItemFeaturedNotice') && $this->item->featured): ?>
 	  	<!-- Featured flag -->
 	  	<span>
 		  	<sup>
@@ -50,7 +50,7 @@ defined('_JEXEC') or die ;
 	  </h2>
 	  <?php endif; ?>
 
-		<?php if($this->params->get('itemAuthor')): ?>
+		<?php if($this->params->get('listItemAuthor')): ?>
 		<!-- Item Author -->
 		<span class="itemAuthor">
 			<?php echo K2HelperUtilities::writtenBy($this->item->author->gender); ?>&nbsp;<?php if(empty($this->item->created_by_alias)): ?>
@@ -78,7 +78,7 @@ defined('_JEXEC') or die ;
 	  <!-- K2 Plugins: K2BeforeDisplayContent -->
 	  <?php echo $this->item->events->K2BeforeDisplayContent; ?>
 
-	  <?php if($this->params->get('itemImage') && $this->item->image): ?>
+	  <?php if($this->params->get('listItemImage') && $this->item->image): ?>
 	  		  	
 	  <!-- Item Image -->
 	  <div class="itemImageBlock">
@@ -88,12 +88,12 @@ defined('_JEXEC') or die ;
 		  	</a>
 		  </span>
 
-		  <?php if($this->params->get('itemImageMainCaption') && $this->item->image->caption): ?>
+		  <?php if($this->params->get('listItemImageMainCaption') && $this->item->image->caption): ?>
 		  <!-- Image caption -->
 		  <span class="itemImageCaption"><?php echo $this->item->image->caption; ?></span>
 		  <?php endif; ?>
 
-		  <?php if($this->params->get('itemImageMainCredits') && $this->item->image->credits): ?>
+		  <?php if($this->params->get('listItemImageMainCredits') && $this->item->image->credits): ?>
 		  <!-- Image credits -->
 		  <span class="itemImageCredits"><?php echo $this->item->image->credits; ?></span>
 		  <?php endif; ?>
@@ -103,13 +103,13 @@ defined('_JEXEC') or die ;
 	  <?php endif; ?>
 
 	  <?php if(!empty($this->item->fulltext)): ?>
-	  <?php if($this->params->get('itemIntroText')): ?>
+	  <?php if($this->params->get('listItemIntroText')): ?>
 	  <!-- Item introtext -->
 	  <div class="itemIntroText">
 	  	<?php echo $this->item->introtext; ?>
 	  </div>
 	  <?php endif; ?>
-	  <?php if($this->params->get('itemFullText')): ?>
+	  <?php if($this->params->get('listItemFullText')): ?>
 	  <!-- Item fulltext -->
 	  <div class="itemFullText">
 	  	<?php echo $this->item->fulltext; ?>
@@ -124,7 +124,7 @@ defined('_JEXEC') or die ;
 
 		<div class="clr"></div>
 
-	  <?php if($this->params->get('itemExtraFields') && count($this->item->extraFieldsGroups)): ?>
+	  <?php if($this->params->get('listItemExtraFields') && count($this->item->extraFieldsGroups)): ?>
 	  <!-- Item extra fields -->
 	  <div class="itemExtraFields">
 	  	<h3><?php echo JText::_('K2_ADDITIONAL_INFO'); ?></h3>
@@ -143,17 +143,17 @@ defined('_JEXEC') or die ;
 	  </div>
 	  <?php endif; ?>
 
-		<?php if($this->params->get('itemHits') || ($this->params->get('itemDateModified') && intval($this->item->modified)!=0)): ?>
+		<?php if($this->params->get('listItemHits') || ($this->params->get('listItemDateModified') && intval($this->item->modified)!=0)): ?>
 		<div class="itemContentFooter">
 
-			<?php if($this->params->get('itemHits')): ?>
+			<?php if($this->params->get('listItemHits')): ?>
 			<!-- Item Hits -->
 			<span class="itemHits">
 				<?php echo JText::_('K2_READ'); ?> <b><?php echo $this->item->hits; ?></b> <?php echo JText::_('K2_TIMES'); ?>
 			</span>
 			<?php endif; ?>
 
-			<?php if($this->params->get('itemDateModified') && intval($this->item->modified)!=0): ?>
+			<?php if($this->params->get('listItemDateModified') && intval($this->item->modified)!=0): ?>
 			<!-- Item date modified -->
 			<span class="itemDateModified">
 				<?php echo JText::_('K2_LAST_MODIFIED_ON'); ?> <?php echo JHTML::_('date', $this->item->modified, JText::_('K2_DATE_FORMAT_LC2')); ?>
@@ -174,10 +174,10 @@ defined('_JEXEC') or die ;
   </div>
 
 
-  <?php if($this->params->get('itemCategory') || $this->params->get('itemTags') || $this->params->get('itemAttachments')): ?>
+  <?php if($this->params->get('listItemCategory') || $this->params->get('listItemTags') || $this->params->get('listItemAttachments')): ?>
   <div class="itemLinks">
 
-		<?php if($this->params->get('itemCategory')): ?>
+		<?php if($this->params->get('listItemCategory')): ?>
 		<!-- Item category -->
 		<div class="itemCategory">
 			<span><?php echo JText::_('K2_PUBLISHED_IN'); ?></span>
@@ -185,7 +185,7 @@ defined('_JEXEC') or die ;
 		</div>
 		<?php endif; ?>
 
-	  <?php if($this->params->get('itemTags') && count($this->item->tags)): ?>
+	  <?php if($this->params->get('listItemTags') && count($this->item->tags)): ?>
 	  <!-- Item tags -->
 	  <div class="itemTagsBlock">
 		  <span><?php echo JText::_('K2_TAGGED_UNDER'); ?></span>
@@ -198,7 +198,7 @@ defined('_JEXEC') or die ;
 	  </div>
 	  <?php endif; ?>
 
-	  <?php if($this->params->get('itemAttachments') && count($this->item->attachments)): ?>
+	  <?php if($this->params->get('listItemAttachments') && count($this->item->attachments)): ?>
 	  <!-- Item attachments -->
 	  <div class="itemAttachmentsBlock">
 		  <span><?php echo JText::_('K2_DOWNLOAD_ATTACHMENTS'); ?></span>
@@ -206,7 +206,7 @@ defined('_JEXEC') or die ;
 		    <?php foreach ($this->item->attachments as $attachment): ?>
 		    <li>
 			    <a title="<?php echo $this->escape($attachment->title); ?>" href="<?php echo $attachment->link; ?>"><?php echo $attachment->name; ?></a>
-			    <?php if($this->params->get('itemAttachmentsCounter')): ?>
+			    <?php if($this->params->get('listItemAttachmentsCounter')): ?>
 			    <span>(<?php echo $attachment->downloads; ?> <?php echo ($attachment->downloads==1) ? JText::_('K2_DOWNLOAD') : JText::_('K2_DOWNLOADS'); ?>)</span>
 			    <?php endif; ?>
 		    </li>
@@ -219,11 +219,11 @@ defined('_JEXEC') or die ;
   </div>
   <?php endif; ?>
 
-  <?php if($this->params->get('itemAuthorBlock') && empty($this->item->created_by_alias)): ?>
+  <?php if($this->params->get('listItemAuthorBlock') && empty($this->item->created_by_alias)): ?>
   <!-- Author Block -->
   <div class="itemAuthorBlock">
 
-  	<?php if($this->params->get('itemAuthorImage') && $this->item->author->image): ?>
+  	<?php if($this->params->get('listItemAuthorImage') && $this->item->author->image): ?>
   	<img class="itemAuthorAvatar" src="<?php echo $this->item->author->image->src; ?>" alt="<?php echo $this->item->author->name; ?>" />
   	<?php endif; ?>
 
@@ -232,15 +232,15 @@ defined('_JEXEC') or die ;
       	<a rel="author" href="<?php echo $this->item->author->link; ?>"><?php echo $this->item->author->name; ?></a>
       </h3>
 
-      <?php if($this->params->get('itemAuthorDescription') && !empty($this->item->author->description)): ?>
+      <?php if($this->params->get('listItemAuthorDescription') && !empty($this->item->author->description)): ?>
       <p><?php echo $this->item->author->description; ?></p>
       <?php endif; ?>
 
-      <?php if($this->params->get('itemAuthorURL') && !empty($this->item->author->site)): ?>
+      <?php if($this->params->get('listItemAuthorURL') && !empty($this->item->author->site)): ?>
       <span class="itemAuthorUrl"><?php echo JText::_('K2_WEBSITE'); ?> <a rel="me" href="<?php echo $this->item->author->site; ?>" target="_blank"><?php echo str_replace('http://', '', $this->item->author->site); ?></a></span>
       <?php endif; ?>
 
-      <?php if($this->params->get('itemAuthorEmail')): ?>
+      <?php if($this->params->get('listItemAuthorEmail')): ?>
       <span class="itemAuthorEmail"><?php echo JText::_('K2_EMAIL'); ?> <?php echo JHTML::_('Email.cloak', $this->item->author->email); ?></span>
       <?php endif; ?>
 
@@ -254,7 +254,7 @@ defined('_JEXEC') or die ;
   </div>
   <?php endif; ?>
 
-  <?php if($this->params->get('itemAuthorLatest') && trim($this->item->created_by_alias) == '' && count($this->item->author->latest)): ?>
+  <?php if($this->params->get('listItemAuthorLatest') && trim($this->item->created_by_alias) == '' && count($this->item->author->latest)): ?>
   <!-- Latest items from author -->
 	<div class="itemAuthorLatest">
 		<h3><?php echo JText::_('K2_LATEST_FROM'); ?> <?php echo $this->item->author->name; ?></h3>
@@ -269,7 +269,7 @@ defined('_JEXEC') or die ;
 	</div>
 	<?php endif; ?>
 	
-  <?php if($this->params->get('itemRelated') && count($this->item->related)): ?>
+  <?php if($this->params->get('listItemRelated') && count($this->item->related)): ?>
   <!-- Related items by tag -->
 	<div class="itemRelated">
 		<h3><?php echo JText::_("K2_RELATED_ITEMS_BY_TAG"); ?></h3>
@@ -277,31 +277,31 @@ defined('_JEXEC') or die ;
 			<?php foreach($this->item->related as $key=>$item): ?>
 			<li class="<?php echo ($key%2) ? "odd" : "even"; ?>">
 
-				<?php if($this->params->get('itemRelatedTitle', 1)): ?>
+				<?php if($this->params->get('listItemRelatedTitle', 1)): ?>
 				<a class="itemRelTitle" href="<?php echo $item->link ?>"><?php echo $item->title; ?></a>
 				<?php endif; ?>
 
-				<?php if($this->params->get('itemRelatedCategory')): ?>
+				<?php if($this->params->get('listItemRelatedCategory')): ?>
 				<div class="itemRelCat"><?php echo JText::_("K2_IN"); ?> <a href="<?php echo $item->category->link ?>"><?php echo $item->category->title; ?></a></div>
 				<?php endif; ?>
 
-				<?php if($this->params->get('itemRelatedAuthor')): ?>
+				<?php if($this->params->get('listItemRelatedAuthor')): ?>
 				<div class="itemRelAuthor"><?php echo JText::_("K2_BY"); ?> <a rel="author" href="<?php echo $item->author->link; ?>"><?php echo $item->author->name; ?></a></div>
 				<?php endif; ?>
 
-				<?php if($this->params->get('itemRelatedImageSize') && $item->image): ?>
+				<?php if($this->params->get('listItemRelatedImageSize') && $item->image): ?>
 				<img style="width:<?php echo $item->image->width; ?>px;height:auto;" class="itemRelImg" src="<?php echo $item->image->src; ?>" alt="<?php echo $item->image->alt; ?>" />
 				<?php endif; ?>
 
-				<?php if($this->params->get('itemRelatedIntrotext')): ?>
+				<?php if($this->params->get('listItemRelatedIntrotext')): ?>
 				<div class="itemRelIntrotext"><?php echo $item->introtext; ?></div>
 				<?php endif; ?>
 
-				<?php if($this->params->get('itemRelatedFulltext')): ?>
+				<?php if($this->params->get('listItemRelatedFulltext')): ?>
 				<div class="itemRelFulltext"><?php echo $item->fulltext; ?></div>
 				<?php endif; ?>
 
-				<?php if($this->params->get('itemRelatedMedia') && count($item->media)): ?>
+				<?php if($this->params->get('listItemRelatedMedia') && count($item->media)): ?>
 				  <div class="itemRelMediaBlock">
 				  	<?php foreach ($item->media as $entry) : ?>
 					<div class="itemRelMedia">
@@ -312,7 +312,7 @@ defined('_JEXEC') or die ;
 				  </div>
 				<?php endif; ?>
 
-				<?php if($this->params->get('itemRelatedImageGallery') && count($item->galleries)): ?>
+				<?php if($this->params->get('listItemRelatedImageGallery') && count($item->galleries)): ?>
 					<div class="itemRelImageGalleries">
 				  	<?php foreach ($item->galleries as $gallery): ?>
 				  		<div class="itemRelImageGallery">

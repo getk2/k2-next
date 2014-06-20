@@ -89,6 +89,11 @@ class K2ViewItemlist extends K2View
 			{
 				$this->category->children = $this->category->getChildren();
 			}
+
+			// Add the template path
+			$this->addTemplatePath(JPATH_SITE.'/components/com_k2/templates/'.$this->category->template);
+			$this->addTemplatePath(JPATH_SITE.'/templates/'.JFactory::getApplication()->getTemplate().'/html/com_k2/'.$this->category->template);
+
 		}
 
 		// Leading items
