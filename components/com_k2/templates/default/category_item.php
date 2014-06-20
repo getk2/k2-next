@@ -254,7 +254,7 @@ defined('_JEXEC') or die ;
   </div>
   <?php endif; ?>
 
-  <?php if($this->params->get('itemAuthorLatest') && count($this->item->author->latest)): ?>
+  <?php if($this->params->get('itemAuthorLatest') && trim($this->item->created_by_alias) == '' && count($this->item->author->latest)): ?>
   <!-- Latest items from author -->
 	<div class="itemAuthorLatest">
 		<h3><?php echo JText::_('K2_LATEST_FROM'); ?> <?php echo $this->item->author->name; ?></h3>
