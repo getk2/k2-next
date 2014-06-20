@@ -28,14 +28,19 @@ defined('_JEXEC') or die; ?>
 		<div class="clr"></div>
 	</div>
 	<?php endif; ?>
-		
+	
+	<form action="<?php echo $this->action; ?>" method="get" autocomplete="off">
+		<input type="text" placeholder="<?php echo JText::_('K2_SEARCH'); ?>" name="searchword" alt="<?php echo JText::_('K2_SEARCH'); ?>" value="<?php echo $this->escape($this->searchword); ?>" />
+		<input type="submit" value="<?php echo JText::_('K2_SEARCH'); ?>" />
+	</form>
+
 	<?php if(count($this->items)): ?>
 	<div class="itemList">
 		<?php foreach($this->items as $item): ?>
 			<?php $this->item = $item; echo $this->loadTemplate('item'); ?>
 		<?php endforeach; ?>
 	</div>
-	<?php else: ?>
+	<?php elseif($this->searchword): ?>
 	<div id="genericItemListNothingFound">
 		<p><?php echo JText::_('K2_NO_RESULTS_FOUND'); ?></p>
 	</div>

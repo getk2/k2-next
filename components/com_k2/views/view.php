@@ -620,6 +620,12 @@ class K2View extends JViewLegacy
 			$this->total = 0;
 		}
 
+		// Form action
+		$this->action = JRoute::_(K2HelperRoute::getSearchRoute());
+
+		// Search word
+		$this->searchword = $search;
+
 	}
 
 	protected function getModuleItems()
