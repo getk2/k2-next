@@ -377,12 +377,24 @@ class PlgSystemK2 extends JPlugin
 				$view->item->comments = $view->item->getComments($offset);
 				jimport('joomla.html.pagination');
 				$view->pagination = new JPagination($view->item->numOfComments, $offset, $view->params->get('commentsLimit'));
+				if (!isset($view->item->author->profile))
+				{
+					$view->item->author->profile = new stdClass;
+				}
 				$view->item->author->profile->url = $view->item->author->site;
 				$view->inlineCommentsModeration = false;
 				$view->authorLatestItems = $view->item->author->latest;
 				$view->item->video = $view->item->getVideo();
 				$view->item->gallery = $view->item->getGallery();
-				$view->item->author->avatar = $view->item->author->image->src;
+				if ($view->item->author->image)
+				{
+					$view->item->author->avatar = $view->item->author->image->src;
+				}
+				else
+				{
+					$view->item->author->avatar = null;
+				}
+
 				if (is_string($view->item->extra_fields))
 				{
 					$view->item->extraFields = $view->item->getExtraFields();

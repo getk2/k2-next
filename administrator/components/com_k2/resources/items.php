@@ -241,8 +241,19 @@ class K2Items extends K2Resource
 
 	public function getAuthor()
 	{
-		$author = null;
-		if ($this->id)
+		$application = JFactory::getApplication();
+		$view = $application->input->get('view');
+		if ($this->created_by_alias && $application->isSite() && ($view != 'admin') && $view != '')
+		{
+			$author = new stdClass;
+			$author->name = $this->created_by_alias;
+			$author->link = null;
+			$author->site = $this->created_by_alias_url;
+			$author->description = null;
+			$author->gender = 'm';
+			$author->image = null;
+		}
+		else
 		{
 			$author = K2Users::getInstance($this->created_by);
 			$this->authorLink = $author->link;
