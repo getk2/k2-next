@@ -123,41 +123,6 @@ class PlgSystemK2 extends JPlugin
 					}
 				}
 			}
-
-			// Google search integration
-			if ($view == 'itemlist' && $task == 'search' && $params->get('googleSearch'))
-			{
-				$language = JFactory::getLanguage();
-				$languageTag = $language->getTag();
-				// Fallback to the new container ID without breaking things
-				$googleSearchContainerID = trim($params->get('googleSearchContainer', 'k2GoogleSearchContainer'));
-				if ($googleSearchContainerID == 'k2Container')
-				{
-					$googleSearchContainerID = 'k2GoogleSearchContainer';
-				}
-				$document->addScript('http://www.google.com/jsapi');
-				$js = '
-				//<![CDATA[
-				google.load("search", "1", {"language" : "'.$languageTag.'"});
-				function OnLoad(){
-					var searchControl = new google.search.SearchControl();
-					var siteSearch = new google.search.WebSearch();
-					siteSearch.setUserDefinedLabel("'.$application->getCfg('sitename').'");
-					siteSearch.setUserDefinedClassSuffix("k2");
-					options = new google.search.SearcherOptions();
-					options.setExpandMode(google.search.SearchControl.EXPAND_MODE_OPEN);
-					siteSearch.setSiteRestriction("'.JURI::root().'");
-					searchControl.addSearcher(siteSearch, options);
-					searchControl.setResultSetSize(google.search.Search.LARGE_RESULTSET);
-					searchControl.setLinkTarget(google.search.Search.LINK_TARGET_SELF);
-					searchControl.draw(document.getElementById("'.$googleSearchContainerID.'"));
-					searchControl.execute("'.$application->input->get('searchword', '', 'string').'");
-				}
-				google.setOnLoadCallback(OnLoad);
-				//]]>
-	 			';
-				$document->addScriptDeclaration($js);
-			}
 		}
 	}
 

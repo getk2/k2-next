@@ -19,11 +19,6 @@ defined('_JEXEC') or die; ?>
 	</h1>
 	<?php endif; ?>
 	
-	<?php if($this->params->get('googleSearch')): ?>
-	<!-- Google Search container -->
-	<div id="<?php echo $this->params->get('googleSearchContainer'); ?>"></div>
-	<?php endif; ?>
-	
 	<?php if($this->params->get('genericFeedIcon')): ?>
 	<!-- RSS feed icon -->
 	<div class="k2FeedIcon">

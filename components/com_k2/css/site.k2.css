@@ -630,13 +630,6 @@ div.genericItemReadMore {display:inline;}
 div#genericItemListNothingFound {padding:40px;text-align:center;}
 	div#genericItemListNothingFound p {font-size:20px;color:#999;}
 
-/* --- Google Search (use Firebug or similar tools to inspect the generated HTML, then style accordingly --- */
-#k2GoogleSearchContainer .gsc-control {width:auto !important;}
-#k2GoogleSearchContainer .gsc-control .gsc-above-wrapper-area,
-#k2GoogleSearchContainer .gsc-control .gsc-resultsHeader,
-#k2GoogleSearchContainer .gsc-control .gsc-url-bottom {display:none !important;} /* Hide unneeded elements of the results page */
-
-
 
 /*----------------------------------------------------------------------
 	Component: Latest view
