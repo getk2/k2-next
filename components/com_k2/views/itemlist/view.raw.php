@@ -66,12 +66,17 @@ class K2ViewItemlist extends K2View
 		// Get and count items using parent function
 		$this->getCategoryItems(true);
 
-		// If we have a single category, merge the params and set metadata
 		if (isset($this->category))
 		{
-			// Merge menu params with category params
-			$effectiveParams = $this->category->getEffectiveParams();
-			$this->params->merge($effectiveParams);
+			// Get children
+			if ($this->params->get('subCategories'))
+			{
+				$this->category->children = $this->category->getChildren();
+			}
+
+			// Add the template path
+			$this->addTemplatePath(JPATH_SITE.'/components/com_k2/templates/'.$this->category->template);
+			$this->addTemplatePath(JPATH_SITE.'/templates/'.JFactory::getApplication()->getTemplate().'/html/com_k2/'.$this->category->template);
 		}
 
 		// Set the layout

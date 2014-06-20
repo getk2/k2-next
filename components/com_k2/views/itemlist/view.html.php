@@ -78,7 +78,6 @@ class K2ViewItemlist extends K2View
 		// Get and count items using parent function
 		$this->getCategoryItems(true);
 
-		// If we have a single category, merge the params and set metadata
 		if (isset($this->category))
 		{
 			// Set metadata
