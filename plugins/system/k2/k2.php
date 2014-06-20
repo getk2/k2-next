@@ -74,6 +74,16 @@ class PlgSystemK2 extends JPlugin
 		$view = $application->input->get('view');
 		$task = $application->input->get('task');
 
+		// Detect if we are in edit mode
+		if (($application->isAdmin() && $option == 'com_k2') || ($application->isSite() && $option == 'com_k2' && ($view == 'admin' || $view == '')))
+		{
+			define('K2_EDIT_MODE', true);
+		}
+		else
+		{
+			define('K2_EDIT_MODE', false);
+		}
+
 		// Redirect settings editing from com_config to K2
 		if ($application->isAdmin() && $option == 'com_config' && $view == 'component' && $application->input->get('component') == 'com_k2')
 		{
@@ -84,7 +94,7 @@ class PlgSystemK2 extends JPlugin
 		if ($application->isSite())
 		{
 			// Enforce system template for editing
-			if ($view == 'admin')
+			if (K2_EDIT_MODE)
 			{
 				$application->input->set('template', 'system');
 			}

@@ -243,7 +243,7 @@ class K2Items extends K2Resource
 	{
 		$application = JFactory::getApplication();
 		$view = $application->input->get('view');
-		if ($this->created_by_alias && $application->isSite() && ($view != 'admin') && $view != '')
+		if ($this->created_by_alias && !K2_EDIT_MODE)
 		{
 			$author = new stdClass;
 			$author->name = $this->created_by_alias;

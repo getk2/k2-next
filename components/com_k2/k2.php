@@ -13,16 +13,15 @@ defined('_JEXEC') or die ;
 // Get application
 $application = JFactory::getApplication();
 
-// Get input
-$view = $application->input->get('view');
+// Get task
 $task = $application->input->get('task');
 
 // Build controller configuration
 $configuration = array();
 $configuration['originalTask'] = JFactory::getApplication()->input->get('task');
-if ($view == '' || $view == 'admin')
+if (K2_EDIT_MODE)
 {
-	// If no view is set proxy all requests to administrator controllers
+	// If we are in edit mode proxy all requests to administrator controllers
 	$configuration['base_path'] = JPATH_ADMINISTRATOR.'/components/com_k2';
 }
 
