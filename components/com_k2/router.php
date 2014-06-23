@@ -342,6 +342,10 @@ class K2Router extends JComponentRouterBase
 		else if ($vars['view'] == 'item')
 		{
 			$id = isset($itemId) ? $itemId : $segments[1];
+			if (isset($segments[2]))
+			{
+				$id .= '-'.$segments[2];
+			}
 			$vars['id'] = $this->parseIdByPattern($id, $params->get('k2SefPatternItem'), 'item');
 		}
 		return $vars;
