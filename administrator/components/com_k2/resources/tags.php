@@ -52,9 +52,17 @@ class K2Tags extends K2Resource
 		{
 			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
 			$model = K2Model::getInstance('Tags', 'K2Model');
-			$model->setState('id', $id);
+			if (is_numeric($id))
+			{
+				$model->setState('id', $id);
+			}
+			else
+			{
+				$model->setState('alias', $id);
+			}
 			$item = $model->getRow();
 			self::$instances[$id] = $item;
+			self::$instances[$item->alias] = $item;
 		}
 		return self::$instances[$id];
 	}

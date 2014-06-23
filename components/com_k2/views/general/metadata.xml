@@ -1,0 +1,7 @@
+<metadata>
+    <view>
+        <options var="view">
+            <option name="K2_GENERAL_VIEW" msg="K2_GENERAL_VIEW_DESC" value="general" />
+        </options>
+    </view>
+</metadata>

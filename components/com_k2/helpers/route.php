@@ -25,6 +25,7 @@ class K2HelperRoute
 
 		// Get component menu links
 		$component = JComponentHelper::getComponent('com_k2');
+		$params = JComponentHelper::getParams('com_k2');
 		$menu = $application->getMenu('site');
 		$items = $menu->getItems('component_id', $component->id);
 
@@ -39,8 +40,15 @@ class K2HelperRoute
 		if (!isset(self::$cache['item'][$id]))
 		{
 			// Initialize Itemid
-			$Itemid = '';
-
+			$defaultItemid = (int)$params->get('k2SefLabelItem');
+			if ($params->get('k2Sef') && $defaultItemid)
+			{
+				$Itemid = $defaultItemid;
+			}
+			else
+			{
+				$Itemid = '';
+			}
 			// Search the menu
 			foreach ($items as $item)
 			{
@@ -52,7 +60,7 @@ class K2HelperRoute
 			}
 
 			// If we do not have menu link to the item search for a menu link to it's category
-			if (!$Itemid)
+			if (!$Itemid || $Itemid == $defaultItemid)
 			{
 				foreach ($items as $item)
 				{
@@ -65,7 +73,7 @@ class K2HelperRoute
 			}
 
 			// Second pass for menu links to multiple categories
-			if (!$Itemid)
+			if (!$Itemid || $Itemid == $defaultItemid)
 			{
 				foreach ($items as $item)
 				{
@@ -99,6 +107,7 @@ class K2HelperRoute
 
 		// Get component menu links
 		$component = JComponentHelper::getComponent('com_k2');
+		$params = JComponentHelper::getParams('com_k2');
 		$menu = $application->getMenu('site');
 		$items = $menu->getItems('component_id', $component->id);
 
@@ -112,7 +121,15 @@ class K2HelperRoute
 		if (!isset(self::$cache['category'][$id]))
 		{
 			// Initialize Itemid
-			$Itemid = '';
+			$defaultItemid = (int)$params->get('k2SefLabelCat');
+			if ($params->get('k2Sef') && $defaultItemid)
+			{
+				$Itemid = $defaultItemid;
+			}
+			else
+			{
+				$Itemid = '';
+			}
 
 			// If we do not have menu link to the item search for a menu link to it's category
 			foreach ($items as $item)
@@ -125,7 +142,7 @@ class K2HelperRoute
 			}
 
 			// Second pass for menu links to multiple categories
-			if (!$Itemid)
+			if (!$Itemid || $Itemid == $defaultItemid)
 			{
 				foreach ($items as $item)
 				{
@@ -160,6 +177,7 @@ class K2HelperRoute
 
 		// Get component menu links
 		$component = JComponentHelper::getComponent('com_k2');
+		$params = JComponentHelper::getParams('com_k2');
 		$menu = $application->getMenu('site');
 		$items = $menu->getItems('component_id', $component->id);
 
@@ -173,7 +191,15 @@ class K2HelperRoute
 		if (!isset(self::$cache['user'][$id]))
 		{
 			// Initialize Itemid
-			$Itemid = null;
+			$defaultItemid = (int)$params->get('k2SefLabelUser');
+			if ($params->get('k2Sef') && $defaultItemid)
+			{
+				$Itemid = $defaultItemid;
+			}
+			else
+			{
+				$Itemid = '';
+			}
 
 			// If we do not have menu link to the item search for a menu link to it's category
 			foreach ($items as $item)
@@ -203,6 +229,7 @@ class K2HelperRoute
 
 		// Get component menu links
 		$component = JComponentHelper::getComponent('com_k2');
+		$params = JComponentHelper::getParams('com_k2');
 		$menu = $application->getMenu('site');
 		$items = $menu->getItems('component_id', $component->id);
 
@@ -216,7 +243,15 @@ class K2HelperRoute
 		if (!isset(self::$cache['tag'][$id]))
 		{
 			// Initialize Itemid
-			$Itemid = '';
+			$defaultItemid = (int)$params->get('k2SefLabelTag');
+			if ($params->get('k2Sef') && $defaultItemid)
+			{
+				$Itemid = $defaultItemid;
+			}
+			else
+			{
+				$Itemid = '';
+			}
 
 			// If we do not have menu link to the item search for a menu link to it's category
 			foreach ($items as $item)

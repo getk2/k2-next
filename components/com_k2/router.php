@@ -47,8 +47,8 @@ class K2Router extends JComponentRouterBase
 			// Get the matched menu item
 			$item = $menu->getItem($query['Itemid']);
 
-			// Itemlist
-			if (isset($query['view']) && $query['view'] == 'itemlist')
+			// Itemlist menu link
+			if (isset($query['view']) && $query['view'] == 'itemlist' && isset($item->query['view']) && $item->query['view'] == 'itemlist')
 			{
 				unset($query['view']);
 				unset($query['task']);
@@ -58,7 +58,7 @@ class K2Router extends JComponentRouterBase
 				}
 			}
 
-			// Item
+			// Item menu link
 			if (isset($query['view']) && $query['view'] == 'item' && isset($item->query['view']) && $item->query['view'] == 'item')
 			{
 				unset($query['view']);
@@ -118,7 +118,7 @@ class K2Router extends JComponentRouterBase
 		$params = JComponentHelper::getParams('com_k2');
 		if ($params->get('k2Sef') && count($segments))
 		{
-			$segments = $this->advacedBuild($segments);
+			$segments = $this->advacedBuild($segments, $query);
 		}
 
 		return $segments;
@@ -205,123 +205,73 @@ class K2Router extends JComponentRouterBase
 	 * @return  void
 	 */
 
-	private function advacedBuild($segments)
+	private function advacedBuild($segments, $query)
 	{
 		$params = JComponentHelper::getParams('com_k2');
-		$view = $segments[0];
-		if ($view == 'itemlist')
+
+		if (!empty($query['Itemid']))
 		{
-			$task = $segments[1];
-			switch($task)
+			// Items
+			if ($query['Itemid'] == $params->get('k2SefLabelItem'))
 			{
-				case 'category' :
-
-					// Only for links to single category
-					if (isset($segments[2]))
-					{
-						// Replace itemlist with the categories prefix
-						$segments[0] = $params->get('k2SefLabelCat', 'content');
-
-						// Remove the task completely
-						unset($segments[1]);
-
-						// Are we using the id in the URL?
-						if ($params->get('k2SefInsertCatId'))
-						{
-							// If category alias is used in the URL. Check the desired separator
-							if ($params->get('k2SefUseCatTitleAlias'))
-							{
-								// If the desired separator is slash, then apply it
-								if ($params->get('k2SefCatIdTitleAliasSep') == 'slash')
-								{
-									list($id, $alias) = explode('-', $segments[2], 2);
-									$segments[2] = $id.'/'.$alias;
-								}
-							}
-							// Category alias is not used in the URL. Keep only the numeric Id
-							else
-							{
-								$segments[2] = (int)$segments[2];
-							}
-						}
-						// Id will not be used in URL
-						else
-						{
-							// Try to split the slug
-							list($id, $alias) = explode('-', $segments[2], 2);
-
-							// Use only alias
-							$segments[2] = $alias;
-						}
-					}
-
-					break;
-				case 'tag' :
-					unset($segments[1]);
-					$segments[0] = $params->get('k2SefLabelTag', 'tag');
-					break;
-				case 'user' :
-					$segments[0] = $params->get('k2SefLabelUser', 'author');
-					unset($segments[1]);
-					break;
-				case 'date' :
-					$segments[0] = $params->get('k2SefLabelDate', 'date');
-					unset($segments[1]);
-					break;
-				case 'search' :
-					$segments[0] = $params->get('k2SefLabelSearch', 'search');
-					unset($segments[1]);
-					break;
-			}
-		}
-		else if ($view == 'item')
-		{
-			// Items category prefix
-			if ($params->get('k2SefLabelItem'))
-			{
-				// Replace the item with the category slug
-				if ($params->get('k2SefLabelItem') == '1')
-				{
-					$item = K2Items::getInstance((int)$segments[1]);
-					$segments[0] = $item->category->alias;
-				}
-				else
-				{
-					$segments[0] = $params->get('k2SefLabelItemCustomPrefix');
-				}
-			}
-			// Remove "item" from the URL
-			else
-			{
+				$view = 'item';
 				unset($segments[0]);
 			}
-
-			// Handle item id and alias
-			if ($params->get('k2SefInsertItemId'))
+			// Categories
+			else if ($query['Itemid'] == $params->get('k2SefLabelCat'))
 			{
-				if ($params->get('k2SefUseItemTitleAlias'))
-				{
-					if ($params->get('k2SefItemIdTitleAliasSep') == 'slash' && strpos($segments[1], '-') !== false)
-					{
-						list($id, $alias) = explode('-', $segments[1], 2);
-						$segments[1] = $id.'/'.$alias;
-					}
-				}
-				else
-				{
-					$segments[1] = (int)$segments[1];
-				}
+				$view = 'itemlist';
+				$task = 'category';
+				unset($segments[0]);
+				unset($segments[1]);
 			}
-			// Id will not be used in URL
-			else
+			// Tags
+			else if ($query['Itemid'] == $params->get('k2SefLabelTag'))
 			{
-				// Try to split the slug
-				list($id, $alias) = explode('-', $segments[1], 2);
-
-				// Use only alias
-				$segments[1] = $alias;
+				$view = 'itemlist';
+				$task = 'tag';
+				unset($segments[0]);
+				unset($segments[1]);
+			}
+			// Users
+			else if ($query['Itemid'] == $params->get('k2SefLabelUser'))
+			{
+				$view = 'itemlist';
+				$task = 'user';
+				unset($segments[0]);
+				unset($segments[1]);
 			}
 
+		}
+
+		if (!isset($view))
+		{
+			$view = $segments[0];
+		}
+
+		if (isset($view))
+		{
+			if ($view == 'itemlist')
+			{
+				if (!isset($task) && isset($segments[1]))
+				{
+					$task = $segments[1];
+				}
+
+				if ($task == 'category' && isset($segments[2]))
+				{
+					$segments[2] = $this->buildIdByPattern($segments[2], $params->get('k2SefPatternCat'));
+				}
+				else if ($task == 'tag' && isset($segments[2]))
+				{
+					$segments[2] = $this->buildIdByPattern($segments[2], $params->get('k2SefPatternTag'));
+				}
+
+			}
+			else if ($view == 'item')
+			{
+				$segments[1] = $this->buildIdByPattern($segments[1], $params->get('k2SefPatternItem'));
+			}
 		}
 
 		// Reorder segments array
@@ -342,88 +292,111 @@ class K2Router extends JComponentRouterBase
 	private function advancedParse($vars, $segments)
 	{
 		$params = JComponentHelper::getParams('com_k2');
-		$reservedViews = array('attachments', 'calendar', 'item', 'itemlist', 'latest');
+		$application = JFactory::getApplication();
+		$menu = $application->getMenu();
+		$item = $menu->getActive();
 
-		if (!in_array($segments[0], $reservedViews))
+		if ($item && $item->component == 'com_k2')
 		{
-			// Category view
-			if ($segments[0] == $params->get('k2SefLabelCat', 'content'))
+			if ($item->id == $params->get('k2SefLabelItem'))
+			{
+				$vars['view'] = 'item';
+				$itemId = $segments[0];
+			}
+			if ($item->id == $params->get('k2SefLabelCat'))
 			{
 				$vars['view'] = 'itemlist';
 				$vars['task'] = 'category';
-				// Detect category id
-				if ($params->get('k2SefInsertCatId'))
-				{
-					$vars['id'] = (int)$segments[1];
-				}
-				else
-				{
-					$alias = str_replace(':', '-', $segments[1]);
-					$category = K2Categories::getInstance($alias);
-					$vars['id'] = $category->id.':'.$alias;
-				}
+				$categoryId = $segments[0];
 			}
-			// Tag view
-			elseif ($segments[0] == $params->get('k2SefLabelTag', 'tag'))
-			{
-				$vars['view'] = 'itemlist';
-				$vars['task'] = 'tag';
-				$vars['id'] = $segments[1];
-			}
-			// User view
-			elseif ($segments[0] == $params->get('k2SefLabelUser', 'author'))
+			else if ($item->id == $params->get('k2SefLabelUser'))
 			{
 				$vars['view'] = 'itemlist';
 				$vars['task'] = 'user';
-				$vars['id'] = $segments[1];
+				$userId = $segments[0];
 			}
-			// Date view
-			elseif ($segments[0] == $params->get('k2SefLabelDate', 'date'))
+			else if ($item->id == $params->get('k2SefLabelTag'))
 			{
 				$vars['view'] = 'itemlist';
-				$vars['task'] = 'date';
-				$vars['year'] = $segments[1];
-				$vars['month'] = $segments[2];
-				if (isset($segments[3]))
-				{
-					$vars['day'] = $segments[3];
-				}
-
+				$vars['task'] = 'tag';
+				$tagId = $segments[0];
 			}
-			// Search view
-			elseif ($segments[0] == $params->get('k2SefLabelSearch', 'search'))
+		}
+		if ($vars['view'] == 'itemlist')
+		{
+			switch($vars['task'])
 			{
-				$vars['view'] = 'itemlist';
-				$vars['task'] = 'search';
+				case 'category' :
+					$id = isset($categoryId) ? $categoryId : $segments[2];
+					$vars['id'] = $this->parseIdByPattern($id, $params->get('k2SefPatternItem'), 'category');
+					break;
+				case 'user' :
+					$vars['id'] = isset($userId) ? $userId : $segments[2];
+					break;
+				case 'tag' :
+					$id = isset($tagId) ? $tagId : $segments[2];
+					$vars['id'] = $this->parseIdByPattern($id, $params->get('k2SefPatternTag'), 'tag');
+					break;
 			}
-			// Item view
-			else
+		}
+		else if ($vars['view'] == 'item')
+		{
+			$id = isset($itemId) ? $itemId : $segments[1];
+			$vars['id'] = $this->parseIdByPattern($id, $params->get('k2SefPatternItem'), 'item');
+		}
+		return $vars;
+
+	}
+
+	private function buildIdByPattern($input, $pattern)
+	{
+		if ($pattern == 'id-dash-alias')
+		{
+			$result = $input;
+		}
+		else
+		{
+			list($id, $alias) = explode('-', $input, 2);
+			if ($pattern == 'id-slash-alias')
 			{
-				$vars['view'] = 'item';
-
-				// Reinsert item id to the item alias
-				if (!$params->get('k2SefInsertItemId'))
-				{
-					$alias = str_replace(':', '-', $segments[1]);
-					$item = K2Items::getInstance($alias);
-					$vars['id'] = $item->id.':'.$alias;
-				}
-				else
-				{
-					if ($params->get('k2SefLabelItem'))
-					{
-						$vars['id'] = $segments[1];
-					}
-					else
-					{
-						$vars['id'] = $segments[0];
-					}
-
-				}
+				$result = $id.'/'.$alias;
+			}
+			else if ($pattern == 'id')
+			{
+				$result = (int)$id;
+			}
+			else if ($pattern == 'alias')
+			{
+				$result = $alias;
 			}
 		}
 
-		return $vars;
+		return $result;
+	}
+
+	private function parseIdByPattern($input, $pattern, $type)
+	{
+		if ($pattern == 'alias')
+		{
+			if ($type == 'item')
+			{
+				$row = K2Items::getInstance($input);
+			}
+			else if ($type == 'category')
+			{
+				$row = K2Categories::getInstance($input);
+			}
+			else if ($type == 'tag')
+			{
+				$row = K2Tags::getInstance($input);
+			}
+			$result = $row->id.':'.$row->alias;
+		}
+		else
+		{
+			$result = $input;
+		}
+		return $result;
 	}
 
 }
