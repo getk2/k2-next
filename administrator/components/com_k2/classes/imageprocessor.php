@@ -24,18 +24,23 @@ class K2ImageProcessor
 
 	public static function getInstance($adapter = null)
 	{
-		// If adapter is null choose the optimal
+		// Get params
+		$params = JComponentHelper::getParams('com_k2');
+
+		// If adapter argument is null read it from parameters
 		if (is_null($adapter))
 		{
-			if (class_exists('Gmagick'))
+			// Read parameters
+			$adapter = $params->get('imageProcessor', 'Gd');
+
+			// Ensure we have a valid adapter
+			if (!in_array($adapter, array('Gd', 'Gmagick', 'Gmagick')))
 			{
-				$adapter = 'Gmagick';
+				$adapter = 'Gd';
 			}
-			else if (class_exists('Imagick'))
-			{
-				$adapter = 'Imagick';
-			}
-			else if (function_exists('gd_info'))
+
+			// Fall back to GD if other adapters are not available
+			if (($adapter == 'Gmagick' && !class_exists('Gmagick')) || ($adapter == 'Imagick' && !class_exists('Gmagick')))
 			{
 				$adapter = 'Gd';
 			}
@@ -48,7 +53,6 @@ class K2ImageProcessor
 			self::$instances[$adapter] = $processor;
 
 			// Check for memory limit override in K2 settings
-			$params = JComponentHelper::getParams('com_k2');
 			if ($memoryLimit = (int)$params->get('imageMemoryLimit'))
 			{
 				ini_set('memory_limit', $memoryLimit.'M');
