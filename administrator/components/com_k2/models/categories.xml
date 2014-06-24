@@ -218,80 +218,80 @@
 			</field>
 		</fieldset>
 		<fieldset name="itemOptions" addfieldpath="/administrator/components/com_k2/fields">
-			<field name="itemTitle" type="radio" default="" label="K2_TITLE" description="">
+			<field name="itemTitle" type="radio" default="1" label="K2_TITLE" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemFeaturedNotice" type="radio" default="" label="K2_FEATURED_NOTICE_NEXT_TO_TITLE" description="">
+			<field name="itemFeaturedNotice" type="radio" default="1" label="K2_FEATURED_NOTICE_NEXT_TO_TITLE" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemAuthor" type="radio" default="" label="K2_AUTHOR" description="">
+			<field name="itemAuthor" type="radio" default="1" label="K2_AUTHOR" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemPrintButton" type="radio" default="" label="K2_PRINT_BUTTON" description="">
+			<field name="itemPrintButton" type="radio" default="1" label="K2_PRINT_BUTTON" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemEmailButton" type="radio" default="" label="K2_EMAIL_BUTTON" description="">
+			<field name="itemEmailButton" type="radio" default="1" label="K2_EMAIL_BUTTON" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemImage" type="radio" default="" label="K2_IMAGE" description="">
+			<field name="itemImage" type="radio" default="1" label="K2_IMAGE" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
 			<field name="itemImgSize" type="k2ImageSizes" k2inheritance="1" label="K2_IMAGE_SIZE" description="" />
-			<field name="itemImageMainCaption" type="radio" default="" label="K2_IMAGE_CAPTION" description="">
+			<field name="itemImageMainCaption" type="radio" default="1" label="K2_IMAGE_CAPTION" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemImageMainCredits" type="radio" default="" label="K2_IMAGE_CREDITS" description="">
+			<field name="itemImageMainCredits" type="radio" default="1" label="K2_IMAGE_CREDITS" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemIntroText" type="radio" default="" label="K2_INTROTEXT" description="">
+			<field name="itemIntroText" type="radio" default="1" label="K2_INTROTEXT" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemFullText" type="radio" default="" label="K2_FULLTEXT" description="">
+			<field name="itemFullText" type="radio" default="1" label="K2_FULLTEXT" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemExtraFields" type="radio" default="" label="K2_EXTRA_FIELDS" description="">
+			<field name="itemExtraFields" type="radio" default="1" label="K2_EXTRA_FIELDS" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemDateCreated" type="radio" default="" label="K2_ITEM_CREATED_DATE_AND_TIME" description="">
+			<field name="itemDateCreated" type="radio" default="1" label="K2_ITEM_CREATED_DATE_AND_TIME" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemDateModified" type="radio" default="" label="K2_ITEM_MODIFIED_DATE_AND_TIME" description="">
+			<field name="itemDateModified" type="radio" default="1" label="K2_ITEM_MODIFIED_DATE_AND_TIME" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemHits" type="radio" default="" label="K2_HITS_PAGE_VIEWS" description="">
+			<field name="itemHits" type="radio" default="1" label="K2_HITS_PAGE_VIEWS" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemCategory" type="radio" default="" label="K2_CATEGORY" description="">
+			<field name="itemCategory" type="radio" default="1" label="K2_CATEGORY" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemTags" type="radio" default="" label="K2_TAGS" description="">
+			<field name="itemTags" type="radio" default="1" label="K2_TAGS" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemAttachments" type="radio" default="" label="K2_ATTACHMENTS" description="">
+			<field name="itemAttachments" type="radio" default="1" label="K2_ATTACHMENTS" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemAttachmentsCounter" type="radio" default="" label="K2_ATTACHMENTS_COUNTER" description="">
+			<field name="itemAttachmentsCounter" type="radio" default="1" label="K2_ATTACHMENTS_COUNTER" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemMedia" type="radio" default="" label="K2_MEDIA" description="">
+			<field name="itemMedia" type="radio" default="1" label="K2_MEDIA" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
@@ -301,102 +301,102 @@
 				<option value="0">K2_NO</option>
 				<option value="1">K2_YES</option>
 			</field>
-			<field name="itemMediaCaption" type="radio" default="" label="K2_MEDIA_CAPTION" description="">
+			<field name="itemMediaCaption" type="radio" default="1" label="K2_MEDIA_CAPTION" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemMediaCredits" type="radio" default="" label="K2_MEDIA_CREDITS" description="">
+			<field name="itemMediaCredits" type="radio" default="1" label="K2_MEDIA_CREDITS" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemImageGalleries" type="radio" default="" label="K2_IMAGE_GALLERIES" description="">
+			<field name="itemImageGalleries" type="radio" default="1" label="K2_IMAGE_GALLERIES" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemNavigation" type="radio" default="" label="K2_ITEM_NAVIGATION" description="">
+			<field name="itemNavigation" type="radio" default="1" label="K2_ITEM_NAVIGATION" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemComments" type="radio" default="" label="K2_COMMENTS" description="">
+			<field name="itemComments" type="radio" default="1" label="K2_COMMENTS" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
 			<field name="" type="k2header" default="K2_SOCIAL_SHARING" label="" description=""/>
-			<field name="itemTwitterButton" type="radio" default="" label="K2_TWITTER_SHARE" description="">
+			<field name="itemTwitterButton" type="radio" default="1" label="K2_TWITTER_SHARE" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemFacebookButton" type="radio" default="" label="K2_FACEBOOK_SHARE" description="">
+			<field name="itemFacebookButton" type="radio" default="1" label="K2_FACEBOOK_SHARE" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemGooglePlusOneButton" type="radio" default="" label="K2_GOOGLEPLUSONE_SHARE" description="">
+			<field name="itemGooglePlusOneButton" type="radio" default="1" label="K2_GOOGLEPLUSONE_SHARE" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
 			<field name="" type="k2header" default="K2_AUTHOR_OPTIONS" label="" description=""/>
-			<field name="itemAuthorBlock" type="radio" default="" label="K2_DISPLAY_EXTENDED_AUTHOR_INFO" description="">
+			<field name="itemAuthorBlock" type="radio" default="1" label="K2_DISPLAY_EXTENDED_AUTHOR_INFO" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemAuthorImage" type="radio" default="" label="K2_AUTHOR_IMAGE" description="">
+			<field name="itemAuthorImage" type="radio" default="1" label="K2_AUTHOR_IMAGE" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemAuthorDescription" type="radio" default="" label="K2_AUTHOR_DESCRIPTION" description="">
+			<field name="itemAuthorDescription" type="radio" default="1" label="K2_AUTHOR_DESCRIPTION" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemAuthorURL" type="radio" default="" label="K2_AUTHOR_URL" description="">
+			<field name="itemAuthorURL" type="radio" default="1" label="K2_AUTHOR_URL" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemAuthorEmail" type="radio" default="" label="K2_AUTHOR_EMAIL" description="">
+			<field name="itemAuthorEmail" type="radio" default="1" label="K2_AUTHOR_EMAIL" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemAuthorLatest" type="radio" default="" label="K2_LATEST_ITEMS_FROM_AUTHOR" description="">
+			<field name="itemAuthorLatest" type="radio" default="1" label="K2_LATEST_ITEMS_FROM_AUTHOR" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
 			<field name="itemAuthorLatestLimit" type="text" default="" size="4" label="K2_LIMIT_FOR_LATEST_ITEMS_FROM_AUTHOR" description="K2_LEAVE_BLANK_TO_INHERIT_FROM_CATEGORY"/>
 			<field name="" type="k2header" default="K2_RELATED_ITEMS" label="" description=""/>
-			<field name="itemRelated" type="radio" default="" label="K2_RELATED_ITEMS_BY_TAG" description="">
+			<field name="itemRelated" type="radio" default="1" label="K2_RELATED_ITEMS_BY_TAG" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
 			<field name="itemRelatedLimit" type="text" default="" size="4" label="K2_RELATED_ITEMS_LIMIT" description=""/>
-			<field name="itemRelatedTitle" type="radio" default="" label="K2_RELATED_ITEMS_TITLE" description="">
+			<field name="itemRelatedTitle" type="radio" default="1" label="K2_RELATED_ITEMS_TITLE" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemRelatedCategory" type="radio" default="" label="K2_RELATED_ITEMS_CATEGORY" description="">
+			<field name="itemRelatedCategory" type="radio" default="0" label="K2_RELATED_ITEMS_CATEGORY" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
 			<field name="itemRelatedImageSize" type="k2ImageSizes" label="K2_RELATED_ITEMS_IMAGE" description="" />
-			<field name="itemRelatedIntrotext" type="radio" default="" label="K2_RELATED_ITEMS_INTROTEXT" description="">
+			<field name="itemRelatedIntrotext" type="radio" default="0" label="K2_RELATED_ITEMS_INTROTEXT" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemRelatedFulltext" type="radio" default="" label="K2_RELATED_ITEMS_FULLTEXT" description="">
+			<field name="itemRelatedFulltext" type="radio" default="0" label="K2_RELATED_ITEMS_FULLTEXT" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemRelatedAuthor" type="radio" default="" label="K2_RELATED_ITEMS_AUTHOR" description="">
+			<field name="itemRelatedAuthor" type="radio" default="0" label="K2_RELATED_ITEMS_AUTHOR" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemRelatedMedia" type="radio" default="" label="K2_RELATED_ITEMS_MEDIA" description="">
+			<field name="itemRelatedMedia" type="radio" default="0" label="K2_RELATED_ITEMS_MEDIA" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemRelatedImageGalleries" type="radio" default="" label="K2_RELATED_ITEMS_IMAGE_GALLERIES" description="">
+			<field name="itemRelatedImageGalleries" type="radio" default="0" label="K2_RELATED_ITEMS_IMAGE_GALLERIES" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
 			<field name="" type="k2header" default="K2_ADVANCED" label="" description=""/>
-			<field name="itemK2Plugins" type="radio" default="" label="K2_ENABLE_K2_PLUGINS" description="">
+			<field name="itemK2Plugins" type="radio" default="1" label="K2_ENABLE_K2_PLUGINS" description="">
 				<option value="0">K2_NO</option>
 				<option value="1">K2_YES</option>
 			</field>
