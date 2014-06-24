@@ -16,6 +16,18 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/categories.php';
 class K2Router extends JComponentRouterBase
 {
 
+	private $params = null;
+	private $menu = null;
+	private $active = null;
+
+	public function __construct()
+	{
+		$this->params = JComponentHelper::getParams('com_k2');
+		$application = JFactory::getApplication();
+		$this->menu = $application->getMenu();
+		$this->active = $this->menu->getActive();
+	}
+
 	/**
 	 * Build the route for the K2 component
 	 *
@@ -38,14 +50,8 @@ class K2Router extends JComponentRouterBase
 		}
 		else
 		{
-			// Get application
-			$application = JFactory::getApplication();
-
-			// Get menu
-			$menu = $application->getMenu();
-
 			// Get the matched menu item
-			$item = $menu->getItem($query['Itemid']);
+			$item = $this->menu->getItem($query['Itemid']);
 
 			// Itemlist menu link
 			if (isset($query['view']) && $query['view'] == 'itemlist' && isset($item->query['view']) && $item->query['view'] == 'itemlist')
@@ -115,8 +121,7 @@ class K2Router extends JComponentRouterBase
 			$segments[] = $hash;
 			unset($query['hash']);
 		}
-		$params = JComponentHelper::getParams('com_k2');
-		if ($params->get('k2Sef') && count($segments))
+		if ($this->params->get('k2Sef') && count($segments))
 		{
 			$segments = $this->advacedBuild($segments, $query);
 		}
@@ -189,8 +194,7 @@ class K2Router extends JComponentRouterBase
 			$vars['year'] = $segments[1];
 			$vars['month'] = $segments[2];
 		}
-		$params = JComponentHelper::getParams('com_k2');
-		if ($params->get('k2Sef') && count($vars))
+		if ($this->params->get('k2Sef') && count($vars))
 		{
 			$vars = $this->advancedParse($vars, $segments);
 		}
@@ -207,18 +211,16 @@ class K2Router extends JComponentRouterBase
 
 	private function advacedBuild($segments, $query)
 	{
-		$params = JComponentHelper::getParams('com_k2');
-
 		if (!empty($query['Itemid']))
 		{
 			// Items
-			if ($query['Itemid'] == $params->get('k2SefLabelItem'))
+			if ($query['Itemid'] == $this->params->get('k2SefLabelItem'))
 			{
 				$view = 'item';
 				unset($segments[0]);
 			}
 			// Categories
-			else if ($query['Itemid'] == $params->get('k2SefLabelCat'))
+			else if ($query['Itemid'] == $this->params->get('k2SefLabelCat'))
 			{
 				$view = 'itemlist';
 				$task = 'category';
@@ -226,7 +228,7 @@ class K2Router extends JComponentRouterBase
 				unset($segments[1]);
 			}
 			// Tags
-			else if ($query['Itemid'] == $params->get('k2SefLabelTag'))
+			else if ($query['Itemid'] == $this->params->get('k2SefLabelTag'))
 			{
 				$view = 'itemlist';
 				$task = 'tag';
@@ -234,7 +236,7 @@ class K2Router extends JComponentRouterBase
 				unset($segments[1]);
 			}
 			// Users
-			else if ($query['Itemid'] == $params->get('k2SefLabelUser'))
+			else if ($query['Itemid'] == $this->params->get('k2SefLabelUser'))
 			{
 				$view = 'itemlist';
 				$task = 'user';
@@ -260,17 +262,17 @@ class K2Router extends JComponentRouterBase
 
 				if ($task == 'category' && isset($segments[2]))
 				{
-					$segments[2] = $this->buildIdByPattern($segments[2], $params->get('k2SefPatternCat'));
+					$segments[2] = $this->buildIdByPattern($segments[2], $this->params->get('k2SefPatternCat'));
 				}
 				else if ($task == 'tag' && isset($segments[2]))
 				{
-					$segments[2] = $this->buildIdByPattern($segments[2], $params->get('k2SefPatternTag'));
+					$segments[2] = $this->buildIdByPattern($segments[2], $this->params->get('k2SefPatternTag'));
 				}
 
 			}
 			else if ($view == 'item')
 			{
-				$segments[1] = $this->buildIdByPattern($segments[1], $params->get('k2SefPatternItem'));
+				$segments[1] = $this->buildIdByPattern($segments[1], $this->params->get('k2SefPatternItem'));
 			}
 		}
 
@@ -291,31 +293,28 @@ class K2Router extends JComponentRouterBase
 	 */
 	private function advancedParse($vars, $segments)
 	{
-		$params = JComponentHelper::getParams('com_k2');
-		$application = JFactory::getApplication();
-		$menu = $application->getMenu();
-		$item = $menu->getActive();
+		$item = $this->active;
 
 		if ($item && $item->component == 'com_k2')
 		{
-			if ($item->id == $params->get('k2SefLabelItem'))
+			if ($item->id == $this->params->get('k2SefLabelItem'))
 			{
 				$vars['view'] = 'item';
 				$itemId = $segments[0];
 			}
-			if ($item->id == $params->get('k2SefLabelCat'))
+			if ($item->id == $this->params->get('k2SefLabelCat'))
 			{
 				$vars['view'] = 'itemlist';
 				$vars['task'] = 'category';
 				$categoryId = $segments[0];
 			}
-			else if ($item->id == $params->get('k2SefLabelUser'))
+			else if ($item->id == $this->params->get('k2SefLabelUser'))
 			{
 				$vars['view'] = 'itemlist';
 				$vars['task'] = 'user';
 				$userId = $segments[0];
 			}
-			else if ($item->id == $params->get('k2SefLabelTag'))
+			else if ($item->id == $this->params->get('k2SefLabelTag'))
 			{
 				$vars['view'] = 'itemlist';
 				$vars['task'] = 'tag';
@@ -328,14 +327,14 @@ class K2Router extends JComponentRouterBase
 			{
 				case 'category' :
 					$id = isset($categoryId) ? $categoryId : $segments[2];
-					$vars['id'] = $this->parseIdByPattern($id, $params->get('k2SefPatternItem'), 'category');
+					$vars['id'] = $this->parseIdByPattern($id, $this->params->get('k2SefPatternItem'), 'category');
 					break;
 				case 'user' :
 					$vars['id'] = isset($userId) ? $userId : $segments[2];
 					break;
 				case 'tag' :
 					$id = isset($tagId) ? $tagId : $segments[2];
-					$vars['id'] = $this->parseIdByPattern($id, $params->get('k2SefPatternTag'), 'tag');
+					$vars['id'] = $this->parseIdByPattern($id, $this->params->get('k2SefPatternTag'), 'tag');
 					break;
 			}
 		}
@@ -346,7 +345,7 @@ class K2Router extends JComponentRouterBase
 			{
 				$id .= '-'.$segments[2];
 			}
-			$vars['id'] = $this->parseIdByPattern($id, $params->get('k2SefPatternItem'), 'item');
+			$vars['id'] = $this->parseIdByPattern($id, $this->params->get('k2SefPatternItem'), 'item');
 		}
 		return $vars;
 
