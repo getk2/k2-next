@@ -301,7 +301,7 @@ class K2Categories extends K2Resource
 	public function getEffectiveParams()
 	{
 		$effectiveParams = $this->params;
-		if ($this->inheritance)
+		if ($this->inheritance && $this->inheritance != $this->id)
 		{
 			if ($this->inheritance == 1)
 			{
@@ -311,7 +311,6 @@ class K2Categories extends K2Resource
 			{
 				$effectiveParams = K2Categories::getInstance($this->inheritance)->params;
 			}
-
 		}
 		return $effectiveParams;
 	}
