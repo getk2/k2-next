@@ -86,6 +86,7 @@ class K2ViewItemlist extends K2View
 	private function date()
 	{
 		$this->getDateItems();
+		$this->setMetadata($this->date);
 	}
 
 	private function search()

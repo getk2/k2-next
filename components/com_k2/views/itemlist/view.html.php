@@ -177,6 +177,9 @@ class K2ViewItemlist extends K2View
 		// Set the flag for sending feed links to head
 		$this->feedLinkToHead = $this->params->get('genericFeedLink');
 
+		// Set metadata
+		$this->setMetadata($this->date);
+
 		// Set the layout
 		$this->setLayout('date');
 

@@ -550,6 +550,17 @@ class K2View extends JViewLegacy
 		$day = $application->input->get('day', 0, 'int');
 		$category = $application->input->get('category', 0, 'int');
 
+		// Build the resource dynamicaly
+		$dateValue = $year.'-'.$month;
+		$dateFormat = JText::_('K2_ITEMLIST_DATE_MONTH_FORMAT');
+		if ($day)
+		{
+			$dateValue .= '-'.$day;
+			$dateFormat = JText::_('K2_ITEMLIST_DATE_DAY_FORMAT');
+		}
+		$this->date = JFactory::getDate($dateValue);
+		$this->date->title = JText::_('K2_ITEMS_FILTERED_BY_DATE').' '.$this->date->format($dateFormat);
+
 		// Determine offset and limit based on document type
 		if ($this->type == 'html' || $this->type == 'raw')
 		{
@@ -664,4 +675,5 @@ class K2View extends JViewLegacy
 			}
 		}
 	}
+
 }
