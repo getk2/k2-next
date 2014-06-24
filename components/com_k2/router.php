@@ -409,7 +409,11 @@ class K2Router extends JComponentRouterBase
 
 	private function parseIdByPattern($input, $pattern, $type)
 	{
-		if ($pattern == 'alias')
+		if ($pattern == 'id-dash-alias')
+		{
+			$result = $input;
+		}
+		else
 		{
 			if ($type == 'item')
 			{
@@ -424,10 +428,6 @@ class K2Router extends JComponentRouterBase
 				$row = K2Tags::getInstance($input);
 			}
 			$result = $row->id.':'.$row->alias;
-		}
-		else
-		{
-			$result = $input;
 		}
 		return $result;
 	}
