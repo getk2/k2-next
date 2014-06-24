@@ -170,7 +170,7 @@ class K2ViewCategories extends K2View
 		$form->language = K2HelperHTML::language('language', $row->language);
 		$form->access = JHtml::_('access.level', 'access', $row->access, '', false);
 		$form->parent = K2HelperHTML::categories('parent_id', $row->parent_id, 'K2_NONE', $row->id);
-		$form->inheritance = K2HelperHTML::categories('inheritance', $row->inheritance, 'K2_NONE', $row->id);
+		$form->inheritance = K2HelperHTML::categories('inheritance', $row->inheritance, 'K2_NONE', $row->id, '', false, 'id', true);
 		$form->template = K2HelperHTML::template('template', $row->template);
 		require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/editor.php';
 		$config = JFactory::getConfig();

@@ -303,7 +303,15 @@ class K2Categories extends K2Resource
 		$effectiveParams = $this->params;
 		if ($this->inheritance)
 		{
-			$effectiveParams = K2Categories::getInstance($this->inheritance)->params;
+			if ($this->inheritance == 1)
+			{
+				$effectiveParams = JComponentHelper::getParams('com_k2');
+			}
+			else
+			{
+				$effectiveParams = K2Categories::getInstance($this->inheritance)->params;
+			}
+
 		}
 		return $effectiveParams;
 	}

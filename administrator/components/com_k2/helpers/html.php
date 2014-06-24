@@ -73,7 +73,7 @@ class K2HelperHTML
 		return JHtml::_('select.genericlist', $list, $name, '', 'value', 'text', $value);
 	}
 
-	public static function categories($name = 'catid', $value = null, $none = false, $exclude = null, $attributes = '', $recursive = false, $valueProperty = 'id')
+	public static function categories($name = 'catid', $value = null, $none = false, $exclude = null, $attributes = '', $recursive = false, $valueProperty = 'id', $inheritance = false)
 	{
 		$model = K2Model::getInstance('Categories', 'K2Model');
 		$model->setState('sorting', 'ordering');
@@ -81,7 +81,11 @@ class K2HelperHTML
 		$options = array();
 		if ($none)
 		{
-			$options[] = JHtml::_('select.option', '', JText::_($none));
+			$options[] = JHtml::_('select.option', '0', JText::_($none));
+		}
+		if ($inheritance)
+		{
+			$options[] = JHtml::_('select.option', '1', JText::_('K2_FROM_K2_CATEGORY_PARAMETERS'));
 		}
 		foreach ($rows as $row)
 		{
@@ -276,4 +280,5 @@ class K2HelperHTML
 		}
 		return JHtml::_('select.genericlist', $options, $name, $attributes, 'value', 'text', $value);
 	}
+
 }
