@@ -198,7 +198,6 @@ class K2Router extends JComponentRouterBase
 		{
 			$vars = $this->advancedParse($vars, $segments);
 		}
-
 		return $vars;
 	}
 
@@ -332,6 +331,23 @@ class K2Router extends JComponentRouterBase
 			{
 				$vars['view'] = 'itemlist';
 				$vars['task'] = 'date';
+				if (isset($segments[0]))
+				{
+					$vars['year'] = $segments[0];
+				}
+				if (isset($segments[1]))
+				{
+					$vars['month'] = $segments[1];
+				}
+				if (isset($segments[2]))
+				{
+					$vars['day'] = $segments[2];
+				}
+				if (isset($segments[3]))
+				{
+					$vars['category'] = $segments[3];
+				}
+				return $vars;
 			}
 		}
 		if ($vars['view'] == 'itemlist')
