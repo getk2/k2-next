@@ -365,7 +365,7 @@
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="itemRelatedLimit" type="text" default="" size="4" label="K2_RELATED_ITEMS_LIMIT" description=""/>
+			<field name="itemRelatedLimit" type="text" default="5" size="4" label="K2_RELATED_ITEMS_LIMIT" description=""/>
 			<field name="itemRelatedTitle" type="radio" default="1" label="K2_RELATED_ITEMS_TITLE" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
