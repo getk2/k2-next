@@ -243,6 +243,14 @@ class K2Router extends JComponentRouterBase
 				unset($segments[0]);
 				unset($segments[1]);
 			}
+			// Date
+			else if ($query['Itemid'] == $this->params->get('k2SefLabelDate'))
+			{
+				$view = 'itemlist';
+				$task = 'date';
+				unset($segments[0]);
+				unset($segments[1]);
+			}
 
 		}
 
@@ -320,6 +328,11 @@ class K2Router extends JComponentRouterBase
 				$vars['task'] = 'tag';
 				$tagId = $segments[0];
 			}
+			else if ($item->id == $this->params->get('k2SefLabelDate'))
+			{
+				$vars['view'] = 'itemlist';
+				$vars['task'] = 'date';
+			}
 		}
 		if ($vars['view'] == 'itemlist')
 		{
@@ -327,7 +340,7 @@ class K2Router extends JComponentRouterBase
 			{
 				case 'category' :
 					$id = isset($categoryId) ? $categoryId : $segments[2];
-					$vars['id'] = $this->parseIdByPattern($id, $this->params->get('k2SefPatternItem'), 'category');
+					$vars['id'] = $this->parseIdByPattern($id, $this->params->get('k2SefPatternCat'), 'category');
 					break;
 				case 'user' :
 					$vars['id'] = isset($userId) ? $userId : $segments[2];
@@ -347,6 +360,7 @@ class K2Router extends JComponentRouterBase
 			}
 			$vars['id'] = $this->parseIdByPattern($id, $this->params->get('k2SefPatternItem'), 'item');
 		}
+
 		return $vars;
 
 	}

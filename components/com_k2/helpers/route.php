@@ -275,6 +275,7 @@ class K2HelperRoute
 
 	public static function getDateRoute($year, $month, $day = null, $category = null)
 	{
+		$params = JComponentHelper::getParams('com_k2');
 		$route = 'index.php?option=com_k2&view=itemlist&task=date&year='.$year.'&month='.$month;
 		if ($day)
 		{
@@ -284,7 +285,16 @@ class K2HelperRoute
 		{
 			$route .= '&category='.$category;
 		}
-		$route .= '&Itemid=';
+		$defaultItemid = (int)$params->get('k2SefLabelDate');
+		if ($params->get('k2Sef') && $defaultItemid)
+		{
+			$Itemid = $defaultItemid;
+		}
+		else
+		{
+			$Itemid = '';
+		}
+		$route .= '&Itemid='.$Itemid;
 		return $route;
 	}
 
