@@ -702,4 +702,67 @@ class K2View extends JViewLegacy
 		}
 	}
 
+	protected function loadItemlistLayout()
+	{
+		// Clear output
+		$this->_output = null;
+
+		// Get current template
+		$template = JFactory::getApplication()->getTemplate();
+		
+		// Load language file
+		$language = JFactory::getLanguage();
+		$language->load('tpl_'.$template, JPATH_BASE, null, false, true) || $language->load('tpl_'.$template, JPATH_THEMES.'/'.$template, null, false, true);
+		
+		// Get layout
+		$layout = $this->getLayout();
+
+		// Generate the file name
+		$file = $layout.'_item';
+
+		// Load the template script
+		jimport('joomla.filesystem.path');
+		$filetofind = $this->_createFileName('template', array('name' => $file));
+		$this->_template = JPath::find($this->_path['template'], $filetofind);
+
+		// If the task specific layout can't be found, fall back to common layout
+		if ($this->_template == false)
+		{
+			$filetofind = $this->_createFileName('', array('name' => 'itemlist_item'));
+			$this->_template = JPath::find($this->_path['template'], $filetofind);
+		}
+
+		// We have a file, let's render
+		if ($this->_template != false)
+		{
+			// Unset so as not to introduce into template scope
+			unset($tpl);
+			unset($file);
+
+			// Never allow a 'this' property
+			if (isset($this->this))
+			{
+				unset($this->this);
+			}
+
+			// Start capturing output into a buffer
+			ob_start();
+
+			// Include the requested template filename in the local scope
+			// (this will execute the view logic).
+			include $this->_template;
+
+			// Done with the requested template; get the buffer and
+			// clear it.
+			$this->_output = ob_get_contents();
+			ob_end_clean();
+
+			return $this->_output;
+		}
+		else
+		{
+			throw new Exception(JText::sprintf('JLIB_APPLICATION_ERROR_LAYOUTFILE_NOT_FOUND', $file), 500);
+		}
+	}
+
 }

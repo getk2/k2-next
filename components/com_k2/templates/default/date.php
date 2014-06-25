@@ -32,7 +32,7 @@ defined('_JEXEC') or die; ?>
 	<?php if(count($this->items)): ?>
 	<div class="itemList">
 		<?php foreach($this->items as $item): ?>
-			<?php $this->item = $item; echo $this->loadTemplate('item'); ?>
+			<?php $this->item = $item; echo $this->loadItemlistLayout(); ?>
 		<?php endforeach; ?>
 	</div>
 	<?php endif; ?>	
