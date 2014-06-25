@@ -81,7 +81,7 @@ class K2Categories extends K2Resource
 		parent::prepare($mode);
 
 		// Edit link
-		$this->editLink = '#categories/edit/'.$this->id;
+		$this->editLink = JURI::base(true).'/index.php?option=com_k2#categories/edit/'.$this->id;
 
 		// Permisisons
 		$user = JFactory::getUser();

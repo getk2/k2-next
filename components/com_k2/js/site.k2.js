@@ -71,7 +71,8 @@ jQuery(document).ready(function() {
 		}, 500);
 	});
 	// Legacy code END
-
+	
+	// Popup
 	jQuery('.k2ClassicPopUp').click(function(event) {
 		event.preventDefault();
 		var href = jQuery(this).attr('href');
@@ -86,6 +87,7 @@ jQuery(document).ready(function() {
 		window.open(href, 'K2PopUpWindow', 'width=' + width + ',height=' + height + ',menubar=yes,resizable=yes');
 	});
 
+	// Calendar navigation
 	jQuery('.k2CalendarBlock').on('click', '.calendarNavLink', function(event) {
 		event.preventDefault();
 		var parentElement = jQuery(this).parent().parent().parent().parent();
@@ -100,7 +102,8 @@ jQuery(document).ready(function() {
 			}
 		});
 	});
-
+	
+	// AJAX search
 	jQuery('div.k2LiveSearchBlock form input[name=searchword]').keyup(function(event) {
 		var parentElement = jQuery(this).parent().parent();
 		if (jQuery(this).val().length > 3 && event.key != 'enter') {
@@ -126,6 +129,26 @@ jQuery(document).ready(function() {
 		}
 	});
 	
+	// Inline editing. Don't use Backbone, we can do it with a few lines of js
+	jQuery('[data-k2-editable]').prop('contenteditable', true);
+	jQuery('[data-k2-editable]').blur(function(event) {
+		var el = jQuery(this);
+		var property = el.data('k2-editable');
+		var id = el.data('k2-item');
+		var data = {};
+		data['id'] = id;
+		data['_method'] = 'PATCH';
+		data['states['+property+']'] = el.html();
+		data[K2SessionToken] = 1;
+		jQuery.post('http://localhost/office/k2v3/index.php?option=com_k2&task=items.sync&format=json', data).done(function() {
+			// @TODO : Inform user that save was succesful
+		}).fail(function(response, aaa, bbb) {
+			alert(response.responseText);
+		});
+	});
+	
+	
+	// Comments application
 	var K2CommentsWidget = jQuery('div[data-widget="k2comments"]');
 	var K2CommentsItemId = K2CommentsWidget.data('itemid');
 	var K2CommentsSite = K2CommentsWidget.data('site');

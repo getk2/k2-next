@@ -75,7 +75,7 @@ class K2Users extends K2Resource
 		if ($this->id)
 		{
 			// Prepare specific properties
-			$this->editLink = '#users/edit/'.$this->id;
+			$this->editLink = JURI::base(true).'/index.php?option=com_k2#users/edit/'.$this->id;
 
 			// Link
 			$this->link = $this->getLink();

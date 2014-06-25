@@ -104,7 +104,7 @@ class K2Items extends K2Resource
 		$this->category = $this->getCategory();
 
 		// Edit link
-		$this->editLink = '#items/edit/'.$this->id;
+		$this->editLink = JURI::base(true).'/index.php?option=com_k2#items/edit/'.$this->id;
 
 		// Permisisons
 		$user = JFactory::getUser();
@@ -429,7 +429,7 @@ class K2Items extends K2Resource
 	{
 		if (!isset($this->printLink))
 		{
-			$this->printLink = JRoute::_(K2HelperRoute::getItemRoute($this->id.':'.$this->alias, $this->catid).'&print=1');
+			$this->printLink = JRoute::_(K2HelperRoute::getItemRoute($this->id.':'.$this->alias, $this->catid).'&tmpl=component&print=1');
 		}
 		return $this->printLink;
 	}

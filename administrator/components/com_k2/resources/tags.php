@@ -92,7 +92,7 @@ class K2Tags extends K2Resource
 		parent::prepare($mode);
 
 		// Prepare specific properties
-		$this->editLink = '#tags/edit/'.$this->id;
+		$this->editLink = JURI::base(true).'/index.php?option=com_k2#tags/edit/'.$this->id;
 
 		// Link
 		$this->link = $this->getLink();

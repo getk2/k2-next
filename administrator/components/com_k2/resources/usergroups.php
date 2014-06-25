@@ -71,7 +71,7 @@ class K2UserGroups extends K2Resource
 		parent::prepare($mode);
 
 		// Prepare specific properties
-		$this->editLink = '#usergroups/edit/'.$this->id;
+		$this->editLink = JURI::base(true).'/index.php?option=com_k2#usergroups/edit/'.$this->id;
 	}
 
 }

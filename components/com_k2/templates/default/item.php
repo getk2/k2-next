@@ -53,7 +53,7 @@ defined('_JEXEC') or die ;
 			</span>
 			<?php endif; ?>
 
-	  	<?php echo $this->item->title; ?>
+	  	<span<?php if($this->item->canEdit): ?> data-k2-editable="title" data-k2-item="<?php echo $this->item->id; ?>" <?php endif; ?>><?php echo $this->item->title; ?></span>
 
 	  	<?php if($this->params->get('itemFeaturedNotice') && $this->item->featured): ?>
 	  	<!-- Featured flag -->
@@ -86,6 +86,24 @@ defined('_JEXEC') or die ;
 
   <!-- K2 Plugins: K2AfterDisplayTitle -->
   <?php echo $this->item->events->K2AfterDisplayTitle; ?>
+  
+  <?php if(($this->params->get('itemPrintButton') || $this->params->get('itemEmailButton')) && !$this->print): ?>
+  <div class="itemToolbar">
+  	<?php if($this->params->get('itemPrintButton') && !$this->print): ?>
+  	<!-- Print Button -->
+	<a class="itemPrintLink" rel="nofollow" href="<?php echo $this->item->printLink; ?>" onclick="window.open(this.href,'printWindow','width=900,height=600,location=no,menubar=no,resizable=yes,scrollbars=yes'); return false;">
+		<span><?php echo JText::_('K2_PRINT'); ?></span>
+	</a>
+	<?php endif; ?>
+
+	<?php if($this->params->get('itemEmailButton') && !$this->print): ?>
+	<!-- Email Button -->
+	<a class="itemEmailLink" rel="nofollow" href="<?php echo $this->item->emailLink; ?>" onclick="window.open(this.href,'emailWindow','width=400,height=350,location=no,menubar=no,resizable=no,scrollbars=no'); return false;">
+		<span><?php echo JText::_('K2_EMAIL'); ?></span>
+	</a>
+	<?php endif; ?>
+  </div>
+  <?php endif; ?>
 
 
   <div class="itemBody">
@@ -123,13 +141,13 @@ defined('_JEXEC') or die ;
 	  <?php if(!empty($this->item->fulltext)): ?>
 	  <?php if($this->params->get('itemIntroText')): ?>
 	  <!-- Item introtext -->
-	  <div class="itemIntroText">
+	  <div class="itemIntroText"<?php if($this->item->canEdit): ?> data-k2-editable="introtext" data-k2-item="<?php echo $this->item->id; ?>" <?php endif; ?>>
 	  	<?php echo $this->item->introtext; ?>
 	  </div>
 	  <?php endif; ?>
 	  <?php if($this->params->get('itemFullText')): ?>
 	  <!-- Item fulltext -->
-	  <div class="itemFullText">
+	  <div class="itemFullText"<?php if($this->item->canEdit): ?> data-k2-editable="fulltext" data-k2-item="<?php echo $this->item->id; ?>" <?php endif; ?>>
 	  	<?php echo $this->item->fulltext; ?>
 	  </div>
 	  <?php endif; ?>
