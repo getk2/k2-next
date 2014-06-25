@@ -60,7 +60,7 @@ class K2ViewItem extends K2View
 			$this->document->addScript(JURI::root(true).'/administrator/components/com_k2/js/sync.js');
 			require_once JPATH_SITE.'/components/com_k2/helpers/captcha.php';
 			K2HelperCaptcha::initialize();
-			
+
 			// Keep alive the session
 			JHtml::_('behavior.keepalive');
 
@@ -69,7 +69,7 @@ class K2ViewItem extends K2View
 		else if ($this->item->canEdit)
 		{
 			$this->document->addScriptDeclaration('var K2SessionToken = "'.JSession::getFormToken().'";');
-			
+
 			// Keep alive the session
 			JHtml::_('behavior.keepalive');
 		}
