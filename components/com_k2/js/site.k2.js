@@ -142,7 +142,7 @@ jQuery(document).ready(function() {
 		data[K2SessionToken] = 1;
 		jQuery.post('http://localhost/office/k2v3/index.php?option=com_k2&task=items.sync&format=json', data).done(function() {
 			// @TODO : Inform user that save was succesful
-		}).fail(function(response, aaa, bbb) {
+		}).fail(function(response) {
 			alert(response.responseText);
 		});
 	});
