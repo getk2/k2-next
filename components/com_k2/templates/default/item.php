@@ -157,6 +157,7 @@ defined('_JEXEC') or die ;
 	  <div class="itemFullText"<?php if($this->item->canEdit): ?> data-k2-editable="fulltext" data-k2-item="<?php echo $this->item->id; ?>" <?php endif; ?>>
 	  	<?php echo $this->item->fulltext; ?>
 	  </div>
+	  <?php endif; ?>
 	 
 
 	<div class="clr"></div>
