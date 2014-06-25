@@ -25,7 +25,7 @@ class K2FileSystem
 
 	protected static $instances = array();
 
-	public static function getInstance($adapter = null)
+	public static function getInstance($adapter = null, $localRoot = JPATH_SITE)
 	{
 		$params = JComponentHelper::getParams('com_k2');
 
@@ -34,12 +34,14 @@ class K2FileSystem
 			$adapter = $params->get('filesystem', 'Local');
 		}
 
-		if (empty(self::$instances[$adapter]))
+		$key = $adapter.'|'.$localRoot;
+
+		if (empty(self::$instances[$key]))
 		{
 			if ($adapter == 'Local')
 			{
-				$filesystem = new Gaufrette\Filesystem(new Gaufrette\Adapter\Local(JPATH_SITE));
-				self::$instances[$adapter] = $filesystem;
+				$filesystem = new Gaufrette\Filesystem(new Gaufrette\Adapter\Local($localRoot));
+				self::$instances[$key] = $filesystem;
 			}
 			elseif ($adapter == 'AmazonS3')
 			{
@@ -48,7 +50,7 @@ class K2FileSystem
 				$AmazonS3Bucket = $params->get('AmazonS3Bucket');
 				$service = S3Client::factory(array('key' => $AmazonS3AccessKey, 'secret' => $AmazonS3SecretAccessKey));
 				$filesystem = new Gaufrette\Filesystem(new Gaufrette\Adapter\AwsS3($service, $AmazonS3Bucket));
-				self::$instances[$adapter] = $filesystem;
+				self::$instances[$key] = $filesystem;
 			}
 			elseif ($adapter == 'MicrosoftAzure')
 			{
@@ -59,12 +61,12 @@ class K2FileSystem
 				$connectionString = 'BlobEndpoint='.$MicrosoftAzureEndpoint.'/;AccountName='.$MicrosoftAzureAccountName.';AccountKey='.$MicrosoftAzureAccountKey;
 				$factory = new Gaufrette\Adapter\AzureBlobStorage\BlobProxyFactory($connectionString);
 				$filesystem = new Gaufrette\Filesystem(new Gaufrette\Adapter\AzureBlobStorage($factory, $MicrosoftAzureContainer));
-				self::$instances[$adapter] = $filesystem;
+				self::$instances[$key] = $filesystem;
 			}
 
 		}
 
-		return self::$instances[$adapter];
+		return self::$instances[$key];
 	}
 
 	public static function getURIRoot($pathonly = false, $adapter = null)

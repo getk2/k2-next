@@ -79,11 +79,20 @@ class K2HelperAttachments
 		// Application
 		$application = JFactory::getApplication();
 
+		// Params
+		$params = JComponentHelper::getParams('com_k2');
+
 		// Session
 		$session = JFactory::getSession();
 
+		// Custom path flag
+		$customPathFlag = $params->get('attachmentsFolder') && $params->get('filesystem') == 'Local' ? true : false;
+
 		// File system
-		$filesystem = K2FileSystem::getInstance();
+		$filesystem = $customPathFlag ? K2FileSystem::getInstance('Local', $params->get('attachmentsFolder')) : K2FileSystem::getInstance();
+
+		// Target path
+		$targetPath = $customPathFlag ? '' : 'media/k2/attachments';
 
 		// Uploaded media
 		$uploadedAttachments = array();
@@ -120,7 +129,7 @@ class K2HelperAttachments
 					$attachment->path = '';
 
 					// Target file
-					$target = 'media/k2/attachments/'.$itemId.'/'.$attachment->file;
+					$target = $targetPath.'/'.$itemId.'/'.$attachment->file;
 
 					// Source file
 					$source = $application->getCfg('tmp_path').'/'.$attachment->file;
@@ -133,14 +142,14 @@ class K2HelperAttachments
 
 						// Convert back the filename
 						$attachment->file = substr($uniqueFileName, strpos($attachment->file, '_') + 1);
-						$target = 'media/k2/attachments/'.$itemId.'/'.$attachment->file;
+						$target = $targetPath.'/'.$itemId.'/'.$attachment->file;
 
 						// Ensure we don't override any existing attachments with the same filename
 						if ($filesystem->has($target))
 						{
 							// File exists, roll back the name changes we will keep the generated file name
 							$attachment->file = $uniqueFileName;
-							$target = 'media/k2/attachments/'.$itemId.'/'.$attachment->file;
+							$target = $targetPath.'/'.$itemId.'/'.$attachment->file;
 						}
 
 						// Transfer the file from the temporary folder to the current file system
@@ -185,7 +194,7 @@ class K2HelperAttachments
 		$item->store();
 
 		// Iterate over the media files in /media/k2/media and delete those who have been removed by the user
-		$folderKey = 'media/k2/attachments/'.$itemId.'/';
+		$folderKey = $targetPath.'/'.$itemId.'/';
 		$keys = $filesystem->listKeys($folderKey);
 		$files = isset($keys['keys']) ? $keys['keys'] : $keys;
 		foreach ($files as $attachmentKey)

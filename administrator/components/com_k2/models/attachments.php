@@ -120,7 +120,7 @@ class K2ModelAttachments extends K2Model
 		// Append sorting
 		$db = $this->getDbo();
 		$query->order($db->quoteName($ordering).' '.$direction);
-		
+
 	}
 
 	public function download()
@@ -192,10 +192,18 @@ class K2ModelAttachments extends K2Model
 	{
 		if ($table->file)
 		{
-			// Filesystem
-			$filesystem = K2FileSystem::getInstance();
+			// Params
+			$params = JComponentHelper::getParams('com_k2');
 
-			$path = 'media/k2/attachments';
+			// Custom path flag
+			$customPathFlag = $params->get('attachmentsFolder') && $params->get('filesystem') == 'Local' ? true : false;
+
+			// File system
+			$filesystem = $customPathFlag ? K2FileSystem::getInstance('Local', $params->get('attachmentsFolder')) : K2FileSystem::getInstance();
+
+			// Path
+			$path = $customPathFlag ? '' : 'media/k2/attachments';
+
 			if ($table->itemId)
 			{
 				$folder = $table->itemId;

@@ -28,7 +28,7 @@ class K2ViewAttachments extends K2View
 		$input = $application->input;
 		$id = $input->get('id', 0, 'int');
 		$hash = $input->get('hash', '', 'string');
-		
+
 		// Both input fields are required
 		if (!$id || empty($hash))
 		{
@@ -67,13 +67,22 @@ class K2ViewAttachments extends K2View
 		// Trigger onK2BeforeDownload event
 		$dispatcher->trigger('onK2BeforeDownload', array(&$attachment));
 
-		// Filesystem
-		$filesystem = K2FileSystem::getInstance();
+		// Params
+		$params = JComponentHelper::getParams('com_k2');
+
+		// Custom path flag
+		$customPathFlag = $params->get('attachmentsFolder') && $params->get('filesystem') == 'Local' ? true : false;
+
+		// File system
+		$filesystem = $customPathFlag ? K2FileSystem::getInstance('Local', $params->get('attachmentsFolder')) : K2FileSystem::getInstance();
+
+		// Path
+		$path = $customPathFlag ? '' : 'media/k2/attachments';
 
 		// Determine the key
 		if ($attachment->file)
 		{
-			$key = 'media/k2/attachments/'.$attachment->itemId.'/'.$attachment->file;
+			$key = $path.'/'.$attachment->itemId.'/'.$attachment->file;
 		}
 		else if ($attachment->path)
 		{
