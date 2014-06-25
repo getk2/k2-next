@@ -96,6 +96,7 @@ class K2View extends JViewLegacy
 
 	public function display($tpl = null)
 	{
+		// Import plugins and trigger the onBeforeDisplayView event
 		$dispatcher = JDispatcher::getInstance();
 		JPluginHelper::importPlugin('k2');
 		$application = JFactory::getApplication();
@@ -105,6 +106,31 @@ class K2View extends JViewLegacy
 			$context .= '.'.$task;
 		}
 		$dispatcher->trigger('onBeforeDisplayView', array($context, &$this));
+
+		// Fix pathway. Remove any Advanced SEF links
+		$params = JComponentHelper::getParams('com_k2');
+		if ($params->get('k2Sef'))
+		{
+			$sefItemIds = array($params->get('k2SefLabelItem'), $params->get('k2SefLabelCat'), $params->get('k2SefLabelTag'), $params->get('k2SefLabelUser'), $params->get('k2SefLabelDate'));
+			$pathway = $application->getPathWay();
+			$pathwayItems = $pathway->getPathway();
+			foreach ($pathwayItems as $key => $pathwayItem)
+			{
+				$Itemid = null;
+				$link = parse_url($pathwayItem->link);
+				if (isset($link['query']))
+				{
+					parse_str($link['query']);
+					if ($Itemid && in_array($Itemid, $sefItemIds))
+					{
+						unset($pathwayItems[$key]);
+					}
+				}
+			}
+			$pathway->setPathway($pathwayItems);
+		}
+
+		// Display
 		parent::display($tpl);
 	}
 
