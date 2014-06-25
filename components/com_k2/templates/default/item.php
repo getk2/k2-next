@@ -44,14 +44,6 @@ defined('_JEXEC') or die ;
 	  <?php if($this->params->get('itemTitle')): ?>
 	  <!-- Item title -->
 	  <h2 class="itemTitle">
-			<?php if($this->item->canEdit): ?>
-			<!-- Item edit link -->
-			<span class="itemEditLink">
-				<a href="<?php echo $this->item->editLink; ?>">
-					<?php echo JText::_('K2_EDIT_ITEM'); ?>
-				</a>
-			</span>
-			<?php endif; ?>
 
 	  	<span<?php if($this->item->canEdit): ?> data-k2-editable="title" data-k2-item="<?php echo $this->item->id; ?>" <?php endif; ?>><?php echo $this->item->title; ?></span>
 
@@ -74,7 +66,11 @@ defined('_JEXEC') or die ;
 			<?php if(empty($this->item->created_by_alias)): ?>
 			<a rel="author" href="<?php echo $this->item->author->link; ?>"><?php echo $this->item->author->name; ?></a>
 			<?php else: ?>
-			<a rel="author" href="<?php echo $this->item->author->site; ?>" target="_blank"><?php echo $this->item->author->name; ?></a>
+			<?php if($this->item->created_by_alias_url): ?>
+				<a rel="author" href="<?php echo $this->item->created_by_alias_url; ?>" target="_blank"><?php echo $this->item->created_by_alias; ?></a>
+			<?php else: ?>
+				<span rel="author"><?php echo $this->item->created_by_alias; ?></span>
+			<?php endif; ?>
 			<?php endif; ?>
 		</span>
 		<?php endif; ?>
@@ -87,21 +83,32 @@ defined('_JEXEC') or die ;
   <!-- K2 Plugins: K2AfterDisplayTitle -->
   <?php echo $this->item->events->K2AfterDisplayTitle; ?>
   
-  <?php if(($this->params->get('itemPrintButton') || $this->params->get('itemEmailButton')) && !$this->print): ?>
+  <?php if(($this->item->canEdit || $this->params->get('itemPrintButton') || $this->params->get('itemEmailButton')) && !$this->print): ?>
   <div class="itemToolbar">
+  	
+	<?php if($this->item->canEdit && !$this->print): ?>
+	<!-- Edit link -->
+	<span class="itemEditLink">
+		<a href="<?php echo $this->item->editLink; ?>">
+			<?php echo JText::_('K2_EDIT_ITEM'); ?>
+		</a>
+	</span>
+	<?php endif; ?>
+  		
   	<?php if($this->params->get('itemPrintButton') && !$this->print): ?>
   	<!-- Print Button -->
 	<a class="itemPrintLink" rel="nofollow" href="<?php echo $this->item->printLink; ?>" onclick="window.open(this.href,'printWindow','width=900,height=600,location=no,menubar=no,resizable=yes,scrollbars=yes'); return false;">
 		<span><?php echo JText::_('K2_PRINT'); ?></span>
 	</a>
 	<?php endif; ?>
-
+	
 	<?php if($this->params->get('itemEmailButton') && !$this->print): ?>
 	<!-- Email Button -->
 	<a class="itemEmailLink" rel="nofollow" href="<?php echo $this->item->emailLink; ?>" onclick="window.open(this.href,'emailWindow','width=400,height=350,location=no,menubar=no,resizable=no,scrollbars=no'); return false;">
 		<span><?php echo JText::_('K2_EMAIL'); ?></span>
 	</a>
 	<?php endif; ?>
+	
   </div>
   <?php endif; ?>
 
@@ -137,28 +144,22 @@ defined('_JEXEC') or die ;
 		  <div class="clr"></div>
 	  </div>
 	  <?php endif; ?>
-
-	  <?php if(!empty($this->item->fulltext)): ?>
-	  <?php if($this->params->get('itemIntroText')): ?>
+		
+	  <?php if($this->params->get('itemIntroText') && $this->item->introtext): ?>
 	  <!-- Item introtext -->
 	  <div class="itemIntroText"<?php if($this->item->canEdit): ?> data-k2-editable="introtext" data-k2-item="<?php echo $this->item->id; ?>" <?php endif; ?>>
 	  	<?php echo $this->item->introtext; ?>
 	  </div>
 	  <?php endif; ?>
-	  <?php if($this->params->get('itemFullText')): ?>
+	  
+	  <?php if($this->params->get('itemFullText') && $this->item->fulltext): ?>
 	  <!-- Item fulltext -->
 	  <div class="itemFullText"<?php if($this->item->canEdit): ?> data-k2-editable="fulltext" data-k2-item="<?php echo $this->item->id; ?>" <?php endif; ?>>
 	  	<?php echo $this->item->fulltext; ?>
 	  </div>
-	  <?php endif; ?>
-	  <?php else: ?>
-	  <!-- Item text -->
-	  <div class="itemFullText">
-	  	<?php echo $this->item->introtext; ?>
-	  </div>
-	  <?php endif; ?>
+	 
 
-		<div class="clr"></div>
+	<div class="clr"></div>
 
 	
 	  <?php if($this->params->get('itemExtraFields') && count($this->item->extraFieldsGroups)): ?>
