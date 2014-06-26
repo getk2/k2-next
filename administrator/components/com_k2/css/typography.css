@@ -1,0 +1,136 @@
+.jw { font-family: 'Open Sans', sans-serif; font-size: 100%; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; font-smoothing: antialiased; }
+.jw a { text-decoration: none; color: #636b6e; }
+
+/* Headings */
+.jw h1, .jw h2, .jw h3, .jw h4, .jw h5, .jw h6 {  font-family: 'Open Sans', sans-serif; font-weight: 400; }
+	.jw h1 { margin: 0; padding: 0; } 
+	.jw h2 { } 
+	.jw h3 { } 
+	.jw h4 { } 
+	.jw h5 { }
+	.jw h6 { }
+
+.jw ul {  }
+	.jw ul li {  }
+	.jw ul.list-reset { list-style: none outside none; }
+
+.jw ol {  }
+	.jw ol li {  }
+
+
+img {-ms-interpolation-mode:bicubic; max-width: 100%; }
+
+/* re-usable stuff */
+.text-center { text-align: center!important; }
+.text-left { text-align: left!important; }
+.text-right { text-right: center!important; }
+
+/* Form elements */
+.jw input, .jw input:focus {outline:0;}
+.jw input[type="checkbox"] {border:0; margin: 0;}
+
+.jw button { margin: 0; background: transparent; border: 0; text-decoration: none; }
+.jw .jw--readonly { opacity: 0.75;  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)"; }
+	.jw .jw--readonly:hover { cursor: not-allowed; }
+	.jw .jw--readonly:focus { box-shadow: 0 0 transparent; border: 1px solid #cdcdcd; }
+
+/* Labels with radio buttons () */
+.jw label.jw--radio {  
+	min-width: 42px; width: auto; text-align: center; border: 1px solid #d4d6d8; line-height: 33px; vertical-align: top; height: 33px; font-size: 12px; margin: 0 -2px;
+	color: #8a8c8c; display: inline-block; vertical-align: middle; white-space: nowrap; background-color: #eff1f1;
+	box-shadow: 0 1px 1px rgba(65,64,66,.14), inset 0 1px 0 #fff;
+
+	-webkit-transition:all 350ms cubic-bezier(0.730, 0, 0.445, 1.000);
+	-webkit-transition:all 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
+	   -moz-transition:all 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
+		-ms-transition:all 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
+	     -o-transition:all 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
+			transition:all 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
+}
+	/* Checked */
+	.jw label.jw--radio.jw--radio__checked { color: #fff; border: 1px solid #828080; background:  #63696f; box-shadow: 0 1px 1px rgba(65,64,66,.14), inset 0 1px 0 #363a3d; }
+
+	/* smaller labels */
+	.jw label.jw--radio.jw--radio__smaller { line-height: 26px; height: 26px; font-size: 11px; margin: 0 -2px; padding: 0 6px; white-space: nowrap; }
+
+	/* labels in a row */
+	.jw label.jw--radio.jw--label__first { border-radius: 3px 0 0 3px; }
+	.jw label.jw--radio.jw--label__last { border-radius: 0 3px 3px 0; }
+
+	/* now hide the radio buttons using opacity and position absolute */
+	.jw .jw--radio input[type="radio"] { opacity: 0; width: 1px; height: 1px; position: absolute; left: -9999px; overflow: hidden; line-height: 0; -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; }
+
+	/* active && hover states */
+	.jw label.jw--radio.btn:hover,
+	.jw label.jw--radio:hover { cursor: pointer; box-shadow: 0 1px 1px rgba(65,64,66,.14), inset 0 0 10px rgba(0,0,0,.15); }
+	.jw label.jw--radio:active,
+	.jw label.jw--radio:focus, { cursor: pointer; box-shadow: inset 0 0 12px rgba(0,0,0,.35); }
+
+	/* label with heading */
+	.jw label.jw--radio--title { display: inline-block; vertical-align: middle; font-size: 13px; font-weight: 700; min-width: 78px; height: 35px; line-height: 35px; }
+
+
+/* Semi transparent togglers (check buttons) */
+.jw--check--wrapper { position: absolute; display: inline-block; z-index: 4; left: 0; top: 0; background-color: #636b6e; background-color: rgba(50,50,50,.5); border-radius: 3px 0; padding: 12px; }
+	.jw--checkbox {  }
+
+/* Featured (star) and Published (check) toggle */
+a.jw--state--toggler { display: inline-block; vertical-align: middle; line-height: 1; font-size: 19px; }
+a.jw--state--toggler:first-child { margin-right: 5px; }
+	
+	/* specific toggles and active states */
+	a.jw--state--toggler__feat.toggler--active  { color: #f59331; }
+	a.jw--state--toggler__pub.toggler--active { color: #3fa800; }
+
+/* Custom Checkboxes */
+.jw--checkbox {   padding: 0; display: block; margin: 0 auto; position: relative; z-index: 1; -webkit-backface-visibility: hidden;
+cursor: pointer; width: 16px; height: 16px; border: 1px solid #dbdcdc; border: 1px solid rgba(99,107,110,.25); border-radius: 3px; background-color: #fff; }
+.jw--checkbox:hover, .jw--checkbox input[type="checkbox"]:hover { cursor: pointer; }
+
+.jw--checkbox input[type="checkbox"] { position: absolute; z-index: 4; width: 100%; height: 100%; opacity: 0; }
+	.jw--checkbox input[type="checkbox"]:checked {  }
+	.jw--checkbox .fa { display: none; color: #00afec; font-size: 16px; position: relative; z-index: 3; top: -2px; left: 1px; }
+	.jw--checkbox input[type="checkbox"]:checked ~ .fa { display: block; }
+
+/* 
+---------------------------------
+Buttons */
+.jw--btn, a.jw--btn, button.jw--btn, input[type="submit"].jw--btn { display: inline-block; vertical-align: middle; white-space: nowrap; color: #fdfdfd; font-size: 13px; line-height: 1; padding: 10px 30px; font-weight: 700; border: 1px solid #363a3d; border-radius: 3px; background-color: #3fa700; position: relative;
+	box-shadow: 0 1px 1px rgba(65,64,66,.14), inset 0 1px 0 #54db00;
+	-webkit-transition:all 350ms cubic-bezier(0.730, 0, 0.445, 1.000);
+	-webkit-transition:all 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
+	   -moz-transition:all 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
+		-ms-transition:all 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
+		 -o-transition:all 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
+		 	transition:all 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000)
+}
+	.jw--btn:hover, a.jw--btn:hover, button.jw--btn:hover, 
+	input[type="submit"].jw--btn:hover { background-color: #54db00; cursor: pointer; }
+
+	/* Specific Buttons */
+	.jw--btn.jw--btn__cancel, a.jw--btn.jw--btn__cancel, button.jw--btn.jw--btn__cancel, input[type="submit"].jw--btn.jw--btn__cancel { border-color: #a53222; background-color: #d7412d; box-shadow: 0 1px 1px rgba(65,64,66,.14), inset 0 1px 0 #ff4d35;  }
+	.jw--btn.jw--btn__cancel:hover, a.jw--btn.jw--btn__cancel:hover, button.jw--btn.jw--btn__cancel:hover, 
+	input[type="submit"].jw--btn.jw--btn__cancel:hover { background-color:#ff4d35; }
+
+	.jw--btn.jw--btn__apply, a.jw--btn.jw--btn__apply, button.jw--btn.jw--btn__apply, input[type="submit"].jw--btn.jw--btn__apply { border-color: #0088ba; background-color: #009bd3; box-shadow: 0 1px 1px rgba(65,64,66,.14), inset 0 1px 0 #00baff; }
+	.jw--btn.jw--btn__apply:hover, a.jw--btn.jw--btn__apply:hover, button.jw--btn.jw--btn__apply:hover, input[type="submit"].jw--btn.jw--btn__apply:hover { background-color: #00baff; }
+
+/* Button with icon */
+.jw--btn.jw--btn__icon { padding-left: 43px; padding-right: 13px; }
+	.jw--btn.jw--btn__icon .fa { font-size: 17px; position: absolute; left: 0; top: 0; text-align: center; width: 33px; line-height: 36px; text-align: center; height: 100%; border-right: 1px solid rgba(0,0,0,.3); }
+	.jw--btn.jw--btn__icon .fa:after { content: ""; position: absolute; right: 0; width: 1px; height: 100%; background-color: rgba(255,255,255,.3); }
+
+/* Button rows */
+.jw--button--row .jw--btn { margin-left: 10px; }
+.jw--button--row__left .jw--btn:first-child { margin-left: 0; }
+
+/* Collapse */
+.jw--button--collapse { overflow: hidden; }
+	.jw--button--collapse .jw--btn { float: left; clear: both; margin-bottom: 15px; }
+
+
+
+
+
+
+

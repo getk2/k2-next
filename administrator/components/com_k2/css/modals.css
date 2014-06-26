@@ -1,0 +1,7 @@
+/*------------------------------------------------------------------
+[Modals] */
+.jw--modal { width: 650px; border: 1px solid rgba(0,0,0,.3); background-color: #fdfdfd; box-shadow: 0 0 29px rgba(0,0,0,.16); position: absolute;
+z-index: 100; left: 50%; top: 50%; margin-left: -325px; margin-top: -300px; }
+	.jw--modal:after { content: ""; width: 100%; height: 100%; }
+
+	.jw--modal.jw--modal__open {  }

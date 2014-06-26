@@ -1,0 +1,44 @@
+.jw *,.jw *:before,.jw *:after{ -webkit-box-sizing:border-box; -moz-box-sizing:border-box; box-sizing:border-box; }
+.fixed--width{ max-width: 990px; }
+
+h1.jw--logo { line-height: 0.8; padding: 15px 0 12px; }
+	.jw--logo img, .jw--logo span { display: inline-block; vertical-align: bottom; }
+	.jw--logo img {  }
+	.jw--logo span { font-size: 12px; color: #fff; color: rgba(255,255,255,.5); }
+
+
+/* menu fix */
+#module-menu #menu {z-index:9999;}
+
+.jw--transition {
+	-webkit-transition:all 350ms cubic-bezier(0.730, 0, 0.445, 1.000);
+	-webkit-transition:all 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
+		 -moz-transition:all 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
+		 	-ms-transition:all 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
+			 -o-transition:all 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
+			 	transition:all 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000)
+}
+
+
+/* Image replacement */
+.ir { background-color: transparent; border: 0; overflow: hidden; }
+.ir:before { content: ""; display: block; width: 0; height: 150%; }
+
+/* helper classes */
+.hidden { display: none !important; visibility: hidden; }
+.visuallyhidden { border: 0; clip: rect(0 0 0 0); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; width: 1px; }
+.visuallyhidden.focusable:active, .visuallyhidden.focusable:focus { clip: auto; height: auto; margin: 0; overflow: visible; position: static; width: auto; }
+.invisible { visibility: hidden; }
+
+
+/*------------------------------------------------------------------
+[Modules - reusable]
+
+/* Search module */
+.jw--search { border: 1px solid #bbbdbf; border-radius: 3px; margin: 0 auto; max-width: 220px; overflow: hidden; }
+	.jw--search input.jw--search--input { font-size: 13px; border-radius: 3px 0 0 3px; border: 1px solid #e1e3e5; border-radius: 3px; padding: 0 10px 0 10px; margin: 0 -50px 0 0; background-color: #fff; box-shadow: inset 0 1px 0 #e1e3e5; height: 34px; line-height: 34px; }
+	.jw--search input.jw--search-iinput:focus { background: #dbdcdc; color: #63696f; }
+
+	.jw--search button.jw--search--button { height: 34px; line-height: 29px; padding: 0 10px; text-align: center; font-size: 19px; color: #63696f; border: 1px solid #d4d6d8; border-radius: 3px; background-clip: padding-box; background-color: #eff1f1; box-shadow: 0 1px 1px rgba(65,64,66,.14), inset 0 1px 0 #fff;}
+	.jw--search button.jw--search--button:hover { color: #00afec; }
+
