@@ -54,6 +54,7 @@ class K2ViewK2 extends JViewLegacy
 		JHtml::_('behavior.keepalive');
 
 		// Load the CSS
+		$document->addStyleSheet('http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css');
 		$document->addStyleSheet(JURI::root(true).'/administrator/components/com_k2/css/admin.k2.css');
 
 		// Add javascript variables
