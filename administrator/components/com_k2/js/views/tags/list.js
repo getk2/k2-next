@@ -1,6 +1,6 @@
 define(['marionette', 'text!layouts/tags/list.html', 'text!layouts/tags/row.html', 'dispatcher'], function(Marionette, list, row, K2Dispatcher) {'use strict';
 	var K2ViewTagsRow = Marionette.ItemView.extend({
-		tagName : 'tr',
+		tagName : 'ul',
 		template : _.template(row),
 		events : {
 			'click a[data-action="edit"]' : 'edit'
@@ -12,7 +12,7 @@ define(['marionette', 'text!layouts/tags/list.html', 'text!layouts/tags/row.html
 	});
 	var K2ViewTags = Marionette.CompositeView.extend({
 		template : _.template(list),
-		itemViewContainer : 'tbody',
+		itemViewContainer : '[data-region="list"]',
 		itemView : K2ViewTagsRow
 	});
 	return K2ViewTags;

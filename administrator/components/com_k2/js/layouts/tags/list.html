@@ -1,15 +1,15 @@
-<table>
-    <thead>
-        <tr>
-            <td><label title="<%- l('K2_SELECT_ALL') %>">
+<div>
+    <div>
+        <ul>
+            <li><label title="<%- l('K2_SELECT_ALL') %>">
                     <input data-action="toggle-all" type="checkbox" />
                 </label>
-            </td>
-            <td><a data-action="sort" data-sorting="name"><%= l('K2_NAME') %></a></td>
-            <td><a data-action="sort" data-sorting="state"><%= l('K2_STATE') %></a></td>
-            <td><%= l('K2_ITEMS') %></td>
-            <td><a data-action="sort" data-sorting="id"><%= l('K2_ID') %></a></td>
-        </tr>
-    </thead>
-    <tbody></tbody>
-</table>
+            </li>
+            <li><a data-action="sort" data-sorting="name"><%= l('K2_NAME') %></a></li>
+            <li><a data-action="sort" data-sorting="state"><%= l('K2_STATE') %></a></li>
+            <li><%= l('K2_ITEMS') %></li>
+            <li><a data-action="sort" data-sorting="id"><%= l('K2_ID') %></a></li>
+        </ul>
+    </div>
+    <div data-region="list"></div>
+</div>
