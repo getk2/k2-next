@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------
 [Sidebar Styling] */
 
-.jw--sidebar { width: 300px; border-left: 1px solid #dbdcdc; top: 61px; bottom: 10px; left: 0; height: 100%; position: absolute; width: 46px; overflow: hidden; z-index: 9; }
+.jw--sidebar { width: 300px; border-left: 1px solid #dbdcdc; /*top: 61px; bottom: 10px; */ left: 0; height: 100%; /*position: absolute;*/ position: relative; width: 46px; overflow: hidden; z-index: 9; }
 	.jw--sidebar--text { width:254px; overflow:auto; padding:0 0 20px ;height:100%; }
 
 

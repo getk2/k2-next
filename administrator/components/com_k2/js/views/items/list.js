@@ -79,7 +79,7 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 
 	// The row view for table
 	var K2ViewItemsTableRow = Marionette.ItemView.extend({
-		tagName : 'tr',
+		tagName : 'ul',
 		template : _.template(row),
 		events : {
 			'click a[data-action="edit"]' : 'edit'
@@ -93,7 +93,7 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 	// Table view
 	var K2ViewItemsTable = Marionette.CompositeView.extend({
 		template : _.template(list),
-		itemViewContainer : 'tbody',
+		itemViewContainer : '[data-region="list"]',
 		itemView : K2ViewItemsTableRow,
 		onCompositeCollectionRendered : function() {
 			K2Widget.ordering(this.$el, 'featured_ordering', this.collection.getState('sorting') === 'featured_ordering' && this.collection.getState('category') < 2);

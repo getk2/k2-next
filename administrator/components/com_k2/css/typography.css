@@ -1,11 +1,15 @@
 .jw { font-family: 'Open Sans', sans-serif; font-size: 100%; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; font-smoothing: antialiased; }
 .jw a { text-decoration: none; color: #636b6e; }
+	.jw a:hover { text-decoration: none; }
+
+.blue { color: #00afeb; }
 
 /* Headings */
 .jw h1, .jw h2, .jw h3, .jw h4, .jw h5, .jw h6 {  font-family: 'Open Sans', sans-serif; font-weight: 400; }
 	.jw h1 { margin: 0; padding: 0; } 
 	.jw h2 { } 
-	.jw h3 { } 
+	.jw h3 { }
+	.jw h3.jw--title { border-left: 5px solid #00afeb; padding-left: 15px; margin: 0; height: 45px; line-height: 45px; }
 	.jw h4 { } 
 	.jw h5 { }
 	.jw h6 { }

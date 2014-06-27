@@ -1,12 +1,16 @@
-<div data-region="toolbar">
-    <span data-name="counter"></span>
-    <span><%= l('K2_SELECTED') %></span>
-    <ul>
+<div class="clr"></div>
+<div class="small-16 jw--toolbar" data-region="toolbar">
+    <div class="left" data-name="counter">
+    	<span><%= l('K2_SELECTED') %></span>
+    	 <button data-action="close"><%= l('K2_CANCEL') %></button>
+
+    </div>
+    
+    <ul class="text-center jw--toolbar--actions">
         <% _.each(toolbar, function(button) { %>
         <button <% _.each(button.attributes, function(value, name) { print(name + '="' + value + '" ');}) %>>
             <%= button.name %>
         </button>
         <% }); %>
     </ul>
-    <button data-action="close"><%= l('K2_CANCEL') %></button>
 </div>

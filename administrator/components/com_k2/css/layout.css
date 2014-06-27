@@ -1,11 +1,20 @@
 .jw *,.jw *:before,.jw *:after{ -webkit-box-sizing:border-box; -moz-box-sizing:border-box; box-sizing:border-box; }
 .fixed--width{ max-width: 990px; }
+.clr { clear: both; }
 
 h1.jw--logo { line-height: 0.8; padding: 15px 0 12px; }
 	.jw--logo img, .jw--logo span { display: inline-block; vertical-align: bottom; }
 	.jw--logo img {  }
 	.jw--logo span { font-size: 12px; color: #fff; color: rgba(255,255,255,.5); }
 
+/* Layout for the extension */
+.com_k2 .container-fluid { padding-left: 0; padding-right: 0; }
+	.com_k2 .row { margin-left: 0; margin-right: 0; }
+	.com_k2 .row .row { margin-left: -15px;margin-right: -15px; }
+	
+	.com_k2 .subhead-collapse, .com_k2 header.header { display: none; position: absolute; clip: rect(0,0,0,0); }
+
+.jw--component { overflow: hidden; }
 
 /* menu fix */
 #module-menu #menu {z-index:9999;}
@@ -13,10 +22,10 @@ h1.jw--logo { line-height: 0.8; padding: 15px 0 12px; }
 .jw--transition {
 	-webkit-transition:all 350ms cubic-bezier(0.730, 0, 0.445, 1.000);
 	-webkit-transition:all 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
-		 -moz-transition:all 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
-		 	-ms-transition:all 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
-			 -o-transition:all 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
-			 	transition:all 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000)
+	   -moz-transition:all 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
+	 	-ms-transition:all 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
+		 -o-transition:all 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
+		 	transition:all 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000)
 }
 
 
@@ -42,3 +51,13 @@ h1.jw--logo { line-height: 0.8; padding: 15px 0 12px; }
 	.jw--search button.jw--search--button { height: 34px; line-height: 29px; padding: 0 10px; text-align: center; font-size: 19px; color: #63696f; border: 1px solid #d4d6d8; border-radius: 3px; background-clip: padding-box; background-color: #eff1f1; box-shadow: 0 1px 1px rgba(65,64,66,.14), inset 0 1px 0 #fff;}
 	.jw--search button.jw--search--button:hover { color: #00afec; }
 
+/*------------------------------------------------------------------
+[Filter - reusable] */
+
+.jw--filter { height: 45px; font-size: 13px; border-left: 1px solid #eaebec; }
+	.jw--filter label { color: #b1b5b6; font-weight: 700; font-size: 11px; line-height: 1; display: block; padding: 6px 15px 0px; margin: 0; }
+	.jw--filter {  }
+	
+/*------------------------------------------------------------------
+[Toolbar] */
+.jw--toolbar { overflow: hidden; padding: 5px 15px; border-top: 1px solid #dbdcdc; border-bottom: 1px solid #dbdcdc; }

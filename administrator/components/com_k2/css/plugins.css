@@ -20,7 +20,7 @@ Version:3.4.0 Timestamp:Tue May 14 08:27:33 PDT 2013
 .select2-container .select2-choice{display:block;color:#636b6e;font-size:13px;height:20px;padding:0 15px;min-width:155px;background-color:#fff;position:relative;text-decoration:none;-webkit-touch-callout:none;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;}
 .select2-container.select2-drop-above .select2-choice{border-bottom-color:#dbdcdc;}
 .select2-container.select2-allowclear .select2-choice span{margin-right:42px;}
-.select2-container .select2-choice span{margin-right:26px;display:block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+.select2-container .select2-choice span{display:block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
 .select2-container .select2-choice abbr{display:none;width:12px;height:12px;position:absolute;right:24px;top:8px;font-size:1px;text-decoration:none;border:0;background:url('select2.png') right top no-repeat;cursor:pointer;outline:0;}
 .select2-container.select2-allowclear .select2-choice abbr{display:inline-block;}
 .select2-container .select2-choice abbr:hover{background-position:right -11px;cursor:pointer;}
@@ -29,10 +29,12 @@ Version:3.4.0 Timestamp:Tue May 14 08:27:33 PDT 2013
 .select2-drop-auto-width{border-top:1px solid #aaa;width:auto;}
 .select2-drop-auto-width .select2-search{padding-top:4px;}
 .select2-drop.select2-drop-above{margin-top:1px;border-top:1px solid #aaa;border-bottom:0;}
-.select2-container .select2-choice div{display:inline-block;width:18px;height:100%;position:absolute;right:0;top:0;}
-.select2-container .select2-choice div b{display:block;width:100%;height:100%;}
-.select2-container .select2-choice div b:before{font-family:fontello;content:'\e83f';}
-.select2-container.select2-dropdown-open .select2-choice div b:before{content:'\e842';}
+
+.select2-container .select2-choice .select2-arrow {display:inline-block;width:18px;height:100%;position:absolute;right:0;top:0;}
+.select2-container .select2-choice .select2-arrow b{display:block;width:100%;height:100%;}
+.select2-container .select2-choice .select2-arrow b:before{font-family:'FontAwesome'; content:"\f0d7"; }
+.select2-container.select2-dropdown-open .select2-choice .select2-arrow b:before{ content:"\f0d8"; }
+
 .select2-search{display:inline-block;width:100%;min-height:26px;margin:0;padding-left:4px;padding-right:4px;position:relative;z-index:10000;white-space:nowrap;}
 .select2-search input{width:100%;height:auto !important;min-height:26px;padding:4px 20px 4px 10px;border-radius:12px;margin:10px 0 3px;outline:0;margin:10px 0;font-family:'Open Sans',sans-serif;font-size:12px;border:1px solid #d0d0cf;background:#fff url('select2.png') no-repeat 100% -22px;}
 .select2-drop.select2-drop-above .select2-search input{margin-top:4px;}

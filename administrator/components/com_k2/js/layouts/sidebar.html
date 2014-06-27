@@ -1,38 +1,62 @@
-<% if(!_.isEmpty(menu)) { %>
-<ul data-region="menu-secondary">
-    <% _.each(menu, function(link) { %>
-    <li>
-        <a <% _.each(link.attributes, function(value, name) { print(name + '="' + value + '" ');}) %>><%= link.name %></a>
-    </li>
-    <% }); %>
-</ul>
-<% } %>
+<aside class="jw--sidebar jw--sidebar__open">
+	<div class="left jw--sidebar--text">
+	
+		<% if(!_.isEmpty(menu)) { %>
+		<nav class="text-center jw--sidebar--header">
+			<ul class="jw--inline--menu jw--inline--menu__icons text-center" data-region="menu-secondary">
+			    <% _.each(menu, function(link) { %>
+			    <li>
+			        <a <% _.each(link.attributes, function(value, name) { print(name + '="' + value + '" ');}) %>><%= link.name %></a>
+			    </li>
+			    <% }); %>
+			</ul>
+		</nav>
+		<% } %>
+		
+		
+		
+		
+			<% if(!_.isEmpty(filters)) { %>
+			<div data-region="filters">
+			    <% _.each(filters, function(filter) { %>
+			    <div data-role="filter">
+			        <% if(filter.radio) { %>
+			        <label><%= filter.label %></label>
+			        <% } else { %>
+			        <label for="<%- filter.id %>"><%= filter.label %></label>
+			        <% } %>
+			        <%= filter.input %>
+			    </div>
+			    <% }); %>
+			</div>
+			
+			
+			<button id="jw--filters--reset" data-action="reset">
+				<%= l('K2_RESET') %> <i class="fa fa-minus-square"></i>
+			</button>
+		
+			
 
-<% if(!_.isEmpty(filters)) { %>
-<div data-region="filters">
-    <% _.each(filters, function(filter) { %>
-    <div data-role="filter">
-        <% if(filter.radio) { %>
-        <label><%= filter.label %></label>
-        <% } else { %>
-        <label for="<%- filter.id %>"><%= filter.label %></label>
-        <% } %>
-        <%= filter.input %>
-    </div>
-    <% }); %>
-</div>
-<button data-action="reset"><%= l('K2_RESET') %></button>
-
-<div>
-	<span><%= l('K2_VIEW_MODE') %></span>
-	<label>
-		<span><%= l('K2_PAGINATION') %></span>
-		<input type="radio" name="viewMode" value="pagination" />
-	</label>
-	<label>
-		<span><%= l('K2_INFINITE_SCROLLING') %></span>
-		<input type="radio" name="viewMode" value="scroll" />
-	</label>
-</div>
-<% } %>
-
+			
+			<div class="jw--pagination--mode">
+				<span><%= l('K2_VIEW_MODE') %></span>
+				
+				<label class="jw--radio jw--radio__smaller jw--label__first">
+					<span><%= l('K2_PAGINATION') %></span>
+					<input type="radio" name="viewMode" value="pagination" />
+				</label>
+				
+				<label class="jw--radio jw--radio__smaller jw--label__last">
+					<span><%= l('K2_INFINITE_SCROLLING') %></span>
+					<input type="radio" name="viewMode" value="scroll" />
+				</label>
+			</div>
+			<% } %>
+		</div>
+		
+		
+		<div class="right jw--sidebar--handle"> 
+			<a class="jw--sidebar--toggle fa fa-navicon" href="#" ></a>
+		</div>
+		
+	</aside>
