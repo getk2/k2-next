@@ -46,34 +46,37 @@ class K2ViewItem extends K2View
 		// Trigger plugins. We need to do this there in order to provide the correct context
 		$this->item->events = $this->item->getEvents('com_k2.item', $this->params, 0);
 
-		// Get comments
-		if ($this->params->get('itemComments') && $this->params->get('comments') && empty($this->item->events->K2CommentsCounter) && empty($this->item->events->K2CommentsBlock))
+		// Load head data for comments and inline editing if required
+		if (($this->item->canEdit) || ($this->params->get('itemComments') && $this->params->get('comments') && empty($this->item->events->K2CommentsCounter) && empty($this->item->events->K2CommentsBlock)))
 		{
-			// Check if user can comment
-			$this->user->canComment = $this->user->authorise('k2.comment.create', 'com_k2');
-
-			// Load comments requirements
-			$this->document->addScriptDeclaration('var K2SitePath = "'.JUri::root(true).'";');
-			$this->document->addScriptDeclaration('var K2SessionToken = "'.JSession::getFormToken().'";');
-			$this->document->addScript(JURI::root(true).'/administrator/components/com_k2/js/lib/underscore-min.js');
-			$this->document->addScript(JURI::root(true).'/administrator/components/com_k2/js/lib/backbone-min.js');
-			$this->document->addScript(JURI::root(true).'/administrator/components/com_k2/js/lib/backbone.marionette.min.js');
-			$this->document->addScript(JURI::root(true).'/administrator/components/com_k2/js/sync.js');
-			require_once JPATH_SITE.'/components/com_k2/helpers/captcha.php';
-			K2HelperCaptcha::initialize();
-
-			// Keep alive the session
+			// Common
 			JHtml::_('behavior.keepalive');
-
-		}
-		// Load the K2 session token in case it has not been loaded by the comments
-		else if ($this->item->canEdit)
-		{
 			$this->document->addScriptDeclaration('var K2SitePath = "'.JUri::root(true).'";');
 			$this->document->addScriptDeclaration('var K2SessionToken = "'.JSession::getFormToken().'";');
 
-			// Keep alive the session
-			JHtml::_('behavior.keepalive');
+			// Comments
+			if ($this->params->get('itemComments') && $this->params->get('comments') && empty($this->item->events->K2CommentsCounter) && empty($this->item->events->K2CommentsBlock))
+			{
+				// Check if user can comment
+				$this->user->canComment = $this->user->authorise('k2.comment.create', 'com_k2');
+
+				// Load comments requirements
+				$this->document->addScript(JURI::root(true).'/administrator/components/com_k2/js/lib/underscore-min.js');
+				$this->document->addScript(JURI::root(true).'/administrator/components/com_k2/js/lib/backbone-min.js');
+				$this->document->addScript(JURI::root(true).'/administrator/components/com_k2/js/lib/backbone.marionette.min.js');
+				$this->document->addScript(JURI::root(true).'/administrator/components/com_k2/js/sync.js');
+				require_once JPATH_SITE.'/components/com_k2/helpers/captcha.php';
+				K2HelperCaptcha::initialize();
+			}
+
+			// Inline editing
+			if ($this->item->canEdit)
+			{
+				$this->document->addScript(JURI::root(true).'/components/com_k2/js/medium-editor.min.js');
+				$this->document->addStyleSheet(JURI::root(true).'/components/com_k2/css/medium-editor.min.css');
+				
+			}
+
 		}
 
 		// Get related items. We need to do this here since the parameter is related with the view

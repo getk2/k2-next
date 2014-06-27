@@ -130,7 +130,13 @@ jQuery(document).ready(function() {
 	});
 	
 	// Inline editing. Don't use Backbone, we can do it with a few lines of js
-	jQuery('[data-k2-editable]').prop('contenteditable', true);
+	var elements = jQuery('[data-k2-editable]');
+	elements.prop('contenteditable', true);
+	elements.each(function() {
+		if(jQuery(this).data('k2-editable') != 'title') {
+			new MediumEditor(this);
+		}
+	});
 	jQuery('[data-k2-editable]').blur(function(event) {
 		var el = jQuery(this);
 		var property = el.data('k2-editable');
