@@ -498,7 +498,7 @@ defined('_JEXEC') or die ;
   
   <?php if($this->params->get('itemComments') && $this->params->get('comments')): ?>
   <a name="itemCommentsAnchor" id="itemCommentsAnchor"></a>
-  <div data-widget="k2comments" data-itemid="<?php echo $this->item->id; ?>" data-site="<?php echo JURI::root(true); ?>"></div>
+  <div data-widget="k2comments" data-itemid="<?php echo $this->item->id; ?>"></div>
   
 	<script type="text/template" id="k2CommentsTemplate">
 		<div class="itemComments">

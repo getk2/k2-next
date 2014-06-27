@@ -140,7 +140,7 @@ jQuery(document).ready(function() {
 		data['_method'] = 'PATCH';
 		data['states['+property+']'] = el.html();
 		data[K2SessionToken] = 1;
-		jQuery.post('http://localhost/office/k2v3/index.php?option=com_k2&task=items.sync&format=json', data).done(function() {
+		jQuery.post(K2SitePath + '/index.php?option=com_k2&task=items.sync&format=json', data).done(function() {
 			// @TODO : Inform user that save was succesful
 		}).fail(function(response) {
 			alert(response.responseText);
@@ -151,7 +151,6 @@ jQuery(document).ready(function() {
 	// Comments application
 	var K2CommentsWidget = jQuery('div[data-widget="k2comments"]');
 	var K2CommentsItemId = K2CommentsWidget.data('itemid');
-	var K2CommentsSite = K2CommentsWidget.data('site');
 	if (K2CommentsItemId) {
 
 		// Comments application
@@ -183,7 +182,7 @@ jQuery(document).ready(function() {
 			},
 
 			urlRoot : function() {
-				return K2CommentsSite + '/index.php?option=com_k2&task=comments.sync&format=json';
+				return K2SitePath + '/index.php?option=com_k2&task=comments.sync&format=json';
 			},
 			parse : function(resp, options) {
 				// If response is null then return. This is the case for POST requests
@@ -211,7 +210,7 @@ jQuery(document).ready(function() {
 				this.pagination = new Backbone.Model();
 			},
 			url : function() {
-				return K2CommentsSite + '/index.php?option=com_k2&task=comments.sync&format=json' + this.buildQuery();
+				return K2SitePath + '/index.php?option=com_k2&task=comments.sync&format=json' + this.buildQuery();
 			},
 			parse : function(resp) {
 				this.pagination.set(resp.pagination);
@@ -340,7 +339,7 @@ jQuery(document).ready(function() {
 				event.preventDefault();
 				var el = jQuery(event.currentTarget);
 				var data = 'id=' + el.data('id') + '&' + K2SessionToken + '=1';
-				jQuery.post(K2CommentsSite + '/index.php?option=com_k2&task=users.report&format=json', data).success(function(data) {
+				jQuery.post(K2SitePath + '/index.php?option=com_k2&task=users.report&format=json', data).success(function(data) {
 					el.hide();
 				}).error(function(data) {
 					el.parent().append('<span>' + data.responseText + '</span>');

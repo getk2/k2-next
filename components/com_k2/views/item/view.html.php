@@ -53,6 +53,7 @@ class K2ViewItem extends K2View
 			$this->user->canComment = $this->user->authorise('k2.comment.create', 'com_k2');
 
 			// Load comments requirements
+			$this->document->addScriptDeclaration('var K2SitePath = "'.JUri::root(true).'";');
 			$this->document->addScriptDeclaration('var K2SessionToken = "'.JSession::getFormToken().'";');
 			$this->document->addScript(JURI::root(true).'/administrator/components/com_k2/js/lib/underscore-min.js');
 			$this->document->addScript(JURI::root(true).'/administrator/components/com_k2/js/lib/backbone-min.js');
@@ -68,6 +69,7 @@ class K2ViewItem extends K2View
 		// Load the K2 session token in case it has not been loaded by the comments
 		else if ($this->item->canEdit)
 		{
+			$this->document->addScriptDeclaration('var K2SitePath = "'.JUri::root(true).'";');
 			$this->document->addScriptDeclaration('var K2SessionToken = "'.JSession::getFormToken().'";');
 
 			// Keep alive the session
