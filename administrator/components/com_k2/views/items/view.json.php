@@ -167,7 +167,7 @@ class K2ViewItems extends K2View
 		if ($canEditFeaturedState)
 		{
 			K2Response::addToolbarAction('feature', 'K2_FEATURE', array('data-state' => 'featured', 'data-value' => '1', 'data-action' => 'set-state'));
-			K2Response::addToolbarAction('unfeature', 'K2_UNFEATURE', array('data-state' => 'featured', 'data-value' => '0', 'data-actiob' => 'set-state'));
+			K2Response::addToolbarAction('unfeature', 'K2_UNFEATURE', array('data-state' => 'featured', 'data-value' => '0', 'data-action' => 'set-state'));
 		}
 
 		if ($canEditState)
