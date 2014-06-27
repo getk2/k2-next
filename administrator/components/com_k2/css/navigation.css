@@ -1,0 +1,42 @@
+/*------------------------------------------------------------------
+[Navigation] */
+.jw--topbar { height: 5px; background-color: #00aeec; box-shadow: 0 1px 1px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.29); }
+
+/* Main navigation */
+.jw--main--navigation { background: #2f6a97 }
+	
+	ul.jw--main--menu { margin: 0; padding: 0; }
+	ul.jw--main--menu > li { position: relative; }
+	ul.jw--main--menu > li > a { color: #fff; padding: 18px 15px; }
+
+	/* common */
+	ul.jw--main--menu .fa { color: #fff; color: rgba(255,255,255,.5); vertical-align: middle; font-size: 23px; margin-right: 5px; }
+		ul.jw--main--menu ul .fa { margin-right: 15px; }
+	ul.jw--main--menu a { font-size: 18px; color: #fff; display: inline-block; }
+
+	/* second level */
+	ul.jw--main--menu > li > ul { padding: 10px 0; position: absolute; left: -999em; z-index: 9999; opacity: 0; top: 65px; width: 300px; background-color: #636a6f; }
+	ul.jw--main--menu > li > ul li { }
+	ul.jw--main--menu > li > ul li a { padding: 15px 20px; display: block; width: 100%; }
+
+	/* visibility toggling and hover states */
+	ul.jw--main--menu > li:hover > a,
+	ul.jw--main--menu > li > a:hover,
+	ul.jw--main--menu > li:hover > ul li a:hover { background: #00afec; }
+
+		ul.jw--main--menu > li > a:hover .fa { color: #fff; }
+		ul.jw--main--menu ul li a:hover .fa { color: #007aa5; }
+
+		/* visibility */
+		ul.jw--main--menu > li:hover > ul { left: auto; right: 0; opacity: 1; top: 41px }
+
+/* Secondary menus (inline menus etc) */
+ul.jw--inline--menu { list-style: none outside none; }
+	ul.jw--inline--menu > li { display: inline-block; vertical-align: middle; }
+	ul.jw--inline--menu ul { list-style: none outside none; }
+
+/* menus with icons */
+ul.jw--inline--menu__icons { margin: 12px 0 35px; padding: 0; }
+	ul.jw--inline--menu__icons > li { margin: 0 15px; }
+	ul.jw--inline--menu__icons > li .fa { font-size: 22px; }
+	ul.jw--inline--menu__icons > li span { display: block; font-size: 11px; color: #b1b5b6; }

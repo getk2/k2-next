@@ -1,25 +1,30 @@
-<div>
-    <i>K2</i>
+<nav class="row jw--main--navigation">
+    <div class="jw--topbar"></div>
+
+    <div class="column small-16">
+        <h1 class="left jw--logo"><i>K2</i></h1>
+	
+		<% if(!_.isEmpty(actions)) { %>
+		<div class="right" data-region="actions">
+		    <% _.each(actions, function(button) { %>
+		        <button class="jw--btn"  <% _.each(button.attributes, function(value, name) { print(name + '="' + value + '" ');}) %>>
+		            <%= button.name %>
+		        </button>
+		    <% }); %>
+		</div>
+		<% } %>
+	
+		<% if(!_.isEmpty(menu)) { %>
+		
+		<ul class="right jw--inline--menu jw--main--menu" data-region="menu-primary">
+		    <% _.each(menu, function(link) { %>
+		    <li>
+		        <a <% _.each(link.attributes, function(value, name) { print(name + '="' + value + '" ');}) %>><%= link.name %></a>
+		    </li>
+		    <% }); %>
+		</ul>
+		
+		<% } %>
+		
+	</div>
 </div>
-
-<% if(!_.isEmpty(menu)) { %>
-<ul data-region="menu-primary">
-    <% _.each(menu, function(link) { %>
-    <li>
-        <a <% _.each(link.attributes, function(value, name) { print(name + '="' + value + '" ');}) %>><%= link.name %></a>
-    </li>
-    <% }); %>
-</ul>
-<% } %>
-
-<% if(!_.isEmpty(actions)) { %>
-<ul data-region="actions">
-    <% _.each(actions, function(button) { %>
-    <li>
-        <button <% _.each(button.attributes, function(value, name) { print(name + '="' + value + '" ');}) %>>
-            <%= button.name %>
-        </button>
-    </li>
-    <% }); %>
-</ul>
-<% } %>

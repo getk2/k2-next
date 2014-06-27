@@ -9,7 +9,7 @@
 
 // no direct access
 defined('_JEXEC') or die ; ?>
-<div data-application="k2">
+<div data-application="k2" class="jw">
 	<div data-region="messages"></div>
     <div data-region="header"></div>
     <div data-region="sidebar" style="float:left; width : 20%;"></div>
