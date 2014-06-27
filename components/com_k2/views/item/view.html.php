@@ -72,9 +72,7 @@ class K2ViewItem extends K2View
 			// Inline editing
 			if ($this->item->canEdit)
 			{
-				$this->document->addScript(JURI::root(true).'/components/com_k2/js/medium-editor.min.js');
-				$this->document->addStyleSheet(JURI::root(true).'/components/com_k2/css/medium-editor.min.css');
-				
+				$this->document->addScript('//cdn.ckeditor.com/4.4.2/standard/ckeditor.js');
 			}
 
 		}
