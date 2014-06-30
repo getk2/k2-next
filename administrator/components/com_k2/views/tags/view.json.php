@@ -92,14 +92,21 @@ class K2ViewTags extends K2View
 		$this->setUserState('page', 1, 'int');
 		$this->setUserState('search', '', 'string');
 		$this->setUserState('state', '', 'cmd');
-		$this->setUserState('sorting', 'ordering', 'string');
+		$this->setUserState('sorting', 'id.reverse', 'string');
 	}
 
 	protected function setFilters()
 	{
 
 		// Sorting filter
-		$sortingOptions = array('K2_ID' => 'id', 'K2_NAME' => 'name', 'K2_ITEMS' => 'items', 'K2_STATE' => 'state');
+		$sortingOptions = array(
+			'K2_ID_ASC' => 'id',
+			'K2_ID_DESC' => 'id.reverse',
+			'K2_NAME_ASC' => 'name',
+			'K2_NAME_DESC' => 'name.reverse',
+			'K2_STATE_ASC' => 'state',
+			'K2_STATE_DESC' => 'state.reverse'
+		);
 		K2Response::addFilter('sorting', JText::_('K2_SORT_BY'), K2HelperHTML::sorting($sortingOptions), false, 'header');
 
 		// Search filter
@@ -112,8 +119,16 @@ class K2ViewTags extends K2View
 
 	protected function setToolbar()
 	{
-		K2Response::addToolbarAction('publish', 'K2_PUBLISH', array('data-state' => 'state', 'data-value' => '1', 'data-action' => 'set-state'));
-		K2Response::addToolbarAction('unpublish', 'K2_UNPUBLISH', array('data-state' => 'state', 'data-value' => '0', 'data-action' => 'set-state'));
+		K2Response::addToolbarAction('publish', 'K2_PUBLISH', array(
+			'data-state' => 'state',
+			'data-value' => '1',
+			'data-action' => 'set-state'
+		));
+		K2Response::addToolbarAction('unpublish', 'K2_UNPUBLISH', array(
+			'data-state' => 'state',
+			'data-value' => '0',
+			'data-action' => 'set-state'
+		));
 
 		K2Response::addToolbarAction('remove', 'K2_DELETE', array('data-action' => 'remove'));
 	}
@@ -141,12 +156,12 @@ class K2ViewTags extends K2View
 		}
 	}
 
-
 	protected function prepareRows($rows)
 	{
-		foreach($rows as $row)
+		foreach ($rows as $row)
 		{
 			$row->items = $row->getItems();
 		}
 	}
+
 }

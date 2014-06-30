@@ -126,17 +126,23 @@ class K2ModelTags extends K2Model
 		switch($sorting)
 		{
 			default :
-			case 'id' :
 				$ordering = 'id';
 				$direction = 'DESC';
 				break;
+			case 'id' :
+			case 'id.reverse' :
+				$ordering = 'id';
+				$direction = $sorting == 'id' ? 'ASC' : 'DESC';
+				break;
 			case 'name' :
+			case 'name.reverse' :
 				$ordering = 'name';
-				$direction = 'ASC';
+				$direction = $sorting == 'name' ? 'ASC' : 'DESC';
 				break;
 			case 'state' :
+			case 'state.reverse' :
 				$ordering = 'state';
-				$direction = 'DESC';
+				$direction = $sorting == 'state' ? 'ASC' : 'DESC';
 				break;
 		}
 
@@ -256,7 +262,10 @@ class K2ModelTags extends K2Model
 				return false;
 			}
 
-			$data = array('name' => $name, 'state' => 1);
+			$data = array(
+				'name' => $name,
+				'state' => 1
+			);
 			$this->setState('data', $data);
 			if (!$this->save())
 			{
