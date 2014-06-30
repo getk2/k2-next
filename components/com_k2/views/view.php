@@ -554,7 +554,7 @@ class K2View extends JViewLegacy
 		$model->setState('limitstart', $this->offset);
 
 		// @TODO Apply menu settings. Since they will be common all tasks we need to wait
-		//$model->setState('sorting', 'created');
+		//$model->setState('sorting', 'created.reverse');
 
 		$this->items = $model->getRows();
 

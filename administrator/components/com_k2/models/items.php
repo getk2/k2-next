@@ -36,25 +36,25 @@ class K2ModelItems extends K2Model
 		$query->select($db->quoteName('item').'.*')->from($db->quoteName('#__k2_items', 'item'));
 
 		// Join over the categories if required
-		if ($this->getState('sorting') == 'ordering' || $this->getState('sorting') == 'ordering.reverse' || $this->getState('sorting') == 'category')
+		if ($this->getState('sorting') == 'ordering' || $this->getState('sorting') == 'ordering.reverse' || $this->getState('sorting') == 'category' || $this->getState('sorting') == 'category.reverse')
 		{
-			$joinType = $this->getState('sorting') == 'category' ? 'RIGHT' : 'LEFT';
+			$joinType = $this->getState('sorting') == 'category' || $this->getState('sorting') == 'category.reverse' ? 'RIGHT' : 'LEFT';
 			$query->join($joinType, $db->quoteName('#__k2_categories', 'category').' ON '.$db->quoteName('category.id').' = '.$db->quoteName('item.catid'));
 		}
 
 		// Join over the author
 		$query->select($db->quoteName('author.name', 'authorName'));
-		$joinType = $this->getState('sorting') == 'author' ? 'RIGHT' : 'LEFT';
+		$joinType = $this->getState('sorting') == 'author' || $this->getState('sorting') == 'author.reverse' ? 'RIGHT' : 'LEFT';
 		$query->join($joinType, $db->quoteName('#__users', 'author').' ON '.$db->quoteName('author.id').' = '.$db->quoteName('item.created_by'));
 
 		// Join over the moderator
 		$query->select($db->quoteName('moderator.name', 'moderatorName'));
-		$joinType = $this->getState('sorting') == 'moderator' ? 'RIGHT' : 'LEFT';
+		$joinType = $this->getState('sorting') == 'moderator' || $this->getState('sorting') == 'moderator.reverse' ? 'RIGHT' : 'LEFT';
 		$query->join($joinType, $db->quoteName('#__users', 'moderator').' ON '.$db->quoteName('moderator.id').' = '.$db->quoteName('item.modified_by'));
 
 		// Join over the hits
 		$query->select($db->quoteName('stats.hits', 'hits'));
-		$joinType = $this->getState('sorting') == 'hits' || $this->getState('sorting') == 'comments' ? 'RIGHT' : 'LEFT';
+		$joinType = $this->getState('sorting') == 'hits' || $this->getState('sorting') == 'comments' || $this->getState('sorting') == 'hits.reverse' || $this->getState('sorting') == 'comments.reverse' ? 'RIGHT' : 'LEFT';
 		$query->join($joinType, $db->quoteName('#__k2_items_stats', 'stats').' ON '.$db->quoteName('stats.itemId').' = '.$db->quoteName('item.id'));
 
 		// Set query conditions
@@ -424,78 +424,88 @@ class K2ModelItems extends K2Model
 		{
 			default :
 			case 'id' :
+			case 'id.reverse' :
 				$ordering = 'item.id';
-				$direction = 'DESC';
+				$direction = $sorting == 'id' ? 'ASC' : 'DESC';
 				break;
 			case 'title' :
-				$ordering = 'item.title';
-				$direction = 'ASC';
-				break;
 			case 'title.reverse' :
 				$ordering = 'item.title';
-				$direction = 'DESC';
+				$direction = $sorting == 'title' ? 'ASC' : 'DESC';
 				break;
 			case 'ordering' :
 			case 'ordering.reverse' :
 				$categories = $this->getState('categories.applied');
-				$ordering = count($categories) == 1 ? 'item.ordering' : array('category.lft', 'item.ordering');
+				$ordering = count($categories) == 1 ? 'item.ordering' : array(
+					'category.lft',
+					'item.ordering'
+				);
 				$direction = $sorting == 'ordering' ? 'ASC' : 'DESC';
 				break;
 			case 'featured_ordering' :
+			case 'featured_ordering.reverse' :
 				$ordering = 'item.featured_ordering';
-				$direction = 'ASC';
+				$direction = $sorting == 'featured_ordering' ? 'ASC' : 'DESC';
 				break;
 			case 'state' :
+			case 'state.reverse' :
 				$ordering = 'item.state';
-				$direction = 'DESC';
+				$direction = $sorting == 'state' ? 'ASC' : 'DESC';
 				break;
 			case 'featured' :
+			case 'featured.reverse' :
 				$ordering = 'item.featured';
-				$direction = 'DESC';
+				$direction = $sorting == 'featured' ? 'ASC' : 'DESC';
 				break;
 			case 'category' :
+			case 'category.reverse' :
 				$ordering = 'category.title';
-				$direction = 'ASC';
+				$direction = $sorting == 'category' ? 'ASC' : 'DESC';
 				break;
 			case 'author' :
+			case 'author.reverse' :
 				$ordering = 'authorName';
-				$direction = 'ASC';
+				$direction = $sorting == 'author' ? 'ASC' : 'DESC';
 				break;
 			case 'moderator' :
+			case 'moderator.reverse' :
 				$ordering = 'moderatorName';
-				$direction = 'ASC';
+				$direction = $sorting == 'moderator' ? 'ASC' : 'DESC';
 				break;
 			case 'access' :
+			case 'access.reverse' :
 				$ordering = 'item.access';
-				$direction = 'ASC';
+				$direction = $sorting == 'access' ? 'ASC' : 'DESC';
 				break;
 			case 'created' :
-				$ordering = 'item.created';
-				$direction = 'DESC';
-				break;
 			case 'created.reverse' :
 				$ordering = 'item.created';
-				$direction = 'ASC';
+				$direction = $sorting == 'created' ? 'ASC' : 'DESC';
 				break;
 			case 'modified' :
+			case 'modified.reverse' :
 				$ordering = 'item.modified';
-				$direction = 'DESC';
+				$direction = $sorting == 'modified' ? 'ASC' : 'DESC';
 				break;
 			case 'hits' :
+			case 'hits.reverse' :
 				$ordering = 'stats.hits';
-				$direction = 'DESC';
+				$direction = $sorting == 'hits' ? 'ASC' : 'DESC';
 				break;
 			case 'comments' :
+			case 'comments.reverse' :
 				$ordering = 'stats.comments';
-				$direction = 'DESC';
+				$direction = $sorting == 'comments' ? 'ASC' : 'DESC';
 				break;
 			case 'language' :
+			case 'language.reverse' :
 				$ordering = 'item.language';
-				$direction = 'ASC';
+				$direction = $sorting == 'language' ? 'ASC' : 'DESC';
 				break;
 			case 'publishUp' :
+			case 'publishUp.reverse' :
 				$ordering = 'item.publish_up';
-				$direction = 'DESC';
+				$direction = $sorting == 'publishUp' ? 'ASC' : 'DESC';
 				break;
 			case 'custom' :
 				$ordering = $this->getState('sorting.custom.value');
@@ -1050,7 +1060,14 @@ class K2ModelItems extends K2Model
 			$filesystem = $params->get('filesystem');
 			$path = ($filesystem == 'Local' || !$filesystem) ? 'media/k2/items/src/'.$data['images']['src']->id.'.jpg' : $data['images']['src']->url;
 			$image = K2HelperImages::add('item', null, $path);
-			$data['image'] = array('id' => '', 'temp' => $image->temp, 'path' => '', 'remove' => 0, 'caption' => $data['image']->caption, 'credits' => $data['image']->credits);
+			$data['image'] = array(
+				'id' => '',
+				'temp' => $image->temp,
+				'path' => '',
+				'remove' => 0,
+				'caption' => $data['image']->caption,
+				'credits' => $data['image']->credits
+			);
 		}
 		else
 		{

@@ -32,18 +32,18 @@
 				<field name="" type="k2header" default="K2_RETRIEVE_ITEMS_FROM_CATEGORIES" label="" description=""/>
 				<field name="filter" type="k2categories" k2multiple="1" k2recursive="select" label="K2_SELECT_ONE_OR_MORE_CATEGORIES" description="K2_SELECT_ONE_ORE_MORE_CATEGORIES_FOR_WHICH_YOU_WANT_TO_FILTER_AN_ITEMS_LIST_SELECT_NONE_TO_FETCH_ITEMS_FROM_ALL_CATEGORIES" />
 				<field name="limit" type="text" size="4" default="5" label="K2_ITEM_COUNT" description=""/>
-				<field name="sorting" type="list" default="" label="K2_ITEM_ORDERING" description="">
-					<option value="id">K2_DEFAULT</option>
-					<option value="created.reverse">K2_OLDEST_FIRST</option>
-					<option value="created">K2_MOST_RECENT_FIRST</option>
-					<option value="publishUp">K2_RECENTLY_PUBLISHED</option>
+				<field name="sorting" type="list" default="id.reverse" label="K2_ITEM_ORDERING" description="">
+					<option value="id.reverse">K2_DEFAULT</option>
+					<option value="created">K2_OLDEST_FIRST</option>
+					<option value="created.reverse">K2_MOST_RECENT_FIRST</option>
+					<option value="publishUp.reverse">K2_RECENTLY_PUBLISHED</option>
 					<option value="title">K2_TITLE_ALPHABETICAL</option>
 					<option value="title.reverse">K2_TITLE_REVERSEALPHABETICAL</option>
 					<option value="ordering">K2_ORDERING</option>
 					<option value="ordering.reverse">K2_ORDERING_REVERSE</option>
-					<option value="hits">K2_MOST_POPULAR</option>
-					<option value="comments">K2_MOST_COMMENTED</option>
-					<option value="modified">K2_LATEST_MODIFIED</option>
+					<option value="hits.reverse">K2_MOST_POPULAR</option>
+					<option value="comments.reverse">K2_MOST_COMMENTED</option>
+					<option value="modified.reverse">K2_LATEST_MODIFIED</option>
 					<option value="random">K2_RANDOM_ORDERING</option>
 				</field>
 				<field name="featured" type="list" default="1" label="K2_FEATURED_ITEMS" description="">

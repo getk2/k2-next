@@ -28,7 +28,7 @@ class ModK2StatsHelper
 	{
 		$model = K2Model::getInstance('Items');
 		$model->setState('state', 1);
-		$model->setState('sorting', 'hits');
+		$model->setState('sorting', 'hits.reverse');
 		$model->setState('limit', 10);
 		$rows = $model->getRows();
 		return $rows;
@@ -38,7 +38,7 @@ class ModK2StatsHelper
 	{
 		$model = K2Model::getInstance('Items');
 		$model->setState('state', 1);
-		$model->setState('sorting', 'comments');
+		$model->setState('sorting', 'comments.reverse');
 		$model->setState('limit', 10);
 		$rows = $model->getRows();
 		return $rows;
@@ -47,7 +47,7 @@ class ModK2StatsHelper
 	public static function getLatestComments()
 	{
 		$model = K2Model::getInstance('Comments');
-		$model->setState('sorting', 'created');
+		$model->setState('sorting', 'created.reverse');
 		$model->setState('limit', 10);
 		$rows = $model->getRows();
 		return $rows;

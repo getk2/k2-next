@@ -23,7 +23,7 @@ class ModK2ToolsHelper
 		$model->setState('site', true);
 		$filter = $params->get('archiveCategory');
 		$model->setState('category.filter', $filter);
-		$model->setState('sorting', 'created');
+		$model->setState('sorting', 'created.reverse');
 		$rows = $model->getArchive();
 		$months = array(JText::_('K2_JANUARY'), JText::_('K2_FEBRUARY'), JText::_('K2_MARCH'), JText::_('K2_APRIL'), JText::_('K2_MAY'), JText::_('K2_JUNE'), JText::_('K2_JULY'), JText::_('K2_AUGUST'), JText::_('K2_SEPTEMBER'), JText::_('K2_OCTOBER'), JText::_('K2_NOVEMBER'), JText::_('K2_DECEMBER'), );
 		$archives = array();
@@ -74,7 +74,7 @@ class ModK2ToolsHelper
 					$model->setState('site', true);
 					$model->setState('author', $author->id);
 					$model->setState('limit', 1);
-					$model->setState('sorting', 'created');
+					$model->setState('sorting', 'created.reverse');
 					$latest = $model->getRows();
 					$author->latest = $latest[0];
 				}

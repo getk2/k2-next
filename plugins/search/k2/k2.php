@@ -69,11 +69,11 @@ class PlgSearchK2 extends JPlugin
 		switch ($ordering)
 		{
 			case 'oldest' :
-				$model->setState('sorting', 'created.reverse');
+				$model->setState('sorting', 'created');
 				break;
 
 			case 'popular' :
-				$model->setState('sorting', 'hits');
+				$model->setState('sorting', 'hits.reverse');
 				break;
 
 			case 'alpha' :
@@ -85,11 +85,11 @@ class PlgSearchK2 extends JPlugin
 				break;
 
 			case 'newest' :
-				$model->setState('sorting', 'created');
+				$model->setState('sorting', 'created.reverse');
 				break;
 
 			default :
-				$model->setState('sorting', 'id');
+				$model->setState('sorting', 'id.reverse');
 				break;
 		}
 

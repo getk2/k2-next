@@ -1190,15 +1190,15 @@ class K2ControllerMigrator extends JControllerLegacy
 
 				if ($ordering == '')
 				{
-					$params->set('sorting', 'id');
+					$params->set('sorting', 'id.reverse');
 				}
 				else if ($ordering == 'date')
 				{
-					$params->set('sorting', 'created.reverse');
+					$params->set('sorting', 'created');
 				}
 				else if ($ordering == 'rdate')
 				{
-					$params->set('sorting', 'created');
+					$params->set('sorting', 'created.reverse');
 				}
 				else if ($ordering == 'alpha')
 				{
