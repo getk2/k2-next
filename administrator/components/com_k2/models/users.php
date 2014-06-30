@@ -167,33 +167,42 @@ class K2ModelUsers extends K2Model
 		switch($sorting)
 		{
 			default :
-			case 'id' :
 				$ordering = 'user.id';
 				$direction = 'DESC';
+			case 'id' :
+			case 'id.reverse' :
+				$ordering = 'user.id';
+				$direction = $sorting == 'id' ? 'ASC' : 'DESC';
 				break;
 			case 'name' :
+			case 'name.reverse' :
 				$ordering = 'user.name';
-				$direction = 'ASC';
+				$direction = $sorting == 'name' ? 'ASC' : 'DESC';
 				break;
 			case 'username' :
+			case 'username.reverse' :
 				$ordering = 'user.username';
-				$direction = 'ASC';
+				$direction = $sorting == 'username' ? 'ASC' : 'DESC';
 				break;
 			case 'email' :
+			case 'email.reverse' :
 				$ordering = 'user.email';
-				$direction = 'ASC';
+				$direction = $sorting == 'email' ? 'ASC' : 'DESC';
 				break;
 			case 'lastvisitDate' :
+			case 'lastvisitDate.reverse' :
 				$ordering = 'user.lastvisitDate';
-				$direction = 'DESC';
+				$direction = $sorting == 'lastvisitDate' ? 'ASC' : 'DESC';
 				break;
 			case 'ip' :
+			case 'ip.reverse' :
 				$ordering = 'profile.ip';
-				$direction = 'ASC';
+				$direction = $sorting == 'ip' ? 'ASC' : 'DESC';
 				break;
 			case 'hostname' :
+			case 'hostname.reverse' :
 				$ordering = 'profile.hostname';
-				$direction = 'ASC';
+				$direction = $sorting == 'hostname' ? 'ASC' : 'DESC';
 				break;
 		}
 
@@ -516,7 +525,10 @@ class K2ModelUsers extends K2Model
 		$query = $db->getQuery(true);
 
 		// Select statement
-		$query->select(array($db->quoteName('id'), $db->quoteName('title')));
+		$query->select(array(
+			$db->quoteName('id'),
+			$db->quoteName('title')
+		));
 
 		$query->from($db->quoteName('#__usergroups'));
 

@@ -92,13 +92,28 @@ class K2ViewUsers extends K2View
 		$this->setUserState('page', 1, 'int');
 		$this->setUserState('search', '', 'string');
 		$this->setUserState('state', '', 'cmd');
-		$this->setUserState('sorting', 'ordering', 'string');
+		$this->setUserState('sorting', 'id.reverse', 'string');
 	}
 
 	protected function setFilters()
 	{
 		// Sorting filter
-		$sortingOptions = array('K2_ID' => 'id', 'K2_NAME' => 'name', 'K2_USERNAME' => 'username', 'K2_EMAIL' => 'email', 'K2_LAST_VISIT' => 'lastvisitDate', 'K2_IP' => 'ip', 'K2_HOSTNAME' => 'hostname', );
+		$sortingOptions = array(
+			'K2_ID_ASC' => 'id',
+			'K2_ID_DESC' => 'id.reverse',
+			'K2_NAME_ASC' => 'name',
+			'K2_NAME_DESC' => 'name.reverse',
+			'K2_USERNAME_ASC' => 'username',
+			'K2_USERNAME_DESC' => 'username.reverse',
+			'K2_EMAIL_ASC' => 'email',
+			'K2_EMAIL_DESC' => 'email.reverse',
+			'K2_LAST_VISIT_ASC' => 'lastvisitDate',
+			'K2_LAST_VISIT_DESC' => 'lastvisitDate.reverse',
+			'K2_IP_ASC' => 'ip',
+			'K2_IP_DESC' => 'ip.reverse',
+			'K2_HOSTNAME_ASC' => 'hostname',
+			'K2_HOSTNAME_DESC' => 'hostname.reverse'
+		);
 		K2Response::addFilter('sorting', JText::_('K2_SORT_BY'), K2HelperHTML::sorting($sortingOptions), false, 'header');
 
 		// Search filter
@@ -111,9 +126,21 @@ class K2ViewUsers extends K2View
 		$user = JFactory::getUser();
 		if ($user->authorise('core.edit.state', 'com_users'))
 		{
-			K2Response::addToolbarAction('activate', 'K2_ACTIVATE', array('data-state' => 'activation', 'data-value' => '0', 'data-action' => 'set-state'));
-			K2Response::addToolbarAction('block', 'K2_BLOCK', array('data-state' => 'block', 'data-value' => '1', 'data-action' => 'set-state'));
-			K2Response::addToolbarAction('unblock', 'K2_UNBLOCK', array('data-state' => 'block', 'data-value' => '0', 'data-action' => 'set-state'));
+			K2Response::addToolbarAction('activate', 'K2_ACTIVATE', array(
+				'data-state' => 'activation',
+				'data-value' => '0',
+				'data-action' => 'set-state'
+			));
+			K2Response::addToolbarAction('block', 'K2_BLOCK', array(
+				'data-state' => 'block',
+				'data-value' => '1',
+				'data-action' => 'set-state'
+			));
+			K2Response::addToolbarAction('unblock', 'K2_UNBLOCK', array(
+				'data-state' => 'block',
+				'data-value' => '0',
+				'data-action' => 'set-state'
+			));
 		}
 		if ($user->authorise('core.delete', 'com_users'))
 		{
