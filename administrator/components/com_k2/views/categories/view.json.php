@@ -110,22 +110,6 @@ class K2ViewCategories extends K2View
 		// Language filter
 		K2Response::addFilter('language', JText::_('K2_SELECT_LANGUAGE'), K2HelperHTML::language('language', '', 'K2_ANY'), false, 'header');
 
-		// Sorting filter
-		/*$sortingOptions = array(
-		 'K2_ID' => 'id',
-		 'K2_TITLE' => 'title',
-		 'K2_ORDERING' => 'ordering',
-		 'K2_STATE' => 'state',
-		 'K2_AUTHOR' => 'author',
-		 'K2_MODERATOR' => 'moderator',
-		 'K2_ACCESS_LEVEL' => 'access',
-		 'K2_CREATED' => 'created',
-		 'K2_MODIFIED' => 'modified',
-		 'K2_IMAGE' => 'image',
-		 'K2_LANGUAGE' => 'language'
-		 );
-		 K2Response::addFilter('sorting', JText::_('K2_SORT_BY'), K2HelperHTML::sorting($sortingOptions), false, 'header');*/
-
 		// Search filter
 		K2Response::addFilter('search', JText::_('K2_SEARCH'), K2HelperHTML::search(), false, 'sidebar');
 
@@ -153,9 +137,21 @@ class K2ViewCategories extends K2View
 		}
 		if ($canEditState)
 		{
-			K2Response::addToolbarAction('publish', 'K2_PUBLISH', array('data-state' => 'state', 'data-value' => '1', 'data-action' => 'set-state'));
-			K2Response::addToolbarAction('unpublish', 'K2_UNPUBLISH', array('data-state' => 'state', 'data-value' => '0', 'data-action' => 'set-state'));
-			K2Response::addToolbarAction('trash', 'K2_TRASH', array('data-state' => 'state', 'data-value' => '-1', 'data-action' => 'set-state'));
+			K2Response::addToolbarAction('publish', 'K2_PUBLISH', array(
+				'data-state' => 'state',
+				'data-value' => '1',
+				'data-action' => 'set-state'
+			));
+			K2Response::addToolbarAction('unpublish', 'K2_UNPUBLISH', array(
+				'data-state' => 'state',
+				'data-value' => '0',
+				'data-action' => 'set-state'
+			));
+			K2Response::addToolbarAction('trash', 'K2_TRASH', array(
+				'data-state' => 'state',
+				'data-value' => '-1',
+				'data-action' => 'set-state'
+			));
 		}
 		K2Response::addToolbarAction('batch', 'K2_BATCH', array('data-action' => 'batch'));
 		if ($canDelete)

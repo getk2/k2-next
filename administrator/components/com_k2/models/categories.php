@@ -20,7 +20,10 @@ class K2ModelCategories extends K2Model
 {
 
 	private static $authorised = null;
-	private static $cache = array('roots' => array(), 'trees' => array());
+	private static $cache = array(
+		'roots' => array(),
+		'trees' => array()
+	);
 
 	public function getRows()
 	{
@@ -188,45 +191,50 @@ class K2ModelCategories extends K2Model
 				$ordering = 'category.lft';
 				$direction = 'ASC';
 				break;
-			case 'title' :
-				$ordering = 'category.title';
-				$direction = 'ASC';
-				break;
 			case 'id' :
+			case 'id.reverse' :
 				$ordering = 'category.id';
-				$direction = 'DESC';
+				$direction = $sorting == 'id' ? 'ASC' : 'DESC';
+				break;
+			case 'title' :
+			case 'title.reverse' :
+				$ordering = 'category.title';
+				$direction = $sorting == 'title' ? 'ASC' : 'DESC';
 				break;
 			case 'state' :
+			case 'state.reverse' :
 				$ordering = 'category.state';
-				$direction = 'DESC';
+				$direction = $sorting == 'state' ? 'ASC' : 'DESC';
 				break;
 			case 'author' :
+			case 'author.reverse' :
 				$ordering = 'authorName';
-				$direction = 'ASC';
+				$direction = $sorting == 'author' ? 'ASC' : 'DESC';
 				break;
 			case 'moderator' :
+			case 'moderator.reverse' :
 				$ordering = 'moderatorName';
-				$direction = 'ASC';
+				$direction = $sorting == 'moderator' ? 'ASC' : 'DESC';
 				break;
 			case 'access' :
+			case 'access.reverse' :
 				$ordering = 'category.access';
-				$direction = 'ASC';
+				$direction = $sorting == 'access' ? 'ASC' : 'DESC';
 				break;
 			case 'created' :
+			case 'created.reverse' :
 				$ordering = 'category.created';
-				$direction = 'DESC';
+				$direction = $sorting == 'created' ? 'ASC' : 'DESC';
 				break;
 			case 'modified' :
+			case 'modified.reverse' :
 				$order = 'category.modified';
-				$direction = 'DESC';
+				$direction = $sorting == 'modified' ? 'ASC' : 'DESC';
 				break;
 			case 'language' :
+			case 'language.reverse' :
 				$ordering = 'category.language';
-				$direction = 'ASC';
-				break;
-			case 'image' :
-				$ordering = 'category.image';
-				$direction = 'DESC';
+				$direction = $sorting == 'language' ? 'ASC' : 'DESC';
 				break;
 		}
 
@@ -642,7 +650,14 @@ class K2ModelCategories extends K2Model
 			$filesystem = $params->get('filesystem');
 			$path = ($filesystem == 'Local' || !$filesystem) ? 'media/k2/categories/'.$data['image']->id.'.jpg' : $data['image']->url;
 			$image = K2HelperImages::add('category', null, $path);
-			$data['image'] = array('id' => '', 'temp' => $image->temp, 'path' => '', 'remove' => 0, 'caption' => $data['image']->caption, 'credits' => $data['image']->credits);
+			$data['image'] = array(
+				'id' => '',
+				'temp' => $image->temp,
+				'path' => '',
+				'remove' => 0,
+				'caption' => $data['image']->caption,
+				'credits' => $data['image']->credits
+			);
 		}
 		else
 		{
