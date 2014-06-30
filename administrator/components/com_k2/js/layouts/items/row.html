@@ -34,7 +34,7 @@
 
 <li class="text-center small-1 large-1 columns">
     <% if(canEditState) { %>
-    <a data-action="toggle-state" data-state-value="<%= state %>" data-state="state" data-id="<%= id %>" class="jw--state--toggler jw--state--toggler__pub toggler--active">
+    <a data-action="toggle-state" data-state-value="<%= state %>" data-state="state" data-id="<%= id %>" class="jw--state--toggler jw--state--toggler__pub <% if( state == 1 ) { print('toggler--active'); } %>">
     	<i class="fa fa-check-circle"></i>
     	<i class="hidden"><%= state %></i>
     </a>
@@ -45,7 +45,7 @@
 
 <li class="text-center small-1 large-1 columns">
     <% if(canEditState && canEditFeaturedState) { %>
-    <a data-action="toggle-state" data-state-value="<%= featured %>" data-state="featured" data-id="<%= id %>" class="jw--state--toggler jw--state--toggler__feat toggler--active">
+    <a data-action="toggle-state" data-state-value="<%= featured %>" data-state="featured" data-id="<%= id %>" class="jw--state--toggler jw--state--toggler__feat <% if( featured == 1 ) { print('toggler--active'); } %>">
     	<i class="fa fa-star"></i>
 		<i class="hidden"><%= featured %></i>
     </a>

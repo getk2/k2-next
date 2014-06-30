@@ -1,12 +1,13 @@
 /*------------------------------------------------------------------
 [Sidebar Styling] */
 
-.jw--sidebar { width: 300px; border-left: 1px solid #dbdcdc; /*top: 61px; bottom: 10px; */ left: 0; height: 100%; /*position: absolute;*/ position: relative; width: 46px; overflow: hidden; z-index: 9; }
-	.jw--sidebar--text { width:254px; overflow:auto; padding:0 0 20px ;height:100%; }
+.jw--sidebar { width: 300px; min-height: 600px; border-left: 1px solid #dbdcdc; /*top: 61px; bottom: 10px; */ left: 0; height: 100%; /*position: absolute;*/ position: relative; width: 46px; overflow: hidden; z-index: 9; }
+	.jw--sidebar--text { width: 1px; overflow:auto; padding:0 0 20px ;height:100%; }
 
 
 	/* opened state */
 	.jw--sidebar.jw--sidebar__open { width:300px; border-left:1px solid #dbdcdc; }
+		.jw--sidebar.jw--sidebar__open .jw--sidebar--text { width:254px; }
 
 	/* menu  -- navigation.css */
 	.jw--sidebar {  }
@@ -33,7 +34,7 @@
 	button#jw--filters--reset i { font-size: 18px; line-height: 1; color: #acacac; display: inline-block; vertical-align: middle; }
 
 	/* pagination filters */
-	.jw--pagination--mode { position: absolute; border-top: 1px solid #dbdcdc; padding: 8px 6px; height: 45px;
+	.jw--pagination--mode { position: absolute; border-top: 1px solid #dbdcdc; padding: 8px 6px; min-height: 45px;
 left: 0; bottom: 45px; width: 255px; }
 	.jw--pagination--mode input[type="radio"] { opacity: 0; }
 	.jw--pagination--mode > span { font-size: 11px; display: inline-block; vertical-align: middle; margin-right: 3px; }

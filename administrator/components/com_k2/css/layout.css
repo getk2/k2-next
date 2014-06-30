@@ -54,7 +54,7 @@ h1.jw--logo { line-height: 0.8; padding: 15px 0 12px; }
 /*------------------------------------------------------------------
 [Filter - reusable] */
 
-.jw--filter { height: 45px; font-size: 13px; border-left: 1px solid #eaebec; }
+.jw--filter { min-height: 45px; font-size: 13px; }
 	.jw--filter label { color: #b1b5b6; font-weight: 700; font-size: 11px; line-height: 1; display: block; padding: 6px 15px 0px; margin: 0; }
 	.jw--filter {  }
 	
