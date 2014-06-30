@@ -125,29 +125,38 @@ class K2ModelExtraFields extends K2Model
 		switch($sorting)
 		{
 			default :
-			case 'id' :
 				$ordering = 'extraField.id';
 				$direction = 'DESC';
 				break;
+			case 'id' :
+			case 'id.reverse' :
+				$ordering = 'extraField.id';
+				$direction = $sorting == 'id' ? 'ASC' : 'DESC';
+				break;
 			case 'name' :
+			case 'name.reverse' :
 				$ordering = 'extraField.name';
-				$direction = 'ASC';
+				$direction = $sorting == 'name' ? 'ASC' : 'DESC';
 				break;
 			case 'group' :
+			case 'group.reverse' :
 				$ordering = 'groupName';
-				$direction = 'ASC';
+				$direction = $sorting == 'group' ? 'ASC' : 'DESC';
 				break;
 			case 'type' :
+			case 'type.reverse' :
 				$ordering = 'type';
-				$direction = 'ASC';
+				$direction = $sorting == 'type' ? 'ASC' : 'DESC';
 				break;
 			case 'state' :
+			case 'state.reverse' :
 				$ordering = 'extraField.state';
-				$direction = 'DESC';
+				$direction = $sorting == 'state' ? 'ASC' : 'DESC';
 				break;
 			case 'ordering' :
+			case 'ordering.reverse' :
 				$ordering = 'extraField.ordering';
-				$direction = 'ASC';
+				$direction = $sorting == 'ordering' ? 'ASC' : 'DESC';
 				break;
 		}
 

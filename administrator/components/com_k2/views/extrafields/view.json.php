@@ -94,7 +94,7 @@ class K2ViewExtraFields extends K2View
 		$this->setUserState('state', '', 'cmd');
 		$this->setUserState('group', '', 'cmd');
 		$this->setUserState('type', '', 'cmd');
-		$this->setUserState('sorting', 'ordering', 'string');
+		$this->setUserState('sorting', 'id.reverse', 'string');
 	}
 
 	protected function setFilters()
@@ -107,7 +107,20 @@ class K2ViewExtraFields extends K2View
 		K2Response::addFilter('group', JText::_('K2_GROUP'), K2HelperHTML::extraFieldsGroups('group', null, 'K2_ANY'), false, 'header');
 
 		// Sorting filter
-		$sortingOptions = array('K2_ID' => 'id', 'K2_NAME' => 'name', 'K2_GROUP' => 'group', 'K2_TYPE' => 'type', 'K2_ORDERING' => 'ordering', 'K2_STATE' => 'state');
+		$sortingOptions = array(
+			'K2_ID_ASC' => 'id',
+			'K2_ID_DESC' => 'id.reverse',
+			'K2_NAME_ASC' => 'name',
+			'K2_NAME_DESC' => 'name.reverse',
+			'K2_GROUP_ASC' => 'group',
+			'K2_GROUP_DESC' => 'group.reverse',
+			'K2_TYPE_ASC' => 'type',
+			'K2_TYPE_DESC' => 'type.reverse',
+			'K2_ORDERING_ASC' => 'ordering',
+			'K2_ORDERING_DESC' => 'ordering.reverse',
+			'K2_STATE_ASC' => 'state',
+			'K2_STATE_DESC' => 'state.reverse'
+		);
 		K2Response::addFilter('sorting', JText::_('K2_SORT_BY'), K2HelperHTML::sorting($sortingOptions), false, 'header');
 
 		// Search filter
