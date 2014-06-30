@@ -423,6 +423,9 @@ class K2ModelItems extends K2Model
 		switch($sorting)
 		{
 			default :
+				$ordering = 'item.id';
+				$direction = 'DESC';
+				break;
 			case 'id' :
 			case 'id.reverse' :
 				$ordering = 'item.id';
