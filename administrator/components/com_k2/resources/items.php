@@ -444,11 +444,11 @@ class K2Items extends K2Resource
 			$model->setState('itemId', $this->id);
 			$model->setState('limit', (int)$params->get('commentsLimit', 10));
 			$model->setState('limitstart', $offset);
-			$model->setState('sorting', 'id');
+			$model->setState('sorting', 'id.reverse');
 			$model->setState('state', 1);
 			if ($params->get('commentsOrdering') == 'ASC')
 			{
-				$model->setState('sorting', 'id.asc');
+				$model->setState('sorting', 'id');
 			}
 			// Load comments
 			$comments = $model->getRows();
@@ -464,7 +464,7 @@ class K2Items extends K2Resource
 			$model = K2Model::getInstance('Comments');
 			$model->setState('itemId', $this->id);
 			$model->setState('state', 1);
-			$model->setState('sorting', 'id');
+			$model->setState('sorting', 'id.reverse');
 			$result = $model->countRows();
 		}
 		return $result;

@@ -203,41 +203,48 @@ class K2ModelComments extends K2Model
 		switch($sorting)
 		{
 			default :
-			case 'id' :
 				$ordering = 'comment.id';
 				$direction = 'DESC';
 				break;
-			case 'id.asc' :
+			case 'id' :
+			case 'id.reverse' :
 				$ordering = 'comment.id';
-				$direction = 'ASC';
+				$direction = $sorting == 'id' ? 'ASC' : 'DESC';
 				break;
 			case 'name' :
+			case 'name.reverse' :
 				$ordering = 'comment.name';
-				$direction = 'ASC';
+				$direction = $sorting == 'name' ? 'ASC' : 'DESC';
 				break;
 			case 'email' :
+			case 'email.reverse' :
 				$ordering = 'comment.email';
-				$direction = 'ASC';
+				$direction = $sorting == 'email' ? 'ASC' : 'DESC';
 				break;
 			case 'url' :
+			case 'url.reverse' :
 				$ordering = 'comment.url';
-				$direction = 'ASC';
+				$direction = $sorting == 'url' ? 'ASC' : 'DESC';
 				break;
 			case 'ip' :
+			case 'ip.reverse' :
 				$ordering = 'comment.ip';
-				$direction = 'ASC';
+				$direction = $sorting == 'ip' ? 'ASC' : 'DESC';
 				break;
 			case 'hostname' :
+			case 'hostname.reverse' :
 				$ordering = 'comment.hostname';
-				$direction = 'ASC';
+				$direction = $sorting == 'hostname' ? 'ASC' : 'DESC';
 				break;
 			case 'date' :
+			case 'date.reverse' :
 				$ordering = 'comment.date';
-				$direction = 'DESC';
+				$direction = $sorting == 'date' ? 'ASC' : 'DESC';
 				break;
 			case 'state' :
+			case 'state.reverse' :
 				$ordering = 'comment.state';
-				$direction = 'DESC';
+				$direction = $sorting == 'state' ? 'ASC' : 'DESC';
 				break;
 		}
 

@@ -106,10 +106,10 @@ class K2ControllerComments extends K2Controller
 				$model->setState('id', false);
 				$model->setState('limit', (int)$params->get('commentsLimit', 10));
 				$model->setState('limitstart', $offset);
-				$model->setState('sorting', 'id');
+				$model->setState('sorting', 'id.reverse');
 				if ($params->get('commentsOrdering') == 'ASC')
 				{
-					$model->setState('sorting', 'id.asc');
+					$model->setState('sorting', 'id');
 				}
 				$comments = $model->getRows();
 
@@ -124,10 +124,10 @@ class K2ControllerComments extends K2Controller
 				$model->setState('id', false);
 				$model->setState('limit', (int)$params->get('commentsLimit', 10));
 				$model->setState('limitstart', $offset);
-				$model->setState('sorting', 'id');
+				$model->setState('sorting', 'id.reverse');
 				if ($params->get('commentsOrdering') == 'ASC')
 				{
-					$model->setState('sorting', 'id.asc');
+					$model->setState('sorting', 'id');
 				}
 				$comments = $model->getRows();
 

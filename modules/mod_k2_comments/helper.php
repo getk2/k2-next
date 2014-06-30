@@ -29,7 +29,7 @@ class ModK2CommentsHelper
 			$model->setState('category', $filter->categories);
 		}
 		$model->setState('limit', (int)$params->get('comments_limit', '5'));
-		$model->setState('sorting', 'id');
+		$model->setState('sorting', 'id.reverse');
 		$comments = $model->getRows();
 
 		foreach ($comments as $comment)
@@ -61,7 +61,7 @@ class ModK2CommentsHelper
 					$model->setState('userId', $commenter->id);
 					$model->setState('state', 1);
 					$model->setState('limit', 1);
-					$model->setState('sorting', 'id');
+					$model->setState('sorting', 'id.reverse');
 					$comments = $model->getRows();
 					$commenter->comment = $comments[0];
 				}
