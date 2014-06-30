@@ -91,14 +91,19 @@ class K2ViewExtraFieldsGroups extends K2View
 		$this->setUserState('limit', 10, 'int');
 		$this->setUserState('page', 1, 'int');
 		$this->setUserState('search', '', 'string');
-		$this->setUserState('sorting', 'ordering', 'string');
+		$this->setUserState('sorting', 'id.reverse', 'string');
 	}
 
 	protected function setFilters()
 	{
 
 		// Sorting filter
-		$sortingOptions = array('K2_ID' => 'id', 'K2_NAME' => 'name');
+		$sortingOptions = array(
+			'K2_ID_ASC' => 'id',
+			'K2_ID_DESC' => 'id.reverse',
+			'K2_NAME_ASC' => 'name',
+			'K2_NAME_DESC' => 'name.reverse'
+		);
 		K2Response::addFilter('sorting', JText::_('K2_SORT_BY'), K2HelperHTML::sorting($sortingOptions), false, 'header');
 
 		// Search filter
