@@ -27,6 +27,6 @@ require.config({
 	}
 });
 
-require(['jquery', 'backbone', 'underscore', 'marionette', 'app'], function($, Backbone, _, Marionette, K2) {
+require(['jquery', 'backbone', 'underscore', 'marionette', 'app', 'ui'], function($, Backbone, _, Marionette, K2) {
 	K2.start();
 });
