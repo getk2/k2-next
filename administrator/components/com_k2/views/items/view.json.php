@@ -101,7 +101,7 @@ class K2ViewItems extends K2View
 		$this->setUserState('author', 0, 'int');
 		$this->setUserState('tag', 0, 'int');
 		$this->setUserState('language', '', 'string');
-		$this->setUserState('sorting', 'id', 'string');
+		$this->setUserState('sorting', 'id.reverse', 'string');
 		$this->setUserState('recursive', 1, 'int');
 		if ($this->getUserState('author') > 0)
 		{
