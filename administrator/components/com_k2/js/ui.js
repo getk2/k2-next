@@ -6,16 +6,9 @@
 		$('.jw--sidebar').toggleClass('jw--sidebar__open');
 	});
 	
-	// Mark the correct labels
-	$('.jw').on('load', function(){
-		if ($('.controls label.radio').has('input:checked')) {
-			$(this).addClass('jw--radio__checked');	
-		}
-	});
-	
 	// label toggling.
-	$('.jw').on('click', '.controls label.radio', function(){
-		$(this).parent().children('label.radio').removeClass('jw--radio__checked');
+	$('.jw').on('click', '.jw--filter .jw--radio', function(){
+		$(this).parent().children('.jw--radio').removeClass('jw--radio__checked');
 		$(this).addClass('jw--radio__checked');
 	});
 	
