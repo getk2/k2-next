@@ -42,7 +42,9 @@ h1.jw--logo { line-height: 0.8; padding: 15px 0 12px; }
 
 
 /*------------------------------------------------------------------
-[Modules - reusable]
+[Modules - reusable] */
+
+.jw--add--area { margin-right: -15px; padding: 10px 15px; background: #204866; }
 
 /* Search module */
 .jw--search { border: 1px solid #bbbdbf; border-radius: 3px; margin: 0 auto; max-width: 220px; overflow: hidden; }
