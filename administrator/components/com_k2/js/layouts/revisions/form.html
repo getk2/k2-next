@@ -1,6 +1,17 @@
 <h2><%= l('K2_REVISIONS') %></h2>
-
+<% if(!_.isEmpty(revisions)) { %>
 <div data-role="revisions-timeline" style="width: 80%; margin:0 auto;"></div>
 
-<label for="notes"><%= l('K2_REVISION_NOTES') %></label>
-<input type="text" name="notes" id="notes" value="" />
+<% if(leftRevision) { %>
+<div>
+	<span><%= leftRevision.get('user') %></span>
+	<span><%= leftRevision.get('date') %></span>
+	<button data-action="restore-revision"><%= l('K2_RESTORE_THIS_REVISION') %></button>
+	
+	<div><%= l('K2_TITLE') %> <%= leftRevision.get('data').title %></div>
+	<div><%= l('K2_INTROTEXT') %> <%= leftRevision.get('data').introtext %></div>
+	<div><%= l('K2_FULLTEXT') %> <%= leftRevision.get('data').fulltext %></div>
+	
+</div>
+<% } %>
+<% } %>
