@@ -60,8 +60,8 @@ img {-ms-interpolation-mode:bicubic; max-width: 100%; }
 	.jw label.jw--radio.jw--radio__smaller { line-height: 26px; height: 26px; font-size: 11px; margin: 0 -2px; padding: 0 6px; white-space: nowrap; }
 
 	/* labels in a row */
-	.jw label.jw--radio.jw--label__first, .jw .controls label.radio:first-child { border-radius: 3px 0 0 3px; }
-	.jw label.jw--radio.jw--label__last, .jw .controls label.radio:last-child { border-radius: 0 3px 3px 0; }
+	.jw--filter .jw--radio:first-child, .jw .controls label.radio:first-child { border-radius: 3px 0 0 3px; }
+	.jw--filter .jw--radio:last-child, .jw .controls label.radio:last-child { border-radius: 0 3px 3px 0; }
 
 	/* now hide the radio buttons using opacity and position absolute */
 	.jw .jw--radio input[type="radio"],
@@ -135,6 +135,13 @@ Buttons */
 /* Collapse */
 .jw--button--collapse { overflow: hidden; }
 	.jw--button--collapse .jw--btn { float: left; clear: both; margin-bottom: 15px; }
+	
+	
+/*------------------------------------------------------------------
+[Messages] */
+
+.jw--messages {  }
+	.jw--messages ul { list-style: none outside none; margin: 0; padding: 0; }
 
 
 

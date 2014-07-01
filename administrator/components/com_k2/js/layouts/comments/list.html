@@ -1,20 +1,18 @@
-<table>
-    <thead>
-        <tr>
-            <td><label title="<%- l('K2_SELECT_ALL') %>">
-                <input data-action="toggle-all" type="checkbox" />
-            </label></td>
-            <td><%= l('K2_COMMENT') %></td>
-            <td><a data-action="sort" data-sorting="state.reverse"><%= l('K2_STATE') %></a></td>
-            <td><a data-action="sort" data-sorting="name"><%= l('K2_NAME') %></a></td>
-            <td><a data-action="sort" data-sorting="email"><%= l('K2_EMAIL') %></a></td>
-            <td><a data-action="sort" data-sorting="url"><%= l('K2_URL') %></a></td>
-            <td><a data-action="sort" data-sorting="ip"><%= l('K2_IP') %></a></td>
-            <td><a data-action="sort" data-sorting="hostname"><%= l('K2_HOSTNAME') %></a></td>
-            <td><a data-action="sort" data-sorting="date.reverse"><%= l('K2_DATE') %></a></td>
-            <td><%= l('K2_ITEM') %></td>
-            <td><a data-action="sort" data-sorting="id.reverse"><%= l('K2_ID') %></a></td>
-        </tr>
-    </thead>
-    <tbody></tbody>
-</table>
+<div class="jw--listed--items">
+    <ul class="jw--items--header">
+        <li class="small-1 large-1 columns"><label title="<%- l('K2_SELECT_ALL') %>">
+            <input data-action="toggle-all" type="checkbox" />
+        </label></li>
+        <li class="small-1 large-6 columns"><%= l('K2_COMMENT') %></li>
+        <li class="small-1 large-1 columns"><a data-action="sort" data-sorting="state.reverse"><%= l('K2_STATE') %></a></li>
+        <li class="small-1 large-1 columns"><a data-action="sort" data-sorting="name"><%= l('K2_NAME') %></a></li>
+        <li class="small-1 large-1 columns"><a data-action="sort" data-sorting="email"><%= l('K2_EMAIL') %></a></li>
+        <li class="small-1 large-1 columns"><a data-action="sort" data-sorting="url"><%= l('K2_URL') %></a></li>
+        <li class="small-1 large-1 columns"><a data-action="sort" data-sorting="ip"><%= l('K2_IP') %></a></li>
+        <li class="small-1 large-1 columns"><a data-action="sort" data-sorting="hostname"><%= l('K2_HOSTNAME') %></a></li>
+        <li class="small-1 large-1 columns"><a data-action="sort" data-sorting="date.reverse"><%= l('K2_DATE') %></a></li>
+        <li class="small-1 large-1 columns"><%= l('K2_ITEM') %></li>
+        <li class="small-1 large-1 columns"><a data-action="sort" data-sorting="id.reverse"><%= l('K2_ID') %></a></li>
+    </ul>
+    <div data-region="list"></div>
+</div>

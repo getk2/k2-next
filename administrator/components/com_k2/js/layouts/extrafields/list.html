@@ -1,23 +1,22 @@
-<table>
-    <thead>
-        <tr>
-            <td><label title="<%- l('K2_SELECT_ALL') %>">
-                    <input data-action="toggle-all" type="checkbox" />
-                </label>
-            </td>
-            <td><a data-action="sort" data-sorting="name"><%= l('K2_NAME') %></a></td>
-            <td><a data-action="sort" data-sorting="group"><%= l('K2_GROUP') %></a></td>
-            <td><a data-action="sort" data-sorting="type"><%= l('K2_TYPE') %></a></td>
-            <td></td>
-            <td>
-                <a data-action="sort" data-sorting="ordering"><%= l('K2_ORDER') %></a>
-                <button data-column="ordering" data-action="save-ordering">
-                    <%= l('K2_SAVE_ORDER') %>
-                </button>
-            </td>
-            <td><a data-action="sort" data-sorting="state.reverse"><%= l('K2_STATE') %></a></td>
-            <td><a data-action="sort" data-sorting="id.reverse"><%= l('K2_ID') %></a></td>
-        </tr>
-    </thead>
-    <tbody></tbody>
-</table>
+<div class="jw--listed--items">
+    <ul class="jw--items--header">
+        <li class="small-1 large-1 columns"><label title="<%- l('K2_SELECT_ALL') %>">
+                <input data-action="toggle-all" type="checkbox" />
+            </label>
+        </li>
+        <li class="small-1 large-4 columns"><a data-action="sort" data-sorting="name"><%= l('K2_NAME') %></a></li>
+        <li class="small-1 large-4 columns"><a data-action="sort" data-sorting="group"><%= l('K2_GROUP') %></a></li>
+        <li class="small-1 large-3 columns"><a data-action="sort" data-sorting="type"><%= l('K2_TYPE') %></a></li>
+        <li class="small-1 large-1 columns"></li>
+        <li class="small-1 large-1 columns">
+            <a data-action="sort" data-sorting="ordering"><%= l('K2_ORDER') %></a>
+            <button data-column="ordering" data-action="save-ordering">
+                <%= l('K2_SAVE_ORDER') %>
+            </button>
+        </li>
+        <li class="small-1 large-1 columns"><a data-action="sort" data-sorting="state.reverse"><%= l('K2_STATE') %></a></li>
+        <li class="small-1 large-1 columns"><a data-action="sort" data-sorting="id.reverse"><%= l('K2_ID') %></a></li>
+    </ul>
+    
+    <div data-region="list"></div>
+</div>

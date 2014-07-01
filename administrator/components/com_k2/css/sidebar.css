@@ -20,12 +20,7 @@
 
 /* Filters */
 .jw--sidebar .jw--filters { border-top: 1px solid #d0d0d0;position:absolute;left:0; padding: 13px 15px 0; bottom: 90px; width: 255px; }
-					
-	/* J! 3/ Bootstrap fixes */
-	.jw--filters label.jw--radio { padding-left: 0; margin-bottom: 0;} 
-	.controls > .jw--radio:first-child, 
-	.controls > .checkbox:first-child { padding-top: 0; }
-	.jw--sidebar .jw--filters div.controls { display: inline-block; vertical-align: middle; margin-bottom: 0; }
+
 	/* /\/\ */
 	.jw--sidebar .jw--filter { margin: 0 0 13px; }
 

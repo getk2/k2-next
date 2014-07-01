@@ -5,9 +5,10 @@
         <h1 class="left jw--logo"><i>K2</i></h1>
 	
 		<% if(!_.isEmpty(actions)) { %>
-		<div class="right" data-region="actions">
+		<div class="right  jw--add--area" data-region="actions">
 		    <% _.each(actions, function(button) { %>
-		        <button class="jw--btn"  <% _.each(button.attributes, function(value, name) { print(name + '="' + value + '" ');}) %>>
+		        <button class="jw--btn jw--btn__icon"  <% _.each(button.attributes, function(value, name) { print(name + '="' + value + '" ');}) %>>
+		            <i class="fa fa-plus"></i>
 		            <%= button.name %>
 		        </button>
 		    <% }); %>
@@ -21,17 +22,43 @@
 		    <% var counter = 0; _.each(menu, function(link) { %>
 		    <% if(counter < 3) { %>
 		    <li>
-		        <a <% _.each(link.attributes, function(value, name) { print(name + '="' + value + '" ');}) %>><%= link.name %></a>
+		        <a <% _.each(link.attributes, function(value, name) { print(name + '="' + value + '" ');}) %>>
+		        <% if(link.id == 'items') {
+					print('<i class="fa fa-file-text"></i>');
+				} else if(link.id == 'categories') {
+		        	print('<i class="fa fa-archive"></i>');
+		        } else if(link.id == 'tags') {
+		        	print('<i class="fa fa-tags"></i>');
+		        } %>
+		        	<%= link.name %>
+		        </a>
 		    </li>
 		    <% } counter++; %>
 		    <% }); %>
 		    <li>
-		    	<%= l('K2_MORE') %>
+		    	<span class="jw--sep"><i class="fa fa-asterisk"></i> <%= l('K2_MORE') %></span>
 		    	<ul>
 		    		<% var counter = 0; _.each(menu, function(link) { %>
 		    			<% if(counter > 2) { %>
 		    				<li>
-		    					<a <% _.each(link.attributes, function(value, name) { print(name + '="' + value + '" ');}) %>><%= link.name %></a>
+		    					<a <% _.each(link.attributes, function(value, name) { print(name + '="' + value + '" ');}) %>>
+		    						<% if(link.id == 'tags') {
+										print('<i class="fa fa-tags"></i>');
+									} else if(link.id == 'users') {
+							        	print('<i class="fa fa-user"></i>');
+							        } else if(link.id == 'usergroups') {
+							        	print('<i class="fa fa-users"></i>');
+							        } else if(link.id == 'extrafields') {
+							        	print('<i class="fa fa-gears"></i>');
+							        } else if(link.id == 'extrafieldsgroups') {
+							        	print('<i class="fa fa-briefcase"></i>');
+							        } else if(link.id == 'comments') {
+							        	print('<i class="fa fa-comments"></i>'); 
+							        }  else if(link.id == 'media') {
+							        	print('<i class="fa fa-photo"></i>'); 
+							        } %>
+		    						<%= link.name %>
+		    					</a>
 		    				</li>
 		    			<% } counter++; %>
 		    		<% }); %>

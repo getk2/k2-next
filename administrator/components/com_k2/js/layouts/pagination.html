@@ -1,8 +1,10 @@
-<div>
+<div class="text-center jw--pagination">
+	
 	<% if(mode == 'pagination') { %>
-    <div>
-        <label><%= l('K2_DISPLAY') %></label>
-        <select name="limit">
+	
+    <div class="left jw--limit">
+        <label class="jw--inline__bl"><%= l('K2_DISPLAY') %></label>
+        <select class="jw--inline__bl" name="limit">
             <option value="5">5</option>
             <option value="10">10</option>
             <option value="20">20</option>
@@ -10,39 +12,43 @@
             <option value="100">100</option>
         </select>
     </div>
-    <div>
-        <% if(pagesTotal > 1) { %>
-        <div>
-            <%= l('K2_PAGE') %> <span><%= pagesCurrent %></span> <%= l('K2_OF') %> <span> <%= pagesTotal %> </span>
-        </div>
-        <ul>
-            <li>
-                <a data-page="1" href="#<%= link %>/page/1"><%= l('K2_START') %></a>
-            </li>
-            <% if((pagesCurrent - 1) > 0) { %>
-            <li>
-                <a data-page="previous" href="#<%= link %>/page/<%= pagesCurrent-1 %>"><%= l('K2_PREVIOUS') %></a>
-            </li>
-            <% } %>
-            <% for(i=pagesStart; i <= pagesStop; i++){ %>
-            <li <% if(pagesCurrent == i) { %> class="active" <% } %>>
-                <a data-page="<%= i %>" href="#<%= link %>/page/<%= i %>"><%= i %></a>
-            </li>
-            <% } %>
-            <% if((pagesCurrent + 1) <= pagesTotal) { %>
-            <li>
-                <a data-page="next" href="#<%= link %>/page/<%= pagesCurrent + 1 %>"><%= l('K2_NEXT') %></a>
-            </li>
-            <% } %>
-            <li>
-                <a data-page="<%= pagesTotal %>" href="#<%= link %>/page/<%= pagesTotal %>"><%= l('K2_END') %></a>
-            </li>
-        </ul>
+    
+    <% if(pagesTotal > 1) { %>
+    <div class="right jw--total">
+		<span class="jw--inline__bl jw--total--block">
+			<%= l('K2_PAGE') %> <strong><%= pagesCurrent %></strong> <%= l('K2_OF') %> <strong> <%= pagesTotal %> </strong>
+		</span>
+		
+		<span class="jw--inline__bl jw--total--block">
+			<strong class="jw--exbold"><%= total %></strong> <%= label %>
+		</span>
+    </div>
+    
+    <ul>
+        <li>
+            <a data-page="1" href="#<%= link %>/page/1"><%= l('K2_START') %></a>
+        </li>
+        <% if((pagesCurrent - 1) > 0) { %>
+        <li>
+            <a data-page="previous" href="#<%= link %>/page/<%= pagesCurrent-1 %>"><%= l('K2_PREVIOUS') %></a>
+        </li>
         <% } %>
-    </div>
-    <div>
-        <strong><%= total %></strong> <%= label %>
-    </div>
+        <% for(i=pagesStart; i <= pagesStop; i++){ %>
+        <li <% if(pagesCurrent == i) { %> class="active" <% } %>>
+            <a data-page="<%= i %>" href="#<%= link %>/page/<%= i %>"><%= i %></a>
+        </li>
+        <% } %>
+        <% if((pagesCurrent + 1) <= pagesTotal) { %>
+        <li>
+            <a data-page="next" href="#<%= link %>/page/<%= pagesCurrent + 1 %>"><%= l('K2_NEXT') %></a>
+        </li>
+        <% } %>
+        <li>
+            <a data-page="<%= pagesTotal %>" href="#<%= link %>/page/<%= pagesTotal %>"><%= l('K2_END') %></a>
+        </li>
+    </ul>
+    <% } %>
+
     <% } else { %>
 		<strong><%= total %></strong> <%= label %>
     <% } %>

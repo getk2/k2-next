@@ -1,6 +1,7 @@
 .jw *,.jw *:before,.jw *:after{ -webkit-box-sizing:border-box; -moz-box-sizing:border-box; box-sizing:border-box; }
 .fixed--width{ max-width: 990px; }
 .clr { clear: both; }
+.jw--inline__bl { display: inline-block; vertical-align: middle; }
 
 h1.jw--logo { line-height: 0.8; padding: 15px 0 12px; }
 	.jw--logo img, .jw--logo span { display: inline-block; vertical-align: bottom; }
@@ -41,7 +42,9 @@ h1.jw--logo { line-height: 0.8; padding: 15px 0 12px; }
 
 
 /*------------------------------------------------------------------
-[Modules - reusable]
+[Modules - reusable] */
+
+.jw--add--area { margin-right: -15px; padding: 10px 15px; background: #204866; }
 
 /* Search module */
 .jw--search { border: 1px solid #bbbdbf; border-radius: 3px; margin: 0 auto; max-width: 220px; overflow: hidden; }
@@ -54,10 +57,34 @@ h1.jw--logo { line-height: 0.8; padding: 15px 0 12px; }
 /*------------------------------------------------------------------
 [Filter - reusable] */
 
-.jw--filter { min-height: 45px; font-size: 13px; }
-	.jw--filter label { color: #b1b5b6; font-weight: 700; font-size: 11px; line-height: 1; display: block; padding: 6px 15px 0px; margin: 0; }
+.jw--top--filters .jw--filter { min-height: 45px; font-size: 13px; border-left: 1px solid #dbdcdc; }
+	.jw--top--filters .jw--filter label { color: #b1b5b6; font-weight: 700; font-size: 11px; line-height: 1; display: block; padding: 8px 15px 2px; margin: 0; }
 	.jw--filter {  }
 	
 /*------------------------------------------------------------------
 [Toolbar] */
 .jw--toolbar { overflow: hidden; padding: 5px 15px; border-top: 1px solid #dbdcdc; border-bottom: 1px solid #dbdcdc; }
+
+
+/*------------------------------------------------------------------
+[Pagination] - common */
+.jw--pagination { position:fixed; width: 100%; padding: 0 12px; background: #fff; z-index:9;bottom:29px;right:0;left:46px;width:auto; border-bottom:1px solid #dbdcdc; border-left: 1px solid #dbdcdc; box-shadow: 0 -1px 0 #dbdbdb, inset 0 1px 0 rgba(255,255,255,.7); height: 50px; }
+	/* pagination pages */
+	.jw--pagination ul {list-style:none outside none; display:inline-block;vertical-align:top; margin:0;padding:0 50px;}
+	.jw--pagination ul li {display:inline-block;vertical-align:middle;border-top:3px solid transparent;font-weight:700;}
+	.jw--pagination ul li a {padding:13px 10px 2px;display:block;color:#626a6d;}
+	.jw--pagination ul li.active {border-color:#00afec;}
+	
+	/* pagination limit */
+	.jw--limit { padding: 7px 0; }
+		.jw--limit label { margin-right: 15px; font-weight: 600; font-size: 13px; }
+		.jw--limit select { max-width: 90px; width: 90px; height: 34px; line-height: 34px; background: #f0f2f2; box-shadow: 0 1px 1px rgba(65,64,66,.14), inset 0 1px 0 #fff; }
+	
+	/* pagination total */
+	.jw--total { font-size: 13px; }
+		.jw--total .jw--exbold { color: #00afec; font-weight: 800; }
+		.jw--total .jw--total--block { line-height: 1; padding: 18px 17px;  }
+		.jw--total .jw--total--block:first-child { border-right: 1px solid #dbdcdc; }
+		
+
+
