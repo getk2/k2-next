@@ -288,7 +288,7 @@ class K2HelperHTML
 		{
 			$active = (string)$option->value == (string)$value;
 			$checked = $active ? 'checked="checked"' : '';
-			$class = $active ? 'class="jw--radio__checked"' : '';
+			$class = $active ? 'class="jw--radio jw--radio__checked"' : 'class="jw--radio"';
 			$id = $name.'_'.$key;
 			$output .= '<label for="'.$id.'" '.$class.'><input type="radio" name="'.$name.'" id="'.$id.'" '.$checked.' value="'.$option->value.'" />'.$option->text.'</label>';
 		}
