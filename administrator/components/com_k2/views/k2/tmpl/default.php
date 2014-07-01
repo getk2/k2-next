@@ -14,7 +14,7 @@ defined('_JEXEC') or die ; ?>
 
     <div class="left" data-region="sidebar"></div>
     <div class="jw--component">
-		<div data-region="messages"></div>
+		<div class="jw--messages" data-region="messages"></div>
 				
         <div data-region="subheader"></div>
         <div data-region="content"></div>

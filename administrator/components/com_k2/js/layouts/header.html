@@ -17,13 +17,47 @@
 		<% if(!_.isEmpty(menu)) { %>
 		
 		<ul class="right jw--inline--menu jw--main--menu" data-region="menu-primary">
-		    <% _.each(menu, function(link) { %>
+			
+		    <% var counter = 0; _.each(menu, function(link) { %>
+		    <% if(counter < 3) { %>
 		    <li>
-		        <a <% _.each(link.attributes, function(value, name) { print(name + '="' + value + '" ');}) %>><%= link.name %></a>
+		        <a <% _.each(link.attributes, function(value, name) { print(name + '="' + value + '" ');}) %>>
+		        <% if(link.id == 'items') {
+					print('<i class="fa fa-file-text"></i>');
+				} else if(link.id == 'categories') {
+		        	print('<i class="fa fa-archive"></i>');
+		        } else if(link.id == 'tags') {
+		        	print('<i class="fa fa-tags"></i>');
+		        } %>
+		        	<%= link.name %>
+		        </a>
 		    </li>
+		    <% } counter++; %>
 		    <% }); %>
+		    <li>
+		    	<span class="jw--sep"><%= l('K2_MORE') %></span>
+		    	<ul>
+		    		<% var counter = 0; _.each(menu, function(link) { %>
+		    			<% if(counter > 2) { %>
+		    				<li>
+		    					<a <% _.each(link.attributes, function(value, name) { print(name + '="' + value + '" ');}) %>>
+		    						<% if(link.id == 'tags') {
+										print('<i class="fa fa-tags"></i>');
+									} else if(link.id == 'users') {
+							        	print('<i class="fa fa-user"></i>');
+							        } else if(link.id == 'tags') {
+							        	print('<i class="fa fa-users"></i>');
+							        } %>
+
+		    						
+		    						<%= link.name %> <%= link.id %>
+		    					</a>
+		    				</li>
+		    			<% } counter++; %>
+		    		<% }); %>
+		    	</ul>
+		    </li>
 		</ul>
-		
 		<% } %>
 		
 	</div>
