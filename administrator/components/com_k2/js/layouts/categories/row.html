@@ -1,35 +1,50 @@
-<span>
+<li class="small-1 large-1 columns">
     <label>
         <input data-action="toggle" name="id[]" value="<%= id %>" type="checkbox" />
     </label>
-</span>
-<span>
+</li>
+
+<li class="small-1 large-4 columns">
     <% if(canEdit) { %>
     <a data-action="edit" href="<%= editLink %>"><%= title %></a>
     <% } else { %>
         <%= str_repeat('-', level) %><%= title %>
     <% } %>
     <span>(<span><%= totalItems %> <%= l('K2_TOTAL') %></span> / <span><%= trashedItems %> <%= l('K2_TRASHED') %></span>)</span>
-</span>
-<span><span data-role="ordering-handle">DRAG ME</span></span>
-<span>
+</li>
+
+<li class="text-center small-1 large-1 columns"><span data-role="ordering-handle"><i class="fa fa-reorder"></i></span></li>
+
+<li class="small-1 large-1 columns">
     <% if(canEditState) { %>
     <a data-action="toggle-state-category" data-state-value="<%= state %>" data-id="<%= id %>" data-state="state"><%= state %></a>
     <% } else { %>
     <%= state %>
     <% } %>
-</span>
-<span><%= viewLevel %></span>
-<span><%= template %></span>
-<span><%= authorName %></span>
-<span><%= createdOn %></span>
-<span><%= moderatorName %></span>
-<span><%= modifiedOn %></span>
-<span>
+</li>
+
+<li class="small-1 large-1 columns"><%= viewLevel %></li>
+
+<li class="small-1 large-1 columns"><%= template %></li>
+
+<li class="small-1 large-1 columns"><%= authorName %></li>
+
+<li class="small-1 large-1 columns"><%= createdOn %></li>
+
+<li class="small-1 large-1 columns"><%= moderatorName %></li>
+
+<li class="small-1 large-1 columns"><%= modifiedOn %></li>
+
+<li class="small-1 large-1 columns">
     <% if(image && image.flag) { %>
         <a href="<%= image.src %>"><%= l('K2_PREVIEW') %></a>
     <% } %>
-</span>
-<span><%= languageTitle %></span>
-<span><%= id %></span>
-<ul data-parent="<%- id %>"></ul>
+</li>
+
+<li class="small-1 large-1 columns"><%= languageTitle %></li>
+
+<li class="small-1 large-1 columns"><%= id %></li>
+
+<li class="small-16 large-16">
+	<ul data-parent="<%- id %>"></ul>
+</li>
