@@ -39,7 +39,7 @@ class K2HelperHTML
 		}
 		else
 		{
-			return JHtml::_('select.radiolist', $options, $name, '', 'value', 'text', $value);
+			return self::radiolist($options, $name, $value);
 		}
 	}
 
@@ -49,7 +49,7 @@ class K2HelperHTML
 		$options[] = JHTML::_('select.option', '', JText::_('K2_ALL'));
 		$options[] = JHTML::_('select.option', 1, JText::_('K2_YES'));
 		$options[] = JHTML::_('select.option', 0, JText::_('K2_NO'));
-		return JHtml::_('select.radiolist', $options, $name, '', 'value', 'text', $value);
+		return self::radiolist($options, $name, $value);
 	}
 
 	public static function language($name = 'language', $value = null, $none = false)
@@ -258,7 +258,7 @@ class K2HelperHTML
 		$options = array();
 		$options[] = JHtml::_('select.option', 'm', JText::_('K2_MALE'));
 		$options[] = JHtml::_('select.option', 'f', JText::_('K2_FEMALE'));
-		return JHtml::_('select.radiolist', $options, $name, $attributes, 'value', 'text', $value);
+		return self::radiolist($options, $name, $value, $attributes);
 	}
 
 	public static function author($name = 'author', $value = null, $none = false, $attributes = '')
@@ -279,6 +279,20 @@ class K2HelperHTML
 			$options[] = JHtml::_('select.option', $row->id, $row->name);
 		}
 		return JHtml::_('select.genericlist', $options, $name, $attributes, 'value', 'text', $value);
+	}
+
+	public function radiolist($options, $name, $value = '', $attributes = '')
+	{
+		$output = '';
+		foreach ($options as $key => $option)
+		{
+			$active = (string)$option->value == (string)$value;
+			$checked = $active ? 'checked="checked"' : '';
+			$class = $active ? 'class="jw--radio jw--radio__checked"' : 'class="jw--radio"';
+			$id = $name.'_'.$key;
+			$output .= '<label for="'.$id.'" '.$class.'><input type="radio" name="'.$name.'" id="'.$id.'" '.$checked.' value="'.$option->value.'" />'.$option->text.'</label>';
+		}
+		return $output;
 	}
 
 }
