@@ -17,13 +17,27 @@
 		<% if(!_.isEmpty(menu)) { %>
 		
 		<ul class="right jw--inline--menu jw--main--menu" data-region="menu-primary">
-		    <% _.each(menu, function(link) { %>
+			
+		    <% var counter = 0; _.each(menu, function(link) { %>
+		    <% if(counter < 3) { %>
 		    <li>
 		        <a <% _.each(link.attributes, function(value, name) { print(name + '="' + value + '" ');}) %>><%= link.name %></a>
 		    </li>
+		    <% } counter++; %>
 		    <% }); %>
+		    <li>
+		    	<%= l('K2_MORE') %>
+		    	<ul>
+		    		<% var counter = 0; _.each(menu, function(link) { %>
+		    			<% if(counter > 2) { %>
+		    				<li>
+		    					<a <% _.each(link.attributes, function(value, name) { print(name + '="' + value + '" ');}) %>><%= link.name %></a>
+		    				</li>
+		    			<% } counter++; %>
+		    		<% }); %>
+		    	</ul>
+		    </li>
 		</ul>
-		
 		<% } %>
 		
 	</div>
