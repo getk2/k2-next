@@ -1,4 +1,4 @@
-define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/extrafields/widget', 'views/attachments/widget', 'views/galleries/widget', 'views/media/widget', 'views/image/widget'], function(K2Dispatcher, K2Widget, template, K2ViewExtraFieldsWidget, K2ViewAttachmentsWidget, K2ViewGalleriesWidget, K2ViewMediaWidget, K2ViewImageWidget) {'use strict';
+define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/extrafields/widget', 'views/attachments/widget', 'views/galleries/widget', 'views/media/widget', 'views/image/widget', 'views/revisions/widget'], function(K2Dispatcher, K2Widget, template, K2ViewExtraFieldsWidget, K2ViewAttachmentsWidget, K2ViewGalleriesWidget, K2ViewMediaWidget, K2ViewImageWidget, K2ViewRevisionsWidget) {'use strict';
 	// K2 item form view
 	var K2ViewItem = Marionette.Layout.extend({
 
@@ -11,7 +11,8 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 			attachmentsRegion : '[data-region="item-attachments"]',
 			galleriesRegion : '[data-region="item-galleries"]',
 			mediaRegion : '[data-region="item-media"]',
-			extraFieldsRegion : '[data-region="item-extra-fields"]'
+			extraFieldsRegion : '[data-region="item-extra-fields"]',
+			revisionsRegion : '[data-region="item-revisions"]'
 		},
 
 		// UI events
@@ -27,7 +28,7 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 		initialize : function() {
 
 			// Image view. First override the size with the one from the settings
-			if(this.model.get('image')) {
+			if (this.model.get('image')) {
 				var images = this.model.get('images');
 				this.model.set('image', images['admin']);
 			}
@@ -63,6 +64,11 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 				scope : 'item'
 			});
 
+			// Revisions
+			this.revisionsView = new K2ViewRevisionsWidget({
+				data : this.model.get('revisions')
+			});
+
 		},
 
 		// Serialize data for view
@@ -79,18 +85,18 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 
 			// Update form from editor contents
 			var form = this.model.getForm();
-			if(form.has('text')) {
+			if (form.has('text')) {
 				K2Editor.save('text');
 			} else {
 				K2Editor.save('introtext');
 				K2Editor.save('fulltext');
 			}
-			
+
 			// Validate extra fields
 			var result = this.extraFieldsView.validate();
-			
+
 			return result;
-			
+
 		},
 
 		// OnBeforeClose event ( Marionette.js build in event )
@@ -111,11 +117,7 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 			// Extra fields
 			this.extraFieldsView.trigger('filter', value);
 		},
-		
-		showRevisions : function(event) {
-			event.preventDefault();
-		},
-		
+
 		onRender : function() {
 			this.$('input[name="featured"]').val([this.model.get('featured')]);
 		},
@@ -157,6 +159,9 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 
 			// Extra fields
 			this.extraFieldsRegion.show(this.extraFieldsView);
+
+			// Revisions
+			this.revisionsRegion.show(this.revisionsView);
 		}
 	});
 	return K2ViewItem;

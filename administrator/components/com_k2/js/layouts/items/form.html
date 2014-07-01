@@ -150,18 +150,7 @@
 	<% }); %>
     
     <!-- Revisions -->
-    <div>
-    	<h2><%= l('K2_REVISIONS') %></h2>
-    	<button><%= l('K2_MANAGE_REVISIONS') %></button>
-    	<ul>
-    		<% _.each(row.revisions, function(revision) { %>
-    			<li><span><%= revision.date %></span><span><%= revision.user %></span></li>
-    		<% }); %>
-    	</ul>
-    	
-    	<label for="notes"><%= l('K2_REVISION_NOTES') %></label>
-    	<input type="text" name="notes" id="notes" value="" />
-    </div>
+    <div data-region="item-revisions"></div>
 
     <input type="hidden" name="id" value="<%- row.id %>" / >
 
