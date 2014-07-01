@@ -44,7 +44,7 @@ h1.jw--logo { line-height: 0.8; padding: 15px 0 12px; }
 /*------------------------------------------------------------------
 [Modules - reusable] */
 
-.jw--add--area { margin-right: -15px; padding: 10px 15px; background: #204866; }
+.jw--add--area { margin-right: -12px; padding: 10px 15px; background: #204866; }
 
 /* Search module */
 .jw--search { border: 1px solid #bbbdbf; border-radius: 3px; margin: 0 auto; max-width: 220px; overflow: hidden; }
@@ -62,10 +62,18 @@ h1.jw--logo { line-height: 0.8; padding: 15px 0 12px; }
 	.jw--filter {  }
 	
 /*------------------------------------------------------------------
-[Toolbar] */
+[Toolbar] batch actions */
 .jw--toolbar { overflow: hidden; padding: 5px 15px; border-top: 1px solid #dbdcdc; border-bottom: 1px solid #dbdcdc; }
-
-
+	.jw--toolbar--actions { list-style: none outside none; margin: 0; padding: 4px 0; font-size: 12px; }
+	.jw--toolbar--actions li { display: inline-block; vertical-align: middle; margin: 0 14px; color: #636a6f; }
+	.jw--toolbar--actions .fa { display: inline-block; vertical-align: middle; font-size: 18px; margin-right: 3px; }
+	.jw--toolbar--actions button { color: #636a6f; padding: 0; line-height: 1; }
+	.jw--toolbar--actions button:hover { color: #00afec; }
+	
+/* The counter */
+.jw--counter { font-size: 16px; color: #bbbdbf; letter-spacing: -1px; padding: 4px 0; }
+	.jw--counter__single { display: inline-block; padding-right: 5px; }
+	
 /*------------------------------------------------------------------
 [Pagination] - common */
 .jw--pagination { position:fixed; width: 100%; padding: 0 12px; background: #fff; z-index:9;bottom:29px;right:0;left:46px;width:auto; border-bottom:1px solid #dbdcdc; border-left: 1px solid #dbdcdc; box-shadow: 0 -1px 0 #dbdbdb, inset 0 1px 0 rgba(255,255,255,.7); height: 50px; }
