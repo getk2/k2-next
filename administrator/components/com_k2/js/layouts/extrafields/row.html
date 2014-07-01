@@ -1,14 +1,14 @@
-<td>
+<li class="small-1 large-1 columns">
     <label>
         <input data-action="toggle" name="id[]" value="<%= id %>" type="checkbox" />
     </label>
-</td>
-<td><a data-action="edit" href="<%= editLink %>"><%= name %></a></td>
-<td><%= groupName %></td>
-<td><%= typeName %></td>
-<td><span data-role="ordering-handle" data-column="ordering">DRAG ME</span></td>
-<td>
+</li>
+<li class="small-1 large-4 columns"><a data-action="edit" href="<%= editLink %>"><%= name %></a></li>
+<li class="small-1 large-4 columns"><%= groupName %></li>
+<li class="small-1 large-3 columns"><%= typeName %></li>
+<li class="small-1 large-1 columns"><span data-role="ordering-handle" data-column="ordering">DRAG ME</span></li>
+<li class="small-1 large-1 columns">
     <input type="text" maxlength="6" size="6" name="ordering[]" value="<%= ordering %>" data-id="<%= id %>" />
-</td>
-<td><a data-action="toggle-state" data-state-value="<%= state %>" data-state="state" data-id="<%= id %>"><%= state %></a></td>
-<td><%= id %></td>
+</li>
+<li class="small-1 large-1 columns"><a data-action="toggle-state" data-state-value="<%= state %>" data-state="state" data-id="<%= id %>"><%= state %></a></li>
+<li class="small-1 large-1 columns"><%= id %></li>

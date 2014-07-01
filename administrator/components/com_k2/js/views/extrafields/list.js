@@ -1,6 +1,6 @@
 define(['marionette', 'text!layouts/extrafields/list.html', 'text!layouts/extrafields/row.html', 'dispatcher', 'session', 'widgets/widget'], function(Marionette, list, row, K2Dispatcher, K2Session, K2Widget) {'use strict';
 	var K2ViewExtraFieldsRow = Marionette.ItemView.extend({
-		tagName : 'tr',
+		tagName : 'ul',
 		template : _.template(row),
 		events : {
 			'click a[data-action="edit"]' : 'edit'
@@ -12,7 +12,7 @@ define(['marionette', 'text!layouts/extrafields/list.html', 'text!layouts/extraf
 	});
 	var K2ViewExtraFields = Marionette.CompositeView.extend({
 		template : _.template(list),
-		itemViewContainer : 'tbody',
+		itemViewContainer : '[data-region="list"]',
 		itemView : K2ViewExtraFieldsRow,
 		onCompositeCollectionRendered : function() {
 			K2Widget.ordering(this.$el, 'ordering', this.collection.getState('sorting') === 'ordering');

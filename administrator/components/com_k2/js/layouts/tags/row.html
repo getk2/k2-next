@@ -1,9 +1,9 @@
-<li>
+<li class="small-1 large-1 columns">
     <label>
         <input data-action="toggle" name="id[]" value="<%= id %>" type="checkbox" />
     </label>
 </li>
-<li><a data-action="edit" href="<%= editLink %>"><%= name %></a></li>
-<li><a data-action="toggle-state" data-state-value="<%= state %>" data-state="state" data-id="<%= id %>"><%= state %></a></li>
-<li><%= items %></li>
-<li><%= id %></li>
+<li class="small-1 large-9 columns"><a data-action="edit" href="<%= editLink %>"><%= name %></a></li>
+<li class="small-1 large-2 columns"><a data-action="toggle-state" data-state-value="<%= state %>" data-state="state" data-id="<%= id %>"><%= state %></a></li>
+<li class="small-1 large-2 columns"><%= items %></li>
+<li class="small-1 large-2 columns"><%= id %></li>

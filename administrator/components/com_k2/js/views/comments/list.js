@@ -1,6 +1,6 @@
 define(['marionette', 'text!layouts/comments/list.html', 'text!layouts/comments/row.html', 'dispatcher'], function(Marionette, list, row, K2Dispatcher) {'use strict';
 	var K2ViewCommentsRow = Marionette.ItemView.extend({
-		tagName : 'tr',
+		tagName : 'ul',
 		template : _.template(row),
 		events : {
 			'click a[data-action="edit"]' : 'edit'
@@ -12,7 +12,7 @@ define(['marionette', 'text!layouts/comments/list.html', 'text!layouts/comments/
 	});
 	var K2ViewComments = Marionette.CompositeView.extend({
 		template : _.template(list),
-		itemViewContainer : 'tbody',
+		itemViewContainer : '[data-region="list"]',
 		itemView : K2ViewCommentsRow
 	});
 	return K2ViewComments;

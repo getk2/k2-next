@@ -1,6 +1,6 @@
 define(['marionette', 'text!layouts/extrafieldsgroups/list.html', 'text!layouts/extrafieldsgroups/row.html', 'dispatcher'], function(Marionette, list, row, K2Dispatcher) {'use strict';
 	var K2ViewExtraFieldsGroupsRow = Marionette.ItemView.extend({
-		tagName : 'tr',
+		tagName : 'ul',
 		template : _.template(row),
 		events : {
 			'click a[data-action="edit"]' : 'edit'
@@ -12,7 +12,7 @@ define(['marionette', 'text!layouts/extrafieldsgroups/list.html', 'text!layouts/
 	});
 	var K2ViewExtraFieldsGroups = Marionette.CompositeView.extend({
 		template : _.template(list),
-		itemViewContainer : 'tbody',
+		itemViewContainer : '[data-region="list"]',
 		itemView : K2ViewExtraFieldsGroupsRow
 	});
 	return K2ViewExtraFieldsGroups;
