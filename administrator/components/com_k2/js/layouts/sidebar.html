@@ -23,60 +23,61 @@
 		<% } %>
 		
 		<% if(!_.isEmpty(filters)) { %>
-		
-		<% if(filters.search) { %>
-		<div class="jw--sidebar--body">	
-			<div class="jw--search" data-role="filter">
-				<!-- <label for="<%- filters.search.id %>"><%= filters.search.label %></label> -->
-				<%= filters.search.input %>
-				<button class="right jw--search--button" type="button" data-action="search"> <i class="fa fa-search"></i></button>
+		<div data-region="filters">
+			<% if(filters.search) { %>
+			<div class="jw--sidebar--body">	
+				<div class="jw--search" data-role="filter">
+					<!-- <label for="<%- filters.search.id %>"><%= filters.search.label %></label> -->
+					<%= filters.search.input %>
+					<button class="right jw--search--button" type="button" data-action="search"> <i class="fa fa-search"></i></button>
+				</div>
 			</div>
-		</div>
-		<% } %>
-			
-		<div class="jw--filters" data-region="filters">
-			<div class="jw--filters--list">
-			
-			    <% _.each(filters, function(filter) { %>
-			    <% if(filter.id != 'search') { %>	    
-			    <div class="jw--filter" data-role="filter">
-			        
-			        <% if(filter.radio) { %>
-			        <label class="jw--radio--title">
-			        	<%= filter.label %>
-			        </label>
-			        
-			        <% } else { %>
-			        <label class="jw--radio" for="<%- filter.id %>">
-			        	<%= filter.label %>
-			        </label>
-			        <% } %>
-			        
-			        <%= filter.input %>
-			    </div>
-			  
-			    <% } %>
-		    <% }); %>
-			</div>
-			
-			<button id="jw--filters--reset" data-action="reset">
-				<%= l('K2_RESET') %> <i class="fa fa-minus-square"></i>
-			</button>
+			<% } %>
+				
+			<div class="jw--filters">
+				<div class="jw--filters--list">
+				
+				    <% _.each(filters, function(filter) { %>
+				    <% if(filter.id != 'search') { %>	    
+				    <div class="jw--filter" data-role="filter">
+				        
+				        <% if(filter.radio) { %>
+				        <label class="jw--radio--title">
+				        	<%= filter.label %>
+				        </label>
+				        
+				        <% } else { %>
+				        <label class="jw--radio" for="<%- filter.id %>">
+				        	<%= filter.label %>
+				        </label>
+				        <% } %>
+				        
+				        <%= filter.input %>
+				    </div>
+				  
+				    <% } %>
+			    <% }); %>
+				</div>
+				
+				<button id="jw--filters--reset" data-action="reset">
+					<%= l('K2_RESET') %> <i class="fa fa-minus-square"></i>
+				</button>
 
-		</div>			
-	
-		<div class="jw--pagination--mode">
-			<span><%= l('K2_VIEW_MODE') %></span>
-			
-			<label class="jw--radio jw--radio__smaller jw--label__first">
-				<span><%= l('K2_PAGINATION') %></span>
-				<input type="radio" name="viewMode" value="pagination" />
-			</label>
-			
-			<label class="jw--radio jw--radio__smaller jw--label__last">
-				<span><%= l('K2_INFINITE_SCROLLING') %></span>
-				<input type="radio" name="viewMode" value="scroll" />
-			</label>
+			</div>			
+		
+			<div class="jw--pagination--mode">
+				<span><%= l('K2_VIEW_MODE') %></span>
+				
+				<label class="jw--radio jw--radio__smaller jw--label__first">
+					<span><%= l('K2_PAGINATION') %></span>
+					<input type="radio" name="viewMode" value="pagination" />
+				</label>
+				
+				<label class="jw--radio jw--radio__smaller jw--label__last">
+					<span><%= l('K2_INFINITE_SCROLLING') %></span>
+					<input type="radio" name="viewMode" value="scroll" />
+				</label>
+			</div>
 		</div>
 		<% } %>
 	</div>
