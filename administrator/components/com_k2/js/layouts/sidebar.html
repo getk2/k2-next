@@ -6,9 +6,15 @@
 			<ul class="jw--inline--menu jw--inline--menu__icons text-center" data-region="menu-secondary">
 			    <% _.each(menu, function(link) { %>
 			    <li>
-			        <a <% _.each(link.attributes, function(value, name) { print(name + '="' + value + '" ');}) %>>
-			        
-			       		<%= link.name %>
+			        <a <% _.each(link.attributes, function(value, name) { print(name + '="' + value + '" ');}) %>> 
+				        <% if(link.id == 'settings') {
+							print('<i class="fa fa-cog"></i>');
+						} else if(link.id == 'information') {
+				        	print('<i class="fa fa-info-circle"></i>');
+				        } else if(link.id == 'help') {
+				        	print('<i class="fa fa-life-saver"></i>');
+				        } %>
+			       		<span><%= link.name %></span>
 			        </a>
 			    </li>
 			    <% }); %>
@@ -23,6 +29,7 @@
 			<div class="jw--search" data-role="filter">
 				<!-- <label for="<%- filters.search.id %>"><%= filters.search.label %></label> -->
 				<%= filters.search.input %>
+				<button class="right jw--search--button" type="button" data-action="search"> <i class="fa fa-search"></i></button>
 			</div>
 		</div>
 		<% } %>
@@ -57,7 +64,6 @@
 			</button>
 
 		</div>			
-
 	
 		<div class="jw--pagination--mode">
 			<span><%= l('K2_VIEW_MODE') %></span>
@@ -74,7 +80,6 @@
 		</div>
 		<% } %>
 	</div>
-	
 	
 	<div class="right jw--sidebar--handle"> 
 		<a class="jw--sidebar--toggle fa fa-navicon" href="#" ></a>
