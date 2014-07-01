@@ -77,6 +77,11 @@ img {-ms-interpolation-mode:bicubic; max-width: 100%; }
 	.jw label.jw--radio--title { display: inline-block; vertical-align: middle; font-size: 13px; font-weight: 700; min-width: 78px; height: 35px; line-height: 35px; padding: 0; color: #636b6e; }
 
 
+/* Circled radio buttons */
+.jw--radio__circled { width: 16px; height: 16px; border: 1px solid #636b6d; border-radius: 10px; background-color: #fff; display: inline-block; vertical-align: top; margin-right: 5px; line-height: 1; }
+	.jw--radio__circled .inner--circle { display: none; width: 8px; height: 8px; border-radius: 6px; background-color: #00afec; }
+	input[type="radio"]:checked ~ .jw--radio__circled .inner--circle { display: inline-block; }
+
 
 /* Semi transparent togglers (check buttons) */
 .jw--check--wrapper { position: absolute; display: inline-block; z-index: 4; left: 0; top: 0; background-color: #636b6e; background-color: rgba(50,50,50,.5); border-radius: 3px 0; padding: 12px; }
@@ -99,6 +104,7 @@ cursor: pointer; width: 16px; height: 16px; border: 1px solid #dbdcdc; border: 1
 	.jw--checkbox input[type="checkbox"]:checked {  }
 	.jw--checkbox .fa { display: none; color: #00afec; font-size: 16px; position: relative; z-index: 3; top: -2px; left: 1px; }
 	.jw--checkbox input[type="checkbox"]:checked ~ .fa { display: block; }
+
 
 /* 
 ---------------------------------
