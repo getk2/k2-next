@@ -1,5 +1,5 @@
 <h2><%= l('K2_REVISIONS') %></h2>
-<% if(!_.isEmpty(revisions)) { %>
+<% if(_.size(revisions) > 1) { %>
 <div data-role="revisions-timeline" style="width: 80%; margin:0 auto;"></div>
 
 <% if(leftRevision) { %>

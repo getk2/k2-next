@@ -26,28 +26,31 @@ define(['text!layouts/revisions/form.html', 'dispatcher', 'jqueryui', 'widgets/s
 		},
 		onDomRefresh : function() {
 
-			var el = this.$el.find('div[data-role="revisions-timeline"]');
-			var max = this.collection.models.length;
+			if (_.size(this.collection) > 2) {
+				var el = this.$el.find('div[data-role="revisions-timeline"]');
+				var max = this.collection.models.length;
 
-			// First fix jQuery UI/Mootools conflict
-			el[0].slide = null;
-			// Triggger the slider
-			el.slider({
-				min : 1,
-				max : max,
-				step : 1,
-				values : [max - 1, max]
-			});
+				// First fix jQuery UI/Mootools conflict
+				el[0].slide = null;
+				// Triggger the slider
+				el.slider({
+					min : 1,
+					max : max,
+					step : 1,
+					values : [max - 1, max]
+				});
 
-			var labels = [];
-			_.each(this.collection.models, function(revision) {
-				labels.push('<span>' + revision.get('user') + '</span><span>' + revision.get('date') + '</span>');
-			});
+				var labels = [];
+				_.each(this.collection.models, function(revision) {
+					labels.push('<span>' + revision.get('user') + '</span><span>' + revision.get('date') + '</span>');
+				});
 
-			el.slider('pips', {
-				rest : 'label',
-				labels : labels
-			});
+				el.slider('pips', {
+					rest : 'label',
+					labels : labels
+				});
+			}
+
 		},
 		// Serialize data for view
 		serializeData : function() {
