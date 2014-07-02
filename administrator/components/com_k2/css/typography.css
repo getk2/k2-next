@@ -90,6 +90,7 @@ img {-ms-interpolation-mode:bicubic; max-width: 100%; }
 /* Featured (star) and Published (check) toggle */
 a.jw--state--toggler { display: inline-block; vertical-align: middle; line-height: 1; font-size: 19px; }
 a.jw--state--toggler:first-child { margin-right: 5px; }
+	a.jw--state--toggler:hover { cursor: pointer; }
 	
 	/* specific toggles and active states */
 	a.jw--state--toggler__feat.toggler--active  { color: #f59331; }

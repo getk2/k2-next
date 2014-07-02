@@ -4,15 +4,23 @@
 /* Generic form styling */
 
 /* Item form styling */
-.jw--form__item { padding: 0 27px; }
+.jw--form__item { }
 
 
 /*------------------------------------------------------------------
 [Tabs] */
 ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; }
 	ul.jw--tabs li { display: inline-block; vertical-align: middle; }
-
-
+	
+/* top item navigation */
+.jw--tabs__top { background: #e4eaed; }
+	.jw--tabs__top li { margin-right: -2px; }
+	.jw--tabs__top a { display: inline-block; font-weight: 300; font-size: 20px; line-height: 1; padding: 20px; border-top: 3px solid transparent; border-left: 1px solid #dedfdf; }
+	.jw--tabs__top .fa { display: inline-block; vertical-align: middle; margin-right: 10px; }
+	.jw--tabs__top a.jw--tab__active { border-top-color: #00afec; background: #fff; }
+	.jw--tabs__top a.jw--tab__active .fa { color: #00afec; }
+	
+	.jw--pane__top {  padding: 0 27px; }
 
 /*------------------------------------------------------------------
 [Settings] */

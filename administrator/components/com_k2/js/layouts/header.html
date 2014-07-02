@@ -20,7 +20,7 @@
 		<ul class="right jw--inline--menu jw--main--menu" data-region="menu-primary">
 			
 		    <% var counter = 0; _.each(menu, function(link) { %>
-		    <% if(counter < 3) { %>
+		    <% if(counter < 4) { %>
 		    <li>
 		        <a <% _.each(link.attributes, function(value, name) { print(name + '="' + value + '" ');}) %>>
 		        <% if(link.id == 'items') {

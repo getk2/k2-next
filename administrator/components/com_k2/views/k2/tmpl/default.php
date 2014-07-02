@@ -10,13 +10,13 @@
 // no direct access
 defined('_JEXEC') or die ; ?>
 <div data-application="k2" class="jw">
-<div data-region="header"></div>
+<div class="jw--header" data-region="header"></div>
 
     <div class="left" data-region="sidebar"></div>
-    <div class="jw--component">
+    <div class="jw--transition jw--component">
 		<div class="jw--messages" data-region="messages"></div>
 				
-        <div data-region="subheader"></div>
+        <div class="jw--transition jw--subheader" data-region="subheader"></div>
         <div data-region="content"></div>
     </div>
     <div class="clr"></div>

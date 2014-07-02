@@ -15,8 +15,19 @@ h1.jw--logo { line-height: 0.8; padding: 15px 0 12px; font: 0/0 transparent; bac
 	
 	.com_k2 .subhead-collapse, .com_k2 header.header { display: none; position: absolute; clip: rect(0,0,0,0); }
 
-.jw--component { overflow: hidden; }
+.jw--component { overflow: hidden; padding-top: 109px; padding-left: 46px; padding-bottom:  28px; }
 
+/* Fixed layout */
+.jw--header { position: fixed; top: 30px; left: 0; width: 100%; z-index: 11; }
+.jw--sidebar { position: fixed; left: 0; top: 94px; bottom: 30px; background: #fff; z-index: 12; }
+.jw--subheader { position: fixed; top: 94px; left: 46px; right: 0; background: #fff; z-index: 10; border-bottom: 1px solid #ebebeb; }
+
+/* Fixed layout - opened layout */
+.open--sidebar {  }
+	.open--sidebar .jw--subheader { left: 300px; }
+	.open--sidebar .jw--component { padding-left: 300px; }
+	.open--sidebar .jw--pagination { left: 300px; }
+	
 /* menu fix */
 #module-menu #menu {z-index:9999;}
 
@@ -76,7 +87,7 @@ h1.jw--logo { line-height: 0.8; padding: 15px 0 12px; font: 0/0 transparent; bac
 	
 /*------------------------------------------------------------------
 [Pagination] - common */
-.jw--pagination { position:fixed; width: 100%; padding: 0 12px; background: #fff; z-index:9;bottom:29px;right:0;left:46px;width:auto; border-bottom:1px solid #dbdcdc; border-left: 1px solid #dbdcdc; box-shadow: 0 -1px 0 #dbdbdb, inset 0 1px 0 rgba(255,255,255,.7); height: 50px; }
+.jw--pagination { position:fixed; width: 100%; padding: 0 12px; background: #fff; z-index:9;bottom:29px;right:0;left:46px;width:auto; border-bottom:1px solid #dbdcdc; box-shadow: 0 -1px 0 #dbdbdb, inset 0 1px 0 rgba(255,255,255,.7); height: 50px; }
 	/* pagination pages */
 	.jw--pagination ul {list-style:none outside none; display:inline-block;vertical-align:top; margin:0;padding:0 50px;}
 	.jw--pagination ul li {display:inline-block;vertical-align:middle;border-top:3px solid transparent;font-weight:700;}

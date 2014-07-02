@@ -1,16 +1,15 @@
 /*------------------------------------------------------------------
 [Sidebar Styling] */
 
-.jw--sidebar { width: 300px; min-height: 600px; border-left: 1px solid #dbdcdc; /*top: 61px; bottom: 10px; */ left: 0; height: 100%; /*position: absolute;*/ position: relative; width: 46px; overflow: hidden; z-index: 9; }
-	.jw--sidebar--text { display: none; width:254px; overflow:auto; padding:0 0 20px ;height:100%; }
+.jw--sidebar { width: 300px; left: -254px; border-left: 1px solid #dbdcdc; overflow: hidden; z-index: 9; }
+	.jw--sidebar--text { width:254px; overflow:auto; padding:0 0 20px ;height:100%; }
 
 
 	/* opened state */
-	.jw--sidebar.jw--sidebar__open { width:300px; border-left:1px solid #dbdcdc; }
+	.jw--sidebar.jw--sidebar__open { left:0; border-left:1px solid #dbdcdc; }
 		.jw--sidebar.jw--sidebar__open .jw--sidebar--text { display: block; }
 
-	/* menu  -- navigation.css */
-	.jw--sidebar {  }
+	/* menu located -- navigation.css */
 
 	/* The handle/ toggler */
 	.jw--sidebar--handle { width:46px; height:100%; text-align:center; overflow:hidden; border-left:1px solid #dbdcdc; border-right:1px solid #dbdcdc;position:absolute;right:0;top:0;}
@@ -19,7 +18,7 @@
 		.jw--sidebar--handle .jw--sidebar--toggle:visited { color:#636b6e; width:32px; margin: 15px auto; font-size:19px; text-align:center; display:block;}
 
 /* Filters */
-.jw--sidebar .jw--filters { border-top: 1px solid #d0d0d0;position:absolute;left:0; padding: 13px 15px 0; bottom: 90px; width: 255px; }
+.jw--sidebar .jw--filters { border-top: 1px solid #d0d0d0;position:absolute;left:0; padding: 13px 15px 0; bottom: 102px; width: 255px; }
 
 	/* /\/\ */
 	.jw--sidebar .jw--filter { margin: 0 0 13px; }
@@ -30,13 +29,13 @@
 
 	/* pagination filters */
 	.jw--pagination--mode { position: absolute; border-top: 1px solid #dbdcdc; padding: 8px 6px; min-height: 45px;
-left: 0; bottom: 45px; width: 255px; }
+left: 0; bottom: 55px; width: 255px; }
 	.jw--pagination--mode input[type="radio"] { opacity: 0; }
 	.jw--pagination--mode > span { font-size: 11px; display: inline-block; vertical-align: middle; margin-right: 3px; }
 
 /* Layout switch */
-.jw--thumbsbar { position: absolute; left: 0; bottom: 0; width: 45px; height: 90px; }
-	button.jw--layout--btn { display: block; font-size: 19px; width: 45px; height: 45px; line-height: 45px; border-top: 1px solid #dbdcdc; margin: 0; padding: 0;  }
+.jw--thumbsbar { position: absolute; left: 0; bottom: 0; width: 45px; }
+	button.jw--layout--btn { display: block; font-size: 19px; width: 45px; height: 50px; line-height: 45px; border-top: 1px solid #dbdcdc; margin: 0; padding: 0;  }
 	button.jw--layout--btn .fa {  }
 	/* active layout */
 	button.jw--layout--btn:hover,
