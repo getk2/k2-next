@@ -29,7 +29,9 @@
 		        	print('<i class="fa fa-archive"></i>');
 		        } else if(link.id == 'tags') {
 		        	print('<i class="fa fa-tags"></i>');
-		        } %>
+		        } else if(link.id == 'comments') {
+					print('<i class="fa fa-comments"></i>'); 
+				} %>
 		        	<%= link.name %>
 		        </a>
 		    </li>
@@ -39,7 +41,7 @@
 		    	<span class="jw--sep"><i class="fa fa-asterisk"></i> <%= l('K2_MORE') %></span>
 		    	<ul>
 		    		<% var counter = 0; _.each(menu, function(link) { %>
-		    			<% if(counter > 2) { %>
+		    			<% if(counter > 3) { %>
 		    				<li>
 		    					<a <% _.each(link.attributes, function(value, name) { print(name + '="' + value + '" ');}) %>>
 		    						<% if(link.id == 'tags') {
@@ -52,8 +54,6 @@
 							        	print('<i class="fa fa-gears"></i>');
 							        } else if(link.id == 'extrafieldsgroups') {
 							        	print('<i class="fa fa-briefcase"></i>');
-							        } else if(link.id == 'comments') {
-							        	print('<i class="fa fa-comments"></i>'); 
 							        }  else if(link.id == 'media') {
 							        	print('<i class="fa fa-photo"></i>'); 
 							        } %>
