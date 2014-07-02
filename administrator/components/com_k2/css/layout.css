@@ -1,7 +1,10 @@
 .jw *,.jw *:before,.jw *:after{ -webkit-box-sizing:border-box; -moz-box-sizing:border-box; box-sizing:border-box; }
+
+/* reusable classes */
 .fixed--width{ max-width: 990px; }
 .clr { clear: both; }
 .jw--inline__bl { display: inline-block; vertical-align: middle; }
+.jw--wauto { width: auto; }
 
 h1.jw--logo { line-height: 0.8; padding: 15px 0 12px; font: 0/0 transparent; background: url(img/logo_66x26.png) no-repeat 0 0; width: 66px; height: 26px; margin-top: 16px; }
 	.jw--logo img, .jw--logo span { display: inline-block; vertical-align: bottom; }
