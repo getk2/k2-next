@@ -1,8 +1,8 @@
 /*------------------------------------------------------------------
 [Sidebar Styling] */
 
-.jw--sidebar { width: 300px; left: -254px; border-left: 1px solid #dbdcdc; overflow: hidden; z-index: 9; }
-	.jw--sidebar--text { width:254px; overflow:auto; padding:0 0 20px ;height:100%; }
+.jw--sidebar { width: 320px; left: -274px; border-left: 1px solid #dbdcdc; overflow: hidden; }
+	.jw--sidebar--text { width:274px; overflow:auto; padding:0 0 20px ;height:100%; }
 
 
 	/* opened state */
@@ -18,7 +18,7 @@
 		.jw--sidebar--handle .jw--sidebar--toggle:visited { color:#636b6e; width:32px; margin: 15px auto; font-size:19px; text-align:center; display:block;}
 
 /* Filters */
-.jw--sidebar .jw--filters { border-top: 1px solid #d0d0d0;position:absolute;left:0; padding: 13px 15px 0; bottom: 102px; width: 255px; }
+.jw--sidebar .jw--filters { border-top: 1px solid #d0d0d0;position:absolute;left:0; padding: 13px 15px 0; bottom: 102px; width: 275px; }
 
 	/* /\/\ */
 	.jw--sidebar .jw--filter { margin: 0 0 13px; }

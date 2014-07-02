@@ -19,14 +19,14 @@ h1.jw--logo { line-height: 0.8; padding: 15px 0 12px; font: 0/0 transparent; bac
 
 /* Fixed layout */
 .jw--header { position: fixed; top: 30px; left: 0; width: 100%; z-index: 11; }
-.jw--sidebar { position: fixed; left: 0; top: 94px; bottom: 30px; background: #fff; z-index: 12; }
+.jw--sidebar { position: fixed; left: 0; top: 94px; bottom: 30px; background: #fff; z-index: 1031; }
 .jw--subheader { position: fixed; top: 94px; left: 46px; right: 0; background: #fff; z-index: 10; border-bottom: 1px solid #ebebeb; }
 
 /* Fixed layout - opened layout */
 .open--sidebar {  }
-	.open--sidebar .jw--subheader { left: 300px; }
-	.open--sidebar .jw--component { padding-left: 300px; }
-	.open--sidebar .jw--pagination { left: 300px; }
+	.open--sidebar .jw--subheader { left: 320px; }
+	.open--sidebar .jw--component { padding-left: 320px; }
+	.open--sidebar .jw--pagination { left: 320px; }
 	
 /* menu fix */
 #module-menu #menu {z-index:9999;}
@@ -78,6 +78,7 @@ h1.jw--logo { line-height: 0.8; padding: 15px 0 12px; font: 0/0 transparent; bac
 	.jw--toolbar--actions { list-style: none outside none; margin: 0; padding: 4px 0; font-size: 12px; }
 	.jw--toolbar--actions li { display: inline-block; vertical-align: middle; margin: 0 14px; color: #636a6f; }
 	.jw--toolbar--actions .fa { display: inline-block; vertical-align: middle; font-size: 18px; margin-right: 3px; }
+	.jw--toolbar--actions span { display: inline-block; vertical-align: middle; }
 	.jw--toolbar--actions button { color: #636a6f; padding: 0; line-height: 1; }
 	.jw--toolbar--actions button:hover { color: #00afec; }
 	
@@ -88,6 +89,8 @@ h1.jw--logo { line-height: 0.8; padding: 15px 0 12px; font: 0/0 transparent; bac
 /*------------------------------------------------------------------
 [Pagination] - common */
 .jw--pagination { position:fixed; width: 100%; padding: 0 12px; background: #fff; z-index:9;bottom:29px;right:0;left:46px;width:auto; border-bottom:1px solid #dbdcdc; box-shadow: 0 -1px 0 #dbdbdb, inset 0 1px 0 rgba(255,255,255,.7); height: 50px; }
+	.jw--pagination.jw--infinite { left: auto; right: 0; border-left: 1px solid #dbdcdc; padding: 15px; }
+	
 	/* pagination pages */
 	.jw--pagination ul {list-style:none outside none; display:inline-block;vertical-align:top; margin:0;padding:0 50px;}
 	.jw--pagination ul li {display:inline-block;vertical-align:middle;border-top:3px solid transparent;font-weight:700;}

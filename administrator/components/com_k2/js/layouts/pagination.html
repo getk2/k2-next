@@ -1,4 +1,4 @@
-<div class="text-center jw--transition jw--pagination">
+<div class="text-center jw--transition jw--pagination <% if(mode != 'pagination') { print('jw--infinite') } %>">
 	
 	<% if(mode == 'pagination') { %>
 	
@@ -13,7 +13,7 @@
         </select>
     </div>
     
-    <% if(pagesTotal > 1) { %>
+    
     <div class="right jw--total">
 		<span class="jw--inline__bl jw--total--block">
 			<%= l('K2_PAGE') %> <strong><%= pagesCurrent %></strong> <%= l('K2_OF') %> <strong> <%= pagesTotal %> </strong>
@@ -24,25 +24,26 @@
 		</span>
     </div>
     
+    <% if(pagesTotal > 1) { %>
     <ul>
         <li>
             <a data-page="1" href="#<%= link %>/page/1"><%= l('K2_START') %></a>
         </li>
-        <% if((pagesCurrent - 1) > 0) { %>
+        
         <li>
             <a data-page="previous" href="#<%= link %>/page/<%= pagesCurrent-1 %>"><%= l('K2_PREVIOUS') %></a>
         </li>
-        <% } %>
+        
         <% for(i=pagesStart; i <= pagesStop; i++){ %>
         <li <% if(pagesCurrent == i) { %> class="active" <% } %>>
             <a data-page="<%= i %>" href="#<%= link %>/page/<%= i %>"><%= i %></a>
         </li>
         <% } %>
-        <% if((pagesCurrent + 1) <= pagesTotal) { %>
+        
         <li>
             <a data-page="next" href="#<%= link %>/page/<%= pagesCurrent + 1 %>"><%= l('K2_NEXT') %></a>
         </li>
-        <% } %>
+
         <li>
             <a data-page="<%= pagesTotal %>" href="#<%= link %>/page/<%= pagesTotal %>"><%= l('K2_END') %></a>
         </li>
