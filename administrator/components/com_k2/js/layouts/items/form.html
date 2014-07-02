@@ -1,4 +1,4 @@
-<form>
+<form class="jw--form jw--form__item">
 <!-- Example tags markup
 	<div data-widget="tabs">
 		<ul data-role="tabs-navigation">
@@ -11,178 +11,227 @@
 		</div>
 	</div>
 -->
+<div data-widget="tabs">
 
-    <label for="title"><%= l('K2_TITLE') %></label>
-    <input type="text" name="title" id="title" value="<%- row.title %>" />
-
-    <label for="alias"><%= l('K2_ALIAS') %></label>
-    <input type="text" name="alias" id="alias" value="<%- row.alias %>" />
-
-    <label for="catid"><%= l('K2_CATEGORY') %></label>
-    <%= form.category %>
-
-    <% if(row.canEditState) { %>
-    <label><%= l('K2_STATE') %></label>
-    <%= form.state %>
-    <% } %>
-
-    <% if(row.canEditFeaturedState) { %>
-    <label><%= l('K2_FEATURED') %></label>
-    <label> <%= l('K2_YES') %>
-        <input type="radio" name="featured" value="1"/>
-    </label>
-    <label> <%= l('K2_NO') %>
-        <input type="radio" name="featured" value="0" />
-    </label>
-    <% } %>
-
-    <label for="access"><%= l('K2_ACCESS') %></label>
-    <%= form.access %>
-
-    <label for="language"><%= l('K2_LANGUAGE') %></label>
-    <%= form.language %>
-
-    <label for="created_by_alias"><%= l('K2_AUTHOR_ALIAS') %></label>
-    <input id="created_by_alias" type="text" name="created_by_alias" value="<%- row.created_by_alias %>" />
-    
-    <label for="created_by_alias_url"><%= l('K2_AUTHOR_ALIAS_URL') %></label>
-    <input id="created_by_alias_url" type="text" name="created_by_alias_url" value="<%- row.created_by_alias_url %>" />
-
-    <label for="createdDate"><%= l('K2_CREATED_DATE') %></label>
-    <input id="createdDate" data-widget="datepicker" type="text" name="createdDate" value="<%- row.createdDate %>" />
-    <label for="createdTime"><%= l('K2_CREATED_TIME') %></label>
-    <input id="createdTime" data-widget="timepicker" type="text" name="createdTime" value="<%- row.createdTime %>" />
-
-    <div>
-        <span><%= l('K2_MODIFIED_DATE') %></span>
-        <span><%= row.modifiedOn %></span>
-    </div>
-
-    <label for="publishUpDate"><%= l('K2_START_PUBLISHING_DATE') %></label>
-    <input data-widget="datepicker" id="publishUpDate" type="text" name="publishUpDate" value="<%- row.publishUpDate %>" />
-
-    <label for="publishUpTime"><%= l('K2_START_PUBLISHING_TIME') %></label>
-    <input data-widget="timepicker" id="publishUpTime" type="text" name="publishUpTime" value="<%- row.publishUpTime %>" />
-
-    <label for="publishDownDate"><%= l('K2_FINISH_PUBLISHING_DATE') %></label>
-    <input data-widget="datepicker" id="publishDownDate" type="text" name="publishDownDate" value="<%- row.publishDownDate %>" />
-
-    <label for="publishDownTime"><%= l('K2_FINISH_PUBLISHING_TIME') %></label>
-    <input data-widget="timepicker" id="publishDownTime" type="text" name="publishDownTime" value="<%- row.publishDownTime %>" />
-
-    <label for="startDate"><%= l('K2_START_DATE') %></label>
-    <input data-widget="datepicker" id="startDate" type="text" name="startDate" value="<%- row.startDate %>" />
-
-    <label for="startTime"><%= l('K2_START_TIME') %></label>
-    <input data-widget="timepicker" id="startTime" type="text" name="startTime" value="<%- row.startTime %>" />
-
-    <label for="endDate"><%= l('K2_END_DATE') %></label>
-    <input data-widget="datepicker" id="endDate" type="text" name="endDate" value="<%- row.endDate %>" />
-
-    <label for="endTime"><%= l('K2_END_TIME') %></label>
-    <input data-widget="timepicker" id="endTime" type="text" name="endTime" value="<%- row.endTime %>" />
-
-    <label><%= l('K2_AUTHOR') %></label>
-    <input data-widget="user" data-min="1" data-name="<%- row.authorName %>" type="hidden" name="created_by" value="<%- row.created_by %>" />
-
-    <div>
-        <span><%= l('K2_MODERATOR') %></span>
-        <span><%= row.moderatorName %></span>
-    </div>
-
-	<% if(form.text) { %>
-    <label for="text"><%= l('K2_TEXT') %></label>
-    <%= form.text %>
-    <% } else { %>
-    <label for="introtext"><%= l('K2_INTROTEXT') %></label>
-    <%= form.introtext %>
-    <label for="fulltext"><%= l('K2_FULLTEXT') %></label>
-    <%= form.fulltext %>
-    <% } %>
-    
-    <% _.each(form.k2Plugins['items-content'], function(field) { %>
-    	<%= field.label %>
-		<%= field.input %>
-	<% }); %>
-
-    <!-- Tags -->
-    <h2><%= l('K2_TAGS') %></h2>
-    <input data-widget="tags" data-create="<%- row.canCreateTag %>" value="<%- row.tagsValue %>" type="hidden" name="tags" />
-
-    <!-- Image -->
-    <div data-region="item-image"></div>
-    
-    <% _.each(form.k2Plugins['items-image'], function(field) { %>
-    	<%= field.label %>
-		<%= field.input %>
-	<% }); %>
-
-    <!-- Attachments -->
-    <div data-region="item-attachments"></div>
-    
-    <% _.each(form.k2Plugins['items-attachments'], function(field) { %>
-    	<%= field.label %>
-		<%= field.input %>
-	<% }); %>
-
-    <!-- Galleries -->
-    <div data-region="item-galleries"></div>
-    
-    <% _.each(form.k2Plugins['items-galleries'], function(field) { %>
-    	<%= field.label %>
-		<%= field.input %>
-	<% }); %>
-
-    <!-- Media -->
-    <div data-region="item-media"></div>
-    
-    <% _.each(form.k2Plugins['items-media'], function(field) { %>
-    	<%= field.label %>
-		<%= field.input %>
-	<% }); %>
-
-    <!-- Extra Fields -->
-    <div data-region="item-extra-fields"></div>
-    
-    <% _.each(form.k2Plugins['items-extra-fields'], function(field) { %>
-    	<%= field.label %>
-		<%= field.input %>
-	<% }); %>
-    
-    <!-- Revisions -->
-    <div data-region="item-revisions"></div>
-    
-    <label for="notes"><%= l('K2_REVISION_NOTES') %></label>
-	<input type="text" name="notes" id="notes" value="" />
-
-    <input type="hidden" name="id" value="<%- row.id %>" / >
-
-    <% _.each(form.jform, function(field) { %>
-    <%= field.label %>
-    <%= field.input %>
-    <% }); %>
-    
-    <h2><%= l('K2_METADATA') %></h2>
-    <% _.each(form.metadata, function(field) { %>
-    <%= field.label %>
-    <%= field.input %>
-    <% }); %>
-    
-    <h2><%= l('K2_LISTING_OPTIONS') %></h2>
-    <% _.each(form.listingOptions, function(field) { %>
-    <%= field.label %>
-    <%= field.input %>
-    <% }); %>
-    
-    <h2><%= l('K2_ITEM_OPTIONS') %></h2> 
-    <% _.each(form.itemOptions, function(field) { %>
-    <%= field.label %>
-    <%= field.input %>
-    <% }); %>
-    
-    <h2><%= l('K2_PERMISSIONS') %></h2> 
-    <% _.each(form.permissions, function(field) { %>
-    <%= field.label %>
-    <%= field.input %>
-    <% }); %>
+	<ul class="jw--tabs jw--tabs__top" data-role="tabs-navigation">
+		<li><a href="#">Basic</a></li>
+		<li><a href="#">Meatada &amp; Publishing</a></li>
+		<li><a href="#">Display Settings</a></li>
+		<li><a href="#">Permissions</a></li>
+	</ul>
+	
+	<div data-role="tabs-content">
+		<div>
+		    <label for="title"><%= l('K2_TITLE') %></label>
+		    <input type="text" name="title" id="title" value="<%- row.title %>" />
+		
+		    <label for="alias"><%= l('K2_ALIAS') %></label>
+		    <input type="text" name="alias" id="alias" value="<%- row.alias %>" />
+		
+		    <label for="catid"><%= l('K2_CATEGORY') %></label>
+		    <%= form.category %>
+		
+		    <% if(row.canEditState) { %>
+		    <label><%= l('K2_STATE') %></label>
+		    <%= form.state %>
+		    <% } %>
+		
+		    <% if(row.canEditFeaturedState) { %>
+		    <label><%= l('K2_FEATURED') %></label>
+		    <label> <%= l('K2_YES') %>
+		        <input type="radio" name="featured" value="1"/>
+		    </label>
+		    <label> <%= l('K2_NO') %>
+		        <input type="radio" name="featured" value="0" />
+		    </label>
+		    <% } %>
+		
+		    <label for="access"><%= l('K2_ACCESS') %></label>
+		    <%= form.access %>
+		
+		    <label for="language"><%= l('K2_LANGUAGE') %></label>
+		    <%= form.language %>
+		
+		    <label for="created_by_alias"><%= l('K2_AUTHOR_ALIAS') %></label>
+		    <input id="created_by_alias" type="text" name="created_by_alias" value="<%- row.created_by_alias %>" />
+		    
+		    <label for="created_by_alias_url"><%= l('K2_AUTHOR_ALIAS_URL') %></label>
+		    <input id="created_by_alias_url" type="text" name="created_by_alias_url" value="<%- row.created_by_alias_url %>" />
+		
+		    <label for="createdDate"><%= l('K2_CREATED_DATE') %></label>
+		    <input id="createdDate" data-widget="datepicker" type="text" name="createdDate" value="<%- row.createdDate %>" />
+		    <label for="createdTime"><%= l('K2_CREATED_TIME') %></label>
+		    <input id="createdTime" data-widget="timepicker" type="text" name="createdTime" value="<%- row.createdTime %>" />
+		
+		    <div>
+		        <span><%= l('K2_MODIFIED_DATE') %></span>
+		        <span><%= row.modifiedOn %></span>
+		    </div>
+		
+		    <label for="publishUpDate"><%= l('K2_START_PUBLISHING_DATE') %></label>
+		    <input data-widget="datepicker" id="publishUpDate" type="text" name="publishUpDate" value="<%- row.publishUpDate %>" />
+		
+		    <label for="publishUpTime"><%= l('K2_START_PUBLISHING_TIME') %></label>
+		    <input data-widget="timepicker" id="publishUpTime" type="text" name="publishUpTime" value="<%- row.publishUpTime %>" />
+		
+		    <label for="publishDownDate"><%= l('K2_FINISH_PUBLISHING_DATE') %></label>
+		    <input data-widget="datepicker" id="publishDownDate" type="text" name="publishDownDate" value="<%- row.publishDownDate %>" />
+		
+		    <label for="publishDownTime"><%= l('K2_FINISH_PUBLISHING_TIME') %></label>
+		    <input data-widget="timepicker" id="publishDownTime" type="text" name="publishDownTime" value="<%- row.publishDownTime %>" />
+		
+		    <label for="startDate"><%= l('K2_START_DATE') %></label>
+		    <input data-widget="datepicker" id="startDate" type="text" name="startDate" value="<%- row.startDate %>" />
+		
+		    <label for="startTime"><%= l('K2_START_TIME') %></label>
+		    <input data-widget="timepicker" id="startTime" type="text" name="startTime" value="<%- row.startTime %>" />
+		
+		    <label for="endDate"><%= l('K2_END_DATE') %></label>
+		    <input data-widget="datepicker" id="endDate" type="text" name="endDate" value="<%- row.endDate %>" />
+		
+		    <label for="endTime"><%= l('K2_END_TIME') %></label>
+		    <input data-widget="timepicker" id="endTime" type="text" name="endTime" value="<%- row.endTime %>" />
+		
+		    <label><%= l('K2_AUTHOR') %></label>
+		    <input data-widget="user" data-min="1" data-name="<%- row.authorName %>" type="hidden" name="created_by" value="<%- row.created_by %>" />
+		
+		    <div>
+		        <span><%= l('K2_MODERATOR') %></span>
+		        <span><%= row.moderatorName %></span>
+		    </div>
+		
+		    <% _.each(form.k2Plugins['items-content'], function(field) { %>
+		    	<%= field.label %>
+				<%= field.input %>
+			<% }); %>
+		
+		    <!-- Tags -->
+		    <h2><%= l('K2_TAGS') %></h2>
+		    <input data-widget="tags" data-create="<%- row.canCreateTag %>" value="<%- row.tagsValue %>" type="hidden" name="tags" />
+		    
+		    <!-- Editor Tabs -->
+			<div data-widget="tabs">
+				<ul class="jw--tabs jw--tabs__content" data-role="tabs-navigation">
+					<li><a href="#">Content</a></li>
+					<li><a href="#">Image</a></li>
+					<li><a href="#">Galleries</a></li>
+					<li><a href="#">Media</a></li>
+					<li><a href="#">Extra Fields</a></li>
+					<li><a href="#">Attachments</a></li>
+				</ul>
+					
+				<div class="jw--pane jw--pane__content" data-role="tabs-content">
+					<!-- Content -->
+					<div>
+						<% if(form.text) { %>
+					    <label for="text"><%= l('K2_TEXT') %></label>
+					    <%= form.text %>
+					    <% } else { %>
+					    <label for="introtext"><%= l('K2_INTROTEXT') %></label>
+					    <%= form.introtext %>
+					    <label for="fulltext"><%= l('K2_FULLTEXT') %></label>
+					    <%= form.fulltext %>
+					    <% } %>
+					</div>
+					
+					<!-- Image -->
+					<div>
+					    <div data-region="item-image"></div>
+					    <% _.each(form.k2Plugins['items-image'], function(field) { %>
+					    	<%= field.label %>
+							<%= field.input %>
+						<% }); %>
+					</div>
+					
+					<!-- Galleries -->
+					<div>
+					    <div data-region="item-galleries"></div>
+					    
+					    <% _.each(form.k2Plugins['items-galleries'], function(field) { %>
+					    	<%= field.label %>
+							<%= field.input %>
+						<% }); %>
+					</div>
+				
+				    <!-- Media -->
+				    <div>
+					    <div data-region="item-media"></div>
+					    
+					    <% _.each(form.k2Plugins['items-media'], function(field) { %>
+					    	<%= field.label %>
+							<%= field.input %>
+						<% }); %>
+					</div>
+				
+				    <!-- Extra Fields -->
+				    <div>
+					    <div data-region="item-extra-fields"></div>
+					    
+					    <% _.each(form.k2Plugins['items-extra-fields'], function(field) { %>
+					    	<%= field.label %>
+							<%= field.input %>
+						<% }); %>
+					</div>
+		
+					<!-- Attachments -->
+					<div>
+					    <div data-region="item-attachments"></div>
+					    <% _.each(form.k2Plugins['items-attachments'], function(field) { %>
+					    	<%= field.label %>
+							<%= field.input %>
+						<% }); %>
+					</div>	
+				</div>
+				
+		    </div>
+		    
+		    <!-- Revisions -->
+		    <div data-region="item-revisions"></div>
+		    
+		    <label for="notes"><%= l('K2_REVISION_NOTES') %></label>
+			<input type="text" name="notes" id="notes" value="" />
+		
+		    <input type="hidden" name="id" value="<%- row.id %>" / >
+		</div>
+			
+			
+			<!-- Item Options -->
+			<div>
+			    <% _.each(form.jform, function(field) { %>
+			    <%= field.label %>
+			    <%= field.input %>
+			    <% }); %>
+			    
+			    <h2><%= l('K2_METADATA') %></h2>
+			    <% _.each(form.metadata, function(field) { %>
+			    <%= field.label %>
+			    <%= field.input %>
+			    <% }); %>
+			</div>  
+			
+			<div class="jw--options">  
+			    <h2><%= l('K2_LISTING_OPTIONS') %></h2>
+			    <% _.each(form.listingOptions, function(field) { %>
+			    <%= field.label %>
+			    <%= field.input %>
+			    <% }); %>
+			    
+			    <h2><%= l('K2_ITEM_OPTIONS') %></h2> 
+			    <% _.each(form.itemOptions, function(field) { %>
+			    <%= field.label %>
+			    <%= field.input %>
+			    <% }); %>
+			</div>
+			
+			<div>
+			    <h2><%= l('K2_PERMISSIONS') %></h2> 
+			    <% _.each(form.permissions, function(field) { %>
+			    <%= field.label %>
+			    <%= field.input %>
+			    <% }); %>
+	    	</div>
+	    	
+	    	
+    	</div>
+	</div>
 </form>

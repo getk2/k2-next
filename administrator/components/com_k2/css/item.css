@@ -1,0 +1,23 @@
+/*------------------------------------------------------------------
+[Item Form] */
+
+/* Generic form styling */
+
+/* Item form styling */
+.jw--form__item { padding: 0 27px; }
+
+
+/*------------------------------------------------------------------
+[Tabs] */
+ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; }
+	ul.jw--tabs li { display: inline-block; vertical-align: middle; }
+
+
+
+/*------------------------------------------------------------------
+[Settings] */
+
+.jw--options {  }
+	.jw--options h2 {  }
+	.jw--options label {  }
+	.jw--options input[type="radio"] {  }
