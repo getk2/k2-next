@@ -1,0 +1,42 @@
+<div class="jw--listed--items">
+		<ul class="jw--items--header">
+
+            <li class="small-4 large-1 columns">
+            	<label title="<%- l('K2_SELECT_ALL') %>" class="jw--checkbox">
+                    <input data-action="toggle-all" type="checkbox" />
+                    <i class="fa fa-check"></i>
+                </label>
+            </li>
+            
+            <li class="small-4 large-4 columns">
+            	<a data-action="sort" data-sorting="title"><%= l('K2_TITLE') %></a>
+            </li>
+            
+            <li class="text-center small-4 large-1 columns">
+	            <i class="fa fa-arrows"></i>
+            </li>
+                        
+            <li class="small-4 large-1 columns">
+                <a data-action="sort" data-sorting="featured_ordering"><%= l('K2_FEATURED_ORDER') %></a>
+                <button data-column="featured_ordering" data-action="save-ordering" disabled="disabled">
+                    <i class="fa fa-save"></i>
+                    <i class="visuallyhidden"><%= l('K2_SAVE_ORDER') %></i>
+                </button>
+            </li>
+            
+            <li class="text-center small-4 large-1 columns"><a data-action="sort" data-sorting="state.reverse"><%= l('K2_STATE') %></a></li>
+            <li class="text-center small-4 large-1 columns"><a data-action="sort" data-sorting="featured.reverse"><%= l('K2_FEATURED') %></a></li>
+            <li class="small-4 large-1 columns"><a data-action="sort" data-sorting="category"><%= l('K2_CATEGORY') %></a></li>
+            <li class="small-4 large-1 columns"><a data-action="sort" data-sorting="author"><%= l('K2_AUTHOR') %></a></li>
+            <li class="small-4 large-1 columns"><a data-action="sort" data-sorting="access"><%= l('K2_ACCESS') %> </a></li>
+            <li class="small-4 large-1 columns"><a data-action="sort" data-sorting="created.reverse"><%= l('K2_CREATED') %> </a></li>
+            <li class="small-4 large-1 columns"><a data-action="sort" data-sorting="modified.reverse"><%= l('K2_MODIFIED') %></a></li>
+            <li class="small-4 large-1 columns"><a data-action="sort" data-sorting="hits.reverse"><%= l('K2_HITS') %></a></li>
+            <li class="small-4 large-1 columns"><a data-action="sort" data-sorting="language"><%= l('K2_LANGUAGE') %></a></li>
+			<!--<li><%= l('K2_IMAGE') %></li>-->
+            <!--<li><a data-action="sort" data-sorting="id"><%= l('K2_ID') %></a></li>-->
+
+		</ul>
+		
+    <ul data-region="list"></ul>
+</div>

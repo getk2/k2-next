@@ -13,6 +13,7 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session'], fun
 			'change [data-region="filters"] input' : 'filter',
 			'change [data-region="filters"] select' : 'filter',
 			'click [data-action="reset"]' : 'resetFilters',
+			'click [data-action="set-layout"]' : 'setLayout',
 			'change input[name="viewMode"]' : 'setViewMode'
 		},
 
@@ -36,6 +37,9 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session'], fun
 				}
 			}, this));
 			var viewMode = K2Session.get('view.mode', 'pagination');
+			this.$('input[name="viewMode"][value="' + viewMode + '"]').prop('checked', true);
+			var itemsLayout = K2Session.get('items.layout', 'default');
+			this.$('[data-layout="' + itemsLayout + '"]').addClass('jw--layout-btn__active');
 			this.$('input[name="viewMode"][value="' + viewMode + '"]').prop('checked', true);
 		},
 
@@ -74,6 +78,14 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session'], fun
 			event.preventDefault();
 			var mode = jQuery('input[name="viewMode"]:checked').val();
 			K2Dispatcher.trigger('app:pagination:mode', mode);
+		},
+
+		setLayout : function(event) {
+			event.preventDefault();
+			var layout = jQuery(event.currentTarget).data('layout');
+			this.$('[data-layout]').removeClass('jw--layout-btn__active');
+			this.$('[data-layout="' + layout + '"]').addClass('jw--layout-btn__active');
+			K2Dispatcher.trigger('app:items:layout', layout);
 		}
 	});
 

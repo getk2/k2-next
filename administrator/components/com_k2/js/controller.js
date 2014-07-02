@@ -90,6 +90,11 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 				this.browseServer(options);
 			}, this);
 
+			// Listener for items layout event
+			K2Dispatcher.on('app:items:layout', function(layout) {
+				this.view.trigger('setLayout', layout);
+			}, this);
+
 		},
 
 		// Executes the request based on the URL.
@@ -164,7 +169,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 					success : _.bind(function() {
 
 						// Create view
-						var view = new View({
+						this.view = new View({
 							collection : this.collection,
 							isModal : this.isModal
 						});
@@ -177,13 +182,13 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 						paginationModel.set('link', this.resource);
 
 						// Create the pagination view
-						var pagination = new Pagination({
+						this.pagination = new Pagination({
 							model : paginationModel
 						});
 
 						// Create the layout
 						var layout = new Layout();
-						
+
 						// Reset messages
 						K2Dispatcher.trigger('app:messages:reset');
 
@@ -191,8 +196,8 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 						K2Dispatcher.trigger('app:region:show', layout, 'content');
 
 						// Render views to the layout
-						layout.grid.show(view);
-						layout.pagination.show(pagination);
+						layout.grid.show(this.view);
+						layout.pagination.show(this.pagination);
 
 						// Update the URL without triggering the router function
 						this.redirect(this.resource + '/page/' + this.collection.getState('page'), false);
@@ -227,7 +232,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 						this.view = new View({
 							model : this.model
 						});
-						
+
 						// Reset messages
 						K2Dispatcher.trigger('app:messages:reset');
 
@@ -250,7 +255,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 
 		// Save function. Saves the model and redirects properly.
 		save : function(redirect, callback) {
-			
+
 			// Reset messages
 			K2Dispatcher.trigger('app:messages:reset');
 
