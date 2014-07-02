@@ -1,17 +1,36 @@
 <h2><%= l('K2_REVISIONS') %></h2>
 <% if(_.size(revisions) > 1) { %>
-<div data-role="revisions-timeline" style="width: 80%; margin:0 auto;"></div>
+<div data-role="revisions-timeline" style="width: 90%; margin:100px auto;"></div>
 
-<% if(leftRevision) { %>
-<div>
-	<span><%= leftRevision.get('user') %></span>
-	<span><%= leftRevision.get('date') %></span>
-	<button data-action="restore-revision"><%= l('K2_RESTORE_THIS_REVISION') %></button>
-	
-	<div><%= l('K2_TITLE') %> <%= leftRevision.get('data').title %></div>
-	<div><%= l('K2_INTROTEXT') %> <%= leftRevision.get('data').introtext %></div>
-	<div><%= l('K2_FULLTEXT') %> <%= leftRevision.get('data').fulltext %></div>
-	
-</div>
-<% } %>
+
+<table style="width: 100%;">
+	<tr>
+		<td>
+			<span><%= l('K2_FROM_REVISION') %></span>
+			<span><%= leftRevision.get('user') %></span>
+			<span><%= leftRevision.get('date') %></span>
+			<span><%= leftRevision.get('notes') %></span>
+			<button data-action="restore-revision" data-id="<%- leftRevision.get('id') %>"><%= l('K2_RESTORE_THIS_REVISION') %></button>
+		</td>
+		<td>
+			<span><%= l('K2_TO_REVISION') %></span>
+			<span><%= rightRevision.get('user') %></span>
+			<span><%= rightRevision.get('date') %></span>
+			<span><%= rightRevision.get('notes') %></span>
+			<button data-action="restore-revision" data-id="<%- rightRevision.get('id') %>"><%= l('K2_RESTORE_THIS_REVISION') %></button>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<!-- Note that mergely requires id in order to work -->
+			<div id="k2-compare-title"></div>
+			<div id="k2-compare-introtext"></div>
+			<div id="k2-compare-fulltext"></div>
+		</td>
+	</tr>
+</table>
+
+
+
+
 <% } %>
