@@ -2,8 +2,10 @@
 
     <ul class="jw--items--header">
     
-        <li class="small-1 large-1 columns"><label title="<%- l('K2_SELECT_ALL') %>">
+        <li class="small-1 large-1 columns">
+        	<label title="<%- l('K2_SELECT_ALL') %>" class="jw--checkbox">
                 <input data-action="toggle-all" type="checkbox" />
+                <i class="fa fa-check"></i>
             </label>
         </li>
         <li class="small-1 large-2 columns"><a data-action="sort" data-sorting="name"><%= l('K2_NAME') %></a></li>

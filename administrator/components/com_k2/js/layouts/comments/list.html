@@ -1,8 +1,11 @@
 <div class="jw--listed--items">
     <ul class="jw--items--header">
-        <li class="small-1 large-1 columns"><label title="<%- l('K2_SELECT_ALL') %>">
-            <input data-action="toggle-all" type="checkbox" />
-        </label></li>
+        <li class="small-1 large-1 columns">
+	        <label title="<%- l('K2_SELECT_ALL') %>" class="jw--checkbox">
+	            <input data-action="toggle-all" type="checkbox" />
+	            <i class="fa fa-check"></i>
+	        </label>
+        </li>
         <li class="small-1 large-3 columns"><%= l('K2_COMMENT') %></li>
         <li class="small-1 large-1 columns"><a data-action="sort" data-sorting="state.reverse"><%= l('K2_STATE') %></a></li>
         <li class="small-1 large-1 columns"><a data-action="sort" data-sorting="name"><%= l('K2_NAME') %></a></li>
