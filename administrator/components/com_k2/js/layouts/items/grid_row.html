@@ -1,65 +1,41 @@
-<div class="small-4 large-1 columns">
-    <label class="jw--checkbox">
-        <input class="jw--row--toggler" data-action="toggle" name="id[]" value="<%= id %>" type="checkbox" />
-        <i class="fa fa-check"></i>
-    </label>
-</div>
+<li class="jw--grid--item">
+	<div class="jw--grid--item--wrap" style="background-image: url(<%= images.modal.src %>);">
+		<div class="jw--grid--item--bg"></div>
+		
+		
+		<div class="jw--check--wrapper">
+		    <label class="jw--checkbox">
+		        <input class="jw--row--toggler" data-action="toggle" name="id[]" value="<%= id %>" type="checkbox" />
+		        <i class="fa fa-check"></i>
+		    </label>
+		</div>
 
-<div class="small-4 large-4 columns">
-	
-	<div class="small-12 jw--row--title">
-		<a data-action="edit" href="<%= editLink %>"><%= title %></a>
+		
+		<div class="jw--toggle-wrapper">
+			<% if(canEditState) { %>
+		    <a data-action="toggle-state" data-state-value="<%= state %>" data-state="state" data-id="<%= id %>" class="jw--state--toggler jw--state--toggler__pub <% if( state == 1 ) { print('toggler--active'); } %>">
+		    	<i class="fa fa-check-circle"></i>
+		    	<i class="hidden"><%= state %></i>
+		    </a>
+		    <% } else { %>
+		    <%= state %>
+		    <% } %>
+		
+		    <% if(canEditState && canEditFeaturedState) { %>
+		    <a data-action="toggle-state" data-state-value="<%= featured %>" data-state="featured" data-id="<%= id %>" class="jw--state--toggler jw--state--toggler__feat <% if( featured == 1 ) { print('toggler--active'); } %>">
+		    	<i class="fa fa-star"></i>
+				<i class="hidden"><%= featured %></i>
+		    </a>
+		   
+		    <% } else { %>
+		    <%= featured %>
+		    <% } %>
+		</div>
+		
+		<div class="jw--grid-text-wrap">
+			<a data-action="edit" href="<%= editLink %>"><%= title %></a>
+			<%= category.title %>
+		</div>
+		
 	</div>
-	
-	<span class="jw--row--title__inline"><%= l('K2_ID') %></span>
-	<%= id %>
-	 
-	<% if(image && image.flag) { %>
-        <a class="jw--row--imlink" href="<%= images.modal.src %>">
-        	<i class="fa fa-camera"></i>
-        	<i class="visuallyhidden"><%= l('K2_PREVIEW') %></i>
-        </a>
-    <% } %>
-</div>
-
-<div class="text-center small-1 large-1 columns">
-	<span data-role="ordering-handle" data-column="featured_ordering">
-		<i class="fa fa-bars"></i>
-	</span>
-</div>
-
-<div class="text-center small-1 large-1 columns">
-    <input type="text" class="jw--featured--inp" maxlength="6" size="6" name="featured_ordering[]" value="<%= featured_ordering %>" data-id="<%= id %>" disabled="disabled" />
-</div>
-
-<div class="text-center small-1 large-1 columns">
-    <% if(canEditState) { %>
-    <a data-action="toggle-state" data-state-value="<%= state %>" data-state="state" data-id="<%= id %>" class="jw--state--toggler jw--state--toggler__pub <% if( state == 1 ) { print('toggler--active'); } %>">
-    	<i class="fa fa-check-circle"></i>
-    	<i class="hidden"><%= state %></i>
-    </a>
-    <% } else { %>
-    <%= state %>
-    <% } %>
-</div>
-
-<div class="text-center small-1 large-1 columns">
-    <% if(canEditState && canEditFeaturedState) { %>
-    <a data-action="toggle-state" data-state-value="<%= featured %>" data-state="featured" data-id="<%= id %>" class="jw--state--toggler jw--state--toggler__feat <% if( featured == 1 ) { print('toggler--active'); } %>">
-    	<i class="fa fa-star"></i>
-		<i class="hidden"><%= featured %></i>
-    </a>
-   
-    <% } else { %>
-    <%= featured %>
-    <% } %>
-</div>
-
-<div class="small-1 large-1 columns"><%= category.title %></div>
-<div class="small-1 large-1 columns"><%= authorName %></div>
-<div class="small-1 large-1 columns"><%= viewLevel %></div>
-<!-- <div class="small-1 large-1 columns"><%= moderatorName %></div> -->
-<div class="small-1 large-1 columns"><%= createdOn %></div>
-<div class="small-1 large-1 columns"><%= modifiedOn %></div>
-<div class="small-1 large-1 columns"><%= hits %></div>
-<div class="small-1 large-1 columns"><%= languageTitle %></div>
+</li>
