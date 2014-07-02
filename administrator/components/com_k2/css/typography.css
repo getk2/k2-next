@@ -74,7 +74,7 @@ img {-ms-interpolation-mode:bicubic; max-width: 100%; }
 	.jw label.jw--radio:focus, { cursor: pointer; box-shadow: inset 0 0 12px rgba(0,0,0,.35); }
 
 	/* label with heading */
-	.jw label.jw--radio--title { display: inline-block; vertical-align: middle; font-size: 13px; font-weight: 700; min-width: 78px; height: 35px; line-height: 35px; padding: 0; color: #636b6e; }
+	.jw label.jw--radio--title { display: block; vertical-align: middle; font-size: 13px; font-weight: 700; min-width: 78px; height: 35px; line-height: 35px; padding: 0; color: #636b6e; }
 
 
 /* Circled radio buttons */

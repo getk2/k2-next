@@ -19,7 +19,7 @@
 		$(this).toggleClass('toggler--active');
 	});
 	
-		// Tabs
+/*		// Tabs
 	K2Container.on('click', '.jw--tabs a', function(event) {
 		// Close all modals first
 		event.preventDefault();
@@ -31,5 +31,5 @@
 		K2Container.find(target).css('display', 'block');
 		//K2Container.tabs[group] = target;
 	});
-	
+*/	
 })(jQuery);
