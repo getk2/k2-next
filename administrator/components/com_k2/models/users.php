@@ -146,6 +146,11 @@ class K2ModelUsers extends K2Model
 		{
 			$query->where($db->quoteName('user.block').' = '.(int)$this->getState('block'));
 		}
+		if ($group = (int)$this->getState('group'))
+		{
+			$query->leftJoin($db->quoteName('#__user_usergroup_map', 'xref').' ON '.$db->quoteName('user.id').' = '.$db->quoteName('xref.user_id'));
+			$query->where($db->quoteName('xref.group_id').' = '.(int)$group);
+		}
 		if ($this->getState('search'))
 		{
 			$search = JString::trim($this->getState('search'));
