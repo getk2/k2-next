@@ -92,6 +92,7 @@ class K2ViewUsers extends K2View
 		$this->setUserState('page', 1, 'int');
 		$this->setUserState('search', '', 'string');
 		$this->setUserState('state', '', 'cmd');
+		$this->setUserState('group', '', 'cmd');
 		$this->setUserState('sorting', 'id.reverse', 'string');
 	}
 
@@ -114,7 +115,12 @@ class K2ViewUsers extends K2View
 			'K2_HOSTNAME_ASC' => 'hostname',
 			'K2_HOSTNAME_DESC' => 'hostname.reverse'
 		);
+
+		// Sorting filter
 		K2Response::addFilter('sorting', JText::_('K2_SORT_BY'), K2HelperHTML::sorting($sortingOptions), false, 'header');
+
+		// Group filter
+		K2Response::addFilter('group', JText::_('K2_GROUP'), K2HelperHTML::usergroups('group', null, 'K2_ANY'), false, 'header');
 
 		// Search filter
 		K2Response::addFilter('search', JText::_('K2_SEARCH'), K2HelperHTML::search(), false, 'sidebar');
