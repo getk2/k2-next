@@ -187,7 +187,9 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 						});
 
 						// Create the layout
-						var layout = new Layout();
+						var layout = new Layout({
+							collection : this.collection
+						});
 
 						// Reset messages
 						K2Dispatcher.trigger('app:messages:reset');
