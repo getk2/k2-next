@@ -7,17 +7,11 @@
 	<tr>
 		<td>
 			<span><%= l('K2_FROM_REVISION') %></span>
-			<span><%= leftRevision.get('user') %></span>
-			<span><%= leftRevision.get('date') %></span>
-			<span><%= leftRevision.get('notes') %></span>
-			<button data-action="restore-revision" data-id="<%- leftRevision.get('id') %>"><%= l('K2_RESTORE_THIS_REVISION') %></button>
+			<div data-region="revisions-left"></div>
 		</td>
 		<td>
 			<span><%= l('K2_TO_REVISION') %></span>
-			<span><%= rightRevision.get('user') %></span>
-			<span><%= rightRevision.get('date') %></span>
-			<span><%= rightRevision.get('notes') %></span>
-			<button data-action="restore-revision" data-id="<%- rightRevision.get('id') %>"><%= l('K2_RESTORE_THIS_REVISION') %></button>
+			<div data-region="revisions-right"></div>
 		</td>
 	</tr>
 	<tr>

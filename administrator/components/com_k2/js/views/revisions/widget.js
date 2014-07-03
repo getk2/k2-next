@@ -1,4 +1,4 @@
-define(['text!layouts/revisions/form.html', 'dispatcher', 'jqueryui'], function(template, K2Dispatcher) {'use strict';
+define(['text!layouts/revisions/form.html', 'text!layouts/revisions/info.html', 'dispatcher', 'jqueryui'], function(template, revisionInfo, K2Dispatcher) {'use strict';
 
 	// Model
 	var Revision = Backbone.Model.extend({
@@ -15,8 +15,27 @@ define(['text!layouts/revisions/form.html', 'dispatcher', 'jqueryui'], function(
 		model : Revision
 	});
 
-	var K2ViewRevisionsWidget = Marionette.ItemView.extend({
+	// The row view for grid
+	var K2ViewRevisionsInfo = Marionette.ItemView.extend({
+		template : _.template(revisionInfo),
+		initialize : function(options) {
+			this.parent = options.parent;
+		},
+		events : {
+			'click [data-action="restore-revision"]' : 'restore'
+		},
+		restore : function(event) {
+			event.preventDefault();
+			this.parent.trigger('restore', this.model);
+		}
+	});
+
+	var K2ViewRevisionsWidget = Marionette.Layout.extend({
 		template : _.template(template),
+		regions : {
+			leftRevisionRegion : '[data-region="revisions-left"]',
+			rightRevisionRegion : '[data-region="revisions-right"]'
+		},
 		initialize : function(options) {
 
 			this.size = _.size(options.data);
@@ -34,6 +53,25 @@ define(['text!layouts/revisions/form.html', 'dispatcher', 'jqueryui'], function(
 			}
 
 		},
+
+		onShow : function() {
+			this.update();
+		},
+
+		update : function() {
+			var leftRevisionView = new K2ViewRevisionsInfo({
+				model : this.leftRevision,
+				parent : this
+			});
+			this.leftRevisionRegion.show(leftRevisionView);
+
+			var rightRevisionView = new K2ViewRevisionsInfo({
+				model : this.rightRevision,
+				parent : this
+			});
+			this.rightRevisionRegion.show(rightRevisionView);
+		},
+
 		onDomRefresh : function() {
 
 			if (this.size > 1) {
@@ -58,6 +96,7 @@ define(['text!layouts/revisions/form.html', 'dispatcher', 'jqueryui'], function(
 								self.rightRevisionIndex = ui.value;
 								self.rightRevision = self.collection.models[self.rightRevisionIndex];
 							}
+							self.update();
 							self.$('#k2-compare-title').mergely('lhs', self.leftRevision.get('data').title);
 							self.$('#k2-compare-title').mergely('rhs', self.rightRevision.get('data').title);
 							self.$('#k2-compare-introtext').mergely('lhs', self.leftRevision.get('data').introtext);
