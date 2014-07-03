@@ -94,6 +94,8 @@ class K2ViewComments extends K2View
 		$this->setUserState('state', '', 'cmd');
 		$this->setUserState('sorting', 'id.reverse', 'string');
 		$this->setUserState('itemId', 0, 'int');
+		$this->setUserState('userId', 0, 'int');
+		$this->setUserState('category', 0, 'cmd');
 	}
 
 	protected function setFilters()
@@ -125,6 +127,12 @@ class K2ViewComments extends K2View
 
 		// State filter
 		K2Response::addFilter('state', JText::_('K2_STATE'), K2HelperHTML::state('state', null, 'K2_ANY', false, 'radio'), true, 'sidebar');
+
+		// Author filter
+		K2Response::addFilter('author', JText::_('K2_USER'), '<input data-widget="user" data-null="'.JText::_('K2_ANY').'" data-min="0" data-name="'.JText::_('K2_ANY').'" type="hidden" name="userId" value="" />', false, 'header');
+
+		// Categories filter
+		K2Response::addFilter('category', JText::_('K2_CATEGORY'), K2HelperHTML::categories('category', null, 'K2_ANY'), false, 'header');
 
 	}
 
