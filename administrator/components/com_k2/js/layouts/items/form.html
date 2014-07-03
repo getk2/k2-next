@@ -14,10 +14,11 @@
 <div data-widget="tabs">
 
 	<ul class="jw--tabs jw--tabs__top" data-role="tabs-navigation">
-		<li><a href="#">Basic</a></li>
-		<li><a href="#">Meatada &amp; Publishing</a></li>
-		<li><a href="#">Display Settings</a></li>
-		<li><a href="#">Permissions</a></li>
+		<li><a href="#"><%= l('K2_BASIC') %></a></li>
+		<li><a href="#"><%= l('K2_REVISIONS') %></a></li>
+		<li><a href="#"><%= l('K2_METADATA_AND_PUBLISHING') %></a></li>
+		<li><a href="#"><%= l('K2_DISPLAY_SETTINGS') %></a></li>
+		<li><a href="#"><%= l('K2_PERMISSIONS') %></a></li>
 	</ul>
 	
 	<div data-role="tabs-content">
@@ -185,13 +186,15 @@
 				
 		    </div>
 		    
-		    <!-- Revisions -->
-		    <div data-region="item-revisions"></div>
-		    
 		    <label for="notes"><%= l('K2_REVISION_NOTES') %></label>
 			<input type="text" name="notes" id="notes" value="" />
 		
 		    <input type="hidden" name="id" value="<%- row.id %>" / >
+		</div>
+		
+		<div>
+			<!-- Revisions -->
+		    <div data-region="item-revisions"></div>
 		</div>
 			
 			
