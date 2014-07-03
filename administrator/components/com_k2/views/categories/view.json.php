@@ -107,8 +107,11 @@ class K2ViewCategories extends K2View
 		// Root filter
 		K2Response::addFilter('root', JText::_('K2_ROOT'), K2HelperHTML::categories('root', null, 'K2_NONE'), true, 'header');
 
+		// Access filter
+		K2Response::addFilter('access', JText::_('K2_ACCESS'), JHtml::_('access.level', 'access', null, '', array(JHtml::_('select.option', '0', JText::_('K2_ANY')))), false, 'header');
+
 		// Language filter
-		K2Response::addFilter('language', JText::_('K2_SELECT_LANGUAGE'), K2HelperHTML::language('language', '', 'K2_ANY'), false, 'header');
+		K2Response::addFilter('language', JText::_('K2_LANGUAGE'), K2HelperHTML::language('language', '', 'K2_ANY'), false, 'header');
 
 		// Search filter
 		K2Response::addFilter('search', JText::_('K2_SEARCH'), K2HelperHTML::search(), false, 'sidebar');
