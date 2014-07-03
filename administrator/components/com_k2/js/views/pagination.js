@@ -9,6 +9,13 @@ define(['marionette', 'text!layouts/pagination.html', 'dispatcher', 'session'], 
 			this.model.set('mode', viewMode);
 			K2Dispatcher.on('app:pagination:mode', function(mode) {
 				this.model.set('mode', mode);
+				if (mode == 'scroll') {
+					this.model.set('limit', 50);
+					K2Dispatcher.trigger('app:controller:setCollectionState', 'limit', 50);
+				} else {
+					this.model.set('limit', 10);
+					K2Dispatcher.trigger('app:controller:setCollectionState', 'limit', 10);
+				}
 				K2Session.set('view.mode', mode);
 				K2Dispatcher.trigger('app:controller:filter', 'page', 1);
 			}, this);
