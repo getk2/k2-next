@@ -24,6 +24,9 @@ define(['marionette', 'text!layouts/pagination.html', 'dispatcher', 'session'], 
 		},
 
 		onRender : function() {
+			this.$('select').select2({
+				minimumResultsForSearch : -1
+			});
 			jQuery(window).off('scroll');
 			if (this.model.get('mode') == 'scroll') {
 				var page = this.model.get('pagesCurrent');
