@@ -116,7 +116,7 @@ class K2HelperHTML
 
 	public static function search($name = 'search')
 	{
-		return '<input type="text" name="'.$name.'" />';
+		return '<input type="text" name="'.$name.'" autocomplete="off" />';
 	}
 
 	public static function template($name = 'template', $value = null)

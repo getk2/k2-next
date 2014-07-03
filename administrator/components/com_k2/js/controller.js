@@ -95,6 +95,11 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 				this.view.trigger('setLayout', layout);
 			}, this);
 
+			// Listener for sidebar search event
+			K2Dispatcher.on('app:controller:search', function(search) {
+				this.search(search);
+			}, this);
+
 		},
 
 		// Executes the request based on the URL.
@@ -382,7 +387,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 				success : _.bind(function() {
 					this.redirect(this.resource + '/page/' + this.collection.getState('page'), false);
 				}, this),
-				error : _.bind(function(model, xhr, options) {
+				error : _.bind(function(collection, xhr, options) {
 					this.enqueueMessage('error', xhr.responseText);
 				}, this)
 			});
@@ -393,7 +398,24 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 			this.collection.fetch({
 				reset : false,
 				remove : false,
-				error : _.bind(function(model, xhr, options) {
+				error : _.bind(function(collection, xhr, options) {
+					this.enqueueMessage('error', xhr.responseText);
+				}, this)
+			});
+		},
+
+		// Search 
+		search : function(search) {
+			this.searchCollection = this.collection.clone();
+			this.searchCollection.setState('search', search);
+			this.searchCollection.fetch({
+				reset : false,
+				parse : true,
+				silent : true,
+				success : function(collection, xhr, options) {
+					K2Dispatcher.trigger('app:sidebar:search:results', collection);
+				},
+				error : _.bind(function(collection, xhr, options) {
 					this.enqueueMessage('error', xhr.responseText);
 				}, this)
 			});

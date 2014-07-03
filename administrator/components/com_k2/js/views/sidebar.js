@@ -14,7 +14,8 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session'], fun
 			'change [data-region="filters"] select' : 'filter',
 			'click [data-action="reset"]' : 'resetFilters',
 			'click [data-action="set-layout"]' : 'setLayout',
-			'change input[name="viewMode"]' : 'setViewMode'
+			'change input[name="viewMode"]' : 'setViewMode',
+			'input input[name="search"]' : 'search'
 		},
 
 		initialize : function() {
@@ -23,6 +24,17 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session'], fun
 					'menu' : response.menu.secondary,
 					'filters' : response.filters.sidebar,
 					'states' : response.states
+				});
+			}, this);
+
+			K2Dispatcher.on('app:sidebar:search:results', function(collection) {
+				var resultsContainer = this.$('ul[data-role="search-results"]');
+				if (_.size(collection) > 0) {
+					resultsContainer.css('display', 'block');
+				}
+				resultsContainer.empty();
+				_.each(collection.models, function(model) {
+					resultsContainer.append('<li><a href="' + model.get('editLink') + '">' + model.get('title') + '</a></li>');
 				});
 			}, this);
 		},
@@ -86,6 +98,16 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session'], fun
 			this.$('[data-layout]').removeClass('jw--layout-btn__active');
 			this.$('[data-layout="' + layout + '"]').addClass('jw--layout-btn__active');
 			K2Dispatcher.trigger('app:items:layout', layout);
+		},
+
+		search : function(event) {
+			var el = jQuery(event.currentTarget);
+			var search = jQuery.trim(el.val());
+			if (search) {
+				K2Dispatcher.trigger('app:controller:search', el.val());
+			} else {
+				this.$('ul[data-role="search-results"]').css('display', 'none');
+			}
 		}
 	});
 
