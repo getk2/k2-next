@@ -54,8 +54,18 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session', 'tex
 				});
 				this.searchResults.show(view);
 			}, this));
+
+			K2Dispatcher.on('app:sidebar:layouts:show', _.bind(function() {
+				this.$('[data-role="layouts"]').show();
+			}, this));
+
+			K2Dispatcher.on('app:sidebar:layouts:hide', _.bind(function() {
+				this.$('[data-role="layouts"]').hide();
+			}, this));
+
 		},
 		onRender : function() {
+			this.$('[data-role="layouts"]').hide();
 			_.each(this.model.get('states'), _.bind(function(value, state) {
 				var filter = this.$('[name="' + state + '"]');
 				if (filter.attr('type') === 'radio') {

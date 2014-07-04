@@ -1,51 +1,49 @@
-<li class="small-1 large-1 columns">
+<div class="small-1 large-1 columns">
     <label class="jw--checkbox">
         <input data-action="toggle" name="id[]" value="<%= id %>" type="checkbox" />
         <i class="fa fa-check"></i>
     </label>
-</li>
+</div>
 
-<li class="small-1 large-4 columns">
+<div class="small-1 large-4 columns">
     <% if(canEdit) { %>
     <a data-action="edit" href="<%= editLink %>"><%= title %></a>
     <% } else { %>
         <%= str_repeat('-', level) %><%= title %>
     <% } %>
     <span>(<span><%= totalItems %> <%= l('K2_TOTAL') %></span> / <span><%= trashedItems %> <%= l('K2_TRASHED') %></span>)</span>
-</li>
+</div>
 
-<li class="text-center small-1 large-1 columns"><span data-role="ordering-handle"><i class="fa fa-reorder"></i></span></li>
+<div class="text-center small-1 large-1 columns"><span data-role="ordering-handle"><i class="fa fa-reorder"></i></span></div>
 
-<li class="small-1 large-1 columns">
+<div class="small-1 large-1 columns">
     <% if(canEditState) { %>
     <a data-action="toggle-state-category" data-state-value="<%= state %>" data-id="<%= id %>" data-state="state"><%= state %></a>
     <% } else { %>
     <%= state %>
     <% } %>
-</li>
+</div>
 
-<li class="small-1 large-1 columns"><%= viewLevel %></li>
+<div class="small-1 large-1 columns"><%= viewLevel %></div>
 
-<li class="small-1 large-1 columns"><%= template %></li>
+<div class="small-1 large-1 columns"><%= template %></div>
 
-<li class="small-1 large-1 columns"><%= authorName %></li>
+<div class="small-1 large-1 columns"><%= authorName %></div>
 
-<li class="small-1 large-1 columns"><%= createdOn %></li>
+<div class="small-1 large-1 columns"><%= createdOn %></div>
 
-<li class="small-1 large-1 columns"><%= moderatorName %></li>
+<div class="small-1 large-1 columns"><%= moderatorName %></div>
 
-<li class="small-1 large-1 columns"><%= modifiedOn %></li>
+<div class="small-1 large-1 columns"><%= modifiedOn %></div>
 
-<li class="small-1 large-1 columns">
+<div class="small-1 large-1 columns">
     <% if(image && image.flag) { %>
         <a href="<%= image.src %>"><%= l('K2_PREVIEW') %></a>
     <% } %>
-</li>
+</div>
 
-<li class="small-1 large-1 columns"><%= languageTitle %></li>
+<div class="small-1 large-1 columns"><%= languageTitle %></div>
 
-<li class="small-1 large-1 columns"><%= id %></li>
+<div class="small-1 large-1 columns"><%= id %></div>
 
-<li class="small-16 large-16">
-	<ul data-parent="<%- id %>"></ul>
-</li>
+<ul data-parent="<%- id %>"></ul>
