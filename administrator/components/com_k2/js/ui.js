@@ -86,6 +86,19 @@
 		$('.jw--filter .jw--radio[for="featured_0"]').addClass('jw--radio__checked');
 	});
 	
+	// Hack to trigger the select boxes when their label is clicked
+	$('body').on('click', 'label', function(event) {
+		var element = jQuery(this).next();
+		if (element.hasClass('select2-container')) {
+			if (element.hasClass('select2-dropdown-open')) {
+				element.select2('close');
+			} else {
+				element.select2('open');
+			}
+		}
+	});
+	
+	
 /*// Tabs
 	K2Container.on('click', '.jw--tabs a', function(event) {
 		// Close all modals first
