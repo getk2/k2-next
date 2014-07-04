@@ -185,7 +185,7 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 
 								}, this),
 								error : _.bind(function(model, xhr, options) {
-									this.enqueueMessage('error', xhr.responseText);
+									K2Dispatcher.trigger('app:messages:add', error, xhr.responseText);
 								}, this)
 							});
 						} else {
