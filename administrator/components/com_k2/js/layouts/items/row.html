@@ -55,8 +55,8 @@
     <% } %>
 </li>
 
-<li class="small-1 large-1 columns"><%= category.title %></li>
-<li class="small-1 large-1 columns"><%= authorName %></li>
+<li class="small-1 large-1 columns"><a href="<%- category.editLink %>"><%= category.title %></a></li>
+<li class="small-1 large-1 columns"><a href="<%- author.editLink %>"><%= authorName %></a></li>
 <li class="small-1 large-1 columns"><%= viewLevel %></li>
 <!-- <li class="small-1 large-1 columns"><%= moderatorName %></li> -->
 <li class="small-1 large-1 columns"><%= createdOn %></li>
