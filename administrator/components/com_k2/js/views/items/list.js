@@ -14,12 +14,12 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 				K2Session.set('items.layout', layout);
 				this.setup();
 			});
-			K2Dispatcher.trigger('app:sidebar:layouts:show');
 		},
 		collectionEvents : {
 			'reset' : 'setup'
 		},
 		onShow : function() {
+			K2Dispatcher.trigger('app:sidebar:layouts:show');
 			this.setup();
 		},
 		onClose : function() {
