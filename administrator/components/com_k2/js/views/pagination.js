@@ -31,6 +31,7 @@ define(['marionette', 'text!layouts/pagination.html', 'dispatcher', 'session'], 
 		},
 
 		onRender : function() {
+			this.$el.removeClass('scroll-loading');
 			this.$('select').select2({
 				minimumResultsForSearch : -1
 			});
@@ -38,8 +39,10 @@ define(['marionette', 'text!layouts/pagination.html', 'dispatcher', 'session'], 
 			if (this.model.get('mode') == 'scroll') {
 				var page = this.model.get('pagesCurrent');
 				var total = this.model.get('pagesTotal');
+				var container = this.$el;
 				jQuery(window).scroll(function() {
 					if (jQuery(window).scrollTop() + jQuery(window).height() == jQuery(document).height() && total > page) {
+						container.addClass('scroll-loading');
 						jQuery(window).off('scroll');
 						K2Dispatcher.trigger('app:controller:filter', 'page', page + 1, 'merge');
 					}
