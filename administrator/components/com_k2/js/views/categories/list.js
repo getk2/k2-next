@@ -64,6 +64,7 @@ define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categor
 			require(['widgets/sortable/jquery-sortable-min'], function() {
 				el.sortable({
 					handle : '[data-role="ordering-handle"]',
+					placeholder : '<li class="k2SortingPlaceholder"/>',
 					onDrop : function(item, container, _super) {
 						var id = item.data('id');
 						var parent = item.parent();
