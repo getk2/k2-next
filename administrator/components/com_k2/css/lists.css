@@ -20,3 +20,10 @@ table.jw--listed--items { width: 100%; font-size: 13px; }
 	.jw--row--title { display: block; margin-bottom: 10px; }
 	.jw--row--title__inline { display: inline-block; font-weight: 700; padding-right: 5px; margin: 0; color: #b3b7b9; }
 	.jw--row--imlink { padding-left: 10px; }
+	
+	/* sortable layouts */
+	.jw--listed--items .fa-bars{ opacity: 0.5; }
+		.jw--listed--items .fa-bars:hover { opacity: 1; cursor: move; }
+		
+	.jw--listed--items .k2SortingPlaceholder { height: 94px; width: 100%; display: block; background: #d1d2d2; border: 3px dashed #b3b5b5; }
+		.jw--listed--items .k2SortingPlaceholder > li {  height: 94px; width: 100%;  display: block; }
