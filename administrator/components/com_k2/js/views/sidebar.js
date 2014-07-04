@@ -1,6 +1,23 @@
-define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session'], function(Marionette, template, K2Dispatcher, K2Session) {'use strict';
+define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session', 'text!layouts/sidebar_search_row.html'], function(Marionette, template, K2Dispatcher, K2Session, searchRowTemplate) {'use strict';
 
-	var K2ViewSidebar = Marionette.ItemView.extend({
+	var K2ViewSidebarSearchResultsItem = Marionette.ItemView.extend({
+		tagName : 'li',
+		template : _.template(searchRowTemplate),
+		events : {
+			'click a[data-action="edit"]' : 'edit'
+		},
+		edit : function(event) {
+			event.preventDefault();
+			K2Dispatcher.trigger('app:controller:edit', this.model.get('id'));
+		}
+	});
+
+	var K2ViewSidebarSearchResults = Marionette.CollectionView.extend({
+		tagName : 'ul',
+		itemView : K2ViewSidebarSearchResultsItem
+	});
+
+	var K2ViewSidebar = Marionette.Layout.extend({
 
 		template : _.template(template),
 
@@ -18,6 +35,10 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session'], fun
 			'input input[name="search"]' : 'search'
 		},
 
+		regions : {
+			searchResults : '[data-region="sidebar-search-results"]'
+		},
+
 		initialize : function() {
 			K2Dispatcher.on('app:update:subheader', function(response) {
 				this.model.set({
@@ -27,18 +48,13 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session'], fun
 				});
 			}, this);
 
-			K2Dispatcher.on('app:sidebar:search:results', function(collection) {
-				var resultsContainer = this.$('ul[data-role="search-results"]');
-				if (_.size(collection) > 0) {
-					resultsContainer.css('display', 'block');
-				}
-				resultsContainer.empty();
-				_.each(collection.models, function(model) {
-					resultsContainer.append('<li><a href="' + model.get('editLink') + '">' + model.get('title') + '</a></li>');
+			K2Dispatcher.on('app:sidebar:search', _.bind(function(collection) {
+				var view = new K2ViewSidebarSearchResults({
+					collection : collection
 				});
-			}, this);
+				this.searchResults.show(view);
+			}, this));
 		},
-
 		onRender : function() {
 			_.each(this.model.get('states'), _.bind(function(value, state) {
 				var filter = this.$('[name="' + state + '"]');
@@ -103,10 +119,10 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session'], fun
 		search : function(event) {
 			var el = jQuery(event.currentTarget);
 			var search = jQuery.trim(el.val());
-			if (search) {
+			if (search && search.length > 2) {
 				K2Dispatcher.trigger('app:controller:search', el.val());
 			} else {
-				this.$('ul[data-role="search-results"]').css('display', 'none');
+				this.searchResults.reset();
 			}
 		}
 	});

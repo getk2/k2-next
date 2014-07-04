@@ -55,7 +55,9 @@ define(['text!layouts/revisions/form.html', 'text!layouts/revisions/info.html', 
 		},
 
 		onShow : function() {
-			this.update();
+			if (this.size > 1) {
+				this.update();
+			}
 		},
 
 		update : function() {

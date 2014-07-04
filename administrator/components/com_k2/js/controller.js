@@ -413,7 +413,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 				parse : true,
 				silent : true,
 				success : function(collection, xhr, options) {
-					K2Dispatcher.trigger('app:sidebar:search:results', collection);
+					K2Dispatcher.trigger('app:sidebar:search', collection);
 				},
 				error : _.bind(function(collection, xhr, options) {
 					this.enqueueMessage('error', xhr.responseText);
