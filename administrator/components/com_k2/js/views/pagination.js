@@ -32,7 +32,7 @@ define(['marionette', 'text!layouts/pagination.html', 'dispatcher', 'session'], 
 
 		onRender : function() {
 			this.$el.removeClass('scroll-loading');
-			this.$('select').select2({
+			this.$('select[name="limit"]').select2({
 				minimumResultsForSearch : -1
 			});
 			jQuery(window).off('scroll');
@@ -48,7 +48,7 @@ define(['marionette', 'text!layouts/pagination.html', 'dispatcher', 'session'], 
 					}
 				});
 			} else {
-				this.$('select[name="limit"]').val(this.model.get('limit'));
+				this.$('select[name="limit"]').select2('val', this.model.get('limit'));
 			}
 		},
 
