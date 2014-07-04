@@ -9,7 +9,7 @@
 	});
 	
 	// label toggling.
-	K2Container.on('click', '.jw--filter .jw--radio', function(){
+	K2Container.on('click', '.jw--radio', function(){
 		$(this).parent().children('.jw--radio').removeClass('jw--radio__checked');
 		$(this).addClass('jw--radio__checked');
 	});
@@ -19,7 +19,15 @@
 		$(this).toggleClass('toggler--active');
 	});
 	
-/*		// Tabs
+	// resetting the filters
+	K2Container.on('click', '#jw--filters--reset', function(){
+		console.log('clicked');
+		$('.jw--filter .jw--radio').removeClass('jw--radio__checked');
+		$('.jw--filter .jw--radio[for="state_0"]').addClass('jw--radio__checked');
+		$('.jw--filter .jw--radio[for="featured_0"]').addClass('jw--radio__checked');
+	});
+	
+/*// Tabs
 	K2Container.on('click', '.jw--tabs a', function(event) {
 		// Close all modals first
 		event.preventDefault();
