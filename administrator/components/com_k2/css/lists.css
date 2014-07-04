@@ -16,6 +16,7 @@ table.jw--listed--items { width: 100%; font-size: 13px; }
 		
 	.jw--listed--items ul.jw--items--header { background: #fff; font-weight: 700; }
 	.jw--listed--items ul.jw--items--header ul { padding-top: 4px; padding-bottom: 4px; }
+	.jw--listed--items ul.jw--items--header li { white-space: nowrap; }
 	.jw--row--title { display: block; margin-bottom: 10px; }
 	.jw--row--title__inline { display: inline-block; font-weight: 700; padding-right: 5px; margin: 0; color: #b3b7b9; }
 	.jw--row--imlink { padding-left: 10px; }

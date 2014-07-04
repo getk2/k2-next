@@ -7,8 +7,24 @@
 		<% if(!_.isEmpty(actions)) { %>
 		<div class="right  jw--add--area" data-region="actions">
 		    <% _.each(actions, function(button) { %>
-		        <button class="jw--btn jw--btn__icon"  <% _.each(button.attributes, function(value, name) { print(name + '="' + value + '" ');}) %>>
+		    		
+		    		<% if(button.id == 'add') { 
+		    			var btnclass = ' jw--btn__icon';
+		    		} else if(button.id == 'save') { 
+		    			var btnclass = '';
+		    		} else if(button.id == 'saveAndNew') {  
+		    			var btnclass = ' jw--btn__apply';
+		    		} else if(button.id == 'saveAndClose') {  
+		    			var btnclass = ' jw--btn__apply';
+		    		} else if(button.id == 'close') {
+		    			var btnclass = ' jw--btn__cancel';
+		    		}
+		    		%>
+		    		
+		        <button class="jw--btn<%= btnclass %>" <% _.each(button.attributes, function(value, name) { print(name + '="' + value + '" ');}) %>>
+		        		<% if(button.id == 'add') { %>
 		            <i class="fa fa-plus"></i>
+		            <% } %>
 		            <%= button.name %>
 		        </button>
 		    <% }); %>
