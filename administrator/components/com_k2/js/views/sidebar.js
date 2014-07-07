@@ -76,6 +76,7 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session', 'tex
 			}, this));
 			var viewMode = K2Session.get('view.mode', 'pagination');
 			this.$('input[name="viewMode"][value="' + viewMode + '"]').prop('checked', true);
+			this.$('input[name="viewMode"][value="' + viewMode + '"]').parent().addClass('jw--radio__checked');
 			var itemsLayout = K2Session.get('items.layout', 'default');
 			this.$('[data-layout="' + itemsLayout + '"]').addClass('jw--layout-btn__active');
 			this.$('input[name="viewMode"][value="' + viewMode + '"]').prop('checked', true);
