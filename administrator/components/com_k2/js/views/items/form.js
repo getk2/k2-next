@@ -160,27 +160,30 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 
 		loadRevisions : function() {
 			// Revisions
-			this.revisionsView = new K2ViewRevisionsWidget({
-				data : this.model.get('revisions'),
-				parent : this
-			});
-			this.revisionsView.on('restore', _.bind(function(revision) {
-				var data = revision.get('data');
-				this.$('input[name="title"]').val(data.title);
-				var form = this.model.getForm();
-				if (form.has('text')) {
-					var text = '';
-					text += data.introtext;
-					if (data.fulltext) {
-						text += '<hr id="system-readmore" />' + data.fulltext;
+			if ( typeof (this.revisionsView) == 'undefined') {
+
+				this.revisionsView = new K2ViewRevisionsWidget({
+					data : this.model.get('revisions'),
+					parent : this
+				});
+				this.revisionsView.on('restore', _.bind(function(revision) {
+					var data = revision.get('data');
+					this.$('input[name="title"]').val(data.title);
+					var form = this.model.getForm();
+					if (form.has('text')) {
+						var text = '';
+						text += data.introtext;
+						if (data.fulltext) {
+							text += '<hr id="system-readmore" />' + data.fulltext;
+						}
+						K2Editor.setContent('text', text);
+					} else {
+						K2Editor.setContent('introtext', data.introtext);
+						K2Editor.setContent('fulltext', data.fulltext);
 					}
-					K2Editor.setContent('text', text);
-				} else {
-					K2Editor.setContent('introtext', data.introtext);
-					K2Editor.setContent('fulltext', data.fulltext);
-				}
-			}, this));
-			this.revisionsRegion.show(this.revisionsView);
+				}, this));
+				this.revisionsRegion.show(this.revisionsView);
+			}
 		}
 	});
 	return K2ViewItem;
