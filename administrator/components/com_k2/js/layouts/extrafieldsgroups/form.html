@@ -1,28 +1,43 @@
-<form>
-
-    <label for="name"><%= l('K2_NAME') %></label>
-    <input type="text" name="name" id="name" value="<%- row.name %>" />
-
-    <label for="scope"><%= l('K2_SCOPE') %></label>
-    <%= form.scope %>
-    
-    <label><%= l('K2_ALL') %>
-        <input type="radio" name="assignments[mode]" value="all" />
-    </label>
-    <label><%= l('K2_SELECT_FROM_LIST') %>
-        <input type="radio" name="assignments[mode]" value="specific" />
-    </label> 
-    <label><%= l('K2_NONE') %>
-        <input type="radio" name="assignments[mode]" value="none" />
-    </label> 
-        
-    <div data-region="extra-field-group-assignements"></div>
-
+<form class="jw--generic--form">
+	
+	<div class="jw--generic--field">
+	    <label class="left" for="name"><%= l('K2_NAME') %></label>
+	    <div class="right">
+	    	<input type="text" name="name" id="name" value="<%- row.name %>" />
+	    </div>
+	</div>
+	
+	<div class="jw--generic--field">
+		<label for="scope"><%= l('K2_SCOPE') %></label>
+		<div class="right">
+		    <%= form.scope %>
+			
+			<div class="clr"></div>
+			<div class="jw--subfield">
+				<label class="jw--radio"><%= l('K2_ALL') %>
+					<input type="radio" name="assignments[mode]" value="all" />
+				</label>
+				<label class="jw--radio"><%= l('K2_SELECT_FROM_LIST') %>
+					<input type="radio" name="assignments[mode]" value="specific" />
+				</label> 
+				<label class="jw--radio"><%= l('K2_NONE') %>
+					<input type="radio" name="assignments[mode]" value="none" />
+				</label>
+			</div>
+		</div>
+	</div>
+	
+	<div class="jw--generic--field">
+		<div class="right jw--generic--def" data-region="extra-field-group-assignements"></div>
+	</div>
+		
     <input type="hidden" name="id" value="<%= row.id %>" / >
     
     <% _.each(form.jform, function(field) { %>
-    <%= field.label %>
-    <%= field.input %>
+	<div class="jw--generic--field">
+	    <%= field.label %>
+	    <%= field.input %>
+	</div>
     <% }); %>
    
 </form>

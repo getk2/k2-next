@@ -75,6 +75,12 @@
 		$(this).addClass('jw--radio__checked');
 	});
 	
+	// Bootstrap fallback
+	K2Container.on('click', '.radio', function(){
+		$(this).parent().children('.radio').removeClass('jw--radio__checked');
+		$(this).addClass('jw--radio__checked');
+	});
+		
 	// Featured, published togglers.
 	K2Container.on('click', '.jw--state--toggler', function(){
 		$(this).toggleClass('toggler--active');
