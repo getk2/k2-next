@@ -35,7 +35,11 @@
 <li class="text-center small-1 large-1 columns">
     <% if(canEditState) { %>
     <a data-action="toggle-state" data-state-value="<%= state %>" data-state="state" data-id="<%= id %>" class="jw--state--toggler jw--state--toggler__pub <% if( state == 1 ) { print('toggler--active'); } %>">
+    	<% if(state == -1) { %>
+    	<i class="fa fa-trash-o"></i>
+    	<% } else { %>
     	<i class="fa fa-check-circle"></i>
+    	<% } %>
     	<i class="hidden"><%= state %></i>
     </a>
     <% } else { %>
