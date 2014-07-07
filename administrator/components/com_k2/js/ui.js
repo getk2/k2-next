@@ -63,9 +63,9 @@
 	});
 	
 	// Close it when redirecting to the settings/ info view
-	K2Container.on('click', '.jw--sidebar .jw--inline--menu a', function(){
-		$('.jw').toggleClass('open--sidebar');
-		$('.jw--sidebar').toggleClass('jw--sidebar__open');
+	K2Container.on('click', '.jw--inline--menu a', function(){
+		$('.jw').removeClass('open--sidebar');
+		$('.jw--sidebar').removeClass('jw--sidebar__open');
 	});
 
 	
