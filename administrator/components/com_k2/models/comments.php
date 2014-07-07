@@ -489,4 +489,13 @@ class K2ModelComments extends K2Model
 
 	}
 
+	public function deleteUnpublished()
+	{
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
+		$query->delete($db->quoteName('#__k2_comments'))->where($db->quoteName('state').' = 0');
+		$db->setQuery($query);
+		$db->execute();
+	}
+
 }

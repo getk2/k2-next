@@ -24,6 +24,12 @@ define(['marionette', 'text!layouts/utilities.html', 'dispatcher'], function(Mar
 		deleteOrphanTags : function(event) {
 			event.preventDefault();
 			jQuery.post('index.php?option=com_k2&task=tags.deleteOrphans&format=json', K2SessionToken + '=1');
+		},
+		deleteUnpublishedComments : function(event) {
+			event.preventDefault();
+			if (confirm(l('K2_THIS_WILL_PERMANENTLY_DELETE_ALL_UNPUBLISHED_COMMENTS_ARE_YOU_SURE'))) {
+				jQuery.post('index.php?option=com_k2&task=comments.deleteUnpublished&format=json', K2SessionToken + '=1');
+			}
 		}
 	});
 

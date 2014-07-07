@@ -149,6 +149,29 @@ class K2ControllerComments extends K2Controller
 		return $this;
 	}
 
+	public function deleteUnpublished()
+	{
+		// Check for token
+		JSession::checkToken() or K2Response::throwError(JText::_('JINVALID_TOKEN'));
+
+		// User
+		$user = JFactory::getUser();
+
+		// Permissions check
+		if (!$user->authorise('k2.comment.edit', 'com_k2'))
+		{
+			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
+		}
+
+		// Get model
+		$model = K2Model::getInstance('Comments');
+		$model->deleteUnpublished();
+
+		echo json_encode(true);
+		return $this;
+
+	}
+
 	public function report()
 	{
 		// Check for token
@@ -214,7 +237,10 @@ class K2ControllerComments extends K2Controller
 		$senderEmail = $configuration->get('mailfrom');
 		$senderName = $configuration->get('fromname');
 
-		$mailer->setSender(array($senderEmail, $senderName));
+		$mailer->setSender(array(
+			$senderEmail,
+			$senderName
+		));
 		$mailer->setSubject(JText::_('K2_COMMENT_REPORT'));
 		$mailer->IsHTML(true);
 
