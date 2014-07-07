@@ -64,12 +64,22 @@ h1.jw--logo { line-height: 0.8; padding: 15px 0 12px; font: 0/0 transparent; bac
 .jw--add--area { margin-right: -12px; padding: 12px 15px; background: #204866; }
 
 /* Search module */
-.jw--search { border: 1px solid #bbbdbf; border-radius: 3px; margin: 0 auto; max-width: 220px; overflow: hidden; }
+.jw--search { border: 1px solid #bbbdbf; border-radius: 3px; margin: 0 auto; max-width: 220px; position: relative; }
 	.jw--search input[type="text"] { font-size: 13px; border-radius: 3px 0 0 3px; border: 1px solid #e1e3e5; border-radius: 3px; padding: 0 10px 0 10px; margin: 0 -50px 0 0; background-color: #fff; box-shadow: inset 0 1px 0 #e1e3e5; height: 34px; line-height: 34px; }
 	.jw--search input[type="text"]:focus { background: #dbdcdc; color: #63696f; }
 
 	.jw--search button.jw--search--button { height: 34px; line-height: 29px; position: relative; padding: 0 10px; text-align: center; font-size: 19px; color: #63696f; border: 1px solid #d4d6d8; border-radius: 3px; background-clip: padding-box; background-color: #eff1f1; box-shadow: 0 1px 1px rgba(65,64,66,.14), inset 0 1px 0 #fff;}
 	.jw--search button.jw--search--button:hover { color: #00afec; }
+
+/* Autocomplete - based on jQuery UI */
+.jw--autocomplete { z-index: 999; position: absolute; background: #f0f0ee; border-radius: 0; min-width: 100%; max-width: 100%; max-height: 223px; overflow: auto; box-shadow: 0 1px 0 rgba(0,0,0,.11), inset 0 1px 0 rgba(0,0,0,.08); left: 0;  }
+		.jw--autocomplete ul { list-style: none outside none; margin: 0; padding: 0; border: 1px solid #e1e3e5; }
+		.jw--autocomplete ul li { display: block; }
+		.jw--autocomplete ul li:nth-child(odd) { background: #fff; }
+		.jw--autocomplete a { font-size: 12px; line-height: 1.3; display: block; margin: 0; padding: 15px;}
+		.jw--autocomplete li:hover,
+		.jw--autocomplete li:hover a,
+		.jw--autocomplete li a:hover { color: #fff; border: 0; background: #00afec; }
 
 /*------------------------------------------------------------------
 [Filter - reusable] */

@@ -29,7 +29,7 @@
 
 	/* pagination filters */
 	.jw--pagination--mode { position: absolute; border-top: 1px solid #dbdcdc; padding: 8px 6px; min-height: 45px;
-left: 0; bottom: 55px; width: 255px; }
+left: 0; bottom: 55px; width: 275px; }
 	.jw--pagination--mode input[type="radio"] { opacity: 0; }
 	.jw--pagination--mode > span { font-size: 11px; display: inline-block; vertical-align: middle; margin-right: 3px; }
 
