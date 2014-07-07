@@ -3,7 +3,9 @@ define(['marionette', 'text!layouts/utilities.html', 'dispatcher'], function(Mar
 	var K2ViewUtilities = Marionette.ItemView.extend({
 		template : _.template(template),
 		events : {
-			'click [data-action="import"]' : 'import'
+			'click [data-action="import"]' : 'import',
+			'click [data-action="delete-orphan-tags"]' : 'deleteOrphanTags',
+			'click [data-action="delete-unpublished-comments"]' : 'deleteUnpublishedComments'
 		},
 		import : function(event) {
 			event.preventDefault();
@@ -18,7 +20,10 @@ define(['marionette', 'text!layouts/utilities.html', 'dispatcher'], function(Mar
 					self._import(data.lastId);
 				}
 			});
-
+		},
+		deleteOrphanTags : function(event) {
+			event.preventDefault();
+			jQuery.post('index.php?option=com_k2&task=tags.deleteOrphans&format=json', K2SessionToken + '=1');
 		}
 	});
 

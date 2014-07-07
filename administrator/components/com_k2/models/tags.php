@@ -432,4 +432,20 @@ class K2ModelTags extends K2Model
 		return $rows;
 	}
 
+	public function deleteOrphans()
+	{
+		// Get database
+		$db = $this->getDbo();
+
+		// Get query
+		$query = $db->getQuery(true);
+
+		// Delete
+		$subquery = $db->getQuery(true);
+		$subquery->select($db->quoteName('tagId'))->from($db->quoteName('#__k2_tags_xref'))->group($db->quoteName('tagId'));
+		$query->delete($db->quoteName('#__k2_tags'))->where($db->quoteName('id').' NOT IN ('.$subquery->__toString().')');
+		$db->setQuery($query);
+		$db->execute();
+	}
+
 }
