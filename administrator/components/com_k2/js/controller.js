@@ -2,7 +2,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 	var K2Controller = Marionette.Controller.extend({
 
 		// The available resources for request. Any other request returns a 404 error.
-		resources : ['items', 'categories', 'tags', 'comments', 'users', 'extrafieldsgroups', 'extrafields', 'usergroups', 'media', 'information', 'settings'],
+		resources : ['items', 'categories', 'tags', 'comments', 'users', 'extrafieldsgroups', 'extrafields', 'usergroups', 'media', 'information', 'settings', 'utilities'],
 
 		// Holds the current resource type.
 		resource : 'items',
@@ -38,11 +38,6 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 			// Listener for close event.
 			K2Dispatcher.on('app:controller:close', function() {
 				this.close();
-			}, this);
-
-			// Listener for import event.
-			K2Dispatcher.on('app:controller:import', function() {
-				this.import(0);
 			}, this);
 
 			// Listener for list event.
@@ -316,16 +311,6 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 			}
 		},
 
-		// Import function
-		import : function(id) {
-			var self = this;
-			jQuery.post('index.php?option=com_k2&task=' + this.resource + '.import&id=' + id + '&format=json', K2SessionToken + '=1', function(data) {
-				if (data && data.lastId) {
-					self.import(data.lastId);
-				}
-			});
-		},
-
 		// Toggle state function.
 		toggleState : function(id, state, model) {
 			if ( typeof (model) == 'undefined') {
@@ -404,7 +389,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 			});
 		},
 
-		// Search 
+		// Search
 		search : function(search) {
 			this.searchCollection = this.collection.clone();
 			this.searchCollection.setState('search', search);
@@ -521,6 +506,36 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 		media : function() {
 			// Load the required files
 			require(['models/media', 'views/media/manager'], _.bind(function(Model, View) {
+
+				// Create the model
+				this.model = new Model();
+
+				// Fetch the data from server
+				this.model.fetch({
+
+					// Success callback
+					success : _.bind(function() {
+
+						// Create the view
+						this.view = new View({
+							model : this.model
+						});
+
+						// Render the view
+						K2Dispatcher.trigger('app:region:show', this.view, 'content');
+
+					}, this),
+					error : _.bind(function(model, xhr, options) {
+						this.enqueueMessage('error', xhr.responseText);
+					}, this)
+				});
+
+			}, this));
+		},
+
+		utilities : function() {
+			// Load the required files
+			require(['models/utilities', 'views/utilities'], _.bind(function(Model, View) {
 
 				// Create the model
 				this.model = new Model();

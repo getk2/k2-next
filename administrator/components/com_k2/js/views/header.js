@@ -9,8 +9,7 @@ define(['marionette', 'text!layouts/header.html', 'dispatcher', 'widgets/widget'
 			'click [data-action="save"]' : 'save',
 			'click [data-action="save-and-new"]' : 'saveAndNew',
 			'click [data-action="save-and-close"]' : 'saveAndClose',
-			'click [data-action="close"]' : 'close',
-			'click [data-action="import"]' : 'import'
+			'click [data-action="close"]' : 'close'
 		},
 
 		modelEvents : {
@@ -59,13 +58,6 @@ define(['marionette', 'text!layouts/header.html', 'dispatcher', 'widgets/widget'
 		close : function(event) {
 			event.preventDefault();
 			K2Dispatcher.trigger('app:controller:close');
-		},
-
-		import : function(event) {
-			event.preventDefault();
-			if (confirm(l('K2_WARNING_YOU_ARE_ABOUT_TO_IMPORT_ALL_SECTIONS_CATEGORIES_AND_ARTICLES_FROM_JOOMLAS_CORE_CONTENT_COMPONENT_COM_CONTENT_INTO_K2_IF_THIS_IS_THE_FIRST_TIME_YOU_IMPORT_CONTENT_TO_K2_AND_YOUR_SITE_HAS_MORE_THAN_A_FEW_THOUSAND_ARTICLES_THE_PROCESS_MAY_TAKE_A_FEW_MINUTES_IF_YOU_HAVE_EXECUTED_THIS_OPERATION_BEFORE_DUPLICATE_CONTENT_MAY_BE_PRODUCED'))) {
-				K2Dispatcher.trigger('app:controller:import');
-			}
 		}
 	});
 

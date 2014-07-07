@@ -278,10 +278,6 @@ class K2ViewItems extends K2View
 		{
 			K2Response::addAction('add', 'K2_ADD', array('data-action' => 'add'));
 		}
-		/*if ($user->authorise('core.admin', 'com_k2') && !$params->get('hideImportButton'))
-		 {
-		 K2Response::addAction('import', 'K2_IMPORT', array('data-action' => 'import'));
-		 }*/
 	}
 
 	protected function setBatchActions()

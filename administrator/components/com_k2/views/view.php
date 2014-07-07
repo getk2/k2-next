@@ -340,7 +340,10 @@ class K2View extends JViewLegacy
 			JPluginHelper::importPlugin('content');
 
 			// Trigger the form preparation event
-			$results = $dispatcher->trigger('onContentPrepareForm', array($form, $row));
+			$results = $dispatcher->trigger('onContentPrepareForm', array(
+				$form,
+				$row
+			));
 
 			// Pass the JForm to the model before attaching the fields
 			$this->prepareJForm($form, $row);
@@ -364,7 +367,11 @@ class K2View extends JViewLegacy
 		// Extend the form with K2 plugins
 		$_form->k2Plugins = array();
 		JPluginHelper::importPlugin('k2');
-		$dispatcher->trigger('onK2RenderAdminForm', array(&$_form, $row, $this->getName()));
+		$dispatcher->trigger('onK2RenderAdminForm', array(
+			&$_form,
+			$row,
+			$this->getName()
+		));
 
 		$this->setFormFields($_form, $row);
 
@@ -428,7 +435,10 @@ class K2View extends JViewLegacy
 	 */
 	protected function setFormActions()
 	{
-		K2Response::addAction('save', 'K2_SAVE', array('data-action' => 'save', 'data-resource' => $this->getName()));
+		K2Response::addAction('save', 'K2_SAVE', array(
+			'data-action' => 'save',
+			'data-resource' => $this->getName()
+		));
 		K2Response::addAction('saveAndNew', 'K2_SAVE_AND_NEW', array('data-action' => 'save-and-new'));
 		K2Response::addAction('saveAndClose', 'K2_SAVE_AND_CLOSE', array('data-action' => 'save-and-close'));
 		K2Response::addAction('close', 'K2_CLOSE', array('data-action' => 'close'));
@@ -481,6 +491,10 @@ class K2View extends JViewLegacy
 			K2Response::addMenuLink('usergroups', 'K2_USER_GROUPS', array('href' => '#usergroups'), 'primary');
 			K2Response::addMenuLink('users', 'K2_USERS', array('href' => '#users'), 'primary');
 			K2Response::addMenuLink('media', 'K2_MEDIA_MANAGER', array('href' => '#media'), 'primary');
+			if ($user->authorise('core.admin', 'com_k2'))
+			{
+				K2Response::addMenuLink('utilities', 'K2_UTILITIES', array('href' => '#utilities'), 'primary');
+			}
 
 		}
 
