@@ -114,9 +114,11 @@ h1.jw--logo { line-height: 0.8; padding: 15px 0 12px; font: 0/0 transparent; bac
 	.jw--pagination ul li.active {border-color:#00afec;}
 	
 	/* pagination limit */
-	.jw--limit { padding: 7px 0; }
-		.jw--limit label { margin-right: 15px; font-weight: 600; font-size: 13px; }
-		.jw--limit select { max-width: 90px; width: 90px; height: 34px; line-height: 34px; background: #f0f2f2; box-shadow: 0 1px 1px rgba(65,64,66,.14), inset 0 1px 0 #fff; }
+	.jw--limit { padding: 7px 0 0; }
+		.jw--limit label { margin-right: 15px; margin-bottom: 0; font-weight: 600; font-size: 13px; }
+		.jw--limit select, .jw--limit .select2-container.jw--limit--select  { display: inline-block; vertical-align: middle; max-width: 90px; width: 90px; min-width: 0; height: 34px; line-height: 34px; background: #f0f2f2; box-shadow: 0 1px 1px rgba(65,64,66,.14); text-align: left; }
+		
+		.jw--limit .select2-container .select2-choice { max-width: 100%; background: #f0f2f2; border-radius: 3px; border: 1px solid #dbdcdc; min-width: 0; height: 34px; line-height: 34px; }
 	
 	/* pagination total */
 	.jw--total { font-size: 13px; }
