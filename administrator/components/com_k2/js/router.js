@@ -3,7 +3,8 @@ define(['marionette'], function(Marionette) {'use strict';
 		appRoutes : {
 			'settings' : 'settings',
 			'media' : 'media',
-			'information': 'information',
+			'information' : 'information',
+			'utilities' : 'utilities',
 			'modal/[url]' : 'execute',
 			'*any' : 'execute'
 		}

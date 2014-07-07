@@ -96,7 +96,7 @@ class K2ControllerItems extends K2Controller
 		$id = $application->input->get('id', 0, 'int');
 
 		// Permissions check
-		if (!$user->authorise('core.admin'))
+		if (!$user->authorise('core.admin', 'com_k2'))
 		{
 			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'), 403);
 		}
