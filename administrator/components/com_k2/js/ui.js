@@ -8,19 +8,15 @@
 		// Cache selectors
 		var lastId,
 		    topMenu = $('.jw--scrollspymenu'),
-		    topMenuHeight = topMenu.outerHeight()+15,
+		    topMenuHeight = 15,
 		    // All list items
-		    menuItems = topMenu.find("a"),
+		    menuItems = topMenu.find("a");
 		    // Anchors corresponding to menu items
-		    scrollItems = menuItems.map(function(){
-		      var item = $($(this).attr("href"));
-		      if (item.length) { return item; }
-		    });
 
 		// Bind click handler to menu items so we can get a fancy scroll animation
 		K2Container.on('click', '.jw--scrollspymenu a', function(e){
-			 var href = $(this).attr("href"),
-		      offsetTop = (href === "#") ? 0 : $(href).offset().top-topMenuHeight-60;
+			var href = $(this).attr("href"),
+		      offsetTop = (href === "#") ? 0 : $(href).offset().top-topMenuHeight - 120;
 		  $('html, body').stop().animate({
 		      scrollTop: offsetTop
 		  }, 300);
@@ -30,9 +26,14 @@
 		// Bind to scroll
 		$(window).scroll(function(){
 		   // Get container scroll position
-		   var fromTop = $(this).scrollTop()+topMenuHeight;
+		   var fromTop = $(this).scrollTop()+120;
 
 		   // Get id of current scroll item
+		  scrollItems = menuItems.map(function(){
+		      var item = $($(this).attr("href"));
+		      if (item.length) { return item; }
+		    });
+		  
 		   var cur = scrollItems.map(function(){
 		     if ($(this).offset().top < fromTop)
 		       return this;
@@ -41,7 +42,8 @@
 		   // Get the id of the current element
 		   cur = cur[cur.length-1];
 		   var id = cur && cur.length ? cur[0].id : "";
-			 			 
+			 
+			 
 		   if (lastId !== id) {
 		       lastId = id;
 		       // Set/remove active class

@@ -29,8 +29,8 @@ h1.jw--logo { line-height: 0.8; padding: 15px 0 12px; font: 0/0 transparent; bac
 .open--sidebar {  }
 	.open--sidebar .jw--component { padding-left: 320px; }
 	.open--sidebar .jw--pagination,
-	.open--sidebar .jw--subheader,
-	.open--sidebar .jw--scrollwrapper { left: 320px; }
+	.open--sidebar .jw--scrollwrapper,
+	.open--sidebar .jw--subheader { left: 320px; }
 	
 	/* Active toolbar */
 	.active--toolbar .jw--component { padding-top: 149px; }
@@ -47,7 +47,6 @@ h1.jw--logo { line-height: 0.8; padding: 15px 0 12px; font: 0/0 transparent; bac
 		 	transition:all 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000)
 }
 
-
 /* Image replacement */
 .ir { background-color: transparent; border: 0; overflow: hidden; }
 .ir:before { content: ""; display: block; width: 0; height: 150%; }
@@ -57,7 +56,6 @@ h1.jw--logo { line-height: 0.8; padding: 15px 0 12px; font: 0/0 transparent; bac
 .visuallyhidden { border: 0; clip: rect(0 0 0 0); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; width: 1px; }
 .visuallyhidden.focusable:active, .visuallyhidden.focusable:focus { clip: auto; height: auto; margin: 0; overflow: visible; position: static; width: auto; }
 .invisible { visibility: hidden; }
-
 
 /*------------------------------------------------------------------
 [Modules - reusable] */

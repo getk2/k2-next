@@ -7,9 +7,21 @@
 <li class="small-1 large-4 columns"><a data-action="edit" href="<%= editLink %>"><%= name %></a></li>
 <li class="small-1 large-4 columns"><%= groupName %></li>
 <li class="small-1 large-3 columns"><%= typeName %></li>
-<li class="small-1 large-1 columns"><span data-role="ordering-handle" data-column="ordering">DRAG ME</span></li>
 <li class="small-1 large-1 columns">
-    <input type="text" maxlength="6" size="6" name="ordering[]" value="<%= ordering %>" data-id="<%= id %>" />
+	<span data-role="ordering-handle" data-column="ordering"><i class="fa fa-bars"></i></span>
 </li>
-<li class="small-1 large-1 columns"><a data-action="toggle-state" data-state-value="<%= state %>" data-state="state" data-id="<%= id %>"><%= state %></a></li>
+<li class="small-1 large-1 columns">
+    <input type="text" class="jw--featured--inp" maxlength="6" size="6" name="ordering[]" value="<%= ordering %>" data-id="<%= id %>" />
+</li>
+
+<li class="text-center small-1 large-1 columns">
+	<a data-action="toggle-state" data-state-value="<%= state %>" data-state="state" data-id="<%= id %>" class="jw--state--toggler jw--state--toggler__pub <% if( state == 1 ) { print('toggler--active'); } %>">
+    	<% if(state == -1) { %>
+    	<i class="fa fa-trash-o"></i>
+    	<% } else { %>
+    	<i class="fa fa-check-circle"></i>
+    	<% } %>
+    	<i class="visuallyhidden"><%= state %></i>
+	</a>
+</li>
 <li class="small-1 large-1 columns"><%= id %></li>

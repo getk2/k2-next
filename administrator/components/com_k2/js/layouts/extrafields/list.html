@@ -13,10 +13,11 @@
         <li class="small-1 large-1 columns">
             <a data-action="sort" data-sorting="ordering"><%= l('K2_ORDER') %></a>
             <button data-column="ordering" data-action="save-ordering">
-                <%= l('K2_SAVE_ORDER') %>
+				<i class="fa fa-save"></i>
+                <i class="visuallyhidden"><%= l('K2_SAVE_ORDER') %></i>
             </button>
         </li>
-        <li class="small-1 large-1 columns"><a data-action="sort" data-sorting="state.reverse"><%= l('K2_STATE') %></a></li>
+        <li class="text-center small-1 large-1 columns"><a data-action="sort" data-sorting="state.reverse"><%= l('K2_STATE') %></a></li>
         <li class="small-1 large-1 columns"><a data-action="sort" data-sorting="id.reverse"><%= l('K2_ID') %></a></li>
     </ul>
     
