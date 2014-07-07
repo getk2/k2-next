@@ -53,7 +53,8 @@ base - link	   #636b6e;
 @import "itemform.css";
 @import "navigation.css";
 @import "settings.css";
+@import "forms.css";
 
 /* Item form */
-@import "item.css"
+@import "item.css";
 
