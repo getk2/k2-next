@@ -19,6 +19,14 @@
 .jw ul {  }
 	.jw ul li {  }
 	.jw ul.list-reset { list-style: none outside none; }
+	
+	ul.jw--bordered {  }
+		ul.jw--bordered > li { overflow: hidden; border-bottom: 1px solid #dbdcdc; }
+	
+	/* generic list classes */
+	.jw ul.no_brd { border: 0; }
+	.jw ul.no_btmbrd { border-bottom: 0; }
+	.jw ul.top_brd { border-top: 1px solid #dbdcdc; }
 
 .jw ol {  }
 	.jw ol li {  }

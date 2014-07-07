@@ -1,11 +1,23 @@
-<span><%= title %></a></span>
-<span><%= id %></span>
-<ul data-category="<%= id %>">
-    <% _.each(rows, function(row) { %>
-        <li data-category="<%= row.get('catid') %>"><%= row.get('title') %>
-            <span data-role="ordering-handle" data-column="ordering">DRAG ME</span> 
-            <input type="hidden" name="ordering[]" value="<%- row.get('ordering') %>" data-id="<%= row.get('id') %>" />
-        </li>
-   <% }); %>
-</ul>
-<ul data-region="category-children"></ul>
+	<div class="small-3 large-1 columns">&nbsp;</div>
+	<div class="small-10 large-6 columns"><strong><%= title %></strong></div>
+	<div class="small-3 large-9 columns"><%= id %></div>
+	
+	<div class="small-16 ov-hidden">
+		<ul class="no_btmbrd" data-category="<%= id %>">
+		    <% _.each(rows, function(row) { %>
+		        <li data-category="<%= row.get('catid') %>">
+		        	<div class="text-center small-3 large-1 columns">
+			            <span data-role="ordering-handle" data-column="ordering">
+			            	<i class="fa fa-bars"></i>
+			            </span> 
+			            <input type="hidden" class="jw--featured--inp" name="ordering[]" value="<%- row.get('ordering') %>" data-id="<%= row.get('id') %>" />
+		        	</div>
+		        	<div class="small-10 large-6 columns">
+			            <%= row.get('title') %>
+			        </div>
+		            <div class="small-3 large-9 columns"><%= row.get('id') %></div>
+		        </li>
+		   <% }); %>
+		</ul>
+		<ul class="no_btmbrd" data-region="category-children"></ul>
+	</div>

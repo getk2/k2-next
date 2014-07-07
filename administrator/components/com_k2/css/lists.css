@@ -19,7 +19,7 @@ table.jw--listed--items { width: 100%; font-size: 13px; }
 		 	 -o-transition: opacity 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
 		 	 		transition: opacity 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000)
 	}
-		.jw--listed--items ul li { padding-top: 15px; padding-bottom: 15px; word-break: break-word; }
+		.jw--listed--items ul li { padding-top: 15px; padding-bottom: 15px; word-break: break-word; overflow: hidden; }
 		
 	.jw--listed--items ul.jw--items--header { background: #fff; font-weight: 700; }
 	.jw--listed--items ul.jw--items--header ul { padding-top: 4px; padding-bottom: 4px; }
@@ -32,7 +32,17 @@ table.jw--listed--items { width: 100%; font-size: 13px; }
 	.jw--listed--items .fa-bars{ opacity: 0.5; }
 		.jw--listed--items .fa-bars:hover { opacity: 1; cursor: move; }
 		
-	.jw--listed--items .k2SortingPlaceholder { height: 94px; width: 100%; display: block; background: #d1d2d2; border: 3px dashed #b3b5b5; }
+	.jw--listed--items .k2SortingPlaceholder, 
+	.jw--listed--items .placeholder { height: 94px; width: 100%; display: block; background: #d1d2d2; border: 3px dashed #b3b5b5; }
+		.jw--listed--items .placeholder { height: 48px; }
 		.jw--listed--items .k2SortingPlaceholder > li {  height: 94px; width: 100%;  display: block; }
 		/* dragged item */
 		.dragged { position: absolute; z-index: 999; opacity: 0.65; }
+		
+/* Sortable and movable lists (items only) */
+
+
+
+
+
+
