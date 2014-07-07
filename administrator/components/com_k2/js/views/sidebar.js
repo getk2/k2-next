@@ -1,6 +1,23 @@
-define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session'], function(Marionette, template, K2Dispatcher, K2Session) {'use strict';
+define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session', 'text!layouts/sidebar_search_row.html'], function(Marionette, template, K2Dispatcher, K2Session, searchRowTemplate) {'use strict';
 
-	var K2ViewSidebar = Marionette.ItemView.extend({
+	var K2ViewSidebarSearchResultsItem = Marionette.ItemView.extend({
+		tagName : 'li',
+		template : _.template(searchRowTemplate),
+		events : {
+			'click a[data-action="edit"]' : 'edit'
+		},
+		edit : function(event) {
+			event.preventDefault();
+			K2Dispatcher.trigger('app:controller:edit', this.model.get('id'));
+		}
+	});
+
+	var K2ViewSidebarSearchResults = Marionette.CollectionView.extend({
+		tagName : 'ul',
+		itemView : K2ViewSidebarSearchResultsItem
+	});
+
+	var K2ViewSidebar = Marionette.Layout.extend({
 
 		template : _.template(template),
 
@@ -14,7 +31,12 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session'], fun
 			'change [data-region="filters"] select' : 'filter',
 			'click [data-action="reset"]' : 'resetFilters',
 			'click [data-action="set-layout"]' : 'setLayout',
-			'change input[name="viewMode"]' : 'setViewMode'
+			'change input[name="viewMode"]' : 'setViewMode',
+			'input input[name="search"]' : 'search'
+		},
+
+		regions : {
+			searchResults : '[data-region="sidebar-search-results"]'
 		},
 
 		initialize : function() {
@@ -25,9 +47,25 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session'], fun
 					'states' : response.states
 				});
 			}, this);
-		},
 
+			K2Dispatcher.on('app:sidebar:search', _.bind(function(collection) {
+				var view = new K2ViewSidebarSearchResults({
+					collection : collection
+				});
+				this.searchResults.show(view);
+			}, this));
+
+			K2Dispatcher.on('app:sidebar:layouts:show', _.bind(function() {
+				this.$('[data-role="layouts"]').show();
+			}, this));
+
+			K2Dispatcher.on('app:sidebar:layouts:hide', _.bind(function() {
+				this.$('[data-role="layouts"]').hide();
+			}, this));
+
+		},
 		onRender : function() {
+			this.$('[data-role="layouts"]').hide();
 			_.each(this.model.get('states'), _.bind(function(value, state) {
 				var filter = this.$('[name="' + state + '"]');
 				if (filter.attr('type') === 'radio') {
@@ -38,6 +76,7 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session'], fun
 			}, this));
 			var viewMode = K2Session.get('view.mode', 'pagination');
 			this.$('input[name="viewMode"][value="' + viewMode + '"]').prop('checked', true);
+			this.$('input[name="viewMode"][value="' + viewMode + '"]').parent().addClass('jw--radio__checked');
 			var itemsLayout = K2Session.get('items.layout', 'default');
 			this.$('[data-layout="' + itemsLayout + '"]').addClass('jw--layout-btn__active');
 			this.$('input[name="viewMode"][value="' + viewMode + '"]').prop('checked', true);
@@ -86,6 +125,16 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session'], fun
 			this.$('[data-layout]').removeClass('jw--layout-btn__active');
 			this.$('[data-layout="' + layout + '"]').addClass('jw--layout-btn__active');
 			K2Dispatcher.trigger('app:items:layout', layout);
+		},
+
+		search : function(event) {
+			var el = jQuery(event.currentTarget);
+			var search = jQuery.trim(el.val());
+			if (search && search.length > 2) {
+				K2Dispatcher.trigger('app:controller:search', el.val());
+			} else {
+				this.searchResults.reset();
+			}
 		}
 	});
 

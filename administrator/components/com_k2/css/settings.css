@@ -12,7 +12,7 @@
 /* ------------------------------------------------------------------
 [Settings form] - global setting form */
 .jw--settings {  }
-	.jw--settings__global { padding: 38px 26px 38px 430px; }
+	.jw--settings__global { padding: 38px 26px 38px 350px; }
 	
 	.jw--settings h3 { font-size: 24px; font-weight: 300; padding-bottom: 16px; margin-bottom: 25px; border-bottom: 2px solid #dddedf; }
 	.jw--settings h4 { background: #e5f7fd; border-radius: 3px; line-height: 1; padding: 18px 25px; color: #346b93; font-size: 18px; }

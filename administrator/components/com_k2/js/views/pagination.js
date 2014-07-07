@@ -31,21 +31,24 @@ define(['marionette', 'text!layouts/pagination.html', 'dispatcher', 'session'], 
 		},
 
 		onRender : function() {
-			this.$('select').select2({
+			this.$el.removeClass('scroll-loading');
+			this.$('select[name="limit"]').select2({
 				minimumResultsForSearch : -1
 			});
 			jQuery(window).off('scroll');
 			if (this.model.get('mode') == 'scroll') {
 				var page = this.model.get('pagesCurrent');
 				var total = this.model.get('pagesTotal');
+				var container = this.$el;
 				jQuery(window).scroll(function() {
 					if (jQuery(window).scrollTop() + jQuery(window).height() == jQuery(document).height() && total > page) {
+						container.addClass('scroll-loading');
 						jQuery(window).off('scroll');
 						K2Dispatcher.trigger('app:controller:filter', 'page', page + 1, 'merge');
 					}
 				});
 			} else {
-				this.$('select[name="limit"]').val(this.model.get('limit'));
+				this.$('select[name="limit"]').select2('val', this.model.get('limit'));
 			}
 		},
 

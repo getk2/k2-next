@@ -257,12 +257,11 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 		ordering : function(element, column, enabled) {
 			var minimumValue = element.find('input[name="' + column + '[]"]:first').val();
 			require(['widgets/sortable/jquery-sortable-min'], function() {
-				element.find('table').sortable({
+				element.find('div[data-region="list"]').sortable({
 					handle : '[data-role="ordering-handle"][data-column="' + column + '"]',
 					containerSelector : 'table',
-					itemPath : '> tbody',
-					itemSelector : 'tr',
-					placeholder : '<tr class="k2SortingPlaceholder"/>',
+					itemSelector : 'ul',
+					placeholder : '<ul class="k2SortingPlaceholder"/>',
 					onDrop : function(item, container, _super) {
 						var value = minimumValue;
 						var keys = [];
@@ -279,11 +278,11 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 
 				// Enable or disable the sorting
 				if (enabled) {
-					element.find('table').sortable('enable');
+					element.find('div[data-region="list"]').sortable('enable');
 					element.find('input[name="' + column + '[]"]').prop('disabled', false);
 					element.find('[data-action="save-ordering"][data-column="' + column + '"]').prop('disabled', false);
 				} else {
-					element.find('table').sortable('disable');
+					element.find('div[data-region="list"]').sortable('disable');
 					element.find('input[name="' + column + '[]"]').prop('disabled', true);
 					element.find('[data-action="save-ordering"][data-column="' + column + '"]').prop('disabled', true);
 				}

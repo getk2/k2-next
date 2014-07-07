@@ -23,6 +23,14 @@ define(['marionette', 'text!layouts/list.html', 'dispatcher'], function(Marionet
 			event.preventDefault();
 			var el = jQuery(event.currentTarget);
 			var sorting = el.data('sorting');
+			var current = this.collection.getState('sorting');
+			if (current == sorting || current == sorting + '.reverse') {
+				if (current.indexOf('.reverse') == -1) {
+					sorting = current + '.reverse';
+				} else {
+					sorting = current.replace('.reverse', '');
+				}
+			}
 			K2Dispatcher.trigger('app:subheader:sort', sorting);
 			K2Dispatcher.trigger('app:controller:filter', 'sorting', sorting);
 		},

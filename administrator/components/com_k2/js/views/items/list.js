@@ -19,7 +19,11 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 			'reset' : 'setup'
 		},
 		onShow : function() {
+			K2Dispatcher.trigger('app:sidebar:layouts:show');
 			this.setup();
+		},
+		onClose : function() {
+			K2Dispatcher.trigger('app:sidebar:layouts:hide');
 		},
 		setup : function() {
 
@@ -185,7 +189,7 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 
 								}, this),
 								error : _.bind(function(model, xhr, options) {
-									this.enqueueMessage('error', xhr.responseText);
+									K2Dispatcher.trigger('app:messages:add', error, xhr.responseText);
 								}, this)
 							});
 						} else {

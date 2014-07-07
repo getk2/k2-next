@@ -34,7 +34,12 @@ define(['marionette', 'text!layouts/filters.html', 'dispatcher', 'widgets/widget
 				// Apply select states
 				this.$('[data-region="filters"] select').each(function() {
 					var el = jQuery(this);
-					var value = el.find('option:first').val();
+					var name = el.attr('name');
+					if (name == 'sorting') {
+						var value = 'id.reverse';
+					} else {
+						var value = el.find('option:first').val();
+					}
 					el.select2('val', value);
 					K2Dispatcher.trigger('app:controller:setCollectionState', el.attr('name'), value);
 				});
@@ -45,7 +50,7 @@ define(['marionette', 'text!layouts/filters.html', 'dispatcher', 'widgets/widget
 					text : l('K2_ANY')
 				});
 				K2Dispatcher.trigger('app:controller:setCollectionState', 'author', 0);
-				
+
 				// Tag
 				this.$('[data-region="filters"] input[name="tag"]').select2('data', {
 					id : 0,
