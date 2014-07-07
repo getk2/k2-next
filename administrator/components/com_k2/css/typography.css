@@ -3,6 +3,8 @@
 	.jw a:hover { text-decoration: none; }
 
 .blue { color: #00afeb; }
+.jw--green { color: #3fa800; font-weight: 600; }
+.jw--red { color: #bd362f; font-weight: 600; }
 
 /* Headings */
 .jw h1, .jw h2, .jw h3, .jw h4, .jw h5, .jw h6 {  font-family: 'Open Sans', sans-serif; font-weight: 400; }
@@ -20,7 +22,6 @@
 
 .jw ol {  }
 	.jw ol li {  }
-
 
 img {-ms-interpolation-mode:bicubic; max-width: 100%; }
 

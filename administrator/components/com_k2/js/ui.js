@@ -16,7 +16,7 @@
 		// Bind click handler to menu items so we can get a fancy scroll animation
 		K2Container.on('click', '.jw--scrollspymenu a', function(e){
 			var href = $(this).attr("href"),
-		      offsetTop = (href === "#") ? 0 : $(href).offset().top-topMenuHeight - 120;
+		      offsetTop = (href === "#") ? 0 : $(href).offset().top-topMenuHeight - 140;
 		  $('html, body').stop().animate({
 		      scrollTop: offsetTop
 		  }, 300);
