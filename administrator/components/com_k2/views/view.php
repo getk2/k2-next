@@ -508,7 +508,10 @@ class K2View extends JViewLegacy
 		{
 			K2Response::addMenuLink('settings', 'K2_SETTINGS', array('href' => '#settings'), 'secondary');
 		}
-		K2Response::addMenuLink('help', 'K2_HELP', array('href' => '#help'), 'secondary');
+		K2Response::addMenuLink('help', 'K2_HELP', array(
+			'href' => 'http://getk2.org/community',
+			'target' => '_blank'
+		), 'secondary');
 
 	}
 
