@@ -177,17 +177,19 @@ Buttons */
 /* Collapse */
 .jw--button--collapse { overflow: hidden; }
 	.jw--button--collapse .jw--btn { float: left; clear: both; margin-bottom: 15px; }
-	
-	
+
 /*------------------------------------------------------------------
 [Messages] */
 
 .jw--messages {  }
 	.jw--messages ul { list-style: none outside none; margin: 0; padding: 0; }
 
-
-
-
+/*------------------------------------------------------------------
+[Responsive Tables] */
+.table-responsive-wrap { position: relative; }
+	.table-responsive { width: 100%; margin-bottom: 15px; overflow-x: scroll; overflow-y: hidden; -webkit-overflow-scrolling: touch; -ms-overflow-style: -ms-autohiding-scrollbar; }
+		.table-responsive:after { content: ""; width: 13px; height: 100%; position: absolute; top: 0; right: 0; background: url(img/res-table-bg.png) repeat-y 0 0; }
+		.table-responsive > .table { margin-bottom: 0; }
 
 
 
