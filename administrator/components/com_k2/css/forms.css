@@ -6,7 +6,7 @@
 	
 	/* Grouped items */
 	.jw--generic--form .jw--generic--group { overflow: hidden; margin-bottom: 60px; }
-		.jw--generic--form .jw--generic--group > h2 { color: #00afec; }
+		.jw--generic--form .jw--generic--group > h2 { color: #00afec; margin-top: 0; }
 	
 	/* separate fields */
 	.jw--generic--field { overflow: hidden; padding: 8px 12px 8px 25px; border-radius: 3px; font-size: 16px; }
