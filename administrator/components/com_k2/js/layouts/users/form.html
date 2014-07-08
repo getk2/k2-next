@@ -1,45 +1,100 @@
-<form>
+<form class="jw--generic--form jw--user--form">
 
     <input type="hidden" name="id" value="<%= row.id %>" / >
     
-    <h2><%= l('K2_USER_DETAILS') %></h2>
-    <% _.each(form.user_details, function(field) { %>
-    <%= field.label %>
-    <%= field.input %>
-    <% }); %> 
+    <div class="jw--generic--group">
+    	<h2><%= l('K2_USER_DETAILS') %></h2>
+	    <% _.each(form.user_details, function(field) { %>
+	    <div class="jw--generic--field">
+			<div class="left">
+		   		<%= field.label %>
+		   	</div>
+		   	
+		   	<div class="right">
+		    	<%= field.input %>
+			</div>
+		</div>
+	    <% }); %> 
+	</div>
     
-    <h2><%= l('K2_USER_GROUPS') %></h2>
-    <%= form.groups %>
+    <div class="jw--generic--group">
+    	<h2><%= l('K2_USER_GROUPS') %></h2>
+	    
+	    <div class="jw--generic--field">
+	    	<%= form.groups %>
+	    </div>
+    </div>
     
+    <div class="jw--generic--group">
+    	<h2><%= l('K2_USER_PROFILE') %></h2>
     
-    <h2><%= l('K2_USER_PROFILE') %></h2>
-    <label for="description"><%= l('K2_DESCRIPTION') %></label>
-    <%= form.description %>
+	    <div class="jw--generic--field">
+			<label class="left" for="description"><%= l('K2_DESCRIPTION') %></label>
+			
+			<div class="right">
+				<%= form.description %>
+			</div>
+		</div>
+	    
+	    <div class="jw--generic--field">
+			<label class="left"><%= l('K2_USER_IMAGE_AVATAR') %></label>
+			<div class="right">
+				<div class="jw--avatar--upload" data-region="user-image"></div>
+			</div>
+		</div>
+	    
+	    <div class="jw--generic--field">
+		    <label class="left" for="gender"><%= l('K2_GENDER') %></label>
+		    <div class="right">
+		    	<%= form.gender %>
+		    </div>
+		</div>
+	    
+	    <div class="jw--generic--field">
+		    <label class="left" for="site"><%= l('K2_SITE') %></label>
+		    <div class="right">
+		    	<input type="text" name="site" id="site" value="<%- row.site %>" />
+		    </div>
+		</div>
+		    
+	    <div class="jw--generic--field">
+		    <label class="left" for="notes"><%= l('K2_NOTES') %></label>
+		    <div class="right">
+		    	<textarea name="notes"><%= row.notes %></textarea>
+		    </div>
+	 	</div>
+	</div>
+	
+	<!-- Extra Fields -->
+	<div class="jw--generic--group">
+		<div data-region="user-extra-fields"></div>
+	</div>
+	
+	<div class="jw--generic--group">	
+	    <% _.each(form.k2Plugins['users'], function(field) { %>
+	    <div class="jw--generic--field">
+			<div class="left">
+		   		<%= field.label %>
+		   	</div>
+		   	<div class="right">
+		    	<%= field.input %>
+			</div>
+		</div>
+		<% }); %>
+	</div>
     
-    <label><%= l('K2_USER_IMAGE_AVATAR') %></label>
-    <div data-region="user-image"></div>
-    
-    <label for="gender"><%= l('K2_GENDER') %></label>
-    <%= form.gender %>
-    
-    <label for="site"><%= l('K2_SITE') %></label>
-    <input type="text" name="site" id="site" value="<%- row.site %>" />
-    
-    <label for="notes"><%= l('K2_NOTES') %></label>
-    <textarea name="notes"><%= row.notes %></textarea>
-    
-     <!-- Extra Fields -->
-    <div data-region="user-extra-fields"></div>
-    
-    <% _.each(form.k2Plugins['users'], function(field) { %>
-    	<%= field.label %>
-		<%= field.input %>
-	<% }); %>
-    
-    <h2><%= l('K2_USER_SETTINGS') %></h2>
-    <% _.each(form.settings, function(field) { %>
-    <%= field.label %>
-    <%= field.input %>
-    <% }); %> 
-   
+    <div class="jw--generic--group">
+    	<h2><%= l('K2_USER_SETTINGS') %></h2>
+	    <% _.each(form.settings, function(field) { %>
+	    <div class="jw--generic--field">
+			<div class="left">
+		   		<%= field.label %>
+		   	</div>
+		   	
+		   	<div class="right">
+		    	<%= field.input %>
+			</div>
+		</div>
+	    <% }); %> 
+	</div>
 </form>
