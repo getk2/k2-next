@@ -1,7 +1,4 @@
-define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'views/subheader', 'views/sidebar', 'ui'], function(Marionette, K2Router, K2Controller, K2Dispatcher, HeaderView, SubheaderView, SidebarView) {'use strict';
-
-	// Override the default Backbone.Sync implementation
-	require(['sync']);
+define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'views/subheader', 'views/sidebar', 'sync', 'ui'], function(Marionette, K2Router, K2Controller, K2Dispatcher, HeaderView, SubheaderView, SidebarView) {'use strict';
 
 	// Bind all jQuery AJAX requests so we can add a class for loading.
 	jQuery(document).bind('ajaxSend', function() {
