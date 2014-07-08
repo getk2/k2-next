@@ -19,3 +19,6 @@
 		.jw--generic--def label,
 		.jw--generic--def input[type="radio"],
 		.jw--generic--def input[type="checkbox"] { margin-right: 10px; display: inline-block; vertical-align: middle; }
+		
+		.jw--generic--def h2 { font-size: 24px; font-weight: 300; padding-bottom: 16px; margin-top: 25px; margin-bottom: 15px; border-bottom: 2px solid #dddedf; }
+		.jw--generic--def h3 { font-size: 13px; font-weight: 700; margin: 0 0 10px; }
