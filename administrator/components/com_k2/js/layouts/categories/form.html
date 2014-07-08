@@ -1,109 +1,276 @@
-<form>
+<nav class="jw--transition jw--scrollwrapper">
+	<ul class="jw--scrollspymenu jw--scrollspymenu__info">
+		<li>	
+			<a href="#jw--info0" class="jw--scroll"><%= l('K2_BASIC') %> <i class="right fa fa-angle-right"></i></a>	
+		</li>
+		<li>	
+			<a href="#jw--info1" class="jw--scroll"><%= l('K2_IMAGE') %> <i class="right fa fa-angle-right"></i></a>	
+		</li>
+		<li>	
+			<a href="#jw--info2" class="jw--scroll"><%= l('K2_EXTRA_FIELDS') %> <i class="right fa fa-angle-right"></i></a>	
+		</li>
+		<li>	
+			<a href="#jw--info3" class="jw--scroll"><%= l('K2_DESCRIPTION') %> <i class="right fa fa-angle-right"></i></a>	
+		</li>
+		<li>	
+			<a href="#jw--info4" class="jw--scroll"><%= l('K2_METADATA') %> <i class="right fa fa-angle-right"></i></a>	
+		</li>
+		<li>	
+			<a href="#jw--info5" class="jw--scroll"><%= l('K2_CATEGORY_LAYOUT_OPTIONS') %> <i class="right fa fa-angle-right"></i></a>	
+		</li>
+		
+		
+		
+		
+		
+		<li>
+			<a href="#jw--info6" class="jw--scroll"><%= l('K2_PERMISSIONS') %> <i class="right fa fa-angle-right"></i></a>	
+		</li>
+	</ul>
+</nav>
 
-    <label for="title"><%= l('K2_TITLE') %></label>
-    <input type="text" name="title" id="title" value="<%- row.title %>" />
+<div class="jw--settings jw--settings__global jw--category">
 
-    <label for="alias"><%= l('K2_ALIAS') %></label>
-    <input type="text" name="alias" id="alias" value="<%- row.alias %>" />
+	<form class="jw--generic--form jw--generic--form__full jw--category--form">
+		
+		<h2><%= l('K2_BASIC') %></h2>
+		
+		<div class="jw--generic--field">
+			<label for="title"><%= l('K2_TITLE') %></label>
+			<input type="text" name="title" id="title" value="<%- row.title %>" />
+		</div>
+		
+		<div class="jw--generic--field">
+			<label for="alias"><%= l('K2_ALIAS') %></label>
+			<input type="text" name="alias" id="alias" value="<%- row.alias %>" />
+		</div>
+		
+		<div class="jw--generic--field">
+			<label for="parent_id"><%= l('K2_PARENT') %></label>
+			<%= form.parent %>
+		</div>
+			
+		<div class="jw--generic--field">	
+			<label for="inheritance"><%= l('K2_INHERITANCE') %></label>
+			<%= form.inheritance %>
+		</div>
+			
+		<div class="jw--generic--field">	
+			<label for="template"><%= l('K2_TEMPLATE') %></label>
+			<%= form.template %>
+		</div>	
+			
+		<% if(row.canEditState) { %>
+		<div class="jw--generic--field">
+			<label><%= l('K2_STATE') %></label>
+			<%= form.state %>
+		</div>
+		<% } %>
+		
+		<div class="jw--generic--field">
+			<label for="access"><%= l('K2_ACCESS') %></label>
+			<%= form.access %>
+		</div>	
+			
+		<div class="jw--generic--field">
+			<label for="language"><%= l('K2_LANGUAGE') %></label>
+			<%= form.language %>
+		</div>
+	
+		<div class="jw--generic--field">
+			<label for="created_by_alias"><%= l('K2_AUTHOR_ALIAS') %></label>
+			<input id="created_by_alias" type="text" name="created_by_alias" value="<%- row.created_by_alias %>" />
+		</div>
+		
+		<div class="jw--generic--field">		
+			<label for="created_by_alias_url"><%= l('K2_AUTHOR_ALIAS_URL') %></label>
+			<input id="created_by_alias_url" type="text" name="created_by_alias_url" value="<%- row.created_by_alias_url %>" />
+		</div>
+		
+		<div class="jw--generic--field">	
+			<label for="createdDate"><%= l('K2_CREATED_DATE') %></label>
+			<input id="createdDate" data-widget="datepicker" type="text" name="createdDate" value="<%- row.createdDate %>" />
+		</div>
+		
+		<div class="jw--generic--field">	
+			<label for="createdTime"><%= l('K2_CREATED_TIME') %></label>
+			<input id="createdTime" data-widget="timepicker" type="text" name="createdTime" value="<%- row.createdTime %>" />
+		</div>
+	
+	    <div class="jw--generic--field">
+	        <label><%= l('K2_MODIFIED_DATE') %></label>
+	        <span><%= row.modifiedOn %></span>
+	    </div>
+	    
+	    <div class="jw--generic--field">
+		    <label><%= l('K2_AUTHOR') %></label>
+		    <input data-widget="user" data-min="1" data-name="<%- row.authorName %>" type="hidden" name="created_by" value="<%- row.created_by %>" />
+	    </div>
+	 
+	    <div class="jw--generic--field">
+	        <label><%= l('K2_MODERATOR') %></label>
+	        <span><%= row.moderatorName %></span>
+	    </div>
+	    
+	    
+	    
+	    <!-- Image -->
+	    <div class="jw--setting--field">
+	    	<div data-region="category-image"></div>
+	    </div>
+	    
+	    
+	    <!-- Extra Fields -->
+	    <div class="jw--setting--field">
+	    	<div data-region="category-extra-fields"></div>
+	    </div>
+	    
+	    
+		<h2><%= l('K2_DESCRIPTION') %></h2> 
+	    <div class="jw--setting--field">
+	    	<%= form.description %>
+	    </div>
+	    
+	    
+	    <input type="hidden" name="id" value="<%= row.id %>" / >
+	    
+	   
+	    <!-- Settings -->
+	    <div class="jw--setting--field">
+	    
+		    <% _.each(form.k2Plugins['categories'], function(field) { %>
+			<% if(field.label !== null) { %>
+			<div class="jw--setting--single">
+			  	<%= field.label %>
+			    <%= field.input %>
+			</div> 
+			<% } else { %>
+			<div class="jw--setting--title">
+				<%= field.input %>
+			</div>
+			<% } %>
+			<% }); %>
+		    
+		    
+		    <% _.each(form.jform, function(field) { %>
+			<% if(field.label !== null) { %>
+			<div class="jw--setting--single">
+			  	<%= field.label %>
+			    <%= field.input %>
+			</div> 
+			<% } else { %>
+			<div class="jw--setting--title">
+				<%= field.input %>
+			</div>
+			<% } %>
+		    <% }); %>
+		    
+		    
+		    <h2><%= l('K2_METADATA') %></h2>
+		    <% _.each(form.metadata, function(field) { %>
+			<% if(field.label !== null) { %>
+			<div class="jw--setting--single">
+			  	<%= field.label %>
+			    <%= field.input %>
+			</div> 
+			<% } else { %>
+			<div class="jw--setting--title">
+				<%= field.input %>
+			</div>
+			<% } %>
+		    <% }); %>
+		    
+		    
+		    <h2><%= l('K2_CATEGORY_LAYOUT_OPTIONS') %></h2>
+		    <% _.each(form.categoryLayoutOptions, function(field) { %>
+			<% if(field.label !== null) { %>
+			<div class="jw--setting--single">
+			  	<%= field.label %>
+			    <%= field.input %>
+			</div> 
+			<% } else { %>
+			<div class="jw--setting--title">
+				<%= field.input %>
+			</div>
+			<% } %>
 
-    <label for="parent_id"><%= l('K2_PARENT') %></label>
-    <%= form.parent %>
-    
-    <label for="inheritance"><%= l('K2_INHERITANCE') %></label>
-    <%= form.inheritance %>
-    
-    <label for="template"><%= l('K2_TEMPLATE') %></label>
-    <%= form.template %>
-
-    
-    <% if(row.canEditState) { %>
-    <label><%= l('K2_STATE') %></label>
-    <%= form.state %>
-    <% } %>
-
-    <label for="access"><%= l('K2_ACCESS') %></label>
-    <%= form.access %>
-
-    <label for="language"><%= l('K2_LANGUAGE') %></label>
-    <%= form.language %>
-
-    <label for="created_by_alias"><%= l('K2_AUTHOR_ALIAS') %></label>
-    <input id="created_by_alias" type="text" name="created_by_alias" value="<%- row.created_by_alias %>" />
-    
-    <label for="created_by_alias_url"><%= l('K2_AUTHOR_ALIAS_URL') %></label>
-    <input id="created_by_alias_url" type="text" name="created_by_alias_url" value="<%- row.created_by_alias_url %>" />
-
-    <label for="createdDate"><%= l('K2_CREATED_DATE') %></label>
-    <input id="createdDate" data-widget="datepicker" type="text" name="createdDate" value="<%- row.createdDate %>" />
-    <label for="createdTime"><%= l('K2_CREATED_TIME') %></label>
-    <input id="createdTime" data-widget="timepicker" type="text" name="createdTime" value="<%- row.createdTime %>" />
-
-    <div>
-        <span><%= l('K2_MODIFIED_DATE') %></span><span><%= row.modifiedOn %></span>
-    </div>
-    
-    <label><%= l('K2_AUTHOR') %></label>
-    <input data-widget="user" data-min="1" data-name="<%- row.authorName %>" type="hidden" name="created_by" value="<%- row.created_by %>" />
-    
- 
-    <div>
-        <span><%= l('K2_MODERATOR') %></span>
-        <span><%= row.moderatorName %></span>
-    </div>
-    
-    <!-- Image -->
-    <div data-region="category-image"></div>
-    
-    <!-- Extra Fields -->
-    <div data-region="category-extra-fields"></div>
-    
-    
-    <label for="description"><%= l('K2_DESCRIPTION') %></label> <%= form.description %>
-    
-    <input type="hidden" name="id" value="<%= row.id %>" / >
-    
-    <% _.each(form.k2Plugins['categories'], function(field) { %>
-    	<%= field.label %>
-		<%= field.input %>
-	<% }); %>
-    
-    <% _.each(form.jform, function(field) { %>
-    <%= field.label %>
-    <%= field.input %>
-    <% }); %>
-    <h2><%= l('K2_METADATA') %></h2>
-    <% _.each(form.metadata, function(field) { %>
-    <%= field.label %>
-    <%= field.input %>
-    <% }); %>
-    <h2><%= l('K2_CATEGORY_LAYOUT_OPTIONS') %></h2>
-    <% _.each(form.categoryLayoutOptions, function(field) { %>
-    <%= field.label %>
-    <%= field.input %>
-    <% }); %>
-    <h2><%= l('K2_CATEGORY_VIEW_OPTIONS') %></h2>
-    <% _.each(form.categoryViewOptions, function(field) { %>
-    <%= field.label %>
-    <%= field.input %>
-    <% }); %>
-    <h2><%= l('K2_CATEGORY_IMAGE_OPTIONS') %></h2>
-    <% _.each(form.categoryImageOptions, function(field) { %>
-    <%= field.label %>
-    <%= field.input %>
-    <% }); %>
-    <h2><%= l('K2_LISTING_OPTIONS') %></h2>
-    <% _.each(form.listingOptions, function(field) { %>
-    <%= field.label %>
-    <%= field.input %>
-    <% }); %>
-    <h2><%= l('K2_ITEM_OPTIONS') %></h2>
-    <% _.each(form.itemOptions, function(field) { %>
-    <%= field.label %>
-    <%= field.input %>
-    <% }); %>
-    <h2><%= l('K2_PERMISSIONS') %></h2>
-    <% _.each(form.permissions, function(field) { %>
-    <%= field.label %>
-    <%= field.input %>
-    <% }); %>
-</form>
+		    <% }); %>
+		    
+		    
+		    <h2><%= l('K2_CATEGORY_VIEW_OPTIONS') %></h2>
+		    <% _.each(form.categoryViewOptions, function(field) { %>
+			<% if(field.label !== null) { %>
+			<div class="jw--setting--single">
+			  	<%= field.label %>
+			    <%= field.input %>
+			</div> 
+			<% } else { %>
+			<div class="jw--setting--title">
+				<%= field.input %>
+			</div>
+			<% } %>
+		    <% }); %>
+		    
+		    
+		    <h2><%= l('K2_CATEGORY_IMAGE_OPTIONS') %></h2>
+		    <% _.each(form.categoryImageOptions, function(field) { %>
+			<% if(field.label !== null) { %>
+			<div class="jw--setting--single">
+			  	<%= field.label %>
+			    <%= field.input %>
+			</div> 
+			<% } else { %>
+			<div class="jw--setting--title">
+				<%= field.input %>
+			</div>
+			<% } %>
+		    <% }); %>
+		    
+		    
+		    <h2><%= l('K2_LISTING_OPTIONS') %></h2>
+		    <% _.each(form.listingOptions, function(field) { %>
+			<% if(field.label !== null) { %>
+			<div class="jw--setting--single">
+			  	<%= field.label %>
+			    <%= field.input %>
+			</div> 
+			<% } else { %>
+			<div class="jw--setting--title">
+				<%= field.input %>
+			</div>
+			<% } %>
+		    <% }); %>
+		    
+		    
+		    <h2><%= l('K2_ITEM_OPTIONS') %></h2>
+		    <% _.each(form.itemOptions, function(field) { %>
+			<% if(field.label !== null) { %>
+			<div class="jw--setting--single">
+			  	<%= field.label %>
+			    <%= field.input %>
+			</div> 
+			<% } else { %>
+			<div class="jw--setting--title">
+				<%= field.input %>
+			</div>
+			<% } %>
+		    <% }); %>
+		    
+		    
+		    <h2><%= l('K2_PERMISSIONS') %></h2>
+		    <% _.each(form.permissions, function(field) { %>
+			<% if(field.label !== null) { %>
+			<div class="jw--setting--single">
+			  	<%= field.label %>
+			    <%= field.input %>
+			</div> 
+			<% } else { %>
+			<div class="jw--setting--title">
+				<%= field.input %>
+			</div>
+			<% } %>
+		    <% }); %>
+		    
+		</div>
+	</form>
+</div>
