@@ -1,19 +1,20 @@
 /*------------------------------------------------------------------
 [Generic Form Styling] - global for extrafields, tags, users */
 .jw--generic--form { padding: 26px; max-width: 950px; }
-
+	.jw--generic--form__full { padding: 26px; max-width: none; }
 	.jw--generic--form h2 {font-size: 24px; font-weight: 300; padding-bottom: 16px; margin-top: 25px; margin-bottom: 15px; border-bottom: 2px solid #dddedf; }
 	
 	/* Grouped items */
 	.jw--generic--form .jw--generic--group { overflow: hidden; margin-bottom: 60px; }
-		.jw--generic--form .jw--generic--group > h2 { color: #00afec; margin-top: 0; }
+		.jw--generic--form .jw--generic--group > h2 { color: #00afec; margin-top: 0; max-width: 850px; }
 	
 	/* separate fields */
 	.jw--generic--field { overflow: hidden; padding: 8px 12px 8px 25px; border-radius: 3px; font-size: 16px; }
 	.jw--generic--field:nth-child(2n-2) { background: #f7f7f7; }
 
 	.jw--generic--field > label, .jw--generic--field label { font-size: 13px; font-weight: 700; color: #777778; padding: 10px 0; line-height: 1; display: inline-block; margin: 0; }
-	.jw--generic--field input[type="text"], .jw--generic--field input[type="password"], .jw--generic--field input[type="email"] { height: 36px; line-height: 36px; width: 300px; padding: 0 10px; margin: 0; }
+	.jw--generic--field input[type="text"], .jw--generic--field input[type="password"], .jw--generic--field input[type="email"],
+	.jw--generic--group input[type="text"], .jw--generic--group input[type="password"], .jw--generic--group input[type="email"] { height: 36px; line-height: 36px; width: 300px; padding: 0 10px; margin: 0; }
 	.jw--generic--field textarea { width: 300px; padding: 10px; margin: 0 }
 	.jw--generic--field select { width: 300px; max-height: 220px; height: 34px; line-height: 34px; background: #f0f2f2; box-shadow: 0 1px 1px rgba(65,64,66,.14), inset 0 1px 0 #fff; margin: 0; }
 	.jw--subfield { margin-top: 8px; }
