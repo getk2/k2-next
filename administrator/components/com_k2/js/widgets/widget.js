@@ -51,19 +51,25 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 		},
 
 		datepicker : function(element) {
-			require(['widgets/pickadate/picker.date', 'css!widgets/pickadate/themes/default.css', 'css!widgets/pickadate/themes/default.date.css'], function(Picker) {
-				element.pickadate({
-					format : element.data('format') || 'yyyy-mm-dd'
+			require(['widgets/pickadate/picker'], function() {
+				require(['widgets/pickadate/picker.date', 'css!widgets/pickadate/themes/default.css', 'css!widgets/pickadate/themes/default.date.css'], function(Picker) {
+					element.pickadate({
+						format : element.data('format') || 'yyyy-mm-dd'
+					});
 				});
 			});
+
 		},
 
 		timepicker : function(element) {
-			require(['widgets/pickadate/picker.time', 'css!widgets/pickadate/themes/default.css', 'css!widgets/pickadate/themes/default.time.css'], function(Picker) {
-				element.pickatime({
-					format : element.data('format') || 'HH:i'
+			require(['widgets/pickadate/picker'], function() {
+				require(['widgets/pickadate/picker.time', 'css!widgets/pickadate/themes/default.css', 'css!widgets/pickadate/themes/default.time.css'], function(Picker) {
+					element.pickatime({
+						format : element.data('format') || 'HH:i'
+					});
 				});
 			});
+
 		},
 		user : function(element) {
 			require(['widgets/select2/select2.min', 'css!widgets/select2/select2.css'], function() {
