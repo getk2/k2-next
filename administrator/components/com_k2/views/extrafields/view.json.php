@@ -127,7 +127,7 @@ class K2ViewExtraFields extends K2View
 		K2Response::addFilter('search', JText::_('K2_SEARCH'), K2HelperHTML::search(), false, 'sidebar');
 
 		// State filter
-		K2Response::addFilter('state', JText::_('K2_STATE'), K2HelperHTML::state('state', null, 'K2_ANY', false, 'radio'), true, 'sidebar');
+		K2Response::addFilter('state', JText::_('K2_STATE'), K2HelperHTML::state('state', null, 'K2_ANY', false), true, 'sidebar');
 
 	}
 

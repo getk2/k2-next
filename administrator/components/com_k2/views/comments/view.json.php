@@ -126,7 +126,7 @@ class K2ViewComments extends K2View
 		K2Response::addFilter('search', JText::_('K2_SEARCH'), K2HelperHTML::search(), false, 'sidebar');
 
 		// State filter
-		K2Response::addFilter('state', JText::_('K2_STATE'), K2HelperHTML::state('state', null, 'K2_ANY', false, 'radio'), true, 'sidebar');
+		K2Response::addFilter('state', JText::_('K2_STATE'), K2HelperHTML::state('state', null, 'K2_ANY', false), true, 'sidebar');
 
 		// Author filter
 		K2Response::addFilter('author', JText::_('K2_USER'), '<input data-widget="user" data-null="'.JText::_('K2_ANY').'" data-min="0" data-name="'.JText::_('K2_ANY').'" type="hidden" name="userId" value="" />', false, 'header');
