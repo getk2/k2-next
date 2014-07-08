@@ -113,7 +113,14 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 				}
 				this.resource = _.first(parts);
 				if (_.indexOf(this.resources, this.resource) === -1) {
-					this.enqueueMessage('error', l('K2_NOT_FOUND'));
+
+					// Show the 404 view
+					require(['views/404'], _.bind(function(View) {
+						var view = new View();
+						view.render();
+						jQuery('[data-application="k2"]').html(view.el);
+					}, this));
+
 				} else {
 					if (parts.length === 1) {
 						this.list(1);
