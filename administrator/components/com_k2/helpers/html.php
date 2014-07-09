@@ -281,7 +281,7 @@ class K2HelperHTML
 		return JHtml::_('select.genericlist', $options, $name, $attributes, 'value', 'text', $value);
 	}
 
-	public function radiolist($options, $name, $value = '', $attributes = '')
+	public static function radiolist($options, $name, $value = '', $attributes = '')
 	{
 		$output = '';
 		foreach ($options as $key => $option)
