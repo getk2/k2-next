@@ -26,15 +26,33 @@
 
 <div class="small-1 large-1 columns"><%= viewLevel %></div>
 
-<div class="small-1 large-1 columns"><%= template %></div>
+<div class="small-1 large-1 columns">
+	<% if(modifiedOn){ 
+		print(modifiedOn); 
+	 } else { %>	
+	 Default
+	<%	} %>
+</div>
 
 <div class="small-1 large-1 columns"><%= authorName %></div>
 
 <div class="small-1 large-1 columns"><%= createdOn %></div>
 
-<div class="small-1 large-1 columns"><%= moderatorName %></div>
+<div class="small-1 large-1 columns">
+	<% if(moderatorName){ 
+		print(moderatorName); 
+	 } else { %>	
+	 -
+	<%	} %>
+</div>
 
-<div class="small-1 large-1 columns"><%= modifiedOn %></div>
+<div class="small-1 large-1 columns">
+	<% if(modifiedOn){ 
+		print(modifiedOn); 
+	 } else { %>	
+	 -v
+	<%	} %>
+</div>
 
 <div class="small-1 large-1 columns">
     <% if(image && image.flag) { %>
