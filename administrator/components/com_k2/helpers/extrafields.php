@@ -29,7 +29,12 @@ class K2HelperExtraFields
 	 *
 	 * @var array $types
 	 */
-	public static $scopes = array('item', 'category', 'user', 'tag');
+	public static $scopes = array(
+		'item',
+		'category',
+		'user',
+		'tag'
+	);
 
 	/**
 	 * Holds the available extra fields groups per scope.
@@ -81,16 +86,9 @@ class K2HelperExtraFields
 			$types = self::getTypes();
 			foreach ($types as $type)
 			{
-				if (JFile::exists(JPATH_ADMINISTRATOR.'/components/com_k2/extrafields/'.$type.'/definition.php'))
-				{
-					$field = new JRegistry();
-					$field->set('prefix', 'value');
-					ob_start();
-					include JPATH_ADMINISTRATOR.'/components/com_k2/extrafields/'.$type.'/definition.php';
-					$definition = ob_get_contents();
-					ob_end_clean();
-					$definitions[$type] = $definition;
-				}
+				$extraField = new K2ExtraFields();
+				$extraField->type = $type;
+				$definitions[$type] = $extraField->getDefinition();
 			}
 			self::$definitions = $definitions;
 		}
