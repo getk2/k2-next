@@ -84,6 +84,7 @@ class K2HelperExtraFields
 				if (JFile::exists(JPATH_ADMINISTRATOR.'/components/com_k2/extrafields/'.$type.'/definition.php'))
 				{
 					$field = new JRegistry();
+					$field->set('prefix', 'value');
 					ob_start();
 					include JPATH_ADMINISTRATOR.'/components/com_k2/extrafields/'.$type.'/definition.php';
 					$definition = ob_get_contents();
