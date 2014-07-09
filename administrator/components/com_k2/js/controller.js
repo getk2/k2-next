@@ -71,8 +71,8 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 			}, this);
 
 			// Listener for save ordering
-			K2Dispatcher.on('app:controller:saveOrder', function(keys, values, column) {
-				this.saveOrder(keys, values, column);
+			K2Dispatcher.on('app:controller:saveOrder', function(keys, values, column, reset) {
+				this.saveOrder(keys, values, column, reset);
 			}, this);
 
 			// Listener for updating the collection states
@@ -333,10 +333,12 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 			});
 		},
 
-		saveOrder : function(keys, values, column) {
+		saveOrder : function(keys, values, column, reset) {
 			this.collection.batch(keys, values, column, {
 				success : _.bind(function(response) {
-					this.resetCollection();
+					if(reset) {
+						this.resetCollection();
+					}
 					K2Dispatcher.trigger('app:messages:set', response);
 				}, this),
 				error : _.bind(function(xhr) {

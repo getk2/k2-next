@@ -1,5 +1,6 @@
 <span><%= title %></a></span>
 <span><%= id %></span>
+<button data-action="expand">+</button>
 <ul data-category="<%= id %>">
     <% _.each(rows, function(row) { %>
         <li data-category="<%= row.get('catid') %>"><%= row.get('title') %>
@@ -8,4 +9,5 @@
         </li>
    <% }); %>
 </ul>
+
 <ul data-region="category-children"></ul>

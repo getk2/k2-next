@@ -52,7 +52,7 @@ define(['marionette', 'text!layouts/list.html', 'dispatcher'], function(Marionet
 				keys.push(row.data('id'));
 				values.push(parseInt(row.val()));
 			});
-			K2Dispatcher.trigger('app:controller:saveOrder', keys, values, column);
+			K2Dispatcher.trigger('app:controller:saveOrder', keys, values, column, true);
 		},
 		toggleRowsSelection : function(event) {
 			var el = jQuery(event.currentTarget);

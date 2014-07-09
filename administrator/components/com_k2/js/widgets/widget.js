@@ -277,7 +277,7 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 							values.push(value);
 							value++;
 						});
-						K2Dispatcher.trigger('app:controller:saveOrder', keys, values, column);
+						K2Dispatcher.trigger('app:controller:saveOrder', keys, values, column, true);
 						_super(item);
 					}
 				});
