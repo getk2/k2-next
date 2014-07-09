@@ -14,7 +14,7 @@
     <span>(<span><%= totalItems %> <%= l('K2_TOTAL') %></span> / <span><%= trashedItems %> <%= l('K2_TRASHED') %></span>)</span>
 </div>
 
-<div class="text-center small-1 large-1 columns"><span data-role="ordering-handle"><i class="fa fa-reorder"></i></span></div>
+<div class="text-center small-1 large-1 columns"><span data-role="ordering-handle"><i class="fa fa-bars"></i></span></div>
 
 <div class="small-1 large-1 columns">
     <% if(canEditState) { %>
@@ -46,4 +46,4 @@
 
 <div class="small-1 large-1 columns"><%= id %></div>
 
-<ul data-parent="<%- id %>"></ul>
+<ul class="jw--subcat" data-parent="<%- id %>"></ul>

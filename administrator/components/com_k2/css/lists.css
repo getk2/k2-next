@@ -28,6 +28,26 @@ table.jw--listed--items { width: 100%; font-size: 13px; }
 	.jw--row--title__inline { display: inline-block; font-weight: 700; padding-right: 5px; margin: 0; color: #b3b7b9; }
 	.jw--row--imlink { padding-left: 10px; }
 	
+	/* Category layout */
+	.jw--cat a { font-weight: 500; padding-right: 5px; }
+	.jw--listed--items .jw--cat > li { border-bottom: 1px solid #dbdcdc; white-space: nowrap; }
+	
+	/* Subcategory layout */
+	.jw--listed--items ul.jw--subcat { border: 0;  }
+			.jw--cat > li > ul.jw--subcat { padding-left: 15px; }
+		
+		.jw--listed--items ul.jw--subcat > li { /*padding-left: 20px; */ padding-bottom: 0; background: #dbdcdc; }
+		.jw--listed--items ul.jw--subcat li:first-child { margin-top: 15px; }
+		.jw--listed--items ul.jw--subcat ul li { background: #cdcdcd; padding-bottom: 0; }
+			.jw--listed--items ul.jw--subcat ul ul li { background: #c1c1c1; }
+			/* Five levels should be enough */
+			.jw--listed--items ul.jw--subcat ul ul ul li { background: #b1b1b1; }
+			
+		/* Resets and further down */
+		.jw--listed--items ul.jw--subcat ul { margin-top: 15px; width: 100%; float: left; clear: both; }
+		.jw--listed--items ul.jw--subcat ul li:first-child { margin-top: 0; }
+
+		
 	/* sortable layouts */
 	.jw--listed--items .fa-bars{ opacity: 0.5; }
 		.jw--listed--items .fa-bars:hover { opacity: 1; cursor: move; }
