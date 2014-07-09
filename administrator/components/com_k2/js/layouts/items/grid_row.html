@@ -1,5 +1,5 @@
 <li class="jw--grid--item">
-	<div class="jw--grid--item--wrap" style="background-image: url(<%= images.modal.src %>);">
+	<div <% if(image && image.flag) { %>class="jw--grid--item--wrap" style="background-image: url(<%= images.modal.src %>);" <% } else { %> class="jw--grid--item--wrap no--imagepres" <% } %>>
 		<div class="jw--grid--item--bg"></div>
 		
 		

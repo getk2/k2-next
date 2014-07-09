@@ -5,6 +5,7 @@ ul.jw--grid--items {  padding: 15px 13px; font-size: 13px; }
 	
 	li.jw--grid--item {  overflow: hidden; padding: 0!important; }
 	li.jw--grid--item .jw--grid--item--wrap {background-position: 50% 50%; background-size: cover;  padding-bottom: 72%; border-radius: 3px; overflow: hidden; position: relative; }
+	li.jw--grid--item .jw--grid--item--wrap.no--imagepres { background-image: url(img/unavailable.png); }
 	li.jw--grid--item.jw--grid--item_selected .jw--grid--item--wrap { border-color: #00afec; border-radius: 3px; }
 
 	/* Responsive bg */
