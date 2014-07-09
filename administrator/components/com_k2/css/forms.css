@@ -2,6 +2,7 @@
 [Generic Form Styling] - global for extrafields, tags, users */
 .jw--generic--form { padding: 26px; max-width: 950px; }
 	.jw--generic--form__full { padding: 26px; max-width: none; }
+	.jw--generic--form__plain { padding: 0; max-width: none; }
 	.jw--generic--form h2 {font-size: 24px; font-weight: 300; padding-bottom: 16px; margin-top: 25px; margin-bottom: 15px; border-bottom: 2px solid #dddedf; }
 	
 	/* Grouped items */
@@ -9,7 +10,7 @@
 		.jw--generic--form .jw--generic--group > h2 { color: #00afec; margin-top: 0; max-width: 850px; }
 	
 	/* separate fields */
-	.jw--generic--field { overflow: hidden; padding: 8px 12px 8px 25px; border-radius: 3px; font-size: 16px; }
+	.jw--generic--field { overflow: hidden; display: block; padding: 8px 12px 8px 25px; border-radius: 3px; font-size: 16px; }
 	.jw--generic--field:nth-child(2n-2) { background: #f7f7f7; }
 
 	.jw--generic--field > label, .jw--generic--field label { font-size: 13px; font-weight: 700; color: #777778; padding: 10px 0; line-height: 1; display: inline-block; margin: 0; }
