@@ -47,6 +47,7 @@ base - link	   #636b6e;
 
 /* Components */
 @import "modals.css";
+@import "messages.css";
 @import "sidebar.css";
 @import "lists.css";
 @import "grid.css";

@@ -105,17 +105,23 @@
 		
 		    <div class="jw--setting--single">
 		        <label><%= l('K2_MODIFIED_DATE') %></label>
-		        <span><%= row.modifiedOn %></span>
+		        <div class="right">
+		        	<label><%= row.modifiedOn %></label>
+		        </div>
 		    </div>
 		    
 		    <div class="jw--setting--single">
 			    <label><%= l('K2_AUTHOR') %></label>
-			    <input data-widget="user" data-min="1" data-name="<%- row.authorName %>" type="hidden" name="created_by" value="<%- row.created_by %>" />
+			    <div class="right">
+					<input data-widget="user" data-min="1" data-name="<%- row.authorName %>" type="hidden" name="created_by" value="<%- row.created_by %>" />
+			    </div>
 		    </div>
 		 
 		    <div class="jw--setting--single">
 		        <label><%= l('K2_MODERATOR') %></label>
-		        <span><%= row.moderatorName %></span>
+		        <div class="right">
+		        	<label><%= row.moderatorName %></label>
+		        </div>
 		    </div>
 	    
 	    </div>
