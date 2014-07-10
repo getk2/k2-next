@@ -47,7 +47,7 @@ img {-ms-interpolation-mode:bicubic; max-width: 100%; }
 	.jw .jw--readonly:hover { cursor: not-allowed; }
 	.jw .jw--readonly:focus { box-shadow: 0 0 transparent; border: 1px solid #cdcdcd; }
 
-/* Labels with radio buttons () */
+/* Labels with radio buttons (custom element) */
 .jw .controls { display: inline-block; vertical-align: middle; }
 .jw label.jw--radio, .jw .controls label.radio {  
 	min-width: 42px; width: auto; text-align: center; border: 1px solid #d4d6d8; line-height: 33px; vertical-align: top; height: 33px; font-size: 12px; margin: 0 -2px; padding: 0 7px;
@@ -118,7 +118,7 @@ cursor: pointer; width: 16px; height: 16px; border: 1px solid #dbdcdc; border: 1
 
 /* 
 ---------------------------------
-Radios with controls - Bootstrap support  */
+Radios with controls (native j3 elements) - Bootstrap support  */
 .btn-group-yesno {  }
 	.btn-group-yesno label { min-width: 42px; width: auto; text-align: center; border: 1px solid #d4d6d8; line-height: 33px; vertical-align: top; height: 33px; font-size: 12px; margin: 0 -2px; padding: 0 7px;
 	color: #8a8c8c; display: inline-block; vertical-align: middle; white-space: nowrap; background-color: #eff1f1;

@@ -1,23 +1,24 @@
+<div class="jw--setting--field">
 	<h2>
 	    <% if(type !== 'user') { %>
 	    <%= l('K2_IMAGE') %>
 	    <% } %>
 	</h2>
 	
-	<div class="jw--generic--field">
+	<div class="jw--setting--single">
 		<input type="file" name="file" data-widget="uploader" data-url="index.php?option=com_k2&task=images.upload&format=json&itemId=<%- itemId %>&type=<%- type %>&temp=<%- temp %>" data-callback="image:upload:<%- cid %>" />
 	</div>
 	
 	<% if(type !== 'user') { %>
-	<div class="jw--generic--field">
+	<div class="jw--setting--single">
 		<input type="text" name="image[path]" data-widget="browser" data-callback="image:select:<%- cid %>" />
 	</div>
 	<% } %>
 	
-	<span class="jw--generic--field" data-widget="dropbox" data-types="images" data-callback="image:dropbox:<%- cid %>"></span>
+	<span class="jw--setting--single" data-widget="dropbox" data-types="images" data-callback="image:dropbox:<%- cid %>"></span>
 	
 	<% if(flag) { %>
-	<div class="jw--generic--field">
+	<div class="jw--setting--single">
 	    <img alt="<%- l('K2_PREVIEW') %>" src="<%- src %>" />
 	    <button class="jw--btn jw--btn__cancel" data-action="remove">
 	        <%= l('K2_REMOVE_IMAGE') %>
@@ -26,12 +27,12 @@
 	<% } %>
 	
 	<% if(type !== 'user') { %>
-	<div class="jw--generic--field">
+	<div class="jw--setting--single">
 		<label><%= l('K2_IMAGE_CAPTION') %></label>
 		<input type="text" name="image[caption]" value="<%- caption %>" />
 	</div>
 	
-	<div class="jw--generic--field">
+	<div class="jw--setting--single">
 		<label><%= l('K2_IMAGE_CREDITS') %></label>
 		<input type="text" name="image[credits]" value="<%- credits %>" />
 	</div>
@@ -40,3 +41,4 @@
 	<input type="hidden" name="image[id]" value="<%- id %>" />
 	<input type="hidden" name="image[temp]" value="<%- temp %>" />
 	<input type="hidden" name="image[remove]" value="<%- remove %>" />
+</div>

@@ -192,40 +192,94 @@
 		    <input type="hidden" name="id" value="<%- row.id %>" / >
 		</div>
 		
-		<div>
 			<!-- Revisions -->
-		    <div data-region="item-revisions"></div>
-		</div>
-			
-			
-			<!-- Item Options -->
 			<div>
-			    <% _.each(form.jform, function(field) { %>
-			    <%= field.label %>
-			    <%= field.input %>
-			    <% }); %>
-			    
-			    <h2><%= l('K2_METADATA') %></h2>
-			    <% _.each(form.metadata, function(field) { %>
-			    <%= field.label %>
-			    <%= field.input %>
-			    <% }); %>
+			    <div data-region="item-revisions"></div>
+			</div>
+				
+			
+			<!-- Item Options (Metadata) -->
+			<div class="jw--options--item">
+				<div class="jw--settings jw--settings__global jw--item">
+					<div class="jw--setting--field" id="jw--item0">
+						
+						<% _.each(form.jform, function(field) { %>
+						<% if(field.label !== null) { %>
+						<div class="jw--setting--single">
+						  	<%= field.label %>
+						    <%= field.input %>
+						</div> 
+						<% } else { %>
+						<div class="jw--setting--title">
+							<%= field.input %>
+						</div>
+						<% } %>
+						<% }); %>
+						
+						<h2><%= l('K2_METADATA') %></h2>
+						<% _.each(form.metadata, function(field) { %>
+						<% if(field.label !== null) { %>
+						<div class="jw--setting--single">
+						  	<%= field.label %>
+						    <%= field.input %>
+						</div> 
+						<% } else { %>
+						<div class="jw--setting--title">
+							<%= field.input %>
+						</div>
+						<% } %>
+						<% }); %>
+						
+					</div>	
+				</div>
 			</div>  
 			
-			<div class="jw--options">  
-			    <h2><%= l('K2_LISTING_OPTIONS') %></h2>
-			    <% _.each(form.listingOptions, function(field) { %>
-			    <%= field.label %>
-			    <%= field.input %>
-			    <% }); %>
-			    
-			    <h2><%= l('K2_ITEM_OPTIONS') %></h2> 
-			    <% _.each(form.itemOptions, function(field) { %>
-			    <%= field.label %>
-			    <%= field.input %>
-			    <% }); %>
+			
+			<!-- Item Options (Listing/ item Options) -->
+			<div class="jw--options--item">
+				<nav class="jw--transition jw--scrollwrapper">
+					<ul class="jw--scrollspymenu jw--scrollspymenu__item">
+						<li><a href="#"><%= l('K2_LISTING_OPTIONS') %></a></li>
+						<li><a href="#"><%= l('K2_ITEM_OPTIONS') %></a></li>
+					</ul>
+				</nav>	
+				
+				<div class="jw--settings jw--settings__global jw--item">
+					<div class="jw--setting--field" id="jw--item0">
+						<h2><%= l('K2_LISTING_OPTIONS') %></h2>
+						<% _.each(form.listingOptions, function(field) { %>
+						<% if(field.label !== null) { %>
+						<div class="jw--setting--single">
+						  	<%= field.label %>
+						    <%= field.input %>
+						</div> 
+						<% } else { %>
+						<div class="jw--setting--title">
+							<%= field.input %>
+						</div>
+						<% } %>
+						<% }); %>
+					</div>
+					
+					<div class="jw--setting--field" id="jw--item1">
+						<h2><%= l('K2_ITEM_OPTIONS') %></h2> 
+						<% _.each(form.itemOptions, function(field) { %>
+						<% if(field.label !== null) { %>
+						<div class="jw--setting--single">
+						  	<%= field.label %>
+						    <%= field.input %>
+						</div> 
+						<% } else { %>
+						<div class="jw--setting--title">
+							<%= field.input %>
+						</div>
+						<% } %>
+						<% }); %>
+					</div>
+				</div>
 			</div>
 			
+			<!-- Permissions -->
 			<div>
 			    <h2><%= l('K2_PERMISSIONS') %></h2> 
 			    <% _.each(form.permissions, function(field) { %>

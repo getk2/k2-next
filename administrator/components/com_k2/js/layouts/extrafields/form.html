@@ -1,65 +1,65 @@
-<form class="jw--generic--form">
-	
-	<div class="jw--generic--field">
-	    <label class="left" for="name"><%= l('K2_NAME') %></label>
-	    <div class="right">
-	    	<input type="text" name="name" id="name" value="<%- row.name %>" />
-	    </div>
-	</div>
-	
-	<div class="jw--generic--field">
-	    <label class="left" for="alias"><%= l('K2_ALIAS') %></label>
-	    <div class="right">
-	    	<input type="text" name="alias" id="alias" value="<%- row.alias %>" />
-	    </div>
-    </div>
-    
-    <div class="jw--generic--field">
-	    <label class="left" for="group"><%= l('K2_EXTRA_FIELDS_GROUP') %></label>
-	   
-	    <div class="right text-right">
-		    <%= form.group %>
-			
-			<div class="clr"></div>
-			<div class="jw--subfield">
-			    <label class="jw--radio--title_inl"><%= l('K2_REQUIRED') %></label>
-			    <label class="jw--radio <%= (row.required > 0) ? 'jw--radio__checked': '' %>"> <%= l('K2_YES') %>
-			        <input type="radio" name="required" value="1" <%= (row.required > 0) ? 'checked="checked"': '' %>/> </label>
-			   
-			    <label class="jw--radio <%= (row.required < 1) ? 'jw--radio__checked': '' %>"> <%= l('K2_NO') %>
-			        <input type="radio" name="required" value="0" <%= (row.required < 1) ? 'checked="checked"': '' %> />
-			    </label>
-			 </div>
+<form class="jw--settings jw--generic--form">
+	<div class="jw--setting--field">
+		<div class="jw--setting--single">
+		    <label class="left" for="name"><%= l('K2_NAME') %></label>
+		    <div class="right">
+		    	<input type="text" name="name" id="name" value="<%- row.name %>" />
+		    </div>
 		</div>
-	</div>
-	
-	<div class="jw--generic--field">
-	    <label class="left"><%= l('K2_STATE') %></label>
-	    <div class="right"><%= form.state %></div>
-	</div>
-
-	<div class="jw--generic--field">
-	   <label class="left" for="type"><%= l('K2_EXTRA_FIELDS_TYPE') %></label>
-	   <div class="right"><%= form.type %></div>
-	</div>
-	
-	<div class="jw--generic--field">
-	    <label class="left"><%= l('K2_EXTRA_FIELDS_DEFINITION') %></label>
-	    <div class="right jw--generic--def" data-region="extra-field-definition"></div>
-	</div>
-
-    <input type="hidden" name="id" value="<%= row.id %>" / >
-
-    <% _.each(form.jform, function(field) { %>
-	<div class="jw--generic--field">
-	    <div class="left">
-	    	<%= field.label %>
+		
+		<div class="jw--setting--single">
+		    <label class="left" for="alias"><%= l('K2_ALIAS') %></label>
+		    <div class="right">
+		    	<input type="text" name="alias" id="alias" value="<%- row.alias %>" />
+		    </div>
 	    </div>
 	    
-	    <div class="right">
-	    	<%= field.input %>
-	    </div>
+	    <div class="jw--setting--single">
+		    <label class="left" for="group"><%= l('K2_EXTRA_FIELDS_GROUP') %></label>
+		   
+		    <div class="right text-right">
+			    <%= form.group %>
+				
+				<div class="clr"></div>
+				<div class="jw--subfield">
+				    <label class="jw--radio--title_inl"><%= l('K2_REQUIRED') %></label>
+				    <label class="jw--radio <%= (row.required > 0) ? 'jw--radio__checked': '' %>"> <%= l('K2_YES') %>
+				        <input type="radio" name="required" value="1" <%= (row.required > 0) ? 'checked="checked"': '' %>/> </label>
+				   
+				    <label class="jw--radio <%= (row.required < 1) ? 'jw--radio__checked': '' %>"> <%= l('K2_NO') %>
+				        <input type="radio" name="required" value="0" <%= (row.required < 1) ? 'checked="checked"': '' %> />
+				    </label>
+				 </div>
+			</div>
+		</div>
+		
+		<div class="jw--setting--single">
+		    <label class="left"><%= l('K2_STATE') %></label>
+		    <div class="right"><%= form.state %></div>
+		</div>
+	
+		<div class="jw--setting--single">
+		   <label class="left" for="type"><%= l('K2_EXTRA_FIELDS_TYPE') %></label>
+		   <div class="right"><%= form.type %></div>
+		</div>
+		
+		<div class="jw--setting--single">
+		    <label class="left"><%= l('K2_EXTRA_FIELDS_DEFINITION') %></label>
+		    <div class="right jw--generic--def" data-region="extra-field-definition"></div>
+		</div>
+	
+	    <input type="hidden" name="id" value="<%= row.id %>" / >
+	
+	    <% _.each(form.jform, function(field) { %>
+		<div class="jw--setting--single">
+		    <div class="left">
+		    	<%= field.label %>
+		    </div>
+		    
+		    <div class="right">
+		    	<%= field.input %>
+		    </div>
+		</div>
+	    <% }); %>
 	</div>
-    <% }); %>
-
 </form>

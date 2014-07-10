@@ -14,6 +14,13 @@
 .jw--settings {  }
 	.jw--settings__global { padding: 38px 26px 38px 350px; }
 	
+	/* form settings */
+	.jw--generic--form { padding: 26px; max-width: 950px; }
+		.jw--generic--form__full { padding: 26px; max-width: none; }
+		.jw--generic--form__plain { padding: 0; max-width: none; }
+	
+	/* headers */
+	.jw--settings h2 { font-size: 24px; font-weight: 300; padding-bottom: 16px; margin-top: 25px; margin-bottom: 15px; border-bottom: 2px solid #dddedf; color: #00afec; }
 	.jw--settings h3 { font-size: 24px; font-weight: 300; padding-bottom: 16px; margin-bottom: 25px; border-bottom: 2px solid #dddedf; }
 	.jw--settings h4 { background: #e5f7fd; border-radius: 3px; line-height: 1; padding: 18px 25px; color: #346b93; font-size: 18px; }
 	.jw--settings label {  }
@@ -21,14 +28,14 @@
 		/* single field */
 		.jw--setting--field { margin-bottom: 60px; }
 		.jw--setting--field, .jw--setting--single { overflow: hidden; }
-		.jw--setting--field .jw--setting--single { padding: 8px 12px 8px 25px; border-radius: 3px; font-size: 16px; }
+		.jw--setting--field .jw--setting--single { display: block; padding: 8px 12px 8px 25px; border-radius: 3px; font-size: 16px; }
 		.jw--setting--field .jw--setting--single:nth-child(2n-2) { background: #f7f7f7; }
 		
 		.jw--setting--field .jw--setting--single > label { font-size: 13px; font-weight: 700; color: #777778; padding: 10px 0; line-height: 1; display: inline-block; margin: 0; }
 		.jw--settings fieldset, .jw--settings select, .jw--settings input[type="text"], .jw--settings input[type="password"], .jw--settings textarea { float: right; }
 		
 		/* Form elements */
-		.jw--settings input[type="text"], .jw--settings input[type="password"] { height: 36px; line-height: 36px; width: 164px; padding: 0 10px; margin: 0; }
+		.jw--settings input[type="text"], .jw--settings input[type="password"], .jw--settings input[type="email"] { height: 36px; line-height: 36px; width: 164px; padding: 0 10px; margin: 0; }
 		.jw--settings select { height: 34px; line-height: 34px; width: 164px; background: #f0f2f2; box-shadow: 0 1px 1px rgba(65,64,66,.14), inset 0 1px 0 #fff; margin: 0; }
 		.jw--settings textarea { min-width: 300px; border-radius: 3px; padding: 5px 10px; } 
 		
@@ -46,9 +53,38 @@
 		.jw--settings fieldset label:first-of-type { border-radius: 3px 0 0 3px; }
 		.jw--settings fieldset label:last-child { border-radius: 0 3px 3px 0; }
 		.jw--setting--single input[type="radio"] { position: absolute; clip: rect(0,0,0,0); }
-		/* enabled/ disabled settings */
+		
+		/* enabled/ disabled/ inherit settings */
+		.jw--setting--single input[value=""]:checked + label { background: #63696f; color: #fff; box-shadow: 0 1px 1px rgba(65,64,66,.14); }
 		.jw--setting--single input[value="0"]:checked + label { background: #bd362f; color: #fff; box-shadow: 0 1px 1px rgba(65,64,66,.14); }
 		.jw--setting--single input[value="1"]:checked + label { background: #3fa800; color: #fff; box-shadow: 0 1px 1px rgba(65,64,66,.14); }
+		
+	/* Form definitions */
+	.jw--generic--def { font-size: 13px; }
+		.jw--generic--def input[type="text"], 
+		.jw--generic--def select,
+		.jw--generic--def button { display: block;  margin-bottom: 15px!important; }
+		
+		.jw--generic--def label,
+		.jw--generic--def input[type="radio"],
+		.jw--generic--def input[type="checkbox"] { margin-right: 10px; display: inline-block; vertical-align: middle; }
+		
+		.jw--generic--def h3 { font-size: 13px; font-weight: 700; margin: 0 0 10px; }
+	
+	/* misc */
+	.jw--category h2 { color: #00afec; }
+	#permissions-sliders, .jw--permissions { font-size: 13px; }
+	.rule-desc { font-size: 13px; margin-bottom: 30px; }
+	.jw--subfield { margin-top: 8px; }
+		
+	/* Specific forms - comments */
+	.jw--comments--form {  }
+		.jw--comments--form textarea { min-height: 220px; }
+		
+	/* Specific forms - users */
+	#helpsite-refresh { display: block; margin-top: 10px; }
+	.jw--avatar--upload h2 { display: none; }
+
 		
 /* ------------------------------------------------------------------
 [Information] - global info form */

@@ -1,16 +1,18 @@
-<div class="jw--generic--form jw--utilities--form">	
-	<div class="jw--generic--field">
-		<label class="left"><%= l('K2_IMPORT_INTO_K2') %></label>
-		<div class="right">
-			<button class="jw--btn" data-action="import"><i class="fa"></i><%= l('K2_IMPORT_JOOMLA_ARTICLES') %></button>
+<div class="jw--settings jw--generic--form jw--utilities--form">
+	<div class="jw--setting--field">
+		<div class="jw--setting--single">
+			<label class="left"><%= l('K2_IMPORT_INTO_K2') %></label>
+			<div class="right">
+				<button class="jw--btn" data-action="import"><i class="fa"></i><%= l('K2_IMPORT_JOOMLA_ARTICLES') %></button>
+			</div>
 		</div>
-	</div>
-	
-	<div class="jw--generic--field">
-		<label class="left"><%= l('K2_MAINTENANCE') %></label>
-		<div class="right">
-			<button class="jw--btn jw--btn__cancel" data-action="delete-orphan-tags"><i class="fa"></i><%= l('K2_DELETE_ORPHAN_TAGS') %></button>
-			<button class="jw--btn jw--btn__cancel" data-action="delete-unpublished-comments"><i class="fa"></i><%= l('K2_DELETE_UNPUBLISHED_COMMENTS') %></button>
+		
+		<div class="jw--setting--single">
+			<label class="left"><%= l('K2_MAINTENANCE') %></label>
+			<div class="right">
+				<button class="jw--btn jw--btn__cancel" data-action="delete-orphan-tags"><i class="fa"></i><%= l('K2_DELETE_ORPHAN_TAGS') %></button>
+				<button class="jw--btn jw--btn__cancel" data-action="delete-unpublished-comments"><i class="fa"></i><%= l('K2_DELETE_UNPUBLISHED_COMMENTS') %></button>
+			</div>
 		</div>
 	</div>
 </div>

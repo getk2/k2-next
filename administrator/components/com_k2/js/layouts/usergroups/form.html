@@ -1,14 +1,14 @@
-<form>
+<form class="jw--settings">
 	<div class="jw--generic--form">
-		<div class="jw--generic--group">
+		<div class="jw--setting--field jw--generic--group">
 			<h2><%= l('K2_TITLE') %></h2>
-			<input type="text" name="title" id="title" value="<%- row.title %>" />
+			<input class="left" type="text" name="title" id="title" value="<%- row.title %>" />
 		</div>
 		
 		<% if(row.id) { %>
 		<input type="hidden" name="parent_id" value="<%= row.parent_id %>" / >
 		<% } else { %>
-		<div class="jw--generic--field">
+		<div class="jw--setting--single">
 			<label class="left"><%= l('K2_PARENT') %></label>
 			<div class="right">
 				<%= form.parent_id %>
@@ -16,11 +16,10 @@
 		</div>
 		<% } %>
 		<input type="hidden" name="id" value="<%= row.id %>" / >
-	
 	</div>
 	
 	<div class="jw--generic--form jw--generic--form__full">
-		<div class="jw--generic--group">
+		<div class="jw--setting--field jw--generic--group">
 			<h2><%= l('K2_PERMISSIONS') %></h2>
 			<div class="table-responsive-wrap">
 				<div class="table-responsive">
@@ -34,15 +33,17 @@
 	</div>
 	
 	<div class="jw--generic--form">
-		<% _.each(form.jform, function(field) { %>
-		<div class="jw--generic--field">
-			<div class="left">
-				<%= field.label %>
+		<div class="jw--setting--field">
+			<% _.each(form.jform, function(field) { %>
+			<div class="jw--setting--single">
+				<div class="left">
+					<%= field.label %>
+				</div>
+				<div class="right">
+					<%= field.input %>
+				</div>
 			</div>
-			<div class="right">
-				<%= field.input %>
-			</div>
+			<% }); %>
 		</div>
-		<% }); %>
 	</div>
 </form>

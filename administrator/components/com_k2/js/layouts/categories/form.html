@@ -39,79 +39,81 @@
 		<div class="jw--setting--field" id="jw--info0">
 			<h2><%= l('K2_BASIC') %></h2>
 			
-			<div class="jw--generic--field">
+			<div class="jw--setting--single">
 				<label for="title"><%= l('K2_TITLE') %></label>
 				<input type="text" name="title" id="title" value="<%- row.title %>" />
 			</div>
 			
-			<div class="jw--generic--field">
+			<div class="jw--setting--single">
 				<label for="alias"><%= l('K2_ALIAS') %></label>
 				<input type="text" name="alias" id="alias" value="<%- row.alias %>" />
 			</div>
 			
-			<div class="jw--generic--field">
+			<div class="jw--setting--single">
 				<label for="parent_id"><%= l('K2_PARENT') %></label>
 				<%= form.parent %>
 			</div>
 				
-			<div class="jw--generic--field">	
+			<div class="jw--setting--single">	
 				<label for="inheritance"><%= l('K2_INHERITANCE') %></label>
 				<%= form.inheritance %>
 			</div>
 				
-			<div class="jw--generic--field">	
+			<div class="jw--setting--single">	
 				<label for="template"><%= l('K2_TEMPLATE') %></label>
 				<%= form.template %>
 			</div>	
 				
 			<% if(row.canEditState) { %>
-			<div class="jw--generic--field">
+			<div class="jw--setting--single">
 				<label><%= l('K2_STATE') %></label>
-				<%= form.state %>
+				<div class="right">
+					<%= form.state %>
+				</div>
 			</div>
 			<% } %>
 			
-			<div class="jw--generic--field">
+			<div class="jw--setting--single">
 				<label for="access"><%= l('K2_ACCESS') %></label>
 				<%= form.access %>
 			</div>	
 				
-			<div class="jw--generic--field">
+			<div class="jw--setting--single">
 				<label for="language"><%= l('K2_LANGUAGE') %></label>
 				<%= form.language %>
 			</div>
 		
-			<div class="jw--generic--field">
+			<div class="jw--setting--single">
 				<label for="created_by_alias"><%= l('K2_AUTHOR_ALIAS') %></label>
 				<input id="created_by_alias" type="text" name="created_by_alias" value="<%- row.created_by_alias %>" />
 			</div>
 			
-			<div class="jw--generic--field">		
+			<div class="jw--setting--single">		
 				<label for="created_by_alias_url"><%= l('K2_AUTHOR_ALIAS_URL') %></label>
 				<input id="created_by_alias_url" type="text" name="created_by_alias_url" value="<%- row.created_by_alias_url %>" />
 			</div>
 			
-			<div class="jw--generic--field">	
+			<div class="jw--setting--single">	
 				<label for="createdDate"><%= l('K2_CREATED_DATE') %></label>
 				<input id="createdDate" data-widget="datepicker" type="text" name="createdDate" value="<%- row.createdDate %>" />
 			</div>
 			
-			<div class="jw--generic--field">	
+			<div class="jw--setting--single">	
 				<label for="createdTime"><%= l('K2_CREATED_TIME') %></label>
 				<input id="createdTime" data-widget="timepicker" type="text" name="createdTime" value="<%- row.createdTime %>" />
 			</div>
 		
-		    <div class="jw--generic--field">
+		    <div class="jw--setting--single">
 		        <label><%= l('K2_MODIFIED_DATE') %></label>
 		        <span><%= row.modifiedOn %></span>
 		    </div>
 		    
-		    <div class="jw--generic--field">
+		    <div class="jw--setting--single">
 			    <label><%= l('K2_AUTHOR') %></label>
 			    <input data-widget="user" data-min="1" data-name="<%- row.authorName %>" type="hidden" name="created_by" value="<%- row.created_by %>" />
 		    </div>
 		 
-		    <div class="jw--generic--field">
+		    <div class="jw--setting--single">
 		        <label><%= l('K2_MODERATOR') %></label>
 		        <span><%= row.moderatorName %></span>
 		    </div>

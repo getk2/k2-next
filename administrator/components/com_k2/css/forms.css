@@ -3,7 +3,7 @@
 .jw--generic--form { padding: 26px; max-width: 950px; }
 	.jw--generic--form__full { padding: 26px; max-width: none; }
 	.jw--generic--form__plain { padding: 0; max-width: none; }
-	.jw--generic--form h2 {font-size: 24px; font-weight: 300; padding-bottom: 16px; margin-top: 25px; margin-bottom: 15px; border-bottom: 2px solid #dddedf; }
+	.jw--generic--form .jw--setting--field h2 {font-size: 24px; font-weight: 300; padding-bottom: 16px; margin-top: 25px; margin-bottom: 15px; border-bottom: 2px solid #dddedf; }
 	
 	/* Grouped items */
 	.jw--generic--form .jw--generic--group { overflow: hidden; margin-bottom: 60px; }
@@ -14,6 +14,7 @@
 	.jw--generic--field:nth-child(2n-2) { background: #f7f7f7; }
 
 	.jw--generic--field > label, .jw--generic--field label { font-size: 13px; font-weight: 700; color: #777778; padding: 10px 0; line-height: 1; display: inline-block; margin: 0; }
+	
 	.jw--generic--field input[type="text"], .jw--generic--field input[type="password"], .jw--generic--field input[type="email"],
 	.jw--generic--group input[type="text"], .jw--generic--group input[type="password"], .jw--generic--group input[type="email"] { height: 36px; line-height: 36px; width: 300px; padding: 0 10px; margin: 0; }
 	.jw--generic--field textarea { width: 300px; padding: 10px; margin: 0 }
@@ -21,23 +22,7 @@
 	.jw--generic--field_short select { max-width: 150px; } 
 	.jw--generic--field_short { overflow: hidden; display: block; padding: 8px 12px 8px 25px; border-radius: 3px;  }
 	.jw--subfield { margin-top: 8px; }
-	
-	/* Form definitions */
-	.jw--generic--def { font-size: 13px; }
-		.jw--generic--def input[type="text"], 
-		.jw--generic--def select,
-		.jw--generic--def button { display: block;  margin-bottom: 15px!important; }
 		
-		.jw--generic--def label,
-		.jw--generic--def input[type="radio"],
-		.jw--generic--def input[type="checkbox"] { margin-right: 10px; display: inline-block; vertical-align: middle; }
-		
-		.jw--generic--def h3 { font-size: 13px; font-weight: 700; margin: 0 0 10px; }
-		
-	.jw--category h2 { color: #00afec; }
-	#permissions-sliders, .jw--permissions { font-size: 13px; }
-	.rule-desc { font-size: 13px; margin-bottom: 30px; }
-	
 	/* Specific forms - comments */
 	.jw--comments--form {  }
 		.jw--comments--form textarea { min-height: 220px; }

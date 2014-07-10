@@ -1,17 +1,20 @@
-<form class="jw--generic--form jw--comments--form">
-	<div class="jw--generic--field">
-		<label class="left"><%= l('K2_STATE') %></label>
+<form class="jw--settings jw--generic--form jw--comments--form">
+	<div class="jw--setting--field">
+		<div class="jw--setting--single">
+			<label class="left"><%= l('K2_STATE') %></label>
+			
+			<div class="right">
+				<%= form.state %>
+			</div>
+		</div>
 		
-		<div class="right">
-			<%= form.state %>
+		<div class="jw--setting--single">
+			<label class="left" for="text"><%= l('K2_COMMENT') %></label>
+			<div class="right">
+				<textarea name="text" id="text"><%= row.text %></textarea>
+			</div>
 		</div>
-	</div>
+		<input type="hidden" name="id" value="<%= row.id %>" / >
 	
-	<div class="jw--generic--field">
-		<label class="left" for="text"><%= l('K2_COMMENT') %></label>
-		<div class="right">
-			<textarea name="text" id="text"><%= row.text %></textarea>
-		</div>
 	</div>
-	<input type="hidden" name="id" value="<%= row.id %>" / >
 </form>
