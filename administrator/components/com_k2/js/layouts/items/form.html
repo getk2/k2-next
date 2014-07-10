@@ -200,7 +200,7 @@
 			
 			<!-- Item Options (Metadata) -->
 			<div class="jw--options--item">
-				<div class="jw--settings jw--settings__global jw--item">
+				<div class="jw--settings jw--generic--form jw--item">
 					<div class="jw--setting--field" id="jw--item0">
 						
 						<% _.each(form.jform, function(field) { %>
@@ -239,13 +239,13 @@
 			<div class="jw--options--item">
 				<nav class="jw--transition jw--scrollwrapper">
 					<ul class="jw--scrollspymenu jw--scrollspymenu__item">
-						<li><a href="#"><%= l('K2_LISTING_OPTIONS') %></a></li>
-						<li><a href="#"><%= l('K2_ITEM_OPTIONS') %></a></li>
+						<li><a class="jw--scroll__primary" href="#jw--itemp0"><%= l('K2_LISTING_OPTIONS') %></a></li>
+						<li><a class="jw--scroll__primary" href="#jw--itemp1"><%= l('K2_ITEM_OPTIONS') %></a></li>
 					</ul>
 				</nav>	
 				
 				<div class="jw--settings jw--settings__global jw--item">
-					<div class="jw--setting--field" id="jw--item0">
+					<div class="jw--setting--field" id="jw--itemp0">
 						<h2><%= l('K2_LISTING_OPTIONS') %></h2>
 						<% _.each(form.listingOptions, function(field) { %>
 						<% if(field.label !== null) { %>
@@ -261,7 +261,7 @@
 						<% }); %>
 					</div>
 					
-					<div class="jw--setting--field" id="jw--item1">
+					<div class="jw--setting--field" id="jw--itemp1">
 						<h2><%= l('K2_ITEM_OPTIONS') %></h2> 
 						<% _.each(form.itemOptions, function(field) { %>
 						<% if(field.label !== null) { %>

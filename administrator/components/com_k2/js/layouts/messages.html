@@ -1,5 +1,7 @@
-<ul>
-    <% _.each(items, function(message) { %>
-        <li class="<%- message.type %>"><%= message.message %></li>
-    <% }) %>
-</ul>
+<div id="system-message-container">
+	<ul>
+	    <% _.each(items, function(message) { %>
+	        <li class="<%- message.type %>"><%= message.message %></li>
+	    <% }) %>
+	</ul>
+</div>

@@ -1,7 +1,7 @@
 .alert { font-size: 13px; }
 #system-message-container {width:610px;max-width:100%;position:absolute;left:50%;top:90px;margin-left:-305px;z-index:9; box-shadow:0 1px 1px rgba(0,0,0,.75), inset 0 1px 0 rgba(0,0,0,.22); border-radius: 0 0 2px 2px;}
 	#system-message-container button.close { display: none;}
-
+	#system-message-container ul { list-style: none outside none; }
 	#system-message-container .alert {margin:0;padding:0;border-radius:0;position:relative;color:#fff;border:0;font-family:'Open Sans',sans-serif;text-shadow:0 0;height:54px;overflow:hidden;}
 	#system-message-container .alert:last-child {border-radius:0 0 4px 4px;}
 	#system-message-container .alert a.close { display: none; }
