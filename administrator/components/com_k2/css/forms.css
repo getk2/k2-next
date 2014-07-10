@@ -33,6 +33,10 @@
 		.jw--generic--def input[type="checkbox"] { margin-right: 10px; display: inline-block; vertical-align: middle; }
 		
 		.jw--generic--def h3 { font-size: 13px; font-weight: 700; margin: 0 0 10px; }
+		
+	.jw--category h2 { color: #00afec; }
+	#permissions-sliders, .jw--permissions { font-size: 13px; }
+	.rule-desc { font-size: 13px; margin-bottom: 30px; }
 	
 	/* Specific forms - comments */
 	.jw--comments--form {  }
