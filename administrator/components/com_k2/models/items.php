@@ -706,7 +706,12 @@ class K2ModelItems extends K2Model
 		}
 
 		// Ordering
-		if (!$table->id)
+		if ($table->id && $this->getState('patch') && isset($data['id']) && isset($data['ordering']))
+		{
+			// Detect current ordering position. We need it in order to update all items ordering in one query after this item's ordering is saved
+			$this->previousOrdering = $table->ordering;
+		}
+		else if (!$table->id)
 		{
 			$data['ordering'] = $table->getNextOrder('catid = '.(int)$data['catid']);
 		}
@@ -915,6 +920,34 @@ class K2ModelItems extends K2Model
 				$input['notes'] = $data['notes'];
 				$model->setState('data', $input);
 				$model->save($input);
+			}
+		}
+
+		// Handle ordering changes
+		if (isset($this->previousOrdering))
+		{
+			$db = $this->getDbo();
+			if ($table->ordering > $this->previousOrdering)
+			{
+				$query = $db->getQuery(true);
+				$query->update($db->quoteName('#__k2_items'));
+				$query->set($db->quoteName('ordering').' = ('.$db->quoteName('ordering').' - 1)');
+				$query->where($db->quoteName('ordering').' > '.(int)$this->previousOrdering);
+				$query->where($db->quoteName('ordering').' <= '.(int)$table->ordering);
+				$query->where($db->quoteName('id').' != '.(int)$table->id);
+				$db->setQuery($query);
+				$db->execute();
+			}
+			else if ($table->ordering < $this->previousOrdering)
+			{
+				$query = $db->getQuery(true);
+				$query->update($db->quoteName('#__k2_items'));
+				$query->set($db->quoteName('ordering').' = ('.$db->quoteName('ordering').' + 1)');
+				$query->where($db->quoteName('ordering').' >= '.(int)$table->ordering);
+				$query->where($db->quoteName('ordering').' < '.(int)$this->previousOrdering);
+				$query->where($db->quoteName('id').' != '.(int)$table->id);
+				$db->setQuery($query);
+				$db->execute();
 			}
 		}
 

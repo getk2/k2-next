@@ -28,7 +28,7 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 		setup : function() {
 
 			if (this.collection.getState('sorting') === 'ordering' && this.isModal === false) {
-				
+
 				var masterCollection = this.collection;
 
 				// Fetch the categories tree
@@ -164,8 +164,8 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 				_.each(collection.models, function(model) {
 					rows.push(model);
 				});
-				this.model.set('rows',[]);
-				this.model.set('rows',rows);
+				this.model.set('rows', []);
+				this.model.set('rows', rows);
 			}, this);
 			this.page = this.page + 1;
 			categoryItemsCollection.setState('limit', 5);
@@ -186,7 +186,6 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 				}, this)
 			});
 		}
-
 	});
 
 	// Sortable view
@@ -206,37 +205,25 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 				el.sortable({
 					handle : '[data-role="ordering-handle"]',
 					onDrop : function(item, container, _super) {
-						var id = item.find('input[name="ordering[]"]').data('id');
-						var catid = item.data('category');
 						var parent = item.parent();
-						var newCategory = parent.data('category');
-						if (catid != newCategory) {
-							items.batch([id], [newCategory], 'catid', {
+						var itemId = item.find('input[name="ordering[]"]').data('id');
+						var currentCategoryId = item.data('category');
+						var newCategoryId = parent.data('category');
+						var ordering = parent.find('li').index(item) + 1;
+						if (currentCategoryId != newCategoryId) {
+							items.batch([itemId], [newCategoryId], 'catid', {
 								success : _.bind(function() {
-									var value = 1;
-									var keys = [];
-									var values = [];
-									parent.find('input[name="ordering[]"]').each(function(index) {
-										keys.push(jQuery(this).data('id'));
-										values.push(value);
-										value++;
-									});
+									var keys = [itemId];
+									var values = [ordering];
 									K2Dispatcher.trigger('app:controller:saveOrder', keys, values, 'ordering', false);
-
 								}, this),
 								error : _.bind(function(model, xhr, options) {
 									K2Dispatcher.trigger('app:messages:add', error, xhr.responseText);
 								}, this)
 							});
 						} else {
-							var value = 1;
-							var keys = [];
-							var values = [];
-							parent.find('input[name="ordering[]"]').each(function(index) {
-								keys.push(jQuery(this).data('id'));
-								values.push(value);
-								value++;
-							});
+							var keys = [itemId];
+							var values = [ordering];
 							K2Dispatcher.trigger('app:controller:saveOrder', keys, values, 'ordering', false);
 						}
 						_super(item);
