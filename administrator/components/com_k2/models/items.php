@@ -935,6 +935,7 @@ class K2ModelItems extends K2Model
 				$query->where($db->quoteName('ordering').' > '.(int)$this->previousOrdering);
 				$query->where($db->quoteName('ordering').' <= '.(int)$table->ordering);
 				$query->where($db->quoteName('id').' != '.(int)$table->id);
+				$query->where($db->quoteName('catid').' ! '.(int)$table->catid);
 				$db->setQuery($query);
 				$db->execute();
 			}
@@ -946,6 +947,7 @@ class K2ModelItems extends K2Model
 				$query->where($db->quoteName('ordering').' >= '.(int)$table->ordering);
 				$query->where($db->quoteName('ordering').' < '.(int)$this->previousOrdering);
 				$query->where($db->quoteName('id').' != '.(int)$table->id);
+				$query->where($db->quoteName('catid').' ! '.(int)$table->catid);
 				$db->setQuery($query);
 				$db->execute();
 			}
