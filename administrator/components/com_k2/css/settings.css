@@ -81,7 +81,7 @@
 		.jw--generic--def input[type="radio"],
 		.jw--generic--def input[type="checkbox"] { margin-right: 10px; display: inline-block; vertical-align: middle; }
 		
-		.jw--generic--def h3 { font-size: 13px; font-weight: 700; margin: 0 0 10px; }
+		.jw--generic--def h3 { font-size: 13px; font-weight: 700; margin: 0 0 10px; border: 0; }
 	
 	/* misc */
 	.jw--category h2 { color: #00afec; }
