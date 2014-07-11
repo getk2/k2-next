@@ -19,6 +19,12 @@ define(['marionette', 'text!layouts/pagination.html', 'dispatcher', 'session'], 
 				K2Session.set('view.mode', mode);
 				K2Dispatcher.trigger('app:controller:filter', 'page', 1);
 			}, this);
+			K2Dispatcher.on('app:pagination:show', _.bind(function() {
+				this.$el.show();
+			}, this));
+			K2Dispatcher.on('app:pagination:hide', _.bind(function() {
+				this.$el.hide();
+			}, this));
 		},
 
 		modelEvents : {

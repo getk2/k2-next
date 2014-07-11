@@ -1,13 +1,7 @@
 <span><%= title %></a></span>
 <span><%= id %></span>
 <button data-action="expand">+</button>
-<ul data-category="<%= id %>">
-    <% _.each(rows, function(row) { %>
-        <li data-category="<%= row.get('catid') %>"><%= row.get('title') %>
-            <span data-role="ordering-handle" data-column="ordering">DRAG ME</span> 
-            <input type="hidden" name="ordering[]" value="<%- row.get('ordering') %>" data-id="<%= row.get('id') %>" />
-        </li>
-   <% }); %>
-</ul>
+<div data-region="category-children"></div>
+<div data-region="category-items" data-category="<%- id %>"></div>
 
-<ul data-region="category-children"></ul>
+

@@ -98,6 +98,7 @@ class K2ViewCategories extends K2View
 		$this->setUserState('state', '', 'cmd');
 		$this->setUserState('language', '', 'string');
 		$this->setUserState('root', 0, 'int');
+		$this->setUserState('parent', 0, 'int');
 		$this->setUserState('sorting', 'ordering', 'string');
 	}
 

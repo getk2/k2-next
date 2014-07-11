@@ -1,4 +1,4 @@
-define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.html', 'text!layouts/items/grid_list.html', 'text!layouts/items/grid_row.html', 'text!layouts/items/sortable_list.html', 'text!layouts/items/sortable_row.html', 'dispatcher', 'session', 'widgets/widget', 'collections/items'], function(Marionette, list, row, gridList, gridRow, sortableList, sortableRow, K2Dispatcher, K2Session, K2Widget, K2CollectionItems) {'use strict';
+define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.html', 'text!layouts/items/grid_list.html', 'text!layouts/items/grid_row.html', 'text!layouts/items/sortable_list.html', 'text!layouts/items/sortable_row.html', 'text!layouts/items/sortable_row_item.html', 'dispatcher', 'session', 'widgets/widget', 'collections/items', 'collections/categories'], function(Marionette, list, row, gridList, gridRow, sortableList, sortableRow, sortableRowItem, K2Dispatcher, K2Session, K2Widget, K2CollectionItems, K2CollectionCategories) {'use strict';
 
 	// List items layout. It handles the two views for items ( table and sortable list)
 	var K2ViewItems = Marionette.Layout.extend({
@@ -29,53 +29,54 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 
 			if (this.collection.getState('sorting') === 'ordering' && this.isModal === false) {
 
-				var masterCollection = this.collection;
+				// Hide the layouts menu
+				K2Dispatcher.trigger('app:sidebar:layouts:hide');
 
-				// Fetch the categories tree
-				require(['collections/categories'], _.bind(function(K2CollectionCategories) {
+				// Hide pagination
+				K2Dispatcher.trigger('app:pagination:hide');
 
-					// Create new categories collection
-					var categoriesCollection = new K2CollectionCategories;
+				// Create new categories collection
+				var categoriesCollection = new K2CollectionCategories;
 
-					// Set states
-					categoriesCollection.setState('limit', 0);
-					categoriesCollection.setState('page', 1);
-					categoriesCollection.setState('language', '');
-					categoriesCollection.setState('search', '');
-					categoriesCollection.setState('root', masterCollection.getState('category'));
+				// Set states
+				categoriesCollection.setState('limit', 0);
+				categoriesCollection.setState('page', 1);
+				categoriesCollection.setState('language', '');
+				categoriesCollection.setState('search', '');
+				categoriesCollection.setState('parent', 1);
+				categoriesCollection.setState('root', 1);
 
-					// Fetch the tree
-					categoriesCollection.fetch({
-						silent : true,
-						parse : false,
-						success : _.bind(function(collection, response) {
+				// Fetch the tree
+				categoriesCollection.fetch({
+					silent : true,
+					parse : false,
+					success : _.bind(function(collection, response) {
 
-							// Populate collection with the data
-							categoriesCollection.reset(response.rows, {
-								silent : true,
-								parse : false
-							});
+						// Populate collection with the data
+						categoriesCollection.reset(response.rows, {
+							silent : true,
+							parse : false
+						});
 
-							// Set the items for each category
-							_.each(categoriesCollection.models, _.bind(function(categoryModel) {
-								categoryModel.set('rows', []);
-							}, this));
+						// Build the categories tree
+						//categoriesCollection.buildTree();
 
-							// Build the categories tree
-							categoriesCollection.buildTree();
+						var view = new K2ViewItemsSortable({
+							collection : categoriesCollection
+						});
 
-							var view = new K2ViewItemsSortable({
-								collection : categoriesCollection,
-								itemsCollection : masterCollection
-							});
+						this.content.show(view);
 
-							this.content.show(view);
-
-						}, this)
-					});
-				}, this));
+					}, this)
+				});
 
 			} else {
+
+				// Show the layouts menu
+				K2Dispatcher.trigger('app:sidebar:layouts:show');
+
+				// Show pagination
+				K2Dispatcher.trigger('app:pagination:show');
 
 				if (this.layout == 'grid') {
 					var view = new K2ViewItemsGrid({
@@ -139,82 +140,97 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 	});
 
 	// The row view for sortable
-	var K2ViewItemsSortableRow = Marionette.CompositeView.extend({
+	var K2ViewItemsSortableRow = Marionette.Layout.extend({
 		tagName : 'li',
 		template : _.template(sortableRow),
-		initialize : function() {
-			this.collection = new Backbone.Collection(this.model.get('children'));
-			this.page = 0;
+		regions : {
+			childrenRegion : '[data-region="category-children"]',
+			itemsRegion : '[data-region="category-items"]'
 		},
-		appendHtml : function(compositeView, itemView) {
-			compositeView.$('[data-region="category-children"]:first').append(itemView.el);
+		initialize : function() {
+			this.page = 1;
+			this.limit = 10;
+			this.itemsCollection = new K2CollectionItems;
+			this.itemsCollection.setState('sorting', 'ordering');
+			this.itemsCollection.setState('recursive', '0');
+			this.itemsCollection.setState('category', this.model.get('id'));
+			this.itemsCollection.setState('limit', this.limit);
+			this.childrenCollection = new K2CollectionCategories;
+			this.childrenCollection.setState('root', this.model.get('id'));
+			this.childrenCollection.setState('parent', this.model.get('id'));
 		},
 		events : {
-			'click [data-action="expand"]' : 'loadCategoryItems'
+			'click [data-action="expand"]' : 'expand'
 		},
-		modelEvents : {
-			'change' : 'render'
-		},
-		loadCategoryItems : function(event) {
+		expand : function(event) {
 			event.preventDefault();
 			event.stopPropagation();
-			var categoryItemsCollection = new K2CollectionItems();
-			categoryItemsCollection.on('sync', function(collection) {
-				var rows = this.model.get('rows');
-				_.each(collection.models, function(model) {
-					rows.push(model);
-				});
-				this.model.set('rows', []);
-				this.model.set('rows', rows);
-			}, this);
-			this.page = this.page + 1;
-			categoryItemsCollection.setState('limit', 5);
-			categoryItemsCollection.setState('page', this.page);
-			categoryItemsCollection.setState('category', this.model.get('id'));
-			//categoryItemsCollection.setState('search', '');
-			//categoryItemsCollection.setState('state', '');
-			//categoryItemsCollection.setState('featured', '');
-			//categoryItemsCollection.setState('language', '');
-			//categoryItemsCollection.setState('access', '');
-			//categoryItemsCollection.setState('tag', '');
-			//categoryItemsCollection.setState('author', '');
-			categoryItemsCollection.fetch({
-				reset : false,
-				remove : false,
-				error : _.bind(function(collection, xhr, options) {
-					K2Dispatcher.trigger('app:messages:add', 'error', xhr.responseText);
-				}, this)
+			this.childrenView = new K2ViewItemsSortableCollectionView({
+				collection : this.childrenCollection
 			});
+			this.childrenRegion.show(this.childrenView);
+			this.childrenCollection.fetch();
+
+			this.itemsView = new K2ViewItemsSortableCollectionViewItems({
+				collection : this.itemsCollection
+			});
+			this.itemsRegion.show(this.itemsView);
+			this.itemsCollection.fetch();
+
 		}
 	});
 
 	// Sortable view
 	var K2ViewItemsSortable = Marionette.CompositeView.extend({
+		tagName : 'ul',
 		template : _.template(sortableList),
-		itemViewContainer : '[data-region="items"]',
-		itemView : K2ViewItemsSortableRow,
-		initialize : function(options) {
-			this.itemsCollection = options.itemsCollection;
-		},
-		onCompositeCollectionRendered : function() {
+		itemViewContainer : '[data-region="list"]',
+		itemView : K2ViewItemsSortableRow
+	});
 
-			// Enable sorting
-			var el = this.$('[data-region="items"]');
-			var items = this.itemsCollection;
+	// Sortable view for category children
+	var K2ViewItemsSortableCollectionView = Marionette.CollectionView.extend({
+		tagName : 'ul',
+		itemView : K2ViewItemsSortableRow
+	});
+
+	// The row view for grid
+	var K2ViewItemsSortableCollectionViewItemsRow = Marionette.ItemView.extend({
+		tagName : 'li',
+		template : _.template(sortableRowItem)
+	});
+
+	// Sortable view for category items
+	var K2ViewItemsSortableCollectionViewItems = Marionette.CollectionView.extend({
+		tagName : 'ul',
+		itemView : K2ViewItemsSortableCollectionViewItemsRow,
+		onCollectionRendered : function() {
+			var collection = this.collection;
 			require(['widgets/sortable/jquery-sortable-min'], _.bind(function() {
-				el.sortable({
+				this.$el.sortable({
 					handle : '[data-role="ordering-handle"]',
+					group : 'k2-items',
 					onDrop : function(item, container, _super) {
 						var parent = item.parent();
-						var itemId = item.find('input[name="ordering[]"]').data('id');
-						var currentCategoryId = item.data('category');
-						var newCategoryId = parent.data('category');
-						var ordering = parent.find('li').index(item) + 1;
+						var input = item.find('input[name="ordering[]"]');
+						var itemId = input.data('id');
+						var currentCategoryId = input.data('category');
+						var newCategoryId = parent.parent().data('category');
 						if (currentCategoryId != newCategoryId) {
-							items.batch([itemId], [newCategoryId], 'catid', {
+							collection.batch([itemId], [newCategoryId], 'catid', {
 								success : _.bind(function() {
+									var previous = item.prev();
+									var next = item.next();
+									if (previous) {
+										var value = parseInt(previous.find('input[name="ordering[]"]').val()) + 1;
+									} else if (next) {
+										var value = parseInt(previous.find('input[name="ordering[]"]').val()) - 1;
+									} else {
+										var value = 1;
+									}
 									var keys = [itemId];
-									var values = [ordering];
+									var values = [value];
+									el.val(value);
 									K2Dispatcher.trigger('app:controller:saveOrder', keys, values, 'ordering', false);
 								}, this),
 								error : _.bind(function(model, xhr, options) {
@@ -222,9 +238,28 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 								}, this)
 							});
 						} else {
-							var keys = [itemId];
-							var values = [ordering];
-							K2Dispatcher.trigger('app:controller:saveOrder', keys, values, 'ordering', false);
+							var keys = [];
+							var values = [];
+							var list = parent.find('input[name="ordering[]"]');
+							list.each(function() {
+								var el = jQuery(this);
+								keys.push(el.data('id'));
+								values.push(parseInt(el.val()));
+							});
+							values.sort(function(a, b) {
+								return a - b;
+							});
+							var modifiedKeys = [];
+							var modifiedValues = [];
+							list.each(function(index) {
+								var el = jQuery(this);
+								if (parseInt(el.val()) !== parseInt(values[index])) {
+									modifiedKeys.push(el.data('id'));
+									modifiedValues.push(values[index]);
+									el.val(values[index]);
+								}
+							});
+							K2Dispatcher.trigger('app:controller:saveOrder', modifiedKeys, modifiedValues, 'ordering', false);
 						}
 						_super(item);
 					}
@@ -232,6 +267,5 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 			}, this));
 		}
 	});
-
 	return K2ViewItems;
 });
