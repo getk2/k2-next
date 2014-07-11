@@ -27,10 +27,10 @@
 <div class="small-1 large-1 columns"><%= viewLevel %></div>
 
 <div class="small-1 large-1 columns">
-	<% if(modifiedOn){ 
-		print(modifiedOn); 
-	 } else { %>	
-	 Default
+	<% if(template) { %>
+		<%= template %>
+	<% } else { %>	
+		<%= l('K2_DEFAULT') %>
 	<%	} %>
 </div>
 
@@ -39,24 +39,26 @@
 <div class="small-1 large-1 columns"><%= createdOn %></div>
 
 <div class="small-1 large-1 columns">
-	<% if(moderatorName){ 
-		print(moderatorName); 
-	 } else { %>	
-	 -
+	<% if(moderatorName){ %>
+		<%= moderatorName %>
+	<% } else { %>	
+		<div class="text-center"> - </div>
 	<%	} %>
 </div>
 
 <div class="small-1 large-1 columns">
-	<% if(modifiedOn){ 
-		print(modifiedOn); 
-	 } else { %>	
-	 -v
+	<% if(modifiedOn){ %>
+		<%= modifiedOn %>
+	<% } else { %>	
+		<%= l('K2_NEVER') %>
 	<%	} %>
 </div>
 
 <div class="small-1 large-1 columns">
     <% if(image && image.flag) { %>
         <a href="<%= image.src %>"><%= l('K2_PREVIEW') %></a>
+    <% } else { %>
+    <div class="text-center"> - </div>
     <% } %>
 </div>
 
