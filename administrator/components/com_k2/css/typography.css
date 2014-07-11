@@ -67,10 +67,10 @@ img {-ms-interpolation-mode:bicubic; max-width: 100%; }
 	.jw .controls label.radio.jw--radio__checked { color: #fff; border: 1px solid #828080; background:  #63696f; box-shadow: 0 1px 1px rgba(65,64,66,.14), inset 0 1px 0 #363a3d; }
 
 	/* smaller labels */
-	.jw label.jw--radio.jw--radio__smaller { line-height: 26px; height: 26px; font-size: 11px; margin: 0 -2px; padding: 0 6px; white-space: nowrap; }
+	.jw label.jw--radio.jw--radio__smaller { line-height: 26px; height: 26px; font-size: 11px; margin: 0 -2px; padding: 0 10px; white-space: nowrap; }
 
 	/* labels in a row */
-	.jw--filter .jw--radio:first-child, .jw .controls label.radio:first-child { border-radius: 3px 0 0 3px; }
+	.jw--filter .jw--radio:first-child, .jw .controls label.radio:first-child, .jw--filter .jw--radio:nth-child(1) { border-radius: 3px 0 0 3px; }
 	.jw--filter .jw--radio:last-child, .jw .controls label.radio:last-child { border-radius: 0 3px 3px 0; }
 
 	/* now hide the radio buttons using opacity and position absolute */
