@@ -149,7 +149,8 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 		},
 		initialize : function() {
 			this.page = 1;
-			this.limit = 10;
+			this.limit = 5;
+			this.expanded = false;
 			this.itemsCollection = new K2CollectionItems;
 			this.itemsCollection.setState('sorting', 'ordering');
 			this.itemsCollection.setState('recursive', '0');
@@ -160,23 +161,36 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 			this.childrenCollection.setState('parent', this.model.get('id'));
 		},
 		events : {
-			'click [data-action="expand"]' : 'expand'
+			'click [data-action="expand"]' : 'expand',
+			'click [data-action="more"]' : 'more'
 		},
 		expand : function(event) {
 			event.preventDefault();
 			event.stopPropagation();
-			this.childrenView = new K2ViewItemsSortableCollectionView({
-				collection : this.childrenCollection
+			if (!this.expanded) {
+				this.childrenView = new K2ViewItemsSortableCollectionView({
+					collection : this.childrenCollection
+				});
+				this.childrenRegion.show(this.childrenView);
+				this.childrenCollection.fetch();
+				this.itemsView = new K2ViewItemsSortableCollectionViewItems({
+					collection : this.itemsCollection
+				});
+				this.itemsRegion.show(this.itemsView);
+				this.itemsCollection.fetch();
+				this.$('[data-action="more"]').show();
+				this.expanded = true;
+			}
+		},
+		more : function(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			this.page = this.page + 1;
+			this.itemsCollection.setState('page', this.page);
+			this.itemsCollection.fetch({
+				reset : false,
+				remove : false
 			});
-			this.childrenRegion.show(this.childrenView);
-			this.childrenCollection.fetch();
-
-			this.itemsView = new K2ViewItemsSortableCollectionViewItems({
-				collection : this.itemsCollection
-			});
-			this.itemsRegion.show(this.itemsView);
-			this.itemsCollection.fetch();
-
 		}
 	});
 
@@ -230,7 +244,7 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 									}
 									var keys = [itemId];
 									var values = [value];
-									el.val(value);
+									input.val(value);
 									K2Dispatcher.trigger('app:controller:saveOrder', keys, values, 'ordering', false);
 								}, this),
 								error : _.bind(function(model, xhr, options) {
