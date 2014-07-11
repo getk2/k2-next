@@ -30,8 +30,10 @@
 	/* pagination filters */
 	.jw--pagination--mode { position: absolute; border-top: 1px solid #dbdcdc; padding: 8px 6px; min-height: 45px;
 left: 0; bottom: 55px; width: 275px; }
-	.jw--pagination--mode input[type="radio"] { opacity: 0; }
-	.jw--pagination--mode > span { font-size: 11px; display: inline-block; vertical-align: middle; margin-right: 3px; }
+		.jw--pagination--mode label:first-of-type { border-radius: 3px 0 0 3px; }
+		.jw--pagination--mode .jw--radio:last-child { border-radius:  0 3px 3px 0; }
+		.jw--pagination--mode input[type="radio"] { opacity: 0; }
+		.jw--pagination--mode > span { font-size: 11px; display: inline-block; vertical-align: middle; line-height: 1; margin-right: 15px; }
 
 /* Layout switch */
 .jw--thumbsbar { position: absolute; left: 0; bottom: 0; width: 45px; }

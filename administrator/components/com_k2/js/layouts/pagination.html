@@ -1,5 +1,9 @@
-<div class="text-center jw--transition jw--pagination <% if(mode != 'pagination') { print('jw--infinite') } %>">
+<% if(mode != 'pagination') { %>
+<div class="jw--infstatus"><span class="jw--preloader"></span> <%= l('K2_LOADING_ITEMS') %></div>
+<% } %>
 	
+<div class="text-center jw--transition jw--pagination <% if(mode != 'pagination') { print('jw--infinite') } %>">
+
 	<% if(mode == 'pagination') { %>
 	
     <div class="left jw--limit">
@@ -51,7 +55,7 @@
     </ul>
     <% } %>
 
-    <% } else { %>
+    <% } else { %>    	
 		<strong><%= total %></strong> <%= label %>
     <% } %>
 </div>

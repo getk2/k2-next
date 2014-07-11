@@ -64,6 +64,6 @@
 <li class="small-1 large-1 columns"><%= viewLevel %></li>
 <!-- <li class="small-1 large-1 columns"><%= moderatorName %></li> -->
 <li class="small-1 large-1 columns"><%= createdOn %></li>
-<li class="small-1 large-1 columns"><%= modifiedOn %></li>
+<li class="small-1 large-1 columns"> <% if(modifiedOn == createdOn) { %> <%= l('K2_NEVER') %> <% } else { %> <%= modifiedOn %> <% } %> </li>
 <li class="small-1 large-1 columns"><%= hits %></li>
 <li class="small-1 large-1 columns"><%= languageTitle %></li>

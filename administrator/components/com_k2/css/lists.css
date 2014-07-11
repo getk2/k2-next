@@ -35,11 +35,11 @@ table.jw--listed--items { width: 100%; font-size: 13px; }
 		
 	/* Subcategory layout */
 	.jw--listed--items ul.jw--subcat { border: 0;  }
-			.jw--cat > li > ul.jw--subcat { padding-left: 15px; }
+			.jw--cat > li > ul.jw--subcat { /* padding-left: 15px; */ }
 		
 		.jw--listed--items ul.jw--subcat > li { /*padding-left: 20px; */ padding-bottom: 0; background: #dbdcdc; }
 		.jw--listed--items ul.jw--subcat li.placeholder,
-		.jw--listed--items ul.jw--subcat li.k2SortingPlaceholder { margin-left: 20px; }
+		.jw--listed--items ul.jw--subcat li.k2SortingPlaceholder { margin-left: 20px!important; }
 		.jw--listed--items ul.jw--subcat li:first-child { margin-top: 15px; }
 		.jw--listed--items ul.jw--subcat ul li { background: #cdcdcd; padding-bottom: 0; }
 			.jw--listed--items ul.jw--subcat ul ul li { background: #c1c1c1; }

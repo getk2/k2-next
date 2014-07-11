@@ -35,8 +35,11 @@
 		
 		/* Form elements */
 		.jw--settings input[type="text"], .jw--settings input[type="password"], .jw--settings input[type="email"] { height: 36px; line-height: 36px; width: 164px; padding: 0 10px; margin: 0; }
+				
 		.jw--settings select { height: 34px; line-height: 34px; width: 164px; background: #f0f2f2; box-shadow: 0 1px 1px rgba(65,64,66,.14), inset 0 1px 0 #fff; margin: 0; }
-		.jw--settings textarea { min-width: 300px; border-radius: 3px; padding: 5px 10px; } 
+		.jw--settings textarea { min-width: 300px; border-radius: 3px; padding: 5px 10px; }
+			/* Larger elements */
+			.jw--settings.jw--generic--form input[type="text"], .jw--settings.jw--generic--form input[type="password"], .jw--settings.jw--generic--form input[type="email"] { width: 300px; }
 		
 		.jw--settings fieldset label { min-width: 85px; width: auto; text-align: center; border: 1px solid #d4d6d8; line-height: 33px; vertical-align: top; height: 33px; font-size: 12px; margin: 0 -2px; padding: 0 13px;
 	color: #8a8c8c; display: inline-block; vertical-align: middle; white-space: nowrap; background-color: #eff1f1;
