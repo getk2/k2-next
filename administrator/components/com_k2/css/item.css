@@ -23,20 +23,28 @@ ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; }
 	.jw--pane__top {  padding: 0 27px; }
 	
 	/* lower tabs */
-	.jw--tabs__content li a {display:block;padding:10px 21px;margin:0;background:#f0f2f2;font-size:14px;text-decoration:none;font-weight:normal;outline:0;border-radius:3px 3px 0 0;color:#6d6f71;border-bottom:1px solid #d4d7d9;}
-	.jw--tabs__content li a:hover {text-decoration:none;background-color:#f6f6f6;}
-	.jw--tabs__content .fa {margin-right:8px;color:#6d6f71;}
-	.jw--tabs__content li.ui-tabs-selected a {padding:10px 20px;background:#fff;color:#58595b;border:1px solid #d4d7d9;border-bottom:1px solid #fff;}
-	.jw--tabs__content li.ui-tabs-selected a i {color:#0091ff;}
-	.jw--tabs__content li.ui-tabs-selected a:hover {background-color:#fff;}
+	ul.jw--tabs__content { margin-top: 25px; }
+		.jw--tabs__content li a {display:block;padding:10px 21px;margin:0;background:#f0f2f2;font-size:14px;text-decoration:none;font-weight:normal;outline:0;border-radius:3px 3px 0 0;color:#6d6f71; }
+		.jw--tabs__content li a:hover {text-decoration:none;background-color:#f6f6f6;}
+		.jw--tabs__content .fa {margin-right:8px;color:#6d6f71;}
+		.jw--tabs__content li.ui-tabs-selected a {padding:10px 20px;background:#fff;color:#58595b;border:1px solid #d4d7d9;border-bottom:1px solid #fff;}
+		.jw--tabs__content li.ui-tabs-selected a i {color:#0091ff;}
+		.jw--tabs__content li.ui-tabs-selected a:hover {background-color:#fff;}
+		
+/*------------------------------------------------------------------
+[Base item form] */
+.jw--item--form { padding: 25px 30px; }
+
 
 
 /*------------------------------------------------------------------
 [Editor content] */
-.jw--editor--tab { padding: 20px; }
-	.jw--editor--cnt { border-radius: 3px; border: 1px solid #e9ebec; }
-
-
-
-/*------------------------------------------------------------------
-[Revisions] */
+.jw--editor--tab { padding: 20px; border: 1px solid #d4d7d9; }
+	.jw--editor--cnt { border-radius: 3px; padding: 20px; border: 1px solid #e9ebec; }
+	
+	.editor { background: #f0f2f2;  border-style: solid; border-color: #d4d7d9; border-width: 0 1px 1px; }
+		.editor .mce-panel { border-left: 0!important; border-right: 0!important; border-color: #d4d7d9; }
+		#editor-xtd-buttons, .toggle-editor { padding: 5px 15px 10px; }
+	
+	/* tags */
+	

@@ -48,12 +48,16 @@
 						
 		    <% if(row.canEditFeaturedState) { %>
 		    <label><%= l('K2_FEATURED') %></label>
-		    <label> <%= l('K2_YES') %>
-		        <input type="radio" name="featured" value="1"/>
-		    </label>
-		    <label> <%= l('K2_NO') %>
-		        <input type="radio" name="featured" value="0" />
-		    </label>
+		    
+		    <div class="switch">
+				<input type="radio" name="featured" value="1"/>
+			    <label> <%= l('K2_YES') %></label>
+			    
+			    <input type="radio" name="featured" value="0" />
+			    <label> <%= l('K2_NO') %>
+			        
+			    </label>
+		    </div>
 		    <% } %>
 		
 		    <label for="access"><%= l('K2_ACCESS') %></label>
@@ -85,17 +89,15 @@
 				<div class="jw--pane jw--pane__content" data-role="tabs-content">
 					<!-- Content -->
 					<div class="jw--editor--tab">
-						<div class="jw--editor--cnt">
-							<% if(form.text) { %>
-						    <label for="text"><%= l('K2_TEXT') %></label>
-						    <%= form.text %>
-						    <% } else { %>
-						    <label for="introtext"><%= l('K2_INTROTEXT') %></label>
-						    <%= form.introtext %>
-						    <label for="fulltext"><%= l('K2_FULLTEXT') %></label>
-						    <%= form.fulltext %>
-						    <% } %>
-						</div>
+						<% if(form.text) { %>
+					    <!--<label for="text"><%= l('K2_TEXT') %></label>-->
+					    <%= form.text %>
+					    <% } else { %>
+					    <label for="introtext"><%= l('K2_INTROTEXT') %></label>
+					    <%= form.introtext %>
+					    <label for="fulltext"><%= l('K2_FULLTEXT') %></label>
+					    <%= form.fulltext %>
+					    <% } %>
 					</div>
 					
 					<!-- Image -->
