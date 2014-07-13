@@ -13,16 +13,16 @@
 -->
 <div data-widget="tabs">
 
-	<ul class="jw--tabs jw--tabs__top" data-role="tabs-navigation">
-		<li><a href="#"><%= l('K2_BASIC') %></a></li>
-		<li><a href="#"><%= l('K2_REVISIONS') %></a></li>
-		<li><a href="#"><%= l('K2_METADATA_AND_PUBLISHING') %></a></li>
-		<li><a href="#"><%= l('K2_DISPLAY_SETTINGS') %></a></li>
-		<li><a href="#"><%= l('K2_PERMISSIONS') %></a></li>
+	<ul class="text-center jw--tabs jw--tabs__top" data-role="tabs-navigation">
+		<li><a href="#"><i class="fa fa-home"></i><%= l('K2_BASIC') %></a></li>
+		<li><a href="#"><i class="fa fa-arrows-h"></i><%= l('K2_REVISIONS') %></a></li>
+		<li><a href="#"><i class="fa fa-info-circle"></i><%= l('K2_METADATA_AND_PUBLISHING') %></a></li>
+		<li><a href="#"><i class="fa fa-desktop"></i><%= l('K2_DISPLAY_SETTINGS') %></a></li>
+		<li><a href="#"><i class="fa fa-unlock-alt"></i><%= l('K2_PERMISSIONS') %></a></li>
 	</ul>
 	
 	<div data-role="tabs-content">
-		<div>
+		<div class="jw--item--form">
 		    <label for="title"><%= l('K2_TITLE') %></label>
 		    <input type="text" name="title" id="title" value="<%- row.title %>" />
 		
@@ -74,74 +74,86 @@
 		    <!-- Editor Tabs -->
 			<div data-widget="tabs">
 				<ul class="jw--tabs jw--tabs__content" data-role="tabs-navigation">
-					<li><a href="#">Content</a></li>
-					<li><a href="#">Image</a></li>
-					<li><a href="#">Galleries</a></li>
-					<li><a href="#">Media</a></li>
-					<li><a href="#">Extra Fields</a></li>
-					<li><a href="#">Attachments</a></li>
+					<li><a href="#"><i class="fa fa-file-text"></i> Content</a></li>
+					<li><a href="#"><i class="fa fa-image"></i> Image</a></li>
+					<li><a href="#"><i class="fa fa-files-o"></i> Galleries</a></li>
+					<li><a href="#"><i class="fa fa-film"></i> Media</a></li>
+					<li><a href="#"><i class="fa fa-gear"></i> Extra Fields</a></li>
+					<li><a href="#"><i class="fa fa-link"></i> Attachments</a></li>
 				</ul>
 					
 				<div class="jw--pane jw--pane__content" data-role="tabs-content">
 					<!-- Content -->
-					<div>
-						<% if(form.text) { %>
-					    <label for="text"><%= l('K2_TEXT') %></label>
-					    <%= form.text %>
-					    <% } else { %>
-					    <label for="introtext"><%= l('K2_INTROTEXT') %></label>
-					    <%= form.introtext %>
-					    <label for="fulltext"><%= l('K2_FULLTEXT') %></label>
-					    <%= form.fulltext %>
-					    <% } %>
+					<div class="jw--editor--tab">
+						<div class="jw--editor--cnt">
+							<% if(form.text) { %>
+						    <label for="text"><%= l('K2_TEXT') %></label>
+						    <%= form.text %>
+						    <% } else { %>
+						    <label for="introtext"><%= l('K2_INTROTEXT') %></label>
+						    <%= form.introtext %>
+						    <label for="fulltext"><%= l('K2_FULLTEXT') %></label>
+						    <%= form.fulltext %>
+						    <% } %>
+						</div>
 					</div>
 					
 					<!-- Image -->
-					<div>
-					    <div data-region="item-image"></div>
-					    <% _.each(form.k2Plugins['items-image'], function(field) { %>
-					    	<%= field.label %>
-							<%= field.input %>
-						<% }); %>
+					<div class="jw--editor--tab">
+						<div class="jw--editor--cnt">
+						    <div data-region="item-image"></div>
+						    <% _.each(form.k2Plugins['items-image'], function(field) { %>
+						    	<%= field.label %>
+								<%= field.input %>
+							<% }); %>
+						</div>
 					</div>
 					
 					<!-- Galleries -->
-					<div>
-					    <div data-region="item-galleries"></div>
-					    
-					    <% _.each(form.k2Plugins['items-galleries'], function(field) { %>
-					    	<%= field.label %>
-							<%= field.input %>
-						<% }); %>
+					<div class="jw--editor--tab">
+						<div class="jw--editor--cnt">
+						    <div data-region="item-galleries"></div>
+						    
+						    <% _.each(form.k2Plugins['items-galleries'], function(field) { %>
+						    	<%= field.label %>
+								<%= field.input %>
+							<% }); %>
+						</div>
 					</div>
 				
 				    <!-- Media -->
-				    <div>
-					    <div data-region="item-media"></div>
-					    
-					    <% _.each(form.k2Plugins['items-media'], function(field) { %>
-					    	<%= field.label %>
-							<%= field.input %>
-						<% }); %>
+				    <div class="jw--editor--tab">
+				    	<div class="jw--editor--cnt">
+						    <div data-region="item-media"></div>
+						    
+						    <% _.each(form.k2Plugins['items-media'], function(field) { %>
+						    	<%= field.label %>
+								<%= field.input %>
+							<% }); %>
+						</div>
 					</div>
 				
 				    <!-- Extra Fields -->
-				    <div>
-					    <div data-region="item-extra-fields"></div>
-					    
-					    <% _.each(form.k2Plugins['items-extra-fields'], function(field) { %>
-					    	<%= field.label %>
-							<%= field.input %>
-						<% }); %>
+				    <div class="jw--editor--tab">
+				    	<div class="jw--editor--cnt">
+						    <div data-region="item-extra-fields"></div>
+						    
+						    <% _.each(form.k2Plugins['items-extra-fields'], function(field) { %>
+						    	<%= field.label %>
+								<%= field.input %>
+							<% }); %>
+						</div>
 					</div>
 		
 					<!-- Attachments -->
-					<div>
-					    <div data-region="item-attachments"></div>
-					    <% _.each(form.k2Plugins['items-attachments'], function(field) { %>
-					    	<%= field.label %>
-							<%= field.input %>
-						<% }); %>
+					<div class="jw--editor--tab">
+						<div class="jw--editor--cnt">
+						    <div data-region="item-attachments"></div>
+						    <% _.each(form.k2Plugins['items-attachments'], function(field) { %>
+						    	<%= field.label %>
+								<%= field.input %>
+							<% }); %>
+						</div>
 					</div>	
 				</div>
 				
@@ -162,7 +174,7 @@
 			<!-- Item Options (Metadata) -->
 			<div class="jw--options--item">
 			
-				<nav class="jw--transition jw--scrollwrapper">
+				<nav class="jw--transition jw--scrollwrapper jw--scrollwrapper__item">
 					<ul class="jw--scrollspymenu jw--scrollspymenu__item">
 						<li><a class="jw--scroll__primary" href="#jw--item1"><%= l('K2_PUBLISHING_SETTINGS') %></a></li>
 						<li><a class="jw--scroll__primary" href="#jw--item2"><%= l('K2_METADATA') %></a></li>
@@ -307,7 +319,7 @@
 			
 			<!-- Item Options (Listing/ item Options) -->
 			<div class="jw--options--item">
-				<nav class="jw--transition jw--scrollwrapper">
+				<nav class="jw--transition jw--scrollwrapper jw--scrollwrapper__item">
 					<ul class="jw--scrollspymenu jw--scrollspymenu__item">
 						<li><a class="jw--scroll__primary" href="#jw--itemp0"><%= l('K2_LISTING_OPTIONS') %></a></li>
 						<li><a class="jw--scroll__primary" href="#jw--itemp1"><%= l('K2_ITEM_OPTIONS') %></a></li>
@@ -350,12 +362,16 @@
 			</div>
 			
 			<!-- Permissions -->
-			<div>
-			    <h2><%= l('K2_PERMISSIONS') %></h2> 
-			    <% _.each(form.permissions, function(field) { %>
-			    <%= field.label %>
-			    <%= field.input %>
-			    <% }); %>
+			<div class="jw--settings jw--item">
+				<div class="jw--generic--form">
+					<div class="jw--setting--field">
+					    <h2><%= l('K2_PERMISSIONS') %></h2> 
+					    <% _.each(form.permissions, function(field) { %>
+					    <%= field.label %>
+					    <%= field.input %>
+					    <% }); %>
+					</div>
+				</div>
 	    	</div>
 	    	
 	    	

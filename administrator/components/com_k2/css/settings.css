@@ -1,6 +1,7 @@
 /* ------------------------------------------------------------------
 [Scrollspy menu] - global for all setting views */
 .jw--scrollwrapper { background: #fff; border-right: 1px solid #e3e4e4; z-index: 8; position: fixed; left: 46px; bottom: 30px; top: 139px; width: 326px; overflow: auto;  }
+.jw--scrollwrapper.jw--scrollwrapper__item { top: 206px; } 
 .jw--scrollspymenu { list-style: none outside none; margin: 0; padding: 15px 0; }
 	.jw--scrollspymenu li { display: block; }
 	.jw--scrollspymenu li a {  line-height: 1; display: block;  }
