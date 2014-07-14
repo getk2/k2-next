@@ -303,11 +303,15 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 			var contentElements = contentsContainer.find('> div');
 			contentElements.css('display', 'none');
 			contentElements.eq(0).css('display', 'block');
+			navigationElements.removeClass('active');
+			navigationElements.eq(0).addClass('active');
 			navigationElements.click(function(event) {
 				event.preventDefault();
 				var index = navigationElements.index(jQuery(this));
 				contentElements.css('display', 'none');
 				contentElements.eq(index).css('display', 'block');
+				navigationElements.removeClass('active');
+				navigationElements.eq(index).addClass('active');
 			});
 		},
 
