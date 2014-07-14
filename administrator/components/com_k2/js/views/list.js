@@ -24,11 +24,13 @@ define(['marionette', 'text!layouts/list.html', 'dispatcher'], function(Marionet
 			var el = jQuery(event.currentTarget);
 			var sorting = el.data('sorting');
 			var current = this.collection.getState('sorting');
-			if (current == sorting || current == sorting + '.reverse') {
-				if (current.indexOf('.reverse') == -1) {
-					sorting = current + '.reverse';
-				} else {
-					sorting = current.replace('.reverse', '');
+			if (sorting != 'ordering' && sorting != 'featured_ordering') {
+				if (current == sorting || current == sorting + '.reverse') {
+					if (current.indexOf('.reverse') == -1) {
+						sorting = current + '.reverse';
+					} else {
+						sorting = current.replace('.reverse', '');
+					}
 				}
 			}
 			K2Dispatcher.trigger('app:subheader:sort', sorting);

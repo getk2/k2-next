@@ -116,8 +116,7 @@ class K2ViewExtraFields extends K2View
 			'K2_GROUP_DESC' => 'group.reverse',
 			'K2_TYPE_ASC' => 'type',
 			'K2_TYPE_DESC' => 'type.reverse',
-			'K2_ORDERING_ASC' => 'ordering',
-			'K2_ORDERING_DESC' => 'ordering.reverse',
+			'K2_ORDERING' => 'ordering',
 			'K2_STATE_ASC' => 'state',
 			'K2_STATE_DESC' => 'state.reverse'
 		);
