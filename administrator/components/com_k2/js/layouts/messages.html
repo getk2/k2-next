@@ -2,7 +2,7 @@
 	<ul>
 	    <% _.each(items, function(message) { %>
         <li class="alert alert-<%- message.type %>">
-        	<i class="fa <% if(message.type == 'message') { print(fa-info-circle); } else if (message.type == 'error') { print(fa-exclamation-circle); } else if (message.type == 'notice') { print(fa-warning); } %>"></i>
+        	<i class="fa <% if(message.type == 'message') { print('fa-info-circle'); } else if (message.type == 'error') { print('fa-exclamation-circle'); } else if (message.type == 'notice') { print('fa-warning'); } %>"></i>
         	<%= message.message %>
         </li>
 	    <% }) %>
