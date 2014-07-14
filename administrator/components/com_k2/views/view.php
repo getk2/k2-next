@@ -51,11 +51,11 @@ class K2View extends JViewLegacy
 		// Set user states
 		$this->setUserStates();
 
-		// Set rows
-		$this->setRows();
-
 		// Set pagination
 		$this->setPagination();
+
+		// Set rows
+		$this->setRows();
 
 		// Set filters
 		$this->setFilters();
@@ -211,6 +211,18 @@ class K2View extends JViewLegacy
 		$total = $model->countRows();
 		$limitstart = $this->getUserState('limitstart');
 		$limit = $this->getUserState('limit');
+
+		if ($limitstart > ($total - $limit))
+		{
+
+			$limitstart = max(0, (int)(ceil($total / $limit) - 1) * $limit);
+			$page = (int)$limitstart / $limit;
+			$input = JFactory::getApplication()->input;
+			$input->set('page', $page);
+			$input->set('limitstart', $limitstart);
+			$model->setState('page', $page);
+			$model->setState('limitstart', $limitstart);
+		}
 
 		// Get the pagination
 		$pagination = new JPagination($total, $limitstart, $limit);

@@ -34,11 +34,11 @@ class K2ViewExtraFieldsGroups extends K2View
 		// Set user states
 		$this->setUserStates();
 
-		// Set rows
-		$this->setRows();
-
 		// Set pagination
 		$this->setPagination();
+
+		// Set rows
+		$this->setRows();
 
 		// Set filters
 		$this->setFilters();
