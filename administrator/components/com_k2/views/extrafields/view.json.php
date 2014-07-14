@@ -94,7 +94,7 @@ class K2ViewExtraFields extends K2View
 		$this->setUserState('state', '', 'cmd');
 		$this->setUserState('group', '', 'cmd');
 		$this->setUserState('type', '', 'cmd');
-		$this->setUserState('sorting', 'id.reverse', 'string');
+		$this->setUserState('sorting', '', 'string');
 	}
 
 	protected function setFilters()
@@ -108,6 +108,7 @@ class K2ViewExtraFields extends K2View
 
 		// Sorting filter
 		$sortingOptions = array(
+			'K2_NONE' => '',
 			'K2_ID_ASC' => 'id',
 			'K2_ID_DESC' => 'id.reverse',
 			'K2_NAME_ASC' => 'name',

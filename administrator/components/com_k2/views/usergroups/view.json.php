@@ -92,13 +92,14 @@ class K2ViewUserGroups extends K2View
 		$this->setUserState('page', 1, 'int');
 		$this->setUserState('search', '', 'string');
 		$this->setUserState('state', '', 'cmd');
-		$this->setUserState('sorting', 'ordering', 'string');
+		$this->setUserState('sorting', '', 'string');
 	}
 
 	protected function setFilters()
 	{
 		// Sorting filter
 		$sortingOptions = array(
+			'K2_NONE' => '',
 			'K2_ID' => 'id',
 			'K2_TITLE' => 'title'
 		);

@@ -92,7 +92,7 @@ class K2ViewTags extends K2View
 		$this->setUserState('page', 1, 'int');
 		$this->setUserState('search', '', 'string');
 		$this->setUserState('state', '', 'cmd');
-		$this->setUserState('sorting', 'id.reverse', 'string');
+		$this->setUserState('sorting', '', 'string');
 	}
 
 	protected function setFilters()
@@ -100,6 +100,7 @@ class K2ViewTags extends K2View
 
 		// Sorting filter
 		$sortingOptions = array(
+			'K2_NONE' => '',
 			'K2_ID_ASC' => 'id',
 			'K2_ID_DESC' => 'id.reverse',
 			'K2_NAME_ASC' => 'name',

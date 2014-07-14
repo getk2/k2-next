@@ -101,7 +101,7 @@ class K2ViewItems extends K2View
 		$this->setUserState('author', 0, 'int');
 		$this->setUserState('tag', 0, 'int');
 		$this->setUserState('language', '', 'string');
-		$this->setUserState('sorting', 'id.reverse', 'string');
+		$this->setUserState('sorting', '', 'string');
 		$this->setUserState('recursive', 1, 'int');
 		if ($this->getUserState('author') > 0)
 		{
@@ -117,6 +117,7 @@ class K2ViewItems extends K2View
 	{
 		// Sorting filter
 		$sortingOptions = array(
+			'K2_NONE' => '',
 			'K2_ID_ASC' => 'id',
 			'K2_ID_DESC' => 'id.reverse',
 			'K2_TITLE_ASC' => 'title',

@@ -93,13 +93,14 @@ class K2ViewUsers extends K2View
 		$this->setUserState('search', '', 'string');
 		$this->setUserState('state', '', 'cmd');
 		$this->setUserState('group', '', 'cmd');
-		$this->setUserState('sorting', 'id.reverse', 'string');
+		$this->setUserState('sorting', '', 'string');
 	}
 
 	protected function setFilters()
 	{
 		// Sorting filter
 		$sortingOptions = array(
+			'K2_NONE' => '',
 			'K2_ID_ASC' => 'id',
 			'K2_ID_DESC' => 'id.reverse',
 			'K2_NAME_ASC' => 'name',
