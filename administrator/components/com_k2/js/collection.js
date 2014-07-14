@@ -30,8 +30,15 @@ define(['backbone', 'model', 'dispatcher'], function(Backbone, K2Model, K2Dispat
 				}, this));
 			}
 
-			// Trigger the update event to notify the application.
-			K2Dispatcher.trigger('app:update', resp);
+			// Set the default value for the update option
+			if ( typeof (options.update) == 'undefined') {
+				options.update = true;
+			}
+
+			if (options.update) {
+				// Trigger the update event to notify the application.
+				K2Dispatcher.trigger('app:update', resp);
+			}
 
 			// Return the rows
 			return resp.rows;
@@ -77,7 +84,7 @@ define(['backbone', 'model', 'dispatcher'], function(Backbone, K2Model, K2Dispat
 			var xhr = this.sync('patch', this, options);
 			return xhr;
 		},
-		
+
 		multibatch : function(keys, states, mode, options) {
 			options || ( options = {});
 			options.data || (options.data = []);

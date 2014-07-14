@@ -43,13 +43,19 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 				categoriesCollection.setState('page', 1);
 				categoriesCollection.setState('language', '');
 				categoriesCollection.setState('search', '');
-				categoriesCollection.setState('parent', 1);
-				categoriesCollection.setState('root', 1);
+
+				var root = 1;
+				if (this.collection.getState('category') > 1) {
+					root = this.collection.getState('category');
+				}
+				categoriesCollection.setState('root', root);
+				categoriesCollection.setState('parent', root);
 
 				// Fetch the tree
 				categoriesCollection.fetch({
 					silent : true,
 					parse : false,
+					update : false,
 					success : _.bind(function(collection, response) {
 
 						// Populate collection with the data
@@ -172,12 +178,16 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 					collection : this.childrenCollection
 				});
 				this.childrenRegion.show(this.childrenView);
-				this.childrenCollection.fetch();
+				this.childrenCollection.fetch({
+					update : false
+				});
 				this.itemsView = new K2ViewItemsSortableCollectionViewItems({
 					collection : this.itemsCollection
 				});
 				this.itemsRegion.show(this.itemsView);
-				this.itemsCollection.fetch();
+				this.itemsCollection.fetch({
+					update : false
+				});
 				this.$('[data-action="more"]').show();
 				this.expanded = true;
 			}
@@ -189,7 +199,8 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 			this.itemsCollection.setState('page', this.page);
 			this.itemsCollection.fetch({
 				reset : false,
-				remove : false
+				remove : false,
+				update : false
 			});
 		}
 	});
