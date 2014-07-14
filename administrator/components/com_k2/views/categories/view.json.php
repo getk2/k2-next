@@ -91,14 +91,15 @@ class K2ViewCategories extends K2View
 
 	protected function setUserStates()
 	{
-		$this->setUserState('limit', 10, 'int');
-		$this->setUserState('page', 1, 'int');
+		$this->setUserState('persist', 1, 'int');
+		$this->setUserState('limit', 10, 'int', $this->getUserState('persist'));
+		$this->setUserState('page', 1, 'int', $this->getUserState('persist'));
 		$this->setUserState('search', '', 'string');
 		$this->setUserState('access', 0, 'int');
 		$this->setUserState('state', '', 'cmd');
 		$this->setUserState('language', '', 'string');
-		$this->setUserState('root', 0, 'int');
-		$this->setUserState('parent', 0, 'int', false);
+		$this->setUserState('root', 0, 'int', $this->getUserState('persist'));
+		$this->setUserState('parent', 0, 'int', $this->getUserState('persist'));
 		$this->setUserState('sorting', 'ordering', 'string');
 	}
 

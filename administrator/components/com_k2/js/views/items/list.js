@@ -42,6 +42,7 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 				categoriesCollection.setState('page', 1);
 				categoriesCollection.setState('language', '');
 				categoriesCollection.setState('search', '');
+				categoriesCollection.setState('persist', 0);
 
 				if (this.collection.getState('category') > 1) {
 					categoriesCollection.setState('root', this.collection.getState('category'));
@@ -168,6 +169,7 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 			this.childrenCollection.setState('root', this.model.get('id'));
 			this.childrenCollection.setState('parent', this.model.get('id'));
 			this.childrenCollection.setState('limit', 0);
+			this.childrenCollection.setState('persist', 0);
 		},
 		events : {
 			'click [data-action="expand"]' : 'expand',
