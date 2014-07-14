@@ -441,7 +441,7 @@ class K2Controller extends JControllerLegacy
 		$ids = array_filter($ids);
 		if (!count($ids))
 		{
-			K2Response::throwError('K2_NO_ROWS_SELECTED', 401);
+			K2Response::throwError(JText::_('K2_NO_ROWS_SELECTED'), 401);
 		}
 
 		foreach ($ids as $key => $id)
