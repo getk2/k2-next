@@ -170,6 +170,13 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 			this.childrenCollection.setState('parent', this.model.get('id'));
 			this.childrenCollection.setState('limit', 0);
 			this.childrenCollection.setState('persist', 0);
+
+		},
+		onShow : function() {
+			this.itemsView = new K2ViewItemsSortableCollectionViewItems({
+				collection : this.itemsCollection
+			});
+			this.itemsRegion.show(this.itemsView);
 		},
 		events : {
 			'click [data-action="expand"]' : 'expand',
