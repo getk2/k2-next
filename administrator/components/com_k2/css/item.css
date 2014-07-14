@@ -11,30 +11,36 @@
 [Tabs] */
 ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; }
 	ul.jw--tabs li { display: inline-block; vertical-align: middle; margin-right: -2px; }
+	.jw--tabs a.active { background: #fff; }
+	.jw--tabs a.active .fa { color: #00afec; }
+
 	
 /* top item navigation */
 .jw--tabs__top { background: #e4eaed; }
 	.jw--tabs__top li { margin-right: -2px; }
 	.jw--tabs__top a { display: inline-block; font-weight: 300; font-size: 20px; line-height: 1; padding: 20px; border-top: 3px solid transparent; border-left: 1px solid #dedfdf; }
 	.jw--tabs__top .fa { display: inline-block; vertical-align: middle; margin-right: 10px; }
-	.jw--tabs__top a.jw--tab__active { border-top-color: #00afec; background: #fff; }
-	.jw--tabs__top a.jw--tab__active .fa { color: #00afec; }
-	
+	.jw--tabs__top a.active { border-top: 1px solid #00afec; border-bottom: 1px solid #fff; }
+
 	.jw--pane__top {  padding: 0 27px; }
 	
 	/* lower tabs */
-	ul.jw--tabs__content { margin-top: 25px; }
+	ul.jw--tabs__content { margin-top: 25px; margin-bottom: -1px; position: relative; z-index: 2; }
 		.jw--tabs__content li a {display:block;padding:10px 21px;margin:0;background:#f0f2f2;font-size:14px;text-decoration:none;font-weight:normal;outline:0;border-radius:3px 3px 0 0;color:#6d6f71; }
 		.jw--tabs__content li a:hover {text-decoration:none;background-color:#f6f6f6;}
 		.jw--tabs__content .fa {margin-right:8px;color:#6d6f71;}
 		.jw--tabs__content li.ui-tabs-selected a {padding:10px 20px;background:#fff;color:#58595b;border:1px solid #d4d7d9;border-bottom:1px solid #fff;}
 		.jw--tabs__content li.ui-tabs-selected a i {color:#0091ff;}
 		.jw--tabs__content li.ui-tabs-selected a:hover {background-color:#fff;}
+		.jw--tabs__content .active { border-color: #d4d7d9; border-style: solid; border-width: 1px 1px 0 1px; }
 		
 /*------------------------------------------------------------------
 [Base item form] */
 .jw--item--form { padding: 25px 30px; }
+	.jw--item--lbl { width: 100px; margin-right: 15px; }
+	.jw--item--lbl label { display: block; color: #7d7d7f; }
 
+.
 
 
 /*------------------------------------------------------------------

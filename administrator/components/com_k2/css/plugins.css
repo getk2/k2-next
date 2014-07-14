@@ -82,18 +82,16 @@ disabled look for disabled choices in the results dropdown
 .select2-default{color:#999 !important;}
 
 /* single choice */
-.select2-container-multi .select2-choices .select2-search-choice { padding:10px 5px 10px 18px; margin:3px 0 3px 5px;position:relative;line-height:1;cursor:default; -webkit-touch-callout:none;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none; border-radius: 4px; background: #d1e8fc; color: #0f4776; font-weight: 700;}
+.select2-container-multi .select2-choices .select2-search-choice { padding:10px 26px 10px 10px; margin:3px 0 3px 5px;position:relative;line-height:1;cursor:default; -webkit-touch-callout:none;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none; border-radius: 4px; background: #d1e8fc; color: #0f4776; font-weight: 700;}
 	.select2-container-multi .select2-choices .select2-search-choice > div { display: inline-block; vertical-align: middle; }
 	.select2-container-multi .select2-choices .select2-search-choice > a { display: inline-block; vertical-align: middle; color: #0f4776; }
 
 .select2-container-multi .select2-choices .select2-search-choice span{cursor:default;}
 .select2-container-multi .select2-choices .select2-search-choice-focus{background:#d4d4d4;}
-.select2-search-choice-close{display:block;width:12px;height:13px;position:absolute;right:3px;top:4px;font-size:1px;outline:none;background:url('img/select2.png') right top no-repeat;}
-.select2-container-multi .select2-search-choice-close{left:3px;}
+.select2-search-choice-close{display:block;width:12px;height:13px;position:absolute;left: auto; right:8px;top:11px;font-size:1px;outline:none;background:url('img/select2.png') right top no-repeat;}
+
 .select2-container-multi .select2-choices .select2-search-choice .select2-search-choice-close:hover{background-position:right -11px;}
 .select2-container-multi .select2-choices .select2-search-choice-focus .select2-search-choice-close{background-position:right -11px;}
-
-
 
 /* disabled styles */
 .select2-container-multi.select2-container-disabled .select2-choices{background-color:#f0f2f2;background-image:none;border:1px solid #ddd;cursor:default;}
