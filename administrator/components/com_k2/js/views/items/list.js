@@ -39,17 +39,19 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 				var categoriesCollection = new K2CollectionCategories;
 
 				// Set states
-				categoriesCollection.setState('limit', 0);
 				categoriesCollection.setState('page', 1);
 				categoriesCollection.setState('language', '');
 				categoriesCollection.setState('search', '');
 
-				var root = 1;
 				if (this.collection.getState('category') > 1) {
-					root = this.collection.getState('category');
+					categoriesCollection.setState('root', this.collection.getState('category'));
+					categoriesCollection.setState('parent', 0);
+					categoriesCollection.setState('limit', 1);
+				} else {
+					categoriesCollection.setState('root', 1);
+					categoriesCollection.setState('parent', 1);
+					categoriesCollection.setState('limit', 0);
 				}
-				categoriesCollection.setState('root', root);
-				categoriesCollection.setState('parent', root);
 
 				// Fetch the tree
 				categoriesCollection.fetch({
@@ -165,6 +167,7 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 			this.childrenCollection = new K2CollectionCategories;
 			this.childrenCollection.setState('root', this.model.get('id'));
 			this.childrenCollection.setState('parent', this.model.get('id'));
+			this.childrenCollection.setState('limit', 0);
 		},
 		events : {
 			'click [data-action="expand"]' : 'expand',
