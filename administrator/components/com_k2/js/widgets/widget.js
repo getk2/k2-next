@@ -23,8 +23,15 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 
 		browser : function(element) {
 
+			// Get the button template
+			var template = element.data('button');
+
 			// Create the button
-			var button = jQuery('<button>' + l('K2_BROWSE_SERVER') + '</button>');
+			if (template) {
+				var button = jQuery(template);
+			} else {
+				var button = jQuery('<button>' + l('K2_BROWSE_SERVER') + '</button>');
+			}
 
 			// Generate a unique callback
 			var callback = 'app:media:' + jQuery.now();
