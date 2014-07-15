@@ -82,7 +82,7 @@ ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; }
 	.jw--element--row .jw--element--single { margin-bottom: 25px; }
 	.jw--element--row .jw--element--single:last-child { margin-bottom: 0; }
 	
-	.jw--element--row  h3 { font-size: 18px; font-weight: 300; padding: 0 0 0 115px; color: #acacad; line-height: 1; margin-bottom: 10px; }
+	.jw--element--row  h3 { font-size: 18px; font-weight: 300; padding: 0 0 0 15px; color: #acacad; line-height: 1; margin: 0 0 5px; }
 	.jw--element--row .jw--element--single input[type="text"],
 	.jw--element--row .jw--element--single textarea { min-width: 100%; min-width: 100%; border-radius: 3px; padding: 10px; height: 40px; line-height: 40px; line-height: 1; display: block; border: 1px solid #d4d7d9; margin: 0; }
 	.jw--element--row .jw--element--single input[type="text"].jw--small--input { display: inline-block; vertical-align: middle; margin-left: 15px; max-width: 150px; min-width: 0; width: auto; }
