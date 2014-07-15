@@ -40,7 +40,9 @@ class K2ControllerTags extends K2Controller
 		$model = K2Model::getInstance('Tags');
 		$model->deleteOrphans();
 
-		echo json_encode(true);
+		$application = JFactory::getApplication();
+		$application->enqueueMessage(JText::_('K2_DELETE_COMPLETED'));
+		echo json_encode(K2Response::render());
 		return $this;
 
 	}
