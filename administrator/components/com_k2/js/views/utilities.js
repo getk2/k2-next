@@ -20,6 +20,7 @@ define(['marionette', 'text!layouts/utilities.html', 'dispatcher'], function(Mar
 				if (data && data.lastId) {
 					self._import(data.lastId);
 				} else {
+					K2Dispatcher.trigger('app:messages:add', 'message', l('K2_IMPORT_COMPLETED'));
 					jQuery('[data-action="import"]').prop('disabled', false);
 				}
 			});
@@ -28,7 +29,8 @@ define(['marionette', 'text!layouts/utilities.html', 'dispatcher'], function(Mar
 			event.preventDefault();
 			var button = jQuery(event.currentTarget);
 			button.prop('disabled', true);
-			jQuery.post('index.php?option=com_k2&task=tags.deleteOrphans&format=json', K2SessionToken + '=1', function() {
+			jQuery.post('index.php?option=com_k2&task=tags.deleteOrphans&format=json', K2SessionToken + '=1', function(response) {
+				K2Dispatcher.trigger('app:messages:set', response);
 				button.prop('disabled', false);
 			});
 		},
@@ -37,7 +39,8 @@ define(['marionette', 'text!layouts/utilities.html', 'dispatcher'], function(Mar
 			var button = jQuery(event.currentTarget);
 			button.prop('disabled', true);
 			if (confirm(l('K2_THIS_WILL_PERMANENTLY_DELETE_ALL_UNPUBLISHED_COMMENTS_ARE_YOU_SURE'))) {
-				jQuery.post('index.php?option=com_k2&task=comments.deleteUnpublished&format=json', K2SessionToken + '=1', function() {
+				jQuery.post('index.php?option=com_k2&task=comments.deleteUnpublished&format=json', K2SessionToken + '=1', function(response) {
+					K2Dispatcher.trigger('app:messages:set', response);
 					button.prop('disabled', false);
 				});
 			}

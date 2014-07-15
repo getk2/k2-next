@@ -167,7 +167,9 @@ class K2ControllerComments extends K2Controller
 		$model = K2Model::getInstance('Comments');
 		$model->deleteUnpublished();
 
-		echo json_encode(true);
+		$application = JFactory::getApplication();
+		$application->enqueueMessage(JText::_('K2_DELETE_COMPLETED'));
+		echo json_encode(K2Response::render());
 		return $this;
 
 	}
