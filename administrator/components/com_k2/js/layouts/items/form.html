@@ -23,58 +23,137 @@
 	
 	<div data-role="tabs-content">
 		<div class="jw--item--form">
-		    <label for="title"><%= l('K2_TITLE') %></label>
-		    <input type="text" name="title" id="title" value="<%- row.title %>" />
 		
-		    <label for="alias"><%= l('K2_ALIAS') %></label>
-		    <input type="text" name="alias" id="alias" value="<%- row.alias %>" />
-		
-		    <label for="catid"><%= l('K2_CATEGORY') %></label>
-		    <%= form.category %>
-		
-		    <% if(row.canEditState) { %>
-		    <label><%= l('K2_STATE') %></label>
-		    <%= form.state %>
-		    <% } %>
-		    
-			<label><%= l('K2_AUTHOR') %></label>
-			<input data-widget="user" data-min="1" data-name="<%- row.authorName %>" type="hidden" name="created_by" value="<%- row.created_by %>" />
-		
-			<label for="created_by_alias"><%= l('K2_AUTHOR_ALIAS') %></label>
-			<input id="created_by_alias" type="text" name="created_by_alias" value="<%- row.created_by_alias %>" />
+			<div class="ov-hidden">
+				<div class="left text-right jw--item--lbl">
+					<label for="title"><%= l('K2_TITLE') %></label>
+				</div>
+				<div class="ov-hidden jw--item--fld jw--item--fld__title">
+					<input type="text" name="title" id="title" value="<%- row.title %>" />
+				</div>
+			</div>
 			
-			<label for="created_by_alias_url"><%= l('K2_AUTHOR_ALIAS_URL') %></label>
-			<input id="created_by_alias_url" type="text" name="created_by_alias_url" value="<%- row.created_by_alias_url %>" />
-						
-		    <% if(row.canEditFeaturedState) { %>
-		    <label><%= l('K2_FEATURED') %></label>
-		    
-		    <div class="switch">
-				<input type="radio" name="featured" value="1"/>
-			    <label> <%= l('K2_YES') %></label>
+			<div class="jw--item--row">
+				<div class="left text-right jw--item--lbl">
+					<label for="alias"><%= l('K2_ALIAS') %></label>
+				</div>
+				<div class="ov-hidden jw--item--fld jw--item--fld__alias">
+					<input type="text" name="alias" id="alias" value="<%- row.alias %>" />
+				</div>
+			</div>
+			
+			<div class="jw--item--row">
+				<div class="left">
+					<div class="left text-right jw--item--lbl">
+						<label for="catid"><%= l('K2_CATEGORY') %></label>
+					</div>
+					<div class="ov-hidden jw--item--fld">
+						<%= form.category %>
+					</div>
+				</div>
+				
+				<% if(row.canEditState) { %>
+			    <div class="right">
+			    	<div class="left text-right jw--item--lbl">
+				    	<label><%= l('K2_STATE') %></label>
+				    </div>
+				    <div class="ov-hidden jw--label--row">
+				    	<%= form.state %>
+				    </div>
+				</div>
+			    <% } %>
 			    
-			    <input type="radio" name="featured" value="0" />
-			    <label> <%= l('K2_NO') %>
-			        
-			    </label>
-		    </div>
-		    <% } %>
+			   <% if(row.canEditFeaturedState) { %>
+			    <div class="right">
+			    	<div class="left text-right jw--item--lbl">
+				    	<label><%= l('K2_FEATURED') %></label>
+				    </div>
+				    
+				    <div class="switch">
+						<input type="radio" name="featured" value="1"/>
+					    <label> <%= l('K2_YES') %></label>
+					    
+					    <input type="radio" name="featured" value="0" />
+					    <label> <%= l('K2_NO') %></label>
+				    </div>
+				</div>
+				<% } %>
+				
+			</div>
+		    <div class="clr"></div>
+			
+			<!-- Tags -->
+			<div class="jw--item--row">
+				<div class="left text-right jw--item--lbl">
+					<label><%= l('K2_TAGS') %></label>
+				</div>
+				<div class="ov-hidden">
+					<input data-widget="tags" data-create="<%- row.canCreateTag %>" value="<%- row.tagsValue %>" type="hidden" name="tags" />
+					<div class="jw--tag--caption"><%= l('K2_WRITE_A_TAG_AND_PRESS_RETURN_OR_COMMA_TO_ADD_IT') %></div>
+				</div>
+			</div>
 		
-		    <label for="access"><%= l('K2_ACCESS') %></label>
-		    <%= form.access %>
-		
-		    <label for="language"><%= l('K2_LANGUAGE') %></label>
-		    <%= form.language %>
-		
-		    <% _.each(form.k2Plugins['items-content'], function(field) { %>
-		    	<%= field.label %>
-				<%= field.input %>
-			<% }); %>
-		
-		    <!-- Tags -->
-		    <h2><%= l('K2_TAGS') %></h2>
-		    <input data-widget="tags" data-create="<%- row.canCreateTag %>" value="<%- row.tagsValue %>" type="hidden" name="tags" />
+			<div class="jw--item--row">
+				<div class="left">
+					<div class="left text-right jw--item--lbl">
+				    	<label for="access"><%= l('K2_ACCESS') %></label>
+				    </div>
+				    <div class="ov-hidden jw--item--fld">
+				    	<%= form.access %>
+				    </div>
+			    </div>
+			    
+			    <div class="left">
+				    <div class="left text-right jw--item--lbl">
+				    	<label for="language"><%= l('K2_LANGUAGE') %></label>
+				    </div>
+				    <div class="ov-hidden jw--item--fld">
+				    	<%= form.language %>
+				    </div>
+				</div>
+
+				<div class="right jw--right--row">
+					<div class="left text-right jw--item--lbl">
+						<label for="created_by_alias_url"><%= l('K2_AUTHOR_ALIAS_URL') %></label>
+					</div>
+					<div class="ov-hidden jw--item--fld">
+						<input id="created_by_alias_url" type="text" name="created_by_alias_url" value="<%- row.created_by_alias_url %>" />
+					</div>
+				</div>
+								
+				<div class="right jw--right--row">
+					<div class="left text-right jw--item--lbl">
+						<label for="created_by_alias"><%= l('K2_AUTHOR_ALIAS') %></label>
+					</div>
+					<div class="ov-hidden jw--item--fld">
+						<input id="created_by_alias" type="text" name="created_by_alias" value="<%- row.created_by_alias %>" />
+					</div>
+				</div>
+				
+				<div class="right jw--right--row">
+					<div class="left text-right jw--item--lbl">
+						<label><%= l('K2_AUTHOR') %></label>
+					</div>
+					<div class="ov-hidden jw--item--fld">
+						<input data-widget="user" data-min="1" data-name="<%- row.authorName %>" type="hidden" name="created_by" value="<%- row.created_by %>" />
+					</div>
+				</div>
+				
+			</div>
+			
+			<div class="clr"></div>
 		    
+		    <% _.each(form.k2Plugins['items-content'], function(field) { %>
+			<div class="jw--item--row">
+				<div class="left text-right jw--item--lbl">		    
+		    		<%= field.label %>
+		    	</div>
+		    	<div class="ov-hidden">
+					<%= field.input %>
+				</div>
+			</div>
+			<% }); %>
+				    
 		    <!-- Editor Tabs -->
 			<div data-widget="tabs">
 				<ul class="jw--tabs jw--tabs__content" data-role="tabs-navigation">
