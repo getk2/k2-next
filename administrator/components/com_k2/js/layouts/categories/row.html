@@ -56,7 +56,7 @@
 
 <div class="small-1 large-1 columns">
     <% if(image && image.flag) { %>
-        <a href="<%= image.src %>"><%= l('K2_PREVIEW') %></a>
+        <a href="<%= image.src %>" data-role="modal"><%= l('K2_PREVIEW') %></a>
     <% } else { %>
     <div class="text-center"> - </div>
     <% } %>
