@@ -66,6 +66,36 @@ ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; }
 		.editor .mce-panel { border-left: 0!important; border-right: 0!important; border-color: #d4d7d9; }
 		#editor-xtd-buttons, .toggle-editor { padding: 5px 15px 10px; }
 	
+/*------------------------------------------------------------------
+[Attachments -images] */
+.jw--image--tab .jw--setting--field .jw--setting--single:nth-child(2n-2) { background: #fff; }
+	.jw--form__item .jw--image--single img { padding: 10px; background: #f7f8f8; border: 1px solid #e9ebec; border-radius: 3px; position: relative; z-index: 2; }
+	button.jw--remove { vertical-align: top; margin-left: -4px; position: relative; z-index: 2; background: #f7f8f8; border-style: solid; border-color: #e9ebec;  border-width: 1px 1px 1px 0; border-radius: 0 3px 3px 0; font-size: 18px; line-height: 1; padding: 13px; color: #949595; }
+	button.jw--remove:hover { color: #a53222; }
+
+
+/*------------------------------------------------------------------
+[Extra fields] */
+.jw--element--row { overflow: hidden;  }
+	.jw--element--row .ov-hidden { padding-bottom: 2px; }
+	.jw--element--row .ov-hidden label { padding-top: 11px; }
+	.jw--element--row .jw--element--single { margin-bottom: 25px; }
+	.jw--element--row .jw--element--single:last-child { margin-bottom: 0; }
+	
+	.jw--element--row  h3 { font-size: 18px; font-weight: 300; padding: 0 0 0 115px; color: #acacad; line-height: 1; margin-bottom: 10px; }
+	.jw--element--row .jw--element--single input[type="text"],
+	.jw--element--row .jw--element--single textarea { min-width: 100%; min-width: 100%; border-radius: 3px; padding: 10px; height: 40px; line-height: 40px; line-height: 1; display: block; border: 1px solid #d4d7d9; margin: 0; }
+	.jw--element--row .jw--element--single input[type="text"].jw--small--input { display: inline-block; vertical-align: middle; margin-left: 15px; max-width: 150px; min-width: 0; width: auto; }
+	
+	.jw--element--row .jw--element--single textarea { min-height: 100px; }
+
+	.jw--element--row label { font-size: 13px; font-weight: 700; display: inline-block; vertical-align: middle; margin: 0; }
+	.jw--element--row input[type="checkbox"], .jw--element--row input[type="radio"] { display: inline-block; vertical-align: middle; margin-right: 15px; margin-top: -2px; margin-left: 2px; }
+	
+	
+	
+	
+	
 	
 	
 	
