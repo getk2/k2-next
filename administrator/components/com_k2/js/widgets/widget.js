@@ -261,23 +261,35 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 			});
 		},
 		ordering : function(element, column, enabled) {
-			var minimumValue = element.find('input[name="' + column + '[]"]:first').val();
 			require(['widgets/sortable/jquery-sortable-min'], function() {
 				element.find('div[data-region="list"]').sortable({
 					handle : '[data-role="ordering-handle"][data-column="' + column + '"]',
-					containerSelector : 'table',
+					containerSelector : 'ul',
 					itemSelector : 'ul',
 					placeholder : '<ul class="k2SortingPlaceholder"/>',
 					onDrop : function(item, container, _super) {
-						var value = minimumValue;
 						var keys = [];
 						var values = [];
-						element.find('input[name="' + column + '[]"]').each(function(index) {
-							keys.push(jQuery(this).data('id'));
-							values.push(value);
-							value++;
+						var list = element.find('input[name="' + column + '[]"]');
+						list.each(function() {
+							var el = jQuery(this);
+							keys.push(el.data('id'));
+							values.push(parseInt(el.val()));
 						});
-						K2Dispatcher.trigger('app:controller:saveOrder', keys, values, column, true);
+						values.sort(function(a, b) {
+							return a - b;
+						});
+						var modifiedKeys = [];
+						var modifiedValues = [];
+						list.each(function(index) {
+							var el = jQuery(this);
+							if (parseInt(el.val()) !== parseInt(values[index])) {
+								modifiedKeys.push(el.data('id'));
+								modifiedValues.push(values[index]);
+								el.val(values[index]);
+							}
+						});
+						K2Dispatcher.trigger('app:controller:saveOrder', modifiedKeys, modifiedValues, column, true);
 						_super(item);
 					}
 				});
