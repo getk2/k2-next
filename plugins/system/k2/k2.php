@@ -63,6 +63,9 @@ class PlgSystemK2 extends JPlugin
 		// Get application
 		$application = JFactory::getApplication();
 
+		// Get user
+		$user = JFactory::getUser();
+
 		// Get params
 		$params = JComponentHelper::getParams('com_k2');
 
@@ -73,6 +76,7 @@ class PlgSystemK2 extends JPlugin
 		$option = $application->input->get('option');
 		$view = $application->input->get('view');
 		$task = $application->input->get('task');
+		$format = $application->input->get('format');
 
 		// Detect if we are in edit mode
 		if (($application->isAdmin() && $option == 'com_k2') || ($application->isSite() && $option == 'com_k2' && ($view == 'admin' || $view == '')))
@@ -88,6 +92,12 @@ class PlgSystemK2 extends JPlugin
 		if ($application->isAdmin() && $option == 'com_config' && $view == 'component' && $application->input->get('component') == 'com_k2')
 		{
 			$application->redirect('index.php?option=com_k2#settings');
+		}
+
+		// Throw an error in JSON format when the session has expired to catch the Joomla! invalid redirect to com_login in JSON format
+		if ($user->get('guest') && K2_EDIT_MODE && $format == 'json')
+		{
+			K2Response::throwError(JText::_('K2_SESSION_EXPIRED'), 500);
 		}
 
 		// Front-end only check
@@ -228,7 +238,10 @@ class PlgSystemK2 extends JPlugin
 				// Trigger K2 plugins
 				JPluginHelper::importPlugin('k2');
 				$dispatcher = JDispatcher::getInstance();
-				$K2Plugins = $dispatcher->trigger('onRenderAdminForm', array(&$K2User, 'user'));
+				$K2Plugins = $dispatcher->trigger('onRenderAdminForm', array(
+					&$K2User,
+					'user'
+				));
 				$view->assignRef('K2Plugins', $K2Plugins);
 				$view->assignRef('K2User', $K2User);
 
@@ -302,7 +315,10 @@ class PlgSystemK2 extends JPlugin
 					// Trigger K2 plugins
 					JPluginHelper::importPlugin('k2');
 					$dispatcher = JDispatcher::getInstance();
-					$K2Plugins = $dispatcher->trigger('onRenderAdminForm', array(&$K2User, 'user'));
+					$K2Plugins = $dispatcher->trigger('onRenderAdminForm', array(
+						&$K2User,
+						'user'
+					));
 					$view->assignRef('K2Plugins', $K2Plugins);
 					$view->assignRef('K2User', $K2User);
 
@@ -350,8 +366,20 @@ class PlgSystemK2 extends JPlugin
 		{
 			$application = JFactory::getApplication();
 			$response = $application->getBody();
-			$searches = array('<meta name="og:url"', '<meta name="og:title"', '<meta name="og:type"', '<meta name="og:image"', '<meta name="og:description"');
-			$replacements = array('<meta property="og:url"', '<meta property="og:title"', '<meta property="og:type"', '<meta property="og:image"', '<meta property="og:description"');
+			$searches = array(
+				'<meta name="og:url"',
+				'<meta name="og:title"',
+				'<meta name="og:type"',
+				'<meta name="og:image"',
+				'<meta name="og:description"'
+			);
+			$replacements = array(
+				'<meta property="og:url"',
+				'<meta property="og:title"',
+				'<meta property="og:type"',
+				'<meta property="og:image"',
+				'<meta property="og:description"'
+			);
 			if (strpos($response, 'prefix="og: http://ogp.me/ns#"') === false)
 			{
 				$searches[] = '<html ';
