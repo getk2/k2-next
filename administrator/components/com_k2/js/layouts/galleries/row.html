@@ -1,13 +1,24 @@
+<div class="clr"></div>
 <div>
 	<% if(remove == 0) { %>
     <label><%= l('K2_FILE') %></label>
     <input type="file" name="archive" data-widget="uploader" data-url="index.php?option=com_k2&task=galleries.upload&upload=<%- upload %>&format=json" data-callback="galleries:upload:<%- cid %>"  />
+   
     <label><%= l('K2_URL') %></label>
-    <input type="text" name="galleries[<%- cid %>][url]" value="<%- url %>" />
-    <span data-widget="dropbox" data-types=".zip" data-callback="galleries:dropbox:<%- cid %>"></span>
-    <button data-action="remove">
+	
+	<div class="jw--element--single"> 
+		<input type="text" name="galleries[<%- cid %>][url]" value="<%- url %>" />
+	</div>
+	
+	<div class="jw--element--single"> 
+		<span data-widget="dropbox" data-types=".zip" data-callback="galleries:dropbox:<%- cid %>"></span>
+	</div>
+    
+    <button lass="jw--remove jw--attachment--remove" data-action="remove">
         <%= l('K2_REMOVE') %>
     </button>
+    
+    
     <% } %>
     <input type="hidden" name="galleries[<%- cid %>][upload]" value="<%- upload %>" />
     <input type="hidden" name="galleries[<%- cid %>][remove]" value="<%- remove %>" />
