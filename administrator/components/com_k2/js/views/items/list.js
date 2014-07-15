@@ -296,7 +296,9 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 									el.val(values[index]);
 								}
 							});
-							K2Dispatcher.trigger('app:controller:saveOrder', modifiedKeys, modifiedValues, 'ordering', false);
+							if (modifiedKeys.length > 0) {
+								K2Dispatcher.trigger('app:controller:saveOrder', modifiedKeys, modifiedValues, 'ordering', false);
+							}
 						}
 						_super(item);
 					}

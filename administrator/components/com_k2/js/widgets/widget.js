@@ -289,7 +289,9 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 								el.val(values[index]);
 							}
 						});
-						K2Dispatcher.trigger('app:controller:saveOrder', modifiedKeys, modifiedValues, column, true);
+						if (modifiedKeys.length > 0) {
+							K2Dispatcher.trigger('app:controller:saveOrder', modifiedKeys, modifiedValues, column, true);
+						}
 						_super(item);
 					}
 				});
