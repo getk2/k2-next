@@ -105,6 +105,10 @@ ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; }
 /*------------------------------------------------------------------
 [galleries] */	
 	
+	/* preview */
+	.jw--gallery--single { padding: 25px 10px 10px; }
+	.jw--gallery--image { position: relative; width: 100%; padding: 0 0 56%; overflow: hidden; z-index: 2; border-radius: 3px; }
+		.jw--gallery--image img { position: absolute; left: 0; top: 0; z-index: 1; min-width: 100%; min-height: 100%; height: auto; }
 	
 /*------------------------------------------------------------------
 [Revisions] */
