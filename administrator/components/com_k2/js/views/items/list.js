@@ -165,6 +165,7 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 			this.itemsCollection.setState('recursive', '0');
 			this.itemsCollection.setState('category', this.model.get('id'));
 			this.itemsCollection.setState('limit', this.limit);
+			this.itemsCollection.setState('persist', 0);
 			this.childrenCollection = new K2CollectionCategories;
 			this.childrenCollection.setState('root', this.model.get('id'));
 			this.childrenCollection.setState('parent', this.model.get('id'));
