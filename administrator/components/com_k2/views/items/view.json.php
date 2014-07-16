@@ -71,7 +71,7 @@ class K2ViewItems extends K2View
 	public function edit($id = null)
 	{
 		// Set title
-		$this->setTitle('K2_ITEM');
+		$this->setTitle($id ? 'K2_EDIT_ITEM' : 'K2_ADD_ITEM');
 
 		// Set row
 		$this->setRow($id);

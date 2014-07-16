@@ -68,7 +68,7 @@ class K2ViewTags extends K2View
 	public function edit($id = null)
 	{
 		// Set title
-		$this->setTitle('K2_TAG');
+		$this->setTitle($id ? 'K2_EDIT_TAG' : 'K2_ADD_TAG');
 
 		// Set row
 		$this->setRow($id);

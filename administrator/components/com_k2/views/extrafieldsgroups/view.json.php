@@ -68,7 +68,7 @@ class K2ViewExtraFieldsGroups extends K2View
 	public function edit($id = null)
 	{
 		// Set title
-		$this->setTitle('K2_EXTRA_FIELDS_GROUP');
+		$this->setTitle($id ? 'K2_EDIT_EXTRA_FIELD_GROUP' : 'K2_ADD_EXTRA_FIELD_GROUP');
 
 		// Set row
 		$this->setRow($id);

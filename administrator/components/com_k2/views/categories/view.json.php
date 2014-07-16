@@ -71,7 +71,7 @@ class K2ViewCategories extends K2View
 	public function edit($id = null)
 	{
 		// Set title
-		$this->setTitle('K2_CATEGORY');
+		$this->setTitle($id ? 'K2_EDIT_CATEGORY' : 'K2_ADD_CATEGORY');
 
 		// Set row
 		$this->setRow($id);

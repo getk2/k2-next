@@ -68,7 +68,7 @@ class K2ViewComments extends K2View
 	public function edit($id = null)
 	{
 		// Set title
-		$this->setTitle('K2_COMMENT');
+		$this->setTitle('K2_EDIT_COMMENT');
 
 		// Set row
 		$this->setRow($id);

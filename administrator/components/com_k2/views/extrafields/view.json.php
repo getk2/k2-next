@@ -68,7 +68,7 @@ class K2ViewExtraFields extends K2View
 	public function edit($id = null)
 	{
 		// Set title
-		$this->setTitle('K2_EXTRA_FIELD');
+		$this->setTitle($id ? 'K2_EDIT_EXTRA_FIELD' : 'K2_ADD_EXTRA_FIELD');
 
 		// Set row
 		$this->setRow($id);

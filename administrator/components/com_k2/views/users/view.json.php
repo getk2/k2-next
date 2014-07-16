@@ -68,7 +68,7 @@ class K2ViewUsers extends K2View
 	public function edit($id = null)
 	{
 		// Set title
-		$this->setTitle('K2_USER');
+		$this->setTitle('K2_EDIT_USER');
 
 		// Set row
 		$this->setRow($id);
