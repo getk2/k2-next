@@ -136,7 +136,7 @@ Radios with controls (native j3 elements) - Bootstrap support  */
 	}
 	.btn-group-yesno label:hover { cursor: pointer; box-shadow: 0 1px 1px rgba(65,64,66,.14), inset 0 0 10px rgba(0,0,0,.15); }
 
-	.btn-group-yesno label:first-child { border-radius: 3px 0 0 3px; }
+	.btn-group-yesno label:first-child, .btn-group-yesno label:first-of-type { border-radius: 3px 0 0 3px; }
 	.btn-group-yesno label:last-child { border-radius: 0 3px 3px 0; }
 	
 	/* Checked state */
