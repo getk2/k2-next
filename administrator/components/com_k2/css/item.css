@@ -100,6 +100,9 @@ ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; }
 	.jw--element--row label { font-size: 13px; font-weight: 700; display: inline-block; vertical-align: middle; margin: 0; }
 	.jw--element--row input[type="checkbox"], .jw--element--row input[type="radio"] { display: inline-block; vertical-align: middle; margin-right: 15px; margin-top: -2px; margin-left: 2px; }
 	
-	
-	
-	
+/*------------------------------------------------------------------
+[Revisions] */
+.jw--editor--revisions { border-radius: 3px; border: 1px solid #d4d7d9; padding: 25px; margin-top: 33px; }
+	.jw--editor--revisions textarea { border-radius: 3px; border: 1px solid #d4d7d9; display: block; min-width: 100%; min-height: 107px; padding: 5px 10px; }
+	.jw--rev--title { display: block; line-height: 1; font-weight: 700; font-size: 18px; color: #58595b; margin-bottom: 13px; letter-spacing: -1px; }
+	.jw--rev--title .fa { display: inline-block; vertical-align: middle; padding-right: 5px; color: #00afec; font-size: 24px; font-weight: 400;  }

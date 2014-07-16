@@ -60,7 +60,7 @@
 				<% if(row.canEditState) { %>
 			    <div class="right">
 			    	<div class="left text-right jw--item--lbl">
-				    	<label><%= l('K2_STATE') %></label>
+				    	<label class="jw--radio--title"><%= l('K2_STATE') %></label>
 				    </div>
 				    <div class="ov-hidden jw--label--row">
 				    	<%= form.state %>
@@ -71,15 +71,15 @@
 			   <% if(row.canEditFeaturedState) { %>
 			    <div class="right">
 			    	<div class="left text-right jw--item--lbl">
-				    	<label><%= l('K2_FEATURED') %></label>
+				    	<label class="jw--radio--title"><%= l('K2_FEATURED') %></label>
 				    </div>
 				    
-				    <div class="switch">
-						<input type="radio" name="featured" value="1"/>
-					    <label> <%= l('K2_YES') %></label>
+				    <div class="left btn-group-yesno">
+						<input class="visuallyhidden" type="radio" name="featured" id="feat1" value="1"/>
+					    <label for="feat1"> <%= l('K2_YES') %></label>
 					    
-					    <input type="radio" name="featured" value="0" />
-					    <label> <%= l('K2_NO') %></label>
+					    <input class="visuallyhidden" type="radio" name="featured" id="feat2" value="0" />
+					    <label for="feat2"> <%= l('K2_NO') %></label>
 				    </div>
 				</div>
 				<% } %>
@@ -245,9 +245,11 @@
 				
 		    </div>
 		    
-		    <label for="notes"><%= l('K2_REVISION_NOTES') %></label>
-			<input type="text" name="notes" id="notes" value="" />
-		
+		    <div class="jw--editor--revisions">
+			    <label class="jw--rev--title" for="notes"><i class="fa fa-clock-o"></i> <%= l('K2_REVISION_NOTES') %></label>
+				<textarea name="notes" id="notes" value="" />
+			</div>
+			
 		    <input type="hidden" name="id" value="<%- row.id %>" / >
 		</div>
 		
