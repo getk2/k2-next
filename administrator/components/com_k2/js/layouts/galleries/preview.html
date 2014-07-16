@@ -1,0 +1,18 @@
+<div class="clr"></div>
+<div>
+	<% if(remove == 0) { %>
+	
+    <button lass="jw--remove jw--attachment--remove" data-action="remove">
+        <%= l('K2_REMOVE') %>
+    </button>
+    <ul>
+    	<li><img src="http://demo.nuevvo.com/commercial/j3x/tamashi/media/k2/items/cache/e31ace2a15a7c70645ad83df9ecd43b0_XS.jpg" alt="" /></li>
+    	<li><img src="http://demo.nuevvo.com/commercial/j3x/tamashi/media/k2/items/cache/184b7cb84d7b456c96a0bdfbbeaa5f14_XS.jpg" alt="" /></li>
+    	<li><img src="http://demo.nuevvo.com/commercial/j3x/tamashi/media/k2/items/cache/9caa2793658f3cc387f216157300b1ce_XS.jpg" alt="" /></li>
+    </ul>
+    
+    <input type="hidden" name="galleries[<%- cid %>][url]" value="<%- url %>" />
+    <% } %>
+    <input type="hidden" name="galleries[<%- cid %>][upload]" value="<%- upload %>" />
+    <input type="hidden" name="galleries[<%- cid %>][remove]" value="<%- remove %>" />
+</div>

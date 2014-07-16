@@ -1,4 +1,4 @@
-define(['text!layouts/galleries/list.html', 'text!layouts/galleries/row.html', 'widgets/widget', 'dispatcher'], function(listTemplate, rowTemplate, K2Widget, K2Dispatcher) {'use strict';
+define(['text!layouts/galleries/widget.html', 'text!layouts/galleries/add.html', 'text!layouts/galleries/preview.html', 'widgets/widget', 'dispatcher'], function(widgetTemplate, addTemplate, previewTemplate, K2Widget, K2Dispatcher) {'use strict';
 
 	// Model
 	var Gallery = Backbone.Model.extend({
@@ -21,7 +21,13 @@ define(['text!layouts/galleries/list.html', 'text!layouts/galleries/row.html', '
 	// Row view
 	var K2ViewGalleriesRow = Marionette.ItemView.extend({
 		tagName : 'div',
-		template : _.template(rowTemplate),
+		getTemplate : function() {
+			if (this.model.get('isNew')) {
+				return _.template(addTemplate);
+			} else {
+				return _.template(previewTemplate);
+			}
+		},
 		events : {
 			'click [data-action="remove"]' : 'removeGallery'
 		},
@@ -65,20 +71,44 @@ define(['text!layouts/galleries/list.html', 'text!layouts/galleries/row.html', '
 	});
 
 	// List view
-	var K2ViewGalleries = Marionette.CompositeView.extend({
-		template : _.template(listTemplate),
-		itemViewContainer : '[data-region="galleries"]',
-		itemView : K2ViewGalleriesRow,
+	var K2ViewGalleries = Marionette.CollectionView.extend({
+		itemView : K2ViewGalleriesRow
+	});
+
+	// Layout view
+	var K2ViewGalleriesWidget = Marionette.Layout.extend({
+		template : _.template(widgetTemplate),
+		regions : {
+			newGalleriesRegion : '[data-region="new-galleries"]',
+			existingGalleriesRegion : '[data-region="existing-galleries"]'
+		},
 		events : {
 			'click [data-action="add"]' : 'addGallery'
 		},
 		initialize : function(options) {
-			this.collection = new Galleries(options.data);
+			this.existingGalleriesCollection = new Galleries(options.data);
+			this.existingGalleriesView = new K2ViewGalleries({
+				collection : this.existingGalleriesCollection
+			});
+
+			this.newGalleriesCollection = new Galleries();
+			this.newGalleriesView = new K2ViewGalleries({
+				collection : this.newGalleriesCollection
+			});
+
+		},
+		onShow : function() {
+			this.existingGalleriesRegion.show(this.existingGalleriesView);
+			this.newGalleriesRegion.show(this.newGalleriesView);
+
 		},
 		addGallery : function(event) {
 			event.preventDefault();
-			this.collection.add({});
+			this.newGalleriesCollection.add({
+				isNew : true
+			});
 		}
 	});
-	return K2ViewGalleries;
+
+	return K2ViewGalleriesWidget;
 });
