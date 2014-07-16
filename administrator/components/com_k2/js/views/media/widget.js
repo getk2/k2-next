@@ -1,11 +1,11 @@
-define(['text!layouts/media/list.html', 'text!layouts/media/row.html', 'widgets/widget', 'dispatcher'], function(listTemplate, rowTemplate, K2Widget, K2Dispatcher) {'use strict';
+define(['text!layouts/media/widget.html', 'text!layouts/media/add.html', 'text!layouts/media/preview.html', 'widgets/widget', 'dispatcher'], function(widgetTemplate, addTemplate, previewTemplate, K2Widget, K2Dispatcher) {'use strict';
 
 	// Model
 	var MediaModel = Backbone.Model.extend({
 		initialize : function() {
 			this.set('cid', this.cid);
 		},
-		idAttribute: '_id',
+		idAttribute : '_id',
 		defaults : {
 			itemId : null,
 			cid : null,
@@ -28,7 +28,13 @@ define(['text!layouts/media/list.html', 'text!layouts/media/row.html', 'widgets/
 	// Row view
 	var K2ViewMediaRow = Marionette.ItemView.extend({
 		tagName : 'div',
-		template : _.template(rowTemplate),
+		getTemplate : function() {
+			if (this.model.get('isNew')) {
+				return _.template(addTemplate);
+			} else {
+				return _.template(previewTemplate);
+			}
+		},
 		events : {
 			'click [data-action="remove"]' : 'removeMedia'
 		},
@@ -76,20 +82,41 @@ define(['text!layouts/media/list.html', 'text!layouts/media/row.html', 'widgets/
 	});
 
 	// List view
-	var K2ViewMedia = Marionette.CompositeView.extend({
-		template : _.template(listTemplate),
-		itemViewContainer : '[data-region="media"]',
-		itemView : K2ViewMediaRow,
+	var K2ViewMedia = Marionette.CollectionView.extend({
+		itemView : K2ViewMediaRow
+	});
+
+	var K2ViewMediaWidget = Marionette.Layout.extend({
+		template : _.template(widgetTemplate),
+		regions : {
+			newMediaRegion : '[data-region="new-media"]',
+			existingMediaRegion : '[data-region="existing-media"]'
+		},
 		events : {
 			'click [data-action="add"]' : 'addMedia'
 		},
 		initialize : function(options) {
-			this.collection = new MediaCollection(options.data);
+			this.existingMediaCollection = new MediaCollection(options.data);
+			this.existingMediaView = new K2ViewMedia({
+				collection : this.existingMediaCollection
+			});
+
+			this.newMediaCollection = new MediaCollection();
+			this.newMediaView = new K2ViewMedia({
+				collection : this.newMediaCollection
+			});
+
+		},
+		onShow : function() {
+			this.newMediaRegion.show(this.newMediaView);
+			this.existingMediaRegion.show(this.existingMediaView);
 		},
 		addMedia : function(event) {
 			event.preventDefault();
-			this.collection.add({});
+			this.newMediaCollection.add({
+				isNew : true
+			});
 		}
 	});
-	return K2ViewMedia;
+	return K2ViewMediaWidget;
 });

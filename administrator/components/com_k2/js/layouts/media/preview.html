@@ -1,0 +1,23 @@
+<div>
+	<% if(remove == 0) { %>
+
+    <input type="hidden" name="media[<%- cid %>][url]" value="<%- url %>" />
+    <input type="hidden" name="media[<%- cid %>][provider]" value="<%- provider %>" />
+    <input type="hidden" name="media[<%- cid %>][id]" value="<%- id %>" />
+    <input type="hidden" name="media[<%- cid %>][embed]" value="<%- embed %>"/>
+    
+    <%= output %>
+    
+    <label><%= l('K2_MEDIA_CAPTION') %></label>
+    <input type="text" name="media[<%- cid %>][caption]" value="<%- caption %>" />
+
+    <label><%= l('K2_MEDIA_CREDITS') %></label>
+    <input type="text" name="media[<%- cid %>][credits]" value="<%- credits %>" />
+
+    <button data-action="remove">
+        <%= l('K2_REMOVE') %>
+    </button>
+    <% } %>
+    <input type="hidden" name="media[<%- cid %>][upload]" value="<%- upload %>" />
+    <input type="hidden" name="media[<%- cid %>][remove]" value="<%- remove %>" />
+</div>
