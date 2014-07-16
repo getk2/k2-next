@@ -161,7 +161,7 @@ img{-ms-interpolation-mode:bicubic;display:inline-block;vertical-align:middle;}
 
 /* Block Grid
 ------------------------------------------------------ */
-[class*="block-grid-"]{display:block;margin:0 -15px;padding:0;*zoom:1;}
+[class*="block-grid-"]{display:block;margin:0;padding:0;*zoom:1;}
 [class*="block-grid-"]:before,[class*="block-grid-"]:after{display:table;content:" ";}
 [class*="block-grid-"]:after{clear:both;}
 [class*="block-grid-"] > li{display:block;float:left;padding:0 15px 1.25rem;height:auto;}

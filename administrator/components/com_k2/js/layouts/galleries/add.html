@@ -15,6 +15,10 @@
 						<i class="fa fa-upload"></i> <span><%= l('K2_UPLOAD') %></span>
 					</span>
 				</div>
+				
+				<div class="jw--element--single">
+					<span data-widget="dropbox" data-types=".zip" data-callback="galleries:dropbox:<%- cid %>"></span>
+				</div>
 			</div>
 		</div>
 		
@@ -24,9 +28,6 @@
 	    	</div>
 	    	
 			<div class="ov-hidden">
-				<div class="jw--element--single">
-					<span data-widget="dropbox" data-types=".zip" data-callback="galleries:dropbox:<%- cid %>"></span>
-				</div>
 				<div class="jw--element--single jw--item--input">
 					<input type="text" name="galleries[<%- cid %>][url]" value="<%- url %>" />
 				</div>
