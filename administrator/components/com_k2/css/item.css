@@ -80,7 +80,7 @@ ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; }
 	
 	/* attachments */
 	.jw--attachments { position: relative; }
-		.jw--attachment--single { padding: 28px 20px 28px 0; margin: 18px 41px 18px 0; background: #f7f8f8; border: 1px solid #e9ebec; border-radius: 3px; position: relative; z-index: 2; }
+		.jw--attachment--single, .row.jw--attachment--single { padding: 28px 20px 28px 10px; margin: 18px 41px 18px 0; background: #f7f8f8; border: 1px solid #e9ebec; border-radius: 3px; position: relative; z-index: 2; }
 		button.jw--attachment--remove { position: absolute; right: 0; top: 0; }
 
 
@@ -92,7 +92,7 @@ ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; }
 	.jw--element--row .jw--element--single { margin-bottom: 25px; }
 	.jw--element--row .jw--element--single:last-child { margin-bottom: 0; }
 	
-	.jw--element--row  h3 { font-size: 18px; font-weight: 300; padding: 0 0 0 15px; color: #acacad; line-height: 1; margin: 0 0 5px; }
+	.jw--element--row h3 { font-size: 18px; font-weight: 300; padding: 0 0 0 15px; color: #acacad; line-height: 1; margin: 0 0 15px; }
 	.jw--element--row .jw--element--single input[type="text"],
 	.jw--element--row .jw--element--single textarea { min-width: 100%; min-width: 100%; border-radius: 3px; padding: 10px; height: 40px; line-height: 40px; line-height: 1; display: block; border: 1px solid #d4d7d9; margin: 0; }
 	.jw--element--row .jw--element--single input[type="text"].jw--small--input { display: inline-block; vertical-align: middle; margin-left: 15px; max-width: 150px; min-width: 0; width: auto; }
