@@ -415,9 +415,13 @@ class K2ModelCategories extends K2Model
 		}
 
 		// Update category location
-		if (isset($data['parent_id']) && !$data['id'])
+		if ((isset($data['parent_id']) && $table->parent_id != $data['parent_id']) || !$data['id'])
 		{
 			$table->setLocation($data['parent_id'], 'last-child');
+		}
+		if ($this->getState('patch'))
+		{
+			$table->setLocation($data['parent_id'], 'first-child');
 		}
 
 		// Image
@@ -501,7 +505,7 @@ class K2ModelCategories extends K2Model
 			return false;
 		}
 
-		if (!$table->rebuild($table->id, $table->lft, $table->level, $table->path))
+		if (!$table->rebuild())
 		{
 			$this->setError($table->getError());
 			return false;

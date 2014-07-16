@@ -113,6 +113,7 @@ class K2View extends JViewLegacy
 		unset($this->userStates['page']);
 		unset($this->userStates['limit']);
 		unset($this->userStates['limitstart']);
+		unset($this->userStates['persist']);
 
 		// Pass the states to the response
 		K2Response::setStates($this->userStates);
