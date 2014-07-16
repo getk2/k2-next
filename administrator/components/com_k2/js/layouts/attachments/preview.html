@@ -3,9 +3,12 @@
 <td><input type="text" name="attachments[<%- cid %>][name]" value="<%- name %>" /></td>
 <td><input type="text" name="attachments[<%- cid %>][title]" value="<%- title %>" /></td>
 <td><%- downloads %></td>
-<td><button data-action="download"><%= l('K2_DOWNLOAD') %></button></td>
-<td>
-	<button data-action="remove"><%= l('K2_REMOVE') %></button>
+<td class="text-right"><button class="jw--btn jw--btn__item" data-action="download"><%= l('K2_DOWNLOAD') %></button></td>
+<td class="text-right">
+	<button class="jw--remove--row" data-action="remove">
+		<i class="fa fa-ban"></i>
+		<span class="visuallyhidden"><%= l('K2_REMOVE') %></span>
+	</button>
 	<input type="hidden" name="attachments[<%- cid %>][id]" value="<%- id %>"  />
 	<input type="hidden" name="attachments[<%- cid %>][remove]" value="<%- remove %>" />
 </td>
