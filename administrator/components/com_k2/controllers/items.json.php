@@ -56,6 +56,7 @@ class K2ControllerItems extends K2Controller
 			$data['introtext'] = JComponentHelper::filterText($this->input->get('introtext', '', 'raw'));
 			$data['fulltext'] = JComponentHelper::filterText($this->input->get('fulltext', '', 'raw'));
 		}
+		$data['media'] = JComponentHelper::filterText($this->input->get('media', '', 'raw'));
 		return $data;
 	}
 
@@ -243,12 +244,26 @@ class K2ControllerItems extends K2Controller
 		if ($articleImages->get('image_fulltext'))
 		{
 			$image = K2HelperImages::add('item', null, $articleImages->get('image_fulltext'));
-			$itemData['image'] = array('id' => '', 'temp' => $image->temp, 'path' => '', 'remove' => 0, 'caption' => $articleImages->get('image_fulltext_caption'), 'credits' => '');
+			$itemData['image'] = array(
+				'id' => '',
+				'temp' => $image->temp,
+				'path' => '',
+				'remove' => 0,
+				'caption' => $articleImages->get('image_fulltext_caption'),
+				'credits' => ''
+			);
 		}
 		else if ($articleImages->get('image_intro'))
 		{
 			$image = K2HelperImages::add('item', null, $articleImages->get('image_intro'));
-			$itemData['image'] = array('id' => '', 'temp' => $image->temp, 'path' => '', 'remove' => 0, 'caption' => $articleImages->get('image_intro_caption'), 'credits' => '');
+			$itemData['image'] = array(
+				'id' => '',
+				'temp' => $image->temp,
+				'path' => '',
+				'remove' => 0,
+				'caption' => $articleImages->get('image_intro_caption'),
+				'credits' => ''
+			);
 		}
 
 		$model = K2Model::getInstance('Items');
@@ -320,7 +335,14 @@ class K2ControllerItems extends K2Controller
 		if ($categoryImage)
 		{
 			$image = K2HelperImages::add('category', null, $categoryImage);
-			$categoryData['image'] = array('id' => '', 'temp' => $image->temp, 'path' => '', 'remove' => 0, 'caption' => '', 'credits' => '');
+			$categoryData['image'] = array(
+				'id' => '',
+				'temp' => $image->temp,
+				'path' => '',
+				'remove' => 0,
+				'caption' => '',
+				'credits' => ''
+			);
 		}
 
 		$model = K2Model::getInstance('Categories');
