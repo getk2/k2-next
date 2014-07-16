@@ -1,0 +1,18 @@
+<% if(remove == 0) { %>
+<td><input type="text" name="attachments[<%- cid %>][file]" readonly="readonly" value="<%- file %>" /></td>
+<td><input type="text" name="attachments[<%- cid %>][name]" value="<%- name %>" /></td>
+<td><input type="text" name="attachments[<%- cid %>][title]" value="<%- title %>" /></td>
+<td><%- downloads %></td>
+<td><button data-action="download"><%= l('K2_DOWNLOAD') %></button></td>
+<td>
+	<button data-action="remove"><%= l('K2_REMOVE') %></button>
+	<input type="hidden" name="attachments[<%- cid %>][id]" value="<%- id %>"  />
+	<input type="hidden" name="attachments[<%- cid %>][remove]" value="<%- remove %>" />
+</td>
+<% } else { %>
+<td colspan="6">
+	<input type="hidden" name="attachments[<%- cid %>][id]" value="<%- id %>"  />
+	<input type="hidden" name="attachments[<%- cid %>][remove]" value="<%- remove %>" />
+</td>
+<% } %>
+

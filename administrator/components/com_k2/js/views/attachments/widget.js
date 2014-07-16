@@ -1,11 +1,10 @@
-define(['dispatcher', 'widgets/widget', 'text!layouts/attachments/list.html', 'text!layouts/attachments/row.html', 'collections/attachments'], function(K2Dispatcher, K2Widget, listTemplate, rowTemplate, K2CollectionAttachments) {'use strict';
+define(['dispatcher', 'widgets/widget', 'text!layouts/attachments/widget.html', 'text!layouts/attachments/add.html', 'text!layouts/attachments/table.html', 'text!layouts/attachments/preview.html', 'collections/attachments'], function(K2Dispatcher, K2Widget, widgetTemplate, addTemplate, tableTemplate, previewTemplate, K2CollectionAttachments) {'use strict';
 
 	var K2ViewAttachmentsRow = Marionette.ItemView.extend({
 		tagName : 'div',
-		template : _.template(rowTemplate),
+		template : _.template(addTemplate),
 		events : {
-			'click [data-action="remove"]' : 'removeAttachment',
-			'click [data-action="download"]' : 'downloadAttachment'
+			'click [data-action="remove"]' : 'removeAttachment'
 		},
 		modelEvents : {
 			'change' : 'render'
@@ -30,13 +29,6 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/attachments/list.html', 't
 			event.preventDefault();
 			this.model.set('remove', 1);
 		},
-		downloadAttachment : function(event) {
-			event.preventDefault();
-			if (this.model.get('link')) {
-				var url = _.unescape(this.model.get('link'));
-				window.location = url;
-			}
-		},
 		setFileFromDropBox : function(url) {
 			var data = {};
 			data['url'] = url;
@@ -57,20 +49,76 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/attachments/list.html', 't
 		}
 	});
 
-	var K2ViewAttachments = Marionette.CompositeView.extend({
-		template : _.template(listTemplate),
-		itemViewContainer : '[data-region="attachments"]',
-		itemView : K2ViewAttachmentsRow,
+	var K2ViewAttachments = Marionette.CollectionView.extend({
+		itemView : K2ViewAttachmentsRow
+	});
+
+	var K2ViewAttachmentsPreviewRow = Marionette.ItemView.extend({
+		tagName : 'tr',
+		template : _.template(previewTemplate),
+		events : {
+			'click [data-action="edit"]' : 'editAttachment',
+			'click [data-action="download"]' : 'downloadAttachment',
+			'click [data-action="remove"]' : 'removeAttachment'
+		},
+		modelEvents : {
+			'change' : 'render'
+		},
+		editAttachment : function(event) {
+			event.preventDefault();
+			this.$el.find('input[reaonly]').prop('readonly', false);
+		},
+		downloadAttachment : function(event) {
+			event.preventDefault();
+			if (this.model.get('link')) {
+				var url = _.unescape(this.model.get('link'));
+				window.location = url;
+			}
+		},
+		removeAttachment : function(event) {
+			event.preventDefault();
+			this.model.set('remove', 1);
+		}
+	});
+	var K2ViewAttachmentsPreview = Marionette.CompositeView.extend({
+		template : _.template(tableTemplate),
+		itemViewContainer : '[data-region="list"]',
+		itemView : K2ViewAttachmentsPreviewRow
+	});
+
+	var K2ViewAttachmentsWidget = Marionette.Layout.extend({
+		template : _.template(widgetTemplate),
+		regions : {
+			newAttachmentsRegion : '[data-region="new-attachments"]',
+			existingAttachmentsRegion : '[data-region="existing-attachments"]'
+		},
 		events : {
 			'click [data-action="add"]' : 'addAttachment'
 		},
 		initialize : function(options) {
-			this.collection = new K2CollectionAttachments(options.data);
+			this.existingAttachmentsCollection = new K2CollectionAttachments(options.data);
+			this.existingAttachmentsView = new K2ViewAttachmentsPreview({
+				collection : this.existingAttachmentsCollection
+			});
+
+			this.newAttachmentsCollection = new K2CollectionAttachments();
+			this.newAttachmentsView = new K2ViewAttachments({
+				collection : this.newAttachmentsCollection
+			});
+
+		},
+		onShow : function() {
+			this.existingAttachmentsRegion.show(this.existingAttachmentsView);
+			this.newAttachmentsRegion.show(this.newAttachmentsView);
+
 		},
 		addAttachment : function(event) {
 			event.preventDefault();
-			this.collection.add({});
+			this.newAttachmentsCollection.add({
+				isNew : true
+			});
 		}
 	});
-	return K2ViewAttachments;
+
+	return K2ViewAttachmentsWidget;
 });
