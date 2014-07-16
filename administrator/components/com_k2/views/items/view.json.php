@@ -91,14 +91,14 @@ class K2ViewItems extends K2View
 
 	protected function setUserStates()
 	{
-		$this->setUserState('persist', 1, 'int', $this->getUserState('persist'));
-		$this->setUserState('limit', 10, 'int');
+		$this->setUserState('persist', 1, 'int');
+		$this->setUserState('limit', 10, 'int', $this->getUserState('persist'));
 		$this->setUserState('page', 1, 'int');
 		$this->setUserState('search', '', 'string');
 		$this->setUserState('access', 0, 'int');
 		$this->setUserState('state', '', 'cmd');
 		$this->setUserState('featured', '', 'cmd');
-		$this->setUserState('category', 0, 'cmd');
+		$this->setUserState('category', 0, 'cmd', $this->getUserState('persist'));
 		$this->setUserState('author', 0, 'int');
 		$this->setUserState('tag', 0, 'int');
 		$this->setUserState('language', '', 'string');
