@@ -200,6 +200,7 @@ class K2ViewCategories extends K2View
 	{
 		K2Response::addBatchAction('access', 'K2_ACCESS', JHtml::_('access.level', 'access', null, '', array(JHtml::_('select.option', '', JText::_('K2_LEAVE_UNCHANGED')))));
 		K2Response::addBatchAction('language', 'K2_LANGUAGE', K2HelperHTML::language('language', '', 'K2_LEAVE_UNCHANGED'));
+		K2Response::addBatchAction('parent', 'K2_PARENT', K2HelperHTML::categories('parent_id', '', 'K2_LEAVE_UNCHANGED', false, '', false, 'id', false, true));
 		K2Response::addBatchAction('inheritance', 'K2_INHERITANCE', K2HelperHTML::categories('inheritance', '', 'K2_LEAVE_UNCHANGED', false, '', false, 'id', true));
 	}
 
