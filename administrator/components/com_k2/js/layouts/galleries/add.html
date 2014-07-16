@@ -1,25 +1,46 @@
 <div class="clr"></div>
-<div>
+<div class="jw--attachments">
 	<% if(remove == 0) { %>
-    <label><%= l('K2_FILE') %></label>
-    <input type="file" name="archive" data-widget="uploader" data-url="index.php?option=com_k2&task=galleries.upload&upload=<%- upload %>&format=json" data-callback="galleries:upload:<%- cid %>"  />
-   
-    <label><%= l('K2_URL') %></label>
-	
-	<div class="jw--element--single"> 
-		<input type="text" name="galleries[<%- cid %>][url]" value="<%- url %>" />
+	<div class="jw--element--row jw--attachment--single">
+		<div class="jw--element--single">
+		
+			<div class="text-right left jw--item--lbl">
+		    	<label><%= l('K2_FILE') %></label>
+		    </div>
+			
+			<div class="ov-hidden jw--element--single">
+				<div class="jw--element--single jw--file--btn">
+				      <input type="file" name="archive" data-widget="uploader" data-url="index.php?option=com_k2&task=galleries.upload&upload=<%- upload %>&format=json" data-callback="galleries:upload:<%- cid %>"  />
+					<span class="jw--btn jw--file-fakebtn">
+						<i class="fa fa-upload"></i> <span><%= l('K2_UPLOAD') %></span>
+					</span>
+				</div>
+			</div>
+		</div>
+		
+		<div class="jw--element--single">
+	   		<div class="text-right left jw--item--lbl">
+	    		<label><%= l('K2_URL') %></label>
+	    	</div>
+	    	
+			<div class="ov-hidden">
+				<div class="jw--element--single">
+					<span data-widget="dropbox" data-types=".zip" data-callback="galleries:dropbox:<%- cid %>"></span>
+				</div>
+				<div class="jw--element--single jw--item--input">
+					<input type="text" name="galleries[<%- cid %>][url]" value="<%- url %>" />
+				</div>
+			</div>
+		</div>
 	</div>
 	
-	<div class="jw--element--single"> 
-		<span data-widget="dropbox" data-types=".zip" data-callback="galleries:dropbox:<%- cid %>"></span>
-	</div>
-    
-    <button lass="jw--remove jw--attachment--remove" data-action="remove">
-        <%= l('K2_REMOVE') %>
+	<button class="jw--remove jw--attachment--remove" data-action="remove">
+	    <i class="fa fa-ban"></i>
+	    <span class="visuallyhidden"><%= l('K2_REMOVE') %></span>  
     </button>
-    
-    
-    <% } %>
+
+  	
+	<% } %>
     <input type="hidden" name="galleries[<%- cid %>][upload]" value="<%- upload %>" />
     <input type="hidden" name="galleries[<%- cid %>][remove]" value="<%- remove %>" />
 </div>
