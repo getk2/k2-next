@@ -116,6 +116,21 @@ class K2ViewUserGroups extends K2View
 	}
 
 	/**
+	 * Hook for children views to allow them set the menu for the list requests.
+	 * Children views usually will not need to override this method.
+	 *
+	 * @return void
+	 */
+	protected function setListActions()
+	{
+		$user = JFactory::getUser();
+		if ($user->authorise('core.create', 'com_users'))
+		{
+			K2Response::addAction('add', 'K2_ADD', array('data-action' => 'add'));
+		}
+	}
+
+	/**
 	 * Hook for children views to allow them attach fields to the form object.
 	 * Children views usually should override this method.
 	 *

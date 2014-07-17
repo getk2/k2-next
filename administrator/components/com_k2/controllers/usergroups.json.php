@@ -18,4 +18,27 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/controller.php';
 
 class K2ControllerUserGroups extends K2Controller
 {
+	protected function onBeforeRead($mode, $id)
+	{
+		$user = JFactory::getUser();
+		$authorized = false;
+		if ($mode == 'row')
+		{
+			// Edit
+			if ($id)
+			{
+				$authorized = ($id == $user->id) || $user->authorise('core.edit', 'com_users');
+			}
+			else
+			{
+				$authorized = $user->authorise('core.create', 'com_users');
+			}
+		}
+		else
+		{
+			$authorized = $user->authorise('core.edit', 'com_users');
+		}
+		return $authorized;
+	}
+
 }

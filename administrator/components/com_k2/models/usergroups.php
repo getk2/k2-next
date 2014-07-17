@@ -49,7 +49,8 @@ class K2ModelUserGroups extends K2Model
 			$input->set('filter_search', 'id:'.$this->getState('id'));
 			$model->setState('filter.search', 'id:'.$this->getState('id'));
 		}
-		else {
+		else
+		{
 			$input->set('filter_search', '');
 		}
 
@@ -90,7 +91,6 @@ class K2ModelUserGroups extends K2Model
 		return (int)$total;
 	}
 
-
 	/**
 	 * Save method.
 	 *
@@ -99,6 +99,12 @@ class K2ModelUserGroups extends K2Model
 
 	public function save()
 	{
+		$user = JFactory::getUser();
+		if (!$user->authorise('core.admin', 'com_users'))
+		{
+			$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
+			return false;
+		}
 		JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_users/models');
 		$model = JModelLegacy::getInstance('Group', 'UsersModel');
 		$table = $this->getTable();
@@ -155,7 +161,7 @@ class K2ModelUserGroups extends K2Model
 
 		}
 
-		 return true;
+		return true;
 	}
 
 	/**
@@ -168,7 +174,8 @@ class K2ModelUserGroups extends K2Model
 	{
 		if (!JFactory::getUser()->authorise('core.admin', 'com_users'))
 		{
-			jexit(JText::_('JERROR_ALERTNOAUTHOR'));
+			$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
+			return false;
 		}
 		JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_users/models');
 		$model = JModelLegacy::getInstance('Group', 'UsersModel');
