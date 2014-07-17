@@ -83,7 +83,14 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/attachments/widget.html', 
 	var K2ViewAttachmentsPreview = Marionette.CompositeView.extend({
 		template : _.template(tableTemplate),
 		itemViewContainer : '[data-region="list"]',
-		itemView : K2ViewAttachmentsPreviewRow
+		itemView : K2ViewAttachmentsPreviewRow,
+		onRender : function() {
+			if (this.collection.models.length > 0) {
+				this.$el.show();
+			} else {
+				this.$el.hide();
+			}
+		}
 	});
 
 	var K2ViewAttachmentsWidget = Marionette.Layout.extend({
