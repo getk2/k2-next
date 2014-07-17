@@ -83,7 +83,7 @@ img {-ms-interpolation-mode:bicubic; max-width: 100%; }
 	/* label with heading */
 	.jw label.jw--radio--title { display: block; font-size: 13px; font-weight: 700; min-width: 78px; height: 35px; line-height: 35px; padding: 0; color: #636b6e; }
 	.jw label.jw--radio--title_inl { display: inline-block; vertical-align: middle; margin-right: 10px; }
-	jw label.jw--radio--title ~ label { border-radius: 3px 3px 0 0; }
+	.jw label.jw--radio--title ~ label { border-radius: 3px 0 0 3px; }
 
 
 /* Circled radio buttons */

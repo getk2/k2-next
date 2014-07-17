@@ -18,7 +18,7 @@ if($field->get('multiple'))
 }
 ?>
 
-<select id="k2ExtraFieldSelectId<?php echo $this->id; ?>" name="<?php echo $name; ?>" <?php echo $attributes; ?>>
+<select class="jw--select" id="k2ExtraFieldSelectId<?php echo $this->id; ?>" name="<?php echo $name; ?>" <?php echo $attributes; ?>>
 <?php if($field->get('null')): ?>
 	<option value=""><?php echo JText::_('K2_SELECT_AN_OPTION'); ?></option>
 <?php endif; ?>
