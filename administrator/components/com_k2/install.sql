@@ -11,9 +11,11 @@ CREATE TABLE IF NOT EXISTS `#__k2_attachments` (
   `title` varchar(255) NOT NULL,
   `file` varchar(255) NOT NULL,
   `path` varchar(255) NOT NULL,
+  `ordering` int(11) NOT NULL,
   `downloads` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `itemId` (`itemId`)
+  KEY `itemId` (`itemId`),
+  KEY `ordering` (`ordering`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------

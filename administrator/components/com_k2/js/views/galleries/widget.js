@@ -1,4 +1,4 @@
-define(['text!layouts/galleries/widget.html', 'text!layouts/galleries/add.html', 'text!layouts/galleries/preview.html', 'widgets/widget', 'dispatcher'], function(widgetTemplate, addTemplate, previewTemplate, K2Widget, K2Dispatcher) {'use strict';
+define(['text!layouts/galleries/widget.html', 'text!layouts/galleries/add.html', 'text!layouts/galleries/preview.html', 'widgets/widget', 'dispatcher', 'widgets/sortable/jquery-sortable-min'], function(widgetTemplate, addTemplate, previewTemplate, K2Widget, K2Dispatcher) {'use strict';
 
 	// Model
 	var Gallery = Backbone.Model.extend({
@@ -42,6 +42,9 @@ define(['text!layouts/galleries/widget.html', 'text!layouts/galleries/add.html',
 			K2Dispatcher.on('galleries:dropbox:' + this.model.cid, function(url) {
 				this.setGalleryFromDropBox(url);
 			}, this);
+			if (!this.model.get('isNew')) {
+				this.$el.attr('data-role', 'sortable-galleries-row');
+			}
 		},
 		onDomRefresh : function() {
 			K2Widget.updateEvents(this.$el);
@@ -72,7 +75,16 @@ define(['text!layouts/galleries/widget.html', 'text!layouts/galleries/add.html',
 
 	// List view
 	var K2ViewGalleries = Marionette.CollectionView.extend({
-		itemView : K2ViewGalleriesRow
+		itemView : K2ViewGalleriesRow,
+		className : 'k2SortableGalleries',
+		onRender : function() {
+			this.$el.attr('data-role', 'sortable-galleries');
+			this.$el.sortable({
+				containerSelector : '[data-role="sortable-galleries"]',
+				itemSelector : '[data-role="sortable-galleries-row"]',
+				placeholder : '<div class="k2SortingPlaceholder"></div>'
+			});
+		}
 	});
 
 	// Layout view

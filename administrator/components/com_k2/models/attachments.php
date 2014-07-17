@@ -116,6 +116,10 @@ class K2ModelAttachments extends K2Model
 				$ordering = 'downloads';
 				$direction = 'DESC';
 				break;
+			case 'ordering' :
+				$ordering = 'ordering';
+				$direction = 'ASC';
+				break;
 		}
 		// Append sorting
 		$db = $this->getDbo();

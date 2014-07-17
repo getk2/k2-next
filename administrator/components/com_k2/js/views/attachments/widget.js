@@ -1,4 +1,4 @@
-define(['dispatcher', 'widgets/widget', 'text!layouts/attachments/widget.html', 'text!layouts/attachments/add.html', 'text!layouts/attachments/table.html', 'text!layouts/attachments/preview.html', 'collections/attachments'], function(K2Dispatcher, K2Widget, widgetTemplate, addTemplate, tableTemplate, previewTemplate, K2CollectionAttachments) {'use strict';
+define(['dispatcher', 'widgets/widget', 'text!layouts/attachments/widget.html', 'text!layouts/attachments/add.html', 'text!layouts/attachments/table.html', 'text!layouts/attachments/preview.html', 'collections/attachments', 'widgets/sortable/jquery-sortable-min'], function(K2Dispatcher, K2Widget, widgetTemplate, addTemplate, tableTemplate, previewTemplate, K2CollectionAttachments) {'use strict';
 
 	var K2ViewAttachmentsRow = Marionette.ItemView.extend({
 		tagName : 'div',
@@ -87,6 +87,12 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/attachments/widget.html', 
 		onRender : function() {
 			if (this.collection.models.length > 0) {
 				this.$el.show();
+				this.$el.find('table').sortable({
+					containerSelector : 'table',
+					itemPath : '> tbody',
+					itemSelector : 'tr',
+					placeholder : '<tr class="k2SortingPlaceholder"/>'
+				});
 			} else {
 				this.$el.hide();
 			}

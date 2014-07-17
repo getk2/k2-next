@@ -106,6 +106,9 @@ class K2HelperAttachments
 		// Attachment Ids
 		$attachmentIds = array();
 
+		// Ordering
+		$ordering = 1;
+
 		// Iterate over the galleries and transfer the new attachment files from /tmp to /media/k2/attachments
 		foreach ($attachments as $attachment)
 		{
@@ -179,6 +182,7 @@ class K2HelperAttachments
 				}
 
 				// Save attachment
+				$attachment->ordering = $ordering;
 				$attachment->itemId = $itemId;
 				$model->setState('data', (array)$attachment);
 				if ($model->save())
@@ -186,6 +190,7 @@ class K2HelperAttachments
 					// Push the id of the attachment to the array
 					$attachmentIds[] = (int)$model->getState('id');
 				}
+				$ordering++;
 			}
 		}
 
@@ -195,6 +200,7 @@ class K2HelperAttachments
 
 		// Iterate over the media files in /media/k2/media and delete those who have been removed by the user
 		$folderKey = $targetPath.'/'.$itemId.'/';
+		$folderKey = ltrim($folderKey, '/');
 		$keys = $filesystem->listKeys($folderKey);
 		$files = isset($keys['keys']) ? $keys['keys'] : $keys;
 		foreach ($files as $attachmentKey)

@@ -1,4 +1,4 @@
-define(['text!layouts/media/widget.html', 'text!layouts/media/add.html', 'text!layouts/media/preview.html', 'widgets/widget', 'dispatcher'], function(widgetTemplate, addTemplate, previewTemplate, K2Widget, K2Dispatcher) {'use strict';
+define(['text!layouts/media/widget.html', 'text!layouts/media/add.html', 'text!layouts/media/preview.html', 'widgets/widget', 'dispatcher', 'widgets/sortable/jquery-sortable-min'], function(widgetTemplate, addTemplate, previewTemplate, K2Widget, K2Dispatcher) {'use strict';
 
 	// Model
 	var MediaModel = Backbone.Model.extend({
@@ -53,6 +53,11 @@ define(['text!layouts/media/widget.html', 'text!layouts/media/add.html', 'text!l
 				this.model.set('upload', data.result);
 				this.model.set('url', '');
 			}, this);
+
+			if (!this.model.get('isNew')) {
+				this.$el.attr('data-role', 'sortable-media-row');
+			}
+
 		},
 		onDomRefresh : function() {
 			K2Widget.updateEvents(this.$el);
@@ -83,7 +88,21 @@ define(['text!layouts/media/widget.html', 'text!layouts/media/add.html', 'text!l
 
 	// List view
 	var K2ViewMedia = Marionette.CollectionView.extend({
-		itemView : K2ViewMediaRow
+		itemView : K2ViewMediaRow,
+		initialize : function(options) {
+			this.sortable = options.sortable;
+		},
+		onRender : function() {
+			if (this.sortable) {
+				this.$el.attr('data-role', 'sortable-media');
+				this.$el.sortable({
+					containerSelector : '[data-role="sortable-media"]',
+					itemSelector : '[data-role="sortable-media-row"]',
+					placeholder : '<div class="k2SortingPlaceholder"></div>'
+				});
+			}
+
+		}
 	});
 
 	var K2ViewMediaWidget = Marionette.Layout.extend({
@@ -98,12 +117,14 @@ define(['text!layouts/media/widget.html', 'text!layouts/media/add.html', 'text!l
 		initialize : function(options) {
 			this.existingMediaCollection = new MediaCollection(options.data);
 			this.existingMediaView = new K2ViewMedia({
-				collection : this.existingMediaCollection
+				collection : this.existingMediaCollection,
+				sortable : true
 			});
 
 			this.newMediaCollection = new MediaCollection();
 			this.newMediaView = new K2ViewMedia({
-				collection : this.newMediaCollection
+				collection : this.newMediaCollection,
+				sortable : false
 			});
 
 		},
