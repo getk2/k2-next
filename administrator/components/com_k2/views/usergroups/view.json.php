@@ -115,21 +115,44 @@ class K2ViewUserGroups extends K2View
 		K2Response::addToolbarAction('remove', 'K2_DELETE', array('data-action' => 'remove'));
 	}
 
+	/**
+	 * Hook for children views to allow them attach fields to the form object.
+	 * Children views usually should override this method.
+	 *
+	 * @return void
+	 */
+	protected function setFormFields(&$_form, $row)
+	{
+		$language = JFactory::getLanguage();
+		$language->load('com_users');
+
+		// Import JForm
+		jimport('joomla.form.form');
+
+		// Determine form name and path
+		$formName = 'JUsersGroupForm';
+		$formPath = JPATH_ADMINISTRATOR.'/components/com_users/models/forms/group.xml';
+
+		// Get the form instance
+		JForm::addFieldPath(JPATH_ADMINISTRATOR.'/components/com_users/models/fields');
+		$form = JForm::getInstance($formName, $formPath);
+
+		// Bind values
+		$form->bind($row);
+		if (isset($row->parent_id) && $row->parent_id == 0 && $row->id > 0)
+		{
+			$form->setFieldAttribute('parent_id', 'type', 'hidden');
+			$form->setFieldAttribute('parent_id', 'hidden', 'true');
+		}
+		$parent_id = $form->getField('parent_id');
+		$_form->showParentId = !$parent_id->hidden;
+		$_form->parent_id = $form->getInput('parent_id');
+
+	}
+
 	protected function prepareJForm(&$form, $row)
 	{
-
 		$form->setFieldAttribute('rules', 'groupId', $row->id);
-
-		/*require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/html.php';
-		 $recursive = new stdClass;
-		 $recursive->label = 'K2_APPLY_RECUSRIVELY';
-		 $recursive->name = 'permissions[recursive]';
-		 $form->categories = K2HelperHTML::categories('permissions[categories][]', null, false, false, 'multiple="multiple"', $recursive);
-
-		 if (!$row->id)
-		 {
-		 $form->parent_id = K2HelperHTML::usergroups('parent_id', null, false, '');
-		 }*/
 	}
 
 }

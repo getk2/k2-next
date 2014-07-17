@@ -5,15 +5,13 @@
 			<input class="left" type="text" name="title" id="title" value="<%- row.title %>" />
 		</div>
 		
-		<% if(row.id) { %>
-		<input type="hidden" name="parent_id" value="<%= row.parent_id %>" / >
-		<% } else { %>
-		<div class="jw--setting--single">
-			<label class="left"><%= l('K2_PARENT') %></label>
-			<div class="right">
-				<%= form.parent_id %>
-			</div>
+		<% if(form.showParentId) { %>
+		<div class="jw--setting--field jw--generic--group">
+			<h2><%= l('K2_PARENT') %></h2>
+			<%= form.parent_id %>
 		</div>
+		<% } else { %>
+			<%= form.parent_id %>
 		<% } %>
 		<input type="hidden" name="id" value="<%= row.id %>" / >
 	</div>
