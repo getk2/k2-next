@@ -251,8 +251,8 @@ class K2ModelUsers extends K2Model
 				else
 				{
 					// Store the input states values in case we need them after
-					$block = $data['block'];
-					$activation = $data['activation'];
+					$block = isset($data['block']) ? $data['block'] : null;
+					$activation = isset($data['activation']) ? $data['activation'] : null;
 
 					// User cannot edit the item. Reset the input
 					if (!$canEdit)
