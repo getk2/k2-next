@@ -17,15 +17,16 @@ if($field->get('multiple'))
 	$attributes = 'multiple="multiple"';
 }
 ?>
-
-<select class="jw--select" id="k2ExtraFieldSelectId<?php echo $this->id; ?>" name="<?php echo $name; ?>" <?php echo $attributes; ?>>
-<?php if($field->get('null')): ?>
-	<option value=""><?php echo JText::_('K2_SELECT_AN_OPTION'); ?></option>
-<?php endif; ?>
-<?php foreach($field->get('options', array()) as $option): ?>
-	<option value="<?php echo htmlspecialchars($option, ENT_QUOTES, 'UTF-8'); ?>"><?php echo $option; ?></option>
-<?php endforeach; ?>
-</select>
+<div class="jw--block--field">
+	<select class="jw--select" id="k2ExtraFieldSelectId<?php echo $this->id; ?>" name="<?php echo $name; ?>" <?php echo $attributes; ?>>
+	<?php if($field->get('null')): ?>
+		<option value=""><?php echo JText::_('K2_SELECT_AN_OPTION'); ?></option>
+	<?php endif; ?>
+	<?php foreach($field->get('options', array()) as $option): ?>
+		<option value="<?php echo htmlspecialchars($option, ENT_QUOTES, 'UTF-8'); ?>"><?php echo $option; ?></option>
+	<?php endforeach; ?>
+	</select>
+</div>
 
 <script type="text/javascript">
 	jQuery(document).on('K2ExtraFieldsRender', function() {

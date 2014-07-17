@@ -139,11 +139,10 @@ Radios with controls (native j3 elements) - Bootstrap support  */
 	.btn-group-yesno input[value="0"]:checked + label { background: #bd362f; color: #fff; box-shadow: 0 1px 1px rgba(65,64,66,.14); }
 	.btn-group-yesno input[value="1"]:checked + label { background: #3fa800; color: #fff; box-shadow: 0 1px 1px rgba(65,64,66,.14); }
 
-
 /* 
 ---------------------------------
 Buttons */
-.jw--btn, a.jw--btn, button.jw--btn, input[type="submit"].jw--btn, .jw--generic--def button { display: inline-block; vertical-align: middle; white-space: nowrap; color: #fdfdfd; font-size: 13px; line-height: 1; padding: 10px 30px; font-weight: 700; border: 1px solid #363a3d; border-radius: 3px; background-color: #3fa700; position: relative;
+.jw--btn, a.jw--btn, button.jw--btn, input[type="submit"].jw--btn { display: inline-block; vertical-align: middle; white-space: nowrap; color: #fdfdfd; font-size: 13px; line-height: 1; padding: 10px 30px; font-weight: 700; border: 1px solid #363a3d; border-radius: 3px; background-color: #3fa700; position: relative;
 	box-shadow: 0 1px 1px rgba(65,64,66,.14), inset 0 1px 0 #54db00;
 	-webkit-transition:all 350ms cubic-bezier(0.730, 0, 0.445, 1.000);
 	-webkit-transition:all 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
@@ -160,8 +159,7 @@ Buttons */
 	.jw--btn.jw--btn__cancel:hover, a.jw--btn.jw--btn__cancel:hover, button.jw--btn.jw--btn__cancel:hover, 
 	input[type="submit"].jw--btn.jw--btn__cancel:hover { background-color:#ff4d35; }
 
-	.jw--btn.jw--btn__apply, a.jw--btn.jw--btn__apply, button.jw--btn.jw--btn__apply, input[type="submit"].jw--btn.jw--btn__apply, 
-	.jw--generic--def button { border-color: #0088ba; background-color: #009bd3; box-shadow: 0 1px 1px rgba(65,64,66,.14), inset 0 1px 0 #00baff; }
+	.jw--btn.jw--btn__apply, a.jw--btn.jw--btn__apply, button.jw--btn.jw--btn__apply, input[type="submit"].jw--btn.jw--btn__apply { border-color: #0088ba; background-color: #009bd3; box-shadow: 0 1px 1px rgba(65,64,66,.14), inset 0 1px 0 #00baff; }
 	.jw--btn.jw--btn__apply:hover, a.jw--btn.jw--btn__apply:hover, button.jw--btn.jw--btn__apply:hover, input[type="submit"].jw--btn.jw--btn__apply:hover { background-color: #00baff; }
 	
 	/* action buttons - used in itemforms */
@@ -202,6 +200,8 @@ Buttons */
 			filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fdfdfd', endColorstr='#f5f5f5',GradientType=0); 
 		}
 		.jw--file--btn input[type="file"]:hover { cursor: pointer; }
+		/* add some margins */
+		.jw--category--form .jw--file-fakebtn, .jw--user--form .jw--file-fakebtn, .jw--tag--form .jw--file-fakebtn { margin: 10px 0 0; }
 
 	a.dropbox-dropin-btn { padding: 14px 20px!important; border-radius: 3px; }
 
