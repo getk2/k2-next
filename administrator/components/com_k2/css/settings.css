@@ -136,3 +136,6 @@
 	.jw--block--field input[type="text"], .jw--block--field select { min-width: 300px; max-width: none; }
 	.jw--block--field label { color: #777778; font-size: 13px; font-weight: 700; padding-top: 11px; padding-bottom: 11px; margin-bottom: 0; }
 	.jw--block--field select { width: 100%; max-width: none; }
+	
+	
+#assignmentscategories { float: none; display: block; min-width: 100%; margin-bottom: 15px; }

@@ -1,7 +1,12 @@
 <!-- <h2><%= l('K2_EXTRA_FIELDS') %></h2> -->
 
 <% if(items.length === 0) { %>
-    <%= l('K2_THERE_ARE_NO_EXTRA_FIELDS_AVAILABLE') %>
+<div class="jw--msg">
+	<div class="alert alert-notice">
+		<i class="fa fa-warning"></i>
+		<%= l('K2_THERE_ARE_NO_EXTRA_FIELDS_AVAILABLE') %>
+	</div>
+</div>
 <% } %>
 
 <% _.each(items, function(group) { %>
