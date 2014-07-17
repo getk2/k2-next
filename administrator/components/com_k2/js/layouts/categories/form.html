@@ -269,7 +269,7 @@
 		<div class="jw--setting--field" id="jw--info6">
 		    <h2><%= l('K2_PERMISSIONS') %></h2>
 		    <% _.each(form.permissions, function(field) { %>
-			<% if(field.label !== null) { %>
+			<% if(field.label !== '') { %>
 			<div class="jw--setting--single">
 			  	<%= field.label %>
 			    <%= field.input %>
