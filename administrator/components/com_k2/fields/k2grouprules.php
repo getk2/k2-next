@@ -88,7 +88,7 @@ class JFormFieldK2GroupRules extends JFormFieldRules
 
 		foreach ($actions as $action)
 		{
-			$html[] = '<th>'.$action->title.'</th>';
+			$html[] = '<th>'.JText::_($action->title).'</th>';
 		}
 		$html[] = '</tr>';
 		$html[] = '<tbody>';
