@@ -27,13 +27,23 @@ class K2ModelUserGroups extends K2Model
 		switch($this->getState('sorting'))
 		{
 			default :
+			case '' :
 				$ordering = 'a.lft';
 				$direction = 'asc';
+				break;
 			case 'id' :
+				$ordering = 'a.id';
+				$direction = 'asc';
+				break;
+			case 'title' :
+				$ordering = 'a.title';
+				$direction = 'asc';
+				break;
+			case 'id.reverse' :
 				$ordering = 'a.id';
 				$direction = 'desc';
 				break;
-			case 'title' :
+			case 'title.reverse' :
 				$ordering = 'a.title';
 				$direction = 'desc';
 				break;

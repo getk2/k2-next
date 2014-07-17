@@ -99,9 +99,11 @@ class K2ViewUserGroups extends K2View
 	{
 		// Sorting filter
 		$sortingOptions = array(
-			'K2_NONE' => '',
-			'K2_ID' => 'id',
-			'K2_TITLE' => 'title'
+			'K2_NONE' => 'ordering',
+			'K2_ID_ASC' => 'id',
+			'K2_ID_DESC' => 'id.reverse',
+			'K2_TITLE_ASC' => 'title',
+			'K2_TITLE_DESC' => 'title.reverse'
 		);
 		K2Response::addFilter('sorting', JText::_('K2_SORT_BY'), K2HelperHTML::sorting($sortingOptions), false, 'header');
 
