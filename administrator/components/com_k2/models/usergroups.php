@@ -16,13 +16,9 @@ class K2ModelUserGroups extends K2Model
 {
 	public function getRows()
 	{
+		$input = JFactory::getApplication()->input;
 		JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_users/models');
 		$model = JModelLegacy::getInstance('Groups', 'UsersModel');
-
-		if ($this->getState('search'))
-		{
-			$model->setState('filter.search', $this->getState('search'));
-		}
 
 		switch($this->getState('sorting'))
 		{
@@ -49,26 +45,18 @@ class K2ModelUserGroups extends K2Model
 				break;
 		}
 
-		$input = JFactory::getApplication()->input;
 		$input->set('limitstart', $this->getState('limitstart'));
 		$input->set('filter_order', $ordering);
 		$input->set('filter_order_Dir', $direction);
-
-		if ($this->getState('id'))
-		{
-			$input->set('filter_search', 'id:'.$this->getState('id'));
-			$model->setState('filter.search', 'id:'.$this->getState('id'));
-		}
-		else
-		{
-			$input->set('filter_search', '');
-		}
 
 		$model->setState('list.ordering', $ordering);
 		$model->setState('list.direction', $direction);
 
 		$model->setState('list.start', $this->getState('limitstart'));
 		$model->setState('list.limit', $this->getState('limit'));
+
+		$input->set('filter_search', $this->getState('search'));
+		$model->setState('filter.search', $this->getState('search'));
 
 		$data = $model->getItems();
 
@@ -88,13 +76,10 @@ class K2ModelUserGroups extends K2Model
 	public function countRows()
 	{
 		JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_users/models');
+		$input = JFactory::getApplication()->input;
 		$model = JModelLegacy::getInstance('Groups', 'UsersModel');
-
-		if ($this->getState('search'))
-		{
-			$model->setState('filter.search', $this->getState('search'));
-		}
-
+		$input->set('filter_search', $this->getState('search'));
+		$model->setState('filter.search', $this->getState('search'));
 		$total = $model->getTotal();
 
 		// Return the result
