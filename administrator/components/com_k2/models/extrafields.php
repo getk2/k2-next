@@ -155,7 +155,7 @@ class K2ModelExtraFields extends K2Model
 				break;
 			case 'ordering' :
 				$ordering = $this->getState('group') ? 'extraField.ordering' : array(
-					'extraFieldsGroup.ordering',
+					'group.ordering',
 					'extraField.ordering'
 				);
 				$direction = 'ASC';
@@ -164,7 +164,19 @@ class K2ModelExtraFields extends K2Model
 
 		// Append sorting
 		$db = $this->getDbo();
-		$query->order($db->quoteName($ordering).' '.$direction);
+		if (is_array($ordering))
+		{
+			$conditions = array();
+			foreach ($ordering as $column)
+			{
+				$conditions[] = $db->quoteName($column).' '.$direction;
+			}
+			$query->order(implode(', ', $conditions));
+		}
+		else
+		{
+			$query->order($db->quoteName($ordering).' '.$direction);
+		}
 
 	}
 
