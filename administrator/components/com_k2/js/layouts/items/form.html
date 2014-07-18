@@ -271,9 +271,9 @@
 			
 				<div class="jw--settings jw--settings__global  jw--item">
 					
-					<div class="row collapse jw--setting--field jw--setting--field__noedit" id="jw--item0">
+					<div class="row collapse" id="jw--item0">
 						
-						<div class="small-16 medium-10 large-13 columns">
+						<div class="small-16 medium-10 large-13 columns jw--setting--field jw--setting--field__noedit">
 							<div class="jw--setting--single jw--setting--single__noedit">			
 							    <label class="left"><%= l('K2_CREATED_DATE') %></label>
 							    <label class="right"><%= row.createdDate %></label>
@@ -300,9 +300,14 @@
 						</div>
 						
 						
-						<div class="text-center small-16 medium-6 large-3 columns jw--hits">
-							<%= l('K2_HITS') %>
-							<%= row.hits %>
+						<div class="text-center small-16 medium-6 large-3 columns">
+							<div class="jw--hits">
+								<%= l('K2_HITS') %>
+								<span><%= row.hits %></span>
+							</div>
+							<div class="jw--reset--wrap">
+								<button class="jw--btn jw--btn__item jw--btn__reset"><%= l('K2_RESET') %></button>
+							</div>
 						</div>
 					
 					</div>
