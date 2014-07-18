@@ -220,7 +220,7 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 
 	// Sortable view
 	var K2ViewItemsSortable = Marionette.CompositeView.extend({
-		tagName : 'ul',
+		tagName : 'div',
 		template : _.template(sortableList),
 		itemViewContainer : '[data-region="list"]',
 		itemView : K2ViewItemsSortableRow
