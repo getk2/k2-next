@@ -4,12 +4,25 @@ define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categor
 		template : _.template(row),
 		events : {
 			'click a[data-action="edit"]' : 'edit',
-			'click a[data-action="toggle-state-category"]' : 'toggleState'
+			'click a[data-action="toggle-state-category"]' : 'toggleState',
+			'click [data-action="unlock"]' : 'unlock'
 		},
 		edit : function(event) {
 			event.preventDefault();
 			event.stopPropagation();
 			K2Dispatcher.trigger('app:controller:edit', this.model.get('id'));
+		},
+		unlock : function(event) {
+			event.preventDefault();
+			this.model.checkin({
+				success : _.bind(function() {
+					this.model.set('isLocked', false);
+					this.render();
+				}, this),
+				error : _.bind(function(model, xhr, options) {
+					this.enqueueMessage('error', xhr.responseText);
+				}, this)
+			});
 		},
 		initialize : function() {
 			this.collection = new Backbone.Collection(this.model.get('children'));
