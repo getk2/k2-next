@@ -47,6 +47,13 @@ define(['marionette', 'text!layouts/filters.html', 'dispatcher', 'widgets/widget
 				});
 				K2Dispatcher.trigger('app:controller:setCollectionState', 'author', 0);
 
+				// User
+				this.$('[data-region="filters"] input[name="userId"]').select2('data', {
+					id : 0,
+					text : l('K2_ANY')
+				});
+				K2Dispatcher.trigger('app:controller:setCollectionState', 'userId', 0);
+
 				// Tag
 				this.$('[data-region="filters"] input[name="tag"]').select2('data', {
 					id : 0,
