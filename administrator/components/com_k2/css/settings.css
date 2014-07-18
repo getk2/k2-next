@@ -74,9 +74,6 @@
 		
 	/* Form definitions */
 	.jw--generic--def { font-size: 13px; }
-		.jw--generic--def input[type="text"], 
-		.jw--generic--def select,
-		.jw--generic--def button { display: block;  margin-bottom: 15px!important; }
 		
 		.jw--generic--def label,
 		.jw--generic--def input[type="radio"],
@@ -131,4 +128,14 @@
 		.jw--information #k2AboutBlock { font-size: 14px; line-height: 1.65; }
 			.jw--information #k2AboutBlock h2 { margin: 30px 0; }
 			.jw--information #k2AboutBlock a { padding-bottom: 2px; border-bottom: 1px solid #dbdcdc; }
+
+/* ------------------------------------------------------------------
+[Links]  - extrafields */
+.jw--block--field {  }
+	.jw--block--field label, .jw--block--field input, .jw--block--field select, .jw--block--field input[type="text"] { display: block; float: none; }
+	.jw--block--field input[type="text"], .jw--block--field select { min-width: 300px; max-width: none; }
+	.jw--block--field label { color: #777778; font-size: 13px; font-weight: 700; padding-top: 11px; padding-bottom: 11px; margin-bottom: 0; }
+	.jw--block--field select { width: 100%; max-width: none; }
 	
+	
+#assignmentscategories { float: none; display: block; min-width: 100%; margin-bottom: 15px; }

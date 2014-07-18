@@ -9,9 +9,9 @@
 
 // no direct access
 defined('_JEXEC') or die ; ?>
-
-<input type="text" name="<?php echo $field->get('prefix'); ?>[value]" value="<?php echo htmlspecialchars($field->get('value'), ENT_QUOTES, 'UTF-8'); ?>" />
-
+<div class="jw--block--field">
+	<input type="text" name="<?php echo $field->get('prefix'); ?>[value]" value="<?php echo htmlspecialchars($field->get('value'), ENT_QUOTES, 'UTF-8'); ?>" />
+</div>
 <?php if($this->required): ?>
 <script type="text/javascript">
 	jQuery(document).bind('K2ExtraFieldsValidate', function(event, K2ExtraFields) {

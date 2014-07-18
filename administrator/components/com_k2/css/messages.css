@@ -1,7 +1,7 @@
-#system-message-container { }
-	#system-message-container ul { list-style: none outside none; }
-	#system-message-container .alert { border:0; padding:15px; margin: 0; border-radius: 0; color:#fff; font-weight: 600;font-size: 13px;overflow:hidden;}
-	#system-message-container .alert .fa { font-size: 16px; display: inline-block; vertical-align: middle; padding-right: 5px; }
-	#system-message-container .alert.alert-message { background:#3fa800;}
-	#system-message-container .alert.alert-error {background:#bd362f;}
-	#system-message-container .alert.alert-notice {background:#fff3b2; color: #4e4c49; }
+.jw--msg { }
+	.jw--msg ul { list-style: none outside none; }
+	.jw--msg .alert { border:0; padding:15px; margin: 0; border-radius: 0; color:#fff; font-weight: 600;font-size: 13px;overflow:hidden;}
+	.jw--msg .alert .fa { font-size: 16px; display: inline-block; vertical-align: middle; padding-right: 5px; }
+	.jw--msg .alert.alert-message { background:#3fa800;}
+	.jw--msg .alert.alert-error {background:#bd362f;}
+	.jw--msg .alert.alert-notice {background:#fff3b2; color: #4e4c49; }
