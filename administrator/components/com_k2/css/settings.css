@@ -130,12 +130,21 @@
 			.jw--information #k2AboutBlock a { padding-bottom: 2px; border-bottom: 1px solid #dbdcdc; }
 
 /* ------------------------------------------------------------------
-[Links]  - extrafields */
+[Links] [Lists] [Radios] - extrafields */
 .jw--block--field {  }
 	.jw--block--field label, .jw--block--field input, .jw--block--field select, .jw--block--field input[type="text"] { display: block; float: none; }
 	.jw--block--field input[type="text"], .jw--block--field select { min-width: 300px; max-width: none; }
 	.jw--block--field label { color: #777778; font-size: 13px; font-weight: 700; padding-top: 11px; padding-bottom: 11px; margin-bottom: 0; }
 	.jw--block--field select { width: 100%; max-width: none; }
 	
+	/* repeater fields */
+	.jw--multiple--fields { overflow: hidden; width: 340px; max-width: 100%; }
+		.jw--multiple--fields label { display: inline-block; vertical-align: middle; min-width: 150px; white-space: nowrap; font-weight: 700; }
+		.jw--multiple--fields .repeater--filters { margin-top: 5px; }
+		.jw--multiple--fields .repeater--action { margin: 10px 0 15px; }
+		.jw--multiple--fields .repeater--field { margin: 0 0 15px; overflow: hidden; }
+		.jw--multiple--fields .repeater--field input { float: left; }
+		.jw--multiple--fields .repeater--remove { font-size: 18px; padding: 10px; line-height: 1; color: #a9aeb0; }
+		.jw--multiple--fields .repeater--remove:hover { color: #a53222; }
 	
 #assignmentscategories { float: none; display: block; min-width: 100%; margin-bottom: 15px; }
