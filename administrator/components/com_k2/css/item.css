@@ -16,7 +16,6 @@ ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; }
 	.jw--tabs a.active { background: #fff; }
 	.jw--tabs a.active .fa { color: #00afec; }
 
-	
 /* top item navigation */
 .jw--tabs__top { background: #e4eaed; }
 	.jw--tabs__top li { margin-right: -2px; }
@@ -50,7 +49,6 @@ ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; }
 		/* different for styling for other elements */
 		.jw--item--fld__title input[type="text"] { padding: 17px 10px; height: auto; }
 		.jw--item--fld__alias input[type="text"] { padding: 10px; background: #f0f2f3; border: 0; }
-
 		
 		/* Select 2 container */
 		.jw--item--fld .select2-container { border-radius: 3px; border: 1px solid #d4d7d9; position: static; min-height: 40px; }
@@ -59,9 +57,9 @@ ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; }
 		.jw--item--fld select { height: 40px; line-height: 40px; width: 164px; background: #f0f2f2; box-shadow: 0 1px 1px rgba(65,64,66,.14), inset 0 1px 0 #fff; margin: 0; }
 		.jw--tag--caption { padding-top: 5px; font-weight: 700; color: #abacad; font-size: 12px; }
 
-	.jw--content--label { font-size: 18px; font-weight: 700; color: #58595b; margin-bottom: 15px; }
+	.jw--content--label { font-size: 18px; font-weight: 700; color: #58595b; margin-bottom: 15px; margin-top: 10px; }
 		.jw--content--label span { font-weight: 400; }
-		.jw--content--label__full { margin-top: 60px; }
+		.jw--content--label__full { margin-top: 50px; }
 
 /*------------------------------------------------------------------
 [Editor content] */
@@ -85,7 +83,6 @@ ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; }
 	.jw--attachments { position: relative; }
 		.jw--attachment--single, .row.jw--attachment--single { padding: 28px 20px 28px 10px; margin: 18px 41px 18px 0; background: #f7f8f8; border: 1px solid #e9ebec; border-radius: 3px; position: relative; z-index: 2; }
 		button.jw--attachment--remove { position: absolute; right: 0; top: 0; }
-
 
 /*------------------------------------------------------------------
 [Extra fields] */
@@ -115,12 +112,9 @@ ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; }
 	/* extrafields radio buttons */
 	.ov-hidden label.jw--radio:first-child { margin-left: 0; }
 	.ov-hidden label.jw--radio:last-child { margin-right: 0; }
-
 	
 /*------------------------------------------------------------------
 [galleries] */	
-	
-	/* preview */
 	.jw--gallery--single { padding: 25px 10px 10px; }
 	.jw--gallery--image { position: relative; width: 100%; padding: 0 0 56%; overflow: hidden; z-index: 2; border-radius: 3px; }
 		.jw--gallery--image img { position: absolute; left: 0; top: 0; z-index: 1; min-width: 100%; min-height: 100%; height: auto; }
@@ -131,3 +125,15 @@ ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; }
 	.jw--editor--revisions textarea { border-radius: 3px; border: 1px solid #d4d7d9; display: block; min-width: 100%; min-height: 107px; padding: 5px 10px; }
 	.jw--rev--title { display: block; line-height: 1; font-weight: 700; font-size: 18px; color: #58595b; margin-bottom: 13px; letter-spacing: -1px; }
 	.jw--rev--title .fa { display: inline-block; vertical-align: middle; padding-right: 5px; color: #00afec; font-size: 24px; font-weight: 400;  }
+
+/*------------------------------------------------------------------
+[Hits] [Publishing Options] */
+.jw--hits { color: #296d86; text-transform: uppercase; font-size: 12px; font-weight: 700; padding-top: 20px; padding-bottom: 15px; background: #2fbbec; border-radius: 3px;margin-left: 15px; }
+	.jw--hits span { color: #fff; font-weight: 300; font-size: 70px; line-height: 1; display: block; }
+	.jw--reset--wrap { background: #ededed; padding: 8px; margin-left: 15px; border-radius: 0 0 3px 3px;}
+	.jw--btn.jw--btn__reset { border-radius: 3px; display: block; width: 100%; max-width: none; padding: 5px 0; font-size: 11px; }
+
+/* non-editable fields */
+.jw--setting--field__noedit { border-bottom: 2px solid #f1f1f1; border-radius: 3px; position: relative; overflow: hidden; }
+	.jw--setting--field .jw--setting--single__noedit { background: #ededed; padding-top: 3px; padding-bottom: 4px; }
+

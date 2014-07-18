@@ -1,8 +1,17 @@
-<span><%= title %></a></span>
-<span><%= id %></span>
-<button data-action="expand">+</button>
-<div data-region="category-children"></div>
-<div data-region="category-items" data-category="<%- id %>"></div>
+<div class="small-13 columns">
+	<%= title %></a>
+	<button data-action="expand">+</button>
+	<div data-region="category-children"></div>
+	<div data-region="category-items" data-category="<%- id %>"></div>
+	<button data-action="more" style="display: none;">MORE</button>
+</div>
+<div class="small-1 columns">
+</div>
+<div class="small-2 columns">
+	<%= id %>
+</div>
 
 
-<button data-action="more" style="display: none;">MORE</button>
+
+
+
