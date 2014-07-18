@@ -63,8 +63,18 @@ table.jw--listed--items { width: 100%; font-size: 13px; }
 		.dragged { position: absolute; z-index: 999; opacity: 0.65; }
 		
 /* Sortable and movable lists (items only) */
-
-
+ul.jw--sortable--items { border: 0; }
+	ul.jw--sortable--items ul { padding: 0; border: 0; }
+	
+	/* borders */
+	ul.jw--sortable--items > li { border: 0; padding: 0; }
+		ul.jw--sortable--items > li > .columns { padding-top: 15px; padding-bottom: 15px; border-top: 1px solid #dbdcdc; }
+		ul.jw--sortable--items > li > .jw--border--col { height: 54px; }
+		
+	.jw--border--col { border-right: 1px solid #dbdcdc; }
+	ul.jw--sortable--items ul li { border: 0; margin-top: 15px;  }
+	
+	ul.jw--sortable--items .jw--btn__more { margin-top: 15px; }
 
 
 

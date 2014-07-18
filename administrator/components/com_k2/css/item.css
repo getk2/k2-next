@@ -121,10 +121,19 @@ ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; }
 	
 /*------------------------------------------------------------------
 [Revisions] */
+
+/* notes */
 .jw--editor--revisions { border-radius: 3px; border: 1px solid #d4d7d9; padding: 25px; margin-top: 33px; }
 	.jw--editor--revisions textarea { border-radius: 3px; border: 1px solid #d4d7d9; display: block; min-width: 100%; min-height: 107px; padding: 5px 10px; }
 	.jw--rev--title { display: block; line-height: 1; font-weight: 700; font-size: 18px; color: #58595b; margin-bottom: 13px; letter-spacing: -1px; }
 	.jw--rev--title .fa { display: inline-block; vertical-align: middle; padding-right: 5px; color: #00afec; font-size: 24px; font-weight: 400;  }
+
+/* panel */
+.jw--revisions { padding: 30px 70px; }
+	
+	/* slider */
+	 .{ background: #e4eaed; }
+	 .ui-slider-handle { background: #00afec; }
 
 /*------------------------------------------------------------------
 [Hits] [Publishing Options] */

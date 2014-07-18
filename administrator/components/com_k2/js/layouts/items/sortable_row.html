@@ -1,14 +1,18 @@
-<div class="small-13 columns">
-	<%= title %></a>
-	<button data-action="expand">+</button>
+<div class="text-center small-1 columns">
+	<%= id %>
+</div>
+<!--
+<div class="text-center small-1 columns">
+	<i class="fa fa-reorder"></i>
+</div>
+-->
+<div class="small-15 columns">
+	<button data-action="expand"><i class="fa fa-expand"></i></button>
+	<%= title %>
+	
 	<div data-region="category-children"></div>
 	<div data-region="category-items" data-category="<%- id %>"></div>
-	<button data-action="more" style="display: none;">MORE</button>
-</div>
-<div class="small-1 columns">
-</div>
-<div class="small-2 columns">
-	<%= id %>
+	<button class="jw--btn jw--btn__item jw--btn__more" data-action="more" style="display: none;">MORE</button>
 </div>
 
 

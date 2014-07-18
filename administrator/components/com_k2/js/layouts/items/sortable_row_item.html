@@ -1,3 +1,5 @@
-<span><%= title %></span>
-<span data-role="ordering-handle" data-column="ordering">DRAG ME</span> 
-<input type="hidden" name="ordering[]" value="<%- ordering %>" data-id="<%- id %>" data-category="<%- catid %>" />
+<div class="row">
+	<span><%= title %></span>
+	<span data-role="ordering-handle" data-column="ordering"><i class="fa fa-reorder"></i></span> 
+	<input type="hidden" name="ordering[]" value="<%- ordering %>" data-id="<%- id %>" data-category="<%- catid %>" />
+</div>
