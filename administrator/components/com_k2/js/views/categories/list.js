@@ -1,4 +1,4 @@
-define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categories/row.html', 'dispatcher', 'session'], function(Marionette, list, row, K2Dispatcher, K2Session) {'use strict';
+define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categories/row.html', 'dispatcher', 'session', 'widgets/widget'], function(Marionette, list, row, K2Dispatcher, K2Session, K2Widget) {'use strict';
 	var K2ViewCategoriesRow = Marionette.CompositeView.extend({
 		tagName : 'li',
 		template : _.template(row),
@@ -44,7 +44,7 @@ define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categor
 			this.buildTree();
 		},
 		buildTree : function() {
-			
+
 			// Rebuild the collection in tree way
 			this.collection.buildTree();
 
@@ -57,30 +57,28 @@ define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categor
 
 		},
 		onCompositeCollectionRendered : function() {
-
-			// Enable sorting
-			var el = this.$('[data-region="categories"]');
 			var collection = this.collection;
-			require(['widgets/sortable/jquery-sortable-min'], function() {
-				el.sortable({
-					handle : '[data-role="ordering-handle"]',
-					placeholder : '<li class="k2SortingPlaceholder"/>',
-					onDrop : function(item, container, _super) {
-						var id = item.data('id');
-						var parent = item.parent();
-						var parent_id = parent.data('parent');
-						var index = parent.children().index(item);
-						if (index === 0) {
-							var location = 'first-child';
-							var reference_id = parent_id;
-						} else {
-							var location = 'after';
-							var reference_id = item.prev().data('id');
-						}
-						collection.moveByReference(reference_id, location, id);
-						_super(item);
+			var el = this.$('[data-region="categories"]');
+			K2Widget.ordering(el, 'ordering', true, {
+				containerSelector : 'ul',
+				itemSelector : 'li',
+				handle : '[data-role="ordering-handle"]',
+				placeholder : '<li class="k2SortingPlaceholder"/>',
+				onDrop : function(item, container, _super) {
+					var id = item.data('id');
+					var parent = item.parent();
+					var parent_id = parent.data('parent');
+					var index = parent.children().index(item);
+					if (index === 0) {
+						var location = 'first-child';
+						var reference_id = parent_id;
+					} else {
+						var location = 'after';
+						var reference_id = item.prev().data('id');
 					}
-				});
+					collection.moveByReference(reference_id, location, id);
+					_super(item);
+				}
 			});
 		}
 	});
