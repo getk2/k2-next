@@ -127,10 +127,29 @@ class K2ModelExtraFieldsGroups extends K2Model
 				$ordering = 'extraFieldsGroup.name';
 				$direction = $sorting == 'name' ? 'ASC' : 'DESC';
 				break;
+			case 'ordering' :
+				$ordering = array(
+					'extraFieldsGroup.scope',
+					'extraFieldsGroup.ordering'
+				);
+				$direction = 'ASC';
+				break;
 		}
 		// Append sorting
 		$db = $this->getDbo();
-		$query->order($db->quoteName($ordering).' '.$direction);
+		if (is_array($ordering))
+		{
+			$conditions = array();
+			foreach ($ordering as $column)
+			{
+				$conditions[] = $db->quoteName($column).' '.$direction;
+			}
+			$query->order(implode(', ', $conditions));
+		}
+		else
+		{
+			$query->order($db->quoteName($ordering).' '.$direction);
+		}
 
 	}
 
@@ -147,6 +166,9 @@ class K2ModelExtraFieldsGroups extends K2Model
 		// User
 		$user = JFactory::getUser();
 
+		// Database
+		$db = $this->getDbo();
+
 		// Permissions check
 		if (!$user->authorise('k2.extrafields.manage'))
 		{
@@ -159,6 +181,13 @@ class K2ModelExtraFieldsGroups extends K2Model
 		{
 			$data['assignments'] = json_encode($data['assignments']);
 		}
+
+		// Ordering
+		if (!$table->id)
+		{
+			$data['ordering'] = $table->getNextOrder($db->quoteName('scope').' = '.$db->quote($data['scope']));
+		}
+
 		return true;
 	}
 

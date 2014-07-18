@@ -92,6 +92,7 @@ class K2ViewExtraFieldsGroups extends K2View
 		$this->setUserState('page', 1, 'int');
 		$this->setUserState('search', '', 'string');
 		$this->setUserState('sorting', '', 'string');
+		$this->setUserState('scope', '', 'word');
 	}
 
 	protected function setFilters()
@@ -102,10 +103,13 @@ class K2ViewExtraFieldsGroups extends K2View
 			'K2_NONE' => '',
 			'K2_ID_ASC' => 'id',
 			'K2_ID_DESC' => 'id.reverse',
+			'K2_ORDERING' => 'ordering',
 			'K2_NAME_ASC' => 'name',
 			'K2_NAME_DESC' => 'name.reverse'
 		);
 		K2Response::addFilter('sorting', JText::_('K2_SORT_BY'), K2HelperHTML::sorting($sortingOptions), false, 'header');
+
+		K2Response::addFilter('scope', JText::_('K2_SCOPE'), K2HelperHTML::extraFieldsScopes('scope', null, '', 'K2_ANY'), false, 'header');
 
 		// Search filter
 		K2Response::addFilter('search', JText::_('K2_SEARCH'), K2HelperHTML::search(), false, 'sidebar');

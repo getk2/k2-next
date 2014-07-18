@@ -20,7 +20,6 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 				element.data('active', true);
 			}
 		},
-
 		browser : function(element) {
 
 			// Get the button template
@@ -267,9 +266,9 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 				});
 			});
 		},
-		ordering : function(element, column, enabled) {
+		ordering : function(element, column, condition, options) {
 			require(['widgets/sortable/jquery-sortable-min'], function() {
-				element.find('div[data-region="list"]').sortable({
+				var defaults = {
 					handle : '[data-role="ordering-handle"][data-column="' + column + '"]',
 					containerSelector : 'ul',
 					itemSelector : 'ul',
@@ -301,15 +300,16 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 						}
 						_super(item);
 					}
-				});
-
+				};
+				jQuery.extend(defaults, options);
+				element.sortable(defaults);
 				// Enable or disable the sorting
-				if (enabled) {
-					element.find('div[data-region="list"]').sortable('enable');
+				if (condition) {
+					element.sortable('enable');
 					element.find('input[name="' + column + '[]"]').prop('disabled', false);
 					element.find('[data-action="save-ordering"][data-column="' + column + '"]').prop('disabled', false);
 				} else {
-					element.find('div[data-region="list"]').sortable('disable');
+					element.sortable('disable');
 					element.find('input[name="' + column + '[]"]').prop('disabled', true);
 					element.find('[data-action="save-ordering"][data-column="' + column + '"]').prop('disabled', true);
 				}

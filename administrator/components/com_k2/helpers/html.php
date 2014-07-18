@@ -191,11 +191,15 @@ class K2HelperHTML
 		return JHtml::_('select.genericlist', $options, $name, $attributes, 'value', 'text', $value);
 	}
 
-	public static function extraFieldsScopes($name = 'scope', $value = null, $attributes = '')
+	public static function extraFieldsScopes($name = 'scope', $value = null, $attributes = '', $none = false)
 	{
 		$options = array();
 		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/extrafields.php';
 		$rows = K2HelperExtraFields::getScopes();
+		if ($none)
+		{
+			$options[] = JHtml::_('select.option', '', JText::_($none));
+		}
 		foreach ($rows as $row)
 		{
 			$options[] = JHtml::_('select.option', $row, JText::_('K2_EXTRA_FIELD_SCOPE_'.strtoupper($row)));
