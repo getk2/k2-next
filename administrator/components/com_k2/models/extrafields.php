@@ -188,6 +188,12 @@ class K2ModelExtraFields extends K2Model
 			return false;
 		}
 
+		// Ordering
+		if (!$table->id)
+		{
+			$data['ordering'] = $table->getNextOrder($db->quoteName('group').' = '.(int)$data['group']);
+		}
+
 		return true;
 	}
 
