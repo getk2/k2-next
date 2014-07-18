@@ -102,8 +102,8 @@ class K2TableItems extends K2Table
 		{
 			$autoAlias = false;
 		}
-		
-		if(JFactory::getApplication()->input->get('task') == 'run')
+
+		if (JFactory::getApplication()->input->get('task') == 'run')
 		{
 			$autoAlias = true;
 		}
@@ -224,6 +224,17 @@ class K2TableItems extends K2Table
 			$this->setRules(new JAccessRules($rules));
 		}
 		return parent::bind($src, $ignore);
+	}
+
+	public function getNextFeaturedOrder()
+	{
+		$query = $this->_db->getQuery(true);
+		$query->select('MAX('.$this->_db->quoteName('featured_ordering').')');
+		$query->from($this->_db->quoteName($this->_tbl));
+		$query->where($this->_db->quoteName('featured').' = 1');
+		$this->_db->setQuery($query);
+		$max = (int)$this->_db->loadResult();
+		return ($max + 1);
 	}
 
 }

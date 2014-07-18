@@ -711,6 +711,12 @@ class K2ModelItems extends K2Model
 			$data['ordering'] = $table->getNextOrder('catid = '.(int)$data['catid']);
 		}
 
+		// Featured ordering
+		if (isset($data['featured']) && $data['featured'] && !isset($data['featured_ordering']) && !$table->featured_ordering)
+		{
+			$data['featured_ordering'] = $table->getNextFeaturedOrder();
+		}
+
 		// Image
 		if (isset($data['image']))
 		{
