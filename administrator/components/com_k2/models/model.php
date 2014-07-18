@@ -127,6 +127,10 @@ class K2Model extends JModelLegacy
 				$this->setError($table->getError());
 				return false;
 			}
+			if ($this->getState('patch') && isset($data['checked_out']) && $data['checked_out'] == 0)
+			{
+				return $this->checkin($data['id']);
+			}
 			if ($table->isCheckedOut(JFactory::getUser()->get('id')))
 			{
 				$this->setError(JText::_('K2_ROW_IS_CURRENTLY_BEING_EDITED_BY_ANOTHER_AUTHOR'));
@@ -142,9 +146,13 @@ class K2Model extends JModelLegacy
 		}
 
 		// Trigger onContentBeforeSave event if this request is not a patch
-		if(!$this->getState('patch'))
+		if (!$this->getState('patch'))
 		{
-			$dispatcher->trigger('onContentBeforeSave', array('com_k2.'.$this->getName(), &$table, $isNew));
+			$dispatcher->trigger('onContentBeforeSave', array(
+				'com_k2.'.$this->getName(),
+				&$table,
+				$isNew
+			));
 		}
 
 		// Save
@@ -164,9 +172,13 @@ class K2Model extends JModelLegacy
 		}
 
 		// Trigger onContentAfterSave event if this request is not a patch
-		if(!$this->getState('patch'))
+		if (!$this->getState('patch'))
 		{
-			$dispatcher->trigger('onContentAfterSave', array('com_k2.'.$this->getName(), &$table, $isNew));
+			$dispatcher->trigger('onContentAfterSave', array(
+				'com_k2.'.$this->getName(),
+				&$table,
+				$isNew
+			));
 		}
 
 		return true;
@@ -245,7 +257,10 @@ class K2Model extends JModelLegacy
 		}
 
 		// Trigger onContentBeforeDelete event
-		$dispatcher->trigger('onContentBeforeDelete', array('com_k2.'.$this->getName(), &$table));
+		$dispatcher->trigger('onContentBeforeDelete', array(
+			'com_k2.'.$this->getName(),
+			&$table
+		));
 
 		// Delete
 		if (!$table->delete())
@@ -261,7 +276,10 @@ class K2Model extends JModelLegacy
 		}
 
 		// Trigger onContentAfterDelete event
-		$dispatcher->trigger('onContentBeforeDelete', array('com_k2.'.$this->getName(), &$table));
+		$dispatcher->trigger('onContentBeforeDelete', array(
+			'com_k2.'.$this->getName(),
+			&$table
+		));
 
 		return true;
 	}
@@ -305,7 +323,10 @@ class K2Model extends JModelLegacy
 	{
 		$dispatcher = JDispatcher::getInstance();
 		JPluginHelper::importPlugin('k2');
-		$dispatcher->trigger('onBeforeSetQuery', array($context, &$query));
+		$dispatcher->trigger('onBeforeSetQuery', array(
+			$context,
+			&$query
+		));
 	}
 
 	/**
@@ -368,7 +389,7 @@ class K2Model extends JModelLegacy
 		}
 
 		// Check if this is the user having previously checked out the row
-		if ($table->checked_out > 0 && $table->checked_out != $user->get('id') && !$user->authorise('core.admin', 'com_checkin'))
+		if ($table->checked_out > 0 && $table->checked_out != $user->get('id') && !$user->authorise('core.manage', 'com_checkin'))
 		{
 			$this->setError(JText::_('JLIB_APPLICATION_ERROR_CHECKIN_USER_MISMATCH'));
 			return false;

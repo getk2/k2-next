@@ -107,11 +107,24 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 		tagName : 'ul',
 		template : _.template(row),
 		events : {
-			'click a[data-action="edit"]' : 'edit'
+			'click a[data-action="edit"]' : 'edit',
+			'click [data-action="unlock"]' : 'unlock'
 		},
 		edit : function(event) {
 			event.preventDefault();
 			K2Dispatcher.trigger('app:controller:edit', this.model.get('id'));
+		},
+		unlock : function(event) {
+			event.preventDefault();
+			this.model.checkin({
+				success : _.bind(function() {
+					this.model.set('isLocked', false);
+					this.render();
+				}, this),
+				error : _.bind(function(model, xhr, options) {
+					this.enqueueMessage('error', xhr.responseText);
+				}, this)
+			});
 		}
 	});
 

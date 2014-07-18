@@ -7,7 +7,16 @@
 
 <div class="small-1 large-4 columns">
     <% if(canEdit) { %>
-    <a data-action="edit" href="<%= editLink %>"><%= title %></a>
+    	<% if(isLocked) { %>
+			<% if(canUnlock) { %>
+				<button data-action="unlock" title="<%- lockedBy %> <%- lockedAt %>">Locked</button>
+			<% } else { %>
+				<span title="<%- lockedBy %> <%- lockedAt %>">Locked</span>
+			<% } %>
+			<%= title %>
+		<% } else { %>
+			<a data-action="edit" href="<%= editLink %>"><%= title %></a>
+		<% } %>
     <% } else { %>
         <%= str_repeat('-', level) %><%= title %>
     <% } %>

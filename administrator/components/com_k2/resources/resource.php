@@ -89,7 +89,10 @@ class K2Resource
 		$method = 'get'.ucfirst($name);
 		if (method_exists($this, $method))
 		{
-			$data = call_user_func(array($this, $method));
+			$data = call_user_func(array(
+				$this,
+				$method
+			));
 			$this->$name = $data;
 			return $this->$name;
 		}
@@ -195,6 +198,21 @@ class K2Resource
 					}
 				}
 				$this->languageTitle = self::$languages[$this->language];
+			}
+		}
+
+		// Checked out
+		if (property_exists($this, 'checked_out') && K2_EDIT_MODE)
+		{
+			$this->isLocked = false;
+			$user = JFactory::getUser();
+			$this->canUnlock = true;
+			if ($this->checked_out && $this->checked_out != $user->id)
+			{
+				$this->isLocked = true;
+				$this->lockedBy = JUser::getInstance($this->checked_out)->name;
+				$this->lockedAt = JHtml::_('date', $this->checked_out_time, 'Y-m-d H:i');
+				$this->canUnlock = $user->authorise('core.manage', 'com_checkin');
 			}
 		}
 
