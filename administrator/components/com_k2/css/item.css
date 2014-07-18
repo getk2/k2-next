@@ -16,7 +16,6 @@ ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; }
 	.jw--tabs a.active { background: #fff; }
 	.jw--tabs a.active .fa { color: #00afec; }
 
-	
 /* top item navigation */
 .jw--tabs__top { background: #e4eaed; }
 	.jw--tabs__top li { margin-right: -2px; }
@@ -50,7 +49,6 @@ ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; }
 		/* different for styling for other elements */
 		.jw--item--fld__title input[type="text"] { padding: 17px 10px; height: auto; }
 		.jw--item--fld__alias input[type="text"] { padding: 10px; background: #f0f2f3; border: 0; }
-
 		
 		/* Select 2 container */
 		.jw--item--fld .select2-container { border-radius: 3px; border: 1px solid #d4d7d9; position: static; min-height: 40px; }
@@ -85,7 +83,6 @@ ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; }
 	.jw--attachments { position: relative; }
 		.jw--attachment--single, .row.jw--attachment--single { padding: 28px 20px 28px 10px; margin: 18px 41px 18px 0; background: #f7f8f8; border: 1px solid #e9ebec; border-radius: 3px; position: relative; z-index: 2; }
 		button.jw--attachment--remove { position: absolute; right: 0; top: 0; }
-
 
 /*------------------------------------------------------------------
 [Extra fields] */
