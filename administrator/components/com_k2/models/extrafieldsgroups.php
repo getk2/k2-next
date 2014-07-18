@@ -128,7 +128,7 @@ class K2ModelExtraFieldsGroups extends K2Model
 				$direction = $sorting == 'name' ? 'ASC' : 'DESC';
 				break;
 			case 'ordering' :
-				$ordering = array(
+				$ordering = $this->getState('scope') ? 'extraFieldsGroup.ordering' : array(
 					'extraFieldsGroup.scope',
 					'extraFieldsGroup.ordering'
 				);

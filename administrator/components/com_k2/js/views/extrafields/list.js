@@ -8,6 +8,9 @@ define(['marionette', 'text!layouts/extrafields/list.html', 'text!layouts/extraf
 		edit : function(event) {
 			event.preventDefault();
 			K2Dispatcher.trigger('app:controller:edit', this.model.get('id'));
+		},
+		onRender : function() {
+			this.$el.attr('data-group', this.model.get('group'));
 		}
 	});
 	var K2ViewExtraFields = Marionette.CompositeView.extend({
@@ -15,7 +18,20 @@ define(['marionette', 'text!layouts/extrafields/list.html', 'text!layouts/extraf
 		itemViewContainer : '[data-region="list"]',
 		itemView : K2ViewExtraFieldsRow,
 		onCompositeCollectionRendered : function() {
-			K2Widget.ordering(this.$('[data-region="list"]'), 'ordering', this.collection.getState('sorting') === 'ordering');
+			var groups = [];
+			_.each(this.collection.models, function(model) {
+				groups.push(model.get('group'));
+			});
+			groups = _.uniq(groups);
+			var self = this;
+			_.each(groups, function(group) {
+				self.$('[data-group="' + group + '"]').wrapAll('<div data-sorting-group="' + group + '"></div>');
+				var element = self.$('[data-sorting-group="' + group + '"]');
+				K2Widget.ordering(element, 'ordering', self.collection.getState('sorting') === 'ordering', {
+					containerSelector : '[data-sorting-group="' + group + '"]',
+					itemSelector : '[data-group="' + group + '"]'
+				});
+			});
 		}
 	});
 	return K2ViewExtraFields;

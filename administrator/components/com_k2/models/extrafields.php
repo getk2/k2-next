@@ -154,9 +154,11 @@ class K2ModelExtraFields extends K2Model
 				$direction = $sorting == 'state' ? 'ASC' : 'DESC';
 				break;
 			case 'ordering' :
-			case 'ordering.reverse' :
-				$ordering = 'extraField.ordering';
-				$direction = $sorting == 'ordering' ? 'ASC' : 'DESC';
+				$ordering = $this->getState('group') ? 'extraField.ordering' : array(
+					'extraFieldsGroup.ordering',
+					'extraField.ordering'
+				);
+				$direction = 'ASC';
 				break;
 		}
 
