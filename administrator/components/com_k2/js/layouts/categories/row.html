@@ -5,13 +5,13 @@
     </label>
 </div>
 
-<div class="small-1 large-4 columns">
+<div class="small-1 large-4 columns jw--cat--title">
     <% if(canEdit) { %>
     	<% if(isLocked) { %>
 			<% if(canUnlock) { %>
-				<button data-action="unlock" title="<%- lockedBy %> <%- lockedAt %>">Locked</button>
+				<button data-action="unlock" title="<%- lockedBy %> <%- lockedAt %>"><i class="fa fa-unlock-alt"></i></button>
 			<% } else { %>
-				<span title="<%- lockedBy %> <%- lockedAt %>">Locked</span>
+				<span title="<%- lockedBy %> <%- lockedAt %>"><i class="fa fa-fa-lock"></i></span>
 			<% } %>
 			<%= title %>
 		<% } else { %>
