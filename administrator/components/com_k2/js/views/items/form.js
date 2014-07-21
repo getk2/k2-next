@@ -18,7 +18,8 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 		// UI events
 		events : {
 			'change #catid' : 'updateCategory',
-			'click ul[data-role="tabs-navigation"] li:nth-child(2) a' : 'loadRevisions'
+			'click ul[data-role="tabs-navigation"] li:nth-child(2) a' : 'loadRevisions',
+			'click [data-action="reset-hits"]' : 'resetHits'
 		},
 
 		modelEvents : {
@@ -184,6 +185,11 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 				}, this));
 				this.revisionsRegion.show(this.revisionsView);
 			}
+		},
+		resetHits : function(event) {
+			event.preventDefault();
+			var counter = this.$('[data-role="hits"]');
+			this.model.resetHits(counter);
 		}
 	});
 	return K2ViewItem;

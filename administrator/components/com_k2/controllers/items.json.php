@@ -60,6 +60,28 @@ class K2ControllerItems extends K2Controller
 		return $data;
 	}
 
+	public function resetHits()
+	{
+		// Check for token
+		JSession::checkToken() or K2Response::throwError(JText::_('JINVALID_TOKEN'));
+
+		// User
+		$user = JFactory::getUser();
+
+		// Item
+		$application = JFactory::getApplication();
+		$id = $application->input->get('id');
+		$item = K2Items::getInstance($id);
+		if (!$item->canEdit)
+		{
+			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'), 403);
+		}
+		$statistics = K2Model::getInstance('Statistics');
+		$statistics->resetItemHitsCounter($item->id);
+		echo json_encode(K2Response::render());
+		return $this;
+	}
+
 	public function close()
 	{
 		// Check for token

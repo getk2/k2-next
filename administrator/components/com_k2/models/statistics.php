@@ -163,6 +163,22 @@ class K2ModelStatistics extends K2Model
 
 	}
 
+	public function resetItemHitsCounter($itemId)
+	{
+		// Get database
+		$db = $this->getDBO();
+
+		// Get query
+		$query = $db->getQuery(true);
+
+		// Update
+		$query->update('#__k2_items_stats');
+		$query->set($db->quoteName('hits').' = 0');
+		$query->where($db->quoteName('itemId').' = '.(int)$itemId);
+		$db->setQuery($query);
+		$db->execute();
+	}
+
 	public function createItemEntry($itemId)
 	{
 		$db = $this->getDbo();
