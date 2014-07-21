@@ -1,17 +1,17 @@
 <h2><%= l('K2_REVISIONS') %></h2>
 <% if(_.size(revisions) > 1) { %>
-<div data-role="revisions-timeline" style="width: 90%; margin: 100px auto;"></div>
+<div data-role="revisions-timeline" style="width: 90%; margin: 100px auto 140px;"></div>
 
 
 <table style="width: 100%;">
 	<tr>
 		<td>
-			<span><%= l('K2_FROM_REVISION') %></span>
-			<div data-region="revisions-left"></div>
+			<span class="rev--name"><%= l('K2_FROM_REVISION') %></span>
+			<div class="rev--header" data-region="revisions-left"></div>
 		</td>
 		<td>
-			<span><%= l('K2_TO_REVISION') %></span>
-			<div data-region="revisions-right"></div>
+			<span class="rev--name"><%= l('K2_TO_REVISION') %></span>
+			<div class="rev--header" data-region="revisions-right"></div>
 		</td>
 	</tr>
 	<tr>

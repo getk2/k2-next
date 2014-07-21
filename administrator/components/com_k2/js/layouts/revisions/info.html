@@ -1,4 +1,7 @@
-<span><%= user %></span>
-<span><%= date %></span>
-<span><%= notes %></span>
-<button data-action="restore-revision" data-id="<%- id %>"><%= l('K2_RESTORE_THIS_REVISION') %></button>
+<div class="rev--author"><%= user %></div>
+<div class="rev--date"><%= date %></div>
+<div class="rev--notes"><%= notes %></div>
+
+<div class="ov-hidden">
+	<button data-action="restore-revision" data-id="<%- id %>" class="jw--btn jw--btn__apply"><%= l('K2_RESTORE_THIS_REVISION') %></button>
+</div>

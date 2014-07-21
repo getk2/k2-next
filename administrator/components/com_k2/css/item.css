@@ -44,7 +44,7 @@ ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; }
 	.jw--right--row { margin-left: 20px; }
 	.jw--item--fld {  }
 	button.push--left { margin-left: 115px; }
-		.jw--item--fld input[type="text"] { min-width: 100%; border-radius: 3px; padding: 10px; height: 40px; line-height: 40px; line-height: 1; display: block; border: 1px solid #d4d7d9; margin: 0; }
+		.jw--item--fld input[type="text"] { min-width: 100%; max-width: 80px; border-radius: 3px; padding: 10px; height: 40px; line-height: 40px; line-height: 1; display: block; border: 1px solid #d4d7d9; margin: 0; }
 		
 		/* different for styling for other elements */
 		.jw--item--fld__title input[type="text"] { padding: 17px 10px; height: auto; }
@@ -132,8 +132,13 @@ ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; }
 .jw--revisions { padding: 30px 70px; }
 	
 	/* slider */
-	 .{ background: #e4eaed; }
 	 .ui-slider-handle { background: #00afec; }
+	 
+	 .rev--name { font-size: 18px; line-height: 1; font-weight: 300; }
+	 .rev--date { font-size: 12px; font-weight: 700; margin: 5px 0; margin: 0 0 10px; }
+	 .rev--author { font-size: 13px; font-weight: 700; color: #22baef; }
+	 .rev--notes {  }
+	 .rev--header { margin: 0 0 20px; }
 
 /*------------------------------------------------------------------
 [Hits] [Publishing Options] */
