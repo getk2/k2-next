@@ -15,7 +15,9 @@
 
 	<ul class="text-center jw--tabs jw--tabs__top" data-role="tabs-navigation">
 		<li><a href="#"><i class="fa fa-home"></i><%= l('K2_BASIC') %></a></li>
+		<% if(row.revisionsEnabled) { %>
 		<li><a href="#"><i class="fa fa-arrows-h"></i><%= l('K2_REVISIONS') %></a></li>
+		<% } %>
 		<li><a href="#"><i class="fa fa-info-circle"></i><%= l('K2_METADATA_AND_PUBLISHING') %></a></li>
 		<li><a href="#"><i class="fa fa-desktop"></i><%= l('K2_DISPLAY_SETTINGS') %></a></li>
 		<li><a href="#"><i class="fa fa-unlock-alt"></i><%= l('K2_PERMISSIONS') %></a></li>
@@ -252,11 +254,13 @@
 			
 		    <input type="hidden" name="id" value="<%- row.id %>" / >
 		</div>
-		
+			
+			<% if(row.revisionsEnabled) { %>
 			<!-- Revisions -->
 			<div class="jw--revisions">
 			    <div data-region="item-revisions"></div>
 			</div>
+			<% } %>
 				
 			
 			<!-- Item Options (Metadata) -->

@@ -305,7 +305,10 @@ class K2ViewItems extends K2View
 		$row->attachments = $row->getAttachments();
 
 		// Revisions
-		if ($row->canEdit)
+		$params = JComponentHelper::getParams('com_k2');
+		$row->revisionsEnabled = (bool)$params->get('revisions');
+		$row->revisions = array();
+		if ($row->canEdit && $row->revisionsEnabled)
 		{
 			$row->revisions = $row->getRevisions();
 		}
