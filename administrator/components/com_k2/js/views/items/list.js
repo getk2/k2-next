@@ -171,7 +171,7 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 		},
 		initialize : function() {
 			this.page = 1;
-			this.limit = 5;
+			this.limit = 20;
 			this.expanded = false;
 			this.itemsCollection = new K2CollectionItems;
 			this.itemsCollection.setState('sorting', 'ordering');
