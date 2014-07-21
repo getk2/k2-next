@@ -6,6 +6,7 @@ table.jw--listed--items { width: 100%; font-size: 13px; }
 	/* various elements */
 	.jw--order--handle { color: #a5a5a2; padding: 0 7px; display: inline-block; vertical-align: middle; }
 		.jw--order--handle:hover { color: #636b6e; cursor: pointer; }
+		.jw--order--title {  padding: 0 7px; display: inline-block; vertical-align: middle; }
 	
 	/* Table header */
 	table.jw--listed--items thead td { font-weight: 700; background: #fff; border-top: 1px solid #ebebeb; padding: 4px 7px; vertical-align: middle; }
