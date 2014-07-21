@@ -72,9 +72,6 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session', 'tex
 			}, this));
 
 		},
-		onBeforeRender : function() {
-
-		},
 		onRender : function() {
 			this.$('[data-role="layouts"]').hide();
 			_.each(this.model.get('states'), _.bind(function(value, state) {
