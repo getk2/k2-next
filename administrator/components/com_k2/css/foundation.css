@@ -161,19 +161,19 @@ img{-ms-interpolation-mode:bicubic;display:inline-block;vertical-align:middle;}
 
 /* Block Grid
 ------------------------------------------------------ */
-[class*="block-grid-"]{display:block;margin:0;padding:0;*zoom:1;}
+[class*="block-grid-"], .sigProContainer ul {display:block;margin:0;padding:0;*zoom:1;}
 [class*="block-grid-"]:before,[class*="block-grid-"]:after{display:table;content:" ";}
 [class*="block-grid-"]:after{clear:both;}
-[class*="block-grid-"] > li{display:block;float:left;padding:0 15px 1.25rem;height:auto;}
+[class*="block-grid-"] > li, .sigProContainer ul > li {display:block;float:left;padding:0 15px 1.25rem;height:auto;}
 
 @media only screen{
 	.small-block-grid-1 > li{width:100%;list-style:none;}
 	.small-block-grid-1 > li:nth-of-type(n){clear:none;}
 	.small-block-grid-1 > li:nth-of-type(1n+1){clear:both;}
 	
-	.small-block-grid-2 > li{width:50%;list-style:none;}
-	.small-block-grid-2 > li:nth-of-type(n){clear:none;}
-	.small-block-grid-2 > li:nth-of-type(2n+1){clear:both;}
+	.small-block-grid-2 > li, .sigProContainer ul > li {width:50%;list-style:none;}
+	.small-block-grid-2 > li:nth-of-type(n), .sigProContainer ul > li:nth-of-type(n) {clear:none;}
+	.small-block-grid-2 > li:nth-of-type(2n+1), .sigProContainer ul > li:nth-of-type(2n+1) {clear:both;}
 	
 	.small-block-grid-3 > li{width:33.33333%;list-style:none;}
 	.small-block-grid-3 > li:nth-of-type(n){clear:none;}
@@ -229,9 +229,9 @@ img{-ms-interpolation-mode:bicubic;display:inline-block;vertical-align:middle;}
 	.medium-block-grid-3 > li:nth-of-type(n){clear:none;}
 	.medium-block-grid-3 > li:nth-of-type(3n+1){clear:both;}
 	
-	.medium-block-grid-4 > li{width:25%;list-style:none;}
-	.medium-block-grid-4 > li:nth-of-type(n){clear:none;}
-	.medium-block-grid-4 > li:nth-of-type(4n+1){clear:both;}
+	.medium-block-grid-4 > li, .sigProContainer ul > li {width:25%;list-style:none;}
+	.medium-block-grid-4 > li:nth-of-type(n), .sigProContainer ul > li:nth-of-type(n) {clear:none;}
+	.medium-block-grid-4 > li:nth-of-type(4n+1), .sigProContainer ul > li:nth-of-type(4n+1) {clear:both;}
 	
 	.medium-block-grid-5 > li{width:20%;list-style:none;}
 	.medium-block-grid-5 > li:nth-of-type(n){clear:none;}
@@ -283,10 +283,10 @@ img{-ms-interpolation-mode:bicubic;display:inline-block;vertical-align:middle;}
 	.large-block-grid-4 > li:nth-of-type(n){clear:none;}
 	.large-block-grid-4 > li:nth-of-type(4n+1){clear:both;}
 	
-	.large-block-grid-5 > li{width:20%;list-style:none;}
-	.large-block-grid-5 > li:nth-of-type(n){clear:none;}
-	.large-block-grid-5 > li:nth-of-type(5n+1){clear:both;}
-	
+	.large-block-grid-5 > li, .sigProContainer ul > li{width:20%;list-style:none;}
+	.large-block-grid-5 > li:nth-of-type(n), .sigProContainer ul > li:nth-of-type(n){clear:none;}
+	.large-block-grid-5 > li:nth-of-type(5n+1), .sigProContainer ul > li:nth-of-type(5n+1){clear:both;}
+		
 	.large-block-grid-6 > li{width:16.66667%;list-style:none;}
 	.large-block-grid-6 > li:nth-of-type(n){clear:none;}
 	.large-block-grid-6 > li:nth-of-type(6n+1){clear:both;}

@@ -116,8 +116,10 @@ ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; }
 /*------------------------------------------------------------------
 [galleries] */	
 	.jw--gallery--single { padding: 25px 10px 10px; }
-	.jw--gallery--image { position: relative; width: 100%; padding: 0 0 56%; overflow: hidden; z-index: 2; border-radius: 3px; }
-		.jw--gallery--image img { position: absolute; left: 0; top: 0; z-index: 1; min-width: 100%; min-height: 100%; height: auto; }
+	.jw--gallery--image, .sigProLinkOuterWrapper { display: block; position: relative; width: 100%; padding: 0 0 56%; overflow: hidden; z-index: 2; border-radius: 3px; }
+		.jw--gallery--image img, .sigProLinkOuterWrapper img { position: absolute; left: 0; top: 0; z-index: 1; min-width: 100%; min-height: 100%; height: auto; }
+	
+	.sigProGalleriaPlaceholderContainer, .sigProPseudoCaption, .sigProCaption { display: none; }
 	
 /*------------------------------------------------------------------
 [Revisions] */
@@ -153,10 +155,11 @@ ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; }
 
 /*------------------------------------------------------------------
 [Sortable] */
-tr.k2SortingPlaceholder td{ background: #d1d2d2; border-top: 2px dashed #b3b5b5; border-bottom: 2px dashed #b3b5b5; }
+tr.k2SortingPlaceholder td { background: #d1d2d2; border-top: 2px dashed #b3b5b5; border-bottom: 2px dashed #b3b5b5; }
 	tr.k2SortingPlaceholder td:first-child { border-left: 2px dashed #b3b5b5; }
 	tr.k2SortingPlaceholder td:last-child { border-right: 2px dashed #b3b5b5; }
 
+.jw--sortable--items .k2SortingPlaceholder { background: #f7f8f8; border-top: 2px dashed #e9ebec; border-bottom: 2px dashed #e9ebec; min-height: 40px; border-radius: 3px; }  
 
 /*------------------------------------------------------------------
 [Mozilla Only] */
