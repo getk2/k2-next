@@ -427,7 +427,7 @@ defined('_JEXEC') or die ;
 
 	<div class="clr"></div>
 
-  <?php if(count($this->item->media)): ?>
+  <?php if($this->params->get('itemMedia') && count($this->item->media)): ?>
   <!-- Item media -->
   <a name="itemMediaAnchor" id="itemMediaAnchor"></a>
   
