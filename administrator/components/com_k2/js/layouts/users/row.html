@@ -9,8 +9,8 @@
 <li class="text-center small-1 large-1 columns">
     <a class="jw--state--toggler jw--state--toggler__pub <% if( enabled == 1 ) { print('toggler--active'); } %>" data-action="toggle-state" data-state="block" data-state-value="<%= enabled  %>" data-id="<%= id %>">
     	
-		<% if(enabled == -1) { %>
-		<i class="fa fa-trash-o"></i>
+		<% if(enabled == 0) { %>
+		<i class="red fa fa-ban"></i>
 		<% } else { %>
 		<i class="fa fa-check-circle"></i>
 		<% } %>
@@ -20,8 +20,8 @@
 </li>
 <li class="text-center small-1 large-1 columns">
     <a class="jw--state--toggler jw--state--toggler__pub <% if( activated == 1 ) { print('toggler--active'); } %>" data-action="toggle-state" data-state="block" data-state-value="<%= activated %>" data-id="<%= id %>">
-    	<% if(activated == -1) { %>
-		<i class="fa fa-trash-o"></i>
+    	<% if(activated == 0) { %>
+		<i class="red fa fa-ban"></i>
 		<% } else { %>
 		<i class="fa fa-check-circle"></i>
 		<% } %>
