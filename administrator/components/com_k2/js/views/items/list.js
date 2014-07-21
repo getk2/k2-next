@@ -212,9 +212,13 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 				});
 				this.itemsRegion.show(this.itemsView);
 				this.itemsCollection.fetch({
-					update : false
+					update : false,
+					success : _.bind(function(collection) {
+						if (collection.models.length > 0) {
+							this.$('[data-action="more"]').show();
+						}
+					}, this)
 				});
-				this.$('[data-action="more"]').show();
 				this.expanded = true;
 			}
 		},
