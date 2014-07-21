@@ -63,19 +63,6 @@
 	});
 	//});
 
-	// Sidebar toggling
-	K2Container.on('click', '.jw--sidebar--toggle', function(e) {
-		e.preventDefault();
-		$('.jw').toggleClass('open--sidebar');
-		$('.jw--sidebar').toggleClass('jw--sidebar__open');
-	});
-
-	// Close it when redirecting to the settings/ info view
-	K2Container.on('click', '.jw--inline--menu a', function() {
-		$('.jw').removeClass('open--sidebar');
-		$('.jw--sidebar').removeClass('jw--sidebar__open');
-	});
-
 	// label toggling.
 	K2Container.on('click', '.jw--radio', function() {
 		$(this).parent().children('.jw--radio').removeClass('jw--radio__checked');
