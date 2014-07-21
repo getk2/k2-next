@@ -152,6 +152,13 @@ ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; }
 	.jw--setting--field .jw--setting--single__noedit { background: #ededed; padding-top: 3px; padding-bottom: 4px; }
 
 /*------------------------------------------------------------------
+[Sortable] */
+tr.k2SortingPlaceholder td{ background: #d1d2d2; border-top: 2px dashed #b3b5b5; border-bottom: 2px dashed #b3b5b5; }
+	tr.k2SortingPlaceholder td:first-child { border-left: 2px dashed #b3b5b5; }
+	tr.k2SortingPlaceholder td:last-child { border-right: 2px dashed #b3b5b5; }
+
+
+/*------------------------------------------------------------------
 [Mozilla Only] */
 @-moz-document url-prefix() { 
 	.jw--item--row__single {  }
