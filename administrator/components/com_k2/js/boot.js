@@ -4,7 +4,7 @@ define('jquery', [], function() {
 });
 require.config({
 	//baseUrl: 'components/com_k2/js', Uncomment this if we build the app into a single file. This way we will have the basic app files loaded in one file while the third-party files will still get loaded during runtime
-	urlArgs : Date.now(),
+	urlArgs : 'v3.0.0BETA',
 	paths : {
 		backbone : 'lib/backbone-min',
 		underscore : 'lib/underscore-min',
