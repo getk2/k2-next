@@ -215,7 +215,7 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 					update : false,
 					success : _.bind(function(collection) {
 						if (collection.models.length > 0) {
-							this.$('[data-action="more"]').show();
+							this.$('[data-action="more"]:last').show();
 						}
 					}, this)
 				});
