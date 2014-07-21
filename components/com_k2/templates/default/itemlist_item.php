@@ -35,9 +35,13 @@ defined('_JEXEC') or die ;
 				</a>
 			</span>
 			<?php endif; ?>
-
-	  	<?php echo $this->item->title; ?>
-
+		
+		<?php if ($this->params->get('listItemTitleLinked')): ?>
+			<a href="<?php echo $this->item->link; ?>"><?php echo $this->item->title; ?></a>
+		<?php else: ?>
+	  		<?php echo $this->item->title; ?>
+		<?php endif; ?>
+		
 	  	<?php if($this->params->get('listItemFeaturedNotice') && $this->item->featured): ?>
 	  	<!-- Featured flag -->
 	  	<span>
@@ -370,6 +374,15 @@ defined('_JEXEC') or die ;
   	<?php endforeach; ?>
   </div>
   <?php endif; ?>
+  
+  <?php if ($this->params->get('listItemReadMore')): ?>
+	<!-- Item "read more..." link -->
+	<div class="itemReadMore">
+		<a class="k2ReadMore" href="<?php echo $this->item->link; ?>">
+			<?php echo JText::_('K2_READ_MORE'); ?>
+		</a>
+	</div>
+   <?php endif; ?>
 
   <!-- K2 Plugins: K2AfterDisplay -->
   <?php echo $this->item->events->K2AfterDisplay; ?>
