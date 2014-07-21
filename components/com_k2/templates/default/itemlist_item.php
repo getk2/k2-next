@@ -331,7 +331,7 @@ defined('_JEXEC') or die ;
 
 	<div class="clr"></div>
 
-  <?php if($this->params->get('itemMedia') && count($this->item->media)): ?>
+  <?php if($this->params->get('listItemMedia') && count($this->item->media)): ?>
   <!-- Item media -->
   <a name="itemMediaAnchor" id="itemMediaAnchor"></a>
   
@@ -358,7 +358,7 @@ defined('_JEXEC') or die ;
 	
   <?php endif; ?>
 
-  <?php if(count($this->item->galleries)): ?>
+  <?php if($this->params->get('listItemGalleries') && count($this->item->galleries)): ?>
   <!-- Item image galleries -->
   <a name="itemImageGalleriesAnchor" id="itemImageGalleriesAnchor"></a>
   <div class="itemImageGalleries">
