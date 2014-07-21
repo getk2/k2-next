@@ -56,7 +56,12 @@
     	<i class="hidden"><%= state %></i>
     </a>
     <% } else { %>
-    <%= state %>
+	    <% if(state == -1) { %>
+		<i class="fa fa-trash-o"></i>
+		<% } else { %>
+		<i class="fa fa-check-circle"></i>
+		<% } %>
+		<i class="hidden"><%= state %></i>
     <% } %>
 </li>
 

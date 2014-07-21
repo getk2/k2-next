@@ -25,11 +25,23 @@
 
 <div class="text-center small-1 large-1 columns"><span data-role="ordering-handle"><i class="fa fa-bars"></i></span></div>
 
-<div class="small-1 large-1 columns">
+<div class="text-center small-1 large-1 columns">
     <% if(canEditState) { %>
-    <a data-action="toggle-state-category" data-state-value="<%= state %>" data-id="<%= id %>" data-state="state"><%= state %></a>
+    <a class="jw--state--toggler jw--state--toggler__pub <% if( state == 1 ) { print('toggler--active'); } %>" data-action="toggle-state-category" data-state-value="<%= state %>" data-id="<%= id %>" data-state="state">
+	    <% if(state == -1) { %>
+		<i class="fa fa-trash-o"></i>
+		<% } else { %>
+		<i class="fa fa-check-circle"></i>
+		<% } %>
+		<i class="hidden"><%= state %></i>
+    </a>
     <% } else { %>
-    <%= state %>
+    	<% if(state == -1) { %>
+		<i class="fa fa-trash-o"></i>
+		<% } else { %>
+		<i class="fa fa-check-circle"></i>
+		<% } %>
+		<i class="hidden"><%= state %></i>
     <% } %>
 </div>
 
