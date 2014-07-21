@@ -11,7 +11,7 @@
 
 /*------------------------------------------------------------------
 [Tabs] */
-ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; }
+ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; position: relative; z-index: 9; }
 	ul.jw--tabs li { display: inline-block; vertical-align: middle; margin-right: -2px; }
 	.jw--tabs a.active { background: #fff; }
 	.jw--tabs a.active .fa { color: #00afec; }
