@@ -45,16 +45,25 @@ table.jw--listed--items { width: 100%; font-size: 13px; }
 			ul.jw--subcat ul .jw--cat--title { padding-left: 30px; }
 				ul.jw--subcat ul ul .jw--cat--title { padding-left: 45px; }
 					ul.jw--subcat ul ul ul .jw--cat--title { padding-left: 60px; }
-		
-		.jw--listed--items ul.jw--subcat > li {  background: #dbdcdc; }
-		.jw--listed--items ul.jw--subcat li.placeholder, .jw--listed--items ul.jw--subcat li.k2SortingPlaceholder { margin-left: 20px!important; }
-		
+						ul.jw--subcat ul ul ul ul .jw--cat--title { padding-left: 75px; }
+			
+		/* placeholder tree view */
+		ul.jw--subcat li.k2SortingPlaceholder { margin-left: 15px; }
+			ul.jw--subcat ul li.k2SortingPlaceholder { margin-left: 30px; }
+				ul.jw--subcat ul ul li.k2SortingPlaceholder { margin-left: 45px; }
+					ul.jw--subcat ul ul ul li.k2SortingPlaceholder { margin-left: 60px; }
+						ul.jw--subcat ul ul ul li.k2SortingPlaceholder { margin-left: 75px; }
+					
+		/* subcategory colors */
+		.jw--listed--items ul.jw--subcat > li { border-top: 1px solid #dbdcdc; background: #dbdcdc; }
 		/* third level */
-		.jw--listed--items ul.jw--subcat ul li { background: #cdcdcd; padding-bottom: 0; }
+		.jw--listed--items ul.jw--subcat ul li {  border-top: 1px solid #dbdcdc; background: #cdcdcd; }
 			/* fourth */
 			.jw--listed--items ul.jw--subcat ul ul li { background: #c1c1c1; }
-			/* Five levels should be enough */
+			/* Fifth */
 			.jw--listed--items ul.jw--subcat ul ul ul li { background: #b1b1b1; }
+			/* six levels should be enough */
+			.jw--listed--items ul.jw--subcat ul ul ul li { background: #a9a9a9; }
 			
 		/* Resets and further down */
 		.jw--listed--items ul.jw--subcat ul { width: 100%; float: left; clear: both; }
