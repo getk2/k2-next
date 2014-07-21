@@ -49,13 +49,13 @@ class K2ViewItem extends K2View
 		// Get related items. We need to do this here since the parameter is related with the view
 		if ($this->params->get('itemRelated'))
 		{
-			$this->item->related = $this->item->getRelated($this->params->get('itemRelatedLimit'));
+			$this->item->related = $this->item->getRelated($this->params->get('itemRelatedLimit', 5));
 		}
 
 		// Get latest from same author. We need to do this here since the parameter is related with the view
 		if ($this->params->get('itemAuthorLatest'))
 		{
-			$this->item->author->latest = $this->item->getLatestByAuthor($this->params->get('itemAuthorLatestLimit'));
+			$this->item->author->latest = $this->item->getLatestByAuthor($this->params->get('itemAuthorLatestLimit', 5));
 		}
 
 		// Set the layout
