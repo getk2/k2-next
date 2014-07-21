@@ -218,12 +218,6 @@ Buttons */
 	a.dropbox-dropin-btn { padding: 14px 20px!important; border-radius: 3px; }
 
 /*------------------------------------------------------------------
-[Messages] */
-
-.jw--messages {  }
-	.jw--messages ul { list-style: none outside none; margin: 0; padding: 0; }
-
-/*------------------------------------------------------------------
 [Responsive Tables] */
 .table-responsive-wrap { position: relative; }
 	.table-responsive { width: 100%; margin-bottom: 15px; overflow-x: scroll; overflow-y: hidden; -webkit-overflow-scrolling: touch; -ms-overflow-style: -ms-autohiding-scrollbar; }

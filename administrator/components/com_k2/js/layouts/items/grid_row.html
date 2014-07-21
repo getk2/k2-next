@@ -1,8 +1,7 @@
 <li class="jw--grid--item">
 	<div <% if(image && image.flag) { %>class="jw--grid--item--wrap" style="background-image: url(<%= images.modal.src %>);" <% } else { %> class="jw--grid--item--wrap no--imagepres" <% } %>>
 		<div class="jw--grid--item--bg"></div>
-		
-		
+
 		<div class="jw--check--wrapper">
 		    <label class="jw--checkbox">
 		        <input class="jw--row--toggler" data-action="toggle" name="id[]" value="<%= id %>" type="checkbox" />
@@ -10,7 +9,6 @@
 		    </label>
 		</div>
 
-		
 		<div class="jw--toggle-wrapper">
 			<% if(canEditState) { %>
 		    <a data-action="toggle-state" data-state-value="<%= state %>" data-state="state" data-id="<%= id %>" class="jw--state--toggler jw--state--toggler__pub <% if( state == 1 ) { print('toggler--active'); } %>">
@@ -30,7 +28,6 @@
 		    	<i class="fa fa-star"></i>
 				<i class="hidden"><%= featured %></i>
 		    </a>
-		   
 		    <% } else { %>
 		    <%= featured %>
 		    <% } %>
