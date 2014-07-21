@@ -2,8 +2,8 @@
 <extension type="component" version="3.3" method="upgrade">
 	<name>COM_K2</name>
 	<author>JoomlaWorks</author>
-	<creationDate>September 11th, 2013</creationDate>
-	<copyright>Copyright (c) 2006 - 2013 JoomlaWorks Ltd. All rights reserved.</copyright>
+	<creationDate>July 21st, 2014</creationDate>
+	<copyright>Copyright (c) 2006 - 2014 JoomlaWorks Ltd. All rights reserved.</copyright>
 	<authorEmail>please-use-the-contact-form@joomlaworks.net</authorEmail>
 	<authorUrl>www.joomlaworks.net</authorUrl>
 	<version>3.0.0</version>
@@ -20,6 +20,11 @@
 			<file driver="mysqli" charset="utf8">uninstall.sql</file>
 		</sql>
 	</uninstall>
+	<!--
+	<updateservers>
+		<server type="extension" priority="1" name="K2 Updates">http://getk2.org/update.xml</server>
+	</updateservers>
+	-->
 	<files folder="components/com_k2">
 		<folder>css</folder>
 		<folder>helpers</folder>
