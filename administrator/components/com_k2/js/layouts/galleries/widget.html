@@ -1,5 +1,13 @@
+<% if(enabled) { %>
 <div data-region="new-galleries"></div>
 <button class="jw--btn jw--btn__item" data-action="add">
     <i class="fa fa-plus-circle"></i> <span><%= l('K2_ADD_GALLERY') %></span>
 </button>
 <div data-region="existing-galleries"></div>
+<% } else { %>
+<div class="jw--msg">
+	<div class="alert alert-notice">
+		<i class="fa fa-warning"></i> <%= l('K2_NOTICE_PLEASE_INSTALL_JOOMLAWORKS_SIMPLE_IMAGE_GALLERY_PRO_PLUGIN_IF_YOU_WANT_TO_USE_THE_IMAGE_GALLERY_FEATURES_OF_K2') %>
+	</div> 
+</div>
+<% } %>

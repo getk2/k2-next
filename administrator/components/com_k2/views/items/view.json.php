@@ -311,9 +311,11 @@ class K2ViewItems extends K2View
 		}
 
 		// Media
+		$row->allVideos = JPluginHelper::isEnabled('content', 'jw_allvideos');
 		$row->media = $row->getMedia();
 
 		// Galleries
+		$row->sigPro = JPluginHelper::isEnabled('content', 'jw_sigpro');
 		$row->galleries = $row->getGalleries();
 
 	}

@@ -48,12 +48,14 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 
 			// Galleries
 			this.galleriesView = new K2ViewGalleriesWidget({
+				enabled : this.model.get('sigPro'),
 				data : this.model.get('galleries'),
 				itemId : this.model.get('id') || this.model.get('tmpId')
 			});
 
 			// Media
 			this.mediaView = new K2ViewMediaWidget({
+				enabled : this.model.get('allVideos'),
 				data : this.model.get('media'),
 				itemId : this.model.get('id') || this.model.get('tmpId')
 			});

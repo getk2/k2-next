@@ -98,6 +98,9 @@ define(['text!layouts/galleries/widget.html', 'text!layouts/galleries/add.html',
 			'click [data-action="add"]' : 'addGallery'
 		},
 		initialize : function(options) {
+			this.model = new Backbone.Model({
+				enabled : options.enabled
+			});
 			this.existingGalleriesCollection = new Galleries(options.data);
 			this.existingGalleriesView = new K2ViewGalleries({
 				collection : this.existingGalleriesCollection

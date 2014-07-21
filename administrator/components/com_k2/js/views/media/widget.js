@@ -115,6 +115,9 @@ define(['text!layouts/media/widget.html', 'text!layouts/media/add.html', 'text!l
 			'click [data-action="add"]' : 'addMedia'
 		},
 		initialize : function(options) {
+			this.model = new Backbone.Model({
+				enabled : options.enabled
+			});
 			this.existingMediaCollection = new MediaCollection(options.data);
 			this.existingMediaView = new K2ViewMedia({
 				collection : this.existingMediaCollection,
