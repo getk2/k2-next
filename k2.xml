@@ -31,6 +31,17 @@
 		<filename>k2.php</filename>
 		<filename>router.php</filename>
 	</files>
+	<media destination="k2" folder="media/k2">
+		<folder>assets</folder>
+		<!--
+		<folder>attachments</folder>
+		<folder>categories</folder>
+		<folder>galleries</folder>
+		<folder>items</folder>
+		<folder>users</folder>
+		<folder>videos</folder>
+		-->
+	</media>
 	<languages folder="language/en-GB">
 		<language tag="en-GB">en-GB.com_k2.ini</language>
 		<language tag="en-GB">en-GB.mod_k2_comments.ini</language>
