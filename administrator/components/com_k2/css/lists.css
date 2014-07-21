@@ -54,14 +54,14 @@ table.jw--listed--items { width: 100%; font-size: 13px; }
 					
 		/* subcategory colors */
 		.jw--listed--items ul.jw--subcat > li { border-top: 1px solid #dbdcdc; background: #dbdcdc; }
-		/* third level */
-		.jw--listed--items ul.jw--subcat ul li {  border-top: 1px solid #dbdcdc; background: #cdcdcd; }
-			/* fourth */
-			.jw--listed--items ul.jw--subcat ul ul li { background: #c1c1c1; }
-			/* Fifth */
-			.jw--listed--items ul.jw--subcat ul ul ul li { background: #b1b1b1; }
-			/* six levels should be enough */
-			.jw--listed--items ul.jw--subcat ul ul ul li { background: #a9a9a9; }
+			/* third level */
+			.jw--listed--items ul.jw--subcat ul li {  border-top: 1px solid #dbdcdc; background: #cdcdcd; }
+				/* fourth */
+				.jw--listed--items ul.jw--subcat ul ul li { background: #c1c1c1; }
+				/* Fifth */
+				.jw--listed--items ul.jw--subcat ul ul ul li { background: #b1b1b1; }
+				/* six levels should be enough */
+				.jw--listed--items ul.jw--subcat ul ul ul li { background: #a9a9a9; }
 			
 		/* Resets and further down */
 		.jw--listed--items ul.jw--subcat ul { width: 100%; float: left; clear: both; }
@@ -92,7 +92,4 @@ ul.jw--sortable--items { border: 0; }
 	
 	/* subcategory items */
 	.jw--subcat__items ul { overflow: visible; }
-	.jw--subcat__items ul li { overflow: visible; border-bottom: 1px solid #dbdcdc; margin-left: -15px; margin-right: 15px; padding-left: 39px; padding-right: 15px; }
-
-
-
+		.jw--subcat__items ul li { overflow: visible; border-bottom: 1px solid #dbdcdc; margin-left: -15px; margin-right: 15px; padding-left: 39px; padding-right: 15px; }

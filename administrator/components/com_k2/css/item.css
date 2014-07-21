@@ -151,3 +151,9 @@ ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; }
 .jw--setting--field__noedit { border-bottom: 2px solid #f1f1f1; border-radius: 3px; position: relative; overflow: hidden; }
 	.jw--setting--field .jw--setting--single__noedit { background: #ededed; padding-top: 3px; padding-bottom: 4px; }
 
+/*------------------------------------------------------------------
+[Mozilla Only] */
+@-moz-document url-prefix() { 
+	.jw--item--row__single {  }
+		.jw--item--row__single .jw--item--fld { float: left; }
+}
