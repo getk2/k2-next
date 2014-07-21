@@ -3,6 +3,10 @@ table.jw--listed--items { width: 100%; font-size: 13px; }
 	table.jw--listed--items tr {  }
 	table.jw--listed--items td { background: #f0f2f2; border-bottom: 1px solid #dbdcdc; padding: 15px 7px; vertical-align: top; }
 	
+	/* various elements */
+	.jw--order--handle { color: #a5a5a2; padding: 0 7px; display: inline-block; vertical-align: middle; }
+		.jw--order--handle:hover { color: #636b6e; cursor: pointer; }
+	
 	/* Table header */
 	table.jw--listed--items thead td { font-weight: 700; background: #fff; border-top: 1px solid #ebebeb; padding: 4px 7px; vertical-align: middle; }
 	
@@ -15,9 +19,9 @@ table.jw--listed--items { width: 100%; font-size: 13px; }
 	-webkit-transition: opacity 350ms cubic-bezier(0.730, 0, 0.445, 1.000);
 	-webkit-transition: opacity 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
 	   -moz-transition: opacity 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
-		 	-ms-transition: opacity 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
-		 	 -o-transition: opacity 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
-		 	 		transition: opacity 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000)
+		-ms-transition: opacity 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
+		 -o-transition: opacity 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
+		 	transition: opacity 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
 	}
 		.jw--listed--items ul li { padding-top: 15px; padding-bottom: 15px; word-break: break-word; overflow: hidden; }
 		
@@ -89,11 +93,12 @@ ul.jw--sortable--items { border: 0; }
 		ul.jw--sortable--items > li > .columns { padding-top: 15px; padding-bottom: 15px; border-top: 1px solid #dbdcdc; }
 		ul.jw--sortable--items > li > .jw--border--col { height: 54px; }
 		
-	.jw--border--col { border-right: 1px solid #dbdcdc; }
-	ul.jw--sortable--items ul li { border: 0; margin-top: 15px;  }
-	
+	ul.jw--sortable--items ul > li:first-child { margin-top: 15px;  }
 	ul.jw--sortable--items .jw--btn__more { margin-top: 15px; }
-
+	
+	/* subcategory items */
+	.jw--subcat__items ul { overflow: visible; }
+	.jw--subcat__items ul li { overflow: visible; border-bottom: 1px solid #dbdcdc; margin-left: -15px; margin-right: 15px; padding-left: 39px; padding-right: 15px; }
 
 
 
