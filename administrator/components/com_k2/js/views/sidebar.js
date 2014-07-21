@@ -32,7 +32,8 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session', 'tex
 			'click [data-action="reset"]' : 'resetFilters',
 			'click [data-action="set-layout"]' : 'setLayout',
 			'change input[name="viewMode"]' : 'setViewMode',
-			'input input[name="search"]' : 'search'
+			'input input[name="search"]' : 'search',
+			'click [data-action="toggle"]' : 'toggleSidebar'
 		},
 
 		regions : {
@@ -71,6 +72,9 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session', 'tex
 			}, this));
 
 		},
+		onBeforeRender : function() {
+
+		},
 		onRender : function() {
 			this.$('[data-role="layouts"]').hide();
 			_.each(this.model.get('states'), _.bind(function(value, state) {
@@ -87,6 +91,10 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session', 'tex
 			var itemsLayout = K2Session.get('items.layout', 'default');
 			this.$('[data-layout="' + itemsLayout + '"]').addClass('jw--layout-btn__active');
 			this.$('input[name="viewMode"][value="' + viewMode + '"]').prop('checked', true);
+
+			if (jQuery('[data-application="k2"]').hasClass('open--sidebar')) {
+				this.$('aside').css('transition', 'none').addClass('jw--sidebar__open');
+			}
 		},
 
 		filter : function(event) {
@@ -142,6 +150,11 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session', 'tex
 			} else {
 				this.searchResults.reset();
 			}
+		},
+		toggleSidebar : function(event) {
+			event.preventDefault();
+			jQuery('[data-application="k2"]').toggleClass('open--sidebar');
+			this.$('aside').css('transition', '').toggleClass('jw--sidebar__open');
 		}
 	});
 
