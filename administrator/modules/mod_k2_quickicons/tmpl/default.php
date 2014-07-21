@@ -37,23 +37,7 @@ defined('_JEXEC') or die ; ?>
 	    </a>
     </div>
   </div>
-	<div class="icon-wrapper">
-    <div class="icon">
-	    <a href="<?php echo JRoute::_('index.php?option=com_k2#items'); ?>">
-		    <img alt="<?php echo JText::_('K2_FEATURED_ITEMS'); ?>" src="<?php echo JURI::root(true); ?>/media/k2/assets/images/dashboard/items-featured.png" />
-		    <span><?php echo JText::_('K2_FEATURED_ITEMS'); ?></span>
-	    </a>
-    </div>
-  </div>
-  <div class="icon-wrapper">
-    <div class="icon">
-	    <a href="<?php echo JRoute::_('index.php?option=com_k2#items'); ?>">
-		    <img alt="<?php echo JText::_('K2_TRASHED_ITEMS'); ?>" src="<?php echo JURI::root(true); ?>/media/k2/assets/images/dashboard/items-trashed.png" />
-		    <span><?php echo JText::_('K2_TRASHED_ITEMS'); ?></span>
-	    </a>
-    </div>
-  </div>
-	<div class="icon-wrapper">
+<div class="icon-wrapper">
     <div class="icon">
 	    <a href="<?php echo JRoute::_('index.php?option=com_k2#categories'); ?>">
 		    <img alt="<?php echo JText::_('K2_CATEGORIES'); ?>" src="<?php echo JURI::root(true); ?>/media/k2/assets/images/dashboard/categories.png" />
@@ -61,15 +45,7 @@ defined('_JEXEC') or die ; ?>
 	    </a>
     </div>
   </div>
-	<div class="icon-wrapper">
-    <div class="icon">
-	    <a href="<?php echo JRoute::_('index.php?option=com_k2#categories'); ?>">
-		    <img alt="<?php echo JText::_('K2_TRASHED_CATEGORIES'); ?>" src="<?php echo JURI::root(true); ?>/media/k2/assets/images/dashboard/categories-trashed.png" />
-		    <span><?php echo JText::_('K2_TRASHED_CATEGORIES'); ?></span>
-	    </a>
-    </div>
-  </div>
-	<?php if(!$componentParams->get('lockTags') || $user->authorise('core.admin', 'com_k2')): ?>
+	<?php if($user->authorise('k2.tags.manage', 'com_k2')): ?>
 	<div class="icon-wrapper">
     <div class="icon">
 	    <a href="<?php echo JRoute::_('index.php?option=com_k2#tags'); ?>">
