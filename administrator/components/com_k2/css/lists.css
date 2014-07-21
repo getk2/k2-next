@@ -32,24 +32,33 @@ table.jw--listed--items { width: 100%; font-size: 13px; }
 	.jw--cat a { font-weight: 500; padding-right: 5px; }
 	.jw--listed--items .jw--cat > li { border-bottom: 1px solid #dbdcdc; white-space: nowrap; }
 		.jw--listed--items .jw--cat li { word-break: break-all; }
-		
+	
+	/* reset all paddings */
+	.jw--listed--items__cat ul li { padding: 0; }
+	.jw--listed--items__cat .columns { padding: 15px 0; }
+	.jw--listed--items__cat	li.k2SortingPlaceholder { height: 48px; }
+	
 	/* Subcategory layout */
-	.jw--listed--items ul.jw--subcat { border: 0;  }
-			.jw--cat > li > ul.jw--subcat { /* padding-left: 15px; */ }
+	.jw--listed--items ul.jw--subcat { border: 0; }
+		/* tree view */
+		ul.jw--subcat .jw--cat--title { padding-left: 15px; }
+			ul.jw--subcat ul .jw--cat--title { padding-left: 30px; }
+				ul.jw--subcat ul ul .jw--cat--title { padding-left: 45px; }
+					ul.jw--subcat ul ul ul .jw--cat--title { padding-left: 60px; }
 		
-		.jw--listed--items ul.jw--subcat > li { /*padding-left: 20px; */ padding-bottom: 0; background: #dbdcdc; }
-		.jw--listed--items ul.jw--subcat li.placeholder,
-		.jw--listed--items ul.jw--subcat li.k2SortingPlaceholder { margin-left: 20px!important; }
-		.jw--listed--items ul.jw--subcat li:first-child { margin-top: 15px; }
+		.jw--listed--items ul.jw--subcat > li {  background: #dbdcdc; }
+		.jw--listed--items ul.jw--subcat li.placeholder, .jw--listed--items ul.jw--subcat li.k2SortingPlaceholder { margin-left: 20px!important; }
+		
+		/* third level */
 		.jw--listed--items ul.jw--subcat ul li { background: #cdcdcd; padding-bottom: 0; }
+			/* fourth */
 			.jw--listed--items ul.jw--subcat ul ul li { background: #c1c1c1; }
 			/* Five levels should be enough */
 			.jw--listed--items ul.jw--subcat ul ul ul li { background: #b1b1b1; }
 			
 		/* Resets and further down */
-		.jw--listed--items ul.jw--subcat ul { margin-top: 15px; width: 100%; float: left; clear: both; }
+		.jw--listed--items ul.jw--subcat ul { width: 100%; float: left; clear: both; }
 		.jw--listed--items ul.jw--subcat ul li:first-child { margin-top: 0; }
-
 		
 	/* sortable layouts */
 	.jw--listed--items .fa-bars{ opacity: 0.5; }
