@@ -2,11 +2,11 @@
 	<ul class="jw--scrollspymenu">
 		<% var index = 0; _.each(form, function(fields, name) { %>
 		<li>	
-			<a href="#" class="jw--scroll jw--scroll__primary" id="jw--setting-<%= index %>"><%= l(name) %></a>	
+			<a href="#jw--setting-<%= index %>" class="jw--scroll jw--scroll__primary"><%= l(name) %></a>	
 			<% var indextwo = 0; _.each(fields, function(field) { %>
 			
 			<% if(field.label == null && field.input !== null && field.input !== '<h4>Advanced</h4>'){ %>
-			<a href="#" class="jw--scroll jw--scroll__sec" id="jw--settingtitle-<%= indextwo %>">
+			<a href="#jw--settingtitle-<%= indextwo %>" class="jw--scroll jw--scroll__sec">
 				<%= field.input %>
 			</a>
 			<% } %>
