@@ -132,7 +132,9 @@ jQuery(document).ready(function() {
 	// Inline editing. Don't use Backbone, we can do it with a few lines of js
 	var elements = jQuery('[data-k2-editable]');
 	elements.prop('contenteditable', true);
-	CKEDITOR.disableAutoInline = true;
+	if(elements.length > 0) {
+		CKEDITOR.disableAutoInline = true;
+	}
 	elements.each(function() {
 		if(jQuery(this).data('k2-editable') != 'title') {
 			CKEDITOR.inline(this);
