@@ -124,7 +124,6 @@
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="" type="k2header" default="K2_ADVANCED" label="" description=""/>
 			<field name="catItemK2Plugins" type="radio" default="" label="K2_ENABLE_K2_PLUGINS" description="">
 				<option value="">K2_INHERIT_FROM_CATEGORY</option>
 				<option value="0">K2_NO</option>
@@ -351,7 +350,6 @@
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="" type="k2header" default="K2_ADVANCED" label="" description=""/>
 			<field name="itemK2Plugins" type="radio" default="" label="K2_ENABLE_K2_PLUGINS" description="">
 				<option value="">K2_INHERIT_FROM_CATEGORY</option>
 				<option value="0">K2_NO</option>
