@@ -62,10 +62,13 @@
 
 	// resetting the filters
 	K2Container.on('click', '#jw--filters--reset', function() {
-		console.log('clicked');
 		$('.jw--filter .jw--radio').removeClass('jw--radio__checked');
 		$('.jw--filter .jw--radio[for="state_0"]').addClass('jw--radio__checked');
 		$('.jw--filter .jw--radio[for="featured_0"]').addClass('jw--radio__checked');
 	});
-
+	
+	K2Container.on('click', '.jw--main--menu li.jw--haschild', function() {
+		$(this).toggleClass('jw--activechild');
+		$(this).children('ul').toggleClass('jw--visible');
+	});
 })(jQuery);
