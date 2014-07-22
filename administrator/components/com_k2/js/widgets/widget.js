@@ -399,8 +399,9 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 
 				if (lastId !== id) {
 					lastId = id;
+
 					// Set/remove active class
-					menuItems.removeClass('active').end().filter('[href=#' + id + ']').addClass('active');
+					menuItems.removeClass('active').filter('[href="#' + id + '"]').addClass('active');
 				}
 			});
 
