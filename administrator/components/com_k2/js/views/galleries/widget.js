@@ -1,4 +1,4 @@
-define(['text!layouts/galleries/widget.html', 'text!layouts/galleries/add.html', 'text!layouts/galleries/preview.html', 'widgets/widget', 'dispatcher', 'widgets/sortable/jquery-sortable-min'], function(widgetTemplate, addTemplate, previewTemplate, K2Widget, K2Dispatcher) {'use strict';
+define(['text!layouts/galleries/widget.html', 'text!layouts/galleries/add.html', 'text!layouts/galleries/preview.html', 'widgets/widget', 'dispatcher', 'widgets/sortable/jquery-sortable-min', 'widgets/magnific/jquery.magnific-popup.min', 'css!widgets/magnific/magnific-popup.css'], function(widgetTemplate, addTemplate, previewTemplate, K2Widget, K2Dispatcher) {'use strict';
 
 	// Model
 	var Gallery = Backbone.Model.extend({
@@ -9,7 +9,8 @@ define(['text!layouts/galleries/widget.html', 'text!layouts/galleries/add.html',
 			cid : null,
 			upload : null,
 			url : null,
-			remove : 0
+			remove : 0,
+			itemId : null
 		}
 	});
 
@@ -29,7 +30,8 @@ define(['text!layouts/galleries/widget.html', 'text!layouts/galleries/add.html',
 			}
 		},
 		events : {
-			'click [data-action="remove"]' : 'removeGallery'
+			'click [data-action="remove"]' : 'removeGallery',
+			'click [data-action="sig"]' : 'openSig'
 		},
 		modelEvents : {
 			'change' : 'render'
@@ -52,6 +54,16 @@ define(['text!layouts/galleries/widget.html', 'text!layouts/galleries/add.html',
 		removeGallery : function(event) {
 			event.preventDefault();
 			this.model.set('remove', 1);
+		},
+		openSig : function(event) {
+			event.preventDefault();
+			var src = jQuery(event.currentTarget).attr('href');
+			jQuery.magnificPopup.open({
+				items : {
+					src : src
+				},
+				type : 'iframe'
+			});
 		},
 		setGalleryFromDropBox : function(url) {
 			var data = {};
@@ -98,8 +110,9 @@ define(['text!layouts/galleries/widget.html', 'text!layouts/galleries/add.html',
 			'click [data-action="add"]' : 'addGallery'
 		},
 		initialize : function(options) {
+			this.itemId = options.itemId;
 			this.model = new Backbone.Model({
-				enabled : options.enabled
+				enabled : options.enabled,
 			});
 			this.existingGalleriesCollection = new Galleries(options.data);
 			this.existingGalleriesView = new K2ViewGalleries({
@@ -120,7 +133,8 @@ define(['text!layouts/galleries/widget.html', 'text!layouts/galleries/add.html',
 		addGallery : function(event) {
 			event.preventDefault();
 			this.newGalleriesCollection.add({
-				isNew : true
+				isNew : true,
+				itemId : this.itemId
 			});
 		}
 	});
