@@ -283,6 +283,7 @@ class K2ViewItems extends K2View
 	protected function setBatchActions()
 	{
 		K2Response::addBatchAction('category', 'K2_CATEGORY', K2HelperHTML::categories('catid', null, 'K2_LEAVE_UNCHANGED'));
+		K2Response::addBatchAction('author', 'K2_AUTHOR', '<input data-widget="user" data-null="'.JText::_('K2_LEAVE_UNCHANGED').'" data-min="0" data-placeholder="'.JText::_('K2_LEAVE_UNCHANGED').'" type="hidden" name="created_by" value="" />');
 		K2Response::addBatchAction('access', 'K2_ACCESS', JHtml::_('access.level', 'access', null, '', array(JHtml::_('select.option', '', JText::_('K2_LEAVE_UNCHANGED')))));
 		K2Response::addBatchAction('language', 'K2_LANGUAGE', K2HelperHTML::language('language', '', 'K2_LEAVE_UNCHANGED'));
 	}

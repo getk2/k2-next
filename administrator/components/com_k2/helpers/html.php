@@ -81,7 +81,7 @@ class K2HelperHTML
 		$options = array();
 		if ($none)
 		{
-			$options[] = JHtml::_('select.option', '0', JText::_($none));
+			$options[] = JHtml::_('select.option', '', JText::_($none));
 		}
 		if ($inheritance)
 		{

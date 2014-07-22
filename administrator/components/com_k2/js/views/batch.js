@@ -1,4 +1,4 @@
-define(['marionette', 'dispatcher', 'text!layouts/batch.html'], function(Marionette, K2Dispatcher, template) {'use strict';
+define(['marionette', 'dispatcher', 'text!layouts/batch.html', 'widgets/widget'], function(Marionette, K2Dispatcher, template, K2Widget) {'use strict';
 	var K2ViewBatch = Marionette.ItemView.extend({
 		template : _.template(template),
 		events : {
@@ -20,11 +20,14 @@ define(['marionette', 'dispatcher', 'text!layouts/batch.html'], function(Marione
 				});
 			}, this));
 		},
+		onDomRefresh : function() {
+			K2Widget.updateEvents(this.$el);
+		},
 		batch : function(event) {
 			event.preventDefault();
 			var rows = jQuery('input[data-action="toggle"]:checked').serializeArray();
 			var states = {};
-			this.$('select').each(function() {
+			this.$('select, input').each(function() {
 				states[jQuery(this).attr('name')] = jQuery(this).val();
 			});
 			var mode = this.$('input[name="batchMode"]:checked').val();
