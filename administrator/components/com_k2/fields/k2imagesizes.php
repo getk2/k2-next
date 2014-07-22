@@ -40,13 +40,13 @@ class JFormFieldK2ImageSizes extends JFormField
 			}
 			if (count($sizes))
 			{
-				$output .= '<ul>';
+				$output .= '<ul class="jw--imagesize">';
 				foreach ($sizes as $key => $size)
 				{
 					$value = isset($values[$size->id]) ? $values[$size->id] : '';
 					$output .= '<li>
 					<label>'.$size->name.'</label> 
-					<input type="number" placeholder="'.htmlspecialchars(JText::_('K2_CURRENT_VALUE').' '.$size->width).'px" value="'.$value.'" name="'.$this->name.'['.$key.'][width]" /> px
+					<input type="number" placeholder="'.htmlspecialchars(JText::_('K2_CURRENT_VALUE').' '.$size->width).'px" value="'.$value.'" name="'.$this->name.'['.$key.'][width]" /> <label>px</label>
 					<input type="hidden" value="'.$size->id.'" name="'.$this->name.'['.$key.'][id]" />
 					<input type="hidden" value="'.$size->name.'" name="'.$this->name.'['.$key.'][name]" />
 					<input type="hidden" value="'.$size->quality.'" name="'.$this->name.'['.$key.'][quality]" />
@@ -61,14 +61,25 @@ class JFormFieldK2ImageSizes extends JFormField
 		{
 			$output .= '
 			<div id="'.$this->id.'">
-			<span class="k2ImageSizesPlaceholder" style="display:none;">
-			<input disabled="disabled" type="text" placeholder="'.htmlspecialchars(JText::_('K2_ID')).'" name="'.$this->name.'[COUNTER][id]" value="" />
-			<input disabled="disabled" type="text" placeholder="'.htmlspecialchars(JText::_('K2_NAME')).'" name="'.$this->name.'[COUNTER][name]" value="" />
-			<input disabled="disabled" type="number" placeholder="'.htmlspecialchars(JText::_('K2_WIDTH')).'" name="'.$this->name.'[COUNTER][width]" size="4" maxlength="4" value="" />px
-			<input disabled="disabled" type="number" placeholder="'.htmlspecialchars(JText::_('K2_QUALITY')).'" name="'.$this->name.'[COUNTER][quality]" size="3" maxlength="3" value="" />%
-			<button class="k2ImageSizesRemove">'.JText::_('K2_REMOVE').'</button>
-			</span>
-			<ul>';
+			<div class="ov-hidden jw--imgplaceholder k2ImageSizesPlaceholder" style="display:none;">
+				<div class="jw--setting--field__small ov-hidden">
+					<input class="left jw--sizeid" disabled="disabled" type="text" placeholder="'.htmlspecialchars(JText::_('K2_ID')).'" name="'.$this->name.'[COUNTER][id]" value="" />
+					<input class="left" disabled="disabled" type="text" placeholder="'.htmlspecialchars(JText::_('K2_NAME')).'" name="'.$this->name.'[COUNTER][name]" value="" />
+				</div>
+				
+				<div class="jw--setting--field__small ov-hidden">
+					<input class="left" disabled="disabled" type="number" placeholder="'.htmlspecialchars(JText::_('K2_WIDTH')).'" name="'.$this->name.'[COUNTER][width]" size="4" maxlength="4" value="" /> 
+					<label class="left">px</label>
+					
+					<input class="left" disabled="disabled" type="number" placeholder="'.htmlspecialchars(JText::_('K2_QUALITY')).'" name="'.$this->name.'[COUNTER][quality]" size="3" maxlength="3" value="" /> 
+					<label class="left">%</label>
+					
+					<div class="clr"></div>
+					<button class="jw--imgremove k2ImageSizesRemove"><i class="fa fa-ban"></i> <span class="visuallyhidden>"'.JText::_('K2_REMOVE').'</span></button>
+
+				</div>
+			</div>
+			<ul class="jw--imagesize">';
 			$counter = 0;
 			if ($this->value)
 			{
@@ -79,17 +90,26 @@ class JFormFieldK2ImageSizes extends JFormField
 					$counter++;
 					$output .= '
 					<li>
-					<input type="text" placeholder="'.htmlspecialchars(JText::_('K2_ID')).'" name="'.$this->name.'['.$counter.'][id]" value="'.htmlspecialchars($entry->id).'" />
-					<input type="text" placeholder="'.htmlspecialchars(JText::_('K2_NAME')).'" name="'.$this->name.'['.$counter.'][name]" value="'.htmlspecialchars($entry->name).'" />
-					<input type="number" placeholder="'.htmlspecialchars(JText::_('K2_WIDTH')).'" name="'.$this->name.'['.$counter.'][width]" size="4" maxlength="4" value="'.(int)$entry->width.'" />px
-					<input type="number" placeholder="'.htmlspecialchars(JText::_('K2_QUALITY')).'" name="'.$this->name.'['.$counter.'][quality]" size="3" maxlength="3" value="'.(int)$entry->quality.'" />%
-					<button class="k2ImageSizesRemove">'.JText::_('K2_REMOVE').'</button>
+						<div class="ov-hidden jw--imgplaceholder">
+							<div class="jw--setting--field__small ov-hidden">
+								<input class="left jw--sizeid" type="text" placeholder="'.htmlspecialchars(JText::_('K2_ID')).'" name="'.$this->name.'['.$counter.'][id]" value="'.htmlspecialchars($entry->id).'" />
+								<input class="left" type="text" placeholder="'.htmlspecialchars(JText::_('K2_NAME')).'" name="'.$this->name.'['.$counter.'][name]" value="'.htmlspecialchars($entry->name).'" />
+							</div>
+							
+							<input class="left" type="number" placeholder="'.htmlspecialchars(JText::_('K2_WIDTH')).'" name="'.$this->name.'['.$counter.'][width]" size="4" maxlength="4" value="'.(int)$entry->width.'" />
+							<label class="left">px</label>
+							
+							<input class="left" type="number" placeholder="'.htmlspecialchars(JText::_('K2_QUALITY')).'" name="'.$this->name.'['.$counter.'][quality]" size="3" maxlength="3" value="'.(int)$entry->quality.'" /> 
+							<label class="left">%</label>
+							
+							<button class="jw--imgremove k2ImageSizesRemove"><i class="fa fa-ban"></i> <span class="visuallyhidden>"'.JText::_('K2_REMOVE').'</span></button>
+						</div>
 					</li>';
 				}
 			}
 
 			$output .= '</ul>
-			<button class="k2ImageSizesAdd">'.JText::_('K2_ADD').'</button>
+			<button class="jw--btn k2ImageSizesAdd">'.JText::_('K2_ADD').'</button>
 			<input type="hidden" name="counter" class="k2ImageSizesCounter" value="'.$counter.'" />
 			</div>
 			<script type="text/javascript">
