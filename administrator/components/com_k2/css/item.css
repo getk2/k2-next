@@ -44,7 +44,7 @@ ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; position: re
 	.jw--right--row { margin-left: 20px; }
 	.jw--item--fld {  }
 	button.push--left { margin-left: 115px; }
-		.jw--item--fld input[type="text"] { min-width: 100%; max-width: 80px; border-radius: 3px; padding: 10px; height: 40px; line-height: 40px; line-height: 1; display: block; border: 1px solid #d4d7d9; margin: 0; }
+		.jw--item--fld input[type="text"] { min-width: 100%; border-radius: 3px; padding: 10px; height: 40px; line-height: 40px; line-height: 1; display: block; border: 1px solid #d4d7d9; margin: 0; }
 		
 		/* different for styling for other elements */
 		.jw--item--fld__title input[type="text"] { padding: 17px 10px; height: auto; }
@@ -54,7 +54,7 @@ ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; position: re
 		.jw--item--fld .select2-container { border-radius: 3px; border: 1px solid #d4d7d9; position: static; min-height: 40px; }
 		.jw--item--fld .select2-container .select2-choice { height: 40px; line-height: 40px; }
 		
-		.jw--item--fld select { height: 40px; line-height: 40px; width: 164px; background: #f0f2f2; box-shadow: 0 1px 1px rgba(65,64,66,.14), inset 0 1px 0 #fff; margin: 0; }
+		.jw--item--fld select { height: 40px; line-height: 40px; width: 206px; background: #f0f2f2; box-shadow: 0 1px 1px rgba(65,64,66,.14), inset 0 1px 0 #fff; margin: 0; }
 		.jw--tag--caption { padding-top: 5px; font-weight: 700; color: #abacad; font-size: 12px; }
 
 	.jw--content--label { font-size: 18px; font-weight: 700; color: #58595b; margin-bottom: 15px; margin-top: 10px; }

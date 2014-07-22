@@ -5,3 +5,6 @@
 	.jw--msg .alert.alert-message { background:#3fa800;}
 	.jw--msg .alert.alert-error {background:#bd362f;}
 	.jw--msg .alert.alert-notice {background:#fff3b2; color: #4e4c49; }
+
+/* loading message */
+.k2-loading:after { content: ""; display: block; position: fixed; top: 50%; left: 50%; width: 200px; height: 200px; margin: -100px 0 0 -100px; z-index: 1031; bottom: 0; background: rgba(0,0,0,.65) url(img/preloader-large.gif) 50% 50% no-repeat; border-radius: 5px; }
