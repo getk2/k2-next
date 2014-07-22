@@ -220,6 +220,8 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 					}, this)
 				});
 				this.expanded = true;
+			} else {
+				this.$('[data-region="category-data"]').toggle();
 			}
 		},
 		more : function(event) {
