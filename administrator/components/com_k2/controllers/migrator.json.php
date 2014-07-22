@@ -134,7 +134,7 @@ class K2ControllerMigrator extends JControllerLegacy
 			}
 			$query = $db->getQuery(true);
 			$query->insert($db->quoteName('#__k2_attachments'));
-			$query->values((int)$attachment->id.','.(int)$attachment->itemID.','.$db->quote($attachment->title).','.$db->quote($attachment->titleAttribute).','.$db->quote($attachment->filename).','.$db->quote('').','.(int)$attachment->hits);
+			$query->values((int)$attachment->id.','.(int)$attachment->itemID.','.$db->quote($attachment->title).','.$db->quote($attachment->titleAttribute).','.$db->quote($attachment->filename).','.$db->quote('').',0,'.(int)$attachment->hits);
 			$db->setQuery($query);
 			$db->execute();
 			$this->response->id = $attachment->id;
@@ -469,7 +469,7 @@ class K2ControllerMigrator extends JControllerLegacy
 
 			$query = $db->getQuery(true);
 			$query->insert($db->quoteName('#__k2_extra_fields_groups'));
-			$query->values((int)$group->id.','.$db->quote($group->name).','.$db->quote('item').','.$db->quote($assignments));
+			$query->values((int)$group->id.','.$db->quote($group->name).','.$db->quote('item').','.$db->quote($assignments).', 0');
 			$db->setQuery($query);
 			$db->execute();
 			$this->response->id = $group->id;
