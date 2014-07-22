@@ -47,7 +47,7 @@ class K2ViewItem extends K2View
 		$this->item->events = $this->item->getEvents('com_k2.item', $this->params, 0);
 
 		// Image modal
-		JHtml::_('behavior.modal', 'a.k2Μodal');
+		JHtml::_('behavior.modal', 'a.k2Modal');
 
 		// Load head data for comments and inline editing if required
 		if (($this->item->canEdit) || ($this->params->get('itemComments') && $this->params->get('comments') && empty($this->item->events->K2CommentsCounter) && empty($this->item->events->K2CommentsBlock)))
