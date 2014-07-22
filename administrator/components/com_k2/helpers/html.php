@@ -81,7 +81,8 @@ class K2HelperHTML
 		$options = array();
 		if ($none)
 		{
-			$options[] = JHtml::_('select.option', '', JText::_($none));
+			$value = $none === 'K2_LEAVE_UNCHANGED' ? '' : '0';
+			$options[] = JHtml::_('select.option', $value, JText::_($none));
 		}
 		if ($inheritance)
 		{
