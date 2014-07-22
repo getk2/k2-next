@@ -11,7 +11,7 @@
 
 	/* common */
 	ul.jw--main--menu .fa { color: #fff; color: rgba(255,255,255,.5); vertical-align: middle; font-size: 23px; margin-right: 5px; }
-		ul.jw--main--menu ul .fa { margin-right: 15px; }
+		ul.jw--main--menu ul .fa { min-width: 25px; text-align: center; margin-right: 15px; }
 	ul.jw--main--menu a, ul.jw--main--menu .jw--sep { font-size: 18px; color: #fff; display: inline-block; }
 
 	/* second level */

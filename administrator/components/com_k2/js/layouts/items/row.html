@@ -11,9 +11,9 @@
 		<% if(canEdit) { %>
 			<% if(isLocked) { %>
 				<% if(canUnlock) { %>
-					<button data-action="unlock" title="<%- lockedBy %> <%- lockedAt %>">Locked</button>
+					<button data-action="unlock" title="<%- lockedBy %> <%- lockedAt %>"><i class="fa fa-unlock"></i> <i class="vissuallyhidden"><%= l('K2_UNLOCK') %></i></button>
 				<% } else { %>
-					<span title="<%- lockedBy %> <%- lockedAt %>">Locked</span>
+					<span title="<%- lockedBy %> <%- lockedAt %>"><i class="fa fa-lock"></i> <i class="vissuallyhidden"><%= l('K2_LOCKED') %></i></span>
 				<% } %>
 				<%= title %>
 			<% } else { %>
