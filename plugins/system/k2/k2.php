@@ -95,7 +95,8 @@ class PlgSystemK2 extends JPlugin
 		}
 
 		// Throw an error in JSON format when the session has expired to catch the Joomla! invalid redirect to com_login in JSON format
-		if ($user->get('guest') && K2_EDIT_MODE && $format == 'json')
+		$isCommentsRequest = $application->isSite() && K2_EDIT_MODE && $task == 'comments.sync';
+		if ($user->get('guest') && K2_EDIT_MODE && $format == 'json' && !$isCommentsRequest)
 		{
 			K2Response::throwError(JText::_('K2_SESSION_EXPIRED'), 500);
 		}
