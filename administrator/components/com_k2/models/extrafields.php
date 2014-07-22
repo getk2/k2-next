@@ -190,6 +190,9 @@ class K2ModelExtraFields extends K2Model
 	 */
 	protected function onBeforeSave(&$data, $table)
 	{
+		// Get database
+		$db = $this->getDBO();
+		
 		// User
 		$user = JFactory::getUser();
 
