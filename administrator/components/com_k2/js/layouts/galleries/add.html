@@ -2,16 +2,21 @@
 <div class="jw--attachments">
 	<% if(remove == 0) { %>
 	<div class="jw--element--row jw--attachment--single">
+					
 		<div class="jw--element--single">
 			
-			<a data-action="sig" href="index.php?option=com_sigpro&view=galleries&task=create&newFolder=<%- itemId %>&type=k2&tmpl=component"><%= l('K2_COM_BE_ITEM_SIGPRO_UPLOAD') %></a> <i>(<%= l('K2_COM_BE_ITEM_SIGPRO_UPLOAD_NOTE') %>)</i>
-			<input name="sigProFolder" type="hidden" value="<%-itemId %>" />
-		
 			<div class="text-right left jw--item--lbl">
 		    	<label><%= l('K2_FILE') %></label>
 		    </div>
 			
 			<div class="ov-hidden jw--element--single">
+			
+				<div class="jw--element--single">
+					<a class="jw--btn jw--file-fakebtn" data-action="sig" href="index.php?option=com_sigpro&view=galleries&task=create&newFolder=<%- itemId %>&type=k2&tmpl=component"><i class="fa fa-image"></i> <%= l('K2_COM_BE_ITEM_SIGPRO_UPLOAD') %></a> 
+					<span class="jw--gallery--text">(<%= l('K2_COM_BE_ITEM_SIGPRO_UPLOAD_NOTE') %>)</span>
+					<input name="sigProFolder" type="hidden" value="<%-itemId %>" />
+				</div>
+
 				<div class="jw--element--single jw--file--btn">
 				      <input type="file" name="archive" data-widget="uploader" data-url="index.php?option=com_k2&task=galleries.upload&upload=<%- upload %>&format=json" data-callback="galleries:upload:<%- cid %>"  />
 					<span class="jw--btn jw--file-fakebtn">
