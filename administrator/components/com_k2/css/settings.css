@@ -8,7 +8,8 @@
 	.jw--scrollspymenu li a.jw--scroll__primary { font-size: 16px; color: #00afec; padding: 14px 28px; }
 	.jw--scrollspymenu li a.jw--scroll__sec { font-size: 13px; padding: 12px 28px; }
 		.jw--scrollspymenu li a.jw--scroll__sec h4 { margin: 0; padding: 0; line-height: 1.25; font-size: 13px; }
-		.jw--scrollspymenu li a.jw--scroll__sec:hover { background: #f7f7f7; }
+		.jw--scrollspymenu li a.jw--scroll__sec:hover,
+		.jw--scrollspymenu li a.active { background: #f7f7f7; }
 
 /* ------------------------------------------------------------------
 [Settings form] - global setting form */

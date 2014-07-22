@@ -3,14 +3,15 @@
 		<% var index = 0; _.each(form, function(fields, name) { %>
 		<li>	
 			<a href="#jw--setting-<%= index %>" class="jw--scroll jw--scroll__primary"><%= l(name) %></a>	
-			<% var indextwo = 0; _.each(fields, function(field) { %>
 			
+			<% var indextwo = 0; _.each(fields, function(field) { %>
 			<% if(field.label == null && field.input !== null){ %>
-			<a href="#jw--settingtitle-<%= indextwo %>" class="jw--scroll jw--scroll__sec">
+			<a href="#jw--settingtitle-<%= index %><%= indextwo %>" class="jw--scroll jw--scroll__sec">
 				<%= field.input %>
 			</a>
 			<% } %>
 			<% indextwo++; }); %>	
+			
 		</li>
 		<% index++; }); %>
 	</ul>
@@ -30,7 +31,7 @@
             <%= field.input %>
         </div> 
         <% } else { %>
-        <div class="jw--setting--title" id="jw--settingtitle-<%= indextwo %>">
+        <div class="jw--setting--title" id="jw--settingtitle-<%= index %><%= indextwo %>">
         	<%= field.input %>
         </div>
         <% } %>
