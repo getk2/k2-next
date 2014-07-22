@@ -168,8 +168,8 @@
 					<li><a href="#"><i class="fa fa-image"></i> Image</a></li>
 					<li><a href="#"><i class="fa fa-files-o"></i> Galleries</a></li>
 					<li><a href="#"><i class="fa fa-film"></i> Media</a></li>
-					<li><a href="#"><i class="fa fa-gear"></i> Extra Fields</a></li>
 					<li><a href="#"><i class="fa fa-link"></i> Attachments</a></li>
+					<li><a href="#"><i class="fa fa-gear"></i> Extra Fields</a></li>
 				</ul>
 					
 				<div class="jw--pane jw--pane__content" data-role="tabs-content">
@@ -220,6 +220,17 @@
 							<% }); %>
 						</div>
 					</div>
+
+					<!-- Attachments -->
+					<div class="jw--editor--tab jw--sortable--items">
+						<div class="jw--editor--cnt">
+						    <div data-region="item-attachments"></div>
+						    <% _.each(form.k2Plugins['items-attachments'], function(field) { %>
+						    	<%= field.label %>
+								<%= field.input %>
+							<% }); %>
+						</div>
+					</div>	
 				
 				    <!-- Extra Fields -->
 				    <div class="jw--editor--tab">
@@ -233,16 +244,6 @@
 						</div>
 					</div>
 		
-					<!-- Attachments -->
-					<div class="jw--editor--tab jw--sortable--items">
-						<div class="jw--editor--cnt">
-						    <div data-region="item-attachments"></div>
-						    <% _.each(form.k2Plugins['items-attachments'], function(field) { %>
-						    	<%= field.label %>
-								<%= field.input %>
-							<% }); %>
-						</div>
-					</div>	
 				</div>
 				
 		    </div>
