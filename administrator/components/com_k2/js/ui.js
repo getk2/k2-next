@@ -67,8 +67,17 @@
 		$('.jw--filter .jw--radio[for="featured_0"]').addClass('jw--radio__checked');
 	});
 	
+	// Make sure the menu works with hovering and clicking
 	K2Container.on('click', '.jw--main--menu li.jw--haschild', function() {
 		$(this).toggleClass('jw--activechild');
 		$(this).children('ul').toggleClass('jw--visible');
+	});
+	
+	// Close the sidebar if the user clicks on the info/settings view
+	K2Container.on('click', '.jw--sidebar--header a', function() {
+		if ($('.jw--sidebar').hasClass('jw--sidebar__open')) {
+			$('.jw--sidebar').removeClass('jw--sidebar__open');
+			K2Container.removeClass('open--sidebar');
+		}		
 	});
 })(jQuery);
