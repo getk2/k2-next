@@ -69,7 +69,7 @@ define(['marionette', 'text!layouts/toolbar.html', 'dispatcher', 'widgets/widget
 
 		showToolbar : function() {
 			this.$('[data-name="counter"]').text(jQuery('input[data-action="toggle"]:checked').length);
-			jQuery('.jw').toggleClass('active--toolbar');
+			jQuery('.jw').addClass('active--toolbar');
 			this.$('[data-region="toolbar"]').show();
 		},
 
