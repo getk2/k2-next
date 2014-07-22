@@ -202,7 +202,7 @@ class K2Resource
 		}
 
 		// Checked out
-		if (property_exists($this, 'checked_out') && K2_EDIT_MODE)
+		if (property_exists($this, 'checked_out') && defined('K2_EDIT_MODE') && K2_EDIT_MODE)
 		{
 			$this->isLocked = false;
 			$user = JFactory::getUser();
