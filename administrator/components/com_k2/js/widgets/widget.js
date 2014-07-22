@@ -355,6 +355,55 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 			} else {
 				element.remove();
 			}
+		},
+
+		scrollspymenu : function(element, options) {
+			var defaults = {
+				menuSelector : '.jw--scrollspymenu',
+				menuItemSelector : 'a',
+				offset : 155
+			};
+			jQuery.extend(defaults, options);
+			element.find(defaults.menuSelector).on('click', defaults.menuItemSelector, function(event) {
+				event.preventDefault();
+				var target = jQuery(this).attr('href'), offsetTop = 0;
+				if (target !== '#') {
+					offsetTop = jQuery(target).offset().top - defaults.offset;
+				}
+				jQuery('html, body').stop().animate({
+					scrollTop : offsetTop
+				}, 300);
+			});
+			var lastId;
+			var menuItems = element.find(defaults.menuSelector + ' ' + defaults.menuItemSelector);
+			var scrollItems = menuItems.map(function() {
+				var item = jQuery(jQuery(this).attr('href'));
+				if (item.length) {
+					return item;
+				}
+			});
+			jQuery(window).on('scroll', function() {
+
+				// Get container scroll position
+				var offset = jQuery(this).scrollTop() + 120;
+
+				// Get id of current scroll item
+				var current = scrollItems.map(function() {
+					if (jQuery(this).offset().top < offset)
+						return this;
+				});
+
+				// Get the id of the current element
+				current = current[current.length - 1];
+				var id = current && current.length ? current[0].id : '';
+
+				if (lastId !== id) {
+					lastId = id;
+					// Set/remove active class
+					menuItems.parent().removeClass('active').end().filter('[href=#' + id + ']').parent().addClass('active');
+				}
+			});
+
 		}
 	};
 	return K2Widget;
