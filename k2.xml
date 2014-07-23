@@ -72,7 +72,7 @@
 			<menu view="extrafields" link="option=com_k2#extrafields">K2_EXTRA_FIELDS</menu>
 			<menu view="extrafieldgroups" link="option=com_k2#extrafieldsgroups">K2_EXTRA_FIELD_GROUPS</menu>
 			<menu view="media" link="option=com_k2#media">K2_MEDIA_MANAGER</menu>
-			<menu view="info" link="option=com_k2#info">K2_INFORMATION</menu>
+			<menu view="info" link="option=com_k2#information">K2_INFORMATION</menu>
 		</submenu>
 		<files folder="administrator/components/com_k2">
 			<folder>classes</folder>
