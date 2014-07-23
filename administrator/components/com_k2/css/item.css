@@ -5,7 +5,7 @@
 
 /* Item form styling */
 .jw--form__item { position: relative; }
-#k2--id {position:absolute;right:0;top:3px;font-size:18px;font-weight:normal;padding:21px 30px;color:#0091ff;}
+#k2--id {position:absolute;right:0;top:3px;font-size:18px;font-weight:normal;padding:21px 30px;color:#0091ff;z-index: 9;}
 #k2--id strong {color:#a8c5dd;}
 
 
