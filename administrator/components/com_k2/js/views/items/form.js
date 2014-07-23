@@ -57,7 +57,8 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 			this.mediaView = new K2ViewMediaWidget({
 				enabled : this.model.get('allVideos'),
 				data : this.model.get('media'),
-				itemId : this.model.get('id') || this.model.get('tmpId')
+				itemId : this.model.get('id') || this.model.get('tmpId'),
+				providers : this.model.getForm().get('mediaProviders')
 			});
 
 			// Extra fields

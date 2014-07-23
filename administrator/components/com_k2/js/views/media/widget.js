@@ -41,7 +41,7 @@ define(['text!layouts/media/widget.html', 'text!layouts/media/add.html', 'text!l
 		modelEvents : {
 			'change' : 'render'
 		},
-		initialize : function() {
+		initialize : function(options) {
 			K2Dispatcher.on('media:select:' + this.model.cid, function(url) {
 				this.model.set('url', url);
 				this.model.set('upload', '');
@@ -57,10 +57,10 @@ define(['text!layouts/media/widget.html', 'text!layouts/media/add.html', 'text!l
 			if (!this.model.get('isNew')) {
 				this.$el.attr('data-role', 'sortable-media-row');
 			}
-
 		},
 		onDomRefresh : function() {
 			K2Widget.updateEvents(this.$el);
+			this.$('select[name="provider"]').attr('name', 'media[' + this.model.get('cid') + '][provider]');
 		},
 		removeMedia : function(event) {
 			event.preventDefault();
@@ -88,10 +88,10 @@ define(['text!layouts/media/widget.html', 'text!layouts/media/add.html', 'text!l
 
 	// List view
 	var K2ViewMedia = Marionette.CollectionView.extend({
-		itemView : K2ViewMediaRow,
 		initialize : function(options) {
 			this.sortable = options.sortable;
 		},
+		itemView : K2ViewMediaRow,
 		onRender : function() {
 			if (this.sortable) {
 				this.$el.attr('data-role', 'sortable-media');
@@ -115,6 +115,7 @@ define(['text!layouts/media/widget.html', 'text!layouts/media/add.html', 'text!l
 			'click [data-action="add"]' : 'addMedia'
 		},
 		initialize : function(options) {
+			this.providers = options.providers;
 			this.model = new Backbone.Model({
 				enabled : options.enabled
 			});
@@ -138,7 +139,8 @@ define(['text!layouts/media/widget.html', 'text!layouts/media/add.html', 'text!l
 		addMedia : function(event) {
 			event.preventDefault();
 			this.newMediaCollection.add({
-				isNew : true
+				isNew : true,
+				providers : this.providers
 			});
 		}
 	});
