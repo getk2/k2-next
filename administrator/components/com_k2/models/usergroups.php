@@ -55,8 +55,16 @@ class K2ModelUserGroups extends K2Model
 		$model->setState('list.start', $this->getState('limitstart'));
 		$model->setState('list.limit', $this->getState('limit'));
 
-		$input->set('filter_search', $this->getState('search'));
-		$model->setState('filter.search', $this->getState('search'));
+		if ($this->getState('id'))
+		{
+			$input->set('filter_search', 'id:'.$this->getState('id'));
+			$model->setState('filter.search', 'id:'.$this->getState('id'));
+		}
+		else
+		{
+			$input->set('filter_search', $this->getState('search'));
+			$model->setState('filter.search', $this->getState('search'));
+		}
 
 		$data = $model->getItems();
 
