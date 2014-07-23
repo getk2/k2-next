@@ -36,7 +36,10 @@ class K2ControllerMigrator extends JControllerLegacy
 		}
 		parent::__construct($config);
 
-		set_error_handler(array($this, 'error'));
+		set_error_handler(array(
+			$this,
+			'error'
+		));
 
 		$this->response = new stdClass;
 		$this->response->type = '';
@@ -60,7 +63,10 @@ class K2ControllerMigrator extends JControllerLegacy
 				$this->response->type = $type;
 				try
 				{
-					call_user_func(array($this, $type), $id);
+					call_user_func(array(
+						$this,
+						$type
+					), $id);
 				}
 				catch(Exception $exception)
 				{
@@ -221,7 +227,12 @@ class K2ControllerMigrator extends JControllerLegacy
 			$this->updateImageSizeParam($updatedParams, 'itemRelatedImageSize', '0');
 
 			$query = $db->getQuery(true);
-			$query->update($db->quoteName('#__k2_categories'))->set(array($db->quoteName('id').' = '.$newCategoryId, $db->quoteName('image').' = '.$db->quote($image), $db->quoteName('plugins').' = '.$db->quote($category->plugins), $db->quoteName('params').' = '.$db->quote($updatedParams->toString())))->where($db->quoteName('id').' = '.$lastInsertedId);
+			$query->update($db->quoteName('#__k2_categories'))->set(array(
+				$db->quoteName('id').' = '.$newCategoryId,
+				$db->quoteName('image').' = '.$db->quote($image),
+				$db->quoteName('plugins').' = '.$db->quote($category->plugins),
+				$db->quoteName('params').' = '.$db->quote($updatedParams->toString())
+			))->where($db->quoteName('id').' = '.$lastInsertedId);
 			$db->setQuery($query);
 			$db->execute();
 
@@ -323,6 +334,16 @@ class K2ControllerMigrator extends JControllerLegacy
 				{
 					$alias = 'extraField'.$field->id;
 				}
+			}
+
+			// Ensure alias is unique during upgrade
+			$query = $db->getQuery(true);
+			$query->select('COUNT(*)')->from($db->quoteName('#__k2_extra_fields'))->where($db->quoteName('alias').' = '.$db->quote($alias));
+			$db->setQuery($query);
+			$aliasTaken = (int)$db->loadResult();
+			if ($aliasTaken)
+			{
+				$alias .= '_'.uniqid();
 			}
 
 			if ($field->type == 'textfield')
@@ -821,7 +842,21 @@ class K2ControllerMigrator extends JControllerLegacy
 
 			$query = $db->getQuery(true);
 			$query->update($db->quoteName('#__k2_items'));
-			$query->set(array($db->quoteName('id').' = '.$item->id, $db->quoteName('image').' = '.$db->quote($image), $db->quoteName('media').' = '.$db->quote($media), $db->quoteName('tags').' = '.$db->quote($tags), $db->quoteName('attachments').' = '.$db->quote($attachments), $db->quoteName('galleries').' = '.$db->quote($galleries), $db->quoteName('extra_fields').' = '.$db->quote($extraFields), $db->quoteName('created').' = '.$db->quote($item->created), $db->quoteName('created_by').' = '.$db->quote($item->created_by), $db->quoteName('modified').' = '.$db->quote($item->modified), $db->quoteName('modified_by').' = '.$db->quote($item->modified_by), $db->quoteName('plugins').' = '.$db->quote($item->plugins), $db->quoteName('params').' = '.$db->quote($updatedParams->toString())))->where($db->quoteName('id').' = '.$lastInsertedId);
+			$query->set(array(
+				$db->quoteName('id').' = '.$item->id,
+				$db->quoteName('image').' = '.$db->quote($image),
+				$db->quoteName('media').' = '.$db->quote($media),
+				$db->quoteName('tags').' = '.$db->quote($tags),
+				$db->quoteName('attachments').' = '.$db->quote($attachments),
+				$db->quoteName('galleries').' = '.$db->quote($galleries),
+				$db->quoteName('extra_fields').' = '.$db->quote($extraFields),
+				$db->quoteName('created').' = '.$db->quote($item->created),
+				$db->quoteName('created_by').' = '.$db->quote($item->created_by),
+				$db->quoteName('modified').' = '.$db->quote($item->modified),
+				$db->quoteName('modified_by').' = '.$db->quote($item->modified_by),
+				$db->quoteName('plugins').' = '.$db->quote($item->plugins),
+				$db->quoteName('params').' = '.$db->quote($updatedParams->toString())
+			))->where($db->quoteName('id').' = '.$lastInsertedId);
 			$db->setQuery($query);
 			$db->execute();
 
@@ -992,7 +1027,13 @@ class K2ControllerMigrator extends JControllerLegacy
 		$db->execute();
 
 		// Modules
-		$modules = array('comments', 'content', 'tools', 'user', 'users');
+		$modules = array(
+			'comments',
+			'content',
+			'tools',
+			'user',
+			'users'
+		);
 		foreach ($modules as $module)
 		{
 			$query = $db->getQuery(true);
