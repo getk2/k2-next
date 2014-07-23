@@ -750,7 +750,7 @@
 		<field menu="hide" name="filesystem" type="list" default="Local" label="K2_FILESYSTEM">
 			<option value="Local">K2_LOCAL</option>
 			<option value="AmazonS3">K2_AMAZON_S3</option>
-			<option value="MicrosoftAzure">K2_MICROSOFT_AZURE_BLOB_STORAGE</option>
+			<option value="MicrosoftAzure">K2_MICROSOFT_AZURE</option>
 		</field>
 		<field menu="hide" name="AmazonS3AccessKey" type="text" default="" label="K2_AMAZON_S3_ACCESS_KEY"/>
 		<field menu="hide" name="AmazonS3SecretAccessKey" type="text" default="" label="K2_AMAZON_S3_SECRET_ACCESS_KEY"/>
