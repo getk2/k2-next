@@ -51,7 +51,11 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session', 'tex
 
 			K2Dispatcher.on('app:sidebar:search', _.bind(function(collection) {
 				_.each(collection.models, function(model) {
-					if (!model.has('title') && model.has('name')) {
+					if (model.has('hostname')) {
+						model.set('title', model.get('text').substr(0, 50) + '...', {
+							silent : true
+						});
+					} else if (!model.has('title') && model.has('name')) {
 						model.set('title', model.get('name'), {
 							silent : true
 						});
