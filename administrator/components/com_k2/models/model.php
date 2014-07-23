@@ -109,9 +109,6 @@ class K2Model extends JModelLegacy
 		// Import content plugins
 		JPluginHelper::importPlugin('content');
 
-		// Import K2 plugins
-		JPluginHelper::importPlugin('k2');
-
 		// Get table
 		$table = $this->getTable();
 
@@ -174,15 +171,11 @@ class K2Model extends JModelLegacy
 			return false;
 		}
 
-		// Trigger onContentAfterSave/onAfterK2Save event if this request is not a patch
+		// Trigger onContentAfterSave event if this request is not a patch
 		if (!$this->getState('patch'))
 		{
 			$dispatcher->trigger('onContentAfterSave', array(
 				'com_k2.'.$this->getName(),
-				&$table,
-				$isNew
-			));
-			$dispatcher->trigger('onAfterK2Save', array(
 				&$table,
 				$isNew
 			));

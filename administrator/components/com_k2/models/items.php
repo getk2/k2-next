@@ -924,6 +924,17 @@ class K2ModelItems extends K2Model
 			}
 		}
 
+		// K2 After Save plugin event . We trigger it here beacuse it is applied only to items ( like in v2 )
+		$dispatcher = JDispatcher::getInstance();
+		JPluginHelper::importPlugin('k2');
+		if (!$this->getState('patch'))
+		{
+			$dispatcher->trigger('onAfterK2Save', array(
+				&$table,
+				$isNew
+			));
+		}
+
 		return true;
 	}
 
