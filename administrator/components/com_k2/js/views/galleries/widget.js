@@ -46,6 +46,8 @@ define(['text!layouts/galleries/widget.html', 'text!layouts/galleries/add.html',
 			}, this);
 			if (!this.model.get('isNew')) {
 				this.$el.attr('data-role', 'sortable-galleries-row');
+			} else {
+				this.model.set('folder', this.model.get('itemId') + this.model.get('cid'));
 			}
 		},
 		onDomRefresh : function() {

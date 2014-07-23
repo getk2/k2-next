@@ -12,9 +12,9 @@
 			<div class="ov-hidden jw--element--single">
 			
 				<div class="jw--element--single">
-					<a class="jw--btn jw--file-fakebtn" data-action="sig" href="index.php?option=com_sigpro&view=galleries&task=create&newFolder=<%- itemId %>&type=k2&tmpl=component"><i class="fa fa-image"></i> <%= l('K2_COM_BE_ITEM_SIGPRO_UPLOAD') %></a> 
+					<a class="jw--btn jw--file-fakebtn" data-action="sig" href="index.php?option=com_sigpro&view=galleries&task=create&newFolder=<%- folder %>&type=k2&tmpl=component"><i class="fa fa-image"></i> <%= l('K2_COM_BE_ITEM_SIGPRO_UPLOAD') %></a> 
 					<span class="jw--gallery--text">(<%= l('K2_COM_BE_ITEM_SIGPRO_UPLOAD_NOTE') %>)</span>
-					<input name="sigProFolder" type="hidden" value="<%-itemId %>" />
+					<input name="galleries[<%- cid %>][folder]" type="hidden" value="<%- folder %>" />
 				</div>
 
 				<div class="jw--element--single jw--file--btn">
