@@ -81,8 +81,8 @@ class K2HelperHTML
 		$options = array();
 		if ($none)
 		{
-			$value = $none === 'K2_LEAVE_UNCHANGED' ? '' : '0';
-			$options[] = JHtml::_('select.option', $value, JText::_($none));
+			$noneValue = $none === 'K2_LEAVE_UNCHANGED' ? '' : '0';
+			$options[] = JHtml::_('select.option', $noneValue, JText::_($none));
 		}
 		if ($inheritance)
 		{
@@ -302,6 +302,35 @@ class K2HelperHTML
 			$output .= '<label for="'.$id.'" '.$class.'><input type="radio" name="'.$name.'" id="'.$id.'" '.$checked.' value="'.$option->value.'" />'.$option->text.'</label>';
 		}
 		return $output;
+	}
+
+	public static function mediaProviders($name = 'provider', $attributes = '')
+	{
+		$providers = array();
+		$filename = JPATH_SITE.'/plugins/content/jw_allvideos/jw_allvideos/includes/sources.php';
+		if (file_exists($filename))
+		{
+			require $filename;
+			$thirdPartyProviders = array_slice($tagReplace, 40);
+			$providersTmp = array_keys($thirdPartyProviders);
+			foreach ($providersTmp as $providerTmp)
+			{
+				if (stristr($providerTmp, 'google|google.co.uk|google.com.au|google.de|google.es|google.fr|google.it|google.nl|google.pl') !== false)
+				{
+					$provider = 'google';
+				}
+				elseif (stristr($providerTmp, 'spike|ifilm') !== false)
+				{
+					$provider = 'spike';
+				}
+				else
+				{
+					$provider = $providerTmp;
+				}
+				$providers[] = JHtml::_('select.option', $provider, ucfirst($provider));
+			}
+		}
+		return JHtml::_('select.genericlist', $providers, $name, $attributes);
 	}
 
 }
