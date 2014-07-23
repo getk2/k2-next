@@ -109,6 +109,9 @@ class K2Model extends JModelLegacy
 		// Import content plugins
 		JPluginHelper::importPlugin('content');
 
+		// Import K2 plugins
+		JPluginHelper::importPlugin('k2');
+
 		// Get table
 		$table = $this->getTable();
 
