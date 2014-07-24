@@ -43,17 +43,22 @@
 	/* item form */
 	.jw--item--form { padding: 25px 10px; }
 	.jw--tabs__content .fa { display: none; }
-	.jw--item--row__single { min-width: 100%; clear: both; }
+	.jw--item--row__single, .jw--item--input { min-width: 100%; clear: both; }
 	
-	.jw--scrollwrapper.jw--scrollwrapper__item { display: none; }
+	.jw--scrollwrapper { display: none; }
 	.jw--settings__global { padding: 38px 10px; }
 	
 	/* the form fields */
+	.jw--item--fld__multi { margin-bottom: 20px; min-width: 100%; }
 	.jw--item--fld { margin-bottom: 20px; } 
-	
+ 
 	/* filters */
 	.jw--top--filters .jw--filter { width: 33.3333%; border-bottom: 1px solid #dbdcdc; }
 	
+	/* Settings */
+	.jw--hits, .jw--reset--wrap { margin-left: 0; }
+	.jw--settings fieldset, .jw--settings select, .jw--settings input[type="text"], .jw--settings input[type="password"], .jw--settings textarea { min-width: 100%; max-width: 100%; margin-top: 5px; }
+	.jw--settings fieldset { padding-left: 0; }
 	
 }
 
@@ -63,8 +68,11 @@
 	/* filters */
 	.jw--top--filters .jw--filter { width: 50%; }
 	
-	.jw--item--form { padding: 25px 0; }
-
+	/* item form and editor content */
+	.jw--item--form { padding: 25px 10px; }
+	
+	.jw--editor--tab { padding: 10px; }
+	.jw--editor--cnt { border: 0; padding: 0; }
 
 }
 
@@ -76,6 +84,38 @@
 
 	/* filters */
 	.jw--top--filters .jw--filter { width: 100%; }
+	
+	/* item form fields - editor - extra fields */
+	.jw--item--lbl { text-align: left!important; min-width: 100%; }
+	.jw--item--fld { min-width: 100%; clear: both; }
+	.jw--item--fld select { width: 100%; min-width: 100%; }
+	.jw--item--input { max-width: 275px; }
+	.jw--item--row { margin-bottom: 0; }
+	.jw--tag--caption { margin-bottom: 20px; }
+	.jw--editor--cnt .editor { max-width: 275px; }
+	.jw--content--label { font-size: 15px; }
 
-
+	/* extra fields */
+	.jw--element--row label { margin-bottom: 5px; }
+	.jw--element--row .jw--element--single input[type="text"], 
+	.jw--element--row .jw--element--single textarea { max-width: 275px; }
+	.jw--element--row .jw--element--single input[type="text"].jw--small--input { margin-left: 0; margin-bottom: 10px; max-width: none; }
+	
+	/* revisions */
+	.jw--editor--revisions { padding: 15px 10px; }
+	
+	/*  the editor */
+	ul.jw--tabs__content li { text-align: center; width: 33.3333%; }
+	
+	/* settings */
+	.jw--settings h2 { font-size: 16px; font-weight: 700; padding-bottom: 10px; margin-bottom: 0; border: 0; }
+	.jw--settings fieldset label { min-width: 0; }
+	
+	/* generic forms */
+	
+	.jw--generic--form { padding: 25px 10px; }
+		.jw--setting--field .jw--setting--single { padding: 8px; }
+		.jw--setting--field .jw--setting--single > .left,
+		.jw--setting--field .jw--setting--single > .right { min-width: 100%; clear: both; }
+		.jw--settings.jw--generic--form input[type="text"], .jw--settings.jw--generic--form input[type="password"], .jw--settings.jw--generic--form input[type="email"] { width: 275px; }
 }
