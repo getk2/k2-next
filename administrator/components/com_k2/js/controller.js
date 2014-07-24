@@ -111,7 +111,10 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 				var first = _.first(parts);
 				if (first == 'modal') {
 					this.isModal = true;
+					jQuery('[data-application="k2"]').addClass('jw--modal');
 					parts = _.rest(parts);
+				} else {
+					jQuery('[data-application="k2"]').removeClass('jw--modal');
 				}
 				this.resource = _.first(parts);
 				if (_.indexOf(this.resources, this.resource) === -1) {
