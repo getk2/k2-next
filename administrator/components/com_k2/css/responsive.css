@@ -94,12 +94,12 @@
 	.jw--tag--caption { margin-bottom: 20px; }
 	.jw--editor--cnt .editor { max-width: 275px; }
 	.jw--content--label { font-size: 15px; }
-
 	/* extra fields */
 	.jw--element--row label { margin-bottom: 5px; }
-	.jw--element--row .jw--element--single input[type="text"], 
-	.jw--element--row .jw--element--single textarea { max-width: 275px; }
-	.jw--element--row .jw--element--single input[type="text"].jw--small--input { margin-left: 0; margin-bottom: 10px; max-width: none; }
+	.jw--element--row .jw--element--single { min-width: 100%; clear: both; }
+		.jw--element--row .jw--element--single input[type="text"], 
+		.jw--element--row .jw--element--single textarea { max-width: 275px; }
+		.jw--element--row .jw--element--single input[type="text"].jw--small--input { margin-left: 0; margin-bottom: 10px; max-width: none; }
 	
 	/* revisions */
 	.jw--editor--revisions { padding: 15px 10px; }
