@@ -929,6 +929,7 @@ class K2ModelItems extends K2Model
 		JPluginHelper::importPlugin('k2');
 		if (!$this->getState('patch'))
 		{
+			$isNew = $this->getState('isNew');
 			$dispatcher->trigger('onAfterK2Save', array(
 				&$table,
 				$isNew
