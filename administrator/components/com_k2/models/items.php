@@ -38,23 +38,23 @@ class K2ModelItems extends K2Model
 		// Join over the categories if required
 		if ($this->getState('sorting') == 'ordering' || $this->getState('sorting') == 'ordering.reverse' || $this->getState('sorting') == 'category' || $this->getState('sorting') == 'category.reverse')
 		{
-			$joinType = $this->getState('sorting') == 'category' || $this->getState('sorting') == 'category.reverse' ? 'RIGHT' : 'LEFT';
+			$joinType = $this->getState('sorting') == 'category' || $this->getState('sorting') == 'category.reverse' ? 'INNER' : 'LEFT';
 			$query->join($joinType, $db->quoteName('#__k2_categories', 'category').' ON '.$db->quoteName('category.id').' = '.$db->quoteName('item.catid'));
 		}
 
 		// Join over the author
 		$query->select($db->quoteName('author.name', 'authorName'));
-		$joinType = $this->getState('sorting') == 'author' || $this->getState('sorting') == 'author.reverse' ? 'RIGHT' : 'LEFT';
+		$joinType = $this->getState('sorting') == 'author' || $this->getState('sorting') == 'author.reverse' ? 'INNER' : 'LEFT';
 		$query->join($joinType, $db->quoteName('#__users', 'author').' ON '.$db->quoteName('author.id').' = '.$db->quoteName('item.created_by'));
 
 		// Join over the moderator
 		$query->select($db->quoteName('moderator.name', 'moderatorName'));
-		$joinType = $this->getState('sorting') == 'moderator' || $this->getState('sorting') == 'moderator.reverse' ? 'RIGHT' : 'LEFT';
+		$joinType = $this->getState('sorting') == 'moderator' || $this->getState('sorting') == 'moderator.reverse' ? 'INNER' : 'LEFT';
 		$query->join($joinType, $db->quoteName('#__users', 'moderator').' ON '.$db->quoteName('moderator.id').' = '.$db->quoteName('item.modified_by'));
 
 		// Join over the hits
 		$query->select($db->quoteName('stats.hits', 'hits'));
-		$joinType = $this->getState('sorting') == 'hits' || $this->getState('sorting') == 'comments' || $this->getState('sorting') == 'hits.reverse' || $this->getState('sorting') == 'comments.reverse' ? 'RIGHT' : 'LEFT';
+		$joinType = $this->getState('sorting') == 'hits' || $this->getState('sorting') == 'comments' || $this->getState('sorting') == 'hits.reverse' || $this->getState('sorting') == 'comments.reverse' ? 'INNER' : 'LEFT';
 		$query->join($joinType, $db->quoteName('#__k2_items_stats', 'stats').' ON '.$db->quoteName('stats.itemId').' = '.$db->quoteName('item.id'));
 
 		// Set query conditions
