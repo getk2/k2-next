@@ -21,3 +21,12 @@ z-index: 100; margin: 25px auto; font-family: 'Open Sans', sans-serif; -webkit-f
 			.jw--action .fa { font-size: 18px; display: inline-block; vertical-align: middle; margin-right: 5px; }
 			
 	.jw--modal .jw--button--row { padding: 16px 65px; background-color: #eff1f1; box-shadow: 0 1px 0 rgba(0,0,0,.18); }
+	
+/*------------------------------------------------------------------
+[inside a modal] */
+.jw--modalwrap {  }
+	.jw--modalwrap .jw--main--navigation { display: none; }
+	.jw--modalwrap .jw--component { padding-top: 0; }
+	.jw--modalwrap .jw--subheader { position: relative; top: 0; left: 0; }
+	.jw--modalwrap .jw--sidebar { top: 0; bottom: 0; } 
+	.jw--modalwrap .jw--pagination { bottom: 0; }
