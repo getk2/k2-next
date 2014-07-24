@@ -21,7 +21,11 @@ require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/image.php';
 class K2HelperImages
 {
 
-	private static $paths = array('item' => 'media/k2/items', 'category' => 'media/k2/categories', 'user' => 'media/k2/users');
+	private static $paths = array(
+		'item' => 'media/k2/items',
+		'category' => 'media/k2/categories',
+		'user' => 'media/k2/users'
+	);
 
 	private static $placeholders = array();
 
