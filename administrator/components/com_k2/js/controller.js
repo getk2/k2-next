@@ -50,7 +50,9 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 
 			// Listener for toggle state event.
 			K2Dispatcher.on('app:controller:toggleState', function(id, state, model) {
-				this.toggleState(id, state, model);
+				if (!this.isModal) {
+					this.toggleState(id, state, model);
+				}
 			}, this);
 
 			// Listener for filter event.

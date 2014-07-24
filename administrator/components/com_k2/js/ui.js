@@ -55,11 +55,6 @@
 		$(this).addClass('jw--radio__checked');
 	});
 
-	// Featured, published togglers.
-	K2Container.on('click', '.jw--state--toggler', function() {
-		$(this).toggleClass('toggler--active');
-	});
-
 	// resetting the filters
 	K2Container.on('click', '#jw--filters--reset', function() {
 		$('.jw--filter .jw--radio').removeClass('jw--radio__checked');
