@@ -60,7 +60,7 @@
 				</div>
 				
 				<% if(row.canEditState) { %>
-			    <div class="right">
+			    <div class="right jw--item--fld__multi">
 			    	<div class="left text-right jw--item--lbl">
 				    	<label class="jw--radio--title"><%= l('K2_STATE') %></label>
 				    </div>
@@ -71,7 +71,7 @@
 			    <% } %>
 			    
 			   <% if(row.canEditFeaturedState) { %>
-			    <div class="right">
+			    <div class="right jw--item--fld__multi">
 			    	<div class="left text-right jw--item--lbl">
 				    	<label class="jw--radio--title"><%= l('K2_FEATURED') %></label>
 				    </div>
@@ -94,7 +94,7 @@
 				<div class="left text-right jw--item--lbl">
 					<label><%= l('K2_TAGS') %></label>
 				</div>
-				<div class="ov-hidden">
+				<div class="ov-hidden jw--item--tags">
 					<input data-widget="tags" data-create="<%- row.canCreateTag %>" value="<%- row.tagsValue %>" type="hidden" name="tags" />
 					<div class="jw--tag--caption"><%= l('K2_WRITE_A_TAG_AND_PRESS_RETURN_OR_COMMA_TO_ADD_IT') %></div>
 				</div>

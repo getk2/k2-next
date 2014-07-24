@@ -40,7 +40,7 @@ ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; position: re
 .jw--item--form { padding: 25px 30px; }
 	.jw--item--row { margin-bottom: 15px; overflow: hidden; }
 	.jw--item--lbl { width: 100px; margin-right: 15px; }
-	.jw--item--lbl label { display: block; color: #7d7d7f; padding-top: 11px; }
+	.jw--item--lbl label { display: block; color: #7d7d7f; padding-top: 11px; font-weight: 600; }
 	.jw--right--row { margin-left: 20px; }
 	.jw--item--fld {  }
 	button.push--left { margin-left: 115px; }

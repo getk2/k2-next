@@ -12,10 +12,19 @@
 
 
 @media only screen and (max-width: 900px){
+	
+	#k2--id { display: none; }
+	
 	/* item form -- tabs */
-	.jw--tabs__top a { padding: 15px 10px; font-size: 14px; }
+	.jw--tabs__top a { padding: 15px 10px; font-size: 15px; }
 	.jw--tabs__top .fa { display: none; }
 	.jw--tabs__content li a { padding: 10px; }
+		
+	/* the form fields */
+	.jw--item--row { margin-bottom: 0; }
+	.jw--item--fld, .jw--item--tags { margin-bottom: 20px; } 
+	.jw--item--fld__multi { margin-bottom: 20px; min-width: 100%; }
+
 	
 	/* menu */
 	ul.jw--main--menu > li > a, ul.jw--main--menu .jw--sep { padding: 22px 10px; }
@@ -29,7 +38,7 @@
 	/* visibility */
 	body { padding-left: 0!important; padding-right: 0!important; }
 	body .navbar-fixed-top, body .navbar-fixed-bottom, body .navbar-static-top { margin-left: 0; margin-right: 0; }
-	#k2--id, ul.jw--main--menu .fa, .jw h3.jw--title { display: none; }
+	ul.jw--main--menu .fa, .jw h3.jw--title { display: none; }
 	
 	/* remove all fixed instances */
 	.jw--header { position: static; width: auto; }
@@ -47,10 +56,6 @@
 	
 	.jw--scrollwrapper { display: none; }
 	.jw--settings__global { padding: 38px 10px; }
-	
-	/* the form fields */
-	.jw--item--fld__multi { margin-bottom: 20px; min-width: 100%; }
-	.jw--item--fld { margin-bottom: 20px; } 
  
 	/* filters */
 	.jw--top--filters .jw--filter { width: 33.3333%; border-bottom: 1px solid #dbdcdc; }
@@ -87,19 +92,20 @@
 	
 	/* item form fields - editor - extra fields */
 	.jw--item--lbl { text-align: left!important; min-width: 100%; }
-	.jw--item--fld { min-width: 100%; clear: both; }
+	.jw--item--fld, .jw--item--tags { min-width: 100%; clear: both; }
 	.jw--item--fld select { width: 100%; min-width: 100%; }
 	.jw--item--input { max-width: 275px; }
 	.jw--item--row { margin-bottom: 0; }
 	.jw--tag--caption { margin-bottom: 20px; }
 	.jw--editor--cnt .editor { max-width: 275px; }
 	.jw--content--label { font-size: 15px; }
-
+	
 	/* extra fields */
 	.jw--element--row label { margin-bottom: 5px; }
-	.jw--element--row .jw--element--single input[type="text"], 
-	.jw--element--row .jw--element--single textarea { max-width: 275px; }
-	.jw--element--row .jw--element--single input[type="text"].jw--small--input { margin-left: 0; margin-bottom: 10px; max-width: none; }
+	.jw--element--row .jw--element--single { min-width: 100%; clear: both; }
+		.jw--element--row .jw--element--single input[type="text"], 
+		.jw--element--row .jw--element--single textarea { max-width: 275px; }
+		.jw--element--row .jw--element--single input[type="text"].jw--small--input { margin-left: 0; margin-bottom: 10px; max-width: none; }
 	
 	/* revisions */
 	.jw--editor--revisions { padding: 15px 10px; }
@@ -112,10 +118,11 @@
 	.jw--settings fieldset label { min-width: 0; }
 	
 	/* generic forms */
-	
 	.jw--generic--form { padding: 25px 10px; }
 		.jw--setting--field .jw--setting--single { padding: 8px; }
 		.jw--setting--field .jw--setting--single > .left,
 		.jw--setting--field .jw--setting--single > .right { min-width: 100%; clear: both; }
-		.jw--settings.jw--generic--form input[type="text"], .jw--settings.jw--generic--form input[type="password"], .jw--settings.jw--generic--form input[type="email"] { width: 275px; }
+		.jw--settings.jw--generic--form input[type="text"], 
+		.jw--settings.jw--generic--form input[type="password"], 
+		.jw--settings.jw--generic--form input[type="email"] { width: 275px; }
 }

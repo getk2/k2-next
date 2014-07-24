@@ -94,7 +94,7 @@ img {-ms-interpolation-mode:bicubic; max-width: 100%; }
 	.jw label.jw--radio:focus, { cursor: pointer; box-shadow: inset 0 0 12px rgba(0,0,0,.35); }
 
 	/* label with heading */
-	.jw label.jw--radio--title { display: block; font-size: 13px; font-weight: 700; min-width: 78px; height: 35px; line-height: 35px; padding: 0; color: #636b6e; }
+	.jw label.jw--radio--title { display: block; font-size: 13px; font-weight: 600; min-width: 78px; height: 35px; line-height: 35px; padding: 0; color: #636b6e; }
 	.jw label.jw--radio--title_inl { display: inline-block; vertical-align: middle; margin-right: 10px; }
 	.jw label.jw--radio--title ~ label { border-radius: 3px 0 0 3px; }
 
@@ -223,6 +223,8 @@ Buttons */
 	.table-responsive { width: 100%; margin-bottom: 15px; overflow-x: scroll; overflow-y: hidden; -webkit-overflow-scrolling: touch; -ms-overflow-style: -ms-autohiding-scrollbar; }
 		.table-responsive:after { content: ""; width: 13px; height: 100%; position: absolute; top: 0; right: 0; background: url(img/res-table-bg.png) repeat-y 0 0; }
 		.table-responsive > .table { margin-bottom: 0; }
+		
+		.jw--form__item .table-responsive:after { display: none; }
 
 
 
