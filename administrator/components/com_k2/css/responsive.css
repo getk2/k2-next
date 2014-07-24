@@ -1,15 +1,11 @@
 @media only screen and (max-width: 1180px){
 	/* item form -- tabs */
 	.jw--tabs__top a { padding: 20px 14px; font-size: 17px; }
-
 }
 
 @media only screen and (max-width: 1025px){
-
 	ul.jw--tabs { text-align: left!important; }
-
 }
-
 
 @media only screen and (max-width: 900px){
 	
@@ -25,13 +21,9 @@
 	.jw--item--fld, .jw--item--tags { margin-bottom: 20px; } 
 	.jw--item--fld__multi { margin-bottom: 20px; min-width: 100%; }
 
-	
 	/* menu */
 	ul.jw--main--menu > li > a, ul.jw--main--menu .jw--sep { padding: 22px 10px; }
-
-	
 }
-
 
 @media only screen and (max-width: 767px){
 
@@ -67,9 +59,12 @@
 	
 }
 
-
 @media only screen and (max-width: 600px){
-
+	
+	h1.jw--logo { margin-bottom: 15px; }
+	/* add area */
+	.jw--add--area { float: none!important; margin: 15px -12px 0; width: auto; overflow: hidden; }
+	
 	/* filters */
 	.jw--top--filters .jw--filter { width: 50%; }
 	
@@ -77,10 +72,9 @@
 	.jw--item--form { padding: 25px 10px; }
 	
 	.jw--editor--tab { padding: 10px; }
-	.jw--editor--cnt { border: 0; padding: 0; }
+	.jw--editor--cnt { border: 0; padding: 10px 0 0; }
 
 }
-
 
 @media only screen and (max-width: 400px){
 
