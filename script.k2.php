@@ -116,13 +116,13 @@ class Com_K2InstallerScript
 				}
 				
 				// Rename component files to get rid of files we don't need
-				if(JFolder::exists(JPATH_SITE.'/components/com_k2'));
+				if(JFolder::exists(JPATH_SITE.'/components/com_k2'))
 				{
 					JFolder::move(JPATH_SITE.'/components/com_k2', JPATH_SITE.'/components/com_k2_v2');
 					JFolder::create(JPATH_SITE.'/components/com_k2');
-					JFolder::move(JPATH_SITE.'/components/com_k2_v2/templates', JPATH_SITE.'/components/com_k2/templates');
+					JFolder::copy(JPATH_SITE.'/components/com_k2_v2/templates', JPATH_SITE.'/components/com_k2/templates');
 				}
-				if(JFolder::exists(JPATH_ADMINISTRATOR.'/components/com_k2'));
+				if(JFolder::exists(JPATH_ADMINISTRATOR.'/components/com_k2'))
 				{
 					JFolder::move(JPATH_ADMINISTRATOR.'/components/com_k2', JPATH_ADMINISTRATOR.'/components/com_k2_v2');
 				}
@@ -316,6 +316,14 @@ class Com_K2InstallerScript
         <span>Last updated before <span id="k2UpgradeLastUpdated">0</span> seconds</span>
         <ul id="k2UpgradeErrorLog"></ul>
         <script type="text/javascript">
+        	function K2Restore() {
+        		jQuery.post('index.php?option=com_k2&task=migrator.restore&format=json', '<?php echo JSession::getFormToken(); ?>=1').done(function(response) {
+        			jQuery('#k2UpgradeStatus').html('Restore completed');
+        		})
+        		.fail(function(response) {
+					jQuery('#k2UpgradeStatus').html('Restore failed');
+				});
+        	}
         	function K2Migrate(type, id) {
         		jQuery.post('index.php?option=com_k2&task=migrator.run&type=' + type + '&id=' + id + '&format=json', '<?php echo JSession::getFormToken(); ?>=1')
         		.done(function(response) {
@@ -324,9 +332,10 @@ class Com_K2InstallerScript
 							jQuery('#k2UpgradeErrorLog').append('<li>' + error + '</li>');
 						});
 						if(response.failed) {
-							jQuery('#k2UpgradeStatus').html('<?php echo JText::_('K2_UPGRADE_FAILED'); ?>');
+							jQuery('#k2UpgradeStatus').html('Upgrade failed. Trying to restore previous version. Please wait');
+							K2Restore();
 						} else if(response.completed) {
-							jQuery('#k2UpgradeStatus').html('<?php echo JText::_('K2_UPGRADE_COMPLETED'); ?>');
+							jQuery('#k2UpgradeStatus').html('Upgrade completed');
 						} else {
 							jQuery('#k2UpgradeStatus').html(response.status);
 							K2Migrate(response.type, response.id);
@@ -334,7 +343,8 @@ class Com_K2InstallerScript
 					}
 				})
 				.fail(function(response) {
-					jQuery('#k2UpgradeStatus').html('<?php echo JText::_('K2_UPGRADE_FAILED'); ?>');
+					jQuery('#k2UpgradeStatus').html('Upgrade failed. Trying to restore previous version. Please wait');
+					K2Restore();
 				});
         	}
         	K2Migrate('attachments', 0);

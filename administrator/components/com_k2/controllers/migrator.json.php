@@ -90,6 +90,77 @@ class K2ControllerMigrator extends JControllerLegacy
 		return $this;
 	}
 
+	public function restore()
+	{
+		if (!JSession::checkToken())
+		{
+			$this->response->errors[] = JText::_('JINVALID_TOKEN');
+			$this->response->failed = 1;
+		}
+		else
+		{
+			// database
+			$db = JFactory::getDbo();
+
+			// Delete v3 tables
+			$sql = JPATH_SITE.'/administrator/components/com_k2/uninstall.sql';
+			$queries = JDatabaseDriver::splitSql(file_get_contents($sql));
+			foreach ($queries as $query)
+			{
+				$query = trim($query);
+				if ($query != '' && $query{0} != '#')
+				{
+					$db->setQuery($query);
+					$db->execute();
+				}
+			}
+
+			// Restore v2 tables
+			$tables = array(
+				'#__k2_v2_attachments',
+				'#__k2_v2_categories',
+				'#__k2_v2_comments',
+				'#__k2_v2_extra_fields',
+				'#__k2_v2_extra_fields_groups',
+				'#__k2_v2_items',
+				'#__k2_v2_rating',
+				'#__k2_v2_tags',
+				'#__k2_v2_tags_xref',
+				'#__k2_v2_users',
+				'#__k2_v2_user_groups'
+			);
+			foreach ($tables as $table)
+			{
+				$name = str_replace('#__k2_v2', '#__k2_', $table);
+				$db->setQuery('RENAME TABLE '.$db->quoteName($table).' TO '.$db->quoteName($name));
+				$db->execute();
+			}
+
+			// Restore component files manually to keep any custom templates
+			if (JFolder::exists(JPATH_SITE.'/components/com_k2'))
+			{
+				JFolder::delete(JPATH_SITE.'/components/com_k2');
+				JFolder::move(JPATH_SITE.'/components/com_k2_v2', JPATH_SITE.'/components/com_k2');
+			}
+			if (JFolder::exists(JPATH_ADMINISTRATOR.'/components/com_k2'))
+			{
+				JFolder::delete(JPATH_ADMINISTRATOR.'/components/com_k2');
+				JFolder::move(JPATH_ADMINISTRATOR.'/components/com_k2_v2', JPATH_ADMINISTRATOR.'/components/com_k2');
+			}
+
+			// Install K2 v2 package to restore rest extension files
+			$installer = JInstaller::getInstance();
+			$file = JInstallerHelper::downloadPackage('http://getk2.org/downloads/?f=K2_v2.6.8.zip');
+			$config = JFactory::getConfig();
+			$package = JInstallerHelper::unpack($config->get('tmp_path').'/'.$file, true);
+			$installer->install($package['dir']);
+		}
+
+		echo json_encode($this->response);
+		return $this;
+
+	}
+
 	public function error($code, $description, $file, $line)
 	{
 		switch ($code)
