@@ -223,6 +223,8 @@ Buttons */
 	.table-responsive { width: 100%; margin-bottom: 15px; overflow-x: scroll; overflow-y: hidden; -webkit-overflow-scrolling: touch; -ms-overflow-style: -ms-autohiding-scrollbar; }
 		.table-responsive:after { content: ""; width: 13px; height: 100%; position: absolute; top: 0; right: 0; background: url(img/res-table-bg.png) repeat-y 0 0; }
 		.table-responsive > .table { margin-bottom: 0; }
+		
+		.jw--form__item .table-responsive:after { display: none; }
 
 
 
