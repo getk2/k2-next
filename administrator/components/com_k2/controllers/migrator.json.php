@@ -191,7 +191,7 @@ class K2ControllerMigrator extends JControllerLegacy
 
 	private function attachments($id)
 	{
-		$this->response->status = JText::_('COM_K2_PROCESSING_ATTACHMENTS');
+		$this->response->status = 'Processing Attahcments';
 
 		$step = 1;
 		$db = JFactory::getDbo();
@@ -226,7 +226,7 @@ class K2ControllerMigrator extends JControllerLegacy
 
 	private function categories($id)
 	{
-		$this->response->status = JText::_('COM_K2_PROCESSING_CATEGORIES');
+		$this->response->status = 'Processing Categories';
 		$step = 1;
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
@@ -325,7 +325,7 @@ class K2ControllerMigrator extends JControllerLegacy
 
 	private function categoriestree($id)
 	{
-		$this->response->status = JText::_('COM_K2_PROCESSING_CATEGORIES_TREE');
+		$this->response->status = 'Processing Categories Tree';
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select('id, parent')->from($db->quoteName('#__k2_v2_categories'))->order('parent, ordering');
@@ -363,7 +363,7 @@ class K2ControllerMigrator extends JControllerLegacy
 
 	private function comments($id)
 	{
-		$this->response->status = JText::_('COM_K2_PROCESSING_COMMENTS');
+		$this->response->status = 'Processing Comments';
 		$db = JFactory::getDbo();
 		$query = 'INSERT INTO '.$db->quoteName('#__k2_comments').'
 		('.$db->quoteName('id').','.$db->quoteName('itemId').','.$db->quoteName('userId').','.$db->quoteName('name').','.$db->quoteName('date').','.$db->quoteName('email').','.$db->quoteName('url').','.$db->quoteName('ip').','.$db->quoteName('hostname').','.$db->quoteName('text').','.$db->quoteName('state').') 
@@ -378,7 +378,7 @@ class K2ControllerMigrator extends JControllerLegacy
 
 	private function extrafields($id)
 	{
-		$this->response->status = JText::_('COM_K2_PROCESSING_EXTRA_FIELDS');
+		$this->response->status = 'Processing Extra Fields';
 		$step = 1;
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
@@ -526,7 +526,7 @@ class K2ControllerMigrator extends JControllerLegacy
 
 	private function extrafieldsgroups($id)
 	{
-		$this->response->status = JText::_('COM_K2_PROCESSING_EXTRA_FIELDS_GROUPS');
+		$this->response->status = 'Processing Extra Fields Groups';
 		$step = 10;
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
@@ -576,7 +576,7 @@ class K2ControllerMigrator extends JControllerLegacy
 
 	private function tags($id)
 	{
-		$this->response->status = JText::_('COM_K2_PROCESSING_TAGS');
+		$this->response->status = 'Processing Tags';
 		$step = 10;
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
@@ -622,7 +622,7 @@ class K2ControllerMigrator extends JControllerLegacy
 
 	private function tagsxref($id)
 	{
-		$this->response->status = JText::_('COM_K2_PROCESSING_TAGS_REFFERENCE');
+		$this->response->status = 'Processing Tags Reference';
 		$db = JFactory::getDbo();
 		$query = 'INSERT INTO '.$db->quoteName('#__k2_tags_xref').'('.$db->quoteName('tagId').','.$db->quoteName('itemId').') SELECT '.$db->quoteName('tagID').','.$db->quoteName('itemID').' FROM '.$db->quoteName('#__k2_v2_tags_xref');
 		$db->setQuery($query);
@@ -633,7 +633,7 @@ class K2ControllerMigrator extends JControllerLegacy
 
 	private function items($id)
 	{
-		$this->response->status = JText::_('COM_K2_PROCESSING_ITEMS');
+		$this->response->status = 'Processing Items';
 		$step = 1;
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
@@ -959,7 +959,7 @@ class K2ControllerMigrator extends JControllerLegacy
 
 	private function users($id)
 	{
-		$this->response->status = JText::_('COM_K2_PROCESSING_USERS');
+		$this->response->status = 'Processing Users';
 
 		$step = 5;
 		$db = JFactory::getDbo();
@@ -1038,7 +1038,7 @@ class K2ControllerMigrator extends JControllerLegacy
 
 	private function setup()
 	{
-		$this->response->status = JText::_('COM_K2_PROCESSING_SETUP');
+		$this->response->status = 'Processing System Setup';
 
 		$db = JFactory::getDbo();
 
