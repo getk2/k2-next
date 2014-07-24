@@ -941,8 +941,10 @@ class K2ControllerMigrator extends JControllerLegacy
 			$comments = $db->loadResult();
 
 			$query = $db->getQuery(true);
-			$query->insert($db->quoteName('#__k2_items_stats'));
-			$query->values((int)$item->id.','.(int)$item->hits.','.(int)$comments);
+			$query->update($db->quoteName('#__k2_items_stats'));
+			$query->set($db->quoteName('hits').' = '.(int)$item->hits);
+			$query->set($db->quoteName('comments').' = '.(int)$comments);
+			$query->where($db->quoteName('itemId').' = '.(int)$item->id);
 			$db->setQuery($query);
 			$db->execute();
 
