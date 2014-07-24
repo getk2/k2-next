@@ -140,6 +140,12 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'vie
 	// Update event listener. Triggered when the server response is parsed.
 	K2Dispatcher.on('app:update', function(response) {
 		if (response.method === 'GET') {
+			// Hide menu and action buttons in modal views
+			if (K2.controller.isModal) {
+				response.menu.primary = [];
+				response.menu.secondary = [];
+				response.actions = [];
+			}
 			// Update the application regions/views
 			K2Dispatcher.trigger('app:update:header', response);
 			K2Dispatcher.trigger('app:update:subheader', response);

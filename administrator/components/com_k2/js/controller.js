@@ -13,6 +13,9 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 		// Holds the current collection instance.
 		collection : null,
 
+		// Holds the modal flag
+		isModal : false,
+
 		// Initialize function
 		initialize : function() {
 
@@ -105,9 +108,6 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 				var parts = url.split('/');
 				var first = _.first(parts);
 				if (first == 'modal') {
-					jQuery('[data-region="menu-primary"]').hide();
-					jQuery('[data-region="menu-secondary"]').hide();
-					jQuery('[data-region="actions"]').hide();
 					this.isModal = true;
 					parts = _.rest(parts);
 				}
@@ -336,7 +336,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 		saveOrder : function(keys, values, column, reset) {
 			this.collection.batch(keys, values, column, {
 				success : _.bind(function(response) {
-					if(reset) {
+					if (reset) {
 						this.resetCollection();
 					}
 					K2Dispatcher.trigger('app:messages:set', response);
