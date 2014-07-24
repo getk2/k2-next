@@ -63,7 +63,10 @@ class K2ControllerCategories extends K2Controller
 		$location = $this->input->get('location', '', 'cmd');
 
 		// Valid location values
-		$locations = array('first-child', 'after');
+		$locations = array(
+			'first-child',
+			'after'
+		);
 
 		// Ensure that we have valid input
 		if (!$id || $reference_id < 1 || !in_array($location, $locations))
