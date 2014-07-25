@@ -99,8 +99,8 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 
 		},
 
-		// OnBeforeClose event ( Marionette.js build in event )
-		onBeforeClose : function() {
+		// onBeforeDestroy event ( Marionette.js build in event )
+		onBeforeDestroy : function() {
 			// Clean up uploaded files
 			if (this.model.isNew()) {
 				this.imageView.trigger('cleanup');

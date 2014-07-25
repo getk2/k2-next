@@ -5,7 +5,7 @@ define(['marionette', 'dispatcher', 'text!layouts/batch.html', 'widgets/widget']
 			'click [data-action="apply"]' : 'batch',
 			'click [data-action="cancel"]' : 'close'
 		},
-		onBeforeClose : function() {
+		onBeforeDestroy : function() {
 			jQuery.magnificPopup.close();
 		},
 		onShow : function() {

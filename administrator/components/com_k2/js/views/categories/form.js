@@ -74,8 +74,8 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher', 'widget
 			this.extraFieldsView.trigger('filter', this.$('#parent_id').val());
 		},
 
-		// OnBeforeClose event ( Marionette.js build in event )
-		onBeforeClose : function() {
+		// onBeforeDestroy event ( Marionette.js build in event )
+		onBeforeDestroy : function() {
 			// Destroy the editor. This is required by TinyMCE in order to be able to re-initialize with out page refresh.
 			if ( typeof (tinymce) != 'undefined') {
 				tinymce.remove();
