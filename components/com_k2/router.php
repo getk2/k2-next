@@ -379,6 +379,16 @@ class K2Router extends JComponentRouterBase
 
 	private function buildIdByPattern($input, $pattern)
 	{
+		$patterns = array(
+			'id-dash-alias',
+			'id-slash-alias',
+			'id',
+			'alias'
+		);
+		if (!in_array($pattern, $patterns))
+		{
+			$pattern = 'id-dash-alias';
+		}
 		if ($pattern == 'id-dash-alias')
 		{
 			$result = $input;
@@ -405,6 +415,16 @@ class K2Router extends JComponentRouterBase
 
 	private function parseIdByPattern($input, $pattern, $type)
 	{
+		$patterns = array(
+			'id-dash-alias',
+			'id-slash-alias',
+			'id',
+			'alias'
+		);
+		if (!in_array($pattern, $patterns))
+		{
+			$pattern = 'id-dash-alias';
+		}
 		if ($pattern == 'id-dash-alias')
 		{
 			$result = $input;

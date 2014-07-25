@@ -16,7 +16,12 @@ defined('_JEXEC') or die ;
 class K2HelperRoute
 {
 
-	private static $cache = array('item' => array(), 'category' => array(), 'user' => array(), 'tag' => array());
+	private static $cache = array(
+		'item' => array(),
+		'category' => array(),
+		'user' => array(),
+		'tag' => array()
+	);
 
 	public static function getItemRoute($id, $category)
 	{
@@ -52,7 +57,7 @@ class K2HelperRoute
 			// Search the menu
 			foreach ($items as $item)
 			{
-				if ($item->query['view'] == 'item' && $item->query['id'] == $id)
+				if ($item->query['view'] == 'item' && isset($item->query['id']) && $item->query['id'] == $id)
 				{
 					$Itemid = $item->id;
 					break;
