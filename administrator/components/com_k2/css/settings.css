@@ -151,6 +151,10 @@
 	
 #assignmentscategories { float: none; display: block; min-width: 100%; margin-bottom: 15px; }
 
+/* tag scope */
+.jw--efields--groups .select2-container { height: auto; }
+.jw--efields--groups .select2-input { min-width: 300px; }
+
 /* ------------------------------------------------------------------
 [Image sizes] - extrafields */
 #jform_imageSizes { padding-bottom: 20px; }
