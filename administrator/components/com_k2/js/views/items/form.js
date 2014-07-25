@@ -156,7 +156,7 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 
 			// Extra fields
 			this.extraFieldsRegion.show(this.extraFieldsView);
-			this.updateExtraFields();
+			this.extraFieldsView.render();
 		},
 
 		loadRevisions : function() {

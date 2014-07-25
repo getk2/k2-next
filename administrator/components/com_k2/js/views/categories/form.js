@@ -54,7 +54,7 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher', 'widget
 
 			this.imageRegion.show(this.imageView);
 			this.extraFieldsRegion.show(this.extraFieldsView);
-			this.updateExtraFields();
+			this.extraFieldsView.render();
 
 		},
 

@@ -159,13 +159,10 @@ class K2HelperExtraFields
 		return $groups;
 	}
 
-	public static function getUserExtraFieldsGroups($userId, $values)
+	public static function getUserExtraFieldsGroups($usergroups, $values)
 	{
 		$groups = array();
 		$values = json_decode($values);
-		$user = JFactory::getUser($userId);
-		$usergroups = $user->getAuthorisedGroups();
-
 		foreach (self::getGroups('user') as $group)
 		{
 			if ($group->assignments->mode == 'all' || ($group->assignments->mode == 'specific' && count(array_intersect($usergroups, $group->assignments->usergroups)) > 0))

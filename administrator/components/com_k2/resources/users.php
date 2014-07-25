@@ -173,7 +173,9 @@ class K2Users extends K2Resource
 		$groups = array();
 		if ($this->id)
 		{
-			$groups = K2HelperExtraFields::getUserExtraFieldsGroups($this->id, $this->extra_fields);
+			$user = JFactory::getUser($this->id);
+			$usergroups = $user->getAuthorisedGroups();
+			$groups = K2HelperExtraFields::getUserExtraFieldsGroups($usergroups, $this->extra_fields);
 		}
 		return $groups;
 	}
@@ -184,7 +186,11 @@ class K2Users extends K2Resource
 		$dispatcher = JDispatcher::getInstance();
 		JPluginHelper::importPlugin('k2');
 		$dispatcher->trigger('onK2PluginInit', array($this));
-		$results = $dispatcher->trigger('onK2UserDisplay', array(&$this, &$params, 0));
+		$results = $dispatcher->trigger('onK2UserDisplay', array(
+			&$this,
+			&$params,
+			0
+		));
 		$events->K2UserDisplay = trim(implode("\n", $results));
 		return $events;
 	}

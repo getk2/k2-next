@@ -9,8 +9,11 @@ define(['marionette', 'text!layouts/users/form.html', 'dispatcher', 'widgets/wid
 		modelEvents : {
 			'change' : 'render'
 		},
+		events : {
+			'click input[name="groups[]"]' : 'updateExtraFields'
+		},
 		initialize : function() {
-			
+
 			// Image
 			this.imageView = new K2ViewImageWidget({
 				row : this.model,
@@ -64,10 +67,10 @@ define(['marionette', 'text!layouts/users/form.html', 'dispatcher', 'widgets/wid
 		onBeforeSave : function() {
 			// Update form from editor contents
 			K2Editor.save('description');
-			
+
 			// Validate extra fields
 			var result = this.extraFieldsView.validate();
-			
+
 			return result;
 		},
 		// OnBeforeClose event ( Marionette.js build in event )
@@ -76,6 +79,13 @@ define(['marionette', 'text!layouts/users/form.html', 'dispatcher', 'widgets/wid
 			if ( typeof (tinymce) != 'undefined') {
 				tinymce.remove();
 			}
+		},
+		updateExtraFields : function() {
+			var groups = [];
+			this.$('input[name="groups[]"]:checked').each(function() {
+				groups.push(this.value);
+			});
+			this.extraFieldsView.trigger('filter', groups.join('|'));
 		}
 	});
 	return K2ViewUser;

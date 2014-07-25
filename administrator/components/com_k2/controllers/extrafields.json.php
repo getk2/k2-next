@@ -30,34 +30,35 @@ class K2ControllerExtraFields extends K2Controller
 		$input = JFactory::getApplication()->input;
 		$scope = $input->get('scope', '', 'cmd');
 		$resourceId = $input->get('resourceId', 0, 'int');
-		$filterId = $input->get('filterId', 0, 'int');
+		$filterId = $input->get('filterId', 0, 'raw');
 		if ($scope == 'item')
 		{
 			require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/items.php';
 			$item = K2Items::getInstance($resourceId);
 			$values = $item->extra_fields;
-			$fields = K2HelperExtraFields::getItemExtraFieldsGroups($filterId, $values);
+			$fields = K2HelperExtraFields::getItemExtraFieldsGroups((int)$filterId, $values);
 		}
 		else if ($scope == 'category')
 		{
 			require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/categories.php';
 			$category = K2Categories::getInstance($resourceId);
 			$values = $category->extra_fields;
-			$fields = K2HelperExtraFields::getCategoryExtraFieldsGroups($filterId, $values);
+			$fields = K2HelperExtraFields::getCategoryExtraFieldsGroups((int)$filterId, $values);
 		}
 		else if ($scope == 'user')
 		{
 			require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/users.php';
 			$user = K2Users::getInstance($resourceId);
 			$values = $user->extra_fields;
-			$fields = K2HelperExtraFields::getUserExtraFieldsGroups($filterId, $values);
+			$groups = explode('|', $filterId);
+			$fields = K2HelperExtraFields::getUserExtraFieldsGroups($groups, $values);
 		}
 		else if ($scope == 'tag')
 		{
 			require_once JPATH_ADMINISTRATOR.'/components/com_k2/resources/tags.php';
 			$tag = K2Tags::getInstance($resourceId);
 			$values = $tag->extra_fields;
-			$fields = K2HelperExtraFields::getTagExtraFieldsGroups($filterId, $values);
+			$fields = K2HelperExtraFields::getTagExtraFieldsGroups((int)$filterId, $values);
 		}
 		echo json_encode($fields);
 		return $this;
