@@ -30,16 +30,21 @@ define(['marionette', 'text!layouts/extrafieldsgroups/form.html', 'dispatcher'],
 			}
 		},
 		updateAssignmentsSelection : function() {
-			var value = this.$('input[name="assignments[mode]"]:checked').val();
+			var active = this.$('input[name="assignments[mode]"]:checked');
+			active.parent().addClass('jw--radio__checked');
+			var value = active.val();
 			var assignments = this.$('[data-region="extra-field-group-assignements"]');
 			if (value === 'all') {
 				assignments.find('select').prop('disabled', true);
 				assignments.find('select option').attr('selected', 'selected');
+				assignments.hide();
 			} else if (value === 'none') {
 				assignments.find('select').prop('disabled', true);
 				assignments.find('select option').removeAttr('selected');
+				assignments.hide();
 			} else {
 				assignments.find('select').prop('disabled', false);
+				assignments.show();
 			}
 		}
 	});
