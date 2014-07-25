@@ -28,7 +28,7 @@
 	.jw--item--fld__multi { margin-bottom: 20px; min-width: 100%; }
 
 	/* menu */
-	ul.jw--main--menu > li > a, ul.jw--main--menu .jw--sep { padding: 22px 10px; }
+	ul.jw--main--menu > li > a, ul.jw--main--menu .jw--sep { padding: 18px 9px; letter-spacing: -1px; }
 }
 
 @media only screen and (max-width: 767px){
@@ -36,16 +36,27 @@
 	/* visibility */
 	body { padding-left: 0!important; padding-right: 0!important; }
 	body .navbar-fixed-top, body .navbar-fixed-bottom, body .navbar-static-top { margin-left: 0; margin-right: 0; }
-	ul.jw--main--menu .fa, .jw h3.jw--title { display: none; }
+	ul.jw--main--menu .fa, .jw h3.jw--title, .jw--thumbsbar { display: none; }
+	.jw--thumbsbar { position: absolute; clip: rect(0,0,0,0); }
+	
+	/* navigation */
+	
 	
 	/* remove all fixed instances */
 	.jw--header { position: static; width: auto; }
 	.jw--subheader { position: static; border: 0; }
 	.jw--component { padding-top: 0; padding-left: 0; min-width: 100%; clear: both;}
 	.jw--pagination { position: static; height: auto; }
+	.open--sidebar .jw--component { padding-left: 0; }
+	
 	
 	/* sidebar styling */
-	.jw--sidebar { left: 0; position: relative; min-width: 100%; top: 0; }
+	.jw--sidebar { left: -280px; width: 280px; top: 0; bottom: 0; padding-top: 15px; overflow: visible; }
+		.jw--sidebar--handle  { right: -46px; background: #fff; overflow: auto; position: absolute; bottom: 10px; top: auto; height: auto; border: 1px solid #dbdcdc; border-left: 0; z-index: 9999; }
+		.jw--sidebar--text { width: 100%; border-right: 1px solid #dbdcdc; }
+		.jw--sidebar .jw--filters,
+		.jw--sidebar .jw--pagination--mode { position: static; width: 100%; clear: both; }
+		.jw--sidebar .jw--filters { margin-top: 15px; }
 	
 	/* item form */
 	.jw--item--form { padding: 25px 10px; }
