@@ -1,6 +1,12 @@
-@media only screen and (max-width: 1180px){
+@media only screen and (max-width: 1250px){
 	/* item form -- tabs */
 	.jw--tabs__top a { padding: 20px 14px; font-size: 17px; }
+	
+	/* filters */
+	.jw--filters { width: 100%; border-top: 1px solid #dbdcdc; }
+	.jw--top--filters .jw--filter { width: 16.66%; }
+	.select2-container .select2-choice, .select2-container { min-width: 0; width: 100%; }
+
 }
 
 @media only screen and (max-width: 1025px){
