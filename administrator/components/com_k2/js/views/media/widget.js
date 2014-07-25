@@ -98,7 +98,8 @@ define(['text!layouts/media/widget.html', 'text!layouts/media/add.html', 'text!l
 				this.$el.sortable({
 					containerSelector : '[data-role="sortable-media"]',
 					itemSelector : '[data-role="sortable-media-row"]',
-					placeholder : '<div class="k2SortingPlaceholder"></div>'
+					placeholder : '<div class="k2SortingPlaceholder"></div>',
+					handle : '[data-role="ordering-handle"]'
 				});
 			}
 
