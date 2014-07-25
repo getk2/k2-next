@@ -54,6 +54,7 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher', 'widget
 
 			this.imageRegion.show(this.imageView);
 			this.extraFieldsRegion.show(this.extraFieldsView);
+			this.updateExtraFields();
 
 		},
 
@@ -69,8 +70,7 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher', 'widget
 			return result;
 		},
 
-		updateExtraFields : function(event) {
-			event.preventDefault();
+		updateExtraFields : function() {
 			this.extraFieldsView.trigger('filter', this.$('#parent_id').val());
 		},
 

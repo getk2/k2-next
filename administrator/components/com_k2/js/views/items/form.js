@@ -17,7 +17,7 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 
 		// UI events
 		events : {
-			'change #catid' : 'updateCategory',
+			'change #catid' : 'updateExtraFields',
 			'click ul[data-role="tabs-navigation"] li:nth-child(2) a' : 'loadRevisions',
 			'click [data-action="reset-hits"]' : 'resetHits'
 		},
@@ -111,11 +111,8 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 			}
 		},
 
-		updateCategory : function(event) {
-			event.preventDefault();
-			var value = this.$('#catid').val();
-			// Extra fields
-			this.extraFieldsView.trigger('filter', value);
+		updateExtraFields : function() {
+			this.extraFieldsView.trigger('filter', this.$('#catid').val());
 		},
 
 		onRender : function() {
@@ -159,7 +156,7 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 
 			// Extra fields
 			this.extraFieldsRegion.show(this.extraFieldsView);
-
+			this.updateExtraFields();
 		},
 
 		loadRevisions : function() {

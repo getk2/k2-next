@@ -58,6 +58,7 @@ define(['marionette', 'text!layouts/users/form.html', 'dispatcher', 'widgets/wid
 			this.imageRegion.show(this.imageView);
 			// Extra fields
 			this.extraFieldsRegion.show(this.extraFieldsView);
+			this.extraFieldsView.render();
 		},
 		// OnBeforeSave event
 		onBeforeSave : function() {

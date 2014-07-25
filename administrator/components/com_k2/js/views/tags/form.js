@@ -17,6 +17,7 @@ define(['marionette', 'text!layouts/tags/form.html', 'views/extrafields/widget']
 		},
 		onShow : function() {
 			this.extraFieldsRegion.show(this.extraFieldsView);
+			this.extraFieldsView.render();
 		},
 		serializeData : function() {
 			var data = {
