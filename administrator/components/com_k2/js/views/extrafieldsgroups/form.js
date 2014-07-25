@@ -28,6 +28,7 @@ define(['marionette', 'text!layouts/extrafieldsgroups/form.html', 'dispatcher'],
 				var assignmentsValue = this.model.get('assignments');
 				this.$('input[name="assignments[mode]"]').val([assignmentsValue.mode]);
 			}
+			this.$('input[name="assignments[recursive]"]:checked').parent().addClass('jw--radio__checked');
 		},
 		updateAssignmentsSelection : function() {
 			var active = this.$('input[name="assignments[mode]"]:checked');
