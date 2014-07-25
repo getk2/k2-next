@@ -96,7 +96,8 @@ define(['text!layouts/galleries/widget.html', 'text!layouts/galleries/add.html',
 			this.$el.sortable({
 				containerSelector : '[data-role="sortable-galleries"]',
 				itemSelector : '[data-role="sortable-galleries-row"]',
-				placeholder : '<div class="k2SortingPlaceholder"></div>'
+				placeholder : '<div class="k2SortingPlaceholder"></div>',
+				handle : '[data-role="ordering-handle"]'
 			});
 		}
 	});

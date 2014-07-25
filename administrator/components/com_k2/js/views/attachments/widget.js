@@ -91,7 +91,8 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/attachments/widget.html', 
 					containerSelector : 'table',
 					itemPath : '> tbody',
 					itemSelector : 'tr',
-					placeholder : '<tr class="k2SortingPlaceholder"><td colspan="6"></td></tr>'
+					placeholder : '<tr class="k2SortingPlaceholder"><td colspan="6"></td></tr>',
+					handle : '[data-role="ordering-handle"]'
 				});
 			} else {
 				this.$el.hide();
