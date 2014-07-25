@@ -24,7 +24,7 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'vie
 	});
 
 	// On after initialize
-	K2.on('initialize:after', function() {
+	K2.on('start', function() {
 
 		// Backbone history
 		Backbone.history.start();

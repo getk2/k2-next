@@ -34,8 +34,8 @@ define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categor
 			}
 			this.$el.attr('data-id', this.model.get('id'));
 		},
-		appendHtml : function(compositeView, itemView) {
-			compositeView.$('ul:first').append(itemView.el);
+		attachHtml : function(compositeView, childView) {
+			compositeView.$('ul:first').append(childView.el);
 		},
 		toggleState : function(event) {
 			event.preventDefault();
@@ -48,8 +48,8 @@ define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categor
 	});
 	var K2ViewCategories = Marionette.CompositeView.extend({
 		template : _.template(list),
-		itemViewContainer : '[data-region="categories"]',
-		itemView : K2ViewCategoriesRow,
+		childViewContainer : '[data-region="categories"]',
+		childView : K2ViewCategoriesRow,
 		collectionEvents : {
 			'reset' : 'buildTree',
 		},
@@ -69,7 +69,7 @@ define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categor
 			});
 
 		},
-		onCompositeCollectionRendered : function() {
+		onRenderCollection : function() {
 			var collection = this.collection;
 			var el = this.$('[data-region="categories"]');
 			K2Widget.ordering(el, 'ordering', true, {

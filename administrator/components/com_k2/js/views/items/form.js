@@ -1,6 +1,6 @@
 define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/extrafields/widget', 'views/attachments/widget', 'views/galleries/widget', 'views/media/widget', 'views/image/widget', 'views/revisions/widget'], function(K2Dispatcher, K2Widget, template, K2ViewExtraFieldsWidget, K2ViewAttachmentsWidget, K2ViewGalleriesWidget, K2ViewMediaWidget, K2ViewImageWidget, K2ViewRevisionsWidget) {'use strict';
 	// K2 item form view
-	var K2ViewItem = Marionette.Layout.extend({
+	var K2ViewItem = Marionette.LayoutView.extend({
 
 		// Template
 		template : _.template(template),

@@ -12,8 +12,8 @@ define(['marionette', 'text!layouts/comments/list.html', 'text!layouts/comments/
 	});
 	var K2ViewComments = Marionette.CompositeView.extend({
 		template : _.template(list),
-		itemViewContainer : '[data-region="list"]',
-		itemView : K2ViewCommentsRow
+		childViewContainer : '[data-region="list"]',
+		childView : K2ViewCommentsRow
 	});
 	return K2ViewComments;
 });

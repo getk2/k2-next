@@ -1,6 +1,6 @@
 define(['marionette', 'text!layouts/list.html', 'dispatcher'], function(Marionette, template, K2Dispatcher) {'use strict';
 
-	var K2ListLayout = Marionette.Layout.extend({
+	var K2ListLayout = Marionette.LayoutView.extend({
 		template : _.template(template),
 		regions : {
 			grid : '[data-region="grid"]',

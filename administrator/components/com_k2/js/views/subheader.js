@@ -1,6 +1,6 @@
 define(['marionette', 'text!layouts/subheader.html', 'dispatcher', 'widgets/widget', 'views/toolbar', 'views/filters'], function(Marionette, template, K2Dispatcher, K2Widget, K2ViewToolbar, K2ViewFilters) {'use strict';
 
-	var K2ViewSubheader = Marionette.Layout.extend({
+	var K2ViewSubheader = Marionette.LayoutView.extend({
 
 		template : _.template(template),
 

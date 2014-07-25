@@ -35,7 +35,7 @@ define(['marionette', 'text!layouts/extrafields/widget.html', 'widgets/widget', 
 			jQuery('.k2ExtraFieldRequired').removeClass('k2ExtraFieldRequired');
 			jQuery(document).trigger('K2ExtraFieldsRender');
 		},
-		onClose : function() {
+		onDestroy : function() {
 			jQuery(document).unbind('K2ExtraFieldsValidate');
 		},
 		validate : function() {

@@ -1,7 +1,7 @@
 define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.html', 'text!layouts/items/grid_list.html', 'text!layouts/items/grid_row.html', 'text!layouts/items/sortable_list.html', 'text!layouts/items/sortable_row.html', 'text!layouts/items/sortable_row_item.html', 'dispatcher', 'session', 'widgets/widget', 'collections/items', 'collections/categories'], function(Marionette, list, row, gridList, gridRow, sortableList, sortableRow, sortableRowItem, K2Dispatcher, K2Session, K2Widget, K2CollectionItems, K2CollectionCategories) {'use strict';
 
 	// List items layout. It handles the two views for items ( table and sortable list)
-	var K2ViewItems = Marionette.Layout.extend({
+	var K2ViewItems = Marionette.LayoutView.extend({
 		template : _.template('<div data-region="items-inner"></div>'),
 		regions : {
 			content : '[data-region="items-inner"]',
@@ -22,7 +22,7 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 			K2Dispatcher.trigger('app:sidebar:layouts:show');
 			this.setup();
 		},
-		onClose : function() {
+		onDestroy : function() {
 			K2Dispatcher.trigger('app:sidebar:layouts:hide');
 		},
 		setup : function() {
@@ -131,9 +131,9 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 	// Table view
 	var K2ViewItemsTable = Marionette.CompositeView.extend({
 		template : _.template(list),
-		itemViewContainer : '[data-region="list"]',
-		itemView : K2ViewItemsTableRow,
-		onCompositeCollectionRendered : function() {
+		childViewContainer : '[data-region="list"]',
+		childView : K2ViewItemsTableRow,
+		onRenderCollection : function() {
 			K2Widget.ordering(this.$('[data-region="list"]'), 'featured_ordering', this.collection.getState('sorting') === 'featured_ordering' && this.collection.getState('category') < 2);
 		}
 	});
@@ -154,15 +154,15 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 	// Grid view
 	var K2ViewItemsGrid = Marionette.CompositeView.extend({
 		template : _.template(gridList),
-		itemViewContainer : '[data-region="list"]',
-		itemView : K2ViewItemsGridRow,
-		onCompositeCollectionRendered : function() {
+		childViewContainer : '[data-region="list"]',
+		childView : K2ViewItemsGridRow,
+		onRenderCollection : function() {
 			K2Widget.ordering(this.$('[data-region="list"]'), 'featured_ordering', this.collection.getState('sorting') === 'featured_ordering');
 		}
 	});
 
 	// The row view for sortable
-	var K2ViewItemsSortableRow = Marionette.Layout.extend({
+	var K2ViewItemsSortableRow = Marionette.LayoutView.extend({
 		tagName : 'li',
 		template : _.template(sortableRow),
 		regions : {
@@ -241,14 +241,14 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 	var K2ViewItemsSortable = Marionette.CompositeView.extend({
 		tagName : 'div',
 		template : _.template(sortableList),
-		itemViewContainer : '[data-region="list"]',
-		itemView : K2ViewItemsSortableRow
+		childViewContainer : '[data-region="list"]',
+		childView : K2ViewItemsSortableRow
 	});
 
 	// Sortable view for category children
 	var K2ViewItemsSortableCollectionView = Marionette.CollectionView.extend({
 		tagName : 'ul',
-		itemView : K2ViewItemsSortableRow
+		childView : K2ViewItemsSortableRow
 	});
 
 	// The row view for grid
@@ -260,8 +260,8 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 	// Sortable view for category items
 	var K2ViewItemsSortableCollectionViewItems = Marionette.CollectionView.extend({
 		tagName : 'ul',
-		itemView : K2ViewItemsSortableCollectionViewItemsRow,
-		onCollectionRendered : function() {
+		childView : K2ViewItemsSortableCollectionViewItemsRow,
+		onRender : function() {
 			var collection = this.collection;
 			require(['widgets/sortable/jquery-sortable-min'], _.bind(function() {
 				this.$el.sortable({

@@ -14,10 +14,10 @@ define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session', 'tex
 
 	var K2ViewSidebarSearchResults = Marionette.CollectionView.extend({
 		tagName : 'ul',
-		itemView : K2ViewSidebarSearchResultsItem
+		childView : K2ViewSidebarSearchResultsItem
 	});
 
-	var K2ViewSidebar = Marionette.Layout.extend({
+	var K2ViewSidebar = Marionette.LayoutView.extend({
 
 		template : _.template(template),
 

@@ -15,9 +15,9 @@ define(['marionette', 'text!layouts/extrafieldsgroups/list.html', 'text!layouts/
 	});
 	var K2ViewExtraFieldsGroups = Marionette.CompositeView.extend({
 		template : _.template(list),
-		itemViewContainer : '[data-region="list"]',
-		itemView : K2ViewExtraFieldsGroupsRow,
-		onCompositeCollectionRendered : function() {
+		childViewContainer : '[data-region="list"]',
+		childView : K2ViewExtraFieldsGroupsRow,
+		onRenderCollection : function() {
 			var scopes = [];
 			_.each(this.collection.models, function(model) {
 				scopes.push(model.get('scope'));

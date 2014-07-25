@@ -91,7 +91,7 @@ define(['text!layouts/media/widget.html', 'text!layouts/media/add.html', 'text!l
 		initialize : function(options) {
 			this.sortable = options.sortable;
 		},
-		itemView : K2ViewMediaRow,
+		childView : K2ViewMediaRow,
 		onRender : function() {
 			if (this.sortable) {
 				this.$el.attr('data-role', 'sortable-media');
@@ -105,7 +105,7 @@ define(['text!layouts/media/widget.html', 'text!layouts/media/add.html', 'text!l
 		}
 	});
 
-	var K2ViewMediaWidget = Marionette.Layout.extend({
+	var K2ViewMediaWidget = Marionette.LayoutView.extend({
 		template : _.template(widgetTemplate),
 		regions : {
 			newMediaRegion : '[data-region="new-media"]',

@@ -12,8 +12,8 @@ define(['marionette', 'text!layouts/users/list.html', 'text!layouts/users/row.ht
 	});
 	var K2ViewUsers = Marionette.CompositeView.extend({
 		template : _.template(list),
-		itemViewContainer : '[data-region="list"]',
-		itemView : K2ViewUsersRow
+		childViewContainer : '[data-region="list"]',
+		childView : K2ViewUsersRow
 	});
 	return K2ViewUsers;
 });

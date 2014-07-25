@@ -89,7 +89,7 @@ define(['text!layouts/galleries/widget.html', 'text!layouts/galleries/add.html',
 
 	// List view
 	var K2ViewGalleries = Marionette.CollectionView.extend({
-		itemView : K2ViewGalleriesRow,
+		childView : K2ViewGalleriesRow,
 		className : 'k2SortableGalleries',
 		onRender : function() {
 			this.$el.attr('data-role', 'sortable-galleries');
@@ -102,7 +102,7 @@ define(['text!layouts/galleries/widget.html', 'text!layouts/galleries/add.html',
 	});
 
 	// Layout view
-	var K2ViewGalleriesWidget = Marionette.Layout.extend({
+	var K2ViewGalleriesWidget = Marionette.LayoutView.extend({
 		template : _.template(widgetTemplate),
 		regions : {
 			newGalleriesRegion : '[data-region="new-galleries"]',

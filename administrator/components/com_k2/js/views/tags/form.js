@@ -1,5 +1,5 @@
 define(['marionette', 'text!layouts/tags/form.html', 'views/extrafields/widget'], function(Marionette, template, K2ViewExtraFieldsWidget) {'use strict';
-	var K2ViewTag = Marionette.Layout.extend({
+	var K2ViewTag = Marionette.LayoutView.extend({
 		template : _.template(template),
 		initialize : function() {
 			this.extraFieldsView = new K2ViewExtraFieldsWidget({

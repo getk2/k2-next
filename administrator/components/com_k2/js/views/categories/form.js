@@ -1,7 +1,7 @@
 define(['marionette', 'text!layouts/categories/form.html', 'dispatcher', 'widgets/widget', 'views/extrafields/widget', 'views/image/widget'], function(Marionette, template, K2Dispatcher, K2Widget, K2ViewExtraFieldsWidget, K2ViewImageWidget) {'use strict';
 
 	// K2 category form view
-	var K2ViewCategory = Marionette.Layout.extend({
+	var K2ViewCategory = Marionette.LayoutView.extend({
 
 		// Template
 		template : _.template(template),

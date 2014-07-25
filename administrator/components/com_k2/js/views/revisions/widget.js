@@ -30,7 +30,7 @@ define(['text!layouts/revisions/form.html', 'text!layouts/revisions/info.html', 
 		}
 	});
 
-	var K2ViewRevisionsWidget = Marionette.Layout.extend({
+	var K2ViewRevisionsWidget = Marionette.LayoutView.extend({
 		template : _.template(template),
 		regions : {
 			leftRevisionRegion : '[data-region="revisions-left"]',

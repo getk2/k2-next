@@ -12,8 +12,8 @@ define(['marionette', 'text!layouts/tags/list.html', 'text!layouts/tags/row.html
 	});
 	var K2ViewTags = Marionette.CompositeView.extend({
 		template : _.template(list),
-		itemViewContainer : '[data-region="list"]',
-		itemView : K2ViewTagsRow
+		childViewContainer : '[data-region="list"]',
+		childView : K2ViewTagsRow
 	});
 	return K2ViewTags;
 });

@@ -32,7 +32,7 @@ define(['marionette', 'dispatcher', 'text!layouts/batch.html', 'widgets/widget']
 			});
 			var mode = this.$('input[name="batchMode"]:checked').val();
 			K2Dispatcher.trigger('app:controller:batchSetMultipleStates', rows, states, mode);
-			this.close();
+			this.destroy();
 		}
 	});
 	return K2ViewBatch;

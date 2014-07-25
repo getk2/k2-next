@@ -50,7 +50,7 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/attachments/widget.html', 
 	});
 
 	var K2ViewAttachments = Marionette.CollectionView.extend({
-		itemView : K2ViewAttachmentsRow
+		childView : K2ViewAttachmentsRow
 	});
 
 	var K2ViewAttachmentsPreviewRow = Marionette.ItemView.extend({
@@ -82,8 +82,8 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/attachments/widget.html', 
 	});
 	var K2ViewAttachmentsPreview = Marionette.CompositeView.extend({
 		template : _.template(tableTemplate),
-		itemViewContainer : '[data-region="list"]',
-		itemView : K2ViewAttachmentsPreviewRow,
+		childViewContainer : '[data-region="list"]',
+		childView : K2ViewAttachmentsPreviewRow,
 		onRender : function() {
 			if (this.collection.models.length > 0) {
 				this.$el.show();
@@ -99,7 +99,7 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/attachments/widget.html', 
 		}
 	});
 
-	var K2ViewAttachmentsWidget = Marionette.Layout.extend({
+	var K2ViewAttachmentsWidget = Marionette.LayoutView.extend({
 		template : _.template(widgetTemplate),
 		regions : {
 			newAttachmentsRegion : '[data-region="new-attachments"]',

@@ -12,8 +12,8 @@ define(['marionette', 'text!layouts/usergroups/list.html', 'text!layouts/usergro
 	});
 	var K2ViewUserGroups = Marionette.CompositeView.extend({
 		template : _.template(list),
-		itemViewContainer : '[data-region="list"]',
-		itemView : K2ViewUserGroupsRow
+		childViewContainer : '[data-region="list"]',
+		childView : K2ViewUserGroupsRow
 	});
 	return K2ViewUserGroups;
 });
