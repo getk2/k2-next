@@ -83,6 +83,8 @@ ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; position: re
 	.jw--attachments { position: relative; }
 		.jw--attachment--single, .row.jw--attachment--single { padding: 28px 20px 28px 10px; margin: 18px 41px 18px 0; background: #f7f8f8; border: 1px solid #e9ebec; border-radius: 3px; position: relative; z-index: 2; }
 		button.jw--attachment--remove { position: absolute; right: 0; top: 0; }
+		.jw--attachment--table .jw--order--handle { font-size: 18px; }
+		.jw--attachment--table .jw--order--handle:hover { cursor: move; }
 
 /*------------------------------------------------------------------
 [Extra fields] */
