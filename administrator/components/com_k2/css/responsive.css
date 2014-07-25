@@ -36,11 +36,17 @@
 	/* visibility */
 	body { padding-left: 0!important; padding-right: 0!important; }
 	body .navbar-fixed-top, body .navbar-fixed-bottom, body .navbar-static-top { margin-left: 0; margin-right: 0; }
-	ul.jw--main--menu .fa, .jw h3.jw--title, .jw--thumbsbar { display: none; }
+	.jw h3.jw--title, .jw--thumbsbar { display: none; }
 	.jw--thumbsbar { position: absolute; clip: rect(0,0,0,0); }
 	
-	/* navigation */
-	
+	/* navigation - break it down with a toggler */
+	ul.jw--inline--menu { width:100%; }
+		ul.jw--inline--menu > li,
+		ul.jw--inline--menu li a { display: block; }
+		ul.jw--inline--menu li { border-bottom: 1px solid #204861; } 
+		ul.jw--inline--menu > li.jw--haschild > span { display: none; }
+		ul.jw--inline--menu > li > ul { display: block; padding: 0; margin: 0; width: 100%; position: static; opacity: 1; background: transparent; }
+		ul.jw--main--menu > li > ul li a { padding: 18px 9px; }
 	
 	/* remove all fixed instances */
 	.jw--header { position: static; width: auto; }
@@ -90,6 +96,9 @@
 	
 	.jw--editor--tab { padding: 10px; }
 	.jw--editor--cnt { border: 0; padding: 10px 0 0; }
+	
+	/* buttons */
+	.jw--btn, a.jw--btn, button.jw--btn, input[type="submit"].jw--btn { padding: 10px 15px; }
 
 }
 
@@ -110,6 +119,10 @@
 	.jw--tag--caption { margin-bottom: 20px; }
 	.jw--editor--cnt .editor { max-width: 275px; }
 	.jw--content--label { font-size: 15px; }
+	
+	/* button area */
+	.jw--add--area { padding: 12px 5px; }
+	.jw--btn, a.jw--btn, button.jw--btn, input[type="submit"].jw--btn { padding: 10px; font-size: 12px; }
 	
 	/* extra fields */
 	.jw--element--row label { margin-bottom: 5px; }
