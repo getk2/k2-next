@@ -1,4 +1,4 @@
-define(['marionette', 'text!layouts/extrafieldsgroups/form.html', 'dispatcher'], function(Marionette, template, K2Dispatcher) {'use strict';
+define(['marionette', 'text!layouts/extrafieldsgroups/form.html', 'dispatcher', 'widgets/widget'], function(Marionette, template, K2Dispatcher, K2Widget) {'use strict';
 	var K2ViewExtraFieldsGroup = Marionette.ItemView.extend({
 		template : _.template(template),
 		modelEvents : {
@@ -18,6 +18,7 @@ define(['marionette', 'text!layouts/extrafieldsgroups/form.html', 'dispatcher'],
 		onDomRefresh : function() {
 			this.updateAssignmentsField();
 			this.updateAssignmentsSelection();
+			K2Widget.updateEvents(this.$el);
 		},
 		updateAssignmentsField : function() {
 			var form = this.model.getForm();

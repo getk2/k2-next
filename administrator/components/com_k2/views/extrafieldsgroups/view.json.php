@@ -132,7 +132,27 @@ class K2ViewExtraFieldsGroups extends K2View
 		$assignments['item'] = K2HelperHTML::categories('assignments[categories][]', isset($row->assignments->categories) ? $row->assignments->categories : array(), false, false, 'multiple="multiple"', $recursive);
 		$assignments['category'] = $assignments['item'];
 		$assignments['user'] = K2HelperHTML::usergroups('assignments[usergroups][]', isset($row->assignments->usergroups) ? $row->assignments->usergroups : array(), false, 'multiple="multiple"');
-		$assignments['tag'] = K2HelperHTML::tags('assignments[tags][]', isset($row->assignments->tags) ? $row->assignments->tags : array(), false, 'multiple="multiple"');
+
+		$tags = array();
+
+		if (isset($row->assignments->tags) && count($row->assignments->tags))
+		{
+			$model = K2Model::getInstance('Tags');
+			$model->setState('id', $row->assignments->tags);
+			$rows = $model->getRows();
+
+			if (count($rows))
+			{
+				foreach ($rows as $row)
+				{
+					$tag = new stdClass;
+					$tag->id = $row->id;
+					$tag->text = $row->name;
+					$tags[] = $tag;
+				}
+			}
+		}
+		$assignments['tag'] = '<input data-widget="tags" data-create="0" data-use-id="1" value="'.htmlspecialchars(json_encode($tags), ENT_QUOTES, 'UTF-8').'" type="hidden" name="assignments[tags]" />';
 		$form->assignments = $assignments;
 
 	}

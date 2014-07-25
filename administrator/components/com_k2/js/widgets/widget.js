@@ -186,18 +186,30 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 		tags : function(element) {
 			require(['widgets/select2/select2.min', 'css!widgets/select2/select2.css'], function() {
 				var canCreateTag = element.data('create');
+				var useIds = element.data('use-id');
 				element.select2({
 					tags : element.val().split(','),
 					placeholder : element.data('placeholder') || l('K2_ENTER_SOME_TAGS'),
 					tokenSeparators : [','],
 					initSelection : function(element, callback) {
 						var data = [];
-						jQuery(element.val().split(',')).each(function() {
-							data.push({
-								id : this,
-								text : this
+						if (useIds) {
+							var selectedTags = jQuery.parseJSON(jQuery(element).val());
+							jQuery(element).val('');
+							_.each(selectedTags, function(tag) {
+								data.push({
+									id : tag.id,
+									text : tag.text
+								});
 							});
-						});
+						} else {
+							jQuery(element.val().split(',')).each(function() {
+								data.push({
+									id : this,
+									text : this
+								});
+							});
+						}
 						callback(data);
 					},
 					createSearchChoice : function(term, data) {
@@ -230,10 +242,18 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 							var tags = [];
 							jQuery.each(data.rows, function(index, row) {
 								var tag = {};
-								tags.push({
-									id : row.name,
-									text : row.name
-								});
+								if (useIds) {
+									tags.push({
+										id : row.id,
+										text : row.name
+									});
+								} else {
+									tags.push({
+										id : row.name,
+										text : row.name
+									});
+								}
+
 							});
 							var more = (page * 50) < data.total;
 							return {

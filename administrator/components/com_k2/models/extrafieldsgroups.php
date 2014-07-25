@@ -179,6 +179,10 @@ class K2ModelExtraFieldsGroups extends K2Model
 		// Assignments
 		if (isset($data['assignments']))
 		{
+			if ($data['assignments']['mode'] == 'specific' && isset($data['assignments']['tags']))
+			{
+				$data['assignments']['tags'] = explode(',', $data['assignments']['tags']);
+			}
 			$data['assignments'] = json_encode($data['assignments']);
 		}
 
