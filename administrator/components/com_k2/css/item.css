@@ -76,8 +76,10 @@ ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; position: re
 /* images */
 .jw--image--tab .jw--setting--field .jw--setting--single:nth-child(2n-2) { background: #fff; }
 	.jw--form__item .jw--image--single img { padding: 10px; background: #f7f8f8; border: 1px solid #e9ebec; border-radius: 3px; position: relative; z-index: 2; }
-	button.jw--remove { vertical-align: top; margin-left: -4px; position: relative; z-index: 2; background: #f7f8f8; border-style: solid; border-color: #e9ebec;  border-width: 1px 1px 1px 0; border-radius: 0 3px 3px 0; font-size: 18px; line-height: 1; padding: 13px; color: #949595; }
+	button.jw--remove, .jw--order--handle__abs { vertical-align: top; margin-left: -4px; position: relative; z-index: 2; background: #f7f8f8; border-style: solid; border-color: #e9ebec;  border-width: 1px 1px 1px 0; border-radius: 0 3px 3px 0; font-size: 18px; line-height: 1; padding: 13px; color: #949595; }
 	button.jw--remove:hover { color: #a53222; }
+	.jw--order--handle__abs { position: absolute; top: 49px; right: 0; }
+	
 	
 	/* attachments */
 	.jw--attachments { position: relative; }
@@ -144,6 +146,10 @@ ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; position: re
 	 .rev--author { font-size: 13px; font-weight: 700; color: #22baef; }
 	 .rev--notes {  }
 	 .rev--header { margin: 0 0 20px; }
+	 
+	 .ui-slider-label span { display: block; white-space: nowrap; font-weight: 700; margin-bottom: 5px; }
+	 .ui-slider-label > span { font-size: 12px; color: #22baef; }
+	 .ui-slider-label > span + span { font-size: 11px; color: #555; }
 
 /*------------------------------------------------------------------
 [Hits] [Publishing Options] */
