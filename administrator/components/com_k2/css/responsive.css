@@ -43,7 +43,7 @@
 	/* visibility */
 	body { padding-left: 0!important; padding-right: 0!important; }
 	body .navbar-fixed-top, body .navbar-fixed-bottom, body .navbar-static-top { margin-left: 0; margin-right: 0; }
-	.jw h3.jw--title, .jw--thumbsbar, .jw--listed--items .fa-save { display: none; }
+	.jw h3.jw--title, .jw--thumbsbar, .jw--listed--items .fa-save, a.btn-subhead { display: none; }
 	.jw--thumbsbar { position: absolute; clip: rect(0,0,0,0); }
 	
 	/* navigation - break it down with a toggler */
