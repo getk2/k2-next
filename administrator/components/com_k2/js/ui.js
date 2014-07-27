@@ -75,4 +75,11 @@
 			K2Container.removeClass('open--sidebar');
 		}		
 	});
+	
+	// Menu toggler
+	K2Container.on('click', '#jw--navtoggle', function(e) {
+		e.preventDefault();
+		$('.jw--main--menu').toggleClass('menu--open');
+	});
+	
 })(jQuery);

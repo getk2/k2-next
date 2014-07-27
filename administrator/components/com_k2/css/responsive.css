@@ -1,4 +1,5 @@
 @media only screen and (max-width: 1250px){
+
 	/* item form -- tabs */
 	.jw--tabs__top a { padding: 20px 14px; font-size: 17px; }
 	
@@ -6,11 +7,16 @@
 	.jw--filters { width: 100%; border-top: 1px solid #dbdcdc; }
 	.jw--top--filters .jw--filter { width: 16.66%; }
 	.select2-container .select2-choice, .select2-container { min-width: 0; width: 100%; }
+	
+	div[data-region="items-inner"], div[data-region="grid"] { overflow: scroll; }
+	.jw--listed--items { min-width: 1240px; overflow: scroll; }
 
 }
 
 @media only screen and (max-width: 1025px){
+
 	ul.jw--tabs { text-align: left!important; }
+	
 }
 
 @media only screen and (max-width: 900px){
@@ -29,6 +35,7 @@
 
 	/* menu */
 	ul.jw--main--menu > li > a, ul.jw--main--menu .jw--sep { padding: 18px 9px; letter-spacing: -1px; }
+	
 }
 
 @media only screen and (max-width: 767px){
@@ -36,7 +43,7 @@
 	/* visibility */
 	body { padding-left: 0!important; padding-right: 0!important; }
 	body .navbar-fixed-top, body .navbar-fixed-bottom, body .navbar-static-top { margin-left: 0; margin-right: 0; }
-	.jw h3.jw--title, .jw--thumbsbar { display: none; }
+	.jw h3.jw--title, .jw--thumbsbar, .jw--listed--items .fa-save { display: none; }
 	.jw--thumbsbar { position: absolute; clip: rect(0,0,0,0); }
 	
 	/* navigation - break it down with a toggler */
@@ -48,13 +55,28 @@
 		ul.jw--inline--menu > li > ul { display: block; padding: 0; margin: 0; width: 100%; position: static; opacity: 1; background: transparent; }
 		ul.jw--main--menu > li > ul li a { padding: 18px 9px; }
 	
+	/* menu visibility */
+	#jw--navtoggle { color: #f6f6f6; position: absolute; right: 6px; top: 7px; padding: 7px 10px; border-radius: 3px; line-height: 1; font-size: 23px; background: #204866 }
+	
+	.jw--main--menu { display: none; }
+		.jw--main--menu.menu--open { display: block; }
+	
 	/* remove all fixed instances */
 	.jw--header { position: static; width: auto; }
 	.jw--subheader { position: static; border: 0; }
-	.jw--component { padding-top: 0; padding-left: 0; min-width: 100%; clear: both;}
+	.jw--component { padding: 0; min-width: 100%; clear: both;}
 	.jw--pagination { position: static; height: auto; }
 	.open--sidebar .jw--component { padding-left: 0; }
 	
+	/* remove joomla! 's margins */
+	.container-main, #system-debug { padding-bottom: 0!important; }
+	.navbar-fixed-bottom { margin-top: 0!important; }
+	
+	/* header styling */
+	h1.jw--logo { margin-left: 3px; margin-bottom: 15px; }
+	
+	/* add area */
+	.jw--add--area { float: none!important; margin: 15px -15px 0; padding: 12px 10px; width: auto; overflow: hidden; }
 	
 	/* sidebar styling */
 	.jw--sidebar { left: -280px; width: 280px; top: 0; bottom: 0; padding-top: 15px; overflow: visible; }
@@ -80,16 +102,20 @@
 	.jw--settings fieldset, .jw--settings select, .jw--settings input[type="text"], .jw--settings input[type="password"], .jw--settings textarea { min-width: 100%; max-width: 100%; margin-top: 5px; }
 	.jw--settings fieldset { padding-left: 0; }
 	
+	/* pagination */
+	.jw--pagination { padding: 0 10px; }
+		.jw--pagination ul { padding:  0 0 15px; margin: 10px -10px 0; display: block; overflow: hidden; border-top: 1px solid #dbdcdc; }
+	
 }
 
-@media only screen and (max-width: 600px){
-	
-	h1.jw--logo { margin-bottom: 15px; }
-	/* add area */
-	.jw--add--area { float: none!important; margin: 15px -12px 0; width: auto; overflow: hidden; }
-	
+@media only screen and (max-width: 640px){
+		
 	/* filters */
 	.jw--top--filters .jw--filter { width: 50%; }
+	.jw--top--filters .jw--filter label { padding-top: 15px; }
+	.select2-container .select2-choice { height: 30px; }
+	
+	.jw--add--area { margin: 15px -7px 0; }
 	
 	/* item form and editor content */
 	.jw--item--form { padding: 25px 10px; }
@@ -102,13 +128,25 @@
 
 }
 
+@media only screen and (max-width: 569px){
+
+	/* pagination */
+	.jw--pagination ul li { display: none; }
+	.jw--pagination ul li.jw--showvsmall { display: inline-block; }
+	.jw--limit .select2-container.jw--limit--select { max-width: 50px; width: 50px;  }
+	.jw--limit .select2-container.jw--limit--select .select2-choice { padding: 0 5px; }
+	.jw--total .jw--total--block { padding: 18px 10px; }
+	.jw--total .jw--total--block:last-child { padding-right: 0; }
+	
+}
+
 @media only screen and (max-width: 400px){
 
 	/* item form */
 	.jw--tabs__content li a { padding: 10px 5px; font-size: 13px; }
 
 	/* filters */
-	.jw--top--filters .jw--filter { width: 100%; }
+	/*.jw--top--filters .jw--filter { width: 100%; }*/
 	
 	/* item form fields - editor - extra fields */
 	.jw--item--lbl { text-align: left!important; min-width: 100%; }
@@ -121,7 +159,6 @@
 	.jw--content--label { font-size: 15px; }
 	
 	/* button area */
-	.jw--add--area { padding: 12px 5px; }
 	.jw--btn, a.jw--btn, button.jw--btn, input[type="submit"].jw--btn { padding: 10px; font-size: 12px; }
 	
 	/* extra fields */
@@ -149,4 +186,5 @@
 		.jw--settings.jw--generic--form input[type="text"], 
 		.jw--settings.jw--generic--form input[type="password"], 
 		.jw--settings.jw--generic--form input[type="email"] { width: 275px; }
+		
 }
