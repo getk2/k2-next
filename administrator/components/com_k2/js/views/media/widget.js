@@ -120,22 +120,25 @@ define(['text!layouts/media/widget.html', 'text!layouts/media/add.html', 'text!l
 			this.model = new Backbone.Model({
 				enabled : options.enabled
 			});
-			this.existingMediaCollection = new MediaCollection(options.data);
-			this.existingMediaView = new K2ViewMedia({
-				collection : this.existingMediaCollection,
-				sortable : true
-			});
+			if (options.enabled) {
+				this.existingMediaCollection = new MediaCollection(options.data);
+				this.existingMediaView = new K2ViewMedia({
+					collection : this.existingMediaCollection,
+					sortable : true
+				});
 
-			this.newMediaCollection = new MediaCollection();
-			this.newMediaView = new K2ViewMedia({
-				collection : this.newMediaCollection,
-				sortable : false
-			});
-
+				this.newMediaCollection = new MediaCollection();
+				this.newMediaView = new K2ViewMedia({
+					collection : this.newMediaCollection,
+					sortable : false
+				});
+			}
 		},
 		onShow : function() {
-			this.newMediaRegion.show(this.newMediaView);
-			this.existingMediaRegion.show(this.existingMediaView);
+			if (this.model.get('enabled')) {
+				this.newMediaRegion.show(this.newMediaView);
+				this.existingMediaRegion.show(this.existingMediaView);
+			}
 		},
 		addMedia : function(event) {
 			event.preventDefault();
