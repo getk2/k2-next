@@ -117,21 +117,23 @@ define(['text!layouts/galleries/widget.html', 'text!layouts/galleries/add.html',
 			this.model = new Backbone.Model({
 				enabled : options.enabled,
 			});
-			this.existingGalleriesCollection = new Galleries(options.data);
-			this.existingGalleriesView = new K2ViewGalleries({
-				collection : this.existingGalleriesCollection
-			});
+			if (options.enabled) {
+				this.existingGalleriesCollection = new Galleries(options.data);
+				this.existingGalleriesView = new K2ViewGalleries({
+					collection : this.existingGalleriesCollection
+				});
 
-			this.newGalleriesCollection = new Galleries();
-			this.newGalleriesView = new K2ViewGalleries({
-				collection : this.newGalleriesCollection
-			});
-
+				this.newGalleriesCollection = new Galleries();
+				this.newGalleriesView = new K2ViewGalleries({
+					collection : this.newGalleriesCollection
+				});
+			}
 		},
 		onShow : function() {
-			this.existingGalleriesRegion.show(this.existingGalleriesView);
-			this.newGalleriesRegion.show(this.newGalleriesView);
-
+			if (this.model.get('enabled')) {
+				this.existingGalleriesRegion.show(this.existingGalleriesView);
+				this.newGalleriesRegion.show(this.newGalleriesView);
+			}
 		},
 		addGallery : function(event) {
 			event.preventDefault();
