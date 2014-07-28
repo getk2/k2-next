@@ -70,10 +70,10 @@ class Com_K2InstallerScript
 					return false;
 				}
 				
-				// User is required to set error reporting to "None" while upgrading to avoid breaking JSON response
-				if($configuration->get('error_reporting') != 'none')
+				// User is required to set error reporting to "None" or "Simple" while upgrading to avoid breaking JSON response due to PHP notices.
+				if($configuration->get('error_reporting') != 'none' && $configuration->get('error_reporting') != 'simple')
 				{
-					$application->enqueueMessage('Joomla! error reporting is enabled. Please set it to "None" and try again.', 'error');
+					$application->enqueueMessage('Joomla! error reporting is enabled. Please set it to "None" or "Simple" and try again.', 'error');
 					return false;
 				}
 				
