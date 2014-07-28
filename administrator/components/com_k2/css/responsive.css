@@ -93,6 +93,9 @@
 	
 	.jw--scrollwrapper { display: none; }
 	.jw--settings__global { padding: 38px 10px; }
+	
+	/* tabs */
+	.jw--gallery--text { overflow: hidden; display: block; margin-top: 10px; }
  
 	/* filters */
 	.jw--top--filters .jw--filter { width: 33.3333%; border-bottom: 1px solid #dbdcdc; }
@@ -122,12 +125,17 @@
 	
 	/* item form and editor content */
 	.jw--item--form { padding: 25px 10px; }
-	
+	.jw--element--row h3 { padding-left: 0; }
 	.jw--editor--tab { padding: 10px; }
 	.jw--editor--cnt { border: 0; padding: 10px 0 0; }
 	
 	/* buttons */
 	.jw--btn, a.jw--btn, button.jw--btn, input[type="submit"].jw--btn { padding: 10px 15px; }
+	#editor-xtd-buttons { width: 100%; padding-bottom: 0; margin-bottom: 0; }
+	.btn-toolbar > .btn + .btn, .btn-toolbar > .btn-group + .btn, .btn-toolbar > .btn + .btn-group, .btn-toolbar > .btn { margin-bottom: 10px!important; margin-left: 0!important; display: block; width: 100%; }
+	.toggle-editor { margin-top: 0!important; padding-top: 0!important; }
+		.toggle-editor, .toggle-editor .btn-group { width: 100%; }
+		.toggle-editor .btn-group .btn { display: block; width: 100%; }
 
 }
 
