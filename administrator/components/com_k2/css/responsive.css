@@ -27,7 +27,11 @@
 	.jw--tabs__top a { padding: 15px 10px; font-size: 15px; }
 	.jw--tabs__top .fa { display: none; }
 	.jw--tabs__content li a { padding: 10px; }
-		
+	
+	/* image tab */
+	.jw--image--single button.jw--remove { position: absolute; right: 0; top: 0; }
+	.jw--image--single .jw--item--input { position: relative; }
+	
 	/* the form fields */
 	.jw--item--row { margin-bottom: 0; }
 	.jw--item--fld, .jw--item--tags { margin-bottom: 20px; } 
@@ -76,7 +80,7 @@
 	h1.jw--logo { margin-left: 3px; margin-bottom: 15px; }
 	
 	/* add area */
-	.jw--add--area { float: none!important; margin: 15px -15px 0; padding: 12px 10px; width: auto; overflow: hidden; }
+	.jw--add--area { float: none!important; margin: 15px -12px 0; padding: 12px 12px; width: auto; overflow: hidden; }
 	
 	/* sidebar styling */
 	.jw--sidebar { left: -280px; width: 280px; top: 0; bottom: 0; padding-top: 15px; overflow: visible; }
@@ -95,6 +99,8 @@
 	.jw--settings__global { padding: 38px 10px; }
 	
 	/* tabs */
+	.jw--item--lbl { text-align: left!important; margin-bottom: 5px; }
+	.jw--element--row h3 { padding-left: 0; }
 	.jw--gallery--text { overflow: hidden; display: block; margin-top: 10px; }
  
 	/* filters */
@@ -125,7 +131,6 @@
 	
 	/* item form and editor content */
 	.jw--item--form { padding: 25px 10px; }
-	.jw--element--row h3 { padding-left: 0; }
 	.jw--editor--tab { padding: 10px; }
 	.jw--editor--cnt { border: 0; padding: 10px 0 0; }
 	
