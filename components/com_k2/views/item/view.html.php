@@ -116,6 +116,10 @@ class K2ViewItem extends K2View
 		// Set the layout
 		$this->setLayout('item');
 
+		// Add the template path
+		$this->addTemplatePath(JPATH_SITE.'/components/com_k2/templates/'.$this->item->category->template);
+		$this->addTemplatePath(JPATH_SITE.'/templates/'.JFactory::getApplication()->getTemplate().'/html/com_k2/'.$this->item->category->template);
+
 		// Display
 		parent::display($tpl);
 	}
