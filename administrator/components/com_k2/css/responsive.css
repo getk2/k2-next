@@ -89,7 +89,7 @@
 	h1.jw--logo { margin-left: 3px; margin-bottom: 15px; }
 	
 	/* add area */
-	.jw--add--area { float: none!important; margin: 15px -12px 0; padding: 12px 12px; width: auto; overflow: hidden; }
+	.jw--add--area { float: none!important; clear: both; margin: 15px -12px 0; padding: 12px 12px; width: auto; overflow: hidden; }
 	
 	/* sidebar styling */
 	.jw--sidebar { left: -280px; width: 280px; top: 0; bottom: 0; padding-top: 15px; overflow: visible; }
@@ -122,7 +122,7 @@
 	
 	/* pagination */
 	.jw--pagination { padding: 0 10px; }
-		.jw--pagination ul { padding:  0 0 15px; margin: 10px -10px 0; display: block; overflow: hidden; border-top: 1px solid #dbdcdc; }
+		.jw--pagination ul { padding:  0 0 15px; margin: 10px -10px 0; display: block; overflow: hidden; border-top: 1px solid #dbdcdc; clear: both; }
 	
 	/* revisions */
 	.jw--revisions { padding: 15px; }
@@ -136,7 +136,7 @@
 	.jw--top--filters .jw--filter label { padding-top: 15px; }
 	.select2-container .select2-choice { height: 30px; }
 	
-	.jw--add--area { margin: 15px -7px 0; }
+	.jw--add--area { margin: 15px -7px 0;  }
 	
 	/* item form and editor content */
 	.jw--item--form { padding: 25px 10px; }
