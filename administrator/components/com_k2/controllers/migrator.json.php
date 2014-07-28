@@ -826,6 +826,12 @@ class K2ControllerMigrator extends JControllerLegacy
 					$db->setQuery($query);
 					$field = $db->loadObject();
 
+					// No field found, go for the next one
+					if (!$field)
+					{
+						continue;
+					}
+
 					$entry = new stdClass;
 					if ($field->type == 'text')
 					{
