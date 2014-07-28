@@ -331,6 +331,12 @@ class K2Items extends K2Resource
 			// Decode value
 			$media = json_decode($this->_media);
 
+			// If it is not an array return now
+			if (!is_array($media))
+			{
+				return array();
+			}
+
 			// Get params
 			$params = JComponentHelper::getParams('com_k2');
 
