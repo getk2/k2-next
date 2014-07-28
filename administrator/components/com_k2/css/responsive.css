@@ -47,12 +47,12 @@
 	.jw--thumbsbar { position: absolute; clip: rect(0,0,0,0); }
 	
 	/* navigation - break it down with a toggler */
-	ul.jw--inline--menu { width:100%; }
-		ul.jw--inline--menu > li,
-		ul.jw--inline--menu li a { display: block; }
-		ul.jw--inline--menu li { border-bottom: 1px solid #204861; } 
-		ul.jw--inline--menu > li.jw--haschild > span { display: none; }
-		ul.jw--inline--menu > li > ul { display: block; padding: 0; margin: 0; width: 100%; position: static; opacity: 1; background: transparent; }
+	ul.jw--main--menu { width:100%; }
+		ul.jw--main--menu > li,
+		ul.jw--main--menu li a { display: block; }
+		ul.jw--main--menu li { border-bottom: 1px solid #204861; } 
+		ul.jw--main--menu > li.jw--haschild > span { display: none; }
+		ul.jw--main--menu > li > ul { display: block; padding: 0; margin: 0; width: 100%; position: static; opacity: 1; background: transparent; }
 		ul.jw--main--menu > li > ul li a { padding: 18px 9px; }
 	
 	/* menu visibility */
