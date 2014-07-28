@@ -207,7 +207,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 						K2Dispatcher.trigger('app:messages:reset');
 
 						// Render the layout to the page
-						K2Dispatcher.trigger('app:region:show', layout, 'content');
+						K2Dispatcher.trigger('app:region:show', layout, 'content', this.resource + '-list');
 
 						// Render views to the layout
 						layout.grid.show(this.view);
@@ -251,7 +251,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 						K2Dispatcher.trigger('app:messages:reset');
 
 						// Render the view
-						K2Dispatcher.trigger('app:region:show', this.view, 'content');
+						K2Dispatcher.trigger('app:region:show', this.view, 'content', this.resource + '-form');
 
 						// Determine the new URL
 						var suffix = (id) ? '/edit/' + id : '/add';
@@ -476,7 +476,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 						});
 
 						// Render the view
-						K2Dispatcher.trigger('app:region:show', this.view, 'content');
+						K2Dispatcher.trigger('app:region:show', this.view, 'content', 'settings');
 
 					}, this),
 					error : _.bind(function(model, xhr, options) {
@@ -506,7 +506,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 						});
 
 						// Render the view
-						K2Dispatcher.trigger('app:region:show', this.view, 'content');
+						K2Dispatcher.trigger('app:region:show', this.view, 'content', 'information');
 
 					}, this),
 					error : _.bind(function(model, xhr, options) {
@@ -536,7 +536,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 						});
 
 						// Render the view
-						K2Dispatcher.trigger('app:region:show', this.view, 'content');
+						K2Dispatcher.trigger('app:region:show', this.view, 'content', 'media');
 
 					}, this),
 					error : _.bind(function(model, xhr, options) {
@@ -566,7 +566,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 						});
 
 						// Render the view
-						K2Dispatcher.trigger('app:region:show', this.view, 'content');
+						K2Dispatcher.trigger('app:region:show', this.view, 'content', 'utilities');
 
 					}, this),
 					error : _.bind(function(model, xhr, options) {

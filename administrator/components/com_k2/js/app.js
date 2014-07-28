@@ -123,7 +123,10 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'vie
 	});
 
 	// Render event listener. Renders a view to a region.
-	K2Dispatcher.on('app:region:show', function(view, region) {
+	K2Dispatcher.on('app:region:show', function(view, region, id) {
+		if (id && region === 'content') {
+			jQuery('[data-application="k2"]').attr('id', 'k2-' + id);
+		}
 		K2[region].show(view);
 	});
 
