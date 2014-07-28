@@ -47,12 +47,12 @@
 	.jw--thumbsbar { position: absolute; clip: rect(0,0,0,0); }
 	
 	/* navigation - break it down with a toggler */
-	ul.jw--inline--menu { width:100%; }
-		ul.jw--inline--menu > li,
-		ul.jw--inline--menu li a { display: block; }
-		ul.jw--inline--menu li { border-bottom: 1px solid #204861; } 
-		ul.jw--inline--menu > li.jw--haschild > span { display: none; }
-		ul.jw--inline--menu > li > ul { display: block; padding: 0; margin: 0; width: 100%; position: static; opacity: 1; background: transparent; }
+	ul.jw--main--menu { width:100%; }
+		ul.jw--main--menu > li,
+		ul.jw--main--menu li a { display: block; }
+		ul.jw--main--menu li { border-bottom: 1px solid #204861; } 
+		ul.jw--main--menu > li.jw--haschild > span { display: none; }
+		ul.jw--main--menu > li > ul { display: block; padding: 0; margin: 0; width: 100%; position: static; opacity: 1; background: transparent; }
 		ul.jw--main--menu > li > ul li a { padding: 18px 9px; }
 	
 	/* menu visibility */
@@ -93,6 +93,9 @@
 	
 	.jw--scrollwrapper { display: none; }
 	.jw--settings__global { padding: 38px 10px; }
+	
+	/* tabs */
+	.jw--gallery--text { overflow: hidden; display: block; margin-top: 10px; }
  
 	/* filters */
 	.jw--top--filters .jw--filter { width: 33.3333%; border-bottom: 1px solid #dbdcdc; }
@@ -105,6 +108,9 @@
 	/* pagination */
 	.jw--pagination { padding: 0 10px; }
 		.jw--pagination ul { padding:  0 0 15px; margin: 10px -10px 0; display: block; overflow: hidden; border-top: 1px solid #dbdcdc; }
+	
+	/* revisions */
+	.jw--revisions { padding: 15px; }
 	
 }
 
@@ -119,12 +125,17 @@
 	
 	/* item form and editor content */
 	.jw--item--form { padding: 25px 10px; }
-	
+	.jw--element--row h3 { padding-left: 0; }
 	.jw--editor--tab { padding: 10px; }
 	.jw--editor--cnt { border: 0; padding: 10px 0 0; }
 	
 	/* buttons */
 	.jw--btn, a.jw--btn, button.jw--btn, input[type="submit"].jw--btn { padding: 10px 15px; }
+	#editor-xtd-buttons { width: 100%; padding-bottom: 0; margin-bottom: 0; }
+	.btn-toolbar > .btn + .btn, .btn-toolbar > .btn-group + .btn, .btn-toolbar > .btn + .btn-group, .btn-toolbar > .btn { margin-bottom: 10px!important; margin-left: 0!important; display: block; width: 100%; }
+	.toggle-editor { margin-top: 0!important; padding-top: 0!important; }
+		.toggle-editor, .toggle-editor .btn-group { width: 100%; }
+		.toggle-editor .btn-group .btn { display: block; width: 100%; }
 
 }
 
