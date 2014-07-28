@@ -134,7 +134,7 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 		childViewContainer : '[data-region="list"]',
 		childView : K2ViewItemsTableRow,
 		onRenderCollection : function() {
-			K2Widget.ordering(this.$('[data-region="list"]'), 'featured_ordering', this.collection.getState('sorting') === 'featured_ordering' && this.collection.getState('category') < 2);
+			K2Widget.ordering(jQuery('[data-region="items-inner"]'), 'featured_ordering', this.collection.getState('sorting') === 'featured_ordering' && this.collection.getState('category') < 2);
 		}
 	});
 
