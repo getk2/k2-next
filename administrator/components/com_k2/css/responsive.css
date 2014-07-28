@@ -106,6 +106,9 @@
 	.jw--pagination { padding: 0 10px; }
 		.jw--pagination ul { padding:  0 0 15px; margin: 10px -10px 0; display: block; overflow: hidden; border-top: 1px solid #dbdcdc; }
 	
+	/* revisions */
+	.jw--revisions { padding: 15px; }
+	
 }
 
 @media only screen and (max-width: 640px){
