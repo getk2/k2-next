@@ -3,7 +3,7 @@ define(['marionette', 'dispatcher', 'text!layouts/batch.html', 'widgets/widget']
 		template : _.template(template),
 		events : {
 			'click [data-action="apply"]' : 'batch',
-			'click [data-action="cancel"]' : 'close'
+			'click [data-action="cancel"]' : 'destroy'
 		},
 		onBeforeDestroy : function() {
 			jQuery.magnificPopup.close();
