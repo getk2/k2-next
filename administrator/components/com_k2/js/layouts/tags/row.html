@@ -4,8 +4,8 @@
         <i class="fa fa-check"></i>
     </label>
 </li>
-<li class="small-1 large-9 columns"><a data-action="edit" href="<%= editLink %>"><%= name %></a></li>
-<li class="text-center small-1 large-2 columns">
+<li class="small-9 large-9 columns"><a data-action="edit" href="<%= editLink %>"><%= name %></a></li>
+<li class="text-center small-2 large-2 columns">
 	<a class="jw--state--toggler jw--state--toggler__pub <% if( state == 1 ) { print('toggler--active'); } %>" data-action="toggle-state" data-state-value="<%= state %>" data-state="state" data-id="<%= id %>">
 		<% if(state == -1) { %>
     	<i class="fa fa-trash-o"></i>
@@ -15,5 +15,5 @@
     	<i class="hidden"><%= state %></i>
 	</a>
 </li>
-<li class="small-1 large-2 columns"><%= items %></li>
-<li class="small-1 large-2 columns"><%= id %></li>
+<li class="small-2 large-2 columns"><%= items %></li>
+<li class="small-2 large-2 columns"><%= id %></li>

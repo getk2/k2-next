@@ -4,7 +4,7 @@
         <i class="fa fa-check"></i>
     </label>
 </li>
-<li class="small-1 large-3 columns"><a data-action="edit" href="<%= editLink %>"><%= text %></a></li>
+<li class="small-3 large-3 columns"><a data-action="edit" href="<%= editLink %>"><%= text %></a></li>
 
 <li class="text-center small-1 large-1 columns">
 	<a class="jw--state--toggler jw--state--toggler__pub <% if( state == 1 ) { print('toggler--active'); } %>" data-action="toggle-state" data-state-value="<%= state %>" data-state="state" data-id="<%= id %>">
@@ -23,10 +23,10 @@
 		<%= name %>
 	<% } %>
 </li>
-<li class="small-1 large-2 columns"><%= email %></li>
+<li class="small-2 large-2 columns"><%= email %></li>
 <li class="small-1 large-1 columns"><%= url %></li>
-<li class="small-1 large-2 columns"><%= ip %></li>
-<li class="small-1 large-2 columns"><%= hostname %></li>
+<li class="small-2 large-2 columns"><%= ip %></li>
+<li class="small-2 large-2 columns"><%= hostname %></li>
 <li class="small-1 large-1 columns"><%= createdOn %></li>
 <li class="small-1 large-1 columns"><a href="#items/edit/<%- itemId %>"><%= itemTitle %></a></li>
 <li class="small-1 large-1 columns"><%= id %></li>
