@@ -5,7 +5,9 @@
 	
 	/* filters */
 	.jw--filters { width: 100%; border-top: 1px solid #dbdcdc; }
-	.jw--top--filters .jw--filter { width: 16.66%; }
+	.jw--component { padding-top: 155px; }
+	.jw--top--filters .jw--filter { width: 16.66%; float: left!important; }
+	.jw--top--filters .jw--filter:only-child { width: 100%; }
 	.select2-container .select2-choice, .select2-container { min-width: 0; width: 100%; }
 	
 	div[data-region="items-inner"], div[data-region="grid"] { overflow: scroll; }
