@@ -3,13 +3,20 @@
 	/* item form -- tabs */
 	.jw--tabs__top a { padding: 20px 14px; font-size: 17px; }
 	
-	/* filters */
-	.jw--filters { width: 100%; border-top: 1px solid #dbdcdc; }
+	/* paddings */
 	.jw--component { padding-top: 155px; }
-	.jw--top--filters .jw--filter { width: 16.66%; float: left!important; }
-	.jw--top--filters .jw--filter:only-child { width: 100%; }
-	.select2-container .select2-choice, .select2-container { min-width: 0; width: 100%; }
+	#k2-items-form .jw--component { padding-top: 109px; }
 	
+	/* filters */
+	.jw--subheader { border-bottom: 0; }
+		.jw--filters { width: 100%; overflow: hidden; margin-bottom: -1px; border-top:  1px solid #dbdcdc; }
+		.jw--top--filters .jw--filter { width: 16.66%; float: left!important; border-left: 0; border-right: 1px solid #dbdcdc; }
+		.jw--top--filters .jw--filter:only-child { width: 100%; }
+		.select2-container .select2-choice, .select2-container { min-width: 0; width: 100%; }
+		/* proper borders */
+		.jw--items--header {  border-top: 1px solid #dbdcdc; }
+	
+	/* creating a scrolled layout */
 	div[data-region="items-inner"], div[data-region="grid"] { overflow: scroll; }
 	.jw--listed--items { min-width: 1240px; overflow: scroll; }
 
@@ -70,7 +77,7 @@
 	/* remove all fixed instances */
 	.jw--header { position: static; width: auto; }
 	.jw--subheader { position: static; border: 0; }
-	.jw--component { padding: 0; min-width: 100%; clear: both;}
+	.jw--component, #k2-items-form .jw--component { padding: 0; min-width: 100%; clear: both;}
 	.jw--pagination { position: static; height: auto; }
 	.open--sidebar .jw--component { padding-left: 0; }
 	
