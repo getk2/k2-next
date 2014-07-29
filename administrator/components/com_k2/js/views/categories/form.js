@@ -77,7 +77,7 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher', 'widget
 		// onBeforeDestroy event ( Marionette.js build in event )
 		onBeforeDestroy : function() {
 			// Destroy the editor. This is required by TinyMCE in order to be able to re-initialize with out page refresh.
-			if ( typeof (tinymce) != 'undefined') {
+			if ( typeof (tinymce) != 'undefined' && parseInt(tinymce.majorVersion) === 4) {
 				tinymce.remove();
 			}
 		},
