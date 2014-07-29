@@ -349,7 +349,10 @@ class K2ControllerMigrator extends JControllerLegacy
 			{
 				$parentId = 1;
 			}
-			$table->setLocation($parentId, 'last-child');
+			if ($srcId != $parentId)
+			{
+				$table->setLocation($parentId, 'last-child');
+			}
 			if (!$table->store())
 			{
 				$this->response->errors[] = $table->getError();
