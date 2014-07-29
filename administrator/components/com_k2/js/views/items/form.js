@@ -106,7 +106,7 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 				this.imageView.trigger('cleanup');
 			}
 			// Destroy the editor. This is required by TinyMCE in order to be able to re-initialize with out page refresh.
-			if ( typeof (tinymce) != 'undefined') {
+			if ( typeof (tinymce) != 'undefined' && parseInt(tinymce.majorVersion) === 4) {
 				tinymce.remove();
 			}
 		},
