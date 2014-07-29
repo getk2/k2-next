@@ -154,7 +154,7 @@
 	.toggle-editor { margin-top: 0!important; padding-top: 0!important; }
 		.toggle-editor, .toggle-editor .btn-group { width: 100%; }
 		.toggle-editor .btn-group .btn { display: block; width: 100%; }
-
+		
 }
 
 @media only screen and (max-width: 569px){
@@ -167,6 +167,21 @@
 	.jw--total .jw--total--block { padding: 18px 10px; }
 	.jw--total .jw--total--block:last-child { padding-right: 0; }
 	
+	.jw--attachment--single, .row.jw--attachment--single { padding-right: 10px; }
+	
+	/*  the editor */
+	ul.jw--tabs__content li, ul.jw--tabs li { text-align: center; width: 33%; }
+	ul.jw--tabs__top li a { display: block; border-bottom: 1px solid #dedfdf; height: 64px; }
+
+	/* extra fields */
+	.jw--element--row label { margin-bottom: 5px; }
+	.jw--element--row .jw--element--single { min-width: 100%; clear: both; overflow: hidden; }
+		.jw--element--row .ov-hidden { width: 100%; }
+		.jw--element--row .jw--element--single input[type="text"], 
+		.jw--element--row .jw--element--single textarea { max-width: 275px; }
+		.jw--element--row .jw--element--single input[type="text"].jw--small--input { margin-left: 0; margin-bottom: 10px; max-width: 186px; }
+
+	
 }
 
 @media only screen and (max-width: 400px){
@@ -178,7 +193,7 @@
 	/*.jw--top--filters .jw--filter { width: 100%; }*/
 	
 	/* item form fields - editor - extra fields */
-	.jw--item--lbl { text-align: left!important; min-width: 100%; }
+	.jw--item--lbl { text-align: left!important; min-width: 100%; clear: both; }
 	.jw--item--fld, .jw--item--tags { min-width: 100%; clear: both; }
 	.jw--item--fld select { width: 100%; min-width: 100%; }
 	.jw--item--input { max-width: 275px; }
@@ -189,21 +204,10 @@
 	
 	/* button area */
 	.jw--btn, a.jw--btn, button.jw--btn, input[type="submit"].jw--btn { padding: 10px; font-size: 12px; }
-	
-	/* extra fields */
-	.jw--element--row label { margin-bottom: 5px; }
-	.jw--element--row .jw--element--single { min-width: 100%; clear: both; }
-		.jw--element--row .jw--element--single input[type="text"], 
-		.jw--element--row .jw--element--single textarea { max-width: 275px; }
-		.jw--element--row .jw--element--single input[type="text"].jw--small--input { margin-left: 0; margin-bottom: 10px; max-width: none; }
-	
+		
 	/* revisions */
 	.jw--editor--revisions { padding: 15px 10px; }
-	
-	/*  the editor */
-	ul.jw--tabs__content li, ul.jw--tabs li { text-align: center; width: 33%; }
-	ul.jw--tabs__top li a { display: block; border-bottom: 1px solid #dedfdf; height: 64px; }
-	
+		
 	/* settings */
 	.jw--settings h2 { font-size: 16px; font-weight: 700; padding-bottom: 10px; margin-bottom: 0; border: 0; }
 	.jw--settings fieldset label { min-width: 0; }
