@@ -31,6 +31,7 @@ define(['marionette', 'text!layouts/extrafields/list.html', 'text!layouts/extraf
 					containerSelector : '[data-sorting-group="' + group + '"]',
 					itemSelector : '[data-group="' + group + '"]'
 				});
+				self.$('[data-action="save-ordering"]').prop('disabled', self.collection.getState('sorting') !== 'ordering');
 			});
 		}
 	});
