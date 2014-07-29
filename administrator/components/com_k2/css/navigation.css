@@ -32,7 +32,7 @@
 		ul.jw--main--menu ul li a:hover .fa { color: #007aa5; }
 
 		/* visibility */
-		ul.jw--main--menu > li:hover > ul { left: auto; right: 0; opacity: 1; top: 59px }
+		/*ul.jw--main--menu > li:hover > ul { left: auto; right: 0; opacity: 1; top: 59px } */
 		ul.jw--main--menu > li ul.jw--visible { left: auto; right: 0; opacity: 1; top: 59px }
 
 /* Secondary menus (inline menus etc) */
