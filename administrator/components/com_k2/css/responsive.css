@@ -49,6 +49,10 @@
 	/* menu */
 	ul.jw--main--menu > li > a, ul.jw--main--menu .jw--sep { padding: 18px 9px; letter-spacing: -1px; }
 	
+	/* reduce the scroll navigation */
+	.jw--scrollwrapper { width: 255px; }
+	.jw--settings__global { padding-left: 275px; }
+	
 }
 
 @media only screen and (max-width: 767px){
