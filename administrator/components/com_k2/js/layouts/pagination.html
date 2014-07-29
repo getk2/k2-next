@@ -31,11 +31,11 @@
     
     <% if(pagesTotal > 1) { %>
     <ul>
-        <li>
+        <li class="jw--showvsmall">
             <a data-page="1" href="#<%= link %>/page/1"><%= l('K2_START') %></a>
         </li>
         
-        <li>
+        <li class="jw--showvsmall">
             <a data-page="previous" href="#<%= link %>/page/<%= pagesCurrent-1 %>"><%= l('K2_PREVIOUS') %></a>
         </li>
         
@@ -45,11 +45,11 @@
         </li>
         <% } %>
         
-        <li>
+        <li class="jw--showvsmall">
             <a data-page="next" href="#<%= link %>/page/<%= pagesCurrent + 1 %>"><%= l('K2_NEXT') %></a>
         </li>
 
-        <li>
+        <li class="jw--showvsmall">
             <a data-page="<%= pagesTotal %>" href="#<%= link %>/page/<%= pagesTotal %>"><%= l('K2_END') %></a>
         </li>
     </ul>
