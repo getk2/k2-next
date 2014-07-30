@@ -18,9 +18,11 @@ define(['marionette', 'text!layouts/messages.html', 'dispatcher'], function(Mari
 			}, this);
 			K2Dispatcher.on('app:messages:set', function(response) {
 				this.collection.set(response.messages);
+				response.messages = [];
 			}, this);
 			K2Dispatcher.on('app:messages:reset', function(response) {
 				this.collection.reset(response.messages);
+				response.messages = [];
 			}, this);
 		},
 	});

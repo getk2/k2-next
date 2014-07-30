@@ -207,9 +207,10 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 						});
 
 						// Show messages
-						response.messages = _.zip(this.messages, response.messages);
-						this.messages = [];
-						K2Dispatcher.trigger('app:messages:reset', response);
+						_.each(response.messages, _.bind(function(message) {
+							this.messages.push(message);
+						}, this));
+						K2Dispatcher.trigger('app:messages:reset', this);
 
 						// Render the layout to the page
 						K2Dispatcher.trigger('app:region:show', layout, 'content', this.resource + '-list');
@@ -253,9 +254,10 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 						});
 
 						// Show messages
-						response.messages = _.zip(this.messages, response.messages);
-						this.messages = [];
-						K2Dispatcher.trigger('app:messages:reset', response);
+						_.each(response.messages, _.bind(function(message) {
+							this.messages.push(message);
+						}, this));
+						K2Dispatcher.trigger('app:messages:reset', this);
 
 						// Render the view
 						K2Dispatcher.trigger('app:region:show', this.view, 'content', this.resource + '-form');
@@ -278,7 +280,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 		save : function(redirect, callback) {
 
 			// Reset messages
-			K2Dispatcher.trigger('app:messages:reset', {});
+			K2Dispatcher.trigger('app:messages:reset', this);
 
 			// Trigger the onBeforeSave event if available
 			var onBeforeSave = true;
