@@ -271,7 +271,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 		save : function(redirect, callback) {
 
 			// Reset messages
-			K2Dispatcher.trigger('app:messages:reset');
+			K2Dispatcher.trigger('app:messages:reset', {});
 
 			// Trigger the onBeforeSave event if available
 			var onBeforeSave = true;

@@ -850,6 +850,6 @@
 		<field menu="hide" name="k2SefLabelDate" type="k2menuitem" filter_attribute="link" filter_value="index.php?option=com_k2&amp;view=general" default="" label="K2_SEF_URL_PREFIX_FOR_DATE_LISTINGS" description="K2_SEF_URL_PREFIX_FOR_DATE_LISTINGS_DESC" />
 	</fieldset>
 	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
-		<field name="rules" type="k2rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_k2" section="component" />
+		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_k2" section="component" />
 	</fieldset>
 </config>
