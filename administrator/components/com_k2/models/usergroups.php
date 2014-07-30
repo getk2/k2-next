@@ -156,6 +156,7 @@ class K2ModelUserGroups extends K2Model
 						$newRule[(int)$groupId] = (int)$value;
 					}
 					$rule = $newRule;
+					$rules = new stdClass;
 					$rules->$action = (object)$rule;
 					$asset->rules = json_encode($rules);
 					$asset->store();
