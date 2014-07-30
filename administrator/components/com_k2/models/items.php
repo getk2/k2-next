@@ -737,7 +737,7 @@ class K2ModelItems extends K2Model
 		}
 
 		// Galleries
-		if (isset($data['galleries']))
+		if (isset($data['galleries']) && $data['galleries'])
 		{
 			// Set the galleries input to state
 			$this->setState('galleries', $data['galleries']);
@@ -759,7 +759,7 @@ class K2ModelItems extends K2Model
 		}
 
 		// Media
-		if (isset($data['media']))
+		if (isset($data['media']) && $data['media'])
 		{
 			// Set the media input to state
 			$this->setState('media', $data['media']);
@@ -781,7 +781,7 @@ class K2ModelItems extends K2Model
 		}
 
 		// Attachments
-		if (isset($data['attachments']))
+		if (isset($data['attachments']) && $data['attachments'])
 		{
 			// Set the media input to state
 			$this->setState('attachments', $data['attachments']);
