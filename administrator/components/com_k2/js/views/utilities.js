@@ -37,9 +37,9 @@ define(['marionette', 'text!layouts/utilities.html', 'dispatcher'], function(Mar
 		},
 		deleteUnpublishedComments : function(event) {
 			event.preventDefault();
-			var button = jQuery(event.currentTarget);
-			button.prop('disabled', true);
 			if (confirm(l('K2_THIS_WILL_PERMANENTLY_DELETE_ALL_UNPUBLISHED_COMMENTS_ARE_YOU_SURE'))) {
+				var button = jQuery(event.currentTarget);
+				button.prop('disabled', true);
 				jQuery.post('index.php?option=com_k2&task=comments.deleteUnpublished&format=json', K2SessionToken + '=1', function(response) {
 					K2Dispatcher.trigger('app:messages:set', response);
 					button.prop('disabled', false);
