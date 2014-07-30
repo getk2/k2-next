@@ -16,6 +16,9 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 		// Holds the modal flag
 		isModal : false,
 
+		// Holds the messages queue
+		messages : [],
+
 		// Initialize function
 		initialize : function() {
 
@@ -203,8 +206,10 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 							collection : this.collection
 						});
 
-						// Reset messages
-						K2Dispatcher.trigger('app:messages:set', response);
+						// Show messages
+						response.messages = _.zip(this.messages, response.messages);
+						this.messages = [];
+						K2Dispatcher.trigger('app:messages:reset', response);
 
 						// Render the layout to the page
 						K2Dispatcher.trigger('app:region:show', layout, 'content', this.resource + '-list');
@@ -247,8 +252,10 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 							model : this.model
 						});
 
-						// Reset messages
-						K2Dispatcher.trigger('app:messages:set', response);
+						// Show messages
+						response.messages = _.zip(this.messages, response.messages);
+						this.messages = [];
+						K2Dispatcher.trigger('app:messages:reset', response);
 
 						// Render the view
 						K2Dispatcher.trigger('app:region:show', this.view, 'content', this.resource + '-form');
@@ -289,7 +296,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 					silent : true,
 					success : _.bind(function(model, response) {
 
-						K2Dispatcher.trigger('app:messages:set', response);
+						this.messages = response.messages;
 
 						if (redirect === 'list') {
 							this.list();
