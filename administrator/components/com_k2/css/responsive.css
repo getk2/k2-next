@@ -84,6 +84,7 @@
 	.jw--component, #k2-items-form .jw--component { padding: 0; min-width: 100%; clear: both;}
 	.jw--pagination { position: static; height: auto; }
 	.open--sidebar .jw--component { padding-left: 0; }
+	div#system-debug { padding-left: 10px; }
 	
 	/* remove joomla! 's margins */
 	.container-main, #system-debug { padding-bottom: 0!important; }
@@ -180,7 +181,6 @@
 		.jw--element--row .jw--element--single input[type="text"], 
 		.jw--element--row .jw--element--single textarea { max-width: 275px; }
 		.jw--element--row .jw--element--single input[type="text"].jw--small--input { margin-left: 0; margin-bottom: 10px; max-width: 186px; }
-
 	
 }
 
