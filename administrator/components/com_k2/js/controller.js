@@ -178,7 +178,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 				this.collection.fetch({
 
 					// Success callback
-					success : _.bind(function() {
+					success : _.bind(function(collection, response, options) {
 
 						// Create view
 						this.view = new View({
@@ -204,7 +204,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 						});
 
 						// Reset messages
-						K2Dispatcher.trigger('app:messages:reset');
+						K2Dispatcher.trigger('app:messages:reset', response);
 
 						// Render the layout to the page
 						K2Dispatcher.trigger('app:region:show', layout, 'content', this.resource + '-list');
@@ -241,14 +241,14 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 
 				// Fetch the data from server
 				this.model.fetch({
-					success : _.bind(function() {
+					success : _.bind(function(model, response, options) {
 						// Create the view
 						this.view = new View({
 							model : this.model
 						});
 
 						// Reset messages
-						K2Dispatcher.trigger('app:messages:reset');
+						K2Dispatcher.trigger('app:messages:reset', response);
 
 						// Render the view
 						K2Dispatcher.trigger('app:region:show', this.view, 'content', this.resource + '-form');

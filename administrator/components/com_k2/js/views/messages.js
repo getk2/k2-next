@@ -20,7 +20,7 @@ define(['marionette', 'text!layouts/messages.html', 'dispatcher'], function(Mari
 				this.collection.set(response.messages);
 			}, this);
 			K2Dispatcher.on('app:messages:reset', function(response) {
-				this.collection.reset([]);
+				this.collection.reset(response.messages);
 			}, this);
 		},
 	});
