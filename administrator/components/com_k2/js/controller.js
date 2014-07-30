@@ -204,7 +204,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 						});
 
 						// Reset messages
-						K2Dispatcher.trigger('app:messages:reset', response);
+						K2Dispatcher.trigger('app:messages:set', response);
 
 						// Render the layout to the page
 						K2Dispatcher.trigger('app:region:show', layout, 'content', this.resource + '-list');
@@ -248,7 +248,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 						});
 
 						// Reset messages
-						K2Dispatcher.trigger('app:messages:reset', response);
+						K2Dispatcher.trigger('app:messages:set', response);
 
 						// Render the view
 						K2Dispatcher.trigger('app:region:show', this.view, 'content', this.resource + '-form');
@@ -287,7 +287,10 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 				this.model.save(null, {
 					data : input,
 					silent : true,
-					success : _.bind(function(model) {
+					success : _.bind(function(model, response) {
+
+						K2Dispatcher.trigger('app:messages:set', response);
+
 						if (redirect === 'list') {
 							this.list();
 						} else if (redirect === 'add') {
