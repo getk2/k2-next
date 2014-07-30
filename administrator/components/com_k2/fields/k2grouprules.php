@@ -35,8 +35,13 @@ class JFormFieldK2GroupRules extends JFormFieldRules
 		$component = 'com_k2';
 		$groupId = (int)(string)$this->element->attributes()->groupId;
 
+		if (!$groupId)
+		{
+			return null;
+		}
+
 		// Get the actions for the asset.
-		$actions = JAccess::getActionsFromFile(JPATH_ADMINISTRATOR . '/components/' . $component . '/access.xml', "/access/section[@name='" . $section . "']/");
+		$actions = JAccess::getActionsFromFile(JPATH_ADMINISTRATOR.'/components/'.$component.'/access.xml', "/access/section[@name='".$section."']/");
 
 		// Iterate over the children and add to the actions.
 		foreach ($this->element->children() as $el)
@@ -99,7 +104,7 @@ class JFormFieldK2GroupRules extends JFormFieldRules
 			$html[] = '<tr>';
 
 			$html[] = '<td>';
-			$html[] = '<span>'.str_repeat('-', $asset->level - 2).$asset->title.'</span><input type="hidden" name="'.$this->name.'[assets][]" value="'.$asset->id.'" />';
+			$html[] = '<span>'.str_repeat('-', $asset->level - 1).$asset->title.'</span><input type="hidden" name="'.$this->name.'[assets][]" value="'.$asset->id.'" />';
 			$html[] = '</td>';
 
 			foreach ($actions as $action)

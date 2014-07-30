@@ -15,7 +15,7 @@
 		<% } %>
 		<input type="hidden" name="id" value="<%= row.id %>" / >
 	</div>
-	
+	<% if(row.id) { %>
 	<div class="jw--generic--form jw--generic--form__full">
 		<div class="jw--setting--field jw--generic--group">
 			<h2><%= l('K2_PERMISSIONS') %></h2>
@@ -29,7 +29,7 @@
 			</div>
 		</div>
 	</div>
-	
+	<% } %>
 	<div class="jw--generic--form">
 		<div class="jw--setting--field">
 			<% _.each(form.jform, function(field) { %>
