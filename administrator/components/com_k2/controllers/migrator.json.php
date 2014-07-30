@@ -627,7 +627,7 @@ class K2ControllerMigrator extends JControllerLegacy
 	{
 		$this->response->status = 'Processing Tags Reference';
 		$db = JFactory::getDbo();
-		$query = 'INSERT INTO '.$db->quoteName('#__k2_tags_xref').'('.$db->quoteName('tagId').','.$db->quoteName('itemId').') SELECT '.$db->quoteName('tagID').','.$db->quoteName('itemID').' FROM '.$db->quoteName('#__k2_v2_tags_xref');
+		$query = 'INSERT IGNORE INTO '.$db->quoteName('#__k2_tags_xref').'('.$db->quoteName('tagId').','.$db->quoteName('itemId').') SELECT '.$db->quoteName('tagID').','.$db->quoteName('itemID').' FROM '.$db->quoteName('#__k2_v2_tags_xref');
 		$db->setQuery($query);
 		$db->execute();
 		$this->response->id = 0;
