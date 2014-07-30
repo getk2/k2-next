@@ -120,8 +120,16 @@ class K2TableItems extends K2Table
 
 		if (JString::trim($this->alias) == '')
 		{
-			$this->setError(JText::_('K2_INVALID_ALIAS'));
-			return false;
+			if (JFactory::getApplication()->input->get('task') == 'run')
+			{
+				$this->alias = uniqid();
+			}
+			else
+			{
+				$this->setError(JText::_('K2_INVALID_ALIAS'));
+				return false;
+			}
+
 		}
 
 		$db = $this->getDbo();
