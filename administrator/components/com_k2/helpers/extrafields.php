@@ -87,7 +87,11 @@ class K2HelperExtraFields
 			$types = self::getTypes();
 			foreach ($types as $type)
 			{
-				$extraField = new K2ExtraFields();
+				$extraField = new K2ExtraFields( array(
+					'id' => null,
+					'type' => '',
+					'value' => ''
+				));
 				$extraField->type = $type;
 				$definitions[$type] = $extraField->getDefinition();
 			}
