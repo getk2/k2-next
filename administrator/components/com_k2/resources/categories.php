@@ -264,12 +264,32 @@ class K2Categories extends K2Resource
 			// Import content plugins
 			JPluginHelper::importPlugin('content');
 
-			$dispatcher->trigger('onContentPrepare', array($context, &$this, &$params, $offset));
-			$results = $dispatcher->trigger('onContentAfterTitle', array($context, &$this, &$params, $offset));
+			$dispatcher->trigger('onContentPrepare', array(
+				$context,
+				&$this,
+				&$params,
+				$offset
+			));
+			$results = $dispatcher->trigger('onContentAfterTitle', array(
+				$context,
+				&$this,
+				&$params,
+				$offset
+			));
 			$events->AfterDisplayTitle = trim(implode("\n", $results));
-			$results = $dispatcher->trigger('onContentBeforeDisplay', array($context, &$this, &$params, $offset));
+			$results = $dispatcher->trigger('onContentBeforeDisplay', array(
+				$context,
+				&$this,
+				&$params,
+				$offset
+			));
 			$events->BeforeDisplayContent = trim(implode("\n", $results));
-			$results = $dispatcher->trigger('onContentAfterDisplay', array($context, &$this, &$params, $offset));
+			$results = $dispatcher->trigger('onContentAfterDisplay', array(
+				$context,
+				&$this,
+				&$params,
+				$offset
+			));
 			$events->AfterDisplayContent = trim(implode("\n", $results));
 
 		}
@@ -282,10 +302,18 @@ class K2Categories extends K2Resource
 
 			$dispatcher->trigger('onK2PluginInit', array($this));
 
-			$results = $dispatcher->trigger('onK2CategoryDisplay', array(&$this, &$params, $offset));
+			$results = $dispatcher->trigger('onK2CategoryDisplay', array(
+				&$this,
+				&$params,
+				$offset
+			));
 			$events->K2CategoryDisplay = trim(implode("\n", $results));
 
-			$dispatcher->trigger('onK2PrepareContent', array(&$this, &$params, $offset));
+			$dispatcher->trigger('onK2PrepareContent', array(
+				&$this,
+				&$params,
+				$offset
+			));
 		}
 
 		// Restore description
@@ -313,6 +341,23 @@ class K2Categories extends K2Resource
 			}
 		}
 		return $effectiveParams;
+	}
+
+	public function getInheritFrom()
+	{
+		$inheritFrom = JText::_('K2_NONE');
+		if ($this->inheritance && $this->inheritance != $this->id)
+		{
+			if ($this->inheritance == 1)
+			{
+				$inheritFrom = JText::_('K2_FROM_K2_CATEGORY_PARAMETERS');
+			}
+			else
+			{
+				$inheritFrom = K2Categories::getInstance($this->inheritance)->title;
+			}
+		}
+		return $inheritFrom;
 	}
 
 	public function checkSiteAccess()
