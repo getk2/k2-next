@@ -241,7 +241,8 @@ class K2Items extends K2Resource
 
 	public function getAuthor()
 	{
-		$author = K2Users::getInstance($this->created_by);
+		$id = $this->created_by ? $this->created_by : JFactory::getUser()->id;
+		$author = K2Users::getInstance($id);
 		$this->authorLink = $author->link;
 		return $author;
 	}
