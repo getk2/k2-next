@@ -208,6 +208,11 @@ class K2ViewCategories extends K2View
 	{
 		// Load items counter in just two queries
 		K2Categories::countItems($rows);
+
+		foreach ($rows as $row)
+		{
+			$row->inheritFrom = $row->getInheritFrom();
+		}
 	}
 
 }
