@@ -45,11 +45,9 @@ jQuery(document).ready(function() {
 	});
 
 	// K2 Items, users and tags fields
-	if ( typeof (jQuery.sortable) == 'function') {
-		jQuery('.k2FieldResourceMultiple').sortable({
-			handle : 'span.k2FieldResourceMultipleHandle',
-		});
-	}
+	jQuery('.k2FieldResourceMultiple').sortable({
+		handle : 'span.k2FieldResourceMultipleHandle',
+	});
 
 	jQuery('.k2FieldResourceMultiple').on('click', '.k2FieldResourceRemove', function(event) {
 		event.preventDefault();
