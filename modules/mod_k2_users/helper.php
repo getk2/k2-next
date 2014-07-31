@@ -21,18 +21,22 @@ class ModK2UsersHelper
 
 		if ($params->get('source') == 'specific' && $params->get('userIDs'))
 		{
-			$id = array();
-			if (is_string($params->get('userIDs')))
+			if (is_array($params->get('userIDs')))
 			{
-				$id[] = $params->get('userIDs');
+				$ids = $params->get('userIDs');
 			}
 			else
 			{
-				$id = $params->get('userIDs');
+				$ids = array();
+				$ids[] = $params->get('userIDs');
 			}
+			$users = array();
 			$model->setState('block', 0);
-			$model->setState('id', $id);
-			$users = $model->getRows();
+			foreach ($ids as $id)
+			{
+				$model->setState('id', $id);
+				$users = array_merge($users, $model->getRows());
+			}
 		}
 		else
 		{
