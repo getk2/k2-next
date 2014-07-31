@@ -78,7 +78,7 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 
 		},
 		user : function(element) {
-			require(['widgets/select2/select2.min', 'css!widgets/select2/select2.css'], function() {
+			require(['widgets/select2/select2.min'], function() {
 				var userId = element.val();
 				var userName = element.data('name');
 				var showNull = element.data('null');
@@ -131,7 +131,7 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 			});
 		},
 		tag : function(element) {
-			require(['widgets/select2/select2.min', 'css!widgets/select2/select2.css'], function() {
+			require(['widgets/select2/select2.min'], function() {
 				var tagId = element.val();
 				var tagName = element.data('name');
 				var showNull = element.data('null');
@@ -184,7 +184,7 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 			});
 		},
 		tags : function(element) {
-			require(['widgets/select2/select2.min', 'css!widgets/select2/select2.css'], function() {
+			require(['widgets/select2/select2.min'], function() {
 				var canCreateTag = element.data('create');
 				var useIds = element.data('use-id');
 				element.select2({
