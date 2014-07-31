@@ -90,6 +90,7 @@ class K2ExtraFields extends K2Resource
 			include JPATH_ADMINISTRATOR.'/components/com_k2/extrafields/'.$this->type.'/definition.php';
 			$definition = ob_get_contents();
 			ob_end_clean();
+			$definition = trim($definition);
 		}
 		return $definition;
 	}
@@ -105,6 +106,7 @@ class K2ExtraFields extends K2Resource
 			include JPATH_ADMINISTRATOR.'/components/com_k2/extrafields/'.$this->type.'/input.php';
 			$input = ob_get_contents();
 			ob_end_clean();
+			$input = trim($input);
 		}
 		return $input;
 	}
@@ -119,14 +121,24 @@ class K2ExtraFields extends K2Resource
 			include JPATH_ADMINISTRATOR.'/components/com_k2/extrafields/'.$this->type.'/output.php';
 			$output = ob_get_contents();
 			ob_end_clean();
+			$output = trim($output);
+			if ($output)
+			{
+				$item = new stdClass;
+				$item->text = $output;
+				$params = JComponentHelper::getParams('com_k2');
+				$dispatcher = JDispatcher::getInstance();
+				JPluginHelper::importPlugin('content');
+				$dispatcher->trigger('onContentPrepare', array(
+					'com_k2.extrafield',
+					&$item,
+					&$params,
+					0
+				));
+				$output = $item->text;
+			}
 		}
-		$item = new stdClass;
-		$item->text = $output;
-		$params = JComponentHelper::getParams('com_k2');
-		$dispatcher = JDispatcher::getInstance();
-		JPluginHelper::importPlugin('content');
-		$dispatcher->trigger('onContentPrepare', array('com_k2.extrafield', &$item, &$params, 0));
-		return $item->text;
+		return $output;
 	}
 
 	private function escape($string)
