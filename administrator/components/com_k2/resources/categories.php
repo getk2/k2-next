@@ -350,7 +350,7 @@ class K2Categories extends K2Resource
 		{
 			if ($this->inheritance == 1)
 			{
-				$inheritFrom = JText::_('K2_FROM_K2_CATEGORY_PARAMETERS');
+				$inheritFrom = JText::_('K2_GLOBAL_PARAMETERS');
 			}
 			else
 			{
