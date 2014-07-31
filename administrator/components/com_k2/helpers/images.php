@@ -371,7 +371,7 @@ class K2HelperImages
 
 			if (JFile::exists(JPATH_SITE.'/templates/'.$template.'/images/placeholder/'.$type.'.png'))
 			{
-				self::$placeholders[$type] = 'templates/'.$mainframe->getTemplate().'/images/placeholder/'.$type.'.png';
+				self::$placeholders[$type] = 'templates/'.$template.'/images/placeholder/'.$type.'.png';
 			}
 			else
 			{
