@@ -17,7 +17,6 @@ define(['marionette', 'text!layouts/utilities.html', 'dispatcher'], function(Mar
 		_import : function(id) {
 			var self = this;
 			jQuery.post('index.php?option=com_k2&task=items.import&id=' + id + '&format=json', K2SessionToken + '=1', function(data) {
-				K2Dispatcher.trigger('app:messages:set', data);
 				if (data && data.lastId) {
 					self._import(data.lastId);
 				} else {
