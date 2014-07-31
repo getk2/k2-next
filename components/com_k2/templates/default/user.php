@@ -77,10 +77,12 @@ defined('_JEXEC') or die; ?>
 			<h4><?php echo $extraFieldGroup->name; ?></h4>
 			<ul>
 			<?php foreach ($extraFieldGroup->fields as $key=>$extraField): ?>
+			<?php if($extraField->output): ?>
 				<li class="<?php echo ($key%2) ? "odd" : "even"; ?> type<?php echo ucfirst($extraField->type); ?> group<?php echo $extraField->group; ?>">
-				<span class="userExtraFieldsLabel"><?php echo $extraField->name; ?>:</span>
-				<span class="userExtraFieldsValue"><?php echo $extraField->output; ?></span>
+					<span class="userExtraFieldsLabel"><?php echo $extraField->name; ?>:</span>
+					<span class="userExtraFieldsValue"><?php echo $extraField->output; ?></span>
 				</li>
+			<?php endif; ?>
 			<?php endforeach; ?>
 			</ul>
 			<?php endforeach; ?>
