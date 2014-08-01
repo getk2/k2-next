@@ -90,7 +90,7 @@ class K2Items extends K2Resource
 	/**
 	 * Prepares the row for output
 	 *
-	 * @param string $mode	The mode for preparing data. 'site' for fron-end data, 'admin' for administrator operations.
+	 * @param string $mode	The mode for preparing data. 'site' for front-end data, 'admin' for administrator operations.
 	 *
 	 * @return void
 	 */
