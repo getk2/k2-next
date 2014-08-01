@@ -5,7 +5,7 @@ ul.jw--grid--items {  padding: 15px 13px; font-size: 13px; }
 	
 	li.jw--grid--item {  overflow: hidden; padding: 0!important; }
 	li.jw--grid--item .jw--grid--item--wrap {background-position: 50% 50%; background-size: cover;  padding-bottom: 72%; border-radius: 3px; overflow: hidden; position: relative; }
-	li.jw--grid--item .jw--grid--item--wrap.no--imagepres { background-image: url(img/unavailable.png); }
+	li.jw--grid--item .jw--grid--item--wrap.no--imagepres { background-image: url('../images/unavailable.png'); }
 	li.jw--grid--item.jw--grid--item_selected .jw--grid--item--wrap { border-color: #00afec; border-radius: 3px; }
 	li.jw--grid--item .jw--state--toggler__pub { margin-right: 5px; }
 	
@@ -13,8 +13,8 @@ ul.jw--grid--items {  padding: 15px 13px; font-size: 13px; }
 	li.jw--grid--item .jw--grid--item--bg { z-index: 2; position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
 	li.jw--grid--item .jw--grid--item--bg:before, 
 	li.jw--grid--item .jw--grid--item--bg:after { content: ""; position: absolute; width: 100%; height: 48px; background-repeat: repeat-x; }
-	li.jw--grid--item .jw--grid--item--bg:before { top: 0; background-position: 0 0; background-image: url(img/grid-bg-top.png); border-radius: 3px 3px 0 0; }
-	li.jw--grid--item .jw--grid--item--bg:after { bottom: 0; background-position: 0 100%; background-image: url(img/grid-bg-bottom.png); border-radius: 0 0 3px 3px; }
+	li.jw--grid--item .jw--grid--item--bg:before { top: 0; background-position: 0 0; background-image: url('../images/grid-bg-top.png'); border-radius: 3px 3px 0 0; }
+	li.jw--grid--item .jw--grid--item--bg:after { bottom: 0; background-position: 0 100%; background-image: url('../images/grid-bg-bottom.png'); border-radius: 0 0 3px 3px; }
 
 	/* wrapper (only) for the state togglers */
 	li.jw--grid--item .jw--toggle-wrapper { z-index: 3; position: relative; margin: 10px; float: right; }

@@ -27,7 +27,7 @@ class JFormFieldK2Users extends JFormField
 		$document->addStyleSheet(JURI::root(true).'/administrator/components/com_k2/js/widgets/magnific/magnific-popup.css');
 		$document->addScript(JURI::root(true).'/administrator/components/com_k2/js/widgets/magnific/jquery.magnific-popup.min.js');
 		$document->addScript(JURI::root(true).'/administrator/components/com_k2/js/widgets/sortable/jquery-sortable-min.js');
-		$document->addScript(JURI::root(true).'/administrator/components/com_k2/js/fields.k2.js');
+		$document->addScript(JURI::root(true).'/administrator/components/com_k2/js/fields.js');
 
 		$this->multiple = (bool)$this->element['k2multiple'];
 		$link = JURI::root(true).'/administrator/index.php?option=com_k2&tmpl=component#modal/users';

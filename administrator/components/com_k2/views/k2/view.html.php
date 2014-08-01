@@ -23,7 +23,8 @@ class K2ViewK2 extends JViewLegacy
 		// Get user
 		$user = JFactory::getUser();
 
-		// Front-end permissions check. We need to do this here since front-end requests are not executed through /administrator/components/com_k2/k2.php
+		// Front-end permissions check.
+		// We need to do this here since front-end requests are not executed through /administrator/components/com_k2/k2.php
 		if ($application->isSite())
 		{
 			if (!$user->authorise('core.manage', 'com_k2'))
@@ -54,8 +55,8 @@ class K2ViewK2 extends JViewLegacy
 		JHtml::_('behavior.keepalive');
 
 		// Load the CSS
-		$document->addStyleSheet('//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css');
-		$document->addStyleSheet(JURI::root(true).'/administrator/components/com_k2/css/admin.k2.css');
+		$document->addStyleSheet('//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css?v=3.0.0b');
+		$document->addStyleSheet(JURI::root(true).'/administrator/components/com_k2/css/k2.css?v=3.0.0b');
 
 		// Add javascript variables
 		$document->addScriptDeclaration('
@@ -78,7 +79,7 @@ class K2ViewK2 extends JViewLegacy
 		}
 
 		// Load the application
-		$document->addCustomTag('<script data-main="'.JURI::root(true).'/administrator/components/com_k2/js/boot" src="'.JURI::root(true).'/administrator/components/com_k2/js/require.js"></script>');
+		$document->addCustomTag('<script data-main="'.JURI::root(true).'/administrator/components/com_k2/js/boot" src="'.JURI::root(true).'/administrator/components/com_k2/js/require.js?v=3.0.0b"></script>');
 
 		// Set title
 		if (class_exists('JToolBarHelper'))

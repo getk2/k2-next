@@ -22,7 +22,7 @@ class JFormFieldK2Categories extends JFormField
 		// Load javascript
 		JHtml::_('jquery.framework');
 		$document = JFactory::getDocument();
-		$document->addScript(JURI::root(true).'/administrator/components/com_k2/js/fields.k2.js');
+		$document->addScript(JURI::root(true).'/administrator/components/com_k2/js/fields.js');
 
 		// Set values if are not set
 		if (!is_array($this->value))
