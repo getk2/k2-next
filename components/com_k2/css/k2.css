@@ -1,5 +1,5 @@
 /**
- * @version		$Id: k2.css 1913 2013-02-08 22:35:11Z joomlaworks $
+ * @version		3.0.0
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2014 JoomlaWorks Ltd. All rights reserved.
@@ -7,6 +7,12 @@
  */
 
 /*
+TO DO:
+- Remove font-families
+- Combine required images into 1 sprite
+
+
+
 ### Legend ###
 Font families used:
 	font-family:Georgia, "Times New Roman", Times, serif;

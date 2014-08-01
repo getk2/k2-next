@@ -367,6 +367,8 @@ class PlgSystemK2 extends JPlugin
 		{
 			$application = JFactory::getApplication();
 			$response = $application->getBody();
+			
+			// Make the following more generic?
 			$searches = array(
 				'<meta name="og:url"',
 				'<meta name="og:title"',
@@ -381,7 +383,8 @@ class PlgSystemK2 extends JPlugin
 				'<meta property="og:image"',
 				'<meta property="og:description"'
 			);
-			if (strpos($response, 'prefix="og: http://ogp.me/ns#"') === false)
+			
+			if (strpos($response, 'prefix="og: http://ogp.me/ns#"') === false) // make it less strict?
 			{
 				$searches[] = '<html ';
 				$searches[] = '<html>';
