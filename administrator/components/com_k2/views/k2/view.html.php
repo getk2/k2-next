@@ -54,14 +54,20 @@ class K2ViewK2 extends JViewLegacy
 		JHtml::_('behavior.keepalive');
 
 		// Load the CSS
-		$document->addStyleSheet('http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css');
+		$document->addStyleSheet('//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css');
 		$document->addStyleSheet(JURI::root(true).'/administrator/components/com_k2/css/admin.k2.css');
 
 		// Add javascript variables
-		$document->addScriptDeclaration('var K2SessionToken = "'.JSession::getFormToken().'";');
-		$document->addScriptDeclaration('var K2Editor = '.$this->getEditor().';');
-		$document->addScriptDeclaration('var K2SitePath = "'.JURI::root(true).'";');
-		$document->addScriptDeclaration('var K2Language = '.$this->getLanguage().';');
+		$document->addScriptDeclaration('
+
+		/* K2 v3.0.0 (beta) - START */
+		var K2SessionToken = "'.JSession::getFormToken().'";
+		var K2Editor = '.$this->getEditor().';
+		var K2SitePath = "'.JURI::root(true).'";
+		var K2Language = '.$this->getLanguage().';
+		/* K2 v3.0.0 (beta) - FINISH */
+
+		');
 
 		// Add DropBox drop-in
 		$params = JComponentHelper::getParams('com_k2');
