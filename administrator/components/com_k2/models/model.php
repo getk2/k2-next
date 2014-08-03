@@ -276,7 +276,7 @@ class K2Model extends JModelLegacy
 		}
 
 		// Trigger onContentAfterDelete event
-		$dispatcher->trigger('onContentBeforeDelete', array(
+		$dispatcher->trigger('onContentAfterDelete', array(
 			'com_k2.'.$this->getName(),
 			&$table
 		));
