@@ -25,7 +25,10 @@
 	</div>
 	
 	<span class="jw--row--title__inline"><%= l('K2_ID') %></span>
-	<%= id %>
+	<span class="jw--row--value__inline"><%= id %></span>
+	
+	<span class="jw--row--title__inline"><%= l('K2_HITS') %></span>
+	<span class="jw--row--value__inline"><%= hits %></span>
 	 
 	<% if(image && image.flag) { %>
         <a class="jw--row--imlink" href="<%= images.modal.src %>" data-role="modal">
@@ -35,7 +38,7 @@
     <% } %>
 </li>
 
-<li class="text-center small-2 large-2 columns jw--ordering--cell">
+<li class="text-center small-1 large-1 columns jw--ordering--cell">
 	<span data-role="ordering-handle" data-column="featured_ordering" class="jw--featured--handle">
 		<i class="fa fa-bars"></i>
 	</span>
@@ -79,7 +82,6 @@
 <li class="small-1 large-1 columns"><a href="<%- author.editLink %>"><%= authorName %></a></li>
 <li class="small-1 large-1 columns"><%= viewLevel %></li>
 <!-- <li class="small-1 large-1 columns"><%= moderatorName %></li> -->
-<li class="small-1 large-1 columns"><%= createdOn %></li>
-<li class="small-1 large-1 columns"> <% if(modifiedOn == createdOn) { %> <%= l('K2_NEVER') %> <% } else { %> <%= modifiedOn %> <% } %> </li>
-<li class="small-1 large-1 columns"><%= hits %></li>
+<li class="small-2 large-2 columns"><%= createdOn %></li>
+<li class="small-2 large-2 columns"> <% if(modifiedOn == createdOn) { %> <%= l('K2_NEVER') %> <% } else { %> <%= modifiedOn %> <% } %> </li>
 <li class="small-1 large-1 columns"><%= languageTitle %></li>
