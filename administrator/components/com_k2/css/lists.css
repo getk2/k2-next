@@ -77,7 +77,12 @@ table.jw--listed--items { width: 100%; font-size: 13px; }
 		.jw--listed--items .k2SortingPlaceholder > li {  height: 94px; width: 100%;  display: block; }
 		/* dragged item */
 		.dragged { position: absolute; z-index: 999; opacity: 0.65; }
-		
+	
+	/* ordering */
+	.jw--ordering--cell {  }
+		.jw--ordering--cell .jw--featured--inp { margin-bottom: 0; margin-left: 5px; }
+		.jw--ordering--cell .jw--featured--handle { display:inline-block; vertical-align: middle; margin-top: 3px; }
+	
 /* Sortable and movable lists (items only) */
 ul.jw--sortable--items { border: 0; }
 	ul.jw--sortable--items ul { padding: 0; border: 0; }
