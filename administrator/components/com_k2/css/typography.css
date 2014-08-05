@@ -1,6 +1,6 @@
 .jw { font-family: 'Open Sans', sans-serif; font-size: 100%; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; font-smoothing: antialiased; }
 .jw a { text-decoration: none; color: #636b6e; }
-	.jw a:hover { text-decoration: none; }
+	.jw a:hover { text-decoration: none; cursor: pointer; }
 	.blue { color: #00afeb; }
 	.red { color: #A53221; }
 

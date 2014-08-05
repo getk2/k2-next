@@ -73,7 +73,7 @@
 		ul.jw--main--menu > li > ul li a { padding: 18px 9px; }
 	
 	/* menu visibility */
-	#jw--navtoggle { color: #f6f6f6; position: absolute; right: 6px; top: 7px; padding: 7px 10px; border-radius: 3px; line-height: 1; font-size: 23px; background: #204866 }
+	#jw--navtoggle { color: #f6f6f6; position: absolute; right: 4px; top: 7px; width: 37px; padding: 7px 10px; border-radius: 3px; line-height: 1; font-size: 23px; background: #204866; }
 	
 	.jw--main--menu { display: none; }
 		.jw--main--menu.menu--open { display: block; }
