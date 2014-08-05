@@ -14,8 +14,7 @@
 	/* The handle/ toggler */
 	.jw--sidebar--handle { width:46px; height:100%; text-align:center; overflow:hidden; border-left:1px solid #dbdcdc; border-right:1px solid #dbdcdc;position:absolute;right:0;top:0;}
 		
-		.jw--sidebar--handle .jw--sidebar--toggle:link,
-		.jw--sidebar--handle .jw--sidebar--toggle:visited { color:#636b6e; width:32px; margin: 15px auto; font-size:19px; text-align:center; display:block;}
+		.jw--sidebar--handle .jw--sidebar--toggle { color:#636b6e; width:32px; margin: 15px auto; font-size:19px; text-align:center; display:block;}
 
 /* Filters */
 .jw--sidebar .jw--filters { border-top: 1px solid #d0d0d0;position:absolute;left:0; padding: 13px 15px 0; bottom: 102px; width: 275px; }

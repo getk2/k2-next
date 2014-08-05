@@ -91,18 +91,24 @@
 	.navbar-fixed-bottom { margin-top: 0!important; }
 	
 	/* header styling */
-	h1.jw--logo { margin-left: 3px; margin-bottom: 15px; }
+	h1.jw--logo { margin-left: 41px; margin-bottom: 15px; }
 	
 	/* add area */
 	.jw--add--area { float: none!important; clear: both; margin: 15px -12px 0; padding: 12px 12px; width: auto; overflow: hidden; }
 	
 	/* sidebar styling */
-	.jw--sidebar { left: -280px; width: 280px; top: 0; bottom: 0; padding-top: 15px; overflow: visible; }
-		.jw--sidebar--handle  { right: -46px; background: #fff; overflow: auto; position: absolute; bottom: 10px; top: auto; height: auto; border: 1px solid #dbdcdc; border-left: 0; z-index: 9999; }
+	.jw--sidebar { left: -280px; width: 280px; top: 0; bottom: 0; padding-top: 15px; overflow: visible; position: absolute; }
+		.jw--sidebar--handle  { right: -45px; background: transparent; overflow: auto; position: absolute; top: 9px; bottom: auto; height: auto; border: 0; border-left: 0; z-index: 9999; color: #fff; }
+		.jw--sidebar--handle .jw--sidebar--toggle { color: #fff; }
 		.jw--sidebar--text { width: 100%; border-right: 1px solid #dbdcdc; }
 		.jw--sidebar .jw--filters,
 		.jw--sidebar .jw--pagination--mode { position: static; width: 100%; clear: both; }
 		.jw--sidebar .jw--filters { margin-top: 15px; }
+		
+	/* Open sidebar */
+	.jw { position: relative; }
+	.jw.open--sidebar { overflow: hidden; }
+	.jw--sidebar.jw--sidebar__open:after { content: ""; position: absolute; right: -837px; top: 0; background: rgba(0,0,0,.75); display: block; width: 300%; height: 100%; }
 	
 	/* item form */
 	.jw--item--form { padding: 25px 10px; }
@@ -191,6 +197,8 @@
 
 	/* filters */
 	/*.jw--top--filters .jw--filter { width: 100%; }*/
+	
+	.jw--sidebar.jw--sidebar__open:after { content: ""; position: absolute; right: -418px; top: 0; background: rgba(0,0,0,.75); display: block; width: 150%; height: 100%; }
 	
 	/* item form fields - editor - extra fields */
 	.jw--item--lbl { text-align: left!important; min-width: 100%; clear: both; }
