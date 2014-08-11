@@ -7,7 +7,7 @@
 .jw--wauto { width: auto; }
 .ov-hidden { overflow: hidden; }
 
-h1.jw--logo { line-height: 0.8; padding: 15px 0 12px; font: 0/0 transparent; background: url('../images/logo_66x26_black.png') no-repeat 0 0; width: 66px; height: 26px; margin-top: 16px; }
+h1.jw--logo { line-height: 0.8; padding: 0; font: 0/0 transparent; background: url('../images/K2logo_102x40.png') no-repeat 0 0; width: 102px; height: 40px; margin: 10px 10px 0 -1px; }
 	.jw--logo img, .jw--logo span { display: inline-block; vertical-align: bottom; }
 	.jw--logo img {  }
 	.jw--logo span { font-size: 12px; color: #fff; color: rgba(255,255,255,.5); }

@@ -381,7 +381,7 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 			var defaults = {
 				menuSelector : '.jw--scrollspymenu',
 				menuItemSelector : 'a',
-				offset : 155
+				offset : 125
 			};
 			jQuery.extend(defaults, options);
 			element.find(defaults.menuSelector).on('click', defaults.menuItemSelector, function(event) {
@@ -405,7 +405,7 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 			jQuery(window).on('scroll', function() {
 
 				// Get container scroll position
-				var offset = jQuery(this).scrollTop() + 120;
+				var offset = jQuery(this).scrollTop() + 190;
 
 				// Get id of current scroll item
 				var current = scrollItems.map(function() {

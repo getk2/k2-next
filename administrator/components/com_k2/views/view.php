@@ -508,6 +508,21 @@ class K2View extends JViewLegacy
 			{
 				K2Response::addMenuLink('utilities', 'K2_UTILITIES', array('href' => '#utilities'), 'primary');
 			}
+				
+			// Assign the secondary menu items to the primary menu as well.
+			if ($user->authorise('core.login.admin', 'com_k2'))
+			{
+				K2Response::addMenuLink('information', 'K2_INFORMATION', array('href' => '#information'), 'primary');
+			}
+	
+			if ($user->authorise('core.admin', 'com_k2'))
+			{
+				K2Response::addMenuLink('settings', 'K2_SETTINGS', array('href' => '#settings'), 'primary');
+			}
+			K2Response::addMenuLink('help', 'K2_HELP', array(
+				'href' => 'http://getk2.org/community',
+				'target' => '_blank'
+			), 'primary');
 
 		}
 

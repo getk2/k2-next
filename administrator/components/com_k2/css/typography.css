@@ -1,5 +1,5 @@
 .jw { font-family: 'Open Sans', sans-serif; font-size: 100%; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; font-smoothing: antialiased; }
-.jw a { text-decoration: none; color: #636b6e; }
+.jw a { text-decoration: none; color: #636b6e; cursor: pointer; }
 	.jw a:hover { text-decoration: none; cursor: pointer; }
 	.blue { color: #00afeb; }
 	.red { color: #A53221; }
@@ -14,7 +14,8 @@ input[type="text"], input[type="email"], input[type="password"], textarea {  fon
 	
 }
 input.disabled, input[disabled], input[disabled="disabled"],
-button.disabled, button[disabled], button[disabled="disabled"] { opacity: 0.5 };
+button.disabled, button[disabled], button[disabled="disabled"] { opacity: 0.5 }
+button:focus, input:focus { outline: 0; }
 
 .blue { color: #00afeb; }
 .jw--green { color: #3fa800; font-weight: 600; }
@@ -114,8 +115,10 @@ a.jw--state--toggler { display: inline-block; vertical-align: middle; line-heigh
 	a.jw--state--toggler:hover { cursor: pointer; }
 	
 	/* specific toggles and active states */
-	a.jw--state--toggler__feat.toggler--active  { color: #f59331; }
-	a.jw--state--toggler__pub.toggler--active { color: #3fa800; }
+	a.jw--state--toggler__feat.toggler--active,
+	a.jw--state--toggler__feat:hover { color: #f59331; }
+	a.jw--state--toggler__pub.toggler--active,
+	a.jw--state--toggler__pub:hover { color: #3fa800; }
 
 /* Custom Checkboxes */
 .jw--checkbox {   padding: 0; display: block; margin: 0 auto; position: relative; z-index: 1; -webkit-backface-visibility: hidden;

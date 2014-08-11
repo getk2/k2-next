@@ -26,7 +26,7 @@
 		    		%>
 		    		
 		        <button class="jw--btn<%= btnclass %>" <% _.each(button.attributes, function(value, name) { print(name + '="' + value + '" ');}) %>>
-		        		<% if(button.id == 'add') { %>
+		        	<% if(button.id == 'add') { %>
 		            <i class="fa fa-plus"></i>
 		            <% } %>
 		            <%= button.name %>
@@ -74,12 +74,18 @@
 							        	print('<i class="fa fa-gears"></i>');
 							        } else if(link.id == 'extrafieldsgroups') {
 							        	print('<i class="fa fa-briefcase"></i>');
-							        }  else if(link.id == 'media') {
+							        } else if(link.id == 'media') {
 							        	print('<i class="fa fa-photo"></i>'); 
-							        }  else if(link.id == 'utilities') {
+							        } else if(link.id == 'utilities') {
 										print('<i class="fa fa-gear"></i>');
-							        }%>
-		    						<%= link.name %>
+							        } else if(link.id == 'settings') {
+										print('<i class="fa fa-cog"></i>');
+									} else if(link.id == 'information') {
+							        	print('<i class="fa fa-info-circle"></i>');
+							        } else if(link.id == 'help') {
+							        	print('<i class="fa fa-life-saver"></i>');
+							        } %>
+									<%= link.name %>
 		    					</a>
 		    				</li>
 		    			<% } counter++; %>
