@@ -10,7 +10,7 @@
 <% } %>
 
 <% _.each(items, function(group) { %>
-<% if(group.scope === 'item') { %>
+<% if(group.scope === 'item' || group.scope === 'category') { %>
 
 <div class="jw--element--row">
     <h3><%= group.name %></h3>

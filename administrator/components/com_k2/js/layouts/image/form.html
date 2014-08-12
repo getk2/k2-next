@@ -1,12 +1,12 @@
 <div class="jw--setting--field">
 	
-	<% if(type !== 'user' && type !== 'item') { %>
+	<% if(type !== 'user' && type !== 'item'  && type !== 'category') { %>
 	<h2>
 	    <%= l('K2_IMAGE') %>
 	</h2>
 	<% } %>
 	
-	<% if(type !== 'item') { %>
+	<% if(type !== 'item' && type !== 'category') { %>
 		<div class="jw--setting--single">
 			<input type="file" name="file" data-widget="uploader" data-url="index.php?option=com_k2&task=images.upload&format=json&itemId=<%- itemId %>&type=<%- type %>&temp=<%- temp %>" data-callback="image:upload:<%- cid %>" />
 		</div>
@@ -41,7 +41,7 @@
 		<% } %>
 	<% } %>
 	
-	<% if(type == 'item'){ %>
+	<% if(type == 'item' || type == 'category'){ %>
 	<div class="jw--element--row">
 		
 		<div class="jw--element--single">
