@@ -85,7 +85,7 @@ div#system-debug { padding-left: 50px; }
 /*------------------------------------------------------------------
 [Filter - reusable] */
 
-.jw--top--filters .jw--filter { min-height: 45px; font-size: 13px; border-left: 1px solid #dbdcdc; }
+.jw--top--filters .jw--filter { min-height: 45px; font-size: 13px; border-left: 1px solid #dbdcdc; width: 186px; }
 	.jw--top--filters .jw--filter label { color: #b1b5b6; font-weight: 700; font-size: 11px; line-height: 1; display: block; padding: 8px 15px 2px; margin: 0; }
 	.jw--filter {  }
 	

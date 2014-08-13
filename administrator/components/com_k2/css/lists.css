@@ -20,6 +20,8 @@ table.jw--listed--items { width: 100%; font-size: 13px; }
 		.jw--listed--items ul li { padding-top: 15px; padding-bottom: 15px; word-break: break-word; overflow: hidden; }
 		
 	.jw--listed--items ul.jw--items--header { background: #fff; font-weight: 700; }
+		/* open sidebar */
+		.open--sidebar .jw--listed--items ul.jw--items--header li { letter-spacing: -1px; }
 	.jw--listed--items ul.jw--items--header ul { padding-top: 4px; padding-bottom: 4px; }
 	.jw--listed--items ul.jw--items--header li { /* white-space: nowrap; */ }
 	.jw--row--title { display: block; margin-bottom: 10px; }

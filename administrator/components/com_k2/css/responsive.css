@@ -1,3 +1,20 @@
+@media only screen and (min-width: 1250px) and (max-width: 1550px){
+
+	.open--sidebar .jw--top--filters .jw--filter { max-width: none; width: 145px;
+	-webkit-transition:all 600ms cubic-bezier(0.730, 0, 0.445, 1.000);
+	-webkit-transition:all 600ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
+	   -moz-transition:all 600ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
+	 	-ms-transition:all 600ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
+		 -o-transition:all 600ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
+		 	transition:all 600ms cubic-bezier(0.730, -0.005, 0.445, 1.000)
+	}
+	.open--sidebar .select2-container { min-width: 0; }
+	.open--sidebar .select2-container .select2-choice { width:135px; min-width: 0; }
+	.open--sidebar .jw--top--filters .jw--filter:only-child { width: 100%; max-width: none; }
+	
+	.jw--listed--items { min-width: 1280px; overflow: scroll; }
+}
+
 @media only screen and (max-width: 1250px){
 
 	/* item form -- tabs */
@@ -18,7 +35,8 @@
 	
 	/* creating a scrolled layout */
 	div[data-region="items-inner"], div[data-region="grid"] { overflow: scroll; }
-	.jw--listed--items { min-width: 1240px; overflow: scroll; }
+	.jw--listed--items { min-width: 1280px; overflow: scroll; }
+	.jw--listed--items ul.jw--items--header li { letter-spacing: -1px; }
 
 }
 
