@@ -63,6 +63,7 @@ div#system-debug { padding-left: 50px; }
 [Modules - reusable] */
 
 .jw--add--area { margin-right: -12px; padding: 12px 15px; background: #204866; }
+	.jw--add--area.jw--add__solo { margin: 0 15px; }
 
 /* Search module */
 .jw--search { border: 1px solid #bbbdbf; border-radius: 3px; margin: 0 auto; max-width: 220px; position: relative; }
