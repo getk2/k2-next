@@ -71,7 +71,8 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 			require(['widgets/pickadate/picker'], function() {
 				require(['widgets/pickadate/picker.time', 'css!widgets/pickadate/themes/default.css', 'css!widgets/pickadate/themes/default.time.css'], function(Picker) {
 					element.pickatime({
-						format : element.data('format') || 'HH:i'
+						format : element.data('format') || 'HH:i',
+						interval : 5
 					});
 				});
 			});
