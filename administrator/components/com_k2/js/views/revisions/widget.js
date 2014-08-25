@@ -1,4 +1,5 @@
-define(['text!layouts/revisions/form.html', 'text!layouts/revisions/info.html', 'dispatcher', 'jqueryui'], function(template, revisionInfo, K2Dispatcher) {'use strict';
+define(['text!layouts/revisions/form.html', 'text!layouts/revisions/info.html', 'dispatcher', 'jqueryui'], function(template, revisionInfo, K2Dispatcher) {
+	'use strict';
 
 	// Model
 	var Revision = Backbone.Model.extend({
@@ -171,6 +172,11 @@ define(['text!layouts/revisions/form.html', 'text!layouts/revisions/info.html', 
 							setValue(rhs.fulltext);
 						}
 					});
+
+					this.$('#k2-compare-title').mergely('resize');
+					this.$('#k2-compare-introtext').mergely('resize');
+					this.$('#k2-compare-fulltext').mergely('resize');
+
 				}, this));
 
 			}
