@@ -198,8 +198,13 @@ class K2HelperExtraFields
 		{
 			$values = new stdClass;
 		}
-		foreach ($group->fields as $field)
+		foreach ($group->fields as $key => $field)
 		{
+			if (!$field->state)
+			{
+				unset($group->fields[$key]);
+				continue;
+			}
 			if (property_exists($values, $field->id))
 			{
 				$index = $field->id;
