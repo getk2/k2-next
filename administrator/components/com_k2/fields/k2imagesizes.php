@@ -111,28 +111,7 @@ class JFormFieldK2ImageSizes extends JFormField
 			$output .= '</ul>
 			<button class="jw--btn k2ImageSizesAdd">'.JText::_('K2_ADD').'</button>
 			<input type="hidden" name="counter" class="k2ImageSizesCounter" value="'.$counter.'" />
-			</div>
-			<script type="text/javascript">
-			var container = jQuery("#'.$this->id.'");
-			container.off("click", "button");
-			container.on("click", ".k2ImageSizesAdd", function(event) {
-				event.preventDefault();
-				var counter = parseInt(container.find(".k2ImageSizesCounter").val()) + 1;
-				var template = container.find(".k2ImageSizesPlaceholder").html();
-				var rendered = template.replace(/COUNTER/g, counter);
-				var element = jQuery("<li></li>").html(rendered);
-				element.find("input").prop("disabled", false);
-				container.find("ul").append(element);
-				container.find("input[name=counter]").val(counter);
-			});
-			container.on("click", ".k2ImageSizesRemove", function(event) {
-				event.preventDefault();
-				jQuery(this).parent().remove();
-				var counter = parseInt(container.find(".k2ImageSizesCounter").val()) - 1;
-				container.find("input[name=counter]").val(counter);
-			});
-			</script>
-		';
+			</div>';
 
 		}
 		// List mode. Appears in module, menu etc. settings to allow user to select the desired image size for output
