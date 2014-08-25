@@ -134,7 +134,13 @@ define(['marionette', 'text!layouts/items/list.html', 'text!layouts/items/row.ht
 		childViewContainer : '[data-region="list"]',
 		childView : K2ViewItemsTableRow,
 		onRenderCollection : function() {
-			K2Widget.ordering(jQuery('[data-region="items-inner"]'), 'featured_ordering', this.collection.getState('sorting') === 'featured_ordering' && this.collection.getState('category') < 2);
+			var enabled = this.collection.getState('sorting') === 'featured_ordering' && this.collection.getState('category') < 2;
+			K2Widget.ordering(jQuery('[data-region="items-inner"]'), 'featured_ordering', enabled);
+			if(!enabled) {
+				this.$('[data-role="featured_ordering_column"]').hide();
+			} else {
+				this.$('[data-role="featured_ordering_column"]').show();
+			}
 		}
 	});
 
