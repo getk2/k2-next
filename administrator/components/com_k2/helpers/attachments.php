@@ -172,7 +172,7 @@ class K2HelperAttachments
 					}
 
 					// Push the attachment to uploaded attachment files array
-					$uploadedAttachments[] = $target;
+					$uploadedAttachments[] = ltrim($target, '/');
 
 				}
 				else if ($attachment->path)
@@ -205,7 +205,7 @@ class K2HelperAttachments
 		$files = isset($keys['keys']) ? $keys['keys'] : $keys;
 		foreach ($files as $attachmentKey)
 		{
-			if ($key != $folderKey && !in_array($attachmentKey, $uploadedAttachments) && $filesystem->has($attachmentKey))
+			if ($attachmentKey != $folderKey && !in_array($attachmentKey, $uploadedAttachments) && $filesystem->has($attachmentKey))
 			{
 				$filesystem->delete($attachmentKey);
 			}
