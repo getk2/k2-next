@@ -45,13 +45,15 @@ jQuery(document).ready(function() {
 	});
 
 	// K2 Items, users and tags fields
-	jQuery('.k2FieldResourceMultiple').sortable({
-		handle : 'span.k2FieldResourceMultipleHandle',
-	});
+	if(typeof(jQuery.sortable) === 'function') {
+		jQuery('.k2FieldResourceMultiple').sortable({
+			handle : 'span.k2FieldResourceMultipleHandle',
+		});
+		jQuery('.k2FieldResourceMultiple').on('click', '.k2FieldResourceRemove', function(event) {
+			event.preventDefault();
+			jQuery(this).parent().remove();
+		});
+	}
 
-	jQuery('.k2FieldResourceMultiple').on('click', '.k2FieldResourceRemove', function(event) {
-		event.preventDefault();
-		jQuery(this).parent().remove();
-	});
 
 });
