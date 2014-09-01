@@ -65,6 +65,9 @@ define(['marionette', 'text!layouts/list.html', 'dispatcher'], function(Marionet
 			var el = jQuery(event.currentTarget);
 			var show = (jQuery('input[data-action="toggle"]:checked').length > 0) ? true : false;
 			K2Dispatcher.trigger('app:view:toolbar', show);
+		},
+		onShow : function() {
+			jQuery(window).trigger('k2AdminListRendered');
 		}
 	});
 
