@@ -82,4 +82,8 @@
 		$('.jw--main--menu').toggleClass('menu--open');
 	});
 	
+	$(window).on('k2AdminListRendered', function() {
+		$('.jw--component').css('min-height', $(window).height() - 80 );
+	});
+	
 })(jQuery);

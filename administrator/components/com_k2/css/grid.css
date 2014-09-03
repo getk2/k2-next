@@ -1,7 +1,7 @@
 /*------------------------------------------------------------------
 [Grid Styling] */
 
-ul.jw--grid--items {  padding: 15px 13px; font-size: 13px; }
+ul.jw--grid--items {  padding: 15px 13px; font-size: 13px; border: 0; }
 	
 	li.jw--grid--item {  overflow: hidden; padding: 0!important; }
 	li.jw--grid--item .jw--grid--item--wrap {background-position: 50% 50%; background-size: cover;  padding-bottom: 72%; border-radius: 3px; overflow: hidden; position: relative; }
