@@ -84,7 +84,7 @@ class K2ControllerUsers extends K2Controller
 		// User
 		$user = JFactory::getUser();
 
-		if ($user->authorise('core.edit', 'com_users'))
+		if (!$user->authorise('core.edit', 'com_users'))
 		{
 			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'), 403);
 		}
