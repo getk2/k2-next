@@ -19,7 +19,8 @@ h1.jw--logo { line-height: 0.8; padding: 0; font: 0/0 transparent; background: u
 	
 	.com_k2 .subhead-collapse, .com_k2 header.header { display: none; position: absolute; clip: rect(0,0,0,0); }
 
-.jw--component { overflow: hidden; background: #f0f2f2; padding-top: 109px; padding-left: 46px; padding-bottom: 28px;}
+.jw--component { overflow: hidden; padding-top: 109px; padding-left: 46px; padding-bottom: 28px;}
+div[data-region="grid"], div[data-region="list"] { background: #f0f2f2; }
 
 /* Fixed layout */
 .jw--header { position: fixed; top: 30px; left: 0; width: 100%; z-index: 11; }

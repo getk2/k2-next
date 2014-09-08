@@ -83,7 +83,7 @@
 	});
 	
 	$(window).on('k2AdminListRendered', function() {
-		$('.jw--component').css('min-height', $(window).height() - 80 );
+		$('div[data-region="grid"], div[data-region="list"]').css('min-height', $(window).height() - 80 );
 	});
 	
 })(jQuery);
