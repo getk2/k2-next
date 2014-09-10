@@ -1,5 +1,5 @@
 <% if(remove == 0) { %>
-<td><input type="text" name="attachments[<%- cid %>][file]" readonly="readonly" value="<%- file %>" /></td>
+<td><input type="text" name="attachments[<%- cid %>][file]" readonly="readonly" value="<%- file ? file : path %>" /></td>
 <td><input type="text" name="attachments[<%- cid %>][name]" value="<%- name %>" /></td>
 <td><input type="text" name="attachments[<%- cid %>][title]" value="<%- title %>" /></td>
 <td><%- downloads %></td>
