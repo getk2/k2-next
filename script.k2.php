@@ -224,6 +224,58 @@ class Com_K2InstallerScript
 				}
 			}
         }
+
+		// Set the default image sizes for new installs
+		if($type == 'install')
+		{
+			$params = JComponentHelper::getParams('com_k2');
+			
+			$imageSizes = array();
+			
+			$size = new stdClass;
+			$size->id = 'XS';
+			$size->name = 'Extra Small';
+			$size->width = 100;
+			$size->quality = 100;
+			$imageSizes[] = $size;
+			
+			$size = new stdClass;
+			$size->id = 'S';
+			$size->name = 'Small';
+			$size->width = 200;
+			$size->quality = 100;
+			$imageSizes[] = $size;
+			
+			$size = new stdClass;
+			$size->id = 'M';
+			$size->name = 'Medium';
+			$size->width = 400;
+			$size->quality = 100;
+			$imageSizes[] = $size;
+			
+			$size = new stdClass;
+			$size->id = 'L';
+			$size->name = 'Large';
+			$size->width = 600;
+			$size->quality = 100;
+			$imageSizes[] = $size;
+			
+			$size = new stdClass;
+			$size->id = 'XL';
+			$size->name = 'Extra Large';
+			$size->width = 900;
+			$size->quality = 100;
+			$imageSizes[] = $size;
+			
+			$params->set('imageSizes', $imageSizes);
+			
+			$query = $db->getQuery(true);
+			$query->update($db->quoteName('#__extensions'));
+			$query->set($db->quoteName('params').' = '.$db->quote($params->toString()));
+			$query->where($db->quoteName('element').' = '.$db->quote('com_k2'));
+			$db->setQuery($query);
+			$db->execute();
+		}
 		
 		// Show results
         $this->installationResults($status);
