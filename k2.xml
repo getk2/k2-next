@@ -115,26 +115,11 @@
 	<config>
 		<fields>
 			<fieldset>
-				<field name="imageSizes[1][id]" default="XS" />
-				<field name="imageSizes[1][name]" default="Extra Small" />
-				<field name="imageSizes[1][width]" default="100" />
-				<field name="imageSizes[1][quality]" default="100" />
-				<field name="imageSizes[2][id]" default="S" />
-				<field name="imageSizes[2][name]" default="Small" />
-				<field name="imageSizes[2][width]" default="200" />
-				<field name="imageSizes[2][quality]" default="100" />
-				<field name="imageSizes[3][id]" default="M" />
-				<field name="imageSizes[3][name]" default="Medium" />
-				<field name="imageSizes[3][width]" default="400" />
-				<field name="imageSizes[3][quality]" default="100" />
-				<field name="imageSizes[4][id]" default="L" />
-				<field name="imageSizes[4][name]" default="Large" />
-				<field name="imageSizes[4][width]" default="600" />
-				<field name="imageSizes[4][quality]" default="100" />
-				<field name="imageSizes[5][id]" default="XL" />
-				<field name="imageSizes[5][name]" default="Extra Large" />
-				<field name="imageSizes[5][width]" default="900" />
-				<field name="imageSizes[5][quality]" default="100" />
+				<field name="imageSizes[]" default="{ \"id\": \"XS\", \"name\": \"Extra Small\", \"width\": \"100\", \"quality\": \"100\" }" />
+				<field name="imageSizes[]" default="{ \"id\": \"S\", \"name\": \"Small\", \"width\": \"200\", \"quality\": \"100\" }" />
+				<field name="imageSizes[]" default="{ \"id\": \"M\", \"name\": \"Medium\", \"width\": \"400\", \"quality\": \"100\" }" />
+				<field name="imageSizes[]" default="{ \"id\": \"L\", \"name\": \"Large\", \"width\": \"600\", \"quality\": \"100\" }" />
+				<field name="imageSizes[]" default="{ \"id\": \"XL\", \"name\": \"Extra Large\", \"width\": \"900\", \"quality\": \"100\" }" />
 			</fieldset>
 		</fields>
 	</config>
