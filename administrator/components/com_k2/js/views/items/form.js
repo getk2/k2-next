@@ -1,4 +1,5 @@
-define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/extrafields/widget', 'views/attachments/widget', 'views/galleries/widget', 'views/media/widget', 'views/image/widget', 'views/revisions/widget'], function(K2Dispatcher, K2Widget, template, K2ViewExtraFieldsWidget, K2ViewAttachmentsWidget, K2ViewGalleriesWidget, K2ViewMediaWidget, K2ViewImageWidget, K2ViewRevisionsWidget) {'use strict';
+define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/extrafields/widget', 'views/attachments/widget', 'views/galleries/widget', 'views/media/widget', 'views/image/widget', 'views/revisions/widget'], function(K2Dispatcher, K2Widget, template, K2ViewExtraFieldsWidget, K2ViewAttachmentsWidget, K2ViewGalleriesWidget, K2ViewMediaWidget, K2ViewImageWidget, K2ViewRevisionsWidget) {
+	'use strict';
 	// K2 item form view
 	var K2ViewItem = Marionette.LayoutView.extend({
 
@@ -11,14 +12,13 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 			attachmentsRegion : '[data-region="item-attachments"]',
 			galleriesRegion : '[data-region="item-galleries"]',
 			mediaRegion : '[data-region="item-media"]',
-			extraFieldsRegion : '[data-region="item-extra-fields"]',
-			revisionsRegion : '[data-region="item-revisions"]'
+			extraFieldsRegion : '[data-region="item-extra-fields"]'
 		},
 
 		// UI events
 		events : {
 			'change #catid' : 'updateExtraFields',
-			'click ul[data-role="tabs-navigation"] li:nth-child(2) a' : 'loadRevisions',
+			'click [data-action="load-revisions"]' : 'loadRevisions',
 			'click [data-action="reset-hits"]' : 'resetHits'
 		},
 
@@ -160,6 +160,9 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 		},
 
 		loadRevisions : function() {
+			if (!this.revisionsRegion) {
+				this.addRegion('revisionsRegion', '[data-region="item-revisions"]');
+			}
 			// Revisions
 			if ( typeof (this.revisionsView) == 'undefined') {
 
