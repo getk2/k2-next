@@ -1,4 +1,5 @@
-define(['marionette', 'text!layouts/header.html', 'dispatcher', 'widgets/widget'], function(Marionette, template, K2Dispatcher, K2Widget) {'use strict';
+define(['marionette', 'text!layouts/header.html', 'dispatcher', 'widgets/widget', 'controller'], function(Marionette, template, K2Dispatcher, K2Widget, K2Controller) {
+	'use strict';
 
 	var K2ViewHeader = Marionette.ItemView.extend({
 
@@ -9,7 +10,8 @@ define(['marionette', 'text!layouts/header.html', 'dispatcher', 'widgets/widget'
 			'click [data-action="save"]' : 'save',
 			'click [data-action="save-and-new"]' : 'saveAndNew',
 			'click [data-action="save-and-close"]' : 'saveAndClose',
-			'click [data-action="close"]' : 'close'
+			'click [data-action="close"]' : 'close',
+			'click [data-region="menu-primary"] a' : 'setActive'
 		},
 
 		modelEvents : {
@@ -23,10 +25,16 @@ define(['marionette', 'text!layouts/header.html', 'dispatcher', 'widgets/widget'
 					'actions' : response.actions
 				});
 			}, this);
+
+			K2Dispatcher.on('app:menu:active', function(resource) {
+				this.$('[data-region="menu-primary"] a').removeClass('active');
+				this.$('[href="#' + resource + '"]').addClass('active');
+			}, this);
 		},
 
 		onDomRefresh : function() {
 			K2Widget.updateEvents(this.$el);
+			K2Dispatcher.trigger('app:controller:menu:active');
 		},
 
 		add : function(event) {
@@ -58,6 +66,12 @@ define(['marionette', 'text!layouts/header.html', 'dispatcher', 'widgets/widget'
 		close : function(event) {
 			event.preventDefault();
 			K2Dispatcher.trigger('app:controller:close');
+		},
+
+		setActive : function(event) {
+			var el = jQuery(event.currentTarget);
+			this.$('[data-region="menu-primary"] a').removeClass('active');
+			el.addClass('active');
 		}
 	});
 

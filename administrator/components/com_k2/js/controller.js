@@ -1,4 +1,5 @@
-define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], function(_, Backbone, Marionette, K2Dispatcher, K2Session) {'use strict';
+define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], function(_, Backbone, Marionette, K2Dispatcher, K2Session) {
+	'use strict';
 	var K2Controller = Marionette.Controller.extend({
 
 		// The available resources for request. Any other request returns a 404 error.
@@ -103,6 +104,10 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 				this.search(search);
 			}, this);
 
+			// Listener for menu active
+			K2Dispatcher.on('app:controller:menu:active', function() {
+				K2Dispatcher.trigger('app:menu:active', this.resource);
+			}, this);
 		},
 
 		// Executes the request based on the URL.
