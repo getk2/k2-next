@@ -26,7 +26,8 @@
 	ul.jw--main--menu > li:hover > ul li a:hover,
 	ul.jw--main--menu .jw--sep:hover,
 	ul.jw--main--menu li:hover .jw--sep,
-	ul.jw--main--menu li.jw--activechild { background: #00afec; }
+	ul.jw--main--menu > li.jw--activechild,
+	ul.jw--main--menu li a.active { background: #00afec; }
 
 		ul.jw--main--menu > li > a:hover .fa { color: #fff; }
 		ul.jw--main--menu ul li a:hover .fa { color: #007aa5; }
