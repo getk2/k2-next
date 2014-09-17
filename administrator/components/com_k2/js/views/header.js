@@ -10,8 +10,7 @@ define(['marionette', 'text!layouts/header.html', 'dispatcher', 'widgets/widget'
 			'click [data-action="save"]' : 'save',
 			'click [data-action="save-and-new"]' : 'saveAndNew',
 			'click [data-action="save-and-close"]' : 'saveAndClose',
-			'click [data-action="close"]' : 'close',
-			'click [data-region="menu-primary"] a' : 'setActive'
+			'click [data-action="close"]' : 'close'
 		},
 
 		modelEvents : {
@@ -27,14 +26,21 @@ define(['marionette', 'text!layouts/header.html', 'dispatcher', 'widgets/widget'
 			}, this);
 
 			K2Dispatcher.on('app:menu:active', function(resource) {
-				this.$('[data-region="menu-primary"] a').removeClass('active');
-				this.$('[href="#' + resource + '"]').addClass('active');
+				this.resource = resource;
+				this.setActive();
+			}, this);
+			
+			K2Dispatcher.on('app:header:set:resource', function(resource) {
+				this.resource = resource;
 			}, this);
 		},
 
 		onDomRefresh : function() {
 			K2Widget.updateEvents(this.$el);
-			K2Dispatcher.trigger('app:controller:menu:active');
+		},
+		
+		onRender : function() {
+			this.setActive();
 		},
 
 		add : function(event) {
@@ -68,10 +74,15 @@ define(['marionette', 'text!layouts/header.html', 'dispatcher', 'widgets/widget'
 			K2Dispatcher.trigger('app:controller:close');
 		},
 
-		setActive : function(event) {
-			var el = jQuery(event.currentTarget);
+		setActive : function() {
+			if(!this.resource) {
+				K2Dispatcher.trigger('app:controller:get:resource');
+			}
+			var resource = this.resource;
 			this.$('[data-region="menu-primary"] a').removeClass('active');
-			el.addClass('active');
+			this.$('[href="#' + resource + '"]').addClass('active');
+			this.$('[data-region="menu-primary"] li').removeClass('active');
+			this.$('[data-region="menu-primary"] a.active').parents('li.jw--haschild').addClass('active');
 		}
 	});
 

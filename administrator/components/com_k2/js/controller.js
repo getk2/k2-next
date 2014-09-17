@@ -103,10 +103,10 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 			K2Dispatcher.on('app:controller:search', function(search) {
 				this.search(search);
 			}, this);
-
-			// Listener for menu active
-			K2Dispatcher.on('app:controller:menu:active', function() {
-				K2Dispatcher.trigger('app:menu:active', this.resource);
+			
+			// Listener for setting the resource to the header
+			K2Dispatcher.on('app:controller:get:resource', function() {
+				K2Dispatcher.trigger('app:header:set:resource', this.resource);
 			}, this);
 		},
 
@@ -162,6 +162,8 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 
 		// Displays a listing page depending on the requested resource type
 		list : function(page) {
+
+			K2Dispatcher.trigger('app:menu:active', this.resource);
 
 			// Load the required files
 			require(['collections/' + this.resource, 'views/' + this.resource + '/list', 'views/pagination', 'views/list'], _.bind(function(Collection, View, Pagination, Layout) {
@@ -505,6 +507,9 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 		},
 
 		information : function() {
+			
+			K2Dispatcher.trigger('app:menu:active', 'information');
+			
 			// Load the required files
 			require(['models/information', 'views/information'], _.bind(function(Model, View) {
 
@@ -535,6 +540,9 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 		},
 
 		media : function() {
+			
+			K2Dispatcher.trigger('app:menu:active', 'media');
+			
 			// Load the required files
 			require(['models/media', 'views/media/manager'], _.bind(function(Model, View) {
 
@@ -565,6 +573,9 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 		},
 
 		utilities : function() {
+			
+			K2Dispatcher.trigger('app:menu:active', 'utilities');
+			
 			// Load the required files
 			require(['models/utilities', 'views/utilities'], _.bind(function(Model, View) {
 
