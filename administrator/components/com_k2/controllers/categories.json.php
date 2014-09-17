@@ -77,8 +77,23 @@ class K2ControllerCategories extends K2Controller
 		// Get table
 		$table = $this->model->getTable();
 
-		// Update
+		// Move the row
 		if (!$table->moveByReference($reference_id, $location, $id))
+		{
+			K2Response::throwError($table->getError());
+		}
+
+		// Load row
+		$table->load($id);
+
+		// Rebuild the path for the category
+		if (!$table->rebuildPath($table->id))
+		{
+			K2Response::throwError($table->getError());
+		}
+
+		// Rebuild the paths of the category's children
+		if (!$table->rebuild($table->id, $table->lft, $table->level, $table->path))
 		{
 			K2Response::throwError($table->getError());
 		}
