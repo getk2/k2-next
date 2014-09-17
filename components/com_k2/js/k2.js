@@ -163,7 +163,7 @@ jQuery(document).ready(function() {
 	if (K2CommentsItemId) {
 
 		// Comments application
-		var K2Comments = new Backbone.Marionette.Application();
+		var K2Comments = new Marionette.Application();
 
 		// Main region of the application
 		K2Comments.addRegions({
@@ -244,7 +244,7 @@ jQuery(document).ready(function() {
 			events : {
 				'click [data-action="create"]' : 'create',
 				'click [data-action="publish"]' : 'publish',
-				'click [data-action="delete"]' : 'destroy',
+				'click [data-action="delete"]' : '_destroy',
 				'click [data-action="report"]' : 'report',
 				'click [data-action="report.send"]' : 'sendReport',
 				'click [data-action="report.user"]' : 'reportUser',
@@ -305,7 +305,7 @@ jQuery(document).ready(function() {
 				});
 
 			},
-			destroy : function(event) {
+			_destroy : function(event) {
 				event.preventDefault();
 				var el = jQuery(event.currentTarget);
 				var id = el.data('id');
@@ -431,7 +431,7 @@ jQuery(document).ready(function() {
 		});
 
 		// On after initialize
-		K2Comments.on('initialize:after', function() {
+		K2Comments.on('start', function() {
 			Backbone.history.start();
 		});
 		K2Comments.start();
