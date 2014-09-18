@@ -72,9 +72,15 @@ img {-ms-interpolation-mode:bicubic; max-width: 100%; }
 }
 /* smaller ones */
 .jw .jw--sidebar label.jw--radio, .jw--sidebar .jw .controls label.radio { font-weight: 400; padding: 0 7px; }
-	/* Checked */
+	
+	/* Checked Default style + Bootstrap overrides */
 	.jw label.jw--radio.jw--radio__checked,
-	.jw .controls label.radio.jw--radio__checked { color: #fff; border: 1px solid #828080; background:  #63696f; box-shadow: 0 1px 1px rgba(65,64,66,.14), inset 0 1px 0 #363a3d; }
+	.jw .controls label.radio.jw--radio__checked { color: #fff; border: 1px solid #828080; background: #63696f; box-shadow: 0 1px 1px rgba(65,64,66,.14), inset 0 1px 0 #363a3d; }
+	
+	/* Checked Overrides Published/ Unpub/ Trash */
+	.jw--state > label.jw--radio.jw--radio__checked:nth-child(1) { background: #3fa800; box-shadow: 0 1px 1px rgba(65,64,66,.04); }
+	.jw--state > label.jw--radio.jw--radio__checked:nth-child(2) { background: #bd362f; box-shadow: 0 1px 1px rgba(65,64,66,.04); }
+	.jw--state > label.jw--radio.jw--radio__checked:nth-child(3) {  }
 
 	/* smaller labels */
 	.jw label.jw--radio.jw--radio__smaller { line-height: 26px; height: 26px; font-size: 11px; margin: 0 -2px; padding: 0 10px; white-space: nowrap; }
@@ -133,6 +139,7 @@ cursor: pointer; width: 16px; height: 16px; border: 1px solid #dbdcdc; border: 1
 /* 
 ---------------------------------
 Radios with controls (native j3 elements) - Bootstrap support  */
+
 .btn-group-yesno {  }
 	.btn-group-yesno label { min-width: 42px; width: auto; text-align: center; border: 1px solid #d4d6d8; line-height: 33px; vertical-align: top; height: 33px; font-size: 12px; margin: 0 -2px; padding: 0 7px;
 	color: #8a8c8c; display: inline-block; vertical-align: middle; white-space: nowrap; background-color: #eff1f1;
