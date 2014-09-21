@@ -34,3 +34,17 @@ body.contentpane ul.config-option-list li>label { background:#f6f6f6; border-bot
 body.contentpane div.current select { margin-bottom:0!important; }
 body.contentpane dl.tabs { padding-left:8px!important; }
 body.contentpane dl.tabs dt.open { background:#fff!important; border-bottom:1px solid #fff!important; }
+
+
+/* Module specific styling */
+.form-horizontal .controls { margin-left: 0!important; }
+#K2SettingsContainer .jw--generic--form { max-width: 100%; overflow: hidden; }
+/* chozen compatibility - float left instead of overflow */
+#K2SettingsContainer .jw--setting--field .jw--setting--single,
+#K2SettingsContainer .jw--setting--field { overflow: visible; float: left; width: 100%; clear: both; }
+#K2SettingsContainer .jw--settings h4 { overflow: hidden; }
+#K2SettingsContainer .chzn-container-multi .chzn-choices { padding: 7px; border-radius: 3px; float: right; clear: both; }
+/* tabs (links) */
+#K2SettingsContainer .jw--tabs { padding-left: 6px; }
+	#K2SettingsContainer .jw--tabs > li:first-child > a{ border-left: 0; }
+	#K2SettingsContainer .jw--tabs a:hover { background: #fff; }

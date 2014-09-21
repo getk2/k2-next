@@ -96,9 +96,11 @@ img {-ms-interpolation-mode:bicubic; max-width: 100%; }
 
 	/* active && hover states */
 	.jw label.jw--radio.btn:hover,
-	.jw label.jw--radio:hover { cursor: pointer; box-shadow: 0 1px 1px rgba(65,64,66,.14), inset 0 0 10px rgba(0,0,0,.15); }
+	.jw label.jw--radio:hover,
+	.jw .controls label.radio:hover { cursor: pointer; box-shadow: 0 1px 1px rgba(65,64,66,.14), inset 0 0 10px rgba(0,0,0,.15); }
 	.jw label.jw--radio:active,
-	.jw label.jw--radio:focus, { cursor: pointer; box-shadow: inset 0 0 12px rgba(0,0,0,.35); }
+	.jw label.jw--radio:focus,
+	.jw .controls label.radio:focus { cursor: pointer; box-shadow: inset 0 0 12px rgba(0,0,0,.35); }
 
 	/* label with heading */
 	.jw label.jw--radio--title { display: block; font-size: 13px; font-weight: 600; min-width: 78px; height: 35px; line-height: 35px; padding: 0; color: #636b6e; }

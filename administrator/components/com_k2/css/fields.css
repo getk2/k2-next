@@ -1,25 +1,47 @@
-/* Joomla! 2.5 Container fixes */
-.panel {
-	border: none !important;
-}
-.panel h3.title {
-	display: none;
-}
-.panel fieldset {
-	border: none !important;
-	margin: 0 !important;
-	padding: 0 !important;
-}
-input#jform_title {
-	width: 250px;
-}
-div.width-40 {
-	width: 60% !important;
-}
-div.width-60 {
-	width: 40% !important;
-}
+/*------------------------------------------------------------------
+[Master Stylesheet]
 
-.pane-slider, fieldset.panelform {
-	overflow: visible !important;
-}
+ * @version		3.0
+ * @package		K2
+ * @author		JoomlaWorks http://www.joomlaworks.net
+ * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
+ * @license		http://www.joomlaworks.net/license
+
+[Colours]
+
+blue - main    #2f6a97
+blue - border  #00afec
+blue - darker  #204866
+gray - bg      #f0f2f2
+border         #dbdcdc
+orange         #f59331
+green          #3fa800
+base - link	   #636b6e;
+
+-------------------------------------------------------------------*/
+
+/* dependencies */
+@import "normalize.css";
+@import "foundation.css";
+
+/* Generic */
+@import "typography.css";
+@import "layout.css";
+@import "plugins.css";
+
+/* Components */
+@import "modals.css";
+@import "messages.css";
+@import "sidebar.css";
+@import "lists.css";
+@import "grid.css";
+@import "itemform.css";
+@import "navigation.css";
+@import "settings.css";
+
+/* Item form */
+@import "item.css";
+
+@import "modules.css";
+
+@import "responsive.css";
