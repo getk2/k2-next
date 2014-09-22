@@ -53,7 +53,7 @@ class JFormFieldK2Users extends JFormField
 					}
 				});
 				if(!userAlreadyInList){
-					var li = '<li><button class=\"k2FieldResourceRemove\">".JText::_('K2_REMOVE_ENTRY_FROM_LIST')."</button><span class=\"k2FieldResourceMultipleHandle\">' + row.get('name') + '</span><input type=\"hidden\" value=\"' + row.get('id') + '\" name=\"".$this->name."[]\"/></li>';
+					var li = '<li><a class=\"k2FieldResourceRemove\">".JText::_('K2_REMOVE_ENTRY_FROM_LIST')."</a><span class=\"k2FieldResourceMultipleHandle\">' + row.get('name') + '</span><input type=\"hidden\" value=\"' + row.get('id') + '\" name=\"".$this->name."[]\"/></li>';
 					jQuery('#".$this->id." .k2FieldUsersMultiple').append(li);
 					jQuery('#".$this->id." ul').sortable('refresh');
 					alert('".JText::_('K2_USER_ADDED_IN_THE_LIST', true)."');
@@ -68,7 +68,7 @@ class JFormFieldK2Users extends JFormField
 			{
 				$html .= '
 				<li>
-					<button class="k2FieldResourceRemove">'.JText::_('K2_REMOVE_ENTRY_FROM_LIST').'</button>
+					<a class="k2FieldResourceRemove">'.JText::_('K2_REMOVE_ENTRY_FROM_LIST').'</a>
 					<span class="k2FieldResourceMultipleHandle">'.$user->name.'</span>
 					<input type="hidden" value="'.$user->id.'" name="'.$this->name.'[]"/>
 				</li>

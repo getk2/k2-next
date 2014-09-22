@@ -53,7 +53,7 @@ class JFormFieldK2Tags extends JFormField
 					}
 				});
 				if(!tagAlreadyInList){
-					var li = '<li><button class=\"k2FieldResourceRemove\">".JText::_('K2_REMOVE_ENTRY_FROM_LIST')."</button><span class=\"k2FieldResourceMultipleHandle\">' + row.get('name') + '</span><input type=\"hidden\" value=\"' + row.get('id') + '\" name=\"".$this->name."[]\"/></li>';
+					var li = '<li><a class=\"k2FieldResourceRemove\">".JText::_('K2_REMOVE_ENTRY_FROM_LIST')."</a><span class=\"k2FieldResourceMultipleHandle\">' + row.get('name') + '</span><input type=\"hidden\" value=\"' + row.get('id') + '\" name=\"".$this->name."[]\"/></li>';
 					jQuery('#".$this->id." .k2FieldTagsMultiple').append(li);
 					jQuery('#".$this->id." ul').sortable('refresh');
 					alert('".JText::_('K2_TAG_ADDED_IN_THE_LIST', true)."');
@@ -68,7 +68,7 @@ class JFormFieldK2Tags extends JFormField
 			{
 				$html .= '
 				<li>
-					<button class="k2FieldResourceRemove">'.JText::_('K2_REMOVE_ENTRY_FROM_LIST').'</button>
+					<a class="k2FieldResourceRemove">'.JText::_('K2_REMOVE_ENTRY_FROM_LIST').'</a>
 					<span class="k2FieldResourceMultipleHandle">'.$tag->name.'</span>
 					<input type="hidden" value="'.$tag->id.'" name="'.$this->name.'[]"/>
 				</li>
