@@ -18,18 +18,38 @@ class JFormFieldK2Settings extends JFormField
 	function getInput()
 	{
 		// Add head data
-		JHtml::_('jquery.framework');	
+		JHtml::_('jquery.framework');
 		$document = JFactory::getDocument();
 		$document->addStyleSheet(JURI::root(true).'/administrator/components/com_k2/css/fields.css?v=3.0.0b');
 		$document->addScript(JURI::root(true).'/administrator/components/com_k2/js/fields.js?v=3.0.0b');
+
+		// Detect context
+		$isMenu = JFactory::getApplication()->input->get('option') == 'com_menus';
 
 		// Include custom layout
 		ob_start();
 		include dirname(__FILE__).'/tmpl/settings.php';
 		$contents = ob_get_clean();
 
-		// Remove the rest groups since we rendered them already in our layout
-		$this->form->removeGroup('params');
+		// Remove the rest groups
+		if (!$isMenu)
+		{
+			$this->form->removeGroup('params');
+		}
+		else
+		{
+			foreach ($this->form->getFieldset('k2basic') as $field)
+			{
+				$this->form->removeField($field->fieldname, 'params');
+			}
+		}
+
+		// Hide the extra tab in menus
+		if ($isMenu)
+		{
+			$document->addScriptDeclaration('jQuery(document).ready(function() {jQuery("#attrib-k2basic").remove();});');
+			$document->addStyleDeclaration('#myTabTabs li:nth-child(3) { display: none !important;}');
+		}
 
 		// Return
 		return $contents;

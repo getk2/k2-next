@@ -13,7 +13,7 @@ defined('_JEXEC') or die ; ?>
 
 <div id="K2SettingsContainer" class="jw">
 
-
+	<?php if(!$isMenu): ?>
 	<div id="K2SettingsMenu">
 		<ul class="jw--tabs jw--tabs__top">
 			<?php foreach ($this->form->getFieldsets() as $name => $fieldset): ?>				
@@ -23,21 +23,27 @@ defined('_JEXEC') or die ; ?>
 			<?php endforeach; ?>
 		</ul>
 	</div>
+	<?php endif; ?>
 	
 	
 	<div id="K2Settings" class="jw--settings jw--generic--form">
 		<?php foreach ($this->form->getFieldsets() as $name => $fieldset): ?>
-		<?php if($name != 'basic'): ?>
+		<?php if((!$isMenu && $name != 'basic') || ($isMenu && $name == 'k2basic')): ?>
 		<?php $attributes = strpos($name, 'K2GROUP_') === 0 ? 'style="display:none;" data-k2group="'.substr($name, 8).'"' : ''; ?>
 		<div class="jw--setting--field K2SettingsSection" <?php echo $attributes;?>>
 		
+			<?php if($fieldset->label): ?>
 			<h3 class="K2SettingsSectionHeader" id="<?php echo $name; ?>"><?php echo JText::_($fieldset->label); ?></h3>
+			<?php endif; ?>
 			
 			<?php if (isset($fieldset->description) && !empty($fieldset->description)) : ?>
 			<p><?php echo JText::_($fieldset->description); ?></p>
 			<?php endif; ?>
 
 			<?php foreach ($this->form->getFieldset($name) as $field): ?>
+			
+			<?php if($field->type != 'K2Settings'): ?>
+			
 			
 			<?php if($field->type == 'K2Header'): ?>
 			
@@ -54,6 +60,7 @@ defined('_JEXEC') or die ; ?>
 				</div>
 			</div>
 			
+			<?php endif; ?>
 			<?php endif; ?>
 			<?php endforeach; ?>
 		</div>

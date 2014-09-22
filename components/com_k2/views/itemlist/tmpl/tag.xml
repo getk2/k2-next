@@ -14,6 +14,9 @@
 		</fields>
 		<fields name="params">
 			<fieldset name="basic" addfieldpath="/administrator/components/com_k2/fields">
+				<field name="K2Settings" type="K2Settings" />
+			</fieldset>
+			<fieldset name="k2basic">
 				<field name="theme" type="k2template" extension="com_k2" default="default" label="K2_SELECT_A_TEMPLATE"/>
 				<field name="categoriesFilter" type="k2categories" k2multiple="1" default="" label="K2_FILTER_CATEGORIES" description=""/>
 				<field name="tagOrdering" type="list" default="" label="K2_ITEM_ORDERING" description="">

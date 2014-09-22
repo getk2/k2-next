@@ -9,7 +9,10 @@
 		<name>K2_LATEST_ITEMS_FROM_ONE_OR_MORE_USERS_OR_CATEGORIES</name>
 		<description>K2_CREATE_A_MENU_ITEM_LINKING_TO_A_GRID_PAGE_WITH_THE_LATEST_ITEMS_FROM_SPECIFIC_CATEGORIES_OR_USERS_IN_K2</description>
 		<fields name="params" addfieldpath="/administrator/components/com_k2/fields">
-			<fieldset name="basic">
+			<fieldset name="basic" addfieldpath="/administrator/components/com_k2/fields">
+				<field name="K2Settings" type="K2Settings" />
+			</fieldset>
+			<fieldset name="k2basic">
 				<field name="theme" type="k2template" extension="com_k2" default="default" label="K2_SELECT_A_TEMPLATE"/>
 				<field name="" type="k2header" default="K2_CONTENT_SOURCE" label="" description=""/>
 				<field name="source" type="list" default="0" class="k2GroupSwitcher" label="K2_CHOOSE_CONTENT_SOURCE" description="K2_PLEASE_SELECT_WHETHER_TO_RETRIEVE_CONTENT_FROM_K2_USERS_OR_CATEGORIES">
