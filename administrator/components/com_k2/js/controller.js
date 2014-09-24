@@ -508,8 +508,6 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 
 		information : function() {
 			
-			K2Dispatcher.trigger('app:menu:active', 'information');
-			
 			// Load the required files
 			require(['models/information', 'views/information'], _.bind(function(Model, View) {
 
@@ -541,8 +539,6 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 
 		media : function() {
 			
-			K2Dispatcher.trigger('app:menu:active', 'media');
-			
 			// Load the required files
 			require(['models/media', 'views/media/manager'], _.bind(function(Model, View) {
 
@@ -573,9 +569,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 		},
 
 		utilities : function() {
-			
-			K2Dispatcher.trigger('app:menu:active', 'utilities');
-			
+						
 			// Load the required files
 			require(['models/utilities', 'views/utilities'], _.bind(function(Model, View) {
 

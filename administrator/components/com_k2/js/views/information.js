@@ -4,6 +4,7 @@ define(['marionette', 'text!layouts/information.html', 'dispatcher', 'widgets/wi
 		template : _.template(template),
 		onDomRefresh : function() {
 			K2Widget.updateEvents(this.$el);
+			K2Dispatcher.trigger('app:menu:active', 'information');
 		}
 	});
 

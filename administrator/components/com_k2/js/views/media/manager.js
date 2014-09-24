@@ -21,6 +21,7 @@ define(['marionette', 'dispatcher', 'text!layouts/media/manager.html', 'jqueryui
 			}, this));
 		},
 		onShow : function() {
+			K2Dispatcher.trigger('app:menu:active', 'media');
 			if (this.options.modal) {
 				require(['widgets/magnific/jquery.magnific-popup.min', 'css!widgets/magnific/magnific-popup.css'], _.bind(function() {
 					jQuery.magnificPopup.open({

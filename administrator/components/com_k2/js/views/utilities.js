@@ -44,6 +44,9 @@ define(['marionette', 'text!layouts/utilities.html', 'dispatcher'], function(Mar
 					button.prop('disabled', false);
 				});
 			}
+		},
+		onShow : function() {
+			K2Dispatcher.trigger('app:menu:active', 'utilities');
 		}
 	});
 
