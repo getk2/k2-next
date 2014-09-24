@@ -546,7 +546,7 @@ class K2HelperImages
 			$image->alt = $user->name;
 			$image->flag = 0;
 		}
-		if ($params->get('gravatar') && !$image->flag)
+		if ($params->get('gravatar') && (is_null($image) || !$image->flag))
 		{
 			if (is_null($image))
 			{
