@@ -210,7 +210,7 @@
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
-			<field name="catItemK2Plugins" type="radio" default="" label="K2_ENABLE_K2_PLUGINS" description="">
+			<field name="catItemK2Plugins" type="radio" default="1" label="K2_ENABLE_K2_PLUGINS" description="">
 				<option value="0">K2_NO</option>
 				<option value="1">K2_YES</option>
 			</field>
