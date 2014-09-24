@@ -62,7 +62,13 @@ class K2Plugin extends JPlugin
 			}
 		}
 
+		$this->onK2RenderAdminHead($row, $type);
+
 		return true;
+	}
+
+	protected function onK2RenderAdminHead($row, $type)
+	{
 	}
 
 	protected function getValue($name, $default = null)

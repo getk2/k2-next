@@ -18,38 +18,38 @@ defined('_JEXEC') or die ;
 class plgK2Example extends K2Plugin
 {
 
-	function onK2PrepareContent(&$item, &$params, $limitstart)
+	public function onK2PrepareContent(&$item, &$params, $limitstart)
 	{
 		$mainframe = JFactory::getApplication();
 		//$item->text = 'It works! '.$item->text;
 	}
 
-	function onK2AfterDisplay(&$item, &$params, $limitstart)
+	public function onK2AfterDisplay(&$item, &$params, $limitstart)
 	{
 		$mainframe = JFactory::getApplication();
 		return '';
 	}
 
-	function onK2BeforeDisplay(&$item, &$params, $limitstart)
+	public function onK2BeforeDisplay(&$item, &$params, $limitstart)
 	{
 		$mainframe = JFactory::getApplication();
 		return '';
 	}
 
-	function onK2AfterDisplayTitle(&$item, &$params, $limitstart)
+	public function onK2AfterDisplayTitle(&$item, &$params, $limitstart)
 	{
 		$mainframe = JFactory::getApplication();
 		return '';
 	}
 
-	function onK2BeforeDisplayContent(&$item, &$params, $limitstart)
+	public function onK2BeforeDisplayContent(&$item, &$params, $limitstart)
 	{
 		$mainframe = JFactory::getApplication();
 		return '';
 	}
 
 	// Event to display (in the frontend) the YouTube URL as entered in the item form
-	function onK2AfterDisplayContent(&$item, &$params, $limitstart)
+	public function onK2AfterDisplayContent(&$item, &$params, $limitstart)
 	{
 		$mainframe = JFactory::getApplication();
 
@@ -77,17 +77,17 @@ class plgK2Example extends K2Plugin
 	}
 
 	// Event to display (in the frontend) the YouTube URL as entered in the category form
-	function onK2CategoryDisplay(&$category, &$params, $limitstart)
+	public function onK2CategoryDisplay(&$category, &$params, $limitstart)
 	{
 		$mainframe = JFactory::getApplication();
 
 		$output = $this->getValue('videoURL_cat');
-		
+
 		return $output;
 	}
 
 	// Event to display (in the frontend) the YouTube URL as entered in the user form
-	function onK2UserDisplay(&$user, &$params, $limitstart)
+	public function onK2UserDisplay(&$user, &$params, $limitstart)
 	{
 		$mainframe = JFactory::getApplication();
 
@@ -97,9 +97,8 @@ class plgK2Example extends K2Plugin
 	}
 
 	// Example to load custom scripts and styles into K2 admin form
-	public function onK2RenderAdminForm(&$form, $row, $type)
+	public function onK2RenderAdminHead($row, $type)
 	{
-		parent::onK2RenderAdminForm($form, $row, $type);
 		$this->addScript(JUri::root(true).'/plugins/k2/example/script.js');
 		$this->addStyle(JUri::root(true).'/plugins/k2/example/style.css');
 	}
