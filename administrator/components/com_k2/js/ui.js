@@ -7,12 +7,13 @@
 	K2Container.on('click', 'a[data-role="modal"]', function(event) {
 		event.preventDefault();
 		var src = jQuery(this).attr('href');
+		var type = jQuery(this).data('type') || 'image';
 		require(['widgets/magnific/jquery.magnific-popup.min', 'css!widgets/magnific/magnific-popup.css'], _.bind(function() {
 			jQuery.magnificPopup.open({
 				items : {
 					src : src
 				},
-				type : 'image'
+				type : type
 			});
 		}, this));
 	});

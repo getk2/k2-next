@@ -264,6 +264,35 @@ class K2ViewItems extends K2View
 
 		$form->mediaProviders = K2HelperHtml::mediaProviders();
 
+		// Associations
+		$associations = new stdClass;
+		$associations->enabled = JLanguageAssociations::isEnabled();
+		$associations->languages = array();
+		if ($associations->enabled)
+		{
+			$languages = JLanguageHelper::getLanguages('lang_code');
+			foreach ($languages as $tag => $language)
+			{
+				if (empty($row->language) || $tag != $row->language)
+				{
+					$lang = new stdClass;
+					$lang->title = $language->title;
+					$lang->code = $language->lang_code;
+					$lang->associated = new stdClass;
+					$lang->associated->title = '';
+					$lang->associated->id = '';
+					if (isset($row->associations) && is_array($row->associations) && isset($row->associations[$language->lang_code]))
+					{
+						$associated = K2Items::getInstance($row->associations[$language->lang_code]);
+						$lang->associated->title = $associated->title;
+						$lang->associated->id = $associated->id;
+					}
+					$associations->languages[] = $lang;
+				}
+			}
+		}
+		$form->associations = $associations;
+
 	}
 
 	/**
@@ -323,6 +352,20 @@ class K2ViewItems extends K2View
 		// Galleries
 		$row->sigPro = JPluginHelper::isEnabled('content', 'jw_sigpro');
 		$row->galleries = $row->getGalleries();
+
+		// Associations
+		if (JLanguageAssociations::isEnabled())
+		{
+			$row->associations = array();
+			if ($row->id)
+			{
+				$associations = JLanguageAssociations::getAssociations('com_k2', '#__k2_items', 'com_k2.item', $row->id, 'id', '', '');
+				foreach ($associations as $tag => $association)
+				{
+					$row->associations[$tag] = $association->id;
+				}
+			}
+		}
 
 	}
 

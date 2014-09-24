@@ -86,6 +86,11 @@ class K2Plugin extends JPlugin
 		K2Response::addScript($url);
 	}
 
+	protected function addScriptDeclaration($js)
+	{
+		K2Response::addScriptDeclaration($js);
+	}
+
 	protected function addStyle($url)
 	{
 		K2Response::addStyle($url);

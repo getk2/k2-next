@@ -19,7 +19,8 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 		events : {
 			'change #catid' : 'updateExtraFields',
 			'click [data-action="load-revisions"]' : 'loadRevisions',
-			'click [data-action="reset-hits"]' : 'resetHits'
+			'click [data-action="reset-hits"]' : 'resetHits',
+			'click [data-action="select-association"]' : 'selectAssociation'
 		},
 
 		modelEvents : {
@@ -188,6 +189,27 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 				}, this));
 				this.revisionsRegion.show(this.revisionsView);
 			}
+		},
+		selectAssociation : function(event) {
+			event.preventDefault();
+			var language = jQuery(event.currentTarget).data('language');
+			window.K2SelectRow = function(row) {
+				if (row.get('language') != language) {
+					alert(l('K2_THIS_RESOURCE_IS_NOT_ASSIGNED_TO_THE_REQUIRED_LANGUAGE'));
+					return false;
+				}
+				jQuery('[data-role="association-title"][data-language="' + language + '"]').text(row.get('title'));
+				jQuery('input[name="associations[' + language + ']"]').val(row.get('id'));
+				jQuery.magnificPopup.close();
+			};
+			jQuery.magnificPopup.open({
+				alignTop : false,
+				closeBtnInside : true,
+				items : {
+					src : 'index.php?option=com_k2&tmpl=component#modal/items',
+					type : 'iframe'
+				}
+			});
 		},
 		resetHits : function(event) {
 			event.preventDefault();

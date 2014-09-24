@@ -124,6 +124,13 @@ class K2Response
 	public static $scripts = array();
 
 	/**
+	 * Array containing the the script declarations enqueued by the application.
+	 *
+	 * @var array $scripts
+	 */
+	public static $scriptDeclarations = array();
+
+	/**
 	 * Array containing the the styles enqueued by the application.
 	 *
 	 * @var array $styles
@@ -667,6 +674,18 @@ class K2Response
 	}
 
 	/**
+	 * Adds a script declaration to the scripts declarations array.
+	 *
+	 * @param string $js	The code of the script.
+	 *
+	 * @return void
+	 */
+	public static function addScriptDeclaration($js)
+	{
+		self::$scriptDeclarations[] = $js;
+	}
+
+	/**
 	 * Adds a stylesheet to the styles array.
 	 *
 	 * @param string $url	The url of the stylesheet.
@@ -691,6 +710,7 @@ class K2Response
 		}
 		self::$response->title = self::getTitle();
 		self::$response->scripts = array_unique(self::$scripts);
+		self::$response->scriptDeclarations = array_unique(self::$scriptDeclarations);
 		self::$response->styles = array_unique(self::$styles);
 		self::$response->states = self::getStates();
 		self::$response->menu = self::getMenu();

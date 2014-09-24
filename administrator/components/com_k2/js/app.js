@@ -154,6 +154,12 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'vie
 			K2Dispatcher.trigger('app:update:subheader', response);
 			// Add scripts and styles
 			require(_.union(response.styles, response.scripts));
+			
+			// Add script declarations
+			_.each(response.scriptDeclarations, function(js) {
+				console.info(js);
+				jQuery('body').append('<script type="text/javascript">' + js + '</script>');
+			});
 		}
 	});
 

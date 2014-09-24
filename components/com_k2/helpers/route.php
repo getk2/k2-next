@@ -23,7 +23,9 @@ class K2HelperRoute
 		'tag' => array()
 	);
 
-	public static function getItemRoute($id, $category)
+	private static $languages = array();
+
+	public static function getItemRoute($id, $category, $language = 0)
 	{
 		// Get application
 		$application = JFactory::getApplication();
@@ -36,6 +38,17 @@ class K2HelperRoute
 
 		// Initialze route
 		$route = 'index.php?option=com_k2&view=item&id='.$id;
+
+		// Append language variable if required
+		if ($language && $language != '*' && JLanguageMultilang::isEnabled())
+		{
+			self::getLanguages();
+
+			if (isset(self::$languages[$language]))
+			{
+				$route .= '&lang='.self::$languages[$language];
+			}
+		}
 
 		// Cast variables
 		$id = (int)$id;
@@ -340,6 +353,21 @@ class K2HelperRoute
 		$route .= '&Itemid='.self::$cache['search'];
 
 		return $route;
+	}
+
+	private static function getLanguages()
+	{
+		if (count(self::$languages) == 0)
+		{
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true)->select('a.sef AS sef')->select('a.lang_code AS lang_code')->from('#__languages AS a');
+			$db->setQuery($query);
+			$languages = $db->loadObjectList();
+			foreach ($languages as $language)
+			{
+				self::$languages[$language->lang_code] = $language->sef;
+			}
+		}
 	}
 
 }

@@ -21,6 +21,9 @@
 		<li><a href="#"><i class="fa fa-info-circle"></i><%= l('K2_METADATA_AND_PUBLISHING') %></a></li>
 		<li><a href="#"><i class="fa fa-desktop"></i><%= l('K2_DISPLAY_SETTINGS') %></a></li>
 		<li><a href="#"><i class="fa fa-unlock-alt"></i><%= l('K2_PERMISSIONS') %></a></li>
+		<% if(form.associations.enabled) { %>
+		<li><a href="#"><i class="fa fa-globe"></i><%= l('K2_ASSOCIATIONS') %></a></li>
+		<% } %>
 	</ul>
 	
 	<div id="k2--id">
@@ -476,6 +479,23 @@
 					</div>
 				</div>
 	    	</div>
+	    	
+	    	<% if(form.associations.enabled) { %>
+			<!-- Associations -->
+			<div class="jw--settings jw--item">
+				<div class="jw--generic--form">
+					<div class="jw--setting--field">
+					    <h2><%= l('K2_ASSOCIATIONS') %></h2> 
+					    <% _.each(form.associations.languages, function(language) { %>
+					    	<label><%- language.title %></label>
+					    	<a href="#" data-action="select-association" data-language="<%- language.code %>"><%- l('K2_SELECT_ITEM') %></a>
+					    	<span data-role="association-title" data-language="<%- language.code %>"><%= language.associated.title %></span>
+					    	<input type="hidden" name="associations[<%- language.code %>]" value="<%- language.associated.id %>" />
+					    <% }); %>
+					</div>
+				</div>
+	    	</div>
+	    	<% } %>
 	    	
 	    	
     	</div>
