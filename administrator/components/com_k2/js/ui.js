@@ -44,18 +44,6 @@
 		}, 300);
 	});
 
-	// label toggling.
-	K2Container.on('click', '.jw--radio', function() {
-		$(this).parent().children('.jw--radio').removeClass('jw--radio__checked');
-		$(this).addClass('jw--radio__checked');
-	});
-
-	// Bootstrap fallback
-	K2Container.on('click', '.radio', function() {
-		$(this).parent().children('.radio').removeClass('jw--radio__checked');
-		$(this).addClass('jw--radio__checked');
-	});
-
 	// resetting the filters
 	K2Container.on('click', '#jw--filters--reset', function() {
 		$('.jw--filter .jw--radio').removeClass('jw--radio__checked');
