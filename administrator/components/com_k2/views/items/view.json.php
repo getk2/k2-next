@@ -239,7 +239,7 @@ class K2ViewItems extends K2View
 
 	protected function setFormFields(&$form, $row)
 	{
-		$form->state = K2HelperHTML::state('state', $row->state, false, true);
+		$form->state = K2HelperHTML::state('state', $row->state, false, true, 'radio', false);
 		$form->language = K2HelperHTML::language('language', $row->language);
 		$form->access = JHtml::_('access.level', 'access', $row->access, '', false);
 		$form->category = K2HelperHTML::categories('catid', $row->catid, 'K2_SELECT_CATEGORY');

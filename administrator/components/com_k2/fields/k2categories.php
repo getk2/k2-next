@@ -72,7 +72,7 @@ class JFormFieldK2Categories extends JFormField
 			$options = array();
 			$options[] = JHtml::_('select.option', '0', JText::_('K2_ALL'));
 			$options[] = JHtml::_('select.option', '1', JText::_('K2_SELECT'));
-			$output .= K2HelperHTML::radiolist($options, $this->name.'[enabled]', $this->value['enabled'], 'class="k2FieldCategoriesFilterEnabled" data-categories="'.$this->name.'[categories][]"');
+			$output .= K2HelperHTML::radiolist($options, $this->name.'[enabled]', $this->value['enabled'], false, 'data-categories="'.$this->name.'[categories][]"');
 			$placeholder = null;
 		}
 		else

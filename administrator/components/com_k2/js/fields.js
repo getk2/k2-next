@@ -11,7 +11,7 @@ jQuery(document).ready(function() {
 	});
 
 	// K2 categories field
-	jQuery('.k2FieldCategoriesFilterEnabled').change(function(event) {
+	jQuery('input[data-categories]').change(function(event) {
 		var target = jQuery(this).data('categories');
 		if (jQuery(this).val() == '0') {
 			jQuery('select[name="' + target + '"] option').prop('selected', true);
