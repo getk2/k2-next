@@ -72,7 +72,7 @@ class JFormFieldK2Categories extends JFormField
 			$options = array();
 			$options[] = JHtml::_('select.option', '0', JText::_('K2_ALL'));
 			$options[] = JHtml::_('select.option', '1', JText::_('K2_SELECT'));
-			$output .= JHtml::_('select.radiolist', $options, $this->name.'[enabled]', 'class="k2FieldCategoriesFilterEnabled" data-categories="'.$this->name.'[categories][]"', 'value', 'text', $this->value['enabled'], $this->id);
+			$output .= K2HelperHTML::radiolist($options, $this->name.'[enabled]', $this->value['enabled'], 'class="k2FieldCategoriesFilterEnabled" data-categories="'.$this->name.'[categories][]"');
 			$placeholder = null;
 		}
 		else
@@ -87,7 +87,10 @@ class JFormFieldK2Categories extends JFormField
 		// And finally the recursive switch
 		if ($this->recursive == 'select')
 		{
-			$output .= '<label>'.JText::_('K2_APPLY_RECUSRIVELY').'</label>'.JHtml::_('select.booleanlist', $this->name.'[recursive]', null, $this->value['recursive']);
+			$options = array();
+			$options[] = JHtml::_('select.option', '0', JText::_('K2_NO'));
+			$options[] = JHtml::_('select.option', '1', JText::_('K2_YES'));
+			$output .= '<label>'.JText::_('K2_APPLY_RECUSRIVELY').'</label>'.K2HelperHTML::radiolist($options, $this->name.'[recursive]', $this->value['recursive']);
 		}
 		else
 		{

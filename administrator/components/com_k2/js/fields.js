@@ -54,4 +54,12 @@ jQuery(document).ready(function() {
 			jQuery(this).parent().remove();
 		});
 	}
+
+	// label toggling.
+	jQuery('.jw--radio').on('click', function() {
+		var name = jQuery(this).find('input').attr('name');
+		jQuery('input[name="' + name + '"]').parent().removeClass('jw--radio__checked');
+		jQuery(this).addClass('jw--radio__checked');
+	});
+
 });
