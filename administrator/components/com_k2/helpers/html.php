@@ -39,8 +39,7 @@ class K2HelperHTML
 		}
 		else
 		{
-			$boolean = count($options) === 2;
-			return self::radiolist($options, $name, $value, $boolean);
+			return self::radiolist($options, $name, $value, true);
 		}
 	}
 
@@ -303,7 +302,7 @@ class K2HelperHTML
 			$checked = $active ? 'checked="checked"' : '';
 			$class = $active ? 'class="jw--radio jw--radio__checked"' : 'class="jw--radio"';
 			$id = $name.'_'.$key;
-			$output .= '<label for="'.$id.'" '.$class.'>'.$option->text.'</label><input type="radio" class="visuallyhidden" name="'.$name.'" id="'.$id.'" '.$checked.' value="'.$option->value.'" />';
+			$output .= '<input type="radio" class="visuallyhidden" name="'.$name.'" id="'.$id.'" '.$checked.' value="'.$option->value.'" /><label for="'.$id.'" '.$class.'>'.$option->text.'</label>';
 		}
 		if ($boolean)
 		{
