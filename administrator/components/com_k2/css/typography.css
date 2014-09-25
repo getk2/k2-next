@@ -53,7 +53,7 @@ img {-ms-interpolation-mode:bicubic; max-width: 100%; }
 	min-width: 42px; width: auto; text-align: center; border: 1px solid #d4d6d8; padding: 0 13px; font-size: 12px; font-weight: 700; line-height: 33px; vertical-align: top; height: 33px; margin: 0 -2px; color: #8a8c8c; display: inline-block; vertical-align: middle; white-space: nowrap; background-color: #eff1f1; box-shadow: 0 1px 1px rgba(65,64,66,.14), inset 0 1px 0 #fff; }
 	
 /* smaller ones */
-.jw .jw--sidebar label.jw--radio, .jw--sidebar .jw .controls label.radio { font-weight: 400; padding: 0 7px; }
+.jw .jw--sidebar label.jw--radio { font-weight: 400; padding: 0 6px; }
 	
 	/* Checked Default style  */
 	.jw input[type="radio"]:checked + label.jw--radio { color: #fff; border: 1px solid #828080; background: #63696f; box-shadow: 0 1px 1px rgba(65,64,66,.14), inset 0 1px 0 #363a3d; }
@@ -66,6 +66,9 @@ img {-ms-interpolation-mode:bicubic; max-width: 100%; }
 	/* radiuses / with Bootstrap elements */
 	.jw--state label:first-of-type { border-radius: 3px 0 0 3px; margin-left: 0; }
 	.jw--state label:last-of-type { border-radius: 0 3px 3px 0; margin-right: 0; }
+	
+	/* override for the sidebar filters */
+	.jw .jw--sidebar .jw--state input[type="radio"]:checked + label.jw--radio { background: #63696f; box-shadow: 0 1px 1px rgba(65,64,66,.14), inset 0 1px 0 #363a3d; }
 
 	/* smaller labels */
 	.jw label.jw--radio.jw--radio__smaller { line-height: 26px; height: 26px; font-size: 11px; margin: 0 -2px; padding: 0 10px; white-space: nowrap; }
@@ -206,6 +209,3 @@ Buttons */
 		.table-responsive > .table { margin-bottom: 0; }
 		
 		.jw--form__item .table-responsive:after { display: none; }
-
-
-
