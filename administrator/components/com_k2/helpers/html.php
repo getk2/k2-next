@@ -40,7 +40,7 @@ class K2HelperHTML
 		else
 		{
 			$boolean = count($options) === 2;
-			return self::radiolist($options, $name, $value, '', $boolean);
+			return self::radiolist($options, $name, $value, $boolean);
 		}
 	}
 
@@ -118,7 +118,7 @@ class K2HelperHTML
 			$options = array();
 			$options[] = JHtml::_('select.option', '0', JText::_('K2_NO'));
 			$options[] = JHtml::_('select.option', '1', JText::_('K2_YES'));
-			$output .= '<label>'.JText::_($recursive->label).'</label>'.K2HelperHTML::radiolist($options, $recursive->name, $recursive->value, '', true);
+			$output .= '<label>'.JText::_($recursive->label).'</label>'.K2HelperHTML::radiolist($options, $recursive->name, $recursive->value, true);
 		}
 		return $output;
 	}
@@ -271,7 +271,7 @@ class K2HelperHTML
 		$options = array();
 		$options[] = JHtml::_('select.option', 'm', JText::_('K2_MALE'));
 		$options[] = JHtml::_('select.option', 'f', JText::_('K2_FEMALE'));
-		return self::radiolist($options, $name, $value, $attributes);
+		return self::radiolist($options, $name, $value);
 	}
 
 	public static function author($name = 'author', $value = null, $none = false, $attributes = '')
@@ -294,7 +294,7 @@ class K2HelperHTML
 		return JHtml::_('select.genericlist', $options, $name, $attributes, 'value', 'text', $value);
 	}
 
-	public static function radiolist($options, $name, $value = '', $attributes = '', $boolean = false)
+	public static function radiolist($options, $name, $value = '', $boolean = false)
 	{
 		$output = $boolean ? '<div class="jw--state">' : '';
 		foreach ($options as $key => $option)
@@ -303,7 +303,7 @@ class K2HelperHTML
 			$checked = $active ? 'checked="checked"' : '';
 			$class = $active ? 'class="jw--radio jw--radio__checked"' : 'class="jw--radio"';
 			$id = $name.'_'.$key;
-			$output .= '<label for="'.$id.'" '.$class.'>'.$option->text.'</label><input type="radio" name="'.$name.'" id="'.$id.'" '.$checked.' value="'.$option->value.'" />';
+			$output .= '<label for="'.$id.'" '.$class.'>'.$option->text.'</label><input type="radio" class="visuallyhidden" name="'.$name.'" id="'.$id.'" '.$checked.' value="'.$option->value.'" />';
 		}
 		if ($boolean)
 		{
