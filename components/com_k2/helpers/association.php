@@ -23,17 +23,61 @@ abstract class K2HelperAssociation
 		{
 			if ($id)
 			{
-				$associations = JLanguageAssociations::getAssociations('com_k2', '#__k2_items', 'com_k2.item', $id, 'id', '', '');
+				$associations = self::getItemAssociations($id);
 				$return = array();
 				foreach ($associations as $tag => $item)
 				{
-					$return[$tag] = K2HelperRoute::getItemRoute($item->id.':'.$item->alias, $item->catid, $item->language);
+					$return[$tag] = K2HelperRoute::getItemRoute($item->id, $item->catid, $item->language);
 				}
 				return $return;
 			}
 		}
 		return array();
 
+	}
+
+	public static function getItemAssociations($id)
+	{
+		$associations = array();
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+		$query->select($db->quoteName('c2.language'));
+		$query->select($db->quoteName('c2.title'));
+		$query->select($query->concatenate(array(
+			$db->quoteName('c2.id'),
+			$db->quoteName('c2.alias')
+		), ':').' AS '.$db->quoteName('id'));
+		$query->from($db->quoteName('#__k2_items', 'c'));
+		$query->join('INNER', $db->quoteName('#__associations', 'a').' ON '.$db->quoteName('a.id').' = '.$db->quoteName('c.id').' AND '.$db->quoteName('a.context').' = '.$db->quote('com_k2.item'));
+		$query->join('INNER', $db->quoteName('#__associations', 'a2').' ON '.$db->quoteName('a.key').' = '.$db->quoteName('a2.key'));
+		$query->join('INNER', $db->quoteName('#__k2_items', 'c2').' ON '.$db->quoteName('a2.id').' = '.$db->quoteName('c2.id'));
+		$query->join('INNER', $db->quoteName('#__k2_categories', 'ca').' ON '.$db->quoteName('c2.catid').' = '.$db->quoteName('ca.id'));
+		$query->select($query->concatenate(array(
+			$db->quoteName('ca.id'),
+			$db->quoteName('ca.alias')
+		), ':').' AS '.$db->quoteName('catid'));
+		$query->where($db->quoteName('c.id').' = '.(int)$id);
+		$db->setQuery($query);
+		try
+		{
+			$items = $db->loadObjectList('language');
+		}
+		catch (RuntimeException $e)
+		{
+			throw new Exception($e->getMessage(), 500);
+		}
+		if ($items)
+		{
+			foreach ($items as $tag => $item)
+			{
+				// Do not return itself as result
+				if ((int)$item->id != $id)
+				{
+					$associations[$tag] = $item;
+				}
+			}
+		}
+		return $associations;
 	}
 
 }
