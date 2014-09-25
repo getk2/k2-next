@@ -114,7 +114,10 @@ class K2HelperHTML
 		$output = JHtml::_('select.genericlist', $options, $name, $attributes, 'value', 'text', $value);
 		if ($recursive)
 		{
-			$output .= '<label>'.JText::_($recursive->label).'</label>'.JHtml::_('select.booleanlist', $recursive->name, null, $recursive->value);
+			$options = array();
+			$options[] = JHtml::_('select.option', '0', JText::_('K2_NO'));
+			$options[] = JHtml::_('select.option', '1', JText::_('K2_YES'));
+			$output .= '<label>'.JText::_($recursive->label).'</label>'.K2HelperHTML::radiolist($options, $recursive->name, $recursive->value);
 		}
 		return $output;
 	}
