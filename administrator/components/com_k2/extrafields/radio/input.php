@@ -12,12 +12,14 @@ defined('_JEXEC') or die ;
 
 ?>
 <div class="jw--label--row">
-<?php foreach($field->get('options', array()) as $option): ?>
-	<label class="jw--radio<?php if($field->get('value') == $option) { echo ' jw--radio__checked"';} ?>">
+	<?php $key = 0; ?>
+	<?php foreach($field->get('options', array()) as $option): ?>
+	<input type="radio" class="visuallyhidden" name="<?php echo $field->get('prefix'); ?>[value]" id="<?php echo $field->get('prefix').$key; ?>[value]" value="<?php echo htmlspecialchars($option, ENT_QUOTES, 'UTF-8'); ?>" <?php if($field->get('value') == $option) { echo 'checked="checked"';} ?> />
+	<label class="jw--radio" for="<?php echo $field->get('prefix').$key; ?>[value]">
 		<?php echo $option; ?>
-		<input type="radio" name="<?php echo $field->get('prefix'); ?>[value]" value="<?php echo htmlspecialchars($option, ENT_QUOTES, 'UTF-8'); ?>" <?php if($field->get('value') == $option) { echo 'checked="checked"';} ?> />
 	</label>
-<?php endforeach; ?>
+	<?php $key++; ?>
+	<?php endforeach; ?>
 </div>
 
 <?php if($this->required): ?>
