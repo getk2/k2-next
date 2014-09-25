@@ -159,12 +159,12 @@
 			<div class="clr"></div>
 		    
 		    <% _.each(form.k2Plugins['items-content'], function(field) { %>
-			<div class="jw--item--row">
-				<div class="left text-right jw--item--lbl">		    
-		    		<%= field.label %>
-		    	</div>
-		    	<div class="ov-hidden">
-					<%= field.input %>
+			<div class="jw--element--row">
+				<div class="jw--element--single">
+			    	<div class="ov-hidden jw--block--field">
+			    		<%= field.label %>
+						<%= field.input %>
+					</div>
 				</div>
 			</div>
 			<% }); %>
@@ -199,8 +199,14 @@
 						<div class="jw--editor--cnt">
 						    <div data-region="item-image"></div>
 						    <% _.each(form.k2Plugins['items-image'], function(field) { %>
-						    	<%= field.label %>
-								<%= field.input %>
+								<div class="jw--element--row">
+									<div class="jw--element--single">
+								    	<div class="ov-hidden jw--block--field">
+								    		<%= field.label %>
+											<%= field.input %>
+										</div>
+									</div>
+								</div>
 							<% }); %>
 						</div>
 					</div>
@@ -211,8 +217,14 @@
 						    <div data-region="item-galleries"></div>
 						    
 						    <% _.each(form.k2Plugins['items-galleries'], function(field) { %>
-						    	<%= field.label %>
-								<%= field.input %>
+								<div class="jw--element--row">
+									<div class="jw--element--single">
+								    	<div class="ov-hidden jw--block--field">
+								    		<%= field.label %>
+											<%= field.input %>
+										</div>
+									</div>
+								</div>
 							<% }); %>
 						</div>
 					</div>
@@ -223,8 +235,14 @@
 						    <div data-region="item-media"></div>
 						    
 						    <% _.each(form.k2Plugins['items-media'], function(field) { %>
-						    	<%= field.label %>
-								<%= field.input %>
+								<div class="jw--element--row">
+									<div class="jw--element--single">
+								    	<div class="ov-hidden jw--block--field">
+								    		<%= field.label %>
+											<%= field.input %>
+										</div>
+									</div>
+								</div>
 							<% }); %>
 						</div>
 					</div>
@@ -234,8 +252,14 @@
 						<div class="jw--editor--cnt">
 						    <div data-region="item-attachments"></div>
 						    <% _.each(form.k2Plugins['items-attachments'], function(field) { %>
-						    	<%= field.label %>
-								<%= field.input %>
+								<div class="jw--element--row">
+									<div class="jw--element--single">
+								    	<div class="ov-hidden jw--block--field">
+								    		<%= field.label %>
+											<%= field.input %>
+										</div>
+									</div>
+								</div>
 							<% }); %>
 						</div>
 					</div>	
@@ -246,8 +270,16 @@
 						    <div data-region="item-extra-fields"></div>
 						    
 						    <% _.each(form.k2Plugins['items-extra-fields'], function(field) { %>
-						    	<%= field.label %>
-								<%= field.input %>
+								<div class="jw--element--row">
+									<div class="jw--element--single">
+										<div class="left text-right jw--item--lbl">		    
+								    		<%= field.label %>
+								    	</div>
+								    	<div class="ov-hidden jw--block--field">
+											<%= field.input %>
+										</div>
+									</div>
+								</div>
 							<% }); %>
 						</div>
 					</div>
@@ -422,7 +454,6 @@
 				</div>
 			</div>  
 			
-			
 			<!-- Item Options (Listing/ item Options) -->
 			<div class="jw--options--item">
 				<nav class="jw--transition jw--scrollwrapper jw--scrollwrapper__item" data-widget="scrollspymenu">
@@ -489,14 +520,15 @@
 					    <% _.each(form.associations.languages, function(language) { %>
 					    	<label><%- language.title %></label>
 					    	<a href="#" data-action="select-association" data-language="<%- language.code %>"><%- l('K2_SELECT_ITEM') %></a>
+					    	
 					    	<span data-role="association-title" data-language="<%- language.code %>"><%= language.associated.title %></span>
+					    	
 					    	<input type="hidden" name="associations[<%- language.code %>]" value="<%- language.associated.id %>" />
 					    <% }); %>
 					</div>
 				</div>
 	    	</div>
 	    	<% } %>
-	    	
 	    	
     	</div>
 	</div>
