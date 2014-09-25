@@ -157,7 +157,6 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'vie
 			
 			// Add script declarations
 			_.each(response.scriptDeclarations, function(js) {
-				console.info(js);
 				jQuery('body').append('<script type="text/javascript">' + js + '</script>');
 			});
 		}

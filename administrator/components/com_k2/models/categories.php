@@ -511,6 +511,50 @@ class K2ModelCategories extends K2Model
 			return false;
 		}
 
+		// Handle associations
+		if (JLanguageAssociations::isEnabled() && isset($data['associations']))
+		{
+			// Get associations input
+			$associations = $data['associations'];
+
+			// Sanitize array with empty values
+			foreach ($associations as $languageTag => $itemId)
+			{
+				if (empty($itemId))
+				{
+					unset($associations[$languageTag]);
+				}
+			}
+
+			// Ensure that the item does not have associations when it's language is set to "All"
+			if ($table->language == '*' && !empty($associations))
+			{
+				$associations = array();
+			}
+
+			// Add current item to associations
+			$associations[$table->language] = $table->id;
+
+			// Deleting old association for affected items
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true)->delete($db->quoteName('#__associations'))->where($db->quoteName('context').' = '.$db->quote('com_k2.category'))->where($db->quoteName('id').' IN ('.implode(',', $associations).')');
+			$db->setQuery($query);
+			$db->execute();
+
+			if ($table->language != '*' && count($associations))
+			{
+				// Adding new association for these items
+				$key = md5(json_encode($associations));
+				$query->clear()->insert($db->quoteName('#__associations'));
+				foreach ($associations as $id)
+				{
+					$query->values((int)$id.','.$db->quote('com_k2.category').','.$db->quote($key));
+				}
+				$db->setQuery($query);
+				$db->execute();
+			}
+		}
+
 		return true;
 	}
 
