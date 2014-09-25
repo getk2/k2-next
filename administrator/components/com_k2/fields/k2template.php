@@ -26,7 +26,7 @@ class JFormFieldK2Template extends JFormField
 		if ($this->extension == 'com_k2')
 		{
 			$corePath = JPATH_SITE.'/components/com_k2/templates';
-			$overridesPath = JPATH_SITE.'/templates/'.$template.'/html/com_k2/templates';
+			$overridesPath = JPATH_SITE.'/templates/'.$template.'/html/com_k2';
 		}
 		else
 		{
