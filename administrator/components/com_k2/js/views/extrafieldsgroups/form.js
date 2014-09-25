@@ -29,12 +29,10 @@ define(['marionette', 'text!layouts/extrafieldsgroups/form.html', 'dispatcher', 
 				var assignmentsValue = this.model.get('assignments');
 				this.$('input[name="assignments[mode]"]').val([assignmentsValue.mode]);
 			}
-			this.$('input[name="assignments[recursive]"]:checked').parent().addClass('jw--radio__checked');
 			K2Widget.updateEvents(this.$el);
 		},
 		updateAssignmentsSelection : function() {
 			var active = this.$('input[name="assignments[mode]"]:checked');
-			active.parent().addClass('jw--radio__checked');
 			var value = active.val();
 			var assignments = this.$('[data-region="extra-field-group-assignements"]');
 			if (value === 'all') {
