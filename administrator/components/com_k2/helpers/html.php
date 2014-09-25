@@ -39,7 +39,8 @@ class K2HelperHTML
 		}
 		else
 		{
-			return self::radiolist($options, $name, $value);
+			$boolean = count($options) === 2;
+			return self::radiolist($options, $name, $value, '', $boolean);
 		}
 	}
 
@@ -117,7 +118,7 @@ class K2HelperHTML
 			$options = array();
 			$options[] = JHtml::_('select.option', '0', JText::_('K2_NO'));
 			$options[] = JHtml::_('select.option', '1', JText::_('K2_YES'));
-			$output .= '<label>'.JText::_($recursive->label).'</label>'.K2HelperHTML::radiolist($options, $recursive->name, $recursive->value);
+			$output .= '<label>'.JText::_($recursive->label).'</label>'.K2HelperHTML::radiolist($options, $recursive->name, $recursive->value, '', true);
 		}
 		return $output;
 	}
@@ -293,16 +294,20 @@ class K2HelperHTML
 		return JHtml::_('select.genericlist', $options, $name, $attributes, 'value', 'text', $value);
 	}
 
-	public static function radiolist($options, $name, $value = '', $attributes = '')
+	public static function radiolist($options, $name, $value = '', $attributes = '', $boolean = false)
 	{
-		$output = '';
+		$output = $boolean ? '<div class="jw--state">' : '';
 		foreach ($options as $key => $option)
 		{
 			$active = (string)$option->value == (string)$value;
 			$checked = $active ? 'checked="checked"' : '';
 			$class = $active ? 'class="jw--radio jw--radio__checked"' : 'class="jw--radio"';
 			$id = $name.'_'.$key;
-			$output .= '<label for="'.$id.'" '.$class.'><input type="radio" name="'.$name.'" id="'.$id.'" '.$checked.' value="'.$option->value.'" />'.$option->text.'</label>';
+			$output .= '<label for="'.$id.'" '.$class.'>'.$option->text.'</label><input type="radio" name="'.$name.'" id="'.$id.'" '.$checked.' value="'.$option->value.'" />';
+		}
+		if ($boolean)
+		{
+			$output .= '</div>';
 		}
 		return $output;
 	}
