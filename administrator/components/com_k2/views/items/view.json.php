@@ -283,9 +283,9 @@ class K2ViewItems extends K2View
 					$lang->associated->id = '';
 					if (isset($row->associations) && is_array($row->associations) && isset($row->associations[$language->lang_code]))
 					{
-						$associated = K2Items::getInstance($row->associations[$language->lang_code]);
+						$associated = $row->associations[$language->lang_code];
 						$lang->associated->title = $associated->title;
-						$lang->associated->id = $associated->id;
+						$lang->associated->id = (int)$associated->id;
 					}
 					$associations->languages[] = $lang;
 				}
@@ -359,10 +359,11 @@ class K2ViewItems extends K2View
 			$row->associations = array();
 			if ($row->id)
 			{
-				$associations = JLanguageAssociations::getAssociations('com_k2', '#__k2_items', 'com_k2.item', $row->id, 'id', '', '');
+				require_once JPATH_SITE.'/components/com_k2/helpers/association.php';
+				$associations = K2HelperAssociation::getItemAssociations($row->id);
 				foreach ($associations as $tag => $association)
 				{
-					$row->associations[$tag] = $association->id;
+					$row->associations[$tag] = $association;
 				}
 			}
 		}

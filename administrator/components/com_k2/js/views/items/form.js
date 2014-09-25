@@ -202,14 +202,16 @@ define(['dispatcher', 'widgets/widget', 'text!layouts/items/form.html', 'views/e
 				jQuery('input[name="associations[' + language + ']"]').val(row.get('id'));
 				jQuery.magnificPopup.close();
 			};
-			jQuery.magnificPopup.open({
-				alignTop : false,
-				closeBtnInside : true,
-				items : {
-					src : 'index.php?option=com_k2&tmpl=component#modal/items',
-					type : 'iframe'
-				}
-			});
+			require(['widgets/magnific/jquery.magnific-popup.min', 'css!widgets/magnific/magnific-popup.css'], _.bind(function() {
+				jQuery.magnificPopup.open({
+					alignTop : false,
+					closeBtnInside : true,
+					items : {
+						src : 'index.php?option=com_k2&tmpl=component#modal/items',
+						type : 'iframe'
+					}
+				});
+			}, this));
 		},
 		resetHits : function(event) {
 			event.preventDefault();

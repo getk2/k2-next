@@ -14,7 +14,8 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher', 'widget
 
 		// UI events
 		events : {
-			'change #parent_id' : 'updateExtraFields'
+			'change #parent_id' : 'updateExtraFields',
+			'click [data-action="select-association"]' : 'selectAssociation'
 		},
 
 		// Model events
@@ -80,6 +81,29 @@ define(['marionette', 'text!layouts/categories/form.html', 'dispatcher', 'widget
 			if ( typeof (tinymce) != 'undefined' && parseInt(tinymce.majorVersion) === 4) {
 				tinymce.remove();
 			}
+		},
+		selectAssociation : function(event) {
+			event.preventDefault();
+			var language = jQuery(event.currentTarget).data('language');
+			window.K2SelectRow = function(row) {
+				if (row.get('language') != language) {
+					alert(l('K2_THIS_RESOURCE_IS_NOT_ASSIGNED_TO_THE_REQUIRED_LANGUAGE'));
+					return false;
+				}
+				jQuery('[data-role="association-title"][data-language="' + language + '"]').text(row.get('title'));
+				jQuery('input[name="associations[' + language + ']"]').val(row.get('id'));
+				jQuery.magnificPopup.close();
+			};
+			require(['widgets/magnific/jquery.magnific-popup.min', 'css!widgets/magnific/magnific-popup.css'], _.bind(function() {
+				jQuery.magnificPopup.open({
+					alignTop : false,
+					closeBtnInside : true,
+					items : {
+						src : 'index.php?option=com_k2&tmpl=component#modal/categories',
+						type : 'iframe'
+					}
+				});
+			}, this));
 		},
 
 		// OnDomRefresh event ( Marionette.js build in event )

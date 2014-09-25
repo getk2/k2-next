@@ -925,7 +925,7 @@ class K2ModelItems extends K2Model
 		}
 
 		// Handle associations
-		if (JLanguageAssociations::isEnabled())
+		if (JLanguageAssociations::isEnabled() && isset($data['associations']))
 		{
 			// Get associations input
 			$associations = $data['associations'];

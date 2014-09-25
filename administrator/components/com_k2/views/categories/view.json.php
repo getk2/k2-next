@@ -179,6 +179,35 @@ class K2ViewCategories extends K2View
 		$form->description = $editor->display('description', $row->description, '100%', '300', '40', '5');
 		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/extrafields.php';
 		$form->extraFields = K2HelperExtraFields::getCategoryExtraFieldsGroups($row->id, $row->extra_fields);
+
+		// Associations
+		$associations = new stdClass;
+		$associations->enabled = JLanguageAssociations::isEnabled();
+		$associations->languages = array();
+		if ($associations->enabled)
+		{
+			$languages = JLanguageHelper::getLanguages('lang_code');
+			foreach ($languages as $tag => $language)
+			{
+				if (empty($row->language) || $tag != $row->language)
+				{
+					$lang = new stdClass;
+					$lang->title = $language->title;
+					$lang->code = $language->lang_code;
+					$lang->associated = new stdClass;
+					$lang->associated->title = '';
+					$lang->associated->id = '';
+					if (isset($row->associations) && is_array($row->associations) && isset($row->associations[$language->lang_code]))
+					{
+						$associated = $row->associations[$language->lang_code];
+						$lang->associated->title = $associated->title;
+						$lang->associated->id = (int)$associated->id;
+					}
+					$associations->languages[] = $lang;
+				}
+			}
+		}
+		$form->associations = $associations;
 	}
 
 	/**
@@ -213,6 +242,25 @@ class K2ViewCategories extends K2View
 		{
 			$row->inheritFrom = $row->getInheritFrom();
 		}
+	}
+
+	protected function prepareRow($row)
+	{
+		// Associations
+		if (JLanguageAssociations::isEnabled())
+		{
+			$row->associations = array();
+			if ($row->id)
+			{
+				require_once JPATH_SITE.'/components/com_k2/helpers/association.php';
+				$associations = K2HelperAssociation::getCategoryAssociations($row->id);
+				foreach ($associations as $tag => $association)
+				{
+					$row->associations[$tag] = $association;
+				}
+			}
+		}
+
 	}
 
 }

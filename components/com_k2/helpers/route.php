@@ -118,7 +118,7 @@ class K2HelperRoute
 		return $route;
 	}
 
-	public static function getCategoryRoute($id)
+	public static function getCategoryRoute($id, $language = 0)
 	{
 		// Get application
 		$application = JFactory::getApplication();
@@ -131,6 +131,17 @@ class K2HelperRoute
 
 		// Initialze route
 		$route = 'index.php?option=com_k2&view=itemlist&task=category&id='.$id;
+
+		// Append language variable if required
+		if ($language && $language != '*' && JLanguageMultilang::isEnabled())
+		{
+			self::getLanguages();
+
+			if (isset(self::$languages[$language]))
+			{
+				$route .= '&lang='.self::$languages[$language];
+			}
+		}
 
 		// Cast variables
 		$id = (int)$id;
