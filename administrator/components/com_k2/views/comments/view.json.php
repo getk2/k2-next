@@ -140,7 +140,7 @@ class K2ViewComments extends K2View
 	protected function setFormFields(&$form, $row)
 	{
 		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/html.php';
-		$form->state = K2HelperHTML::state('state', $row->state);
+		$form->state = K2HelperHTML::state('state', $row->state, false, false, 'radio', true);
 	}
 
 	/**

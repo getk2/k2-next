@@ -20,7 +20,7 @@ K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
 class K2HelperHTML
 {
 
-	public static function state($name = 'state', $value = null, $all = false, $trashed = false, $type = 'radio', $boolean = true)
+	public static function state($name = 'state', $value = null, $all = false, $trashed = false, $type = 'radio', $boolean = false)
 	{
 		$options = array();
 		if ($all)

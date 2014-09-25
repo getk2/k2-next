@@ -138,7 +138,7 @@ class K2ViewExtraFields extends K2View
 
 	protected function setFormFields(&$form, $row)
 	{
-		$form->state = K2HelperHTML::state('state', $row->state);
+		$form->state = K2HelperHTML::state('state', $row->state, false, false, 'radio', true);
 		$form->group = K2HelperHTML::extraFieldsGroups('group', $row->group);
 		$form->type = K2HelperHTML::extraFieldsTypes('type', $row->type, 'K2_SELECT_TYPE');
 		$definitions = K2HelperExtraFields::getDefinitions();
