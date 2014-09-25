@@ -24,15 +24,8 @@ button:focus, input:focus { outline: 0; }
 /* Headings */
 .jw h1, .jw h2, .jw h3, .jw h4, .jw h5, .jw h6 { font-family: 'Open Sans', sans-serif; font-weight: 400; }
 	.jw h1 { margin: 0; padding: 0; } 
-	.jw h2 { } 
-	.jw h3 { }
 	.jw h3.jw--title { border-left: 5px solid #00afeb; padding-left: 15px; margin: 0; height: 45px; line-height: 45px; }
-	.jw h4 { } 
-	.jw h5 { }
-	.jw h6 { }
 
-.jw ul {  }
-	.jw ul li {  }
 	.jw ul.list-reset { list-style: none outside none; }
 	
 	ul.jw--bordered {  }
@@ -42,9 +35,6 @@ button:focus, input:focus { outline: 0; }
 	.jw ul.no_brd { border: 0; }
 	.jw ul.no_btmbrd { border-bottom: 0; }
 	.jw ul.top_brd { border-top: 1px solid #dbdcdc; }
-
-.jw ol {  }
-	.jw ol li {  }
 
 img {-ms-interpolation-mode:bicubic; max-width: 100%; }
 
@@ -59,7 +49,7 @@ img {-ms-interpolation-mode:bicubic; max-width: 100%; }
 
 /* Labels with radio buttons (custom element) */
 .jw .controls { display: inline-block; vertical-align: middle; }
-.jw label.jw--radio, .jw .controls label.radio {  
+.jw label.jw--radio {  
 	min-width: 42px; width: auto; text-align: center; border: 1px solid #d4d6d8; padding: 0 13px; font-size: 12px; font-weight: 700; line-height: 33px; vertical-align: top; height: 33px; margin: 0 -2px; color: #8a8c8c; display: inline-block; vertical-align: middle; white-space: nowrap; background-color: #eff1f1;
 	box-shadow: 0 1px 1px rgba(65,64,66,.14), inset 0 1px 0 #fff;
 
@@ -74,13 +64,12 @@ img {-ms-interpolation-mode:bicubic; max-width: 100%; }
 .jw .jw--sidebar label.jw--radio, .jw--sidebar .jw .controls label.radio { font-weight: 400; padding: 0 7px; }
 	
 	/* Checked Default style + Bootstrap overrides */
-	.jw label.jw--radio.jw--radio__checked,
-	.jw .controls label.radio.jw--radio__checked { color: #fff; border: 1px solid #828080; background: #63696f; box-shadow: 0 1px 1px rgba(65,64,66,.14), inset 0 1px 0 #363a3d; }
+	.jw input[type="radio"]:checked + label.jw--radio { color: #fff; border: 1px solid #828080; background: #63696f; box-shadow: 0 1px 1px rgba(65,64,66,.14), inset 0 1px 0 #363a3d; }
 	
 	/* Checked Overrides Published/ Unpub/ Trash */
-	.jw--state > label.jw--radio.jw--radio__checked:nth-child(1) { background: #3fa800; box-shadow: 0 1px 1px rgba(65,64,66,.04); }
-	.jw--state > label.jw--radio.jw--radio__checked:nth-child(2) { background: #bd362f; box-shadow: 0 1px 1px rgba(65,64,66,.04); }
-	.jw--state > label.jw--radio.jw--radio__checked:nth-child(3) {  }
+	.jw--state > input[type="radio"]:nth-child(1):checked + label.jw--radio { background: #3fa800; box-shadow: 0 1px 1px rgba(65,64,66,.04); }
+	.jw--state > input[type="radio"]:nth-of-type(2):checked + label.jw--radio { background: #bd362f; box-shadow: 0 1px 1px rgba(65,64,66,.04); }
+	.jw--state > input[type="radio"]:nth-of-type(3):checked + label.jw--radio {  }
 
 	/* smaller labels */
 	.jw label.jw--radio.jw--radio__smaller { line-height: 26px; height: 26px; font-size: 11px; margin: 0 -2px; padding: 0 10px; white-space: nowrap; }
@@ -90,9 +79,6 @@ img {-ms-interpolation-mode:bicubic; max-width: 100%; }
 	.jw--label--row label:first-child { border-radius: 3px 0 0 3px; }
 	.jw--filter .jw--radio:last-child, .jw .controls label.radio:last-child, .jw--label--row label:last-child { border-radius: 0 3px 3px 0; }
 
-	/* now hide the radio buttons using opacity and position absolute */
-	.jw .jw--radio input[type="radio"],
-	.jw .controls label.radio input[type="radio"] { opacity: 0; width: 1px; height: 1px; position: absolute; left: -9999px; overflow: hidden; line-height: 0; -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; }
 
 	/* active && hover states */
 	.jw label.jw--radio.btn:hover,
@@ -141,7 +127,6 @@ cursor: pointer; width: 16px; height: 16px; border: 1px solid #dbdcdc; border: 1
 /* 
 ---------------------------------
 Radios with controls (native j3 elements) - Bootstrap support  */
-
 .jw .btn-group-yesno {  }
 	.jw .btn-group-yesno label { min-width: 42px; width: auto; text-align: center; border: 1px solid #d4d6d8; line-height: 33px; vertical-align: top; height: 33px; font-size: 12px; margin: 0 -2px; padding: 0 7px;
 	color: #8a8c8c; display: inline-block; vertical-align: middle; white-space: nowrap; background-color: #eff1f1;
@@ -178,7 +163,7 @@ Buttons */
 	.jw--btn:hover, a.jw--btn:hover, button.jw--btn:hover, 
 	input[type="submit"].jw--btn:hover { background-color: #54db00; cursor: pointer; }
 
-	/* Specific Buttons */
+	/* Specific Buttons - apply etc*/
 	.jw--btn.jw--btn__cancel, a.jw--btn.jw--btn__cancel, button.jw--btn.jw--btn__cancel, input[type="submit"].jw--btn.jw--btn__cancel { border-color: #a53222; background-color: #d7412d; box-shadow: 0 1px 1px rgba(65,64,66,.14), inset 0 1px 0 #ff4d35;  }
 	.jw--btn.jw--btn__cancel:hover, a.jw--btn.jw--btn__cancel:hover, button.jw--btn.jw--btn__cancel:hover, 
 	input[type="submit"].jw--btn.jw--btn__cancel:hover { background-color:#ff4d35; }
@@ -186,7 +171,7 @@ Buttons */
 	.jw--btn.jw--btn__apply, a.jw--btn.jw--btn__apply, button.jw--btn.jw--btn__apply, input[type="submit"].jw--btn.jw--btn__apply { border-color: #0088ba; background-color: #009bd3; box-shadow: 0 1px 1px rgba(65,64,66,.14), inset 0 1px 0 #00baff; }
 	.jw--btn.jw--btn__apply:hover, a.jw--btn.jw--btn__apply:hover, button.jw--btn.jw--btn__apply:hover, input[type="submit"].jw--btn.jw--btn__apply:hover { background-color: #00baff; }
 	
-	/* action buttons - used in itemforms */
+	/* action buttons - used in item and category forms */
 	.jw--btn.jw--btn__item, a.jw--btn.jw--btn__item, button.jw--btn.jw--btn__item, input[type="submit"].jw--btn.jw--btn__item { color: #414042; border-color: #d4d7d9; background-color: #f0f2f2; box-shadow: 0 1px 1px rgba(65,64,66,.14), inset 0 1px 0 #fff; }
 	.jw--btn.jw--btn__item:hover, a.jw--btn.jw--btn__item:hover, button.jw--btn.jw--btn__item:hover, input[type="submit"].jw--btn.jw--btn__item:hover { background-color: #d4d7d9; }
 		.jw--btn.jw--btn__item .fa { display: inline-block; vertical-align: middle; color: #a9aeb0; font-size: 19px; line-height: 1; padding-right: 12px; }
@@ -205,7 +190,7 @@ Buttons */
 .jw--button--collapse { overflow: hidden; }
 	.jw--button--collapse .jw--btn { float: left; clear: both; margin-bottom: 15px; }
 	
-/* file upload buttons */
+/* file upload buttons (Fake buttons) */
 .jw--file--btn { position: relative; }
 	.jw--file-fakebtn .fa { display: inline-block; vertical-align: middle; font-size: 19px; line-height: 1; padding-right: 12px; color: #00afec; }
 	.jw--file-fakebtn span { display: inline-block; vertical-align: middle; line-height: 1; }
