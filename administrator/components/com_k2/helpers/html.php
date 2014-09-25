@@ -39,7 +39,8 @@ class K2HelperHTML
 		}
 		else
 		{
-			return self::radiolist($options, $name, $value, true);
+			$boolean = count($options) === 2;
+			return self::radiolist($options, $name, $value, $boolean);
 		}
 	}
 
