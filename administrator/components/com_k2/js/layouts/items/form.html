@@ -518,12 +518,15 @@
 					<div class="jw--setting--field">
 					    <h2><%= l('K2_ASSOCIATIONS') %></h2> 
 					    <% _.each(form.associations.languages, function(language) { %>
+					    	<div class="jw--setting--single">
+					    	
 					    	<label><%- language.title %></label>
-					    	<a href="#" data-action="select-association" data-language="<%- language.code %>"><%- l('K2_SELECT_ITEM') %></a>
+					    	<a href="#" data-action="select-association" class="right jw--btn jw--btn__apply" data-language="<%- language.code %>"><%- l('K2_SELECT_ITEM') %></a>
 					    	
 					    	<span data-role="association-title" data-language="<%- language.code %>"><%= language.associated.title %></span>
 					    	
 					    	<input type="hidden" name="associations[<%- language.code %>]" value="<%- language.associated.id %>" />
+							</div>
 					    <% }); %>
 					</div>
 				</div>
