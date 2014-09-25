@@ -167,7 +167,7 @@ class K2ViewCategories extends K2View
 
 	protected function setFormFields(&$form, $row)
 	{
-		$form->state = K2HelperHTML::state('state', $row->state, false, true);
+		$form->state = K2HelperHTML::state('state', $row->state, false, true, 'radio', false);
 		$form->language = K2HelperHTML::language('language', $row->language);
 		$form->access = JHtml::_('access.level', 'access', $row->access, '', false);
 		$form->parent = K2HelperHTML::categories('parent_id', $row->parent_id, 'K2_NONE', $row->id);

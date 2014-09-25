@@ -20,7 +20,7 @@ K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
 class K2HelperHTML
 {
 
-	public static function state($name = 'state', $value = null, $all = false, $trashed = false, $type = 'radio')
+	public static function state($name = 'state', $value = null, $all = false, $trashed = false, $type = 'radio', $boolean = true)
 	{
 		$options = array();
 		if ($all)
@@ -39,7 +39,6 @@ class K2HelperHTML
 		}
 		else
 		{
-			$boolean = count($options) === 2;
 			return self::radiolist($options, $name, $value, $boolean);
 		}
 	}
@@ -294,7 +293,7 @@ class K2HelperHTML
 		return JHtml::_('select.genericlist', $options, $name, $attributes, 'value', 'text', $value);
 	}
 
-	public static function radiolist($options, $name, $value = '', $boolean = false)
+	public static function radiolist($options, $name, $value = '', $boolean = false, $attributes = '')
 	{
 		$output = $boolean ? '<div class="jw--state">' : '';
 		foreach ($options as $key => $option)
@@ -303,7 +302,7 @@ class K2HelperHTML
 			$checked = $active ? 'checked="checked"' : '';
 			$class = $active ? 'class="jw--radio jw--radio__checked"' : 'class="jw--radio"';
 			$id = $name.'_'.$key;
-			$output .= '<input type="radio" class="visuallyhidden" name="'.$name.'" id="'.$id.'" '.$checked.' value="'.$option->value.'" /><label for="'.$id.'" '.$class.'>'.$option->text.'</label>';
+			$output .= '<input type="radio" class="visuallyhidden" name="'.$name.'" id="'.$id.'" '.$checked.' value="'.$option->value.'" '.$attributes.' /><label for="'.$id.'" '.$class.'>'.$option->text.'</label>';
 		}
 		if ($boolean)
 		{
