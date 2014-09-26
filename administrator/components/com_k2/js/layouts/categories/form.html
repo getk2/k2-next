@@ -3,17 +3,9 @@
 	
 		<ul class="text-center jw--tabs jw--tabs__top" data-role="tabs-navigation">
 			<li><a href="#"><i class="fa fa-home"></i><%= l('K2_BASIC') %></a></li>
-			
-			<% if(!_.isEmpty(form.k2Plugins['categories'])) { %>
-			<li><a href="#"><i class="fa fa-gear"></i><%= l('K2_PLUGINS') %> </a></li>
-			<% } %>
-			
 			<li><a href="#"><i class="fa fa-desktop"></i><%= l('K2_METADATA') %> </a></li>
 			<li><a href="#"><i class="fa fa-desktop"></i><%= l('K2_CATEGORY_LAYOUT_OPTIONS') %> </a></li>
 			<li><a href="#"><i class="fa fa-unlock-alt"></i><%= l('K2_PERMISSIONS') %></a></li>
-			<% if(form.associations.enabled) { %>
-			<li><a href="#"><i class="fa fa-globe"></i><%= l('K2_ASSOCIATIONS') %></a></li>
-			<% } %>
 		</ul>
 			
 		<div data-role="tabs-content">
@@ -192,6 +184,9 @@
 						<li><a href="#"><i class="fa fa-file-text"></i> <%= l('K2_DESCRIPTION') %></a></li>
 						<li><a href="#"><i class="fa fa-image"></i> <%= l('K2_IMAGE') %></a></li>
 						<li><a href="#"><i class="fa fa-gear"></i> <%= l('K2_EXTRA_FIELDS') %></a></li>
+						<% if(!_.isEmpty(form.k2Plugins['categories'])) { %>
+						<li><a href="#"><i class="fa fa-gear"></i> <%= l('K2_PLUGINS') %></a></li>
+						<% } %>
 					</ul>
 					
 					<div class="jw--pane jw--pane__content" data-role="tabs-content">
@@ -214,6 +209,40 @@
 					    		<div data-region="category-extra-fields"></div>
 					    	</div>
 					    </div>
+					    
+					    
+					    <% if(!_.isEmpty(form.k2Plugins['categories'])) { %>
+					    <!-- Plugins -->
+					    <div class="jw--settings jw--setting--field jw--editor--tab jw--generic--form">   
+						    <% _.each(form.k2Plugins['categories'], function(field) { %>
+							<% if(field.label !== null) { %>
+							<div class="jw--setting--single">
+							  	<%= field.label %>
+							    <%= field.input %>
+							</div> 
+							<% } else { %>
+							<div class="jw--setting--title">
+								<%= field.input %>
+							</div>
+							<% } %>
+							<% }); %>
+						   
+						    <% _.each(form.jform, function(field) { %>
+							<% if(field.label !== null) { %>
+							<div class="jw--setting--single">
+							  	<%= field.label %>
+							    <%= field.input %>
+							</div> 
+							<% } else { %>
+							<div class="jw--setting--title">
+								<%= field.input %>
+							</div>
+							<% } %>
+						    <% }); %>
+						</div>
+						<% } %>
+					    
+					    
 					</div>
 					
 				</div>
@@ -221,36 +250,7 @@
 		    
 		    <input type="hidden" name="id" value="<%= row.id %>" / >
 		    
-		    <!-- Plugins -->
-		    <% if(!_.isEmpty(form.k2Plugins['categories'])) { %>
-		    <div class="jw--settings jw--setting--field jw--tab--cnt jw--generic--form" id="k2--catplg">   
-			    <% _.each(form.k2Plugins['categories'], function(field) { %>
-				<% if(field.label !== null) { %>
-				<div class="jw--setting--single">
-				  	<%= field.label %>
-				    <%= field.input %>
-				</div> 
-				<% } else { %>
-				<div class="jw--setting--title">
-					<%= field.input %>
-				</div>
-				<% } %>
-				<% }); %>
-			   
-			    <% _.each(form.jform, function(field) { %>
-				<% if(field.label !== null) { %>
-				<div class="jw--setting--single">
-				  	<%= field.label %>
-				    <%= field.input %>
-				</div> 
-				<% } else { %>
-				<div class="jw--setting--title">
-					<%= field.input %>
-				</div>
-				<% } %>
-			    <% }); %>
-			</div>
-			<% } %>
+
 			
 			<!-- Metadata -->
 			
@@ -274,6 +274,26 @@
 					    <% }); %>
 					</div>
 				</div>
+				
+				
+				<% if(form.associations.enabled) { %>
+				<div class="jw--settings jw--generic--form">
+			    	
+			    	<h2><%= l('K2_ASSOCIATIONS') %></h2>
+			    	<div class="jw--setting--field">
+					    <% _.each(form.associations.languages, function(language) { %>
+					    <div class="jw--setting--single">
+					    	<label><%- language.title %></label>
+					    	<a href="#" class="right jw--btn jw--btn__apply" data-action="select-association" data-language="<%- language.code %>"><%- l('K2_SELECT_CATEGORY') %></a>
+					    	<span data-role="association-title" data-language="<%- language.code %>"><%= language.associated.title %></span>
+					    	<input type="hidden" name="associations[<%- language.code %>]" value="<%- language.associated.id %>" />
+					    </div>
+					    <% }); %>
+					</div>
+				</div>					
+				<% } %>
+				
+				
 			</div>
 			
 			<!-- Layout Options -->
@@ -382,28 +402,7 @@
 				<% } %>
 			    <% }); %>
 			</div>
-			
-	    	<% if(form.associations.enabled) { %>
-			<!-- Associations -->
-			<div class="jw--settings jw--item">
-				<div class="jw--generic--form">
-					<div class="jw--setting--field">
-					
-					    <h2><%= l('K2_ASSOCIATIONS') %></h2> 
-					    <% _.each(form.associations.languages, function(language) { %>
-					    <div class="jw--setting--single">
-					    	<label><%- language.title %></label>
-					    	<a href="#" class="right jw--btn jw--btn__apply" data-action="select-association" data-language="<%- language.code %>"><%- l('K2_SELECT_CATEGORY') %></a>
-					    	<span data-role="association-title" data-language="<%- language.code %>"><%= language.associated.title %></span>
-					    	<input type="hidden" name="associations[<%- language.code %>]" value="<%- language.associated.id %>" />
-					    </div>
-					    <% }); %>
-					    
-					</div>
-				</div>
-	    	</div>
-	    	<% } %>
-	
+				
 		</div>
 	</div>
 </form>
