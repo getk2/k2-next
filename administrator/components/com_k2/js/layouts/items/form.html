@@ -21,9 +21,6 @@
 		<li><a href="#"><i class="fa fa-info-circle"></i><%= l('K2_METADATA_AND_PUBLISHING') %></a></li>
 		<li><a href="#"><i class="fa fa-desktop"></i><%= l('K2_DISPLAY_SETTINGS') %></a></li>
 		<li><a href="#"><i class="fa fa-unlock-alt"></i><%= l('K2_PERMISSIONS') %></a></li>
-		<% if(form.associations.enabled) { %>
-		<li><a href="#"><i class="fa fa-globe"></i><%= l('K2_ASSOCIATIONS') %></a></li>
-		<% } %>
 	</ul>
 	
 	<div id="k2--id">
@@ -311,12 +308,15 @@
 					<ul class="jw--scrollspymenu jw--scrollspymenu__item">
 						<li><a class="jw--scroll__primary active" href="#jw--item0"><%= l('K2_PUBLISHING_SETTINGS') %></a></li>
 						<li><a class="jw--scroll__primary" href="#jw--item1"><%= l('K2_METADATA') %></a></li>
+						<% if(form.associations.enabled) { %>
+						<li><a class="jw--scroll__primary" href="#jw--item2"><%= l('K2_ASSOCIATIONS') %></a></li>
+						<% } %>
 					</ul>
 				</nav>
 			
 				<div class="jw--settings jw--settings__global  jw--item">
 					
-					<div class="row collapse" id="jw--item0">
+					<div class="row collapse">
 						
 						<div class="small-16 medium-10 large-13 columns jw--setting--field jw--setting--field__noedit">
 							<div class="jw--setting--single jw--setting--single__noedit">			
@@ -358,7 +358,7 @@
 					</div>
 					
 					
-					<div class="jw--setting--field" id="jw--item1">	
+					<div class="jw--setting--field" id="jw--item0">	
 						<h2><%= l('K2_PUBLISHING_SETTINGS') %></h2>
 
 						<div class="jw--setting--single">
@@ -417,12 +417,8 @@
 							<label class="left" for="endTime"><%= l('K2_END_TIME') %></label>
 							<input class="right" data-widget="timepicker" id="endTime" type="text" name="endTime" value="<%- row.endTime %>" />
 						</div>
-											
-					</div>
-				
-				
-					<div class="jw--setting--field" id="jw--item2">
 						
+						<!-- JForm fields TODO: Move them somewhere else in the form -->
 						<% _.each(form.jform, function(field) { %>
 						<% if(field.label !== null) { %>
 						<div class="jw--setting--single">
@@ -435,6 +431,11 @@
 						</div>
 						<% } %>
 						<% }); %>
+											
+					</div>
+				
+				
+					<div class="jw--setting--field"  id="jw--item1">
 						
 						<h2><%= l('K2_METADATA') %></h2>
 						<% _.each(form.metadata, function(field) { %>
@@ -451,6 +452,28 @@
 						<% }); %>
 						
 					</div>	
+					
+					
+					<% if(form.associations.enabled) { %>
+					<!-- Associations -->
+					<div class="jw--setting--field" id="jw--item2">
+					    <h2><%= l('K2_ASSOCIATIONS') %></h2> 
+					    <% _.each(form.associations.languages, function(language) { %>
+					    	<div class="jw--setting--single">
+					    	
+					    	<label><%- language.title %></label>
+					    	<a href="#" data-action="select-association" class="right jw--btn jw--btn__apply" data-language="<%- language.code %>"><%- l('K2_SELECT_ITEM') %></a>
+					    	
+					    	<span data-role="association-title" data-language="<%- language.code %>"><%= language.associated.title %></span>
+					    	
+					    	<input type="hidden" name="associations[<%- language.code %>]" value="<%- language.associated.id %>" />
+							</div>
+					    <% }); %>
+			    	</div>
+			    	<% } %>
+					
+					
+					
 				</div>
 			</div>  
 			
@@ -510,28 +533,6 @@
 					</div>
 				</div>
 	    	</div>
-	    	
-	    	<% if(form.associations.enabled) { %>
-			<!-- Associations -->
-			<div class="jw--settings jw--item">
-				<div class="jw--generic--form">
-					<div class="jw--setting--field">
-					    <h2><%= l('K2_ASSOCIATIONS') %></h2> 
-					    <% _.each(form.associations.languages, function(language) { %>
-					    	<div class="jw--setting--single">
-					    	
-					    	<label><%- language.title %></label>
-					    	<a href="#" data-action="select-association" class="right jw--btn jw--btn__apply" data-language="<%- language.code %>"><%- l('K2_SELECT_ITEM') %></a>
-					    	
-					    	<span data-role="association-title" data-language="<%- language.code %>"><%= language.associated.title %></span>
-					    	
-					    	<input type="hidden" name="associations[<%- language.code %>]" value="<%- language.associated.id %>" />
-							</div>
-					    <% }); %>
-					</div>
-				</div>
-	    	</div>
-	    	<% } %>
 	    	
     	</div>
 	</div>
