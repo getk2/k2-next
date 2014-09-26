@@ -219,16 +219,11 @@
 				</div>
 		    </div>
 		    
-
-		    
-
-		    
-		    
 		    <input type="hidden" name="id" value="<%= row.id %>" / >
 		    
 		    <!-- Plugins -->
 		    <% if(!_.isEmpty(form.k2Plugins['categories'])) { %>
-		    <div class="jw--setting--field jw--tab--cnt" id="k2--catplg">    
+		    <div class="jw--settings jw--setting--field jw--tab--cnt jw--generic--form" id="k2--catplg">   
 			    <% _.each(form.k2Plugins['categories'], function(field) { %>
 				<% if(field.label !== null) { %>
 				<div class="jw--setting--single">
