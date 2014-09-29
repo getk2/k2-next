@@ -88,8 +88,8 @@ class JFormFieldK2Categories extends JFormField
 		if ($this->recursive == 'select')
 		{
 			$options = array();
-			$options[] = JHtml::_('select.option', '0', JText::_('K2_NO'));
 			$options[] = JHtml::_('select.option', '1', JText::_('K2_YES'));
+			$options[] = JHtml::_('select.option', '0', JText::_('K2_NO'));
 			$output .= '<label>'.JText::_('K2_APPLY_RECUSRIVELY').'</label>'.K2HelperHTML::radiolist($options, $this->name.'[recursive]', $this->value['recursive'], true);
 		}
 		else
