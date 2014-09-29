@@ -105,13 +105,22 @@ class K2View extends JViewLegacy
 		{
 			$context .= '.'.$task;
 		}
-		$dispatcher->trigger('onBeforeDisplayView', array($context, &$this));
+		$dispatcher->trigger('onBeforeDisplayView', array(
+			$context,
+			&$this
+		));
 
 		// Fix pathway. Remove any Advanced SEF links
 		$params = JComponentHelper::getParams('com_k2');
 		if ($params->get('k2Sef'))
 		{
-			$sefItemIds = array($params->get('k2SefLabelItem'), $params->get('k2SefLabelCat'), $params->get('k2SefLabelTag'), $params->get('k2SefLabelUser'), $params->get('k2SefLabelDate'));
+			$sefItemIds = array(
+				$params->get('k2SefLabelItem'),
+				$params->get('k2SefLabelCat'),
+				$params->get('k2SefLabelTag'),
+				$params->get('k2SefLabelUser'),
+				$params->get('k2SefLabelDate')
+			);
 			$pathway = $application->getPathWay();
 			$pathwayItems = $pathway->getPathway();
 			foreach ($pathwayItems as $key => $pathwayItem)
@@ -472,6 +481,16 @@ class K2View extends JViewLegacy
 		$model->setState('limitstart', $this->offset);
 		$this->items = $model->getRows();
 
+		// Word limit
+		if ($this->params->get('catItemIntroTextWordLimit'))
+		{
+			foreach ($this->items as $item)
+			{
+				$item->introtext = K2HelperUtilities::wordLimit($item->introtext, $this->params->get('catItemIntroTextWordLimit'));
+			}
+
+		}
+
 		// Count items
 		if ($count)
 		{
@@ -709,11 +728,11 @@ class K2View extends JViewLegacy
 
 		// Get current template
 		$template = JFactory::getApplication()->getTemplate();
-		
+
 		// Load language file
 		$language = JFactory::getLanguage();
 		$language->load('tpl_'.$template, JPATH_BASE, null, false, true) || $language->load('tpl_'.$template, JPATH_THEMES.'/'.$template, null, false, true);
-		
+
 		// Get layout
 		$layout = $this->getLayout();
 
