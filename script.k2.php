@@ -90,6 +90,8 @@ class Com_K2InstallerScript
 				foreach($oldTables as $oldTable)
 				{
 					$newTable = str_replace('#__k2_', '#__k2_v2_', $oldTable);
+					$db->setQuery('DROP TABLE IF EXISTS '.$db->quoteName($newTable));
+					$db->execute();
 					$db->setQuery('RENAME TABLE '.$db->quoteName($oldTable).' TO '.$db->quoteName($newTable));
 					if(!$db->execute())
 					{
