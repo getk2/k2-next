@@ -708,7 +708,7 @@ class K2ControllerMigrator extends JControllerLegacy
 			$image = new stdClass;
 			$image->caption = $item->image_caption;
 			$image->credits = $item->image_credits;
-			$image->flag = JFile::exists(JPATH_SITE.'/media/k2/items/src/'.md5('Image'.$item->id).'.jpg') ? 1 : 0;
+			$image->flag = JFile::exists(JPATH_SITE.'/media/k2/items/src/'.md5('Image'.$item->id).'_Generic.jpg') ? 1 : 0;
 			$image = json_encode($image);
 
 			$media = array();
