@@ -132,6 +132,9 @@ class K2ControllerMigrator extends JControllerLegacy
 			foreach ($tables as $table)
 			{
 				$name = str_replace('#__k2_v2_', '#__k2_', $table);
+				$db->setQuery('DROP TABLE IF EXISTS '.$db->quoteName($name));
+				$db->execute();
+
 				$db->setQuery('RENAME TABLE '.$db->quoteName($table).' TO '.$db->quoteName($name));
 				$db->execute();
 			}
