@@ -70,7 +70,7 @@ final class Image extends AbstractImage
      */
     public function __destruct()
     {
-        if (null !== $this->gmagick && $this->gmagick instanceof \Gmagick) {
+        if ($this->gmagick instanceof \Gmagick) {
             $this->gmagick->clear();
             $this->gmagick->destroy();
         }
@@ -406,8 +406,11 @@ final class Image extends AbstractImage
     public function getSize()
     {
         try {
+            $i = $this->gmagick->getimageindex();
+            $this->gmagick->setimageindex(0); //rewind
             $width  = $this->gmagick->getimagewidth();
             $height = $this->gmagick->getimageheight();
+            $this->gmagick->setimageindex($i);
         } catch (\GmagickException $e) {
             throw new RuntimeException('Get size operation failed', $e->getCode(), $e);
         }
@@ -554,6 +557,8 @@ final class Image extends AbstractImage
             ColorInterface::COLOR_MAGENTA => \Gmagick::COLOR_MAGENTA,
             ColorInterface::COLOR_YELLOW  => \Gmagick::COLOR_YELLOW,
             ColorInterface::COLOR_KEYLINE => \Gmagick::COLOR_BLACK,
+            // There is no gray component in \Gmagick, let's use one of the RGB comp
+            ColorInterface::COLOR_GRAY    => \Gmagick::COLOR_RED,
         );
 
         if ($this->palette->supportsAlpha()) {
@@ -566,16 +571,19 @@ final class Image extends AbstractImage
             $alpha = null;
         }
 
-        return $this->palette->color(
-            array_map(function ($color) use ($pixel, $colorMapping) {
-                if (!isset($colorMapping[$color])) {
-                    throw new InvalidArgumentException(sprintf('Color %s is not mapped in Gmagick', $color));
-                }
+        $palette = $this->palette();
 
-                return $pixel->getcolorvalue($colorMapping[$color]) * 255;
-            }, $this->palette->pixelDefinition()),
-            $alpha
-        );
+        return $this->palette->color(array_map(function ($color) use ($palette, $pixel, $colorMapping) {
+            if (!isset($colorMapping[$color])) {
+                throw new InvalidArgumentException(sprintf('Color %s is not mapped in Gmagick', $color));
+            }
+            $multiplier = 255;
+            if ($palette->name() === PaletteInterface::PALETTE_CMYK) {
+                $multiplier = 100;
+            }
+
+            return $pixel->getcolorvalue($colorMapping[$color]) * $multiplier;
+        }, $this->palette->pixelDefinition()), $alpha);
     }
 
     /**

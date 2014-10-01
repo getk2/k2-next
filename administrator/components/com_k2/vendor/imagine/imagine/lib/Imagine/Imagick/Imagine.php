@@ -36,11 +36,7 @@ final class Imagine extends AbstractImagine
             throw new RuntimeException('Imagick not installed');
         }
 
-        $imagick = new \Imagick();
-        $v = $imagick->getVersion();
-        list($version) = sscanf($v['versionString'], 'ImageMagick %s %04d-%02d-%02d %s %s');
-
-        if (version_compare('6.2.9', $version) > 0) {
+        if (version_compare('6.2.9', $this->getVersion(new \Imagick())) > 0) {
             throw new RuntimeException('ImageMagick version 6.2.9 or higher is required');
         }
     }
@@ -50,13 +46,7 @@ final class Imagine extends AbstractImagine
      */
     public function open($path)
     {
-        $handle = @fopen($path, 'r');
-
-        if (false === $handle) {
-            throw new InvalidArgumentException(sprintf('File %s doesn\'t exist', $path));
-        }
-
-        fclose($handle);
+        $path = $this->checkPath($path);
 
         try {
             $imagick = new \Imagick($path);
@@ -87,6 +77,10 @@ final class Imagine extends AbstractImagine
             $imagick->newImage($width, $height, $pixel);
             $imagick->setImageMatte(true);
             $imagick->setImageBackgroundColor($pixel);
+
+            if (version_compare('6.3.1', $this->getVersion($imagick)) < 0) {
+                $imagick->setImageOpacity($pixel->getColorValue(\Imagick::COLOR_ALPHA));
+            }
 
             $pixel->clear();
             $pixel->destroy();
@@ -141,6 +135,15 @@ final class Imagine extends AbstractImagine
         return new Font(new \Imagick(), $file, $size, $color);
     }
 
+    /**
+     * Returns the palette corresponding to an \Imagick resource colorspace
+     *
+     * @param \Imagick $imagick
+     *
+     * @return CMYK|Grayscale|RGB
+     *
+     * @throws NotSupportedException
+     */
     private function createPalette(\Imagick $imagick)
     {
         switch ($imagick->getImageColorspace()) {
@@ -152,7 +155,22 @@ final class Imagine extends AbstractImagine
             case \Imagick::COLORSPACE_GRAY:
                 return new Grayscale();
             default:
-                throw new NotSupportedException('Only RGB and CMYK colorspace are curently supported');
+                throw new NotSupportedException('Only RGB and CMYK colorspace are currently supported');
         }
+    }
+
+    /**
+     * Returns ImageMagick version
+     *
+     * @param \Imagick $imagick
+     *
+     * @return string
+     */
+    private function getVersion(\Imagick $imagick)
+    {
+        $v = $imagick->getVersion();
+        list($version) = sscanf($v['versionString'], 'ImageMagick %s %04d-%02d-%02d %s %s');
+
+        return $version;
     }
 }

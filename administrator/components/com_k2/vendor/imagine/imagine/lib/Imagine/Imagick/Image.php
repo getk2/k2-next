@@ -81,7 +81,7 @@ final class Image extends AbstractImage
      */
     public function __destruct()
     {
-        if (null !== $this->imagick && $this->imagick instanceof \Imagick) {
+        if ($this->imagick instanceof \Imagick) {
             $this->imagick->clear();
             $this->imagick->destroy();
         }
@@ -103,7 +103,7 @@ final class Image extends AbstractImage
     public function copy()
     {
         try {
-            if (version_compare(phpversion("imagick"), "3.1.0b1", ">=")) {
+            if (version_compare(phpversion("imagick"), "3.1.0b1", ">=") || defined("HHVM_VERSION")) {
                 $clone = clone $this->imagick;
             } else {
                 $clone = $this->imagick->clone();
@@ -361,8 +361,11 @@ final class Image extends AbstractImage
     public function getSize()
     {
         try {
+            $i = $this->imagick->getIteratorIndex();
+            $this->imagick->rewind();
             $width  = $this->imagick->getImageWidth();
             $height = $this->imagick->getImageHeight();
+            $this->imagick->setIteratorIndex($i);
         } catch (\ImagickException $e) {
             throw new RuntimeException('Could not get size', $e->getCode(), $e);
         }
@@ -506,16 +509,23 @@ final class Image extends AbstractImage
             ColorInterface::COLOR_MAGENTA => \Imagick::COLOR_MAGENTA,
             ColorInterface::COLOR_YELLOW  => \Imagick::COLOR_YELLOW,
             ColorInterface::COLOR_KEYLINE => \Imagick::COLOR_BLACK,
+            // There is no gray component in \Imagick, let's use one of the RGB comp
+            ColorInterface::COLOR_GRAY    => \Imagick::COLOR_RED,
         );
 
         $alpha = $this->palette->supportsAlpha() ? (int) round($pixel->getColorValue(\Imagick::COLOR_ALPHA) * 100) : null;
+        $palette = $this->palette();
 
-        return $this->palette->color(array_map(function ($color) use ($pixel, $colorMapping) {
+        return $this->palette->color(array_map(function ($color) use ($palette, $pixel, $colorMapping) {
             if (!isset($colorMapping[$color])) {
                 throw new InvalidArgumentException(sprintf('Color %s is not mapped in Imagick', $color));
             }
+            $multiplier = 255;
+            if ($palette->name() === PaletteInterface::PALETTE_CMYK) {
+                $multiplier = 100;
+            }
 
-            return $pixel->getColorValue($colorMapping[$color]) * 255;
+            return $pixel->getColorValue($colorMapping[$color]) * $multiplier;
         }, $this->palette->pixelDefinition()), $alpha);
     }
 
@@ -593,8 +603,15 @@ final class Image extends AbstractImage
      */
     private function flatten()
     {
+        /**
+         * @see https://github.com/mkoppanen/imagick/issues/45
+         */
         try {
-            $this->imagick = $this->imagick->flattenImages();
+            if (method_exists($this->imagick, 'mergeImageLayers') && defined('Imagick::LAYERMETHOD_UNDEFINED')) {
+                $this->imagick = $this->imagick->mergeImageLayers(\Imagick::LAYERMETHOD_UNDEFINED);
+            } elseif (method_exists($this->imagick, 'flattenImages')) {
+                $this->imagick = $this->imagick->flattenImages();
+            }
         } catch (\ImagickException $e) {
             throw new RuntimeException('Flatten operation failed', $e->getCode(), $e);
         }

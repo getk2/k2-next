@@ -409,16 +409,29 @@ class StreamWrapper
                 return true;
             }
 
+            // Use a key that adds a trailing slash if needed.
+            $prefix = rtrim($params['Key'], '/') . '/';
+
             $result = self::$client->listObjects(array(
                 'Bucket'  => $params['Bucket'],
-                // Use a key that adds a trailing slash if needed.
-                'Prefix'  => rtrim($params['Key'], '/') . '/',
+                'Prefix'  => $prefix,
                 'MaxKeys' => 1
             ));
 
-            return $result['Contents'] || $result['CommonPrefixes']
-                ? $this->triggerError('Pseudo directory is not empty')
-                : $this->unlink(rtrim($path, '/') . '/');
+            // Check if the bucket contains keys other than the placeholder
+            if ($result['Contents']) {
+                foreach ($result['Contents'] as $key) {
+                    if ($key['Key'] == $prefix) {
+                        continue;
+                    }
+                    return $this->triggerError('Psuedo folder is not empty');
+                }
+                return $this->unlink(rtrim($path, '/') . '/');
+            }
+
+            return $result['CommonPrefixes']
+                ? $this->triggerError('Pseudo folder contains nested folders')
+                : true;
 
         } catch (\Exception $e) {
             return $this->triggerError($e->getMessage());
@@ -427,6 +440,11 @@ class StreamWrapper
 
     /**
      * Support for opendir().
+     *
+     * The opendir() method of the Amazon S3 stream wrapper supports a stream
+     * context option of "listFilter". listFilter must be a callable that
+     * accepts an associative array of object data and returns true if the
+     * object should be yielded when iterating the keys in a bucket.
      *
      * @param string $path    The path to the directory (e.g. "s3://dir[</prefix>]")
      * @param string $options Whether or not to enforce safe_mode (0x04). Unused.
@@ -440,6 +458,7 @@ class StreamWrapper
         $this->clearStatInfo();
         $params = $this->getParams($path);
         $delimiter = $this->getOption('delimiter');
+        $filterFn = $this->getOption('listFilter');
 
         if ($delimiter === null) {
             $delimiter = '/';
@@ -462,12 +481,14 @@ class StreamWrapper
             'sort_results'    => true
         ));
 
-        // Filter our "/" keys added by the console as directories
+        // Filter our "/" keys added by the console as directories, and ensure
+        // that if a filter function is provided that it passes the filter.
         $this->objectIterator = new FilterIterator(
             $objectIterator,
-            function ($key) {
+            function ($key) use ($filterFn) {
                 // Each yielded results can contain a "Key" or "Prefix"
-                return !isset($key['Key']) || substr($key['Key'], -1, 1) !== '/';
+                return (!$filterFn || call_user_func($filterFn, $key)) &&
+                    (!isset($key['Key']) || substr($key['Key'], -1, 1) !== '/');
             }
         );
 
@@ -723,12 +744,14 @@ class StreamWrapper
      */
     protected function triggerError($errors, $flags = null)
     {
-        if ($flags === STREAM_URL_STAT_QUIET) {
-            // This is triggered with things like file_exists()
-            return false;
-        } elseif ($flags === (STREAM_URL_STAT_QUIET | STREAM_URL_STAT_LINK)) {
+        if ($flags & STREAM_URL_STAT_QUIET) {
+          // This is triggered with things like file_exists()
+
+          if ($flags & STREAM_URL_STAT_LINK) {
             // This is triggered for things like is_link()
             return $this->formatUrlStat(false);
+          }
+          return false;
         }
 
         // This is triggered when doing things like lstat() or stat()

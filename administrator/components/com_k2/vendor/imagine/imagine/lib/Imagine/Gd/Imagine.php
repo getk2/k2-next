@@ -61,7 +61,7 @@ final class Imagine extends AbstractImagine
             throw new InvalidArgumentException('GD driver only supports RGB colors');
         }
 
-        $index = imagecolorallocatealpha($resource, $color->getRed(), $color->getGreen(), $color->getBlue(), round(127 * $color->getAlpha() / 100));
+        $index = imagecolorallocatealpha($resource, $color->getRed(), $color->getGreen(), $color->getBlue(), round(127 * (100 - $color->getAlpha()) / 100));
 
         if (false === $index) {
             throw new RuntimeException('Unable to allocate color');
@@ -83,16 +83,17 @@ final class Imagine extends AbstractImagine
      */
     public function open($path)
     {
+        $path = $this->checkPath($path);
         $data = @file_get_contents($path);
 
         if (false === $data) {
-            throw new InvalidArgumentException(sprintf('File %s doesn\'t exist', $path));
+            throw new RuntimeException(sprintf('Failed to open file %s', $path));
         }
 
         $resource = @imagecreatefromstring($data);
 
         if (!is_resource($resource)) {
-            throw new InvalidArgumentException(sprintf('Unable to open image %s', $path));
+            throw new RuntimeException(sprintf('Unable to open image %s', $path));
         }
 
         return $this->wrap($resource, new RGB(), $this->getMetadataReader()->readFile($path));
