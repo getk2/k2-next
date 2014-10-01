@@ -1495,23 +1495,23 @@ class K2ControllerMigrator extends JControllerLegacy
 		$image = $params->get($name, $default);
 		if ($image == 'XSmall')
 		{
-			$params->set('itemImgSize', 'XS');
+			$params->set($name, 'XS');
 		}
 		else if ($image == 'Small')
 		{
-			$params->set('itemImgSize', 'S');
+			$params->set($name, 'S');
 		}
 		else if ($image == 'Medium')
 		{
-			$params->set('itemImgSize', 'M');
+			$params->set($name, 'M');
 		}
 		else if ($image == 'Large')
 		{
-			$params->set('itemImgSize', 'L');
+			$params->set($name, 'L');
 		}
 		else if ($image == 'XLarge')
 		{
-			$params->set('itemImgSize', 'XL');
+			$params->set($name, 'XL');
 		}
 	}
 
