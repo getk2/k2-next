@@ -21,7 +21,18 @@ class JFormFieldK2Template extends JFormField
 	public function getInput()
 	{
 		$application = JFactory::getApplication();
-		$template = $application->getTemplate();
+		if ($application->isSite())
+		{
+			$template = $application->getTemplate();
+		}
+		else
+		{
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true);
+			$query->select($db->quoteName('template'))->from($db->quoteName('#__template_styles'))->where($db->quoteName('client_id').' = 0')->where($db->quoteName('home').' = 1');
+			$db->setQuery($query);
+			$template = $db->loadResult();
+		}
 		$this->extension = $this->element['extension'];
 		if ($this->extension == 'com_k2')
 		{
