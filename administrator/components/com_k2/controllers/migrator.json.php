@@ -300,6 +300,9 @@ class K2ControllerMigrator extends JControllerLegacy
 			$this->updateImageSizeParam($updatedParams, 'itemImgSize', 'Large');
 			$this->updateImageSizeParam($updatedParams, 'itemRelatedImageSize', '0');
 
+			$this->updateOrderingParam($updatedParams, 'catOrdering', '');
+			$this->updateOrderingParam($updatedParams, 'subCatOrdering', '');
+
 			$query = $db->getQuery(true);
 			$query->update($db->quoteName('#__k2_categories'))->set(array(
 				$db->quoteName('id').' = '.$newCategoryId,
@@ -1512,6 +1515,59 @@ class K2ControllerMigrator extends JControllerLegacy
 		else if ($image == 'XLarge')
 		{
 			$params->set($name, 'XL');
+		}
+	}
+
+	private function updateOrderingParam(&$params, $name, $default = 'id.reverse')
+	{
+		$value = $params->get($name, $default);
+		if ($value == '')
+		{
+			$params->set($name, 'id.reverse');
+		}
+		else if ($value == 'date')
+		{
+			$params->set($name, 'created');
+		}
+		else if ($value == 'rdate')
+		{
+			$params->set($name, 'created.reverse');
+		}
+		else if ($image == 'publishUp')
+		{
+			$params->set($name, 'publishUp.reverse');
+		}
+		else if ($value == 'alpha')
+		{
+			$params->set($name, 'title');
+		}
+		else if ($value == 'ralpha')
+		{
+			$params->set($name, 'title.reverse');
+		}
+		else if ($value == 'order')
+		{
+			$params->set($name, 'ordering');
+		}
+		else if ($value == 'rorder')
+		{
+			$params->set($name, 'ordering.reverse');
+		}
+		else if ($value == 'featured')
+		{
+			$params->set($name, 'featured.reverse');
+		}
+		else if ($value == 'hits')
+		{
+			$params->set($name, 'hits.reverse');
+		}
+		else if ($value == 'modified')
+		{
+			$params->set($name, 'modified.reverse');
+		}
+		elseif ($value == 'reversedefault')
+		{
+			$params->set($name, 'id');
 		}
 	}
 

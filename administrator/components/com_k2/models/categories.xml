@@ -88,11 +88,11 @@
 			</field>
 			<field name="subCatColumns" type="text" default="2" size="4" label="K2_COLUMNS" description=""/>
 			<field name="subCatOrdering" type="list" default="" label="K2_SUBCATEGORY_ORDERING" description="">
-				<option value="">K2_DEFAULT_BY_ID_ASCENDING</option>
-				<option value="reversedefault">K2_REVERSE_DEFAULT_BY_ID_DESCENDING</option>
-				<option value="alpha">K2_TITLE_ALPHABETICAL</option>
-				<option value="ralpha">K2_TITLE_REVERSEALPHABETICAL</option>
-				<option value="order">K2_ORDERING</option>
+				<option value="">K2_DEFAULT_BY_ID_DESCENDING</option>
+				<option value="id">K2_REVERSE_DEFAULT_BY_ID_ASCENDING</option>
+				<option value="title">K2_TITLE_ALPHABETICAL</option>
+				<option value="title.reverse">K2_TITLE_REVERSEALPHABETICAL</option>
+				<option value="ordering">K2_ORDERING</option>
 			</field>
 			<field name="subCatTitle" type="radio" default="1" label="K2_SUBCATEGORY_TITLE" description="">
 				<option value="0">K2_HIDE</option>
