@@ -102,6 +102,7 @@ class K2ViewItemlist extends K2View
 		foreach ($this->leading as &$item)
 		{
 			$item->itemGroup = 'leading';
+			$item->image = $item->getImage($this->params->get('leadingImgSize'));
 		}
 
 		// Primary
@@ -111,6 +112,7 @@ class K2ViewItemlist extends K2View
 		foreach ($this->primary as &$item)
 		{
 			$item->itemGroup = 'primary';
+			$item->image = $item->getImage($this->params->get('primaryImgSize'));
 		}
 
 		// Secondary
@@ -120,6 +122,7 @@ class K2ViewItemlist extends K2View
 		foreach ($this->secondary as &$item)
 		{
 			$item->itemGroup = 'secondary';
+			$item->image = $item->getImage($this->params->get('secondaryImgSize'));
 		}
 
 		// Links
@@ -129,6 +132,7 @@ class K2ViewItemlist extends K2View
 		foreach ($this->links as &$item)
 		{
 			$item->itemGroup = 'links';
+			$item->image = $item->getImage($this->params->get('linksImgSize'));
 		}
 
 		// Set the flag for sending feed links to head
