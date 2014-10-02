@@ -367,7 +367,7 @@ class PlgSystemK2 extends JPlugin
 		{
 			$application = JFactory::getApplication();
 			$response = $application->getBody();
-			
+
 			// Make the following more generic?
 			$searches = array(
 				'<meta name="og:url"',
@@ -383,8 +383,8 @@ class PlgSystemK2 extends JPlugin
 				'<meta property="og:image"',
 				'<meta property="og:description"'
 			);
-			
-			if (strpos($response, 'prefix="og: http://ogp.me/ns#"') === false) // make it less strict?
+
+			if (strpos($response, 'prefix="og: http://ogp.me/ns#"') === false)// make it less strict?
 			{
 				$searches[] = '<html ';
 				$searches[] = '<html>';
@@ -455,6 +455,11 @@ class PlgSystemK2 extends JPlugin
 						$view->item->params->set('comments', 2);
 					}
 				}
+
+				if (!$view->item->canEdit)
+				{
+					unset($view->item->editLink);
+				}
 				break;
 
 			// User view
@@ -503,6 +508,12 @@ class PlgSystemK2 extends JPlugin
 						$item->params->merge($categoryParams);
 						$item->params->merge($itemParams);
 					}
+
+					if (!$item->canEdit)
+					{
+						unset($item->editLink);
+					}
+
 				}
 				break;
 
