@@ -818,6 +818,31 @@ class K2Items extends K2Resource
 		return $this->category->link;
 	}
 
+	public function getImageXSmall()
+	{
+		return isset($this->images['XS']) ? $this->images['XS']->src : '';
+	}
+
+	public function getImageSmall()
+	{
+		return isset($this->images['L']) ? $this->images['S']->src : '';
+	}
+
+	public function getImageMedium()
+	{
+		return isset($this->images['M']) ? $this->images['M']->src : '';
+	}
+
+	public function getImageLarge()
+	{
+		return isset($this->images['L']) ? $this->images['L']->src : '';
+	}
+
+	public function getImageXLarge()
+	{
+		return isset($this->images['XL']) ? $this->images['XL']->src : '';
+	}
+
 	public function getImage_caption()
 	{
 		return is_object($this->image) ? $this->image->caption : '';
