@@ -37,10 +37,10 @@ defined('_JEXEC') or die; ?>
 		<!-- Category block -->
 		<div class="itemListCategory">
 
-			<?php if(isset($this->addLink)): ?>
+			<?php if($this->category->canAdd): ?>
 			<!-- Item add link -->
 			<span class="catItemAddLink">
-				<a href="<?php echo $this->addLink; ?>">
+				<a href="<?php echo $this->category->addLink; ?>">
 					<?php echo JText::_('K2_ADD_A_NEW_ITEM_IN_THIS_CATEGORY'); ?>
 				</a>
 			</span>

@@ -32,10 +32,10 @@ defined('_JEXEC') or die; ?>
 	<?php if ($this->params->get('userImage') || $this->params->get('userName') || $this->params->get('userDescription') || $this->params->get('userURL') || $this->params->get('userEmail')): ?>
 	<div class="userBlock">
 	
-		<?php if(isset($this->addLink) && JRequest::getInt('id') == $this->user->id): ?>
+		<?php if($this->author->canAdd && JRequest::getInt('id') == $this->user->id): ?>
 		<!-- Item add link -->
 		<span class="userItemAddLink">
-			<a href="<?php echo $this->addLink; ?>">
+			<a href="<?php echo $this->author->addLink; ?>">
 				<?php echo JText::_('K2_POST_A_NEW_ITEM'); ?>
 			</a>
 		</span>

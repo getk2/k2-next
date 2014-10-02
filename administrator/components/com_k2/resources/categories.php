@@ -83,6 +83,9 @@ class K2Categories extends K2Resource
 		// Edit link
 		$this->editLink = JURI::base(true).'/index.php?option=com_k2#categories/edit/'.$this->id;
 
+		// Add link
+		$this->addLink = JURI::base(true).'/index.php?option=com_k2#items/add';
+
 		// Permisisons
 		$user = JFactory::getUser();
 		if ($user->guest)

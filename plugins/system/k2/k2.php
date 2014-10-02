@@ -479,6 +479,10 @@ class PlgSystemK2 extends JPlugin
 				$view->now = JFactory::getDate()->toSql();
 				$view->user->avatar = $view->user->image->src;
 				$view->feed = $view->user->feedLink;
+				if (!$view->user->canAdd)
+				{
+					unset($view->user->addLink);
+				}
 				break;
 
 			// Tag view
@@ -492,6 +496,10 @@ class PlgSystemK2 extends JPlugin
 				{
 					$view->feed = $view->category->feedLink;
 					$view->subCategories = $view->category->children;
+					if (!$view->category->canAdd)
+					{
+						unset($view->category->addLink);
+					}
 				}
 				else
 				{
