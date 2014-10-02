@@ -225,7 +225,13 @@ class K2Users extends K2Resource
 	// Legacy
 	public function getProfile()
 	{
-		return $this;
+		$profile = new stdClass;
+		$profile->userName = $this->name;
+		$profile->gender = $this->gender;
+		$profile->description = $this->description;
+		$profile->image = $this->image;
+		$profile->url = $this->site;
+		return $profile;
 	}
 
 	public function __toString()
