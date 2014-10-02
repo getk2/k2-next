@@ -469,6 +469,10 @@ class PlgSystemK2 extends JPlugin
 				foreach ($view->items as &$item)
 				{
 					$item->params = $view->params;
+					if (!$item->canEdit)
+					{
+						unset($item->editLink);
+					}
 				}
 				$db = JFactory::getDbo();
 				$view->nullDate = $db->getNullDate();
