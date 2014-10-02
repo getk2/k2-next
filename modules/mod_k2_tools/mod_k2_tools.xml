@@ -76,13 +76,6 @@
 				<!-- Categories List (Menu) Settings -->
 				<field name="root_id" type="k2categories" label="K2_SELECT_ROOT_CATEGORY" description="K2_SELECT_THE_ROOT_CATEGORY_FOR_WHICH_YOU_WANT_TO_CREATE_A_CATEGORY_LIST_SELECT_NONE_TO_FETCH_A_LIST_OF_ALL_CATEGORIES"/>
 				<field name="end_level" type="text" default="" size="4" label="K2_LEVELS_TO_RENDER" description="K2_SELECT_THE_NUMBER_OF_LEVELS_YOU_WISH_TO_RENDER_LEAVE_THIS_BLANK_IF_YOU_WISH_TO_RENDER_ALL_THE_LEVELS_BELOW_THE_SELECTED_ROOT_CATEGORY"/>
-				<field name="categoriesListOrdering" type="list" default="" label="K2_ORDER_BY" description="">
-					<option value="">K2_DEFAULT_BY_ID_ASCENDING</option>
-					<option value="reversedefault">K2_REVERSE_DEFAULT_BY_ID_DESCENDING</option>
-					<option value="alpha">K2_NAME_ALPHABETICAL</option>
-					<option value="ralpha">K2_NAME_REVERSE_ALPHABETICAL</option>
-					<option value="order">K2_ORDERING</option>
-				</field>
 				<field name="categoriesListItemsCounter" type="radio" default="1" label="K2_ITEMS_COUNTER" description="">
 					<option value="0">K2_HIDE</option>
 					<option value="1">K2_SHOW</option>
