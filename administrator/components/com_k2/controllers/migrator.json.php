@@ -930,6 +930,7 @@ class K2ControllerMigrator extends JControllerLegacy
 			$query->update($db->quoteName('#__k2_items'));
 			$query->set(array(
 				$db->quoteName('id').' = '.$item->id,
+				$db->quoteName('ordering').' = '.(int)$item->ordering,
 				$db->quoteName('image').' = '.$db->quote($image),
 				$db->quoteName('media').' = '.$db->quote($media),
 				$db->quoteName('tags').' = '.$db->quote($tags),
