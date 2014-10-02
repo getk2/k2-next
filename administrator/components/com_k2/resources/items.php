@@ -818,6 +818,16 @@ class K2Items extends K2Resource
 		return $this->category->link;
 	}
 
+	public function getImage_caption()
+	{
+		return is_object($this->image) ? $this->image->caption : '';
+	}
+
+	public function getImage_credits()
+	{
+		return is_object($this->image) ? $this->image->credits : '';
+	}
+
 	public function getVideo()
 	{
 		return count($this->media) ? $this->media[0]->output : '';
