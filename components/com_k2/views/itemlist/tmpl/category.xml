@@ -32,7 +32,7 @@
 					<option value="featured.reverse">K2_FEATURED_FIRST</option>
 					<option value="hits.reverse">K2_MOST_POPULAR</option>
 					<option value="modified.reverse">K2_LATEST_MODIFIED</option>
-					<option value="rand">K2_RANDOM_ORDERING</option>
+					<option value="random">K2_RANDOM_ORDERING</option>
 				</field>
 				<field name="" type="k2header" default="K2_LAYOUT_OPTIONS_FOR_MULTIPLE_CATEGORY_SELECTION" label="" description=""/>
 				<field name="theme" type="k2template" extension="com_k2" default="default" label="K2_SELECT_A_TEMPLATE"/>
@@ -70,7 +70,7 @@
 				<option value="featured.reverse">K2_FEATURED_FIRST</option>
 				<option value="hits.reverse">K2_MOST_POPULAR</option>
 				<option value="modified.reverse">K2_LATEST_MODIFIED</option>
-				<option value="rand">K2_RANDOM_ORDERING</option>
+				<option value="random">K2_RANDOM_ORDERING</option>
 				</field>
 				<field name="catPagination" type="list" default="2" label="K2_PAGINATION" description="">
 					<option value="0">K2_HIDE</option>

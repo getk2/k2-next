@@ -1315,44 +1315,8 @@ class K2ControllerMigrator extends JControllerLegacy
 				$limit = $params->get('itemCount');
 				$params->set('limit', $limit);
 
-				$ordering = $params->get('itemsOrdering');
-
-				if ($ordering == '')
-				{
-					$params->set('sorting', 'id.reverse');
-				}
-				else if ($ordering == 'date')
-				{
-					$params->set('sorting', 'created');
-				}
-				else if ($ordering == 'rdate')
-				{
-					$params->set('sorting', 'created.reverse');
-				}
-				else if ($ordering == 'alpha')
-				{
-					$params->set('sorting', 'title');
-				}
-				else if ($ordering == 'ralpha')
-				{
-					$params->set('sorting', 'title.reverse');
-				}
-				else if ($ordering == 'order')
-				{
-					$params->set('sorting', 'ordering');
-				}
-				else if ($ordering == 'rorder')
-				{
-					$params->set('sorting', 'ordering.reverse');
-				}
-				else if ($ordering == 'rand')
-				{
-					$params->set('sorting', 'random');
-				}
-				else
-				{
-					$params->set('sorting', $ordering);
-				}
+				$params->set('sorting', $params->get('itemsOrdering'));
+				$this->updateOrderingParam($params, 'sorting', 'id.reverse');
 
 				$params->set('featured', $params->get('FeaturedItems'));
 				$params->set('timeRange', $params->get('popularityRange'));
@@ -1568,6 +1532,14 @@ class K2ControllerMigrator extends JControllerLegacy
 		elseif ($value == 'reversedefault')
 		{
 			$params->set($name, 'id');
+		}
+		elseif ($value == 'rand')
+		{
+			$params->set($name, 'random');
+		}
+		elseif ($value == 'comments')
+		{
+			$params->set($name, 'comments.reverse');
 		}
 	}
 
