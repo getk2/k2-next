@@ -21,6 +21,7 @@
 				<field name="categories" type="k2categories" k2multiple="1" k2mode="menu" k2recursive="select" default="" label="K2_SELECT_CATEGORIES" description="K2_IF_YOU_SELECT_MULTIPLE_CATEGORIES_YOU_CAN_ADJUST_ADDITIONAL_PARAMETERS_BELOW_IF_YOU_SELECT_ONLY_ONE_CATEGORY_THEN_K2_WILL_FETCH_THE_OPTIONS_AS_DEFINED_IN_THAT_SPECIFIC_CATEGORYS_OPTIONS_IN_K2_CATEGORIES"/>
 				<field name="" type="k2header" default="K2_LAYOUT_OPTIONS_FOR_SINGLE_CATEGORY_SELECTION" label="" description=""/>
 				<field name="singleCatOrdering" type="list" default="id.reverse" label="K2_ITEM_ORDERING" description="">
+					<option value="">K2_INHERIT_FROM_CATEGORY</option>
 					<option value="id.reverse">K2_DEFAULT</option>
 					<option value="created">K2_OLDEST_FIRST</option>
 					<option value="created.reverse">K2_MOST_RECENT_FIRST</option>
