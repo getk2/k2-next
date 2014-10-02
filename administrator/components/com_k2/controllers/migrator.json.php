@@ -1497,7 +1497,7 @@ class K2ControllerMigrator extends JControllerLegacy
 		{
 			$params->set($name, 'created.reverse');
 		}
-		else if ($image == 'publishUp')
+		else if ($value == 'publishUp')
 		{
 			$params->set($name, 'publishUp.reverse');
 		}
