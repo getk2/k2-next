@@ -927,11 +927,6 @@ class K2Items extends K2Resource
 		return $this->state;
 	}
 
-	public function getImageXLarge()
-	{
-		return isset($this->images['XL']) ? $this->images['XL']->src : null;
-	}
-
 	public function getImageWidth()
 	{
 		return isset($this->image) ? $this->image->width : null;
