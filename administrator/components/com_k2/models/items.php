@@ -510,10 +510,6 @@ class K2ModelItems extends K2Model
 				$ordering = 'item.publish_up';
 				$direction = $sorting == 'publishUp' ? 'ASC' : 'DESC';
 				break;
-			case 'random' :
-				$ordering = 'RAND()';
-				$direction = '';
-				break;
 			case 'custom' :
 				$ordering = $this->getState('sorting.custom.value');
 				$direction = $this->getState('sorting.custom.direction');
@@ -532,7 +528,15 @@ class K2ModelItems extends K2Model
 		}
 		else
 		{
-			$query->order($db->quoteName($ordering).' '.$direction);
+			if ($sorting == 'random')
+			{
+				$query->order('RAND()');
+			}
+			else
+			{
+				$query->order($db->quoteName($ordering).' '.$direction);
+			}
+
 		}
 
 	}
