@@ -808,6 +808,11 @@ class K2Items extends K2Resource
 		return $events;
 	}
 
+	public function getCategoryId()
+	{
+		return $this->catid;
+	}
+
 	public function getCategoryName()
 	{
 		return $this->category->title;
