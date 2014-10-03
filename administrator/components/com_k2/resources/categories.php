@@ -421,6 +421,11 @@ class K2Categories extends K2Resource
 		return $events;
 	}
 
+	public function getCanAdd()
+	{
+		return $this->canAddItem;
+	}
+
 	public function getName()
 	{
 		return $this->title;
