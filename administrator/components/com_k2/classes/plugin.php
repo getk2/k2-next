@@ -43,10 +43,16 @@ class K2Plugin extends JPlugin
 				// Compute the field name
 				$name = $this->_name.'_'.$field->__get('name');
 
+				// Handle array names
+				if (strpos($name, '[]'))
+				{
+					$name = str_replace('[]', '', $name);
+				}
+
 				// Set the value
 				if (isset($row->plugins->$name))
 				{
-					$field->__set('value', $row->plugins->$name);
+					$field->setValue($row->plugins->$name);
 				}
 
 				// Set the field name
