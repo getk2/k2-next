@@ -100,11 +100,11 @@ class PlgSearchK2 extends JPlugin
 		foreach ($rows as $item)
 		{
 			$item->browsernav = '';
-			$item->section = '';
+			$item->section = $item->category->name;
 			$item->href = $item->link;
 			$item->text = $item->introtext.' '.$item->fulltext;
 			$item->extra_fields_search = '';
-			foreach ($item->extraFields as $extraFieldGroup)
+			foreach ($item->extraFieldsGroups as $extraFieldGroup)
 			{
 				foreach ($extraFieldGroup->fields as $field)
 				{
