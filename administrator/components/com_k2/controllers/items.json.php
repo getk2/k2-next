@@ -169,6 +169,7 @@ class K2ControllerItems extends K2Controller
 				$table->store();
 				$table->rebuildPath($table->id);
 			}
+			$table = JTable::getInstance('Categories', 'K2Table');
 			$table->rebuild();
 
 			// Clear session
