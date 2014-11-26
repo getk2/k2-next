@@ -282,7 +282,8 @@ class K2View extends JViewLegacy
 			// Auto calculate the limitstart
 			if (!isset($this->userStates['limitstart']) && isset($this->userStates['page']) && isset($this->userStates['limit']))
 			{
-				$this->userStates['limitstart'] = ($this->userStates['page'] * $this->userStates['limit']) - $this->userStates['limit'];
+				$limitstart = ($this->userStates['page'] * $this->userStates['limit']) - $this->userStates['limit'];
+				$this->userStates['limitstart'] = $limitstart < 0 ? 0 : $limitstart;
 				$model->setState('limitstart', $this->userStates['limitstart']);
 			}
 		}
