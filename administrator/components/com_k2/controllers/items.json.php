@@ -167,7 +167,9 @@ class K2ControllerItems extends K2Controller
 				$parentId = $mapping->categories[$mapping->parents[$sourceCategoryId]];
 				$table->setLocation($parentId, 'last-child');
 				$table->store();
+				$table->rebuildPath($table->id);
 			}
+			$table->rebuild();
 
 			// Clear session
 			$mapping = new stdClass;
@@ -352,7 +354,6 @@ class K2ControllerItems extends K2Controller
 		$categoryData['parent_id'] = 1;
 		$categoryData['access'] = $category->access;
 		$categoryData['language'] = $category->language;
-		$categoryData['level'] = $category->level;
 		$categoryParams = new JRegistry($category->params);
 		$categoryImage = $categoryParams->get('image');
 		if ($categoryImage)
