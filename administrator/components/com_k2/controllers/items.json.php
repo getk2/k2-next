@@ -131,6 +131,31 @@ class K2ControllerItems extends K2Controller
 			$mapping->articles = array();
 			$mapping->categories = array();
 			$mapping->parents = array();
+
+			// Import all categories at once in the first request
+			$query = $db->getQuery(true);
+			$query->select('*')->from($db->quoteName('#__categories'))->where($db->quoteName('extension').' = '.$db->quote('com_content'))->order($db->quoteName('lft'));
+			$db->setQuery($query);
+			$categories = $db->loadObjectList();
+
+			// Import
+			foreach ($categories as $category)
+			{
+				$categoryId = $this->importCategory($category);
+				$mapping->categories[(int)$category->id] = (int)$categoryId;
+				$mapping->parents[(int)$category->id] = (int)$category->parent_id;
+			}
+
+			// Fix tree
+			foreach ($mapping->categories as $sourceCategoryId => $importedCategoryId)
+			{
+				$parentId = $mapping->categories[$mapping->parents[$sourceCategoryId]];
+				$table = JTable::getInstance('Categories', 'K2Table');
+				$table->moveByReference($parentId, 'last-child', $importedCategoryId);
+			}
+			$table = JTable::getInstance('Categories', 'K2Table');
+			$table->rebuild();
+
 		}
 		else
 		{
@@ -146,32 +171,6 @@ class K2ControllerItems extends K2Controller
 		// Check if we are done
 		if (!$article)
 		{
-
-			// First import all categories that have not been imported ( categories with no articles )
-			$query = $db->getQuery(true);
-			$query->select('*')->from($db->quoteName('#__categories'))->where($db->quoteName('extension').' = '.$db->quote('com_content'))->where($db->quoteName('id').' NOT IN('.implode(',', array_keys($mapping->categories)).')');
-			$db->setQuery($query);
-			$categories = $db->loadObjectList();
-			foreach ($categories as $category)
-			{
-				$categoryId = $this->importCategory($category);
-				$mapping->categories[$category->id] = $categoryId;
-				$mapping->parents[$category->id] = $category->parent_id;
-			}
-
-			// Fix tree
-			foreach ($mapping->categories as $sourceCategoryId => $importedCategoryId)
-			{
-				$table = JTable::getInstance('Categories', 'K2Table');
-				$table->load($importedCategoryId);
-				$parentId = $mapping->categories[$mapping->parents[$sourceCategoryId]];
-				$table->setLocation($parentId, 'last-child');
-				$table->store();
-				$table->rebuildPath($table->id);
-			}
-			$table = JTable::getInstance('Categories', 'K2Table');
-			$table->rebuild();
-
 			// Clear session
 			$mapping = new stdClass;
 			$mapping->articles = array();
@@ -181,27 +180,8 @@ class K2ControllerItems extends K2Controller
 			return $this;
 		}
 
-		// Detect category
-		if (isset($mapping->categories[$article->catid]))
-		{
-			// Category is already imported so use the id from mapping
-			$categoryId = $mapping->categories[$article->catid];
-		}
-		else
-		{
-			// Category has not been imported yet so we need to import it now. First get the data
-			$query = $db->getQuery(true);
-			$query->select('*')->from($db->quoteName('#__categories'))->where($db->quoteName('id').' = '.$article->catid);
-			$db->setQuery($query, 0, 1);
-			$category = $db->loadObject();
-
-			// Import the category
-			$categoryId = $this->importCategory($category);
-
-			// Update mapping
-			$mapping->categories[$article->catid] = $categoryId;
-			$mapping->parents[$article->catid] = $category->parent_id;
-		}
+		// Detect category Id
+		$categoryId = $mapping->categories[$article->catid];
 
 		// Import the item
 		$itemId = $this->importArticle($article, $categoryId);
@@ -269,26 +249,12 @@ class K2ControllerItems extends K2Controller
 		if ($articleImages->get('image_fulltext'))
 		{
 			$image = K2HelperImages::add('item', null, $articleImages->get('image_fulltext'));
-			$itemData['image'] = array(
-				'id' => '',
-				'temp' => $image->temp,
-				'path' => '',
-				'remove' => 0,
-				'caption' => $articleImages->get('image_fulltext_caption'),
-				'credits' => ''
-			);
+			$itemData['image'] = array('id' => '', 'temp' => $image->temp, 'path' => '', 'remove' => 0, 'caption' => $articleImages->get('image_fulltext_caption'), 'credits' => '');
 		}
 		else if ($articleImages->get('image_intro'))
 		{
 			$image = K2HelperImages::add('item', null, $articleImages->get('image_intro'));
-			$itemData['image'] = array(
-				'id' => '',
-				'temp' => $image->temp,
-				'path' => '',
-				'remove' => 0,
-				'caption' => $articleImages->get('image_intro_caption'),
-				'credits' => ''
-			);
+			$itemData['image'] = array('id' => '', 'temp' => $image->temp, 'path' => '', 'remove' => 0, 'caption' => $articleImages->get('image_intro_caption'), 'credits' => '');
 		}
 
 		$model = K2Model::getInstance('Items');
@@ -360,14 +326,7 @@ class K2ControllerItems extends K2Controller
 		if ($categoryImage)
 		{
 			$image = K2HelperImages::add('category', null, $categoryImage);
-			$categoryData['image'] = array(
-				'id' => '',
-				'temp' => $image->temp,
-				'path' => '',
-				'remove' => 0,
-				'caption' => '',
-				'credits' => ''
-			);
+			$categoryData['image'] = array('id' => '', 'temp' => $image->temp, 'path' => '', 'remove' => 0, 'caption' => '', 'credits' => '');
 		}
 
 		$model = K2Model::getInstance('Categories');

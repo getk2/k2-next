@@ -505,7 +505,7 @@ class K2ModelCategories extends K2Model
 			return false;
 		}
 
-		if (!$table->rebuild())
+		if (!$table->rebuild($table->id, $table->lft, $table->level, $table->path))
 		{
 			$this->setError($table->getError());
 			return false;
