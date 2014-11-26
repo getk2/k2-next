@@ -167,6 +167,8 @@ class K2ControllerItems extends K2Controller
 				$parentId = $mapping->categories[$mapping->parents[$sourceCategoryId]];
 				$table->setLocation($parentId, 'last-child');
 				$table->store();
+				$table->rebuildPath($table->id);
+				$table->rebuild();
 			}
 
 			// Clear session
