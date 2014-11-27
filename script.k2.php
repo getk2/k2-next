@@ -227,6 +227,14 @@ class Com_K2InstallerScript
 			}
         }
 
+		// Rebuild the categories table for new installs
+		if($type == 'install')
+		{
+			JTable::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/tables');
+			$table = JTable::getInstance('Categories', 'K2Table');
+			$table->rebuild();
+		}
+
 		// Set the default image sizes for new installs
 		if($type == 'install')
 		{
