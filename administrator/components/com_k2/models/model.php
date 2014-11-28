@@ -246,8 +246,8 @@ class K2Model extends JModelLegacy
 		// Load record
 		if (!$table->load($id))
 		{
-			$this->setError($table->getError());
-			return false;
+			// Record probably has already been deleted, so return true
+			return true;
 		}
 
 		// Before delete hook for children models
