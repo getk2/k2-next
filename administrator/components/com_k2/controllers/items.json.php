@@ -318,7 +318,7 @@ class K2ControllerItems extends K2Controller
 		{
 			$categoryData['state'] = 0;
 		}
-		$categoryData['parent_id'] = 1;
+		$categoryData['parent_id'] = 0;
 		$categoryData['access'] = $category->access;
 		$categoryData['language'] = $category->language;
 		$categoryParams = new JRegistry($category->params);
@@ -360,7 +360,6 @@ class K2ControllerItems extends K2Controller
 		$query->set($db->quoteName('modified').' = '.$db->quote($category->modified_time));
 		$query->set($db->quoteName('created_by').' = '.$db->quote($category->created_user_id));
 		$query->set($db->quoteName('modified_by').' = '.$db->quote($category->modified_user_id));
-		$query->set($db->quoteName('parent_id').' = '.$db->quote($category->parent_id));
 		$query->set($db->quoteName('params').' = '.$db->quote($params->toString()));
 		$query->where($db->quoteName('id').' = '.$categoryId);
 		$db->setQuery($query);
