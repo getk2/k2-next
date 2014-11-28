@@ -153,8 +153,6 @@ class K2ControllerItems extends K2Controller
 				$table = JTable::getInstance('Categories', 'K2Table');
 				$table->moveByReference($parentId, 'last-child', $importedCategoryId);
 			}
-			$table = JTable::getInstance('Categories', 'K2Table');
-			$table->rebuild();
 
 		}
 		else
