@@ -419,7 +419,7 @@ class K2ModelCategories extends K2Model
 		{
 			$table->setLocation($data['parent_id'], 'last-child');
 		}
-		if ($this->getState('patch'))
+		if ($this->getState('patch') && isset($data['parent_id']))
 		{
 			$table->setLocation($data['parent_id'], 'first-child');
 		}
