@@ -133,7 +133,7 @@ class K2Model extends JModelLegacy
 			}
 			if ($table->isCheckedOut(JFactory::getUser()->get('id')))
 			{
-				$this->setError(JText::_('K2_ROW_IS_CURRENTLY_BEING_EDITED_BY_ANOTHER_AUTHOR'));
+				$this->setError(JText::sprintf('K2_ROW_IS_CURRENTLY_BEING_EDITED_BY_ANOTHER_AUTHOR', $row->title));
 				return false;
 			}
 
