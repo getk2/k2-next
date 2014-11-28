@@ -591,7 +591,7 @@ class K2ModelCategories extends K2Model
 		// Check that the category is trashed
 		if ($table->state != -1)
 		{
-			$this->setError(JText::_('K2_YOU_CAN_ONLY_DELETE_TRASHED_CATEGORIES'));
+			$this->setError(JText::sprintf('K2_CATEGORY_IS_NOT_TRASHED', $table->title));
 			return false;
 		}
 
@@ -601,7 +601,7 @@ class K2ModelCategories extends K2Model
 		{
 			if ($category->state != -1)
 			{
-				$this->setError(JText::_('K2_COULD_NOT_DELETE_CATEGORY_BECAUSE_IT_CONTAINS_NON_TRASHED_CATEGORIES'));
+				$this->setError(JText::sprintf('K2_COULD_NOT_DELETE_CATEGORY_BECAUSE_IT_CONTAINS_NON_TRASHED_CATEGORIES', $table->title));
 				return false;
 			}
 		}
@@ -612,7 +612,7 @@ class K2ModelCategories extends K2Model
 		$count = $model->countRows();
 		if ($count)
 		{
-			$this->setError(JText::_('K2_COULD_NOT_DELETE_CATEGORY_BECAUSE_IT_CONTAINS_ITEMS'));
+			$this->setError(JText::sprintf('K2_COULD_NOT_DELETE_CATEGORY_BECAUSE_IT_CONTAINS_ITEMS', $table->title));
 			return false;
 		}
 
