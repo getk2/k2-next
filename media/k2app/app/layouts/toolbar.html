@@ -1,0 +1,36 @@
+<div class="clr"></div>
+<div class="small-16 jw--toolbar" data-region="toolbar">
+    <div class="left jw--counter">
+    	<span class="blue jw--counter__single" data-name="counter"></span>
+    	<span><%= l('K2_SELECTED') %></span>
+    	<!--<button data-action="close"><%= l('K2_CANCEL') %></button> -->
+    </div>
+    
+    
+    <ul class="text-center jw--toolbar--actions">
+        <% _.each(toolbar, function(button) { %>
+        <li>
+	        <button <% _.each(button.attributes, function(value, name) { print(name + '="' + value + '" ');}) %>>
+	        	
+	         	<% if(button.id == 'publish') {
+					print('<i class="fa fa-check-circle-o"></i>');
+				} else if(button.id == 'unpublish') {
+		        	print('<i class="fa fa-circle-o"></i>');
+		        } else if(button.id == 'feature') {
+		        	print('<i class="fa fa-star"></i>');
+		        } else if(button.id == 'unfeature') {
+		        	print('<i class="fa fa-star-o"></i>');
+		        } else if(button.id == 'trash') {
+		        	print('<i class="fa fa-trash-o"></i>');
+		        } else if(button.id == 'batch') {
+		        	print('<i class="fa fa-repeat"></i>');
+		        } else if(button.id == 'remove') {
+		        	print('<i class="fa fa-trash-o"></i>');
+		        } %>
+
+	            <span><%= button.name %></span>
+	        </button>
+	    </li>
+        <% }); %>
+    </ul>
+</div>

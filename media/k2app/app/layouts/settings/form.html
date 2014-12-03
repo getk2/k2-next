@@ -1,0 +1,44 @@
+<nav class="jw--transition jw--scrollwrapper" data-widget="scrollspymenu">
+	<ul class="jw--scrollspymenu">
+		<% var index = 0; _.each(form, function(fields, name) { %>
+		<li>	
+			<a href="#jw--setting-<%= index %>" class="jw--scroll jw--scroll__primary"><%= l(name) %></a>	
+			
+			<% var indextwo = 0; _.each(fields, function(field) { %>
+			<% if(field.label == null && field.input !== null){ %>
+			<a href="#jw--settingtitle-<%= index %><%= indextwo %>" class="jw--scroll jw--scroll__sec">
+				<%= field.input %>
+			</a>
+			<% } %>
+			<% indextwo++; }); %>	
+			
+		</li>
+		<% index++; }); %>
+	</ul>
+</nav>
+
+<form class="jw--settings jw--settings__global">
+    <% var index = 0; _.each(form, function(fields, name) { %>
+    <div class="jw--setting--field" id="jw--setting-<%= index %>">
+        
+        <h3><%= l(name) %></h3>
+        
+        <% var indextwo = 0; _.each(fields, function(field) { %>
+        
+        <% if(field.label !== null) { %>
+        <div class="jw--setting--single">
+          	<%= field.label %>
+            <%= field.input %>
+        </div> 
+        <% } else { %>
+        <div class="jw--setting--title" id="jw--settingtitle-<%= index %><%= indextwo %>">
+        	<%= field.input %>
+        </div>
+        <% } %>
+        
+        <% indextwo++; }); %>
+        
+	</div>
+    <% index++; }); %>
+    <input type="hidden" name="id" value="<%= row.id %>" />
+</form>

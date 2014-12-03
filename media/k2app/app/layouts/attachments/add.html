@@ -1,0 +1,65 @@
+<div class="clr"></div>
+<div class="jw--attachments">
+	<% if(remove == 0) { %>
+    
+    <div class="jw--element--row jw--attachment--single">
+    	<div class="jw--element--single">
+    		<div class="text-right left jw--item--lbl">
+				<label><%= l('K2_FILE') %></label>
+			</div>
+			
+			<div class="ov-hidden jw--element--single">
+				<div class="jw--element--single jw--file--btn">
+				    <input type="file" data-widget="uploader" data-url="index.php?option=com_k2&task=attachments.upload&id=<%- id %>&itemId=<%- itemId %>&format=json" data-callback="attachments:upload:<%- cid %>" name="file" />
+					<input type="hidden" name="attachments[<%- cid %>][file]" value="<%- file %>" />
+					<span class="jw--btn jw--file-fakebtn">
+						<i class="fa fa-upload"></i> <span><%= l('K2_UPLOAD') %></span>
+					</span>
+				</div>
+			
+				<div class="jw--element--single">    
+				    <input class="jw--small--input" type="text" data-widget="browser" data-callback="attachments:select:<%- cid %>" name="attachments[<%- cid %>][path]" value="<%- path %>" data-button="<button class='left text-left jw--btn jw--file-fakebtn'><i class='fa fa-upload'></i> <span><%- l('K2_BROWSE_SERVER') %></span></button>" />
+				</div>
+				
+				<div class="jw--element--single">
+				    <span data-widget="dropbox" data-callback="attachments:dropbox:<%- cid %>"></span>
+				</div>
+			</div>
+		</div>
+		
+		<div class="jw--element--single">
+			<div class="text-right left jw--item--lbl">
+				<label><%= l('K2_NAME') %></label>
+			</div>
+			<div class="ov-hidden jw--item--input">
+				<input type="text" name="attachments[<%- cid %>][name]" value="<%- name %>" />
+			</div>
+		</div>
+		
+		<div class="jw--element--single">
+			<div class="text-right left jw--item--lbl">
+				<label><%= l('K2_TITLE') %></label>
+			</div>
+			<div class="ov-hidden jw--item--input">
+				<input type="text" name="attachments[<%- cid %>][title]" value="<%- title %>" />
+			</div>
+		</div>
+		
+		<% if(id) { %>
+		<div class="jw--element--single">
+			<button class="jw--btn jw--btn__item push--left" data-action="download">
+				<%= l('K2_DOWNLOAD') %>
+			</button>
+		</div>
+		<% } %>
+	</div>
+	
+	<button class="jw--remove jw--attachment--remove" data-action="remove">
+		<i class="fa fa-ban"></i>
+	    <span class="visuallyhidden"><%= l('K2_REMOVE') %></span>        
+	</button>	
+	<% } %>
+	<input type="hidden" name="attachments[<%- cid %>][id]" value="<%- id %>"  />
+	<input type="hidden" name="attachments[<%- cid %>][remove]" value="<%- remove %>" />
+</div>
+

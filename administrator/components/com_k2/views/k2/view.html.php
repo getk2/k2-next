@@ -56,7 +56,7 @@ class K2ViewK2 extends JViewLegacy
 
 		// Load the CSS
 		$document->addStyleSheet('//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css?v=3.0.0b');
-		$document->addStyleSheet(JURI::root(true).'/administrator/components/com_k2/css/k2.css?v=3.0.0b');
+		$document->addStyleSheet(JURI::root(true).'/media/k2app/assets/css/k2.css?v=3.0.0b');
 
 		// Add javascript variables
 		$document->addScriptDeclaration('
@@ -79,7 +79,7 @@ class K2ViewK2 extends JViewLegacy
 		}
 
 		// Load the application
-		$document->addCustomTag('<script data-main="'.JURI::root(true).'/administrator/components/com_k2/js/app/main" src="'.JURI::root(true).'/administrator/components/com_k2/js/vendor/require/require.js?v=3.0.0b"></script>');
+		$document->addCustomTag('<script data-main="'.JURI::root(true).'/media/k2app/app/main" src="'.JURI::root(true).'/media/k2app/vendor/require/require.js?v=3.0.0b"></script>');
 
 		// Set title
 		if (class_exists('JToolBarHelper'))

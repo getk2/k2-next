@@ -1,0 +1,90 @@
+<div class="jw--attachments">
+	<% if(remove == 0) { %>
+    <div class="jw--element--row jw--attachment--single">
+		<div class="jw--element--single">
+		
+			<div class="text-right left jw--item--lbl">
+		    	<label><%= l('K2_FILE') %></label>
+		    </div>
+			
+			<div class="ov-hidden jw--element--single">
+				<div class="jw--element--single jw--file--btn">
+					<input type="file" name="file" data-widget="uploader" data-url="index.php?option=com_k2&task=media.upload&itemId=<%- itemId %>&upload=<%- upload %>&format=json" data-callback="media:upload:<%- cid %>" />
+					<span class="jw--btn jw--file-fakebtn">
+						<i class="fa fa-upload"></i> <span><%= l('K2_UPLOAD') %></span>
+					</span>
+				</div>
+				
+				<div class="jw--element--single">
+					<span data-widget="dropbox" data-types="audio,video" data-callback="media:dropbox:<%- cid %>"></span>
+				</div>
+			</div>
+		</div>
+		
+		<div class="jw--element--single">
+	   		<div class="text-right left jw--item--lbl">
+	    		<label><%= l('K2_URL') %></label>
+	    	</div>
+	    	
+			<div class="ov-hidden">
+				<div class="jw--element--single jw--item--input">
+					<input class="jw--small--input" type="text" name="media[<%- cid %>][url]" value="<%- url %>" data-widget="browser" data-callback="media:select:<%- cid %>" data-button="<button class='left text-left jw--btn jw--file-fakebtn'><i class='fa fa-upload'></i> <span><%- l('K2_BROWSE_SERVER') %></span></button>" />
+				</div>
+			</div>
+		</div>
+		
+ 		<div class="jw--element--single">
+	   		<div class="text-right left jw--item--lbl">
+			    <label><%= l('K2_PROVIDER') %></label>
+			</div>
+			<div class="ov-hidden jw--item--input">
+				<%= providers %>
+			</div>
+		</div>
+
+ 		<div class="jw--element--single">
+	   		<div class="text-right left jw--item--lbl">			
+				<label><%= l('K2_ID') %></label>
+			</div>
+			<div class="ov-hidden jw--item--input">
+				<input type="text" name="media[<%- cid %>][id]" value="<%- id %>" />
+			</div>
+		</div>		
+
+ 		<div class="jw--element--single">
+	   		<div class="text-right left jw--item--lbl">
+				<label><%= l('K2_EMBED') %></label>
+			</div>
+			<div class="ov-hidden jw--item--input">
+				<textarea name="media[<%- cid %>][embed]"><%= embed %></textarea>
+			</div>
+		</div>
+
+ 		<div class="jw--element--single">
+	   		<div class="text-right left jw--item--lbl">
+				<label><%= l('K2_MEDIA_CAPTION') %></label>
+			</div>
+			<div class="ov-hidden jw--item--input">
+				<input type="text" name="media[<%- cid %>][caption]" value="<%- caption %>" />
+			</div>
+		</div>
+			    
+ 		<div class="jw--element--single">
+	   		<div class="text-right left jw--item--lbl">
+			    <label><%= l('K2_MEDIA_CREDITS') %></label>
+			</div>
+			<div class="ov-hidden jw--item--input">
+			    <input type="text" name="media[<%- cid %>][credits]" value="<%- credits %>" />
+			</div>
+		</div>		
+	</div>
+	
+	<button class="jw--remove jw--attachment--remove" data-action="remove">
+	    <i class="fa fa-ban"></i>
+	    <span class="visuallyhidden"><%= l('K2_REMOVE') %></span>  
+    </button>
+
+    <% } %>
+    <input type="hidden" name="media[<%- cid %>][upload]" value="<%- upload %>" />
+    <input type="hidden" name="media[<%- cid %>][remove]" value="<%- remove %>" />
+</div>

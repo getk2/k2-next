@@ -1,0 +1,112 @@
+<div class="jw--setting--field">
+	
+	<% if(type !== 'user' && type !== 'item'  && type !== 'category') { %>
+	<h2>
+	    <%= l('K2_IMAGE') %>
+	</h2>
+	<% } %>
+	
+	<% if(type !== 'item' && type !== 'category') { %>
+		<div class="jw--setting--single">
+			<input type="file" name="file" data-widget="uploader" data-url="index.php?option=com_k2&task=images.upload&format=json&itemId=<%- itemId %>&type=<%- type %>&temp=<%- temp %>" data-callback="image:upload:<%- cid %>" />
+		</div>
+		
+		<% if(type !== 'user') { %>
+		<div class="jw--setting--single">
+			<input type="text" name="image[path]" data-widget="browser" data-callback="image:select:<%- cid %>" />
+		</div>
+		<% } %>
+		
+		<span class="jw--setting--single" data-widget="dropbox" data-types="images" data-callback="image:dropbox:<%- cid %>"></span>
+		
+		<% if(flag) { %>
+		<div class="jw--setting--single jw--image--single">
+		    <img alt="<%- l('K2_PREVIEW') %>" src="<%- src %>" />
+		    <button class="jw--btn jw--btn__cancel" data-action="remove">
+		        <%= l('K2_REMOVE_IMAGE') %>
+		    </button>
+		</div>
+		<% } %>
+		
+		<% if(type !== 'user') { %>
+		<div class="jw--setting--single">
+			<label><%= l('K2_IMAGE_CAPTION') %></label>
+			<input type="text" name="image[caption]" value="<%- caption %>" />
+		</div>
+		
+		<div class="jw--setting--single">
+			<label><%= l('K2_IMAGE_CREDITS') %></label>
+			<input type="text" name="image[credits]" value="<%- credits %>" />
+		</div>
+		<% } %>
+	<% } %>
+	
+	<% if(type == 'item' || type == 'category'){ %>
+	<div class="jw--element--row">
+		
+		<div class="jw--element--single">
+			<div class="text-right left jw--item--lbl">
+				<label><%= l('K2_ITEM_IMAGE') %></label>
+			</div>
+			
+			<div class="ov-hidden jw--element--single">
+				<div class="jw--element--single">
+					<div class="jw--file--btn">
+						<input type="file" name="file" data-widget="uploader" data-url="index.php?option=com_k2&task=images.upload&format=json&itemId=<%- itemId %>&type=<%- type %>&temp=<%- temp %>" data-callback="image:upload:<%- cid %>" />
+		
+						<span class="jw--btn jw--file-fakebtn">
+							<i class="fa fa-upload"></i> <span><%= l('K2_UPLOAD') %></span>
+						</span>
+					</div>
+				</div>
+				
+				<div class="jw--element--single">
+					<input class="jw--small--input" type="text" name="image[path]" data-widget="browser" data-callback="image:select:<%- cid %>" data-button="<button class='left text-left jw--btn jw--file-fakebtn'><i class='fa fa-upload'></i> <span><%- l('K2_BROWSE_SERVER') %></span></button>" />
+				</div>
+				
+				<div class="jw--element--single">
+					<span data-widget="dropbox" data-types="images" data-callback="image:dropbox:<%- cid %>"></span>
+				</div>
+			</div>
+		</div>
+	
+		<% if(flag) { %>
+		<div class="jw--element--single jw--image--single">
+			<div class="text-right left jw--item--lbl">
+				<label><%- l('K2_PREVIEW') %></label>
+			</div>
+			<div class="ov-hidden jw--item--input">
+			    <img alt="<%- l('K2_PREVIEW') %>" src="<%- src %>" />
+			    <button class="jw--remove" data-action="remove">
+			    	<i class="fa fa-ban"></i>
+			        <span class="visuallyhidden"><%= l('K2_REMOVE_IMAGE') %></span>
+			    </button>
+			</div>
+		</div>
+		<% } %>
+	
+		<div class="jw--element--single">
+			<div class="text-right left jw--item--lbl">
+				<label><%= l('K2_IMAGE_CAPTION') %></label>
+			</div>
+			<div class="ov-hidden jw--item--input">
+				<input type="text" name="image[caption]" value="<%- caption %>" />
+			</div>
+		</div>
+		
+		<div class="jw--element--single">
+			<div class="text-right left jw--item--lbl">
+				<label><%= l('K2_IMAGE_CREDITS') %></label>
+			</div>
+			<div class="ov-hidden jw--item--input">
+				<input type="text" name="image[credits]" value="<%- credits %>" />
+			</div>
+		</div>
+	</div>
+	<% } %>
+	
+	
+	<input type="hidden" name="image[id]" value="<%- id %>" />
+	<input type="hidden" name="image[temp]" value="<%- temp %>" />
+	<input type="hidden" name="image[remove]" value="<%- remove %>" />
+</div>

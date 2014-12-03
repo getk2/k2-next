@@ -1,0 +1,105 @@
+<nav class="row jw--main--navigation">
+    <div class="jw--topbar"></div>
+
+    <div class="column small-16">
+        <h1 class="left jw--logo"><i>K2</i></h1>
+        
+        <% if(!_.isEmpty(menu)) { %>
+        <a id="jw--navtoggle" class="text-center show-for-small-only" href="#"><i class="fa fa-ellipsis-v"></i></a>
+		<% } %>
+		
+		<% if(!_.isEmpty(menu)) { %>
+		<ul class="right jw--inline--menu jw--main--menu" data-region="menu-primary">
+			
+		    <% var counter = 0; _.each(menu, function(link) { %>
+		    <% if(counter < 4) { %>
+		    <li>
+		        <a <% _.each(link.attributes, function(value, name) { print(name + '="' + value + '" ');}) %>>
+		        <% if(link.id == 'items') {
+					print('<i class="fa fa-file-text"></i>');
+				} else if(link.id == 'categories') {
+		        	print('<i class="fa fa-archive"></i>');
+		        } else if(link.id == 'tags') {
+		        	print('<i class="fa fa-tags"></i>');
+		        } else if(link.id == 'comments') {
+					print('<i class="fa fa-comments"></i>'); 
+				} %>
+		        	<%= link.name %>
+		        </a>
+		    </li>
+		    <% } counter++; %>
+		    <% }); %>
+		    <li class="jw--haschild">
+		    	<span class="jw--sep"><i class="fa fa-asterisk"></i> <%= l('K2_MORE') %></span>
+		    	<ul>
+		    		<% var counter = 0; _.each(menu, function(link) { %>
+		    			<% if(counter > 3) { %>
+		    				<li>
+		    					<a <% _.each(link.attributes, function(value, name) { print(name + '="' + value + '" ');}) %>>
+		    						<% if(link.id == 'tags') {
+										print('<i class="fa fa-tags"></i>');
+									} else if(link.id == 'users') {
+							        	print('<i class="fa fa-user"></i>');
+							        } else if(link.id == 'usergroups') {
+							        	print('<i class="fa fa-users"></i>');
+							        } else if(link.id == 'extrafields') {
+							        	print('<i class="fa fa-gears"></i>');
+							        } else if(link.id == 'extrafieldsgroups') {
+							        	print('<i class="fa fa-briefcase"></i>');
+							        } else if(link.id == 'media') {
+							        	print('<i class="fa fa-photo"></i>'); 
+							        } else if(link.id == 'utilities') {
+										print('<i class="fa fa-gear"></i>');
+							        } else if(link.id == 'settings') {
+										print('<i class="fa fa-cog"></i>');
+									} else if(link.id == 'information') {
+							        	print('<i class="fa fa-info-circle"></i>');
+							        } else if(link.id == 'help') {
+							        	print('<i class="fa fa-life-saver"></i>');
+							        } %>
+									<%= link.name %>
+		    					</a>
+		    				</li>
+		    			<% } counter++; %>
+		    		<% }); %>
+		    	</ul>
+		    </li>
+		</ul>
+		<% } %>
+
+		
+		<% if(!_.isEmpty(actions)) { %>
+		<% if(actions.add) {
+			var layclass = ' jw--add__solo';
+		} else { 
+
+		} %>
+		<div class="right jw--add--area<%= layclass %>" data-region="actions">
+			
+		    <% _.each(actions, function(button) { %>
+		    		
+		    		<% if(button.id == 'add') { 
+		    			var btnclass = ' jw--btn__icon';
+		    		} else if(button.id == 'save') { 
+		    			var btnclass = '';
+		    		} else if(button.id == 'saveAndNew') {  
+		    			var btnclass = ' jw--btn__apply';
+		    		} else if(button.id == 'saveAndClose') {  
+		    			var btnclass = ' jw--btn__apply';
+		    		} else if(button.id == 'close') {
+		    			var btnclass = ' jw--btn__cancel';
+		    		}
+		    		%>
+		    		
+		        <button class="jw--btn<%= btnclass %>" <% _.each(button.attributes, function(value, name) { print(name + '="' + value + '" ');}) %>>
+		        	<% if(button.id == 'add') { %>
+		            <i class="fa fa-plus"></i>
+		            <% } %>
+		            <%= button.name %>
+		        </button>
+		    <% }); %>
+		</div>
+		<% } %>
+		
+	</div>
+</div>

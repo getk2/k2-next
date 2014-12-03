@@ -1,0 +1,62 @@
+<div class="jw--modal">
+	<div class="jw--modal--header">
+	    <h3 class="left"><%= l('K2_BATCH_OPERATIONS') %></h3>
+	    <span class="right">
+	        <strong><%= counter %></strong>
+	        <%= l('K2_SELECTED_ITEMS') %>
+	    </span>
+	</div>
+	
+	<div class="row">
+		<div class="jw--modal--content">
+			<div class="small-16 large-8 columns">
+			
+				<input class="visuallyhidden" type="radio" name="batchMode" value="apply" id="assign" checked="checked" />
+			    <label for="assign" class="text-center jw--radio__circled">
+			    	<span class="inner--circle"></span>
+			    </label>
+			    
+			    <strong><%= l('K2_ASSIGN') %></strong>
+			</div>
+			<div class="small-16 large-8 columns">
+				
+				<input class="visuallyhidden" type="radio" name="batchMode" id="clone" value="clone"  />
+			    <label for="clone" class="text-center jw--radio__circled">
+			    	<span class="inner--circle"></span>
+			    </label>
+			    
+			    <strong><%= l('K2_CREATE_DUPLICATE') %></strong>
+			</div>
+		</div>
+		
+		<div class="clr"></div>	
+		
+		<div class="jw--modal--actions">
+		    <% _.each(actions, function(action) { %>
+	        <div class="small-16 large-8 columns jw--action" id="<%= action.id %>">
+	            
+	            <label>
+		            <% if(action.id == 'appBatchCategory') {
+						print('<i class="fa fa-folder-open"></i>');
+					} else if(action.id == 'appBatchAccess') {
+			        	print('<i class="fa fa-unlock-alt"></i>');
+			        } else if(action.id == 'appBatchLanguage') {
+			        	print('<i class="fa fa-globe"></i>');
+			        } else if(action.id == 'appBatchAuthor') {
+			        	print('<i class="fa fa-user"></i>');
+			        } %>
+	            	<%= action.label %>
+	            </label>
+	            		       	
+		       	<%= action.input %>
+	        </div>
+		    <% }); %>
+		</div>
+	    
+	</div>
+	
+	<div class="text-right jw--button--row jw--button--row__right">
+	    <button class="jw--btn jw--btn__apply" data-action="apply"><%= l('K2_APPLY') %></button>
+	    <button class="jw--btn jw--btn__cancel" data-action="cancel"><%= l('K2_CANCEL') %></button>
+	</div>
+</div>

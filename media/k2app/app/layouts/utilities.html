@@ -1,0 +1,29 @@
+<nav class="jw--transition jw--scrollwrapper" data-widget="scrollspymenu">
+	<ul class="jw--scrollspymenu">
+		<li>
+			<a href="#jw--setting-0" class="jw--scroll jw--scroll__primary"><%= l('K2_BASIC') %></a>
+		</li>
+	</ul>
+</nav>
+
+<div class="jw--settings jw--settings__global">
+	<div class="jw--setting--field" id="jw--setting-0">
+		<h3><%= l('K2_BASIC') %></h3>
+		
+		<div class="jw--setting--single">
+			<label class="left"><%= l('K2_IMPORT_INTO_K2') %></label>
+			<div class="right">
+				<button class="jw--btn" data-action="import"><i class="fa"></i><%= l('K2_IMPORT_JOOMLA_ARTICLES') %></button>
+			</div>
+		</div>
+		
+		<div class="jw--setting--single">
+			<label class="left"><%= l('K2_MAINTENANCE') %></label>
+			<div class="right">
+				<button class="jw--btn jw--btn__cancel" data-action="delete-orphan-tags"><i class="fa"></i><%= l('K2_DELETE_ORPHAN_TAGS') %></button>
+				<button class="jw--btn jw--btn__cancel" data-action="delete-unpublished-comments"><i class="fa"></i><%= l('K2_DELETE_UNPUBLISHED_COMMENTS') %></button>
+			</div>
+		</div>
+	</div>	
+</div>
+

@@ -1,0 +1,92 @@
+<div class="small-1 large-1 columns">
+    <label class="jw--checkbox">
+        <input data-action="toggle" name="id[]" value="<%= id %>" type="checkbox" />
+        <i class="fa fa-check"></i>
+    </label>
+</div>
+
+<div class="small-3 large-3 columns jw--cat--title">
+    <% if(canEdit) { %>
+    	<% if(isLocked) { %>
+			<% if(canUnlock) { %>
+				<button data-action="unlock" title="<%- lockedBy %> <%- lockedAt %>"><i class="fa fa-unlock-alt"></i></button>
+			<% } else { %>
+				<span title="<%- lockedBy %> <%- lockedAt %>"><i class="fa fa-fa-lock"></i></span>
+			<% } %>
+			<%= title %>
+		<% } else { %>
+			<a data-action="edit" href="<%= editLink %>"><%= title %></a>
+		<% } %>
+    <% } else { %>
+        <%= str_repeat('-', level) %><%= title %>
+    <% } %>
+    <span>(<span><%= totalItems %> <%= l('K2_TOTAL') %></span> / <span><%= trashedItems %> <%= l('K2_TRASHED') %></span>)</span>
+</div>
+
+<div class="text-center small-1 large-1 columns"><span data-role="ordering-handle"><i class="fa fa-bars"></i></span></div>
+
+<div class="small-1 large-1 columns"><%= inheritFrom %></div>
+
+<div class="text-center small-1 large-1 columns">
+    <% if(canEditState) { %>
+    <a class="jw--state--toggler jw--state--toggler__pub <% if( state == 1 ) { print('toggler--active'); } %>" data-action="toggle-state-category" data-state-value="<%= state %>" data-id="<%= id %>" data-state="state">
+	    <% if(state == -1) { %>
+		<i class="fa fa-trash-o"></i>
+		<% } else { %>
+		<i class="fa fa-check-circle"></i>
+		<% } %>
+		<i class="hidden"><%= state %></i>
+    </a>
+    <% } else { %>
+    	<% if(state == -1) { %>
+		<i class="fa fa-trash-o"></i>
+		<% } else { %>
+		<i class="fa fa-check-circle"></i>
+		<% } %>
+		<i class="hidden"><%= state %></i>
+    <% } %>
+</div>
+
+<div class="small-1 large-1 columns"><%= viewLevel %></div>
+
+<div class="small-1 large-1 columns">
+	<% if(template) { %>
+		<%= template %>
+	<% } else { %>	
+		<%= l('K2_DEFAULT') %>
+	<%	} %>
+</div>
+
+<div class="small-1 large-1 columns"><a href="#users/edit/<%- created_by %>"><%= authorName %></a></div>
+
+<div class="small-1 large-1 columns"><%= createdOn %></div>
+
+<div class="small-1 large-1 columns">
+	<% if(moderatorName){ %>
+		<%= moderatorName %>
+	<% } else { %>	
+		<div class="text-center"> - </div>
+	<%	} %>
+</div>
+
+<div class="small-1 large-1 columns">
+	<% if(modifiedOn){ %>
+		<%= modifiedOn %>
+	<% } else { %>	
+		<%= l('K2_NEVER') %>
+	<%	} %>
+</div>
+
+<div class="small-1 large-1 columns">
+    <% if(image && image.flag) { %>
+        <a href="<%= image.src %>" data-role="modal"><%= l('K2_PREVIEW') %></a>
+    <% } else { %>
+    <div class="text-center"> - </div>
+    <% } %>
+</div>
+
+<div class="small-1 large-1 columns"><%= languageTitle %></div>
+
+<div class="small-1 large-1 columns"><%= id %></div>
+
+<ul class="jw--subcat" data-parent="<%- id %>"></ul>

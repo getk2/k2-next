@@ -1,0 +1,17 @@
+<div class="clr"></div>
+<div class="jw--attachments">
+	<% if(remove == 0) { %>
+	<div class="jw--element--row jw--attachment--single jw--gallery--single">
+		<%= output %>
+		<input type="hidden" name="galleries[<%- cid %>][url]" value="<%- url %>" />
+    </div>
+    
+	<button class="jw--remove jw--attachment--remove" data-action="remove">
+	    <i class="fa fa-ban"></i>
+	    <span class="visuallyhidden"><%= l('K2_REMOVE') %></span>  
+    </button>
+    <span class="fa fa-reorder jw--order--handle jw--order--handle__abs" data-role="ordering-handle"></span> 
+    <% } %>
+    <input type="hidden" name="galleries[<%- cid %>][upload]" value="<%- upload %>" />
+    <input type="hidden" name="galleries[<%- cid %>][remove]" value="<%- remove %>" />
+</div>

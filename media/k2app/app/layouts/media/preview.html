@@ -1,0 +1,45 @@
+<div class="jw--attachments">
+	<% if(remove == 0) { %>
+	<div class="row jw--element--row jw--attachment--single">
+		<div class="column small-16 medium-6 large-4">
+			<input type="hidden" name="media[<%- cid %>][url]" value="<%- url %>" />
+			<input type="hidden" name="media[<%- cid %>][provider]" value="<%- provider %>" />
+			<input type="hidden" name="media[<%- cid %>][id]" value="<%- id %>" />
+			<input type="hidden" name="media[<%- cid %>][embed]" value="<%- embed %>"/>
+			
+			<%= output %>
+			
+		</div>
+		<div class="column small-16 medium-10 large-12">
+		
+			<div class="jw--element--single">
+		   		<div class="text-right left jw--item--lbl">
+					<label><%= l('K2_MEDIA_CAPTION') %></label>
+				</div>
+				<div class="ov-hidden jw--item--input">
+					<input type="text" name="media[<%- cid %>][caption]" value="<%- caption %>" />
+				</div>
+			</div>
+					
+			<div class="jw--element--single">
+		   		<div class="text-right left jw--item--lbl">				
+					<label><%= l('K2_MEDIA_CREDITS') %></label>
+				</div>
+				<div class="ov-hidden jw--item--input">
+					<input type="text" name="media[<%- cid %>][credits]" value="<%- credits %>" />
+				</div>
+			</div>
+			
+		</div>
+	</div>
+	<button class="jw--remove jw--attachment--remove" data-action="remove">
+	    <i class="fa fa-ban"></i>
+	    <span class="visuallyhidden"><%= l('K2_REMOVE') %></span>  
+    </button>
+    <span class="fa fa-reorder jw--order--handle jw--order--handle__abs" data-role="ordering-handle"></span> 
+    <% } %>
+    
+	<input type="hidden" name="media[<%- cid %>][upload]" value="<%- upload %>" />
+	<input type="hidden" name="media[<%- cid %>][remove]" value="<%- remove %>" />
+
+</div>

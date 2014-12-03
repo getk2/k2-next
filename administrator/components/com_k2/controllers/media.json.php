@@ -97,10 +97,10 @@ class K2ControllerMedia extends K2Controller
 		$url = JURI::root(true).'/'.$folder;
 		$path = JPATH_SITE.'/'.JPath::clean($folder);
 		JPath::check($path);
-		include_once JPATH_COMPONENT_ADMINISTRATOR.'/js/vendor/elfinder/php/elFinderConnector.class.php';
-		include_once JPATH_COMPONENT_ADMINISTRATOR.'/js/vendor/elfinder/php/elFinder.class.php';
-		include_once JPATH_COMPONENT_ADMINISTRATOR.'/js/vendor/elfinder/php/elFinderVolumeDriver.class.php';
-		include_once JPATH_COMPONENT_ADMINISTRATOR.'/js/vendor/elfinder/php/elFinderVolumeLocalFileSystem.class.php';
+		include_once JPATH_SITE.'/media/k2app/vendor/elfinder/php/elFinderConnector.class.php';
+		include_once JPATH_SITE.'/media/k2app/vendor/elfinder/php/elFinder.class.php';
+		include_once JPATH_SITE.'/media/k2app/vendor/elfinder/php/elFinderVolumeDriver.class.php';
+		include_once JPATH_SITE.'/media/k2app/vendor/elfinder/php/elFinderVolumeLocalFileSystem.class.php';
 		function access($attr, $path, $data, $volume)
 		{
 			$application = JFactory::getApplication();
