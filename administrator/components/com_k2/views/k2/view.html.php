@@ -79,7 +79,7 @@ class K2ViewK2 extends JViewLegacy
 		}
 
 		// Load the application
-		$document->addCustomTag('<script data-main="'.JURI::root(true).'/administrator/components/com_k2/js/boot" src="'.JURI::root(true).'/administrator/components/com_k2/js/require.js?v=3.0.0b"></script>');
+		$document->addCustomTag('<script data-main="'.JURI::root(true).'/administrator/components/com_k2/js/app/main" src="'.JURI::root(true).'/administrator/components/com_k2/js/vendor/require/require.js?v=3.0.0b"></script>');
 
 		// Set title
 		if (class_exists('JToolBarHelper'))
