@@ -1,4 +1,4 @@
-define(['marionette', 'text!layouts/users/list.html', 'text!layouts/users/row.html', 'dispatcher'], function(Marionette, list, row, K2Dispatcher) {'use strict';
+define(['marionette', 'text!templates/users/list.html', 'text!templates/users/row.html', 'dispatcher'], function(Marionette, list, row, K2Dispatcher) {'use strict';
 	var K2ViewUsersRow = Marionette.ItemView.extend({
 		tagName : 'ul',
 		template : _.template(row),

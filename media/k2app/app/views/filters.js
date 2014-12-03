@@ -1,4 +1,4 @@
-define(['marionette', 'text!layouts/filters.html', 'dispatcher', 'widget'], function(Marionette, template, K2Dispatcher, K2Widget) {'use strict';
+define(['marionette', 'text!templates/filters.html', 'dispatcher', 'widget'], function(Marionette, template, K2Dispatcher, K2Widget) {'use strict';
 
 	var K2ViewFilters = Marionette.ItemView.extend({
 

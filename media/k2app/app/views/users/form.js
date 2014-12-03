@@ -1,4 +1,4 @@
-define(['marionette', 'text!layouts/users/form.html', 'dispatcher', 'widget', 'views/image/widget', 'views/extrafields/widget'], function(Marionette, template, K2Dispatcher, K2Widget, K2ViewImageWidget, K2ViewExtraFieldsWidget) {'use strict';
+define(['marionette', 'text!templates/users/form.html', 'dispatcher', 'widget', 'views/image/widget', 'views/extrafields/widget'], function(Marionette, template, K2Dispatcher, K2Widget, K2ViewImageWidget, K2ViewExtraFieldsWidget) {'use strict';
 	var K2ViewUser = Marionette.LayoutView.extend({
 		template : _.template(template),
 		// Regions

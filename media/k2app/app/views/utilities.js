@@ -1,4 +1,4 @@
-define(['marionette', 'text!layouts/utilities.html', 'dispatcher'], function(Marionette, template, K2Dispatcher) {'use strict';
+define(['marionette', 'text!templates/utilities.html', 'dispatcher'], function(Marionette, template, K2Dispatcher) {'use strict';
 
 	var K2ViewUtilities = Marionette.ItemView.extend({
 		template : _.template(template),

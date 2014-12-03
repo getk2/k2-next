@@ -1,4 +1,4 @@
-define(['marionette', 'text!layouts/pagination.html', 'dispatcher', 'session'], function(Marionette, template, K2Dispatcher, K2Session) {'use strict';
+define(['marionette', 'text!templates/pagination.html', 'dispatcher', 'session'], function(Marionette, template, K2Dispatcher, K2Session) {'use strict';
 
 	var K2ViewPagination = Marionette.ItemView.extend({
 

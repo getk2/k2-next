@@ -1,4 +1,4 @@
-define(['marionette', 'text!layouts/toolbar.html', 'dispatcher', 'widget', 'views/batch'], function(Marionette, template, K2Dispatcher, K2Widget, K2ViewBatch) {'use strict';
+define(['marionette', 'text!templates/toolbar.html', 'dispatcher', 'widget', 'views/batch'], function(Marionette, template, K2Dispatcher, K2Widget, K2ViewBatch) {'use strict';
 
 	var K2ViewToolbar = Marionette.ItemView.extend({
 

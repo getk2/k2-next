@@ -1,4 +1,4 @@
-define(['marionette', 'text!layouts/list.html', 'dispatcher'], function(Marionette, template, K2Dispatcher) {'use strict';
+define(['marionette', 'text!templates/list.html', 'dispatcher'], function(Marionette, template, K2Dispatcher) {'use strict';
 
 	var K2ListLayout = Marionette.LayoutView.extend({
 		template : _.template(template),

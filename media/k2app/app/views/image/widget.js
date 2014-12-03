@@ -1,4 +1,4 @@
-define(['text!layouts/image/form.html', 'widget', 'dispatcher'], function(template, K2Widget, K2Dispatcher) {'use strict';
+define(['text!templates/image/form.html', 'widget', 'dispatcher'], function(template, K2Widget, K2Dispatcher) {'use strict';
 
 	// Model
 	var ImageModel = Backbone.Model.extend({

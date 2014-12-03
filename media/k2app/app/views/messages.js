@@ -1,4 +1,4 @@
-define(['marionette', 'text!layouts/messages.html', 'dispatcher'], function(Marionette, template, K2Dispatcher) {'use strict';
+define(['marionette', 'text!templates/messages.html', 'dispatcher'], function(Marionette, template, K2Dispatcher) {'use strict';
 
 	var K2ViewMessages = Marionette.ItemView.extend({
 		template : _.template(template),

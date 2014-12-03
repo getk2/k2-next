@@ -1,4 +1,4 @@
-define(['text!layouts/media/widget.html', 'text!layouts/media/add.html', 'text!layouts/media/preview.html', 'widget', 'dispatcher', 'sortable'], function(widgetTemplate, addTemplate, previewTemplate, K2Widget, K2Dispatcher) {'use strict';
+define(['text!templates/media/widget.html', 'text!templates/media/add.html', 'text!templates/media/preview.html', 'widget', 'dispatcher', 'sortable'], function(widgetTemplate, addTemplate, previewTemplate, K2Widget, K2Dispatcher) {'use strict';
 
 	// Model
 	var MediaModel = Backbone.Model.extend({

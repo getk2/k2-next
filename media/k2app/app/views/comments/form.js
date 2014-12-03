@@ -1,4 +1,4 @@
-define(['marionette', 'text!layouts/comments/form.html'], function(Marionette, template) {'use strict';
+define(['marionette', 'text!templates/comments/form.html'], function(Marionette, template) {'use strict';
 	var K2ViewComment = Marionette.ItemView.extend({
 		template : _.template(template),
 		modelEvents : {

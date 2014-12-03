@@ -1,4 +1,4 @@
-define(['marionette', 'text!layouts/categories/list.html', 'text!layouts/categories/row.html', 'dispatcher', 'session', 'widget'], function(Marionette, list, row, K2Dispatcher, K2Session, K2Widget) {'use strict';
+define(['marionette', 'text!templates/categories/list.html', 'text!templates/categories/row.html', 'dispatcher', 'session', 'widget'], function(Marionette, list, row, K2Dispatcher, K2Session, K2Widget) {'use strict';
 	var K2ViewCategoriesRow = Marionette.CompositeView.extend({
 		tagName : 'li',
 		template : _.template(row),

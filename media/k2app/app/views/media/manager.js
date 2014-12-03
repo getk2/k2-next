@@ -1,4 +1,4 @@
-define(['marionette', 'dispatcher', 'text!layouts/media/manager.html', 'jqueryui'], function(Marionette, K2Dispatcher, template) {'use strict';
+define(['marionette', 'dispatcher', 'text!templates/media/manager.html', 'jqueryui'], function(Marionette, K2Dispatcher, template) {'use strict';
 	var K2ViewMediaManager = Marionette.ItemView.extend({
 		template : _.template(template),
 		onRender : function() {

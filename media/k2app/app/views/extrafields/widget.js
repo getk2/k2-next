@@ -1,4 +1,4 @@
-define(['marionette', 'text!layouts/extrafields/widget.html', 'widget', 'dispatcher'], function(Marionette, template, K2Widget, K2Dispatcher) {'use strict';
+define(['marionette', 'text!templates/extrafields/widget.html', 'widget', 'dispatcher'], function(Marionette, template, K2Widget, K2Dispatcher) {'use strict';
 
 	var K2CollectionExtraFieldsWidget = Backbone.Collection.extend({
 		initialize : function() {

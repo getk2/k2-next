@@ -1,4 +1,4 @@
-define(['marionette', 'text!layouts/sidebar.html', 'dispatcher', 'session', 'text!layouts/sidebar_search_row.html'], function(Marionette, template, K2Dispatcher, K2Session, searchRowTemplate) {'use strict';
+define(['marionette', 'text!templates/sidebar.html', 'dispatcher', 'session', 'text!templates/sidebar_search_row.html'], function(Marionette, template, K2Dispatcher, K2Session, searchRowTemplate) {'use strict';
 
 	var K2ViewSidebarSearchResultsItem = Marionette.ItemView.extend({
 		tagName : 'li',

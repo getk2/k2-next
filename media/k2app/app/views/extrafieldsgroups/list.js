@@ -1,4 +1,4 @@
-define(['marionette', 'text!layouts/extrafieldsgroups/list.html', 'text!layouts/extrafieldsgroups/row.html', 'dispatcher', 'widget'], function(Marionette, list, row, K2Dispatcher, K2Widget) {'use strict';
+define(['marionette', 'text!templates/extrafieldsgroups/list.html', 'text!templates/extrafieldsgroups/row.html', 'dispatcher', 'widget'], function(Marionette, list, row, K2Dispatcher, K2Widget) {'use strict';
 	var K2ViewExtraFieldsGroupsRow = Marionette.ItemView.extend({
 		tagName : 'ul',
 		template : _.template(row),

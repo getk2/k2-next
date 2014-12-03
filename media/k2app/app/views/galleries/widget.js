@@ -1,4 +1,4 @@
-define(['text!layouts/galleries/widget.html', 'text!layouts/galleries/add.html', 'text!layouts/galleries/preview.html', 'widget', 'dispatcher', 'sortable', 'magnific', 'css!magnificStyle'], function(widgetTemplate, addTemplate, previewTemplate, K2Widget, K2Dispatcher) {'use strict';
+define(['text!templates/galleries/widget.html', 'text!templates/galleries/add.html', 'text!templates/galleries/preview.html', 'widget', 'dispatcher', 'sortable', 'magnific', 'css!magnificStyle'], function(widgetTemplate, addTemplate, previewTemplate, K2Widget, K2Dispatcher) {'use strict';
 
 	// Model
 	var Gallery = Backbone.Model.extend({

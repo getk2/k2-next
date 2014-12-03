@@ -1,4 +1,4 @@
-define(['marionette', 'text!layouts/extrafields/form.html', 'dispatcher', 'widget'], function(Marionette, template, K2Dispatcher, K2Widget) {'use strict';
+define(['marionette', 'text!templates/extrafields/form.html', 'dispatcher', 'widget'], function(Marionette, template, K2Dispatcher, K2Widget) {'use strict';
 	var K2ViewExtraFields = Marionette.ItemView.extend({
 		template : _.template(template),
 		modelEvents : {

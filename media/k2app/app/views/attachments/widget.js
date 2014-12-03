@@ -1,4 +1,4 @@
-define(['dispatcher', 'widget', 'text!layouts/attachments/widget.html', 'text!layouts/attachments/add.html', 'text!layouts/attachments/table.html', 'text!layouts/attachments/preview.html', 'collections/attachments', 'sortable'], function(K2Dispatcher, K2Widget, widgetTemplate, addTemplate, tableTemplate, previewTemplate, K2CollectionAttachments) {'use strict';
+define(['dispatcher', 'widget', 'text!templates/attachments/widget.html', 'text!templates/attachments/add.html', 'text!templates/attachments/table.html', 'text!templates/attachments/preview.html', 'collections/attachments', 'sortable'], function(K2Dispatcher, K2Widget, widgetTemplate, addTemplate, tableTemplate, previewTemplate, K2CollectionAttachments) {'use strict';
 
 	var K2ViewAttachmentsRow = Marionette.ItemView.extend({
 		tagName : 'div',

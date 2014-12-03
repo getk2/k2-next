@@ -1,4 +1,4 @@
-define(['marionette', 'text!layouts/comments/list.html', 'text!layouts/comments/row.html', 'dispatcher'], function(Marionette, list, row, K2Dispatcher) {'use strict';
+define(['marionette', 'text!templates/comments/list.html', 'text!templates/comments/row.html', 'dispatcher'], function(Marionette, list, row, K2Dispatcher) {'use strict';
 	var K2ViewCommentsRow = Marionette.ItemView.extend({
 		tagName : 'ul',
 		template : _.template(row),
