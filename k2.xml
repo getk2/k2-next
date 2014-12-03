@@ -77,11 +77,9 @@
 		<files folder="administrator/components/com_k2">
 			<folder>classes</folder>
 			<folder>controllers</folder>
-			<folder>css</folder>
 			<folder>extrafields</folder>
 			<folder>fields</folder>
 			<folder>helpers</folder>
-			<folder>images</folder>
 			<folder>js</folder>
 			<folder>models</folder>
 			<folder>resources</folder>
