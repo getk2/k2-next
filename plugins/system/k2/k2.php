@@ -209,7 +209,8 @@ class PlgSystemK2 extends JPlugin
 				$view = $controller->getView('registration', 'html');
 
 				// Add K2 layout paths to the core users view
-				$view->addTemplatePath(JPATH_SITE.'/components/com_k2/templates');
+				$view->addTemplatePath(JPATH_SITE.'/components/com_k2/templates/default');
+				$view->addTemplatePath(JPATH_SITE.'/templates/'.$application->getTemplate().'/html/com_k2/templates/default');
 				$view->addTemplatePath(JPATH_SITE.'/templates/'.$application->getTemplate().'/html/com_k2/templates');
 				$view->addTemplatePath(JPATH_SITE.'/templates/'.$application->getTemplate().'/html/com_k2');
 
@@ -286,7 +287,8 @@ class PlgSystemK2 extends JPlugin
 					$view = $controller->getView('profile', 'html');
 
 					// Add K2 layout paths to the core users view
-					$view->addTemplatePath(JPATH_SITE.'/components/com_k2/templates');
+					$view->addTemplatePath(JPATH_SITE.'/components/com_k2/templates/default');
+					$view->addTemplatePath(JPATH_SITE.'/templates/'.$application->getTemplate().'/html/com_k2/templates/default');
 					$view->addTemplatePath(JPATH_SITE.'/templates/'.$application->getTemplate().'/html/com_k2/templates');
 					$view->addTemplatePath(JPATH_SITE.'/templates/'.$application->getTemplate().'/html/com_k2');
 
