@@ -665,10 +665,6 @@
 			<option value="ASC">K2_OLDEST_FIRST</option>
 		</field>
 		<field menu="hide" name="commentsLimit" type="text" size="4" default="10" label="K2_COMMENTS_LIMIT" description="" />
-		<field menu="hide" name="commentsFormPosition" type="list" default="below" label="K2_COMMENTS_FORM_POSITION" description="">
-			<option value="above">K2_ABOVE_COMMENTS</option>
-			<option value="below">K2_BELOW_COMMENTS</option>
-		</field>
 		<field menu="hide" name="commentsPublishing" type="radio" default="1" label="K2_ENABLE_COMMENT_AUTOPUBLISHING" description="">
 			<option value="0">K2_NO</option>
 			<option value="1">K2_YES</option>
