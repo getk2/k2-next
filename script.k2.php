@@ -26,9 +26,9 @@ class Com_K2InstallerScript
 		if($type != 'install')
 		{
 			// Ensure that we are under Joomla! 3.2 or later
-			if(version_compare(JVERSION, '3.2.4', 'lt'))
+			if(version_compare(JVERSION, '3.3.6', 'lt'))
 			{
-				$application->enqueueMessage('K2 v3 requires Joomla! 3.2.4 or later.', 'error');
+				$application->enqueueMessage('K2 v3 requires Joomla! 3.3.6 or later.', 'error');
 				return false;
 			}
 						
@@ -56,33 +56,11 @@ class Com_K2InstallerScript
 					return false;
 				}
 				
-				// User is required to disable Joomla! system debugger while upgrading
-				if($configuration->get('debug'))
-				{
-					$application->enqueueMessage('Joomla! system debugger is enabled. Please disable it and try again.', 'error');
-					return false;
-				}
-				
-				// User is required to disable Joomla! language debugger while upgrading
-				if($configuration->get('debug_lang'))
-				{
-					$application->enqueueMessage('Joomla! language debugger is enabled. Please disable it and try again.', 'error');
-					return false;
-				}
-				
 				// User is required to set error reporting to "None" or "Simple" while upgrading to avoid breaking JSON response due to PHP notices.
 				if($configuration->get('error_reporting') != 'none' && $configuration->get('error_reporting') != 'simple')
 				{
 					$application->enqueueMessage('Joomla! error reporting is enabled. Please set it to "None" or "Simple" and try again.', 'error');
 					return false;
-				}
-				
-				// Ensure that all K2 plugins are disabled
-				$k2Plugins = JPluginHelper::getPlugin('k2');
-				if(count($k2Plugins))
-				{
-					$application->enqueueMessage('Third-party K2 plugins found on your system. Please disable them and try again.', 'error');
-					return false;					
 				}
 				
 				// Since this is an upgrade rename all K2 2.x tables so the new ones will be created.
