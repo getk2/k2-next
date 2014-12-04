@@ -56,13 +56,6 @@ class Com_K2InstallerScript
 					return false;
 				}
 				
-				// User is required to set error reporting to "None" or "Simple" while upgrading to avoid breaking JSON response due to PHP notices.
-				if($configuration->get('error_reporting') != 'none' && $configuration->get('error_reporting') != 'simple')
-				{
-					$application->enqueueMessage('Joomla! error reporting is enabled. Please set it to "None" or "Simple" and try again.', 'error');
-					return false;
-				}
-				
 				// Since this is an upgrade rename all K2 2.x tables so the new ones will be created.
 				$oldTables = array('#__k2_attachments', '#__k2_categories', '#__k2_comments', '#__k2_extra_fields' , '#__k2_extra_fields_groups', '#__k2_items', '#__k2_rating', '#__k2_tags', '#__k2_tags_xref', '#__k2_users', '#__k2_user_groups');
 				foreach($oldTables as $oldTable)
@@ -100,7 +93,7 @@ class Com_K2InstallerScript
 				{
 					JFolder::move(JPATH_SITE.'/components/com_k2', JPATH_SITE.'/components/com_k2_v2');
 					JFolder::create(JPATH_SITE.'/components/com_k2');
-					JFolder::copy(JPATH_SITE.'/components/com_k2_v2/templates', JPATH_SITE.'/components/com_k2/templates');
+					JFolder::copy(JPATH_SITE.'/components/com_k2_v2/templates', JPATH_SITE.'/components/com_k2/templates', '', true);
 				}
 				if(JFolder::exists(JPATH_ADMINISTRATOR.'/components/com_k2'))
 				{
