@@ -377,6 +377,46 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 				element.remove();
 			}
 		},
+		
+		extrafieldgroups : function(element) {
+			var select = element.find('select'), list = element.find('div[data-role="list"]'), active = element.data('value');
+			require(['select2', 'sortable'], function() {
+				if(active) {
+					active = String(active);
+					if(active.indexOf('|') === -1) {
+						var init = [active];
+					} else {
+						var init = active.split('|');
+					}
+					jQuery.each(init, function(index, value) {
+						var option = select.find('option[value="'+value+'"]');
+						option.prop('disabled', true);
+						list.append('<div data-role="row"><span class="fa fa-reorder jw--order--handle" data-role="ordering-handle"></span><button class="jw--remove--row" data-action="remove"><i class="fa fa-ban"></i><span class="visuallyhidden">' + l('K2_REMOVE') + '</span></button><span>' + option.text() + '</span><input type="hidden" value="'+option.val()+'" name="'+select.attr('name')+'[]" /></div>');
+					});						
+				}
+				list.sortable({
+					containerSelector : 'div[data-role="list"]',
+					itemSelector : 'div[data-role="row"]',
+					handle : 'span[data-role="ordering-handle"]',
+					placeholder : '<div></div>'
+				});
+				list.on('click', 'button[data-action="remove"]', function(event) {
+					event.preventDefault();
+					var row =  jQuery(this).parents('div[data-role="row"]');
+					select.find('option[value="'+row.find('input').val()+'"]').prop('disabled', false);
+					row.remove();
+				});
+				select.select2({
+					placeholder : l('K2_ADD_GROUP')
+				}).on('select2-selecting', function(event) {
+					list.append('<div data-role="row"><span class="fa fa-reorder jw--order--handle" data-role="ordering-handle"></span><button class="jw--remove--row" data-action="remove"><i class="fa fa-ban"></i><span class="visuallyhidden">' + l('K2_REMOVE') + '</span></button><span>' + event.choice.text + '</span><input type="hidden" value="'+event.choice.id+'" name="'+select.attr('name')+'[]" /></div>');
+					list.sortable('refresh');
+					select.find('option[value="'+event.choice.id+'"]').prop('disabled', true);
+				}).on('change', function() {
+					select.select2('val', '');
+				});
+			});
+		},
 
 		scrollspymenu : function(element, options) {
 			var defaults = {

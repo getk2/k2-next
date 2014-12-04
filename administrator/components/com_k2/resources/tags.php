@@ -151,7 +151,7 @@ class K2Tags extends K2Resource
 		$groups = array();
 		if ($this->id)
 		{
-			$groups = K2HelperExtraFields::getTagExtraFieldsGroups($this->id, $this->extra_fields);
+			$groups = K2HelperExtraFields::getTagExtraFieldsGroups($this->extra_fields);
 		}
 		return $groups;
 	}

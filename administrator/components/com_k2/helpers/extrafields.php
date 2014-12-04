@@ -72,8 +72,13 @@ class K2HelperExtraFields
 			K2Model::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_k2/models');
 			$model = K2Model::getInstance('ExtraFieldsGroups', 'K2Model');
 			$model->setState('scope', $scope);
-			$model->setState('sorting', 'ordering');
-			self::$groups[$scope] = $model->getRows();
+			$model->setState('sorting', 'name');
+			$rows = $model->getRows();
+			self::$groups[$scope] = array();
+			foreach ($rows as $row)
+			{
+				self::$groups[$scope][$row->id] = $row;
+			}
 		}
 		return self::$groups[$scope];
 	}
@@ -104,90 +109,53 @@ class K2HelperExtraFields
 	{
 		$groups = array();
 		$values = json_decode($values);
-		$search = array();
-		foreach (self::getGroups('item') as $group)
+		$category = K2Categories::getInstance($categoryId);
+		$categoryParams = $category->getEffectiveParams();
+		$selectedGroups = $categoryParams->get('catExtraFieldGroups', array());
+		if(!is_array($selectedGroups))
 		{
-			if ($group->assignments->mode == 'specific')
-			{
-				$search = $group->assignments->categories;
-				if ($group->assignments->recursive)
-				{
-					foreach ($group->assignments->categories as $id)
-					{
-						$table = JTable::getInstance('Categories', 'K2Table');
-						foreach ($table->getTree($id) as $category)
-						{
-							$search[] = $category->id;
-						}
-					}
-				}
-				$search = array_unique($search);
-			}
-
-			if ($group->assignments->mode == 'all' || ($group->assignments->mode == 'specific' && in_array($categoryId, $search)))
-			{
-				$groups[] = self::renderGroup($group, $values);
-			}
+			$selectedGroups = array($selectedGroups);
+		}
+		$itemGroups = self::getGroups('item');
+		foreach ($selectedGroups as $groupId)
+		{
+			$group = $itemGroups[$groupId];
+			$groups[] = self::renderGroup($group, $values);
 		}
 		return $groups;
 	}
 
-	public static function getCategoryExtraFieldsGroups($parentId, $values)
+	public static function getCategoryExtraFieldsGroups($values)
 	{
 		$groups = array();
 		$values = json_decode($values);
 
 		foreach (self::getGroups('category') as $group)
 		{
-			if ($group->assignments->mode == 'specific')
-			{
-				$search = $group->assignments->categories;
-				if ($group->assignments->recursive)
-				{
-					foreach ($group->assignments->categories as $id)
-					{
-						$table = JTable::getInstance('Categories', 'K2Table');
-						foreach ($table->getTree($id) as $category)
-						{
-							$search[] = $category->id;
-						}
-					}
-				}
-				$search = array_unique($search);
-			}
-			if ($group->assignments->mode == 'all' || ($group->assignments->mode == 'specific' && in_array($parentId, $search)))
-			{
-				$groups[] = self::renderGroup($group, $values);
-			}
+			$groups[] = self::renderGroup($group, $values);
 		}
 		return $groups;
 	}
 
-	public static function getUserExtraFieldsGroups($usergroups, $values)
+	public static function getUserExtraFieldsGroups($values)
 	{
 		$groups = array();
 		$values = json_decode($values);
 		foreach (self::getGroups('user') as $group)
 		{
-			if ($group->assignments->mode == 'all' || ($group->assignments->mode == 'specific' && count(array_intersect($usergroups, $group->assignments->usergroups)) > 0))
-			{
-				$groups[] = self::renderGroup($group, $values);
-			}
+			$groups[] = self::renderGroup($group, $values);
 		}
 		return $groups;
 	}
 
-	public static function getTagExtraFieldsGroups($tagId, $values)
+	public static function getTagExtraFieldsGroups($values)
 	{
 		$groups = array();
 		$values = json_decode($values);
 
 		foreach (self::getGroups('tag') as $group)
 		{
-			if ($group->assignments->mode == 'all' || ($group->assignments->mode == 'specific' && in_array($tagId, $group->assignments->tags)))
-			{
-				$groups[] = self::renderGroup($group, $values);
-			}
+			$groups[] = self::renderGroup($group, $values);
 		}
 		return $groups;
 	}

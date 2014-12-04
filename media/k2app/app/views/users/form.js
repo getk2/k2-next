@@ -9,9 +9,6 @@ define(['marionette', 'text!templates/users/form.html', 'dispatcher', 'widget', 
 		modelEvents : {
 			'change' : 'render'
 		},
-		events : {
-			'click input[name="groups[]"]' : 'updateExtraFields'
-		},
 		initialize : function() {
 
 			// Image
@@ -23,7 +20,7 @@ define(['marionette', 'text!templates/users/form.html', 'dispatcher', 'widget', 
 			this.extraFieldsView = new K2ViewExtraFieldsWidget({
 				data : this.model.getForm().get('extraFields'),
 				resourceId : this.model.get('id'),
-				filterId : this.model.get('id'),
+				filterId : 0,
 				scope : 'user'
 			});
 
@@ -79,13 +76,6 @@ define(['marionette', 'text!templates/users/form.html', 'dispatcher', 'widget', 
 			if ( typeof (tinymce) != 'undefined' && parseInt(tinymce.majorVersion) === 4) {
 				tinymce.remove();
 			}
-		},
-		updateExtraFields : function() {
-			var groups = [];
-			this.$('input[name="groups[]"]:checked').each(function() {
-				groups.push(this.value);
-			});
-			this.extraFieldsView.trigger('filter', groups.join('|'));
 		}
 	});
 	return K2ViewUser;

@@ -2,7 +2,6 @@
 <config>
 	<fieldset name="COM_K2_LAYOUT_OPTIONS" label="K2_LAYOUT_VIEWS" addfieldpath="/administrator/components/com_k2/fields">
 		<!-- ######################### CSS Settings ######################### -->
-		<field type="k2language"/>
 		<field menu="hide" name="" type="k2header" default="K2_CSS_SETTINGS" label="" description="" />
 		<field menu="hide" name="enable_css" type="radio" default="1" label="K2_DEFAULT_CSS" description="K2_THIS_OPTION_WILL_LOAD_THE_BUILTIN_CSS_STYLING_THAT_COMES_WITH_K2_BY_DEFAULT_IF_YOU_ARE_USING_A_JOOMLA_TEMPLATE_WHICH_SUPPORTS_K2_STYLES_YOU_MAY_HAVE_TO_DISABLE_THIS_OPTION_TO_APPLY_YOUR_JOOMLA_TEMPLATES_CSS_STYLING_TO_THE_K2_COMPONENT_AND_MODULES">
 			<option value="0">K2_DISABLE</option>

@@ -139,7 +139,7 @@ class K2ViewTags extends K2View
 		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/html.php';
 		$form->state = K2HelperHTML::state('state', $row->state, false, false, 'radio', true);
 		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/extrafields.php';
-		$form->extraFields = K2HelperExtraFields::getTagExtraFieldsGroups($row->id, $row->extra_fields);
+		$form->extraFields = K2HelperExtraFields::getTagExtraFieldsGroups($row->extra_fields);
 	}
 
 	/**

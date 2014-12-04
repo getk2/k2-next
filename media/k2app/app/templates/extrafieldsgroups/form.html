@@ -11,24 +11,7 @@
 			<label for="scope"><%= l('K2_SCOPE') %></label>
 			<div class="right">
 			    <%= form.scope %>
-				
-				<div class="clr"></div>
-				<div class="jw--subfield">
-					<label class="jw--radio"><%= l('K2_ALL') %>
-						<input type="radio" name="assignments[mode]" value="all" />
-					</label>
-					<label class="jw--radio"><%= l('K2_SELECT_FROM_LIST') %>
-						<input type="radio" name="assignments[mode]" value="specific" />
-					</label> 
-					<label class="jw--radio"><%= l('K2_NONE') %>
-						<input type="radio" name="assignments[mode]" value="none" />
-					</label>
-				</div>
 			</div>
-		</div>
-		
-		<div class="jw--setting--single">
-			<div class="right jw--generic--def" data-region="extra-field-group-assignements"></div>
 		</div>
 			
 	    <input type="hidden" name="id" value="<%= row.id %>" / >

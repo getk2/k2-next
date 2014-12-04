@@ -234,7 +234,7 @@ class K2ViewUsers extends K2View
 		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/html.php';
 		$_form->gender = K2HelperHTML::gender('gender', $row->gender);
 		require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/extrafields.php';
-		$_form->extraFields = K2HelperExtraFields::getUserExtraFieldsGroups(JFactory::getUser($row->id)->getAuthorisedGroups(), $row->extra_fields);
+		$_form->extraFields = K2HelperExtraFields::getUserExtraFieldsGroups($row->extra_fields);
 		require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/editor.php';
 		$config = JFactory::getConfig();
 		$editor = K2Editor::getInstance($config->get('editor'));

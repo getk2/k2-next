@@ -238,7 +238,7 @@ class K2Categories extends K2Resource
 		$groups = array();
 		if ($this->id)
 		{
-			$groups = K2HelperExtraFields::getCategoryExtraFieldsGroups($this->id, $this->extra_fields);
+			$groups = K2HelperExtraFields::getCategoryExtraFieldsGroups($this->extra_fields);
 		}
 		return $groups;
 	}

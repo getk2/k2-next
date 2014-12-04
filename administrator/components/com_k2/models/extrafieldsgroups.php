@@ -127,13 +127,6 @@ class K2ModelExtraFieldsGroups extends K2Model
 				$ordering = 'extraFieldsGroup.name';
 				$direction = $sorting == 'name' ? 'ASC' : 'DESC';
 				break;
-			case 'ordering' :
-				$ordering = $this->getState('scope') ? 'extraFieldsGroup.ordering' : array(
-					'extraFieldsGroup.scope',
-					'extraFieldsGroup.ordering'
-				);
-				$direction = 'ASC';
-				break;
 		}
 		// Append sorting
 		$db = $this->getDbo();
@@ -174,22 +167,6 @@ class K2ModelExtraFieldsGroups extends K2Model
 		{
 			$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
 			return false;
-		}
-
-		// Assignments
-		if (isset($data['assignments']))
-		{
-			if ($data['assignments']['mode'] == 'specific' && isset($data['assignments']['tags']))
-			{
-				$data['assignments']['tags'] = explode(',', $data['assignments']['tags']);
-			}
-			$data['assignments'] = json_encode($data['assignments']);
-		}
-
-		// Ordering
-		if (!$table->id)
-		{
-			$data['ordering'] = $table->getNextOrder($db->quoteName('scope').' = '.$db->quote($data['scope']));
 		}
 
 		return true;

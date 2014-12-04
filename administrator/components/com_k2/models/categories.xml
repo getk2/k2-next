@@ -5,7 +5,6 @@
 	</fields>
 	<fields name="params">
 		<fieldset name="categoryLayoutOptions" addfieldpath="/administrator/components/com_k2/fields">
-			<field type="k2language"/>
 			<field name="" type="k2header" default="K2_LAYOUT_GRID" label="" description=""/>
 			<field name="num_leading_items" type="text" size="4" default="2" label="K2_LEADING_COUNT" description="K2_NUMBER_OF_ITEMS_TO_DISPLAY_AS_LEADING"/>
 			<field name="num_leading_columns" type="text" size="4" default="1" label="K2_COLUMNS_FOR_LEADING" description=""/>
@@ -57,6 +56,7 @@
 			</field>
 		</fieldset>
 		<fieldset name="categoryViewOptions" addfieldpath="/administrator/components/com_k2/fields">
+			<field name="catExtraFieldGroups" type="k2extrafieldgroups" label="K2_EXTRA_FIELD_GROUPS"/>
 			<field name="catTitle" type="radio" default="1" label="K2_TITLE" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>

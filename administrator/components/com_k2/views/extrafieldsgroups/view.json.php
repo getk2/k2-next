@@ -103,7 +103,6 @@ class K2ViewExtraFieldsGroups extends K2View
 			'K2_NONE' => '',
 			'K2_ID_ASC' => 'id',
 			'K2_ID_DESC' => 'id.reverse',
-			'K2_ORDERING' => 'ordering',
 			'K2_NAME_ASC' => 'name',
 			'K2_NAME_DESC' => 'name.reverse'
 		);
@@ -124,37 +123,6 @@ class K2ViewExtraFieldsGroups extends K2View
 	protected function setFormFields(&$form, $row)
 	{
 		$form->scope = K2HelperHTML::extraFieldsScopes('scope', $row->scope);
-		$assignments = array();
-		$recursive = new stdClass;
-		$recursive->label = 'K2_APPLY_RECUSRIVELY';
-		$recursive->name = 'assignments[recursive]';
-		$recursive->value = isset($row->assignments->recursive) ? $row->assignments->recursive : 0;
-		$assignments['item'] = K2HelperHTML::categories('assignments[categories][]', isset($row->assignments->categories) ? $row->assignments->categories : array(), false, false, 'multiple="multiple"', $recursive);
-		$assignments['category'] = $assignments['item'];
-		$assignments['user'] = K2HelperHTML::usergroups('assignments[usergroups][]', isset($row->assignments->usergroups) ? $row->assignments->usergroups : array(), false, 'multiple="multiple"');
-
-		$tags = array();
-
-		if (isset($row->assignments->tags) && count($row->assignments->tags))
-		{
-			$model = K2Model::getInstance('Tags');
-			$model->setState('id', $row->assignments->tags);
-			$rows = $model->getRows();
-
-			if (count($rows))
-			{
-				foreach ($rows as $row)
-				{
-					$tag = new stdClass;
-					$tag->id = $row->id;
-					$tag->text = $row->name;
-					$tags[] = $tag;
-				}
-			}
-		}
-		$assignments['tag'] = '<input data-widget="tags" data-create="0" data-use-id="1" value="'.htmlspecialchars(json_encode($tags), ENT_QUOTES, 'UTF-8').'" type="hidden" name="assignments[tags]" />';
-		$form->assignments = $assignments;
-
 	}
 
 	/**

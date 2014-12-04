@@ -14,7 +14,6 @@ define(['marionette', 'text!templates/categories/form.html', 'dispatcher', 'widg
 
 		// UI events
 		events : {
-			'change #parent_id' : 'updateExtraFields',
 			'click [data-action="select-association"]' : 'selectAssociation'
 		},
 
@@ -35,7 +34,7 @@ define(['marionette', 'text!templates/categories/form.html', 'dispatcher', 'widg
 			// Extra fields
 			this.extraFieldsView = new K2ViewExtraFieldsWidget({
 				data : this.model.getForm().get('extraFields'),
-				filterId : this.model.get('parent_id'),
+				filterId : 0,
 				resourceId : this.model.get('id'),
 				scope : 'category'
 			});
@@ -69,10 +68,6 @@ define(['marionette', 'text!templates/categories/form.html', 'dispatcher', 'widg
 			var result = this.extraFieldsView.validate();
 
 			return result;
-		},
-
-		updateExtraFields : function() {
-			this.extraFieldsView.trigger('filter', this.$('#parent_id').val());
 		},
 
 		// onBeforeDestroy event ( Marionette.js build in event )

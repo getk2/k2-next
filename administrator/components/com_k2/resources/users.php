@@ -175,7 +175,7 @@ class K2Users extends K2Resource
 		{
 			$user = JFactory::getUser($this->id);
 			$usergroups = $user->getAuthorisedGroups();
-			$groups = K2HelperExtraFields::getUserExtraFieldsGroups($usergroups, $this->extra_fields);
+			$groups = K2HelperExtraFields::getUserExtraFieldsGroups($this->extra_fields);
 		}
 		return $groups;
 	}

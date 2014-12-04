@@ -132,8 +132,6 @@ CREATE TABLE IF NOT EXISTS `#__k2_extra_fields_groups` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `scope` varchar(255) NOT NULL,
-  `assignments` text NOT NULL,
-  `ordering` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `scope` (`scope`),
   KEY `ordering` (`ordering`)

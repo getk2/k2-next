@@ -5,7 +5,7 @@ define(['marionette', 'text!templates/tags/form.html', 'views/extrafields/widget
 			this.extraFieldsView = new K2ViewExtraFieldsWidget({
 				data : this.model.getForm().get('extraFields'),
 				resourceId : this.model.get('id'),
-				filterId : this.model.get('id'),
+				filterId : 0,
 				scope : 'tag'
 			});
 		},

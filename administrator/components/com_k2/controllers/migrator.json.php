@@ -562,17 +562,29 @@ class K2ControllerMigrator extends JControllerLegacy
 				}
 			}
 
-			$assignments = new stdClass;
-			$assignments->mode = 'specific';
-			$assignments->categories = $categories;
-			$assignments->recursive = 0;
-			$assignments = json_encode($assignments);
-
 			$query = $db->getQuery(true);
 			$query->insert($db->quoteName('#__k2_extra_fields_groups'));
-			$query->values((int)$group->id.','.$db->quote($group->name).','.$db->quote('item').','.$db->quote($assignments).', 0');
+			$query->values((int)$group->id.','.$db->quote($group->name).','.$db->quote('item'));
 			$db->setQuery($query);
 			$db->execute();
+			
+			if(count($newCategories))
+			{
+				$query = $query = $db->getQuery(true);
+				$query->select('id, params')->from('#__k2_categories')->where('id IN ('.implode(',', $newCategories).')');
+				$db->setQuery($query);
+				$results = $db->loadObjectList();
+				foreach($results as $result)
+				{
+					$tmpParams = new JRegistry($result->params);
+					$tmpParams->set('catExtraFieldGroups', array($group->id));
+					$query = $db->getQuery(true);
+					$query->update('#__k2_categories')->set('params = '.$db->quote($tmpParams->toString()))->where('id = '.(int)$result->id);
+					$db->setQuery($query);
+					$db->execute();
+				}				
+			}
+
 			$this->response->id = $group->id;
 		}
 

@@ -5,7 +5,6 @@
 	</fields>
 	<fields name="params">
 		<fieldset name="listingOptions" addfieldpath="/administrator/components/com_k2/fields">
-			<field type="k2language"/>
 			<field name="catItemTitle" type="radio" default="" label="K2_TITLE" description="">
 				<option value="">K2_INHERIT_FROM_CATEGORY</option>
 				<option value="0">K2_HIDE</option>
