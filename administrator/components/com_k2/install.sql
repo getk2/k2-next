@@ -133,8 +133,7 @@ CREATE TABLE IF NOT EXISTS `#__k2_extra_fields_groups` (
   `name` varchar(255) NOT NULL,
   `scope` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `scope` (`scope`),
-  KEY `ordering` (`ordering`)
+  KEY `scope` (`scope`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
