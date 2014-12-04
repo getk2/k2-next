@@ -1,4 +1,4 @@
-define(['text!templates/revisions/form.html', 'text!templates/revisions/info.html', 'dispatcher', 'jqueryui'], function(template, revisionInfo, K2Dispatcher) {
+define(['text!templates/revisions/edit.html', 'text!templates/revisions/info.html', 'dispatcher', 'jqueryui'], function(template, revisionInfo, K2Dispatcher) {
 	'use strict';
 
 	// Model

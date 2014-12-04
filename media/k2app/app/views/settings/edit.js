@@ -1,4 +1,4 @@
-define(['marionette', 'text!templates/settings/form.html', 'dispatcher', 'widget'], function(Marionette, template, K2Dispatcher, K2Widget) {
+define(['marionette', 'text!templates/settings/edit.html', 'dispatcher', 'widget'], function(Marionette, template, K2Dispatcher, K2Widget) {
 	'use strict';
 	var K2ViewSettings = Marionette.ItemView.extend({
 		template : _.template(template),

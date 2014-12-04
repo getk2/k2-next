@@ -1,5 +1,5 @@
-define(['marionette', 'text!templates/comments/form.html'], function(Marionette, template) {'use strict';
-	var K2ViewComment = Marionette.ItemView.extend({
+define(['marionette', 'text!templates/usergroups/edit.html', 'dispatcher'], function(Marionette, template, K2Dispatcher) {'use strict';
+	var K2ViewUserGroup = Marionette.ItemView.extend({
 		template : _.template(template),
 		modelEvents : {
 			'change' : 'render'
@@ -12,5 +12,5 @@ define(['marionette', 'text!templates/comments/form.html'], function(Marionette,
 			return data;
 		}
 	});
-	return K2ViewComment;
+	return K2ViewUserGroup;
 });

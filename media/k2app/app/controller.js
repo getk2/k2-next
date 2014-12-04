@@ -242,7 +242,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 		edit : function(id) {
 
 			// Load the required files
-			require(['models/' + this.resource, 'views/' + this.resource + '/form'], _.bind(function(Model, View) {
+			require(['models/' + this.resource, 'views/' + this.resource + '/edit'], _.bind(function(Model, View) {
 
 				// Create the model
 				this.model = new Model();
@@ -478,7 +478,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 		settings : function() {
 
 			// Load the required files
-			require(['models/settings', 'views/settings/form'], _.bind(function(Model, View) {
+			require(['models/settings', 'views/settings/edit'], _.bind(function(Model, View) {
 
 				// Create the model
 				this.model = new Model();
