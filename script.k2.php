@@ -28,7 +28,7 @@ class Com_K2InstallerScript
 			// Ensure that we are under Joomla! 3.2 or later
 			if(version_compare(JVERSION, '3.3.6', 'lt'))
 			{
-				$application->enqueueMessage('K2 v3 requires Joomla! 3.3.6 or later.', 'error');
+				$parent->getParent()->abort('K2 v3 requires Joomla! 3.3.6 or later.');
 				return false;
 			}
 						
@@ -45,14 +45,14 @@ class Com_K2InstallerScript
 				// Ensure that the installed K2 version is not very old. Otherwise the update will fail.
 				if(version_compare($installedVersion, '2.6.8', 'lt'))
 				{
-					$application->enqueueMessage('You cannot update from this version of K2. Please update first your current K2 installation to the latest 2.x series and try again.', 'error');
+					$parent->getParent()->abort('You cannot update from this version of K2. Please update first your current K2 installation to the latest 2.x series and try again.');
 					return false;
 				}
 				
 				// User is required to put the site offline while upgrading
 				if(!$configuration->get('offline'))
 				{
-					$application->enqueueMessage('Site is not offline. Please put your site offline and try again.', 'error');
+					$parent->getParent()->abort('Site is not offline. Please put your site offline and try again.');
 					return false;
 				}
 				
@@ -66,7 +66,7 @@ class Com_K2InstallerScript
 					$db->setQuery('RENAME TABLE '.$db->quoteName($oldTable).' TO '.$db->quoteName($newTable));
 					if(!$db->execute())
 					{
-						$application->enqueueMessage(JText::sprintf('JLIB_INSTALLER_ABORT_COMP_INSTALL_SQL_ERROR', $db->stderr(true)), 'error');
+						$parent->getParent()->abort(JText::sprintf('JLIB_INSTALLER_ABORT_COMP_INSTALL_SQL_ERROR', $db->stderr(true)));
 						return false;
 					}
 				}
@@ -82,7 +82,7 @@ class Com_K2InstallerScript
 						$db->setQuery($query);
 						if (!$db->execute())
 						{
-							$application->enqueueMessage(JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)), 'error');
+							$parent->getParent()->abort(JText::sprintf('JLIB_INSTALLER_ERROR_SQL_ERROR', $db->stderr(true)));
 							return false;
 						}
 					}
