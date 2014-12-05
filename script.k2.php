@@ -91,13 +91,47 @@ class Com_K2InstallerScript
 				// Rename component files to get rid of files we don't need
 				if(JFolder::exists(JPATH_SITE.'/components/com_k2'))
 				{
-					JFolder::move(JPATH_SITE.'/components/com_k2', JPATH_SITE.'/components/com_k2_v2');
-					JFolder::create(JPATH_SITE.'/components/com_k2');
-					JFolder::copy(JPATH_SITE.'/components/com_k2_v2/templates', JPATH_SITE.'/components/com_k2/templates', '', true);
+					if(JFolder::exists(JPATH_SITE.'/components/com_k2_v2'))
+					{
+						if(!JFolder::delete(JPATH_SITE.'/components/com_k2_v2'))
+						{
+							$parent->getParent()->abort('Could not delete folder '.JPATH_SITE.'/components/com_k2_v2. Check permissions.');
+							return false;
+						}
+					}
+					if(!JFolder::move(JPATH_SITE.'/components/com_k2', JPATH_SITE.'/components/com_k2_v2'))
+					{
+						$parent->getParent()->abort('Could not move folder '.JPATH_SITE.'/components/com_k2. Check permissions.');
+						return false;
+					}
+					if(!JFolder::create(JPATH_SITE.'/components/com_k2'))
+					{
+						$parent->getParent()->abort('Could not create folder '.JPATH_SITE.'/components/com_k2. Check permissions.');
+						return false;
+					}
+					if(!JFolder::copy(JPATH_SITE.'/components/com_k2_v2/templates', JPATH_SITE.'/components/com_k2/templates'))
+					{
+						$parent->getParent()->abort('Could not copy folder '.JPATH_SITE.'/components/com_k2_v2/templates. Check permissions.');
+						return false;
+					}
 				}
 				if(JFolder::exists(JPATH_ADMINISTRATOR.'/components/com_k2'))
 				{
-					JFolder::move(JPATH_ADMINISTRATOR.'/components/com_k2', JPATH_ADMINISTRATOR.'/components/com_k2_v2');
+					
+					if(JFolder::exists(JPATH_ADMINISTRATOR.'/components/com_k2_v2'))
+					{
+						if(!JFolder::delete(JPATH_ADMINISTRATOR.'/components/com_k2_v2'))
+						{
+							$parent->getParent()->abort('Could not delete folder '.JPATH_ADMINISTRATOR.'/components/com_k2_v2. Check permissions.');
+							return false;
+						}
+					}
+					
+					if(!JFolder::move(JPATH_ADMINISTRATOR.'/components/com_k2', JPATH_ADMINISTRATOR.'/components/com_k2_v2'))
+					{
+						$parent->getParent()->abort('Could not move folder '.JPATH_ADMINISTRATOR.'/components/com_k2. Check permissions.');
+						return false;
+					}
 				}
 
 				// Set a flag that this is an upgrade

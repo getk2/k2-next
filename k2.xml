@@ -29,7 +29,6 @@
 		<folder>css</folder>
 		<folder>helpers</folder>
 		<folder>images</folder>
-		<folder>js</folder>
 		<folder>templates</folder>
 		<folder>views</folder>
 		<filename>controller.php</filename>
@@ -37,15 +36,17 @@
 		<filename>router.php</filename>
 	</files>
 	<media destination="k2" folder="media/k2">
-		<folder>assets</folder>
-		<!--
 		<folder>attachments</folder>
 		<folder>categories</folder>
 		<folder>galleries</folder>
 		<folder>items</folder>
+		<folder>media</folder>
 		<folder>users</folder>
-		<folder>videos</folder>
-		-->
+	</media>
+	<media destination="k2app" folder="media/k2app">
+		<folder>app</folder>
+		<folder>assets</folder>
+		<folder>vendor</folder>
 	</media>
 	<languages folder="language/en-GB">
 		<language tag="en-GB">en-GB.com_k2.ini</language>
@@ -80,7 +81,6 @@
 			<folder>extrafields</folder>
 			<folder>fields</folder>
 			<folder>helpers</folder>
-			<folder>js</folder>
 			<folder>models</folder>
 			<folder>resources</folder>
 			<folder>tables</folder>
