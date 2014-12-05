@@ -155,6 +155,13 @@ class Com_K2InstallerScript
         $src = $parent->getParent()->getPath('source');
         $manifest = $parent->getParent()->manifest;
 		
+		// Install media/k2app
+		if(JFolder::exists(JPATH_SITE.'/media/k2app'))
+		{
+			JFolder::delete(JPATH_SITE.'/media/k2app');
+		}
+		JFolder::copy($src.'/media/k2app', JPATH_SITE.'/media/k2app');
+		
 		// Install plugins
         $plugins = $manifest->xpath('plugins/plugin');
 				
@@ -301,6 +308,12 @@ class Com_K2InstallerScript
 		
 		// Get manifest
         $manifest = $parent->getParent()->manifest;
+		
+		// Install media/k2app
+		if(JFolder::exists(JPATH_SITE.'/media/k2app'))
+		{
+			JFolder::delete(JPATH_SITE.'/media/k2app');
+		}
 		
 		// Uninstall plugins
 		$plugins = $manifest->xpath('plugins/plugin');
