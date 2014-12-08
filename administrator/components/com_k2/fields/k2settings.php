@@ -25,6 +25,11 @@ class JFormFieldK2Settings extends JFormField
 
 		// Detect context
 		$isMenu = JFactory::getApplication()->input->get('option') == 'com_menus';
+		
+		// Load temporarily the front-end language file if we are on the module manager.
+		// This should be removed when the strings will be transfered in the proper file
+		$language = JFactory::getLanguage();
+		$language->load('com_k2', JPATH_SITE);
 
 		// Include custom layout
 		ob_start();
