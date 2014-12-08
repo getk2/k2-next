@@ -23,7 +23,7 @@ class PlgSearchK2 extends JPlugin
 	public function onContentSearchAreas()
 	{
 		$this->loadLanguage('plg_search_k2', JPATH_ADMINISTRATOR);
-		static $areas = array('k2' => 'K2_ITEMS');
+		static $areas = array('k2' => 'K2_K2_ITEMS');
 		return $areas;
 	}
 
