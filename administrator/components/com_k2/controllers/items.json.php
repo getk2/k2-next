@@ -159,15 +159,18 @@ class K2ControllerItems extends K2Controller
 		{
 			$mapping = $session->get('k2.import.mapping');
 		}
+		
+		// Articles import
+		$step = $id == 0 ? 1 : 10;
 
-		// Get next article to import
+		// Get next articles to import
 		$query = $db->getQuery(true);
 		$query->select('*')->from($db->quoteName('#__content'))->where($db->quoteName('id').' > '.$id)->order($db->quoteName('id'));
-		$db->setQuery($query, 0, 1);
-		$article = $db->loadObject();
+		$db->setQuery($query, 0, $step);
+		$articles = $db->loadObjectList();
 
 		// Check if we are done
-		if (!$article)
+		if (!count($articles))
 		{
 			// Clear session
 			$mapping = new stdClass;
@@ -177,15 +180,18 @@ class K2ControllerItems extends K2Controller
 
 			return $this;
 		}
+		
+		foreach($articles as $article)
+		{
+			// Detect category Id
+			$categoryId = $mapping->categories[$article->catid];
 
-		// Detect category Id
-		$categoryId = $mapping->categories[$article->catid];
+			// Import the item
+			$itemId = $this->importArticle($article, $categoryId);
 
-		// Import the item
-		$itemId = $this->importArticle($article, $categoryId);
-
-		// Update article/items mapping
-		$mapping->articles[$article->id] = $itemId;
+			// Update article/items mapping
+			$mapping->articles[$article->id] = $itemId;
+		}
 
 		// Update mapping to session
 		$session->set('k2.import.mapping', $mapping);
