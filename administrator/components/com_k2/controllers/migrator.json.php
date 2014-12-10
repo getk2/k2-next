@@ -153,7 +153,7 @@ class K2ControllerMigrator extends JControllerLegacy
 
 			// Install K2 v2 package to restore rest extension files
 			$installer = JInstaller::getInstance();
-			$file = JInstallerHelper::downloadPackage('http://getk2.org/downloads/?f=K2_v2.6.8.zip');
+			$file = JInstallerHelper::downloadPackage('http://getk2.org/downloads/?f=K2_v2.6.9.zip');
 			$config = JFactory::getConfig();
 			$package = JInstallerHelper::unpack($config->get('tmp_path').'/'.$file, true);
 			$installer->install($package['dir']);
@@ -355,7 +355,7 @@ class K2ControllerMigrator extends JControllerLegacy
 			{
 				$parentId = 1;
 			}
-			if ($srcId != $parentId)
+			if ($table->id != $parentId)
 			{
 				$table->setLocation($parentId, 'last-child');
 			}

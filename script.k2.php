@@ -43,7 +43,7 @@ class Com_K2InstallerScript
 			if(version_compare($installedVersion, '3.0.0', 'lt'))
 			{
 				// Ensure that the installed K2 version is not very old. Otherwise the update will fail.
-				if(version_compare($installedVersion, '2.6.8', 'lt'))
+				if(version_compare($installedVersion, '2.6.9', 'lt'))
 				{
 					$parent->getParent()->abort('You cannot update from this version of K2. Please update first your current K2 installation to the latest 2.x series and try again.');
 					return false;
@@ -71,7 +71,7 @@ class Com_K2InstallerScript
 					}
 				}
 				
-				// Force parsing of SQL file since Joomla! does that only in install mode, not in upgrades
+				// Force parsing of SQL file since Joomla! does that only in install mode, not in updates
 				$sql = $installer->getPath('source').'/administrator/components/com_k2/install.sql';
 				$queries = JDatabaseDriver::splitSql(file_get_contents($sql));
 				foreach ($queries as $query)
