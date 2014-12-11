@@ -23,10 +23,14 @@ class K2ViewK2 extends JViewLegacy
 		// Get user
 		$user = JFactory::getUser();
 
+		// Extra class for Front-end
+		$this->class = '';
+
 		// Front-end permissions check.
 		// We need to do this here since front-end requests are not executed through /administrator/components/com_k2/k2.php
 		if ($application->isSite())
 		{
+			$this->class = ' jw-frontend';
 			if (!$user->authorise('core.manage', 'com_k2'))
 			{
 				if ($user->guest)

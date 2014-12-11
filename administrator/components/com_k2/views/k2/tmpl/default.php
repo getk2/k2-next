@@ -9,7 +9,7 @@
 
 // no direct access
 defined('_JEXEC') or die ; ?>
-<div data-application="k2" class="jw">
+<div data-application="k2" class="jw<?php echo $this->class; ?>">
 <div class="jw--header" data-region="header"></div>
 
     <div class="left" data-region="sidebar"></div>
