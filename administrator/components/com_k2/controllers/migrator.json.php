@@ -357,13 +357,12 @@ class K2ControllerMigrator extends JControllerLegacy
 			}
 			if ($table->id != $parentId)
 			{
-				$table->setLocation($parentId, 'last-child');
-			}
-			if (!$table->store())
-			{
-				$this->response->errors[] = $table->getError();
-				$this->response->failed = 1;
-				return;
+				if(!$table->moveByReference($parentId, 'last-child', $srcId))
+				{
+					$this->response->errors[] = $table->getError();
+					$this->response->failed = 1;
+					return;
+				}
 			}
 		}
 		$this->response->id = 0;
