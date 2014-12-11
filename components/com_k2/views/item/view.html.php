@@ -64,10 +64,10 @@ class K2ViewItem extends K2View
 				$this->user->canComment = $this->user->authorise('k2.comment.create', 'com_k2');
 
 				// Load comments requirements
-				$this->document->addScript(JURI::root(true).'/administrator/components/com_k2/js/lib/underscore-min.js');
-				$this->document->addScript(JURI::root(true).'/administrator/components/com_k2/js/lib/backbone-min.js');
-				$this->document->addScript(JURI::root(true).'/administrator/components/com_k2/js/lib/backbone.marionette.min.js');
-				$this->document->addScript(JURI::root(true).'/administrator/components/com_k2/js/sync.js');
+				$this->document->addScript(JURI::root(true).'/media/k2app/vendor/underscore/underscore-min.js');
+				$this->document->addScript(JURI::root(true).'/media/k2app/vendor/backbone/backbone-min.js');
+				$this->document->addScript(JURI::root(true).'/media/k2app/vendor/marionette/backbone.marionette.min.js');
+				$this->document->addScript(JURI::root(true).'/media/k2app/app/sync.js');
 				require_once JPATH_SITE.'/components/com_k2/helpers/captcha.php';
 				K2HelperCaptcha::initialize();
 			}
