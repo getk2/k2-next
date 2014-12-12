@@ -113,13 +113,15 @@
 	
 	/* header styling */
 	h1.jw--logo { margin-left: 41px; margin-bottom: 15px; }
+	.jw-frontend h1.jw--logo { margin-left: 61px;  }
 	
 	/* add area */
 	.jw--add--area { float: none!important; clear: both; margin: 15px -5px 0; padding: 12px 12px; width: auto; }
 	.jw--add--area.jw--add__solo { margin: 15px -5px 0; }
 	 
 	/* sidebar styling */
-	.jw--sidebar { left: -280px; width: 280px; top: 0; bottom: 0; padding-top: 15px; overflow: visible; position: absolute; }
+	.jw--sidebar { left: -280px; width: 280px; padding-top: 15px; overflow: visible; position: absolute; }
+		.jw-backend .jw--sidebar, .jw-frontend .jw--sidebar {  top: 0; bottom: 0; }
 		.jw--sidebar--handle  { right: -45px; background: transparent; overflow: auto; position: absolute; top: 9px; bottom: auto; height: auto; border: 0; border-left: 0; z-index: 9999; color: #fff; }
 		.jw--sidebar--handle .jw--sidebar--toggle { color: #fff; }
 		.jw--sidebar--text { width: 100%; border-right: 1px solid #dbdcdc; }

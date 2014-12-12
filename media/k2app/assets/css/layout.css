@@ -31,7 +31,7 @@ div#system-debug { padding-left: 50px; }
 /* [Frontend] layout */
 .jw-frontend h1.jw--logo { margin-left: 10px; }
 .jw-frontend .jw--header { top: 0; }
-.jw-frontend .jw--sidebar,.jw-frontend .jw--subheader { top: 67px; }
+.jw-frontend .jw--sidebar,.jw-frontend .jw--subheader { top: 64px; }
 .jw-frontend .jw--sidebar { bottom: 0; }
 .jw-frontend .jw--pagination { bottom: 0; }
 

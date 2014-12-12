@@ -34,6 +34,7 @@
 		.jw--setting--field .jw--setting--single:nth-child(2n-2) { background: #f7f7f7; }
 		
 		.jw--setting--field .jw--setting--single > label { font-size: 13px; font-weight: 700; color: #777778; padding: 10px 0; line-height: 1; display: inline-block; margin: 0; }
+		.jw--settings fieldset { border: 0; }
 		.jw--settings fieldset, .jw--settings select, .jw--settings input[type="text"], .jw--settings input[type="password"], .jw--settings textarea { float: right; }
 		
 		/* Form elements */
