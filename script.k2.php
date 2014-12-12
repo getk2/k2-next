@@ -356,7 +356,7 @@ class Com_K2InstallerScript
 		$document->addStyleSheet(JURI::root(true).'/media/k2app/assets/css/installation.css');
 		if ($this->upgrade)
 		{
-			echo '<a href="#" onclick="window.open(\'index.php?option=com_k2&view=import&tmpl=component\', \'K2\', \'width=640,height=480\'); return false;">'.JText::_('K2_INITIATE_DATA_MIGRATION_PROCESS').'</a>';
+			echo '<a href="#" onclick="window.open(\'index.php?option=com_k2&view=migrate&tmpl=component\', \'K2\', \'width=640,height=480\'); return false;">'.JText::_('K2_INITIATE_DATA_MIGRATION_PROCESS').'</a>';
 		}
 		echo JText::_('K2_POST_INSTALLATION_MESSAGE');
 	}
