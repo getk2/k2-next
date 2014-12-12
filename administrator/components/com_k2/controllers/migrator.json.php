@@ -82,7 +82,7 @@ class K2ControllerMigrator extends JControllerLegacy
 			$this->response->errors[] = JText::_('JINVALID_TOKEN');
 			$this->response->failed = 1;
 		}
-		$percentage = 100 * ($this->response->processed / $this->response->total);
+		$percentage = ($this->response->total > 0) ? 100 * ($this->response->processed / $this->response->total) : 0;
 		$this->response->percentage = round($percentage);
 		echo json_encode($this->response);
 		return $this;
