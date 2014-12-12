@@ -24,7 +24,7 @@ defined('_JEXEC') or die ; ?>
 		jQuery.post('index.php?option=com_k2&task=migrator.run&type=' + type + '&id=' + id + '&format=json', '<?php echo JSession::getFormToken(); ?>=1').done(function(response) {
 			if (response) {
 				jQuery.each(response.errors, function( index, error ) {
-					jQuery('.k2ProcessErrorLog').append('<li>' + error + '</li>');
+					jQuery('.k2ProcessErrorLog').append('<div class="jw--msg"><div class="alert alert-error">' + error + '</div></div>');
 				});
 				if(response.failed) {
 					jQuery('.k2ProcessStatusText').html('<?php echo JText::_('K2_UPGRADE_FAILED_TRYING_TO_RESTORE'); ?>');
@@ -56,9 +56,18 @@ defined('_JEXEC') or die ; ?>
 	}
 	_migrate('attachments', 0);
 </script>
-<span class="k2ProcessStatusText"></span>
-<span class="k2ProcessPercentage">0%</span>
-<div class="k2ProcessStatus"><div class="k2ProcessStatusBar" style="width: 0%; height: 40px; background: red;"></div></div>
-<div class="k2ProcessNote"><?php echo JText::_('K2_PROCESS_DO_NOT_CLOSE_THIS_WINDOW'); ?></div>
+<div class="jw jw--popup">
+	<div class="jw--msg">
+		<div class="alert alert-notice k2ProcessNote">
+			<i class="fa fa-warning"></i> <?php echo JText::_('K2_PROCESS_DO_NOT_CLOSE_THIS_WINDOW'); ?>
+		</div>
+	</div>
+	<span class="k2ProcessStatusText"></span>
+	<span class="text-center k2ProcessPercentage">0%</span>
 
-<ul class="k2ProcessErrorLog"></ul>
+	<div class="k2ProcessErrorLog"></div>
+
+	<div class="k2ProcessStatus">
+		<div class="k2ProcessStatusBar"></div>
+	</div>
+</div>

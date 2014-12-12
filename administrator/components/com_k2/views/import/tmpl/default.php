@@ -47,7 +47,18 @@ defined('_JEXEC') or die ; ?>
 		_import(0, 1);
 	}); 
 </script>
-<span class="k2ProcessStatusText"></span>
-<span class="k2ProcessPercentage">0%</span>
-<div class="k2ProcessStatus"><div class="k2ProcessStatusBar" style="width: 0%; height: 40px; background: red;"></div></div>
-<div class="k2ProcessNote"><?php echo JText::_('K2_PROCESS_DO_NOT_CLOSE_THIS_WINDOW'); ?></div>
+<div class="jw jw--popup">
+	<div class="jw--msg">
+		<div class="alert alert-notice k2ProcessNote">
+			<i class="fa fa-warning"></i> <?php echo JText::_('K2_PROCESS_DO_NOT_CLOSE_THIS_WINDOW'); ?>
+		</div>
+	</div>
+	
+	<span class="k2ProcessStatusText"></span>
+	<span class="text-center k2ProcessPercentage">0%</span>
+
+	<div class="k2ProcessStatus">
+		<div class="k2ProcessStatusBar"></div>
+	</div>
+
+</div>
