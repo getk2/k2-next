@@ -21,11 +21,10 @@
 	.jw--tabs__top a { padding: 20px 14px; font-size: 17px; }
 	
 	/* paddings */
-	.jw-backend .jw--component { padding-top: 155px; }
-	.jw-frontend .jw--component { padding-top: 125px; }
+	.jw--component { padding-top: 155px; }
+	.active--toolbar .jw--component { padding-top: 195px; }
 
-	#k2-items-form.jw-backend .jw--component { padding-top: 109px; }
-	#k2-items-form.jw-frontend .jw--component { padding-top: 79px; }
+	 #k2-items-form .jw--component { padding-top: 109px; }
 	
 	/* filters */
 	.jw--subheader { border-bottom: 0; }
