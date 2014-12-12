@@ -34,8 +34,12 @@ defined('_JEXEC') or die ; ?>
 				} else {
 					jQuery('.k2ProcessStatusText').html(response.status);
 					jQuery('.k2ProcessPercentage').text(response.percentage + '%');
+					if(response.percentage == 0) {
+						jQuery('.k2ProcessStatusBar').css('width', '0%');
+					}
 					jQuery('.k2ProcessStatusBar').animate({'width' : (response.percentage) + '%'}, 'slow', 'linear', function() {
-						if (response && response.id) {
+						console.info(response);
+						if (response && !response.completed) {
 							_migrate(response.type, response.id);
 						} else {
 							window.onbeforeunload = null;
