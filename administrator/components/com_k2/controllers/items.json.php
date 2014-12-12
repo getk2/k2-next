@@ -132,6 +132,13 @@ class K2ControllerItems extends K2Controller
 			$mapping->categories = array();
 			$mapping->parents = array();
 
+			// Count all articles to provide a progress status
+			$query = $db->getQuery(true);
+			$query->select('COUNT(*)')->from($db->quoteName('#__content'));
+			$db->setQuery($query);
+			$total = $db->loadResult();
+			$session->set('k2.import.total', $total);
+
 			// Import all categories at once in the first request
 			$query = $db->getQuery(true);
 			$query->select('*')->from($db->quoteName('#__categories'))->where($db->quoteName('extension').' = '.$db->quote('com_content'))->order($db->quoteName('lft'));
@@ -159,7 +166,7 @@ class K2ControllerItems extends K2Controller
 		{
 			$mapping = $session->get('k2.import.mapping');
 		}
-		
+
 		// Articles import
 		$step = $id == 0 ? 1 : 10;
 
@@ -177,11 +184,11 @@ class K2ControllerItems extends K2Controller
 			$mapping->articles = array();
 			$mapping->categories = array();
 			$session->set('k2.import.mapping', $mapping);
-
+			$session->set('k2.import.total', 0);
 			return $this;
 		}
-		
-		foreach($articles as $article)
+
+		foreach ($articles as $article)
 		{
 			// Detect category Id
 			$categoryId = $mapping->categories[$article->catid];
@@ -199,6 +206,7 @@ class K2ControllerItems extends K2Controller
 		// Output
 		$response = new stdClass;
 		$response->lastId = $article->id;
+		$response->total = $session->get('k2.import.total');
 		echo json_encode($response);
 
 		// Return
