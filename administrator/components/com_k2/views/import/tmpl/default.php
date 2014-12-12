@@ -10,6 +10,9 @@
 // no direct access
 defined('_JEXEC') or die ; ?>
 <script type="text/javascript">
+	window.onbeforeunload = function(e) {
+		return '<?php echo JText::_('K2_PROCESS_ARE_YOU_SURE_YOU_WANT_TO_LEAVE_THIS_PAGE'); ?>';
+	};
 	jQuery(document).ready(function() {
 		function _import(id, processed) {
 			var self = this;
@@ -30,6 +33,7 @@ defined('_JEXEC') or die ; ?>
 					if (data && data.lastId) {
 						_import(data.lastId, processed);
 					} else {
+						window.onbeforeunload = null;
 						setTimeout(function() {
 							window.close();
 						}, 1000);
@@ -45,4 +49,4 @@ defined('_JEXEC') or die ; ?>
 </script>
 <span id="k2ImportPercentage">0%</span>
 <div id="k2ImportStatus"><div id="k2ImportStatusBar" style="width: 0%; height: 40px; background: red;"></div></div>
-<div class="k2ImportNote"><?php echo JText::_('K2_IMPORT_DO_NOT_CLOSE_THIS_WINDOW'); ?></div>
+<div class="k2ImportNote"><?php echo JText::_('K2_PROCESS_DO_NOT_CLOSE_THIS_WINDOW'); ?></div>
