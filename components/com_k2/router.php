@@ -354,7 +354,7 @@ class K2Router extends JComponentRouterBase
 				}
 				return $vars;
 			}
-			else
+			else if (isset($item->query['task']) && $item->query['task'] == 'category' && count($segments) === 1)
 			{
 				$segments[1] = $vars['view'];
 				$vars['view'] = 'item';
