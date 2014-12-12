@@ -61,6 +61,7 @@ class K2ViewK2 extends JViewLegacy
 		// Load the CSS
 		if ($application->isSite())
 		{
+			$document->addScript(JURI::root(true).'/media/k2app/assets/js/frontend.js?v=3.0.0b');
 			$document->addStyleSheet(JURI::root(true).'/media/k2app/assets/css/frontend.css?v=3.0.0b');
 		}
 		$document->addStyleSheet('//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css?v=3.0.0b');
