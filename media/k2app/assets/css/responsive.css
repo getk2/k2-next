@@ -113,7 +113,6 @@
 	
 	/* header styling */
 	h1.jw--logo { margin-left: 41px; margin-bottom: 15px; }
-	.jw-frontend h1.jw--logo { margin-left: 61px;  }
 	
 	/* add area */
 	.jw--add--area { float: none!important; clear: both; margin: 15px -5px 0; padding: 12px 12px; width: auto; }

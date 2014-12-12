@@ -19,7 +19,7 @@ h1.jw--logo { line-height: 0.8; padding: 0; font: 0/0 transparent; background: u
 	
 	.com_k2 .subhead-collapse, .com_k2 header.header { display: none; position: absolute; clip: rect(0,0,0,0); }
 
-.jw--component { overflow: hidden; padding-top: 109px; padding-left: 46px; padding-bottom: 28px;}
+.jw--component { overflow: hidden; padding-left: 46px; padding-bottom: 28px;}
 div[data-region="grid"], div[data-region="list"] { background: #f0f2f2; }
 
 /* layout */
@@ -29,17 +29,19 @@ div[data-region="grid"], div[data-region="list"] { background: #f0f2f2; }
 div#system-debug { padding-left: 50px; }
 
 /* [Frontend] layout */
-.jw-frontend h1.jw--logo { margin-left: 10px; }
 .jw-frontend .jw--header { top: 0; }
 .jw-frontend .jw--sidebar,.jw-frontend .jw--subheader { top: 64px; }
 .jw-frontend .jw--sidebar { bottom: 0; }
 .jw-frontend .jw--pagination { bottom: 0; }
+.jw-frontend .row {  margin-left: 0; margin-right: 0; }
+.jw-frontend  .jw--component { padding-top: 79px; }
 
 /* [Backend] layout */
 .jw-backend .jw--header { top: 30px; }
 .jw-backend .jw--sidebar, .jw-backend .jw--subheader { top: 94px; }
 .jw-backend .jw--sidebar { bottom: 30px; }
 .jw-backend .jw--pagination { bottom: 29px; }
+.jw-backend .jw--component { padding-top: 109px; }
 
 /* [Common] Fixed layout - opened layout */
 .open--sidebar {  }
@@ -49,7 +51,8 @@ div#system-debug { padding-left: 50px; }
 	.open--sidebar .jw--subheader { left: 320px; }
 	
 	/* Active toolbar */
-	.active--toolbar .jw--component { padding-top: 149px; }
+	.jw-backend .active--toolbar .jw--component { padding-top: 149px; }
+	.jw-frontend.active--toolbar .jw--component { padding-top: 119px; }
 	
 /* menu fix */
 #module-menu #menu {z-index:9999;}
