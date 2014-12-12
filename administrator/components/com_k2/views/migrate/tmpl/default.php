@@ -15,9 +15,9 @@ defined('_JEXEC') or die ; ?>
 	};
 	function _restore() {
 		jQuery.post('index.php?option=com_k2&task=migrator.restore&format=json', '<?php echo JSession::getFormToken(); ?>=1').done(function(response) {
-			jQuery('#k2UpgradeStatus').html('Restore completed');
+			jQuery('#k2UpgradeStatus').html('<?php echo JText::_('K2_RESTORE_COMPLETED'); ?>');
 		}).fail(function(response) {
-			jQuery('#k2UpgradeStatus').html('Restore failed');
+			jQuery('#k2UpgradeStatus').html('<?php echo JText::_('K2_RESTORE_FAILED'); ?>');
 		});
 	}
 	function _migrate(type, id) {
@@ -27,17 +27,17 @@ defined('_JEXEC') or die ; ?>
 					jQuery('#k2UpgradeErrorLog').append('<li>' + error + '</li>');
 				});
 				if(response.failed) {
-					jQuery('#k2UpgradeStatus').html('Upgrade failed. Trying to restore previous version. Please wait');
+					jQuery('#k2UpgradeStatus').html('<?php echo JText::_('K2_UPGRADE_FAILED_TRYING_TO_RESTORE'); ?>');
 					_restore();
 				} else if(response.completed) {
-					jQuery('#k2UpgradeStatus').html('Upgrade completed');
+					jQuery('#k2UpgradeStatus').html('<?php echo JText::_('K2_UPGRADE_COMPLETED'); ?>');
 				} else {
 					jQuery('#k2UpgradeStatus').html(response.status);
 					_migrate(response.type, response.id);
 				}
 			}
 		}).fail(function(response) {
-			jQuery('#k2UpgradeStatus').html('Upgrade failed. Trying to restore previous version. Please wait');
+			jQuery('#k2UpgradeStatus').html('<?php echo JText::_('K2_UPGRADE_FAILED_TRYING_TO_RESTORE'); ?>');
 				_restore();
 			});
 	}
