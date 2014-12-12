@@ -36,15 +36,14 @@ class K2ControllerMigrator extends JControllerLegacy
 		}
 		parent::__construct($config);
 
-		set_error_handler(array(
-			$this,
-			'error'
-		));
+		set_error_handler(array($this, 'error'));
 
 		$this->response = new stdClass;
 		$this->response->type = '';
 		$this->response->id = 0;
 		$this->response->status = '';
+		$this->response->total = 0;
+		$this->response->processed = 0;
 		$this->response->errors = array();
 		$this->response->completed = 0;
 		$this->response->failed = 0;
@@ -63,10 +62,7 @@ class K2ControllerMigrator extends JControllerLegacy
 				$this->response->type = $type;
 				try
 				{
-					call_user_func(array(
-						$this,
-						$type
-					), $id);
+					call_user_func(array($this, $type), $id);
 				}
 				catch(Exception $exception)
 				{
@@ -86,6 +82,8 @@ class K2ControllerMigrator extends JControllerLegacy
 			$this->response->errors[] = JText::_('JINVALID_TOKEN');
 			$this->response->failed = 1;
 		}
+		$percentage = 100 * ($this->response->processed / $this->response->total);
+		$this->response->percentage = round($percentage);
 		echo json_encode($this->response);
 		return $this;
 	}
@@ -116,19 +114,7 @@ class K2ControllerMigrator extends JControllerLegacy
 			}
 
 			// Restore v2 tables
-			$tables = array(
-				'#__k2_v2_attachments',
-				'#__k2_v2_categories',
-				'#__k2_v2_comments',
-				'#__k2_v2_extra_fields',
-				'#__k2_v2_extra_fields_groups',
-				'#__k2_v2_items',
-				'#__k2_v2_rating',
-				'#__k2_v2_tags',
-				'#__k2_v2_tags_xref',
-				'#__k2_v2_users',
-				'#__k2_v2_user_groups'
-			);
+			$tables = array('#__k2_v2_attachments', '#__k2_v2_categories', '#__k2_v2_comments', '#__k2_v2_extra_fields', '#__k2_v2_extra_fields_groups', '#__k2_v2_items', '#__k2_v2_rating', '#__k2_v2_tags', '#__k2_v2_tags_xref', '#__k2_v2_users', '#__k2_v2_user_groups');
 			foreach ($tables as $table)
 			{
 				$name = str_replace('#__k2_v2_', '#__k2_', $table);
@@ -195,9 +181,18 @@ class K2ControllerMigrator extends JControllerLegacy
 	private function attachments($id)
 	{
 		$this->response->status = 'Processing Attahcments';
-
-		$step = 1;
+		$session = JFactory::getSession();
+		$step = 10;
 		$db = JFactory::getDbo();
+		if ($id == 0)
+		{
+			$query = $db->getQuery(true);
+			$query->select('COUNT(*)')->from($db->quoteName('#__k2_v2_attachments'));
+			$db->setQuery($query);
+			$total = $db->loadResult();
+			$session->set('k2.upgrade.attachments.total', $total);
+			$session->set('k2.upgrade.attachments.processed', 0);
+		}
 		$query = $db->getQuery(true);
 		$query->select('*')->from($db->quoteName('#__k2_v2_attachments'))->where($db->quoteName('id').' > '.$id)->order($db->quoteName('id'));
 		$db->setQuery($query, 0, $step);
@@ -219,6 +214,9 @@ class K2ControllerMigrator extends JControllerLegacy
 			$db->execute();
 			$this->response->id = $attachment->id;
 		}
+		$this->response->total = $session->get('k2.upgrade.attachments.total');
+		$session->set('k2.upgrade.attachments.processed', (int)$session->get('k2.upgrade.attachments.processed') + count($attachments));
+		$this->response->processed = $session->get('k2.upgrade.attachments.processed');
 
 		if (count($attachments) == 0)
 		{
@@ -230,12 +228,24 @@ class K2ControllerMigrator extends JControllerLegacy
 	private function categories($id)
 	{
 		$this->response->status = 'Processing Categories';
-		$step = 1;
+		$session = JFactory::getSession();
+		$step = 10;
 		$db = JFactory::getDbo();
+		if ($id == 0)
+		{
+			$query = $db->getQuery(true);
+			$query->select('COUNT(*)')->from($db->quoteName('#__k2_v2_categories'));
+			$db->setQuery($query);
+			$total = $db->loadResult();
+			$session->set('k2.upgrade.categories.total', $total);
+			$session->set('k2.upgrade.categories.processed', 0);
+		}
+
 		$query = $db->getQuery(true);
 		$query->select('*')->from($db->quoteName('#__k2_v2_categories'))->where($db->quoteName('id').' > '.$id)->order($db->quoteName('id'));
 		$db->setQuery($query, 0, $step);
 		$categories = $db->loadObjectList();
+
 		foreach ($categories as $category)
 		{
 			$hasImage = false;
@@ -304,12 +314,7 @@ class K2ControllerMigrator extends JControllerLegacy
 			$this->updateOrderingParam($updatedParams, 'subCatOrdering', '');
 
 			$query = $db->getQuery(true);
-			$query->update($db->quoteName('#__k2_categories'))->set(array(
-				$db->quoteName('id').' = '.$newCategoryId,
-				$db->quoteName('image').' = '.$db->quote($image),
-				$db->quoteName('plugins').' = '.$db->quote($category->plugins),
-				$db->quoteName('params').' = '.$db->quote($updatedParams->toString())
-			))->where($db->quoteName('id').' = '.$lastInsertedId);
+			$query->update($db->quoteName('#__k2_categories'))->set(array($db->quoteName('id').' = '.$newCategoryId, $db->quoteName('image').' = '.$db->quote($image), $db->quoteName('plugins').' = '.$db->quote($category->plugins), $db->quoteName('params').' = '.$db->quote($updatedParams->toString())))->where($db->quoteName('id').' = '.$lastInsertedId);
 			$db->setQuery($query);
 			$db->execute();
 
@@ -321,6 +326,10 @@ class K2ControllerMigrator extends JControllerLegacy
 			}
 			$this->response->id = $category->id;
 		}
+
+		$this->response->total = $session->get('k2.upgrade.categories.total');
+		$session->set('k2.upgrade.categories.processed', (int)$session->get('k2.upgrade.categories.processed') + count($categories));
+		$this->response->processed = $session->get('k2.upgrade.categories.processed');
 
 		if (count($categories) == 0)
 		{
@@ -357,7 +366,7 @@ class K2ControllerMigrator extends JControllerLegacy
 			}
 			if ($table->id != $parentId)
 			{
-				if(!$table->moveByReference($parentId, 'last-child', $srcId))
+				if (!$table->moveByReference($parentId, 'last-child', $srcId))
 				{
 					$this->response->errors[] = $table->getError();
 					$this->response->failed = 1;
@@ -365,6 +374,8 @@ class K2ControllerMigrator extends JControllerLegacy
 				}
 			}
 		}
+		$this->response->total = 1;
+		$this->response->processed = 1;
 		$this->response->id = 0;
 		$this->response->type = 'comments';
 	}
@@ -380,6 +391,8 @@ class K2ControllerMigrator extends JControllerLegacy
 		FROM '.$db->quoteName('#__k2_v2_comments');
 		$db->setQuery($query);
 		$db->execute();
+		$this->response->total = 1;
+		$this->response->processed = 1;
 		$this->response->id = 0;
 		$this->response->type = 'extrafields';
 	}
@@ -387,8 +400,18 @@ class K2ControllerMigrator extends JControllerLegacy
 	private function extrafields($id)
 	{
 		$this->response->status = 'Processing Extra Fields';
-		$step = 1;
+		$session = JFactory::getSession();
+		$step = 10;
 		$db = JFactory::getDbo();
+		if ($id == 0)
+		{
+			$query = $db->getQuery(true);
+			$query->select('COUNT(*)')->from($db->quoteName('#__k2_v2_extra_fields'));
+			$db->setQuery($query);
+			$total = $db->loadResult();
+			$session->set('k2.upgrade.extrafields.total', $total);
+			$session->set('k2.upgrade.extrafields.processed', 0);
+		}
 		$query = $db->getQuery(true);
 		$query->select('*')->from($db->quoteName('#__k2_v2_extra_fields'))->where($db->quoteName('id').' > '.$id)->order($db->quoteName('id'));
 		$db->setQuery($query, 0, $step);
@@ -525,6 +548,10 @@ class K2ControllerMigrator extends JControllerLegacy
 			$this->response->id = $field->id;
 		}
 
+		$this->response->total = $session->get('k2.upgrade.extrafields.total');
+		$session->set('k2.upgrade.extrafields.processed', (int)$session->get('k2.upgrade.extrafields.processed') + count($fields));
+		$this->response->processed = $session->get('k2.upgrade.extrafields.processed');
+
 		if (count($fields) == 0)
 		{
 			$this->response->id = 0;
@@ -536,7 +563,17 @@ class K2ControllerMigrator extends JControllerLegacy
 	{
 		$this->response->status = 'Processing Extra Fields Groups';
 		$step = 10;
+		$session = JFactory::getSession();
 		$db = JFactory::getDbo();
+		if ($id == 0)
+		{
+			$query = $db->getQuery(true);
+			$query->select('COUNT(*)')->from($db->quoteName('#__k2_v2_extra_fields_groups'));
+			$db->setQuery($query);
+			$total = $db->loadResult();
+			$session->set('k2.upgrade.extrafieldgroups.total', $total);
+			$session->set('k2.upgrade.extrafieldgroups.processed', 0);
+		}
 		$query = $db->getQuery(true);
 		$query->select('*')->from($db->quoteName('#__k2_v2_extra_fields_groups'))->where($db->quoteName('id').' > '.$id)->order($db->quoteName('id'));
 		$db->setQuery($query, 0, $step);
@@ -566,14 +603,14 @@ class K2ControllerMigrator extends JControllerLegacy
 			$query->values((int)$group->id.','.$db->quote($group->name).','.$db->quote('item'));
 			$db->setQuery($query);
 			$db->execute();
-			
-			if(count($newCategories))
+
+			if (count($newCategories))
 			{
 				$query = $query = $db->getQuery(true);
 				$query->select('id, params')->from('#__k2_categories')->where('id IN ('.implode(',', $newCategories).')');
 				$db->setQuery($query);
 				$results = $db->loadObjectList();
-				foreach($results as $result)
+				foreach ($results as $result)
 				{
 					$tmpParams = new JRegistry($result->params);
 					$tmpParams->set('catExtraFieldGroups', array($group->id));
@@ -581,11 +618,15 @@ class K2ControllerMigrator extends JControllerLegacy
 					$query->update('#__k2_categories')->set('params = '.$db->quote($tmpParams->toString()))->where('id = '.(int)$result->id);
 					$db->setQuery($query);
 					$db->execute();
-				}				
+				}
 			}
 
 			$this->response->id = $group->id;
 		}
+
+		$this->response->total = $session->get('k2.upgrade.extrafieldgroups.total');
+		$session->set('k2.upgrade.extrafieldgroups.processed', (int)$session->get('k2.upgrade.extrafieldgroups.processed') + count($groups));
+		$this->response->processed = $session->get('k2.upgrade.extrafieldgroups.processed');
 
 		if (count($groups) == 0)
 		{
@@ -598,7 +639,17 @@ class K2ControllerMigrator extends JControllerLegacy
 	{
 		$this->response->status = 'Processing Tags';
 		$step = 10;
+		$session = JFactory::getSession();
 		$db = JFactory::getDbo();
+		if ($id == 0)
+		{
+			$query = $db->getQuery(true);
+			$query->select('COUNT(*)')->from($db->quoteName('#__k2_v2_tags'));
+			$db->setQuery($query);
+			$total = $db->loadResult();
+			$session->set('k2.upgrade.tags.total', $total);
+			$session->set('k2.upgrade.tags.processed', 0);
+		}
 		$query = $db->getQuery(true);
 		$query->select('*')->from($db->quoteName('#__k2_v2_tags'))->where($db->quoteName('id').' > '.$id)->order($db->quoteName('id'));
 		$db->setQuery($query, 0, $step);
@@ -633,6 +684,10 @@ class K2ControllerMigrator extends JControllerLegacy
 			$this->response->id = $tag->id;
 		}
 
+		$this->response->total = $session->get('k2.upgrade.tags.total');
+		$session->set('k2.upgrade.tags.processed', (int)$session->get('k2.upgrade.tags.processed') + count($tags));
+		$this->response->processed = $session->get('k2.upgrade.tags.processed');
+
 		if (count($tags) == 0)
 		{
 			$this->response->id = 0;
@@ -647,6 +702,8 @@ class K2ControllerMigrator extends JControllerLegacy
 		$query = 'INSERT IGNORE INTO '.$db->quoteName('#__k2_tags_xref').'('.$db->quoteName('tagId').','.$db->quoteName('itemId').') SELECT '.$db->quoteName('tagID').','.$db->quoteName('itemID').' FROM '.$db->quoteName('#__k2_v2_tags_xref');
 		$db->setQuery($query);
 		$db->execute();
+		$this->response->total = 1;
+		$this->response->processed = 1;
 		$this->response->id = 0;
 		$this->response->type = 'items';
 	}
@@ -654,8 +711,18 @@ class K2ControllerMigrator extends JControllerLegacy
 	private function items($id)
 	{
 		$this->response->status = 'Processing Items';
-		$step = 1;
+		$step = 10;
+		$session = JFactory::getSession();
 		$db = JFactory::getDbo();
+		if ($id == 0)
+		{
+			$query = $db->getQuery(true);
+			$query->select('COUNT(*)')->from($db->quoteName('#__k2_v2_items'));
+			$db->setQuery($query);
+			$total = $db->loadResult();
+			$session->set('k2.upgrade.items.total', $total);
+			$session->set('k2.upgrade.items.processed', 0);
+		}
 		$query = $db->getQuery(true);
 		$query->select('*')->from($db->quoteName('#__k2_v2_items'))->where($db->quoteName('id').' > '.$id)->order($db->quoteName('id'));
 		$db->setQuery($query, 0, $step);
@@ -939,22 +1006,7 @@ class K2ControllerMigrator extends JControllerLegacy
 
 			$query = $db->getQuery(true);
 			$query->update($db->quoteName('#__k2_items'));
-			$query->set(array(
-				$db->quoteName('id').' = '.$item->id,
-				$db->quoteName('ordering').' = '.(int)$item->ordering,
-				$db->quoteName('image').' = '.$db->quote($image),
-				$db->quoteName('media').' = '.$db->quote($media),
-				$db->quoteName('tags').' = '.$db->quote($tags),
-				$db->quoteName('attachments').' = '.$db->quote($attachments),
-				$db->quoteName('galleries').' = '.$db->quote($galleries),
-				$db->quoteName('extra_fields').' = '.$db->quote($extraFields),
-				$db->quoteName('created').' = '.$db->quote($item->created),
-				$db->quoteName('created_by').' = '.$db->quote($item->created_by),
-				$db->quoteName('modified').' = '.$db->quote($item->modified),
-				$db->quoteName('modified_by').' = '.$db->quote($item->modified_by),
-				$db->quoteName('plugins').' = '.$db->quote($item->plugins),
-				$db->quoteName('params').' = '.$db->quote($updatedParams->toString())
-			))->where($db->quoteName('id').' = '.$lastInsertedId);
+			$query->set(array($db->quoteName('id').' = '.$item->id, $db->quoteName('ordering').' = '.(int)$item->ordering, $db->quoteName('image').' = '.$db->quote($image), $db->quoteName('media').' = '.$db->quote($media), $db->quoteName('tags').' = '.$db->quote($tags), $db->quoteName('attachments').' = '.$db->quote($attachments), $db->quoteName('galleries').' = '.$db->quote($galleries), $db->quoteName('extra_fields').' = '.$db->quote($extraFields), $db->quoteName('created').' = '.$db->quote($item->created), $db->quoteName('created_by').' = '.$db->quote($item->created_by), $db->quoteName('modified').' = '.$db->quote($item->modified), $db->quoteName('modified_by').' = '.$db->quote($item->modified_by), $db->quoteName('plugins').' = '.$db->quote($item->plugins), $db->quoteName('params').' = '.$db->quote($updatedParams->toString())))->where($db->quoteName('id').' = '.$lastInsertedId);
 			$db->setQuery($query);
 			$db->execute();
 
@@ -978,6 +1030,10 @@ class K2ControllerMigrator extends JControllerLegacy
 			$this->response->id = $item->id;
 		}
 
+		$this->response->total = $session->get('k2.upgrade.items.total');
+		$session->set('k2.upgrade.items.processed', (int)$session->get('k2.upgrade.items.processed') + count($items));
+		$this->response->processed = $session->get('k2.upgrade.items.processed');
+
 		if (count($items) == 0)
 		{
 			$this->response->id = 0;
@@ -990,7 +1046,8 @@ class K2ControllerMigrator extends JControllerLegacy
 	{
 		$this->response->status = 'Processing Users';
 
-		$step = 5;
+		$step = 10;
+		$session = JFactory::getSession();
 		$db = JFactory::getDbo();
 
 		if ($id == 0)
@@ -1004,6 +1061,14 @@ class K2ControllerMigrator extends JControllerLegacy
 			$query->delete($db->quoteName('#__k2_users_stats'));
 			$db->setQuery($query);
 			$db->execute();
+
+			$query = $db->getQuery(true);
+			$query->select('COUNT(*)')->from($db->quoteName('#__k2_v2_users'));
+			$db->setQuery($query);
+			$total = $db->loadResult();
+			$session->set('k2.upgrade.users.total', $total);
+			$session->set('k2.upgrade.users.processed', 0);
+
 		}
 
 		$query = $db->getQuery(true);
@@ -1056,6 +1121,10 @@ class K2ControllerMigrator extends JControllerLegacy
 
 			$this->response->id = $author->userID;
 		}
+
+		$this->response->total = $session->get('k2.upgrade.users.total');
+		$session->set('k2.upgrade.users.processed', (int)$session->get('k2.upgrade.users.processed') + count($authors));
+		$this->response->processed = $session->get('k2.upgrade.users.processed');
 
 		if (count($authors) == 0)
 		{
@@ -1127,13 +1196,7 @@ class K2ControllerMigrator extends JControllerLegacy
 		$db->execute();
 
 		// Modules
-		$modules = array(
-			'comments',
-			'content',
-			'tools',
-			'user',
-			'users'
-		);
+		$modules = array('comments', 'content', 'tools', 'user', 'users');
 		foreach ($modules as $module)
 		{
 			$query = $db->getQuery(true);
@@ -1279,6 +1342,8 @@ class K2ControllerMigrator extends JControllerLegacy
 			$db->execute();
 		}
 
+		$this->response->total = 1;
+		$this->response->processed = 1;
 		$this->response->completed = 1;
 	}
 

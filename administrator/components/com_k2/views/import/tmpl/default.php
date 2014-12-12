@@ -26,8 +26,8 @@ defined('_JEXEC') or die ; ?>
 				} else {
 					percentage = 100;
 				}
-				jQuery('#k2ImportPercentage').text(percentage + '%');
-				jQuery('#k2ImportStatusBar').animate({
+				jQuery('.k2ProcessPercentage').text(percentage + '%');
+				jQuery('.k2ProcessStatusBar').animate({
 					'width' : (percentage) + '%'
 				}, 'slow', 'linear', function() {
 					if (data && data.lastId) {
@@ -47,6 +47,7 @@ defined('_JEXEC') or die ; ?>
 		_import(0, 1);
 	}); 
 </script>
-<span id="k2ImportPercentage">0%</span>
-<div id="k2ImportStatus"><div id="k2ImportStatusBar" style="width: 0%; height: 40px; background: red;"></div></div>
-<div class="k2ImportNote"><?php echo JText::_('K2_PROCESS_DO_NOT_CLOSE_THIS_WINDOW'); ?></div>
+<span class="k2ProcessStatusText"></span>
+<span class="k2ProcessPercentage">0%</span>
+<div class="k2ProcessStatus"><div class="k2ProcessStatusBar" style="width: 0%; height: 40px; background: red;"></div></div>
+<div class="k2ProcessNote"><?php echo JText::_('K2_PROCESS_DO_NOT_CLOSE_THIS_WINDOW'); ?></div>

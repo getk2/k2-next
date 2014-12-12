@@ -15,34 +15,47 @@ defined('_JEXEC') or die ; ?>
 	};
 	function _restore() {
 		jQuery.post('index.php?option=com_k2&task=migrator.restore&format=json', '<?php echo JSession::getFormToken(); ?>=1').done(function(response) {
-			jQuery('#k2UpgradeStatus').html('<?php echo JText::_('K2_RESTORE_COMPLETED'); ?>');
+			jQuery('.k2ProcessStatusText').html('<?php echo JText::_('K2_RESTORE_COMPLETED'); ?>');
 		}).fail(function(response) {
-			jQuery('#k2UpgradeStatus').html('<?php echo JText::_('K2_RESTORE_FAILED'); ?>');
+			jQuery('.k2ProcessStatusText').html('<?php echo JText::_('K2_RESTORE_FAILED'); ?>');
 		});
 	}
 	function _migrate(type, id) {
 		jQuery.post('index.php?option=com_k2&task=migrator.run&type=' + type + '&id=' + id + '&format=json', '<?php echo JSession::getFormToken(); ?>=1').done(function(response) {
 			if (response) {
 				jQuery.each(response.errors, function( index, error ) {
-					jQuery('#k2UpgradeErrorLog').append('<li>' + error + '</li>');
+					jQuery('.k2ProcessErrorLog').append('<li>' + error + '</li>');
 				});
 				if(response.failed) {
-					jQuery('#k2UpgradeStatus').html('<?php echo JText::_('K2_UPGRADE_FAILED_TRYING_TO_RESTORE'); ?>');
+					jQuery('.k2ProcessStatusText').html('<?php echo JText::_('K2_UPGRADE_FAILED_TRYING_TO_RESTORE'); ?>');
 					_restore();
 				} else if(response.completed) {
-					jQuery('#k2UpgradeStatus').html('<?php echo JText::_('K2_UPGRADE_COMPLETED'); ?>');
+					jQuery('.k2ProcessStatusText').html('<?php echo JText::_('K2_UPGRADE_COMPLETED'); ?>');
 				} else {
-					jQuery('#k2UpgradeStatus').html(response.status);
-					_migrate(response.type, response.id);
+					jQuery('.k2ProcessStatusText').html(response.status);
+					jQuery('.k2ProcessPercentage').text(response.percentage + '%');
+					jQuery('.k2ProcessStatusBar').animate({'width' : (response.percentage) + '%'}, 'slow', 'linear', function() {
+						if (response && response.id) {
+							_migrate(response.type, response.id);
+						} else {
+							window.onbeforeunload = null;
+							setTimeout(function() {
+								window.close();
+							}, 1000);
+						}
+					});
 				}
 			}
 		}).fail(function(response) {
-			jQuery('#k2UpgradeStatus').html('<?php echo JText::_('K2_UPGRADE_FAILED_TRYING_TO_RESTORE'); ?>');
+			jQuery('.k2ProcessStatusText').html('<?php echo JText::_('K2_UPGRADE_FAILED_TRYING_TO_RESTORE'); ?>');
 				_restore();
 			});
 	}
 	_migrate('attachments', 0);
 </script>
+<span class="k2ProcessStatusText"></span>
+<span class="k2ProcessPercentage">0%</span>
+<div class="k2ProcessStatus"><div class="k2ProcessStatusBar" style="width: 0%; height: 40px; background: red;"></div></div>
+<div class="k2ProcessNote"><?php echo JText::_('K2_PROCESS_DO_NOT_CLOSE_THIS_WINDOW'); ?></div>
 
-<span id="k2UpgradeStatus"></span>
-<ul id="k2UpgradeErrorLog"></ul>
+<ul class="k2ProcessErrorLog"></ul>
