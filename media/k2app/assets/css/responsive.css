@@ -21,8 +21,11 @@
 	.jw--tabs__top a { padding: 20px 14px; font-size: 17px; }
 	
 	/* paddings */
-	.jw--component { padding-top: 155px; }
-	#k2-items-form .jw--component { padding-top: 109px; }
+	.jw-backend .jw--component { padding-top: 155px; }
+	.jw-frontend .jw--component { padding-top: 125px; }
+
+	#k2-items-form.jw-backend .jw--component { padding-top: 109px; }
+	#k2-items-form.jw-frontend .jw--component { padding-top: 79px; }
 	
 	/* filters */
 	.jw--subheader { border-bottom: 0; }
@@ -102,7 +105,7 @@
 	/* remove all fixed instances */
 	.jw--header { position: static; width: auto; }
 	.jw--subheader { position: static; border: 0; }
-	.jw--component, #k2-items-form .jw--component { padding: 0; min-width: 100%; clear: both;}
+	.jw--component, #k2-items-form .jw--component, .jw-backend .jw--component, .jw-frontend .jw--component { padding: 0; min-width: 100%; clear: both;}
 	.jw--pagination { position: static; height: auto; }
 	.open--sidebar .jw--component { padding-left: 0; }
 	div#system-debug { padding-left: 10px; }
