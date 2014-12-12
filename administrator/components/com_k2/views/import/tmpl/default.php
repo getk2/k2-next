@@ -16,7 +16,7 @@ defined('_JEXEC') or die ; ?>
 	jQuery(document).ready(function() {
 		function _import(id, processed) {
 			var self = this;
-			jQuery.post('index.php?option=com_k2&task=items.import&id=' + id + '&format=json', K2SessionToken + '=1', function(data) {
+			jQuery.post('index.php?option=com_k2&task=items.import&id=' + id + '&format=json', '<?php echo JSession::getFormToken(); ?>=1', function(data) {
 				if (id > 0) {
 					processed = processed + 10;
 				}

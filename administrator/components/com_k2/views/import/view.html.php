@@ -33,16 +33,8 @@ class K2ViewImport extends JViewLegacy
 		$document->addStyleSheet('//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css?v=3.0.0b');
 		$document->addStyleSheet(JURI::root(true).'/media/k2app/assets/css/k2.css?v=3.0.0b');
 
-		// Add javascript variables
-		$document->addScriptDeclaration('
-		/* K2 v3.0.0 (beta) - START */
-		var K2SessionToken = "'.JSession::getFormToken().'";
-		/* K2 v3.0.0 (beta) - FINISH */
-		');
-
 		// Display
 		parent::display($tpl);
-
 	}
 
 }

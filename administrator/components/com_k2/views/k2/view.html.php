@@ -74,6 +74,7 @@ class K2ViewK2 extends JViewLegacy
 		var K2SessionToken = "'.JSession::getFormToken().'";
 		var K2Editor = '.$this->getEditor().';
 		var K2SitePath = "'.JURI::root(true).'";
+		var K2BasePath = "'.JURI::base(true).'";
 		var K2Language = '.$this->getLanguage().';
 		/* K2 v3.0.0 (beta) - FINISH */
 
