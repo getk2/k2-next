@@ -34,7 +34,7 @@ div#system-debug { padding-left: 50px; }
 .jw-frontend .jw--sidebar { bottom: 0; }
 .jw-frontend .jw--pagination { bottom: 0; }
 .jw-frontend .row {  margin-left: 0; margin-right: 0; }
-.jw-frontend  .jw--component { padding-top: 79px; }
+ .jw--component { padding-top: 109px; }
 
 /* [Backend] layout */
 .jw-backend .jw--header { top: 30px; }
@@ -51,8 +51,7 @@ div#system-debug { padding-left: 50px; }
 	.open--sidebar .jw--subheader { left: 320px; }
 	
 	/* Active toolbar */
-	.jw-backend .active--toolbar .jw--component { padding-top: 149px; }
-	.jw-frontend.active--toolbar .jw--component { padding-top: 119px; }
+	.active--toolbar .jw--component { padding-top: 149px; }
 	
 /* menu fix */
 #module-menu #menu {z-index:9999;}
@@ -126,7 +125,7 @@ div#system-debug { padding-left: 50px; }
 	
 /*------------------------------------------------------------------
 [Pagination] - common */
-.jw--pagination { position:fixed; width: 100%; padding: 0 12px; background: #fff; z-index:9; right:0;left:46px;width:auto; border-bottom:1px solid #dbdcdc; box-shadow: 0 -1px 0 #dbdbdb, inset 0 1px 0 rgba(255,255,255,.7); height: 50px; }
+.jw--pagination { position:fixed; width: 100%; padding: 0 12px; font-size: 13px; background: #fff; z-index:9; right:0;left:46px;width:auto; border-bottom:1px solid #dbdcdc; box-shadow: 0 -1px 0 #dbdbdb, inset 0 1px 0 rgba(255,255,255,.7); height: 50px; }
 	.jw--pagination.jw--infinite { left: auto; right: 0; border-left: 1px solid #dbdcdc; padding: 15px; }
 	
 	/* pagination pages */
