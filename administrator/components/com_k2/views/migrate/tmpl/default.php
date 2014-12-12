@@ -38,14 +38,13 @@ defined('_JEXEC') or die ; ?>
 						jQuery('.k2ProcessStatusBar').css('width', '0%');
 					}
 					jQuery('.k2ProcessStatusBar').animate({'width' : (response.percentage) + '%'}, 'slow', 'linear', function() {
-						console.info(response);
-						if (response && !response.completed) {
-							_migrate(response.type, response.id);
-						} else {
+						if(response.completed) {
 							window.onbeforeunload = null;
 							setTimeout(function() {
 								window.close();
 							}, 1000);
+						} else {
+							_migrate(response.type, response.id);
 						}
 					});
 				}
