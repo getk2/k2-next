@@ -250,12 +250,17 @@ class K2Router extends JComponentRouterBase
 				unset($segments[0]);
 				unset($segments[1]);
 			}
+			// If we have a matched Itemid from the category of the item then unset the "item" from the URL.
+			else
+			{
+				$item = $this->menu->getItem($query['Itemid']);
+				if ($item->query['task'] == 'category')
+				{
+					$view = $segments[0];
+					unset($segments[0]);
+				}
+			}
 
-		}
-
-		if (!isset($view))
-		{
-			$view = $segments[0];
 		}
 
 		if (isset($view))
@@ -349,6 +354,11 @@ class K2Router extends JComponentRouterBase
 				}
 				return $vars;
 			}
+			else
+			{
+				$segments[1] = $vars['view'];
+				$vars['view'] = 'item';
+			}
 		}
 		if ($vars['view'] == 'itemlist')
 		{
@@ -379,12 +389,7 @@ class K2Router extends JComponentRouterBase
 
 	private function buildIdByPattern($input, $pattern)
 	{
-		$patterns = array(
-			'id-dash-alias',
-			'id-slash-alias',
-			'id',
-			'alias'
-		);
+		$patterns = array('id-dash-alias', 'id-slash-alias', 'id', 'alias');
 		if (!in_array($pattern, $patterns))
 		{
 			$pattern = 'id-dash-alias';
@@ -415,12 +420,7 @@ class K2Router extends JComponentRouterBase
 
 	private function parseIdByPattern($input, $pattern, $type)
 	{
-		$patterns = array(
-			'id-dash-alias',
-			'id-slash-alias',
-			'id',
-			'alias'
-		);
+		$patterns = array('id-dash-alias', 'id-slash-alias', 'id', 'alias');
 		if (!in_array($pattern, $patterns))
 		{
 			$pattern = 'id-dash-alias';
