@@ -354,7 +354,6 @@ class Com_K2InstallerScript
 		$language->load('com_k2');
 		$document = JFactory::getDocument();
 		$document->addStyleSheet(JURI::root(true).'/media/k2app/assets/css/installation.css');
-
 		echo '<div class="tab-content-k2">';
 		echo '<div class="container-fluid installation-wrap">';
 		echo '	<div class="span8 offset2">';
@@ -372,5 +371,7 @@ class Com_K2InstallerScript
 		}
 		echo'			</div>';
 		echo '</div></div></div></div></div>';
+
 	}
+
 }
