@@ -119,6 +119,10 @@
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
 			</field>
+			<field name="catItemTitleLinked" type="radio" default="1" label="K2_LINK_ON_TITLE" description="">
+				<option value="0">K2_HIDE</option>
+				<option value="1">K2_SHOW</option>
+			</field>
 			<field name="catItemFeaturedNotice" type="radio" default="1" label="K2_FEATURED_NOTICE_NEXT_TO_TITLE" description="">
 				<option value="0">K2_HIDE</option>
 				<option value="1">K2_SHOW</option>
