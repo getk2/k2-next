@@ -15,7 +15,7 @@
 .installation-block { margin-bottom: 50px; padding-bottom: 50px; border-bottom: 1px solid #dbdcdc; }
 .installation-block_plain { margin-bottom: 60px; }
 .installation-block_min { margin-bottom: 30px; }
-.installation-wrap { font-family: 'Open Sans', sans-serif; font-size: 16px; line-height: 1.5; padding-top: 30px; }
+.installation-wrap { font-family: 'Open Sans', sans-serif; font-size: 16px; line-height: 1.5; padding-top: 50px; }
 	.installation-wrap h1, h2, h3, h4 { font-weight: 400; font-family: 'Open Sans', sans-serif; }
 	.installation-wrap h1 { margin-bottom: 20px; margin-top: 0; }
 	.installation-wrap h2 { font-size: 32px; line-height: 1.25; padding-bottom: 12px; }
@@ -27,11 +27,13 @@
 		.installation-wrap a:hover { color: #005580; border-color: #005580; text-decoration: none; }
 	
 	/* bootstrap additions */
-	.installation-wrap .span8.offset2 { margin-left: 16.89361702%; }
-	.installation-wrap .span10.offset1 { margin-left:8.382978723%; }
-	.installation-wrap .half-block .span6 { display: inline-block; vertical-align: middle; float: none; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
-	.installation-wrap .half-block .span6.text-field { padding: 0 20px; }
-	.installation-wrap .left { float: left; }
+	@media screen and (min-width: 767px){
+		.installation-wrap .span8.offset2 { margin-left: 16.89361702%; }
+		.installation-wrap .span10.offset1 { margin-left:8.382978723%; }
+		.installation-wrap .half-block .span6 { display: inline-block; vertical-align: middle; float: none; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; margin-left: -2px; margin-right: -2px; }
+		.installation-wrap .half-block .span6.text-field { padding: 0 20px; }
+		.installation-wrap .left { float: left; }
+	}
 
 	.installation-wrap iframe { border: 5px solid #e6e6e6; }
 	.installation-wrap .more-block p { font-size: 13px; }
