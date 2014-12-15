@@ -361,8 +361,31 @@ class PlgSystemK2 extends JPlugin
 
 	public function onAfterRender()
 	{
-		// Get params
+		// Get variables
+		$application = JFactory::getApplication();
+		$document = JFactory::getDocument();
+		$user = JFactory::getUser();
 		$params = JComponentHelper::getParams('com_k2');
+		
+		// Add user toolbar
+		if($application->isSite() && $document->getType() == 'html' && $user->authorise('core.manage', 'com_k2'))
+		{
+			$author = K2Users::getInstance($user->id);
+			ob_start();
+			include 'toolbar.php';
+			$toolbar = ob_get_contents();
+			ob_end_clean();
+			
+			$response = $application->getBody();
+			$searches = array(
+				'</body>'
+			);
+			$replacements = array(
+				$toolbar,
+			);
+			$response = str_ireplace($searches, $replacements, $response);
+			$application->setBody($response);
+		}
 
 		// Fix Facebook meta tags
 		if ($params->get('facebookMetadata'))
