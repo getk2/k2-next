@@ -18,6 +18,9 @@ class Com_K2InstallerScript
 		$configuration = JFactory::getConfig();
 		$installer = $parent->getParent();
 		$db = JFactory::getDbo();
+		
+		$document = JFactory::getDocument();
+		$document->addStyleSheet(JURI::root(true).'/media/k2app/assets/css/installation.css');
 
 		// Init the upgrade flag
 		$this->upgrade = false;
@@ -352,8 +355,6 @@ class Com_K2InstallerScript
 	{
 		$language = JFactory::getLanguage();
 		$language->load('com_k2');
-		$document = JFactory::getDocument();
-		$document->addStyleSheet(JURI::root(true).'/media/k2app/assets/css/installation.css');
 		echo '<div class="tab-content-k2">';
 		echo '<div class="container-fluid installation-wrap">';
 		echo '	<div class="span8 offset2">';
