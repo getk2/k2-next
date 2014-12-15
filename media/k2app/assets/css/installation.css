@@ -14,7 +14,9 @@
 table.adminform { width: 100%; }
 table.adminform th { background: #f0f2f2; padding: 30px 0 0; display: none; }
 table.adminform td { margin: 0; padding: 0; }
-.tab-content-k2 { background: #f0f2f2; margin-bottom: 40px; }
+.container-main, html { background: #f0f2f2; height: 100%; }
+.subhead-collapse.collapse, header.header { display: none; }
+.tab-content-k2 { margin-bottom: 40px; }
 .installation-block { margin-bottom: 50px; padding-bottom: 50px; border-bottom: 1px solid #dbdcdc; }
 .installation-block_plain { margin-bottom: 60px; }
 .installation-block_min { margin-bottom: 30px; }
