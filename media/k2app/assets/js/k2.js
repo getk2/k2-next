@@ -1,7 +1,7 @@
 jQuery(document).ready(function() {
-	
+
 	// Legacy code START
-  	// Generic function to get URL params passed in .js script include
+	// Generic function to get URL params passed in .js script include
 	function getUrlParams(targetScript, varName) {
 		var scripts = document.getElementsByTagName('script');
 		var scriptCount = scripts.length;
@@ -17,8 +17,9 @@ jQuery(document).ready(function() {
 			}
 		}
 	}
+
 	// comments
-	jQuery('#comment-form').submit(function(event){
+	jQuery('#comment-form').submit(function(event) {
 		event.preventDefault();
 		var form = jQuery(this);
 		var k2SitePath = getUrlParams('k2.js', 'sitepath');
@@ -32,13 +33,13 @@ jQuery(document).ready(function() {
 		form.find('input[name="commentURL"]').attr('name', 'url');
 		jQuery('#formLog').empty().addClass('formLogLoading');
 		jQuery.ajax({
-			url: k2SitePath + 'index.php?option=com_k2&task=comments.sync&format=json&id=null',
-			type: 'post',
-			dataType: 'json',
-			data: jQuery('#comment-form').serialize(),
-			success: function(response){
+			url : k2SitePath + 'index.php?option=com_k2&task=comments.sync&format=json&id=null',
+			type : 'post',
+			dataType : 'json',
+			data : jQuery('#comment-form').serialize(),
+			success : function(response) {
 				jQuery('#formLog').removeClass('formLogLoading').html(response.message);
-				if(typeof(Recaptcha) != "undefined"){
+				if ( typeof (Recaptcha) != "undefined") {
 					Recaptcha.reload();
 				}
 				if (response.status) {
@@ -49,29 +50,46 @@ jQuery(document).ready(function() {
 				jQuery('#formLog').removeClass('formLogLoading').html(response.responseText);
 			}
 		});
-	});	
+	});
 	// Text Resizer
-	jQuery('#fontDecrease').click(function(event){
+	jQuery('#fontDecrease').click(function(event) {
 		event.preventDefault();
 		jQuery('.itemFullText').removeClass('largerFontSize');
 		jQuery('.itemFullText').addClass('smallerFontSize');
 	});
-	jQuery('#fontIncrease').click(function(event){
+	jQuery('#fontIncrease').click(function(event) {
 		event.preventDefault();
 		jQuery('.itemFullText').removeClass('smallerFontSize');
 		jQuery('.itemFullText').addClass('largerFontSize');
 	});
 
 	// Smooth Scroll
-	jQuery('.k2Anchor').click(function(event){
+	jQuery('.k2Anchor').click(function(event) {
 		event.preventDefault();
 		var target = this.hash;
 		jQuery('html, body').stop().animate({
-			scrollTop: jQuery(target).offset().top
+			scrollTop : jQuery(target).offset().top
 		}, 500);
 	});
 	// Legacy code END
-	
+
+	// K2 toolbar
+	var isK2ModalOpen = false;
+	jQuery('[data-role="k2-admin-link"]').click(function(event) {
+		event.preventDefault();
+		if (!isK2ModalOpen) {
+			var src = jQuery(this).attr('href');
+			var modal = jQuery('<div><a href="#">x</button><iframe src="' + src + '"></iframe></div>');
+			modal.find('a').click(function(event) {
+				event.preventDefault();
+				modal.remove();
+				isK2ModalOpen = false;
+			});
+			modal.appendTo('body');
+			isK2ModalOpen = true;
+		}
+	});
+
 	// Popup
 	jQuery('.k2ClassicPopUp').click(function(event) {
 		event.preventDefault();
@@ -102,7 +120,7 @@ jQuery(document).ready(function() {
 			}
 		});
 	});
-	
+
 	// AJAX search
 	jQuery('div.k2LiveSearchBlock form input[name=searchword]').keyup(function(event) {
 		var parentElement = jQuery(this).parent().parent();
@@ -128,15 +146,15 @@ jQuery(document).ready(function() {
 			parentElement.find('.k2LiveSearchResults').css('display', 'none').empty();
 		}
 	});
-	
+
 	// Inline editing. Don't use Backbone, we can do it with a few lines of js
 	var elements = jQuery('[data-k2-editable]');
 	elements.prop('contenteditable', true);
-	if(elements.length > 0) {
+	if (elements.length > 0) {
 		CKEDITOR.disableAutoInline = true;
 	}
 	elements.each(function() {
-		if(jQuery(this).data('k2-editable') != 'title') {
+		if (jQuery(this).data('k2-editable') != 'title') {
 			CKEDITOR.inline(this);
 		}
 	});
@@ -147,7 +165,7 @@ jQuery(document).ready(function() {
 		var data = {};
 		data['id'] = id;
 		data['_method'] = 'PATCH';
-		data['states['+property+']'] = el.html();
+		data['states[' + property + ']'] = el.html();
 		data[K2SessionToken] = 1;
 		jQuery.post(K2SitePath + '/index.php?option=com_k2&task=items.sync&format=json', data).done(function() {
 			// @TODO : Inform user that save was succesful
@@ -155,8 +173,7 @@ jQuery(document).ready(function() {
 			alert(response.responseText);
 		});
 	});
-	
-	
+
 	// Comments application
 	var K2CommentsWidget = jQuery('div[data-widget="k2comments"]');
 	var K2CommentsItemId = K2CommentsWidget.data('itemid');
@@ -263,7 +280,7 @@ jQuery(document).ready(function() {
 					var href = jQuery(this).data('user-link');
 					jQuery(this).attr('href', href);
 				});
-				if(typeof(K2ShowRecaptcha) === 'function') {
+				if ( typeof (K2ShowRecaptcha) === 'function') {
 					K2ShowRecaptcha();
 				}
 			},
@@ -279,7 +296,7 @@ jQuery(document).ready(function() {
 					}, this),
 					error : _.bind(function(model, xhr, options) {
 						this.message(xhr.responseText);
-						if(typeof(Recaptcha) !== 'undefined'){
+						if ( typeof (Recaptcha) !== 'undefined') {
 							Recaptcha.reload();
 						}
 					}, this)
