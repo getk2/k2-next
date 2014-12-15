@@ -138,6 +138,7 @@ class K2ControllerItems extends K2Controller
 			$db->setQuery($query);
 			$total = $db->loadResult();
 			$session->set('k2.import.total', $total);
+			$session->set('k2.import.processed', 0);
 
 			// Import all categories at once in the first request
 			$query = $db->getQuery(true);
@@ -202,11 +203,14 @@ class K2ControllerItems extends K2Controller
 
 		// Update mapping to session
 		$session->set('k2.import.mapping', $mapping);
+		$session->set('k2.import.processed', (int)$session->get('k2.import.processed') + count($articles));
+		
 
 		// Output
 		$response = new stdClass;
 		$response->lastId = $article->id;
 		$response->total = $session->get('k2.import.total');
+		$response->percentage = round(100*($session->get('k2.import.processed')/$session->get('k2.import.total')));
 		echo json_encode($response);
 
 		// Return

@@ -17,12 +17,9 @@ defined('_JEXEC') or die ; ?>
 		function _import(id, processed) {
 			var self = this;
 			jQuery.post('index.php?option=com_k2&task=items.import&id=' + id + '&format=json', '<?php echo JSession::getFormToken(); ?>=1', function(data) {
-				if (id > 0) {
-					processed = processed + 10;
-				}
 				var percentage;
 				if(data) {
-					percentage = Math.round((processed/data.total)*100);
+					percentage = data.percentage;
 				} else {
 					percentage = 100;
 				}
