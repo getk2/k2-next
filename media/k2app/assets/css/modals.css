@@ -41,4 +41,4 @@ z-index: 100; margin: 25px auto; font-family: 'Open Sans', sans-serif; -webkit-f
 .jw--popup { padding: 20px; background: #f7f7f7; }
 	.jw--popup .k2ProcessPercentage { display: block; font-size: 70px; line-height: 1; font-weight: 800; margin: 30px auto; }
 	.jw--popup .k2ProcessStatus { margin-top: 30px; height: 40px; border-radius: 5px; background-color: #e4eaed; overflow: hidden; max-width: 100%; }
-	.jw--popup .k2ProcessStatusBar { height: 40px; border-radius: 5px; background: #00afec; }
+	.jw--popup .k2ProcessStatusBar { height: 40px; border-radius: 5px; background: #00afec; width: 0%; }
