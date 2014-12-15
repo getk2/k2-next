@@ -19,6 +19,9 @@ class Com_K2InstallerScript
 		$installer = $parent->getParent();
 		$db = JFactory::getDbo();
 
+		$document = JFactory::getDocument();
+		$document->addStyleSheet(JURI::root(true).'/media/k2app/assets/css/installation.css');
+
 		// Init the upgrade flag
 		$this->upgrade = false;
 
@@ -352,8 +355,6 @@ class Com_K2InstallerScript
 	{
 		$language = JFactory::getLanguage();
 		$language->load('com_k2');
-		$document = JFactory::getDocument();
-		$document->addStyleSheet(JURI::root(true).'/media/k2app/assets/css/installation.css');
 		if ($this->upgrade)
 		{
 			echo '<a href="#" onclick="window.open(\'index.php?option=com_k2&view=migrate&tmpl=component\', \'K2\', \'width=640,height=480\'); return false;">'.JText::_('K2_INITIATE_DATA_MIGRATION_PROCESS').'</a>';
