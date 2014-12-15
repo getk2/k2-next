@@ -117,35 +117,7 @@ class K2ViewItems extends K2View
 	protected function setFilters()
 	{
 		// Sorting filter
-		$sortingOptions = array(
-			'K2_NONE' => '',
-			'K2_ID_ASC' => 'id',
-			'K2_ID_DESC' => 'id.reverse',
-			'K2_TITLE_ASC' => 'title',
-			'K2_TITLE_DESC' => 'title.reverse',
-			'K2_ORDERING' => 'ordering',
-			'K2_FEATURED_ORDERING' => 'featured_ordering',
-			'K2_STATE_ASC' => 'state',
-			'K2_STATE_DESC' => 'state.reverse',
-			'K2_FEATURED_ASC' => 'featured',
-			'K2_FEATURED_DESC' => 'featured.reverse',
-			'K2_CATEGORY_ASC' => 'category',
-			'K2_CATEGORY_DESC' => 'category.reverse',
-			'K2_AUTHOR_ASC' => 'author',
-			'K2_AUTHOR_DESC' => 'author.reverse',
-			'K2_MODERATOR_ASC' => 'moderator',
-			'K2_MODERATOR_DESC' => 'moderator.reverse',
-			'K2_ACCESS_LEVEL_ASC' => 'access',
-			'K2_ACCESS_LEVEL_DESC' => 'access.reverse',
-			'K2_CREATED_ASC' => 'created',
-			'K2_CREATED_DESC' => 'created.reverse',
-			'K2_MODIFIED_ASC' => 'modified',
-			'K2_MODIFIED_DESC' => 'modified.reverse',
-			'K2_LANGUAGE_ASC' => 'language',
-			'K2_LANGUAGE_DESC' => 'language.reverse',
-			'K2_HITS_ASC' => 'hits',
-			'K2_HITS_DESC' => 'hits.reverse'
-		);
+		$sortingOptions = array('K2_NONE' => '', 'K2_ID_ASC' => 'id', 'K2_ID_DESC' => 'id.reverse', 'K2_TITLE_ASC' => 'title', 'K2_TITLE_DESC' => 'title.reverse', 'K2_ORDERING' => 'ordering', 'K2_FEATURED_ORDERING' => 'featured_ordering', 'K2_STATE_ASC' => 'state', 'K2_STATE_DESC' => 'state.reverse', 'K2_FEATURED_ASC' => 'featured', 'K2_FEATURED_DESC' => 'featured.reverse', 'K2_CATEGORY_ASC' => 'category', 'K2_CATEGORY_DESC' => 'category.reverse', 'K2_AUTHOR_ASC' => 'author', 'K2_AUTHOR_DESC' => 'author.reverse', 'K2_MODERATOR_ASC' => 'moderator', 'K2_MODERATOR_DESC' => 'moderator.reverse', 'K2_ACCESS_LEVEL_ASC' => 'access', 'K2_ACCESS_LEVEL_DESC' => 'access.reverse', 'K2_CREATED_ASC' => 'created', 'K2_CREATED_DESC' => 'created.reverse', 'K2_MODIFIED_ASC' => 'modified', 'K2_MODIFIED_DESC' => 'modified.reverse', 'K2_LANGUAGE_ASC' => 'language', 'K2_LANGUAGE_DESC' => 'language.reverse', 'K2_HITS_ASC' => 'hits', 'K2_HITS_DESC' => 'hits.reverse');
 		K2Response::addFilter('sorting', JText::_('K2_SORT_BY'), K2HelperHTML::sorting($sortingOptions), false, 'header');
 
 		// Categories filter
@@ -198,36 +170,16 @@ class K2ViewItems extends K2View
 
 		if ($canEditFeaturedState)
 		{
-			K2Response::addToolbarAction('feature', 'K2_FEATURE', array(
-				'data-state' => 'featured',
-				'data-value' => '1',
-				'data-action' => 'set-state'
-			));
-			K2Response::addToolbarAction('unfeature', 'K2_UNFEATURE', array(
-				'data-state' => 'featured',
-				'data-value' => '0',
-				'data-action' => 'set-state'
-			));
+			K2Response::addToolbarAction('feature', 'K2_FEATURE', array('data-state' => 'featured', 'data-value' => '1', 'data-action' => 'set-state'));
+			K2Response::addToolbarAction('unfeature', 'K2_UNFEATURE', array('data-state' => 'featured', 'data-value' => '0', 'data-action' => 'set-state'));
 		}
 
 		if ($canEditState)
 		{
-			K2Response::addToolbarAction('publish', 'K2_PUBLISH', array(
-				'data-state' => 'state',
-				'data-value' => '1',
-				'data-action' => 'set-state'
-			));
-			K2Response::addToolbarAction('unpublish', 'K2_UNPUBLISH', array(
-				'data-state' => 'state',
-				'data-value' => '0',
-				'data-action' => 'set-state'
-			));
+			K2Response::addToolbarAction('publish', 'K2_PUBLISH', array('data-state' => 'state', 'data-value' => '1', 'data-action' => 'set-state'));
+			K2Response::addToolbarAction('unpublish', 'K2_UNPUBLISH', array('data-state' => 'state', 'data-value' => '0', 'data-action' => 'set-state'));
 
-			K2Response::addToolbarAction('trash', 'K2_TRASH', array(
-				'data-state' => 'state',
-				'data-value' => '-1',
-				'data-action' => 'set-state'
-			));
+			K2Response::addToolbarAction('trash', 'K2_TRASH', array('data-state' => 'state', 'data-value' => '-1', 'data-action' => 'set-state'));
 		}
 		K2Response::addToolbarAction('batch', 'K2_BATCH', array('data-action' => 'batch'));
 
@@ -321,6 +273,14 @@ class K2ViewItems extends K2View
 
 	protected function prepareRow($row)
 	{
+
+		// State and featured flags
+		if (!$row->id)
+		{
+			$row->state = 1;
+			$row->featured = 0;
+		}
+
 		// Tags
 		$row->tags = $row->getTags();
 		$tagsValue = array();

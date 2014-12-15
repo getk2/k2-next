@@ -165,4 +165,13 @@ class K2ViewExtraFields extends K2View
 		}
 	}
 
+	protected function prepareRow($row)
+	{
+		// State
+		if (!$row->id)
+		{
+			$row->state = 1;
+		}
+	}
+
 }
