@@ -138,8 +138,15 @@ define(['marionette', 'text!templates/items/list.html', 'text!templates/items/ro
 			K2Widget.ordering(jQuery('[data-region="items-inner"]'), 'featured_ordering', enabled);
 			if(!enabled) {
 				this.$('[data-role="featured_ordering_column"]').hide();
+				
+				this.$('.jw--itemtitle').addClass('small-4 large-4');
+				this.$('.jw--itemtitle').removeClass('small-3 large-3');
+
 			} else {
 				this.$('[data-role="featured_ordering_column"]').show();
+
+				this.$('.jw--itemtitle').removeClass('small-4 large-4');
+				this.$('.jw--itemtitle').addClass('small-3 large-3');
 			}
 		}
 	});
