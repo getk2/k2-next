@@ -133,7 +133,7 @@ define(['marionette', 'text!templates/items/list.html', 'text!templates/items/ro
 		template : _.template(list),
 		childViewContainer : '[data-region="list"]',
 		childView : K2ViewItemsTableRow,
-		onRenderCollection : function() {
+		onShow : function() {
 			var enabled = this.collection.getState('sorting') === 'featured_ordering' && this.collection.getState('category') < 2;
 			K2Widget.ordering(jQuery('[data-region="items-inner"]'), 'featured_ordering', enabled);
 			if(!enabled) {
