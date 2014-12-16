@@ -280,6 +280,8 @@ jQuery(document).ready(function() {
 					var href = jQuery(this).data('user-link');
 					jQuery(this).attr('href', href);
 				});
+			},
+			onDomRefresh : function() {
 				if ( typeof (K2ShowRecaptcha) === 'function') {
 					K2ShowRecaptcha();
 				}

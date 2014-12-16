@@ -23,12 +23,19 @@ class K2HelperCaptcha
 		if (($params->get('antispam') == 'recaptcha' || $params->get('antispam') == 'both') && $params->get('recaptcha_public_key') && ($user->guest || $params->get('recaptchaForRegistered')))
 		{
 			$document = JFactory::getDocument();
-			$document->addScript('https://www.google.com/recaptcha/api/js/recaptcha_ajax.js');
+			$document->addScript('https://www.google.com/recaptcha/api.js?render=explicit');
 			$js = '
+			var k2TimeoutId;
 			function K2ShowRecaptcha(){
-				Recaptcha.create("'.$params->get('recaptcha_public_key').'", "K2Recaptcha", {
-					theme: "'.$params->get('recaptcha_theme', 'clean').'"
-				});
+				if(typeof(grecaptcha) != "undefined") {
+					grecaptcha.render("K2Recaptcha", {
+						"sitekey" : "'.$params->get('recaptcha_public_key').'",
+						"theme": "'.$params->get('recaptcha_theme', 'light').'"
+					});
+					window.clearTimeout(k2TimeoutId);
+				} else {
+					k2TimeoutId = window.setTimeout(K2Recaptcha, 1000);
+				}
 			}';
 			$document->addScriptDeclaration($js);
 		}
@@ -42,7 +49,7 @@ class K2HelperCaptcha
 		$output = '';
 		if (($params->get('antispam') == 'recaptcha' || $params->get('antispam') == 'both') && $params->get('recaptcha_public_key') && ($user->guest || $params->get('recaptchaForRegistered')))
 		{
-			$output .= '<label class="K2CommentsCaptcha">'.JText::_('K2_ENTER_THE_TWO_WORDS_YOU_SEE_BELOW').'</label><div id="K2Recaptcha"></div>';
+			$output .= '<label class="K2CommentsCaptcha">'.JText::_('K2_PLEASE_VERIFY_THAT_YOU_ARE_HUMAN').'</label><div id="K2Recaptcha"></div>';
 		}
 		return $output;
 	}
@@ -82,7 +89,7 @@ class K2HelperCaptcha
 				$lines = explode("\n", $response);
 				if (trim($lines[0]) != 'true')
 				{
-					$model->setError(JText::_('K2_THE_WORDS_YOU_TYPED_DID_NOT_MATCH_THE_ONES_DISPLAYED_PLEASE_TRY_AGAIN'));
+					$model->setError(JText::_('K2_WE_COULD_NOT_VERIFY_THAT_YOU_ARE_HUMAN'));
 					return false;
 				}
 

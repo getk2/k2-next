@@ -353,7 +353,7 @@ class PlgUserK2 extends JPlugin
 			$lines = explode("\n", $response);
 			if (trim($lines[0]) != 'true')
 			{
-				$application->enqueueMessage(JText::_('K2_THE_WORDS_YOU_TYPED_DID_NOT_MATCH_THE_ONES_DISPLAYED_PLEASE_TRY_AGAIN'), 'error');
+				$application->enqueueMessage(JText::_('K2_WE_COULD_NOT_VERIFY_THAT_YOU_ARE_HUMAN'), 'error');
 				$application->redirect($url);
 				return false;
 			}

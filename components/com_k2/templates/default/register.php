@@ -176,7 +176,7 @@ JHtml::_('behavior.formvalidation');
 		</table>
 		
 		<?php if($this->K2Params->get('recaptchaOnRegistration') && $this->K2Params->get('recaptcha_public_key')): ?>
-		<label class="formRecaptcha"><?php echo JText::_('K2_ENTER_THE_TWO_WORDS_YOU_SEE_BELOW'); ?></label>
+		<label class="formRecaptcha"><?php echo JText::_('K2_PLEASE_VERIFY_THAT_YOU_ARE_HUMAN'); ?></label>
 		<div id="recaptcha"></div>
 		<?php endif; ?>
 		

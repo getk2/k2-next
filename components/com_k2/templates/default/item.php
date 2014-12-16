@@ -661,7 +661,7 @@ defined('_JEXEC') or die ;
 			<textarea name="reportReason" id="reportReason" cols="60" rows="10"></textarea>
 
 			<?php if($this->params->get('recaptcha') && $this->user->guest): ?>
-			<label class="formRecaptcha"><?php echo JText::_('K2_ENTER_THE_TWO_WORDS_YOU_SEE_BELOW'); ?></label>
+			<label class="formRecaptcha"><?php echo JText::_('K2_PLEASE_VERIFY_THAT_YOU_ARE_HUMAN'); ?></label>
 			<div id="recaptcha"></div>
 			<?php endif; ?>
 			

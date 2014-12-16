@@ -799,11 +799,8 @@
 		<field menu="hide" name="recaptcha_public_key" type="text" default="" size="40" label="K2_RECAPTCHA_PUBLIC_KEY" description="K2_RECAPTCHA_KEY_DESC" />
 		<field menu="hide" name="recaptcha_private_key" type="password" default="" size="40" label="K2_RECAPTCHA_PRIVATE_KEY" description="K2_RECAPTCHA_KEY_DESC" />
 		<field menu="hide" name="recaptcha_theme" type="list" default="clean" label="K2_RECAPTCHA_THEME" description="K2_SELECT_THE_RECAPTCHA_THEME">
-			<option value="red">K2_RED</option>
-			<option value="white">K2_WHITE</option>
-			<option value="blackglass">K2_BLACKGLASS</option>
-			<option value="clean">K2_CLEAN</option>
-			<option value="custom">K2_CUSTOM</option>
+			<option value="light">K2_LIGHT</option>
+			<option value="dark">K2_DARK</option>
 		</field>
 		<field menu="hide" name="recaptchaOnRegistration" type="radio" default="0" label="K2_ENABLE_RECAPTCHA_ON_REGISTRATION_FORM" description="K2_ENABLE_RECAPTCHA_ON_REGISTRATION_FORM_DESC">
 			<option value="0">K2_NO</option>
