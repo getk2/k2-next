@@ -60,7 +60,7 @@ class JFormFieldK2ImageSizes extends JFormField
 		else if ($this->mode == 'definition')
 		{
 			$output .= '
-			<div id="'.$this->id.'">
+			<div id="'.$this->id.'" data-role="k2-images-definition">
 			<div class="ov-hidden jw--imgplaceholder k2ImageSizesPlaceholder" style="display:none;">
 				<div class="jw--setting--field__small ov-hidden">
 					<input class="left jw--sizeid" disabled="disabled" type="text" placeholder="'.htmlspecialchars(JText::_('K2_ID')).'" name="'.$this->name.'[COUNTER][id]" value="" />

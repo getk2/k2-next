@@ -7,7 +7,7 @@ define(['marionette', 'text!templates/settings/edit.html', 'dispatcher', 'widget
 		},
 		onDomRefresh : function() {
 			K2Widget.updateEvents(this.$el);
-			var container = this.$el;
+			var container = this.$el.find('[data-role="k2-images-definition"]');
 			container.off("click", "button");
 			container.on("click", ".k2ImageSizesAdd", function(event) {
 				event.preventDefault();
