@@ -221,9 +221,16 @@ class Com_K2InstallerScript
 				if ($id)
 				{
 					$query = $db->getQuery(true);
-					$query->insert($db->quoteName('#__modules_menu'))->columns('moduleid, menuid')->values($id.',0');
+					$query->select('COUNT(*)')->from($db->quoteName('#__modules_menu'))->where($db->quote('moduleid').' = '.$id);
 					$db->setQuery($query);
-					$db->execute();
+					$exists = (int)$db->loadResult();
+					if (!$exists)
+					{
+						$query = $db->getQuery(true);
+						$query->insert($db->quoteName('#__modules_menu'))->columns('moduleid, menuid')->values($id.',0');
+						$db->setQuery($query);
+						$db->execute();
+					}
 				}
 			}
 		}
