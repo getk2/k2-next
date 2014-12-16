@@ -34,7 +34,7 @@ class K2HelperCaptcha
 					});
 					window.clearTimeout(k2TimeoutId);
 				} else {
-					k2TimeoutId = window.setTimeout(K2Recaptcha, 1000);
+					k2TimeoutId = window.setTimeout(K2ShowRecaptcha, 1000);
 				}
 			}';
 			$document->addScriptDeclaration($js);
