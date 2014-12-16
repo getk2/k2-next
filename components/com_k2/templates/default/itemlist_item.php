@@ -11,7 +11,7 @@
 defined('_JEXEC') or die ;
  ?>
 
-<div>
+<div class="itemlistItemView<?php echo ($this->item->featured) ? ' itemlistItemIsFeatured' : ''; ?><?php if($this->item->params->get('pageclass_sfx')) echo ' '.$this->item->params->get('pageclass_sfx'); ?>">
 	<!-- K2 Plugins: K2BeforeDisplay -->
 	<?php echo $this->item->events->K2BeforeDisplay; ?>
 	
