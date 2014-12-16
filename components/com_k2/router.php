@@ -254,7 +254,7 @@ class K2Router extends JComponentRouterBase
 			else
 			{
 				$item = $this->menu->getItem($query['Itemid']);
-				if ($item->query['task'] == 'category')
+				if ($item && isset($item->query['task']) && $item->query['task'] == 'category')
 				{
 					$view = $segments[0];
 					unset($segments[0]);

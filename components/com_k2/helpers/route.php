@@ -70,7 +70,7 @@ class K2HelperRoute
 			// Search the menu
 			foreach ($items as $item)
 			{
-				if ($item->query['view'] == 'item' && isset($item->query['id']) && $item->query['id'] == $id)
+				if (isset($item->query['view']) && $item->query['view'] == 'item' && isset($item->query['id']) && $item->query['id'] == $id)
 				{
 					$Itemid = $item->id;
 					break;
@@ -82,7 +82,7 @@ class K2HelperRoute
 			{
 				foreach ($items as $item)
 				{
-					if ($item->query['view'] == 'itemlist' && isset($item->query['task']) && $item->query['task'] == 'category' && isset($item->query['id']) && $item->query['id'] == $category)
+					if (isset($item->query['view']) && $item->query['view'] == 'itemlist' && isset($item->query['task']) && $item->query['task'] == 'category' && isset($item->query['id']) && $item->query['id'] == $category)
 					{
 						$Itemid = $item->id;
 						break;
