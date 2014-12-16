@@ -66,16 +66,13 @@ class K2HelperCaptcha
 			if ($user->guest || $params->get('recaptchaForRegistered'))
 			{
 				$data = array();
-				$data['privatekey'] = $params->get('recaptcha_private_key');
+				$data['secret'] = $params->get('recaptcha_private_key');
 				$data['remoteip'] = $_SERVER["REMOTE_ADDR"];
-				$data['challenge'] = $application->input->post->get('recaptcha_challenge_field', '', 'raw');
-				$data['response'] = $application->input->post->get('recaptcha_response_field', '', 'raw');
+				$data['response'] = $application->input->post->get('g-recaptcha-response', '', 'raw');
 
 				$ch = curl_init();
-				curl_setopt($ch, CURLOPT_URL, 'http://www.google.com/recaptcha/api/verify');
-				curl_setopt($ch, CURLOPT_POST, 1);
+				curl_setopt($ch, CURLOPT_URL, 'https://www.google.com/recaptcha/api/siteverify?'.http_build_query($data));
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-				curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 				$response = curl_exec($ch);
 				$error = curl_error($ch);
 				curl_close($ch);
@@ -86,8 +83,8 @@ class K2HelperCaptcha
 					return false;
 				}
 
-				$lines = explode("\n", $response);
-				if (trim($lines[0]) != 'true')
+				$json = json_decode($response);
+				if (!$json->success)
 				{
 					$model->setError(JText::_('K2_WE_COULD_NOT_VERIFY_THAT_YOU_ARE_HUMAN'));
 					return false;
