@@ -95,7 +95,7 @@ class K2HelperRoute
 			{
 				foreach ($items as $item)
 				{
-					if ($item->query['view'] == 'itemlist' && isset($item->query['task']) && $item->query['task'] == 'category' && !isset($item->query['id']))
+					if (isset($item->query['view']) && $item->query['view'] == 'itemlist' && isset($item->query['task']) && $item->query['task'] == 'category' && !isset($item->query['id']))
 					{
 						// Get menu link categories
 						$filter = $item->params->get('categories');
