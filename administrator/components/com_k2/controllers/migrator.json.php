@@ -180,7 +180,7 @@ class K2ControllerMigrator extends JControllerLegacy
 
 	private function attachments($id)
 	{
-		$this->response->status = 'Processing Attahcments';
+		$this->response->status = 'Processing Attachments';
 		$session = JFactory::getSession();
 		$step = 10;
 		$db = JFactory::getDbo();
