@@ -1015,4 +1015,13 @@ div.k2UsersBlock ul li ul.ubUserItems li {}
 
 
 
+/*----------------------------------------------------------------------
+	Plugins: K2 System Plugin - User Toolbar
+----------------------------------------------------------------------*/
+#k2UserToolbar {background:#000;position:fixed;top:0;left:0;right:0;z-index:9999;opacity:0.8;margin:0;padding:0;border:0;}
+	#k2UserToolbarInnerContainer {width:80%;margin:0 auto;padding:4px 40px;border:0;}
+	#k2UserToolbarInnerContainer img {height:24px;width:auto;}
+
+
+
 /* --- END --- */
