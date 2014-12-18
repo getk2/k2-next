@@ -20,7 +20,7 @@ class JFormFieldK2Settings extends JFormField
 		// Add head data
 		JHtml::_('jquery.framework');
 		$document = JFactory::getDocument();
-		$document->addStyleSheet(JURI::root(true).'/media/k2app/assets/css/fields.css');
+		$document->addStyleSheet(JURI::root(true).'/media/k2app/assets/css/k2.css');
 		$document->addScript(JURI::root(true).'/media/k2app/assets/js/fields.js');
 
 		// Detect context
