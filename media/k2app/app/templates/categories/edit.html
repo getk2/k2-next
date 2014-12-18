@@ -1,28 +1,28 @@
 <form class="jw--form jw--form__cat">
 	<div data-widget="tabs">
-	
+
 		<ul class="text-center jw--tabs jw--tabs__top" data-role="tabs-navigation">
 			<li><a href="#"><i class="fa fa-home"></i><%= l('K2_BASIC') %></a></li>
 			<li><a href="#"><i class="fa fa-desktop"></i><%= l('K2_METADATA') %> </a></li>
-			<li><a href="#"><i class="fa fa-desktop"></i><%= l('K2_CATEGORY_LAYOUT_OPTIONS') %> </a></li>
+			<li><a href="#"><i class="fa fa-desktop"></i><%= l('K2_DISPLAY_SETTINGS') %> </a></li>
 			<li><a href="#"><i class="fa fa-unlock-alt"></i><%= l('K2_PERMISSIONS') %></a></li>
 		</ul>
-			
+
 		<div data-role="tabs-content">
-		
+
 			<!-- Base settings -->
 			<div class="jw--item--form jw--setting--field jw--tab--cnt" id="jw--info0">
-				
+
 				<div class="ov-hidden">
 					<div class="left text-right jw--item--lbl">
 						<label for="title"><%= l('K2_TITLE') %></label>
 					</div>
-					
+
 					<div class="ov-hidden jw--item--fld jw--item--fld__title">
 						<input type="text" name="title" id="title" value="<%- row.title %>" />
 					</div>
 				</div>
-				
+
 				<div class="jw--item--row">
 					<div class="left text-right jw--item--lbl">
 						<label for="alias"><%= l('K2_ALIAS') %></label>
@@ -31,7 +31,7 @@
 						<input type="text" name="alias" id="alias" value="<%- row.alias %>" />
 					</div>
 				</div>
-				
+
 				<% if(row.canEditState) { %>
 				<div class="jw--item--row">
 				    <div class="left jw--item--fld__multi">
@@ -44,9 +44,9 @@
 					</div>
 				</div>
 				<% } %>
-					
+
 				<div class="jw--item--row">
-					
+
 					<div class="left jw--item--row__single">
 						<div class="left text-right jw--item--lbl">
 							<label for="parent_id"><%= l('K2_PARENT') %></label>
@@ -55,7 +55,7 @@
 							<%= form.parent %>
 						</div>
 					</div>
-					
+
 					<div class="left jw--item--row__single">
 						<div class="left text-right jw--item--lbl">
 							<label for="inheritance"><%= l('K2_INHERITANCE') %></label>
@@ -64,7 +64,7 @@
 							<%= form.inheritance %>
 						</div>
 					</div>
-					
+
 					<div class="left jw--item--row__single">
 						<div class="left text-right jw--item--lbl">
 							<label for="template"><%= l('K2_TEMPLATE') %></label>
@@ -75,9 +75,9 @@
 					</div>
 				</div>
 				<div class="clr"></div>
-				
+
 				<div class="jw--item--row">
-					
+
 					<div class="left jw--item--row__single">
 						<div class="left text-right jw--item--lbl">
 							<label for="access"><%= l('K2_ACCESS') %></label>
@@ -85,8 +85,8 @@
 						<div class="ov-hidden jw--item--fld">
 							<%= form.access %>
 						</div>
-					</div>	
-						
+					</div>
+
 					<div class="left jw--item--row__single">
 						<div class="left text-right jw--item--lbl">
 							<label for="language"><%= l('K2_LANGUAGE') %></label>
@@ -95,13 +95,13 @@
 							<%= form.language %>
 						</div>
 					</div>
-					
+
 					<div class="clr"></div>
 
 				</div>
-				
+
 				<div class="jw--item--row">
-				
+
 					<div class="left jw--item--row__single">
 						<div class="left text-right jw--item--lbl">
 							<label for="created_by_alias"><%= l('K2_AUTHOR_ALIAS') %></label>
@@ -110,7 +110,7 @@
 							<input id="created_by_alias" type="text" name="created_by_alias" value="<%- row.created_by_alias %>" />
 						</div>
 					</div>
-					
+
 					<div class="left jw--item--row__single">
 						<div class="left text-right jw--item--lbl">
 							<label for="created_by_alias_url"><%= l('K2_AUTHOR_ALIAS_URL') %></label>
@@ -119,7 +119,7 @@
 							<input id="created_by_alias_url" type="text" name="created_by_alias_url" value="<%- row.created_by_alias_url %>" />
 						</div>
 					</div>
-					
+
 					<div class="left jw--item--row__single">
 						<div class="left text-right jw--item--lbl">
 						    <label><%= l('K2_AUTHOR') %></label>
@@ -128,12 +128,12 @@
 							<input data-widget="user" data-min="1" data-name="<%- row.authorName %>" type="hidden" name="created_by" value="<%- row.created_by %>" />
 					    </div>
 				    </div>
-				    
-				    
+
+
 				</div>
-				
+
 				<div class="jw--item--row">
-				
+
 					<div class="left jw--item--row__single">
 						<div class="left text-right jw--item--lbl">
 							<label for="createdDate"><%= l('K2_CREATED_DATE') %></label>
@@ -142,7 +142,7 @@
 							<input id="createdDate" data-widget="datepicker" type="text" name="createdDate" value="<%- row.createdDate %>" />
 						</div>
 					</div>
-					
+
 					<div class="left jw--item--row__single">
 						<div class="left text-right jw--item--lbl">
 							<label for="createdTime"><%= l('K2_CREATED_TIME') %></label>
@@ -151,10 +151,10 @@
 							<input id="createdTime" data-widget="timepicker" type="text" name="createdTime" value="<%- row.createdTime %>" />
 						</div>
 					</div>
-					
+
 				</div>
 				<div class="jw--item--row">
-					
+
 					<% if(row.modifiedOn !== "Never") { %>
 				    <div class="left jw--item--row__single">
 				    	<div class="left text-right jw--item--lbl">
@@ -165,7 +165,7 @@
 				        </div>
 				    </div>
 					<% } %>
-					
+
 					<% if(row.moderatorName) { %>
 				    <div class="left jw--item--row__single">
 				    	<div class="left text-right jw--item--lbl">
@@ -176,9 +176,9 @@
 				        </div>
 				    </div>
 				    <% } %>
-				    
+
 			    </div>
-				
+
 				<div data-widget="tabs">
 					<ul class="jw--tabs jw--tabs__content" data-role="tabs-navigation">
 						<li><a href="#"><i class="fa fa-file-text"></i> <%= l('K2_DESCRIPTION') %></a></li>
@@ -188,51 +188,51 @@
 						<li><a href="#"><i class="fa fa-gear"></i> <%= l('K2_PLUGINS') %></a></li>
 						<% } %>
 					</ul>
-					
+
 					<div class="jw--pane jw--pane__content" data-role="tabs-content">
 						<!-- Description -->
 						<div class="jw--editor--tab">
-							<label class="jw--content--label"><%= l('K2_DESCRIPTION') %></label> 
+							<label class="jw--content--label"><%= l('K2_DESCRIPTION') %></label>
 							<%= form.description %>
 						</div>
-						
+
 						<!-- Image -->
 						<div class="jw--editor--tab jw--image--tab">
 							<div class="jw--editor--cnt">
 					    		<div data-region="category-image"></div>
 							</div>
 					    </div>
-					    
+
 						<!-- Extra Fields -->
 					    <div class="jw--editor--tab" id="jw--info2">
 					    	<div class="jw--editor--cnt">
 					    		<div data-region="category-extra-fields"></div>
 					    	</div>
 					    </div>
-					    
-					    
+
+
 					    <% if(!_.isEmpty(form.k2Plugins['categories'])) { %>
 					    <!-- Plugins -->
-					    <div class="jw--settings jw--setting--field jw--editor--tab jw--generic--form">   
+					    <div class="jw--settings jw--setting--field jw--editor--tab jw--generic--form">
 						    <% _.each(form.k2Plugins['categories'], function(field) { %>
 							<% if(field.label !== null) { %>
 							<div class="jw--setting--single">
 							  	<%= field.label %>
 							    <%= field.input %>
-							</div> 
+							</div>
 							<% } else { %>
 							<div class="jw--setting--title">
 								<%= field.input %>
 							</div>
 							<% } %>
 							<% }); %>
-						   
+
 						    <% _.each(form.jform, function(field) { %>
 							<% if(field.label !== null) { %>
 							<div class="jw--setting--single">
 							  	<%= field.label %>
 							    <%= field.input %>
-							</div> 
+							</div>
 							<% } else { %>
 							<div class="jw--setting--title">
 								<%= field.input %>
@@ -241,31 +241,31 @@
 						    <% }); %>
 						</div>
 						<% } %>
-					    
-					    
+
+
 					</div>
-					
+
 				</div>
 		    </div>
-		    
-		    <input type="hidden" name="id" value="<%= row.id %>" / >
-		    
 
-			
+		    <input type="hidden" name="id" value="<%= row.id %>" / >
+
+
+
 			<!-- Metadata -->
-			
+
 			<div class="jw--options--item">
 				<div class="jw--settings jw--generic--form">
-			    	
+
 			    	<h2><%= l('K2_METADATA') %></h2>
 			    	<div class="jw--setting--field">
 					    <% _.each(form.metadata, function(field) { %>
 						<% if(field.label !== null) { %>
-						
+
 						<div class="jw--setting--single">
 						  	<%= field.label %>
 						    <%= field.input %>
-						</div> 
+						</div>
 						<% } else { %>
 						<div class="jw--setting--title">
 							<%= field.input %>
@@ -274,11 +274,11 @@
 					    <% }); %>
 					</div>
 				</div>
-				
-				
+
+
 				<% if(form.associations.enabled) { %>
 				<div class="jw--settings jw--generic--form">
-			    	
+
 			    	<h2><%= l('K2_ASSOCIATIONS') %></h2>
 			    	<div class="jw--setting--field">
 					    <% _.each(form.associations.languages, function(language) { %>
@@ -290,15 +290,15 @@
 					    </div>
 					    <% }); %>
 					</div>
-				</div>					
+				</div>
 				<% } %>
-				
-				
+
+
 			</div>
-			
+
 			<!-- Layout Options -->
 			<div class="jw--setting--field jw--tab--cnt" id="jw--info5">
-			
+
 				<!-- Item Options (Listing/ item Options) -->
 				<div class="jw--options--item">
 					<nav class="jw--transition jw--scrollwrapper jw--scrollwrapper__item" data-widget="scrollspymenu">
@@ -309,9 +309,9 @@
 							<li><a class="jw--scroll__primary" href="#jw--itemp3"><%= l('K2_LISTING_OPTIONS') %></a></li>
 							<li><a class="jw--scroll__primary" href="#jw--itemp4"><%= l('K2_ITEM_OPTIONS') %></a></li>
 						</ul>
-					</nav>	
+					</nav>
 				</div>
-				
+
 				<div class="jw--settings jw--settings__global jw--item">
 				    <h2 id="jw--itemp0"><%= l('K2_CATEGORY_LAYOUT_OPTIONS') %></h2>
 				    <% _.each(form.categoryLayoutOptions, function(field) { %>
@@ -319,73 +319,73 @@
 					<div class="jw--setting--single">
 					  	<%= field.label %>
 					    <%= field.input %>
-					</div> 
+					</div>
 					<% } else { %>
 					<div class="jw--setting--title">
 						<%= field.input %>
 					</div>
 					<% } %>
 				    <% }); %>
-				    
+
 				    <h2 id="jw--itemp1"><%= l('K2_CATEGORY_VIEW_OPTIONS') %></h2>
 				    <% _.each(form.categoryViewOptions, function(field) { %>
 					<% if(field.label !== null) { %>
 					<div class="jw--setting--single">
 					  	<%= field.label %>
 					    <%= field.input %>
-					</div> 
+					</div>
 					<% } else { %>
 					<div class="jw--setting--title">
 						<%= field.input %>
 					</div>
 					<% } %>
 				    <% }); %>
-				    
+
 				    <h2 id="jw--itemp2"><%= l('K2_ITEM_IMAGE_OPTIONS') %></h2>
 				    <% _.each(form.categoryImageOptions, function(field) { %>
 					<% if(field.label !== null) { %>
 					<div class="jw--setting--single">
 					  	<%= field.label %>
 					    <%= field.input %>
-					</div> 
+					</div>
 					<% } else { %>
 					<div class="jw--setting--title">
 						<%= field.input %>
 					</div>
 					<% } %>
 				    <% }); %>
-				    
+
 				    <h2 id="jw--itemp3"><%= l('K2_LISTING_OPTIONS') %></h2>
 				    <% _.each(form.listingOptions, function(field) { %>
 					<% if(field.label !== null) { %>
 					<div class="jw--setting--single">
 					  	<%= field.label %>
 					    <%= field.input %>
-					</div> 
+					</div>
 					<% } else { %>
 					<div class="jw--setting--title">
 						<%= field.input %>
 					</div>
 					<% } %>
 				    <% }); %>
-				    
+
 				    <h2 id="jw--itemp4"><%= l('K2_ITEM_OPTIONS') %></h2>
 				    <% _.each(form.itemOptions, function(field) { %>
 					<% if(field.label !== null) { %>
 					<div class="jw--setting--single">
 					  	<%= field.label %>
 					    <%= field.input %>
-					</div> 
+					</div>
 					<% } else { %>
 					<div class="jw--setting--title">
 						<%= field.input %>
 					</div>
 					<% } %>
 				    <% }); %>
-				    
+
 				</div>
 			</div>
-			
+
 			<!-- Permissions -->
 			<div class="jw--setting--field jw--tab--cnt" id="jw--info6">
 			    <h2><%= l('K2_PERMISSIONS') %></h2>
@@ -394,7 +394,7 @@
 				<div class="jw--setting--single">
 				  	<%= field.label %>
 				    <%= field.input %>
-				</div> 
+				</div>
 				<% } else { %>
 				<div class="jw--setting--title">
 					<%= field.input %>
@@ -402,7 +402,7 @@
 				<% } %>
 			    <% }); %>
 			</div>
-				
+
 		</div>
 	</div>
 </form>
