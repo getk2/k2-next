@@ -31,6 +31,10 @@ defined('_JEXEC') or die ; ?>
 					_restore();
 				} else if(response.completed) {
 					jQuery('.k2ProcessStatusText').html('<?php echo JText::_('K2_UPGRADE_COMPLETED'); ?>');
+					window.onbeforeunload = null;
+					setTimeout(function() {
+						window.close();
+					}, 1000);
 				} else {
 					jQuery('.k2ProcessStatusText').html(response.status);
 					jQuery('.k2ProcessPercentage').text(response.percentage + '%');
