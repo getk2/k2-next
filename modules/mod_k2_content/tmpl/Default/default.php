@@ -101,7 +101,7 @@ defined('_JEXEC') or die ; ?>
 
       <div class="clr"></div>
 
-     <?php if(!empty($item->media)): ?>
+  <?php if(!empty($item->media) && $params->get('itemVideo')): ?>
   <!-- Item media -->
   <a name="itemMediaAnchor" id="itemMediaAnchor"></a>
   
