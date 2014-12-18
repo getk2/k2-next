@@ -79,7 +79,7 @@ jQuery(document).ready(function() {
 		event.preventDefault();
 		if (!isK2ModalOpen) {
 			var src = jQuery(this).attr('href');
-			var modal = jQuery('<div><a href="#">x</button><iframe src="' + src + '"></iframe></div>');
+			var modal = jQuery('<div id="k2AdminModalContainer"><div id="k2AdminModal"><a href="#">&times;</a><iframe src="' + src + '" style="width:'+(vw-80)+'px;height:'+(vh-160)+'px;"></iframe></div></div>');
 			modal.find('a').click(function(event) {
 				event.preventDefault();
 				modal.remove();
