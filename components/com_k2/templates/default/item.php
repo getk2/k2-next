@@ -496,9 +496,12 @@ defined('_JEXEC') or die ;
   <!-- K2 Plugins: K2AfterDisplay -->
   <?php echo $this->item->events->K2AfterDisplay; ?>
   
-  
-  
   <?php if($this->params->get('itemComments') && $this->params->get('comments')): ?>
+  <!-- K2 Plugins: K2CommentsBlock -->
+  <?php echo $this->item->events->K2CommentsBlock; ?>
+  <?php endif; ?>
+  
+  <?php if($this->params->get('itemComments') && $this->params->get('comments') && empty($this->item->events->K2CommentsBlock)): ?>
   <a name="itemCommentsAnchor" id="itemCommentsAnchor"></a>
   <div data-widget="k2comments" data-itemid="<?php echo $this->item->id; ?>"></div>
   
