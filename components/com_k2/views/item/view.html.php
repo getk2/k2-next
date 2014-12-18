@@ -84,6 +84,10 @@ class K2ViewItem extends K2View
 		if ($this->params->get('itemRelated'))
 		{
 			$this->item->related = $this->item->getRelated($this->params->get('itemRelatedLimit', 5));
+			foreach($this->item->related as $related)
+			{
+				$related->image = $related->getImage($this->params->get('itemRelatedImageSize'));
+			}
 		}
 
 		// Get latest from same author. We need to do this here since the parameter is related with the view
