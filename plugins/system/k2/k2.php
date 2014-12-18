@@ -370,7 +370,7 @@ class PlgSystemK2 extends JPlugin
 		$view = $application->input->get('view');
 		
 		// Add user toolbar
-		if($application->isSite() && $document->getType() == 'html' && $user->authorise('core.manage', 'com_k2') && $view != 'admin' && $view != 'k2')
+		if($application->isSite() && $document->getType() == 'html' && $user->authorise('core.manage', 'com_k2') && $view != 'admin' && $view != 'k2' && trim($view) != '')
 		{
 			$author = K2Users::getInstance($user->id);
 			ob_start();
