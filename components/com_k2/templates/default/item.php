@@ -45,7 +45,7 @@ defined('_JEXEC') or die ;
 	  <!-- Item title -->
 	  <h2 class="itemTitle">
 
-	  	<span<?php if($this->item->canEdit): ?> data-k2-editable="title" data-k2-item="<?php echo $this->item->id; ?>" <?php endif; ?>><?php echo $this->item->title; ?></span>
+	  	<span<?php if($this->item->canEdit && !$this->print): ?> data-k2-editable="title" data-k2-item="<?php echo $this->item->id; ?>" <?php endif; ?>><?php echo $this->item->title; ?></span>
 
 	  	<?php if($this->params->get('itemFeaturedNotice') && $this->item->featured): ?>
 	  	<!-- Featured flag -->
@@ -147,14 +147,14 @@ defined('_JEXEC') or die ;
 		
 	  <?php if($this->params->get('itemIntroText') && $this->item->introtext): ?>
 	  <!-- Item introtext -->
-	  <div class="itemIntroText"<?php if($this->item->canEdit): ?> data-k2-editable="introtext" data-k2-item="<?php echo $this->item->id; ?>" <?php endif; ?>>
+	  <div class="itemIntroText"<?php if($this->item->canEdit && !$this->print): ?> data-k2-editable="introtext" data-k2-item="<?php echo $this->item->id; ?>" <?php endif; ?>>
 	  	<?php echo $this->item->introtext; ?>
 	  </div>
 	  <?php endif; ?>
 	  
 	  <?php if($this->params->get('itemFullText') && $this->item->fulltext): ?>
 	  <!-- Item fulltext -->
-	  <div class="itemFullText"<?php if($this->item->canEdit): ?> data-k2-editable="fulltext" data-k2-item="<?php echo $this->item->id; ?>" <?php endif; ?>>
+	  <div class="itemFullText"<?php if($this->item->canEdit && !$this->print): ?> data-k2-editable="fulltext" data-k2-item="<?php echo $this->item->id; ?>" <?php endif; ?>>
 	  	<?php echo $this->item->fulltext; ?>
 	  </div>
 	  <?php endif; ?>
