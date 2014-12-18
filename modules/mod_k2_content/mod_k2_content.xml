@@ -8,7 +8,7 @@
 	<authorUrl>www.joomlaworks.net</authorUrl>
 	<version>3.0.0</version>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-	<description>K2_MOD_K2_CONTENT_DESCRIPTION</description>
+	<description>MOD_K2_CONTENT_DESCRIPTION</description>
 	<files>
 		<filename module="mod_k2_content">mod_k2_content.php</filename>
 		<filename>helper.php</filename>
