@@ -28,7 +28,7 @@ class Com_K2InstallerScript
 			// Ensure that we are under Joomla! 3.2 or later
 			if (version_compare(JVERSION, '3.3.6', 'lt'))
 			{
-				$parent->getParent()->abort('K2 v3 requires Joomla! 3.3.6 or later.');
+				$parent->getParent()->abort('K2 requires Joomla! 3.3.6 or later.');
 				return false;
 			}
 
