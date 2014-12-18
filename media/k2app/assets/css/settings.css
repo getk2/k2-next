@@ -108,6 +108,7 @@
 	/* Tabled elements */
 	.jw--information table,
 	.jw--information fieldset {width:100%;border:0;}
+	.jw--information fieldset div {padding:10px 0 0;}
 		.jw--information .jw--shorttable tr td:first-child {width:70%;}
 		.jw--information .jw--shorttable tr td:last-child {width:30%;}
 
