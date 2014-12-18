@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		3.0.0b
+ * @version		3.0.0
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2014 JoomlaWorks Ltd. All rights reserved.
@@ -50,7 +50,7 @@ if ($user->authorise('core.manage', 'com_k2'))
 	// Append CSS to the document's head
 	if ($modCSSStyling)
 	{
-		$document->addStyleSheet(JURI::base(true).'/modules/mod_k2_quickicons/tmpl/css/style.css?v=2.6.8');
+		$document->addStyleSheet(JURI::base(true).'/modules/mod_k2_quickicons/tmpl/css/style.css?v=3.0.0');
 	}
 
 	// Output content with template

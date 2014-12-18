@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		3.0.0b
+ * @version		3.0.0
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2014 JoomlaWorks Ltd. All rights reserved.
@@ -19,7 +19,7 @@ class JFormFieldK2Header extends JFormField
 	public function getInput()
 	{
 		$document = JFactory::getDocument();
-		$document->addStyleSheet(JURI::root(true).'/media/k2app/assets/css/modules.css?v=3.0.0b');
+		$document->addStyleSheet(JURI::root(true).'/media/k2app/assets/css/modules.css?v=3.0.0');
 		return '<h4>'.JText::_($this->value).'</h4>';
 	}
 	

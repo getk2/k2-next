@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		3.0.0b
+ * @version		3.0.0
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2014 JoomlaWorks Ltd. All rights reserved.
@@ -288,7 +288,7 @@ class ModK2ToolsHelper
 			$document = JFactory::getDocument();
 			if ($document->getType() == 'html')
 			{
-				$document->addScript(JURI::root(true).'/administrator/components/com_k2/js/lib/underscore-min.js');
+				$document->addScript(JURI::root(true).'/media/k2app/vendor/underscore/underscore-min.js?v=3.0.0');
 				$document->addScriptDeclaration('var K2Site = "'.JURI::root(true).'";');
 			}
 		}

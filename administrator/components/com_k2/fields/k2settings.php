@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		3.0.0b
+ * @version		3.0.0
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2014 JoomlaWorks Ltd. All rights reserved.
@@ -20,8 +20,8 @@ class JFormFieldK2Settings extends JFormField
 		// Add head data
 		JHtml::_('jquery.framework');
 		$document = JFactory::getDocument();
-		$document->addStyleSheet(JURI::root(true).'/media/k2app/assets/css/k2.css');
-		$document->addScript(JURI::root(true).'/media/k2app/assets/js/fields.js');
+		$document->addStyleSheet(JURI::root(true).'/media/k2app/assets/css/k2.css?v=3.0.0');
+		$document->addScript(JURI::root(true).'/media/k2app/assets/js/fields.js?v=3.0.0');
 
 		// Detect context
 		$isMenu = JFactory::getApplication()->input->get('option') == 'com_menus';

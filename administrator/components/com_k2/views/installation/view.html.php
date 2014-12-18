@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		3.0.0b
+ * @version		3.0.0
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2014 JoomlaWorks Ltd. All rights reserved.
@@ -18,7 +18,7 @@ class K2ViewInstallation extends JViewLegacy
 		$document = JFactory::getDocument();
 
 		// Load the CSS
-		$document->addStyleSheet(JURI::root(true).'/media/k2app/assets/css/installation.css');
+		$document->addStyleSheet(JURI::root(true).'/media/k2app/assets/css/installation.css?v=3.0.0');
 
 		// Upgrade flag
 		$this->upgrade = JFactory::getSession()->get('k2.upgrade');

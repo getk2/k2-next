@@ -1,5 +1,5 @@
 /**
- * @version		3.0.0b
+ * @version		3.0.0
  * @package		Example K2 Plugin (K2 plugin)
  * @author		JoomlaWorks - http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2014 JoomlaWorks Ltd. All rights reserved.

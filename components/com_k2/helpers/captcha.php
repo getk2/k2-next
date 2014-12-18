@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		3.0.0b
+ * @version		3.0.0
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2014 JoomlaWorks Ltd. All rights reserved.
@@ -36,7 +36,8 @@ class K2HelperCaptcha
 				} else {
 					k2TimeoutId = window.setTimeout(K2ShowRecaptcha, 1000);
 				}
-			}';
+			}
+			';
 			$document->addScriptDeclaration($js);
 		}
 

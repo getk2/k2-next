@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		3.0.0b
+ * @version		3.0.0
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2014 JoomlaWorks Ltd. All rights reserved.
@@ -24,10 +24,10 @@ class JFormFieldK2Users extends JFormField
 
 		// Load required scripts
 		$document = JFactory::getDocument();
-		$document->addStyleSheet(JURI::root(true).'/media/k2app/vendor/magnific/magnific-popup.css');
-		$document->addScript(JURI::root(true).'/media/k2app/vendor/magnific/jquery.magnific-popup.min.js');
-		$document->addScript(JURI::root(true).'/media/k2app/vendor/sortable/jquery-sortable-min.js');
-		$document->addScript(JURI::root(true).'/media/k2app/assets/js/fields.js');
+		$document->addStyleSheet(JURI::root(true).'/media/k2app/vendor/magnific/magnific-popup.css?v=3.0.0');
+		$document->addScript(JURI::root(true).'/media/k2app/vendor/magnific/jquery.magnific-popup.min.js?v=3.0.0');
+		$document->addScript(JURI::root(true).'/media/k2app/vendor/sortable/jquery-sortable-min.js?v=3.0.0');
+		$document->addScript(JURI::root(true).'/media/k2app/assets/js/fields.js?v=3.0.0');
 
 		$this->multiple = (bool)$this->element['k2multiple'];
 		$link = JURI::root(true).'/administrator/index.php?option=com_k2&tmpl=component#modal/users';

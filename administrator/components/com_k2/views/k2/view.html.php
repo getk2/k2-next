@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		3.0.0b
+ * @version		3.0.0
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2014 JoomlaWorks Ltd. All rights reserved.
@@ -61,23 +61,21 @@ class K2ViewK2 extends JViewLegacy
 		// Load the CSS
 		if ($application->isSite())
 		{
-			$document->addScript(JURI::root(true).'/media/k2app/assets/js/frontend.js?v=3.0.0b');
-			$document->addStyleSheet(JURI::root(true).'/media/k2app/assets/css/frontend.css?v=3.0.0b');
+			$document->addScript(JURI::root(true).'/media/k2app/assets/js/frontend.js?v=3.0.0');
+			$document->addStyleSheet(JURI::root(true).'/media/k2app/assets/css/frontend.css?v=3.0.0');
 		}
-		$document->addStyleSheet('//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css?v=3.0.0b');
-		$document->addStyleSheet(JURI::root(true).'/media/k2app/assets/css/k2.css?v=3.0.0b');
+		$document->addStyleSheet('//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css?v=3.0.0');
+		$document->addStyleSheet(JURI::root(true).'/media/k2app/assets/css/k2.css?v=3.0.0');
 
 		// Add javascript variables
 		$document->addScriptDeclaration('
-
-		/* K2 v3.0.0 (beta) - START */
-		var K2SessionToken = "'.JSession::getFormToken().'";
-		var K2Editor = '.$this->getEditor().';
-		var K2SitePath = "'.JURI::root(true).'";
-		var K2BasePath = "'.JURI::base(true).'";
-		var K2Language = '.$this->getLanguage().';
-		/* K2 v3.0.0 (beta) - FINISH */
-
+			/* K2 v3.0.0 - START */
+			var K2SessionToken = "'.JSession::getFormToken().'";
+			var K2Editor = '.$this->getEditor().';
+			var K2SitePath = "'.JURI::root(true).'";
+			var K2BasePath = "'.JURI::base(true).'";
+			var K2Language = '.$this->getLanguage().';
+			/* K2 v3.0.0 - FINISH */
 		');
 
 		// Add DropBox drop-in
@@ -89,7 +87,7 @@ class K2ViewK2 extends JViewLegacy
 		}
 
 		// Load the application
-		$document->addCustomTag('<script data-main="'.JURI::root(true).'/media/k2app/app/main" src="'.JURI::root(true).'/media/k2app/vendor/require/require.js?v=3.0.0b"></script>');
+		$document->addCustomTag('<script data-main="'.JURI::root(true).'/media/k2app/app/main" src="'.JURI::root(true).'/media/k2app/vendor/require/require.js?v=3.0.0"></script>');
 
 		// Set title
 		if (class_exists('JToolBarHelper'))

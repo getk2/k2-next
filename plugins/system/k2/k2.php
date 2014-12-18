@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		3.0.0b
+ * @version		3.0.0
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2014 JoomlaWorks Ltd. All rights reserved.
@@ -115,7 +115,7 @@ class PlgSystemK2 extends JPlugin
 			{
 				// Javascript files
 				JHtml::_('jquery.framework');
-				$document->addScript(JURI::root(true).'/media/k2app/assets/js/k2.js?v3.0.0b&amp;sitepath='.JURI::root(true).'/');
+				$document->addScript(JURI::root(true).'/media/k2app/assets/js/k2.js?v3.0.0&amp;sitepath='.JURI::root(true).'/');
 
 				// CSS files. Check first that K2 CSS is enabled in component settings
 				if ($params->get('enable_css'))
@@ -123,11 +123,11 @@ class PlgSystemK2 extends JPlugin
 					// Load k2.css. Check for overrides in template's css directory
 					if (JFile::exists(JPATH_SITE.'/templates/'.$application->getTemplate().'/css/k2.css'))
 					{
-						$document->addStyleSheet(JURI::root(true).'/templates/'.$application->getTemplate().'/css/k2.css?v=3.0.0b');
+						$document->addStyleSheet(JURI::root(true).'/templates/'.$application->getTemplate().'/css/k2.css?v=3.0.0');
 					}
 					else
 					{
-						$document->addStyleSheet(JURI::root(true).'/components/com_k2/css/k2.css?v=3.0.0b');
+						$document->addStyleSheet(JURI::root(true).'/components/com_k2/css/k2.css?v=3.0.0');
 					}
 
 					// Load k2.print.css if we are in print mode. Check for overrides in template's css directory
@@ -135,11 +135,11 @@ class PlgSystemK2 extends JPlugin
 					{
 						if (JFile::exists(JPATH_SITE.'/templates/'.$application->getTemplate().'/css/k2.print.css'))
 						{
-							$document->addStyleSheet(JURI::root(true).'/templates/'.$application->getTemplate().'/css/k2.print.css?v=3.0.0b', 'text/css', 'print');
+							$document->addStyleSheet(JURI::root(true).'/templates/'.$application->getTemplate().'/css/k2.print.css?v=3.0.0', 'text/css', 'print');
 						}
 						else
 						{
-							$document->addStyleSheet(JURI::root(true).'/components/com_k2/css/k2.print.css?v=3.0.0b', 'text/css', 'print');
+							$document->addStyleSheet(JURI::root(true).'/components/com_k2/css/k2.print.css?v=3.0.0', 'text/css', 'print');
 						}
 					}
 				}
@@ -190,7 +190,8 @@ class PlgSystemK2 extends JPlugin
 					}
 					jQuery(document).ready(function() {
 						showRecaptcha();
-					});';
+					});
+					';
 					$document->addScriptDeclaration($js);
 				}
 

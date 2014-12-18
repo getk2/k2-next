@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		3.0.0b
+ * @version		3.0.0
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2014 JoomlaWorks Ltd. All rights reserved.
@@ -22,7 +22,7 @@ class JFormFieldK2Categories extends JFormField
 		// Load javascript
 		JHtml::_('jquery.framework');
 		$document = JFactory::getDocument();
-		$document->addScript(JURI::root(true).'/media/k2app/assets/js/fields.js');
+		$document->addScript(JURI::root(true).'/media/k2app/assets/js/fields.js?v=3.0.0');
 
 		// Set values if are not set
 		if (!is_array($this->value))
