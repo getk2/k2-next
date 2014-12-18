@@ -11,5 +11,6 @@
 	<description>K2_THE_K2_SYSTEM_PLUGIN_IS_USED_TO_ASSIST_THE_PROPER_FUNCTIONALITY_OF_THE_K2_COMPONENT_SITE_WIDE_MAKE_SURE_ITS_ALWAYS_PUBLISHED_WHEN_THE_K2_COMPONENT_IS_INSTALLED</description>
 	<files>
 		<filename plugin="k2">k2.php</filename>
+		<filename plugin="k2">toolbar.php</filename>
 	</files>
 </extension>
