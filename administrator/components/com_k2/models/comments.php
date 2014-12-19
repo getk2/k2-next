@@ -162,12 +162,16 @@ class K2ModelComments extends K2Model
 		}
 		if ($this->getState('search'))
 		{
-			$search = JString::trim($this->getState('search'));
-			$search = JString::strtolower($search);
+			$search = trim($this->getState('search'));
+			$search = strtolower($search);
 			if ($search)
 			{
 				$search = $db->escape($search, true);
-				$query->where($db->quoteName('comment.text').' LIKE '.$db->Quote('%'.$search.'%', false));
+				$query->where('('.$db->quoteName('comment.text').' LIKE '.$db->Quote('%'.$search.'%', false).' 
+					OR '.$db->quoteName('comment.name').' LIKE '.$db->Quote('%'.$search.'%', false).'
+					OR '.$db->quoteName('comment.email').' LIKE '.$db->Quote('%'.$search.'%', false).'
+					OR '.$db->quoteName('comment.ip').' LIKE '.$db->Quote('%'.$search.'%', false).'
+					OR '.$db->quoteName('comment.hostname').' LIKE '.$db->Quote('%'.$search.'%', false).')');
 			}
 		}
 
