@@ -826,29 +826,39 @@
 			<option value="0">K2_NO</option>
 			<option value="1">K2_YES</option>
 		</field>
-		<field menu="hide" name="k2SefLabelItem" type="k2menuitem" filter_attribute="link" filter_value="index.php?option=com_k2&amp;view=general" default="" label="K2_SEF_URL_CATEGORY_PREFIX_FOR_ITEMS" description="K2_SEF_URL_CATEGORY_PREFIX_FOR_ITEMS_DESC" />
+		<field menu="hide" name="k2SefLabelItem" type="k2menuitem" filter_attribute="link" filter_value="index.php?option=com_k2&amp;view=general" default="" label="K2_SEF_URL_CATEGORY_PREFIX_FOR_ITEMS" description="K2_SEF_URL_CATEGORY_PREFIX_FOR_ITEMS_DESC">
+			<option value="">K2_NONE</option>
+		</field>
 		<field menu="hide" name="k2SefPatternItem" type="list" default="id-dash-alias" label="K2_ITEM_URLS_PATTERN">
 			<option value="id-dash-alias">K2_SEF_ID_DASH_ALIAS</option>
 			<option value="id-slash-alias">K2_ID_SLASH_ALIAS</option>
 			<option value="id">K2_SEF_ID</option>
 			<option value="alias">K2_SEF_ALIAS</option>
 		</field>
-		<field menu="hide" name="k2SefLabelCat" type="k2menuitem" filter_attribute="link" filter_value="index.php?option=com_k2&amp;view=general" default="" label="K2_SEF_URL_PREFIX_FOR_CATEGORIES" description="K2_SEF_URL_PREFIX_FOR_CATEGORIES_DESC" />
+		<field menu="hide" name="k2SefLabelCat" type="k2menuitem" filter_attribute="link" filter_value="index.php?option=com_k2&amp;view=general" default="" label="K2_SEF_URL_PREFIX_FOR_CATEGORIES" description="K2_SEF_URL_PREFIX_FOR_CATEGORIES_DESC">
+			<option value="">K2_NONE</option>
+		</field>
 		<field menu="hide" name="k2SefPatternCat" type="list" default="id-dash-alias" label="K2_CATEGORY_URLS_PATTERN">
 			<option value="id-dash-alias">K2_SEF_ID_DASH_ALIAS</option>
 			<option value="id-slash-alias">K2_ID_SLASH_ALIAS</option>
 			<option value="id">K2_SEF_ID</option>
 			<option value="alias">K2_SEF_ALIAS</option>
 		</field>
-		<field menu="hide" name="k2SefLabelTag" type="k2menuitem" filter_attribute="link" filter_value="index.php?option=com_k2&amp;view=general" default="" label="K2_SEF_URL_PREFIX_FOR_TAGS" description="K2_SEF_URL_PREFIX_FOR_TAGS_DESC" />
+		<field menu="hide" name="k2SefLabelTag" type="k2menuitem" filter_attribute="link" filter_value="index.php?option=com_k2&amp;view=general" default="" label="K2_SEF_URL_PREFIX_FOR_TAGS" description="K2_SEF_URL_PREFIX_FOR_TAGS_DESC">
+			<option value="">K2_NONE</option>
+		</field>
 		<field menu="hide" name="k2SefPatternTag" type="list" default="id-dash-alias" label="K2_TAG_URLS_PATTERN">
 			<option value="id-dash-alias">K2_SEF_ID_DASH_ALIAS</option>
 			<option value="id-slash-alias">K2_ID_SLASH_ALIAS</option>
 			<option value="id">K2_SEF_ID</option>
 			<option value="alias">K2_SEF_ALIAS</option>
 		</field>
-		<field menu="hide" name="k2SefLabelUser" type="k2menuitem" filter_attribute="link" filter_value="index.php?option=com_k2&amp;view=general" default="" label="K2_SEF_URL_PREFIX_FOR_USERSAUTHORS" description="K2_SEF_URL_PREFIX_FOR_USERSAUTHORS_DESC" />
-		<field menu="hide" name="k2SefLabelDate" type="k2menuitem" filter_attribute="link" filter_value="index.php?option=com_k2&amp;view=general" default="" label="K2_SEF_URL_PREFIX_FOR_DATE_LISTINGS" description="K2_SEF_URL_PREFIX_FOR_DATE_LISTINGS_DESC" />
+		<field menu="hide" name="k2SefLabelUser" type="k2menuitem" filter_attribute="link" filter_value="index.php?option=com_k2&amp;view=general" default="" label="K2_SEF_URL_PREFIX_FOR_USERSAUTHORS" description="K2_SEF_URL_PREFIX_FOR_USERSAUTHORS_DESC">
+			<option value="">K2_NONE</option>
+		</field>
+		<field menu="hide" name="k2SefLabelDate" type="k2menuitem" filter_attribute="link" filter_value="index.php?option=com_k2&amp;view=general" default="" label="K2_SEF_URL_PREFIX_FOR_DATE_LISTINGS" description="K2_SEF_URL_PREFIX_FOR_DATE_LISTINGS_DESC">
+			<option value="">K2_NONE</option>
+		</field>
 	</fieldset>
 	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
 		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_k2" section="component" />

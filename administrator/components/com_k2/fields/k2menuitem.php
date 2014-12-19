@@ -33,7 +33,7 @@ class JFormFieldK2Menuitem extends JFormFieldMenuitem
 			$application = JApplication::getInstance('site');
 			$menu = $application->getMenu();
 			$items = $menu->getItems($this->filterAttribute, $this->filterValue);
-			$enabled = array();
+			$enabled = array('', '0');
 			foreach ($items as $item)
 			{
 				$enabled[] = $item->id;
