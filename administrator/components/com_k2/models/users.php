@@ -530,10 +530,7 @@ class K2ModelUsers extends K2Model
 		$query = $db->getQuery(true);
 
 		// Select statement
-		$query->select(array(
-			$db->quoteName('id'),
-			$db->quoteName('title')
-		));
+		$query->select(array($db->quoteName('id'), $db->quoteName('title')));
 
 		$query->from($db->quoteName('#__usergroups'));
 
@@ -705,7 +702,6 @@ class K2ModelUsers extends K2Model
 		$query->update($db->quoteName('#__users'))->set($db->quoteName('block').' = 1')->where($db->quoteName('id').' = '.$id);
 		$db->setQuery($query);
 		$db->execute();
-		$application->enqueueMessage(JText::_('K2_USER_BLOCKED'));
 
 		// return
 		return true;
