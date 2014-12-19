@@ -42,32 +42,4 @@ class K2ViewUtilities extends K2View
 		// Render
 		$this->render();
 	}
-
-	/**
-	 * Helper method for fetching a single row and pass it to K2 response.
-	 * This is triggered by the edit function.
-	 * Usually there will be no need to override this function.
-	 *
-	 * @param   integer  $id  The id of the row to edit.
-	 *
-	 * @return void
-	 */
-	protected function setRow($id)
-	{
-
-		// Create row
-		$row = new stdClass;
-
-		$row->importArticles = false;
-
-		$user = JFactory::getUser();
-		$params = JComponentHelper::getParams('com_k2');
-		if ($user->authorise('core.admin', 'com_k2') && !$params->get('hideImportButton'))
-		{
-			$row->importArticles = true;
-		}
-
-		K2Response::setRow($row);
-	}
-
 }
