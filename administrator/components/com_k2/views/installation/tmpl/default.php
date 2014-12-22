@@ -20,6 +20,7 @@ defined('_JEXEC') or die ; ?>
 					</div>
 					<?php echo JText::_('K2_POST_INSTALLATION_MESSAGE'); ?>
 				<div class="call-to-action">
+					<a class="jw--btn jw--btn__item" href="index.php?option=com_installer"><?php echo JText::_('K2_BACKEND_RETURN_TO_THE_JOOMLA_INSTALLER'); ?></a>
 					<a class="jw--btn jw--btn__item" href="index.php?option=com_k2"><?php echo JText::_('K2_GO_TO_K2'); ?></a>
 					<?php if ($this->upgrade) : ?>
 						<a class="jw--btn jw--btn__item" href="#" onclick="window.open('index.php?option=com_k2&view=migrate&tmpl=component', 'K2', 'width=640,height=480'); return false;"><?php echo JText::_('K2_INITIATE_DATA_MIGRATION_PROCESS'); ?></a>
