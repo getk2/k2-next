@@ -54,7 +54,7 @@ img, object, embed{max-width:100%;height:auto;}object, embed{height:100%;}img{-m
 	.blue { color: #00afeb; }
 	.red { color: #A53221; }
 
-input[type="text"], input[type="email"], input[type="password"], textarea, label, input[type="datetime"], input[type="number"] {  font-family: 'Open Sans', sans-serif; font-weight: 400; font-size: 13px;
+.jw input[type="text"], .jw input[type="email"], .jw input[type="password"], .jw textarea, .jw label, .jw input[type="datetime"], .jw input[type="number"] {  font-family: 'Open Sans', sans-serif; font-weight: 400; font-size: 13px;
 	-webkit-transition: opacity 350ms cubic-bezier(0.730, 0, 0.445, 1.000);
 	-webkit-transition: opacity 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
 	   -moz-transition: opacity 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
@@ -63,11 +63,11 @@ input[type="text"], input[type="email"], input[type="password"], textarea, label
 		 	transition: opacity 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
 
 }
-input.disabled, input[disabled], input[disabled="disabled"],
-button.disabled, button[disabled], button[disabled="disabled"] { opacity: 0.5 }
-button:focus, input:focus { outline: 0; }
+.jw input.disabled,.jw  input[disabled],.jw  input[disabled="disabled"],
+.jw button.disabled, .jw button[disabled], .jw button[disabled="disabled"] { opacity: 0.5 }
+.jw button:focus,.jw  input:focus { outline: 0; }
 .jw-frontend textarea { border-color: #ccc; }
-select { font-family: 'Open Sans', sans-serif; font-size: 13px; }
+.jw select { font-family: 'Open Sans', sans-serif; font-size: 13px; }
 
 .blue { color: #00afeb; }
 .jw--green { color: #3fa800; font-weight: 600; }
@@ -598,7 +598,7 @@ z-index: 100; margin: 25px auto; font-family: 'Open Sans', sans-serif; -webkit-f
 [inside a modal] */
 .jw--modalwrap {  }
 	.jw--modalwrap .jw--main--navigation { display: none; }
-	.jw--modalwrap .jw--component { padding-top: 0; }
+	.jw--modalwrap .jw--component { padding-top: 0!important; }
 	.jw--modalwrap .jw--subheader { position: relative; top: 0; left: 0; }
 	.jw--modalwrap .jw--sidebar { top: 0; bottom: 0; }
 	.jw--modalwrap .jw--pagination { bottom: 0; }
@@ -925,7 +925,8 @@ ul.jw--inline--menu__icons { margin: 12px 0 35px; padding: 0; }
 		.jw--setting--field .jw--setting--single {display:block;padding:8px 12px 8px 25px;border-radius:3px;font-size:16px;}
 		.jw--setting--field .jw--setting--single:nth-child(2n-2) {background:#f7f7f7;}
 
-		.jw--setting--field .jw--setting--single > label {font-size:13px;font-weight:700;color:#777778;padding:10px 0;line-height:1;display:inline-block;margin:0;}
+		.jw--setting--field .jw--setting--single > label,
+		.com_modules .jw--setting--field label {font-size:13px;font-weight:700;color:#777778;padding:10px 0;line-height:1;display:inline-block;margin:0;}
 		.jw--settings fieldset {border:0;}
 		.jw--settings fieldset, .jw--settings select, .jw--settings input[type="text"], .jw--settings input[type="password"], .jw--settings textarea {float:right;}
 
@@ -1274,7 +1275,7 @@ body.contentpane dl.tabs { padding-left:8px!important; }
 body.contentpane dl.tabs dt.open { background:#fff!important; border-bottom:1px solid #fff!important; }
 
 /* Module specific styling */
-.form-horizontal .controls { margin-left: 0!important; }
+.jw .form-horizontal .controls { margin-left: 0!important; }
 #K2SettingsContainer .jw--generic--form { max-width: 100%; overflow: hidden; }
 /* chozen compatibility - float left instead of overflow */
 #K2SettingsContainer .jw--setting--field .jw--setting--single,
