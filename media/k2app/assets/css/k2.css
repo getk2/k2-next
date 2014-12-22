@@ -426,7 +426,15 @@ text-shadow: 0 1px 0 rgba(0,0,0,.42); padding: 0 22px; position: fixed; bottom: 
 /* Plugins
 ------------------------------------------------------ */
 /* elfinder */
+@media screen and (min-width: 768px) {
+	.elfinder-toolbar { position: fixed; margin-top: 1px; right: 0; left: 46px; z-index: 9999; }
+	.elfinder .elfinder-workzone { padding-top: 60px; }
+}
+@media screen and (min-width: 935px) {
+	.elfinder .elfinder-workzone { padding-top: 41px; }
+}
 .elfinder .elfinder-navbar { display: block!important; }
+.elfinder-navbar .ui-resizable-handle { z-index: 9!important; }
 
 /* Select2 */
 /*
