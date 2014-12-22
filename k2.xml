@@ -59,6 +59,7 @@
 			<menu view="extrafieldgroups" link="option=com_k2#extrafieldsgroups">K2_EXTRA_FIELD_GROUPS</menu>
 			<menu view="media" link="option=com_k2#media">K2_MEDIA_MANAGER</menu>
 			<menu view="info" link="option=com_k2#information">K2_INFORMATION</menu>
+			<menu view="settings" link="option=com_k2#settings">K2_SETTINGS</menu>
 		</submenu>
 		<files folder="administrator/components/com_k2">
 			<folder>classes</folder>
