@@ -1275,7 +1275,8 @@ body.contentpane dl.tabs { padding-left:8px!important; }
 body.contentpane dl.tabs dt.open { background:#fff!important; border-bottom:1px solid #fff!important; }
 
 /* Module specific styling */
-.jw .form-horizontal .controls { margin-left: 0!important; }
+.jw .form-horizontal .controls,
+.com_modules .form-horizontal .controls { margin-left: 0!important; }
 #K2SettingsContainer .jw--generic--form { max-width: 100%; overflow: hidden; }
 /* chozen compatibility - float left instead of overflow */
 #K2SettingsContainer .jw--setting--field .jw--setting--single,
