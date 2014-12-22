@@ -50,7 +50,7 @@ img, object, embed{max-width:100%;height:auto;}object, embed{height:100%;}img{-m
 ------------------------------------------------------ */
 .jw { font-family: 'Open Sans', sans-serif; font-size: 100%; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; font-smoothing: antialiased; }
 .jw a { text-decoration: none; color: #636b6e; cursor: pointer; }
-	.jw a:hover { text-decoration: none; cursor: pointer; }
+	.jw a:hover, .jw a:active, .jw a:focus { text-decoration: none; cursor: pointer; }
 	.blue { color: #00afeb; }
 	.red { color: #A53221; }
 
@@ -262,8 +262,6 @@ Buttons */
 
 		.jw--form__item .table-responsive:after { display: none; }
 
-
-
 /* Layout
 ------------------------------------------------------ */
 .jw *,.jw *:before,.jw *:after{ -webkit-box-sizing:border-box; -moz-box-sizing:border-box; box-sizing:border-box; }
@@ -347,7 +345,7 @@ div#system-debug { padding-left: 50px; }
 [Modules - reusable] */
 
 .jw--add--area { margin-right: -12px; padding: 12px 15px; background: #204866; }
-	.jw--add--area.jw--add__solo { margin: 0 15px; }
+	.jw--add--area.jw--add__solo { margin: 0; }
 
 /* Search module */
 .jw--search { border: 1px solid #bbbdbf; border-radius: 3px; margin: 0 auto; max-width: 220px; position: relative; }
@@ -427,6 +425,9 @@ text-shadow: 0 1px 0 rgba(0,0,0,.42); padding: 0 22px; position: fixed; bottom: 
 
 /* Plugins
 ------------------------------------------------------ */
+/* elfinder */
+.elfinder .elfinder-navbar { display: block!important; }
+
 /* Select2 */
 /*
 Version:3.4.0 Timestamp:Tue May 14 08:27:33 PDT 2013
@@ -1344,7 +1345,7 @@ body.contentpane dl.tabs dt.open { background:#fff!important; border-bottom:1px 
 	.jw--tabs__top .fa { display: none; }
 	.jw--tabs__content li a { padding: 10px; }
 
-	.jw--add--area.jw--add__solo { margin: 0 2px 0 4px; }
+	.jw--add--area.jw--add__solo { margin: 0 0 0 4px; }
 
 	/* image tab */
 	.jw--image--single button.jw--remove { position: absolute; right: 0; top: 0; }
