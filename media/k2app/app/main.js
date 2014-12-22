@@ -32,7 +32,6 @@ require.config({
 		'sliderpipsStyle' : '../vendor/sliderpips/jquery-ui-slider-pips.css',
 		'sortable' : '../vendor/sortable/jquery-sortable-min',
 		'tipr' : '../vendor/tipr/tipr.min',
-		'tiprStyle' : '../vendor/tipr/tipr.css',
 		'underscore' : '../vendor/underscore/underscore-min',
 		'uploader' : '../vendor/uploader/jquery.fileupload',
 		'uploaderIframe' : '../vendor/uploader/jquery.iframe-transport',
