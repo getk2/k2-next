@@ -5,9 +5,20 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 		updateEvents : function(container) {
 			// Copy this to a variable
 			var self = this;
-			// Browse server
+			// Widgets
 			container.find('[data-widget]').each(function() {
 				self.attachWidget(jQuery(this));
+			});
+			
+			// Tooltips
+			var labels = container.find('label.hasTooltip');
+			labels.each(function() {
+				var el = jQuery(this);
+				el.attr('data-tip', el.attr('title'));
+				el.removeAttr('title');
+			});
+			require(['tipr', 'css!tiprStyle'], function() {
+     			labels.tipr();
 			});
 
 		},
