@@ -1317,7 +1317,8 @@ body.contentpane dl.tabs dt.open { background:#fff!important; border-bottom:1px 
 	.jw--tabs__top a { padding: 20px 14px; font-size: 17px; }
 
 	/* paddings */
-	.jw--component { padding-top: 155px; }
+	.jw-backend .jw--component { padding-top: 155px; }
+	.jw-frontend .jw--component { padding-top: 125px; }
 	.active--toolbar .jw--component { padding-top: 195px; }
 
 	 #k2-items-form .jw--component { padding-top: 109px; }
