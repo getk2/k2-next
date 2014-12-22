@@ -53,11 +53,12 @@
 			<menu view="categories" link="option=com_k2#categories">K2_CATEGORIES</menu>
 			<menu view="tags" link="option=com_k2#tags">K2_TAGS</menu>
 			<menu view="comments" link="option=com_k2#comments">K2_COMMENTS</menu>
-			<menu view="usergroups" link="option=com_k2#users">K2_USERS</menu>
-			<menu view="usergroups" link="option=com_k2#usergroups">K2_USER_GROUPS</menu>
 			<menu view="extrafields" link="option=com_k2#extrafields">K2_EXTRA_FIELDS</menu>
 			<menu view="extrafieldgroups" link="option=com_k2#extrafieldsgroups">K2_EXTRA_FIELD_GROUPS</menu>
+			<menu view="usergroups" link="option=com_k2#usergroups">K2_USER_GROUPS</menu>
+			<menu view="users" link="option=com_k2#users">K2_USERS</menu>
 			<menu view="media" link="option=com_k2#media">K2_MEDIA_MANAGER</menu>
+			<menu view="utilities" link="option=com_k2#utilities">K2_UTILITIES</menu>
 			<menu view="info" link="option=com_k2#information">K2_INFORMATION</menu>
 			<menu view="settings" link="option=com_k2#settings">K2_SETTINGS</menu>
 		</submenu>
