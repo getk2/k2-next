@@ -79,6 +79,8 @@ jQuery(document).ready(function() {
 		event.preventDefault();
 		if (!isK2ModalOpen) {
 			var src = jQuery(this).attr('href');
+			var vw = jQuery(window).width;
+			var vh = jQuery(window).height;
 			var modal = jQuery('<div id="k2AdminModalContainer"><div id="k2AdminModal"><a href="#">&times;</a><iframe src="' + src + '" style="width:'+(vw-80)+'px;height:'+(vh-160)+'px;"></iframe></div></div>');
 			modal.find('a').click(function(event) {
 				event.preventDefault();
