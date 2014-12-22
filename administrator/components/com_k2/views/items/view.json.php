@@ -103,7 +103,7 @@ class K2ViewItems extends K2View
 		$this->setUserState('tag', 0, 'int');
 		$this->setUserState('language', '', 'string');
 		$this->setUserState('sorting', '', 'string');
-		$this->setUserState('recursive', 1, 'int');
+		$this->setUserState('recursive', JComponentHelper::getParams('com_k2')->get('showChildCatItems'), 'int');
 		if ($this->getUserState('author') > 0)
 		{
 			$this->setUserState('authorName', JFactory::getUser($this->getUserState('author'))->name, 'string', false);
