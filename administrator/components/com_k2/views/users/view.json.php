@@ -181,7 +181,8 @@ class K2ViewUsers extends K2View
 	{
 
 		$language = JFactory::getLanguage();
-		$language->load('com_users');
+		$language->load('', JPATH_ADMINISTRATOR);
+		$language->load('com_users', JPATH_ADMINISTRATOR);
 
 		// Import JForm
 		jimport('joomla.form.form');
