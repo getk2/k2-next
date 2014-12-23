@@ -17,7 +17,7 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 				el.attr('data-tip', el.attr('title'));
 				el.removeAttr('title');
 			});
-			require(['tipr', 'css!tiprStyle'], function() {
+			require(['tipr'], function() {
      			labels.tipr();
 			});
 
