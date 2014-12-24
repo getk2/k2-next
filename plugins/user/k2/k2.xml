@@ -8,7 +8,7 @@
 	<authorUrl>www.joomlaworks.net</authorUrl>
 	<version>3.0.0</version>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-	<description>K2_A_USER_SYNCHRONIZATION_PLUGIN_FOR_K2</description>
+	<description>K2_PLG_USER_DESC</description>
 	<files>
 		<filename plugin="k2">k2.php</filename>
 		<folder>forms</folder>

@@ -99,8 +99,8 @@ class plgK2Example extends K2Plugin
 	// Example to load custom scripts and styles into K2 admin form
 	public function onK2RenderAdminHead($row, $type)
 	{
-		$this->addScript(JUri::root(true).'/plugins/k2/example/script.js');
-		$this->addStyle(JUri::root(true).'/plugins/k2/example/style.css');
+		$this->addScript(JUri::root(true).'/plugins/k2/example/assets/script.js');
+		$this->addStyle(JUri::root(true).'/plugins/k2/example/assets/style.css');
 	}
 
 } // END CLASS

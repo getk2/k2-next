@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.3" type="plugin" group="finder" method="upgrade">
-	<name>plg_finder_k2</name>
+	<name>Smart Search - K2</name>
 	<author>JoomlaWorks</author>
 	<creationDate>December 18th, 2014</creationDate>
 	<copyright>Copyright (c) 2006 - 2014 JoomlaWorks Ltd. All rights reserved.</copyright>
@@ -8,7 +8,7 @@
 	<authorEmail>please-use-the-contact-form@joomlaworks.net</authorEmail>
 	<authorUrl>www.joomlaworks.net</authorUrl>
 	<version>3.0.0</version>
-	<description>PLG_FINDER_K2_DESCRIPTION</description>
+	<description>K2_PLG_FINDER_K2_DESCRIPTION</description>
 	<files>
 		<file plugin="k2">k2.php</file>
 	</files>

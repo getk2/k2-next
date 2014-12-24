@@ -11,6 +11,7 @@
 	<description>An example K2 plugin to extend item, category and user forms in K2 with a URL inputbox for YouTube videos. The plugin will convert the YouTube URL you enter in K2 backends forms into a functional video player in the frontend.</description>
 	<files>
 		<filename plugin="example">example.php</filename>
+		<folder>assets</folder>
 	</files>
 	<!-- Standard Joomla! plugin parameters to setup the K2 plugin once -->
 	<config>
