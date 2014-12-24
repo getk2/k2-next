@@ -32,3 +32,8 @@ if (K2_EDIT_MODE || $view == 'import')
 $controller = JControllerLegacy::getInstance('K2', $configuration);
 $controller->execute($application->input->get('task'));
 $controller->redirect();
+
+if (JRequest::getCmd('format') != 'json')
+{
+    echo "\n<!-- JoomlaWorks \"K2\" (v3.0.0) | Learn more about K2 at http://getk2.org -->\n\n";
+}
