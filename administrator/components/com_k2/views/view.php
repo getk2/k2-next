@@ -479,7 +479,7 @@ class K2View extends JViewLegacy
 		// Get user
 		$user = JFactory::getUser();
 
-		// Set prmary menu only for listings
+		// Set primary menu only for listings
 		if ($mode != 'edit')
 		{
 			K2Response::addMenuLink('items', 'K2_ITEMS', array('href' => '#items'), 'primary');
@@ -497,19 +497,18 @@ class K2View extends JViewLegacy
 			if ($user->authorise('k2.extrafields.manage', 'com_k2'))
 			{
 				K2Response::addMenuLink('extrafields', 'K2_EXTRA_FIELDS', array('href' => '#extrafields'), 'primary');
-
 				K2Response::addMenuLink('extrafieldsgroups', 'K2_EXTRA_FIELD_GROUPS', array('href' => '#extrafieldsgroups'), 'primary');
 			}
 
-			K2Response::addMenuLink('usergroups', 'K2_USER_GROUPS', array('href' => '#usergroups'), 'primary');
 			K2Response::addMenuLink('users', 'K2_USERS', array('href' => '#users'), 'primary');
+			K2Response::addMenuLink('usergroups', 'K2_USER_GROUPS', array('href' => '#usergroups'), 'primary');
 			K2Response::addMenuLink('media', 'K2_MEDIA_MANAGER', array('href' => '#media'), 'primary');
+
 			if ($user->authorise('core.admin', 'com_k2'))
 			{
 				K2Response::addMenuLink('utilities', 'K2_UTILITIES', array('href' => '#utilities'), 'primary');
 			}
 
-			// Assign the secondary menu items to the primary menu as well.
 			if ($user->authorise('core.login.admin', 'com_k2'))
 			{
 				K2Response::addMenuLink('information', 'K2_INFORMATION', array('href' => '#information'), 'primary');
@@ -519,8 +518,8 @@ class K2View extends JViewLegacy
 			{
 				K2Response::addMenuLink('settings', 'K2_SETTINGS', array('href' => '#settings'), 'primary');
 			}
-			K2Response::addMenuLink('help', 'K2_HELP', array('href' => 'http://getk2.org/community', 'target' => '_blank'), 'primary');
 
+			K2Response::addMenuLink('help', 'K2_HELP', array('href' => 'http://www.joomlaworks.net/forum/k2', 'target' => '_blank'), 'primary');
 		}
 
 		// Set secondary menu
@@ -533,6 +532,7 @@ class K2View extends JViewLegacy
 		{
 			K2Response::addMenuLink('settings', 'K2_SETTINGS', array('href' => '#settings'), 'secondary');
 		}
+
 		K2Response::addMenuLink('help', 'K2_HELP', array('href' => 'http://getk2.org/community', 'target' => '_blank'), 'secondary');
 
 	}
