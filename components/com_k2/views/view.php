@@ -107,22 +107,13 @@ class K2View extends JViewLegacy
 		{
 			$context .= '.'.$task;
 		}
-		$dispatcher->trigger('onBeforeDisplayView', array(
-			$context,
-			&$this
-		));
+		$dispatcher->trigger('onBeforeDisplayView', array($context, &$this));
 
 		// Fix pathway. Remove any Advanced SEF links
 		$params = JComponentHelper::getParams('com_k2');
 		if ($params->get('k2Sef') && $params->get('k2SefMode', 'legacy') != 'legacy')
 		{
-			$sefItemIds = array(
-				$params->get('k2SefPrefixItem'),
-				$params->get('k2SefPrefixCat'),
-				$params->get('k2SefPrefixTag'),
-				$params->get('k2SefPrefixUser'),
-				$params->get('k2SefPrefixDate')
-			);
+			$sefItemIds = array($params->get('k2SefPrefixItem'), $params->get('k2SefPrefixCat'), $params->get('k2SefPrefixTag'), $params->get('k2SefPrefixUser'), $params->get('k2SefPrefixDate'));
 			$pathway = $application->getPathWay();
 			$pathwayItems = $pathway->getPathway();
 			foreach ($pathwayItems as $key => $pathwayItem)
@@ -139,6 +130,12 @@ class K2View extends JViewLegacy
 				}
 			}
 			$pathway->setPathway($pathwayItems);
+		}
+
+		$document = JFactory::getDocument();
+		if ($document->getType() == 'html')
+		{
+			echo "\n<!-- JoomlaWorks \"K2\" (v3.0.0) | Learn more about K2 at http://getk2.org -->\n\n";
 		}
 
 		// Display
