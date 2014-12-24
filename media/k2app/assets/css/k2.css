@@ -1201,7 +1201,7 @@ ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; position: re
 [galleries] */
 	.jw--gallery--single { padding: 25px 10px 10px; }
 	.jw--gallery--image, .sigProLinkOuterWrapper { display: block; position: relative; width: 100%; padding: 0 0 56%; overflow: hidden; z-index: 2; border-radius: 3px; }
-		.jw--gallery--image img, .sigProLinkOuterWrapper img { position: absolute; left: 0; top: 0; z-index: 1; min-width: 100%; min-height: 100%; height: auto; }
+		.jw--gallery--image img, .sigProLinkOuterWrapper img { position: absolute; left: 0; top: 0; z-index: 1; min-width: 100%; min-height: 100%; height: auto; background-repeat:no-repeat; }
 
 	.sigProGalleriaPlaceholderContainer, .sigProPseudoCaption, .sigProCaption { display: none; }
 	.jw--gallery--text { padding-left: 15px; color: #a2a2a3; }
