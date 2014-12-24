@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.3" type="plugin" group="k2" method="upgrade">
-	<name>Example K2 Plugin</name>
+	<name>K2 - Example Plugin</name>
 	<author>JoomlaWorks</author>
 	<creationDate>December 18th, 2014</creationDate>
 	<copyright>Copyright (c) 2006 - 2014 JoomlaWorks Ltd. All rights reserved.</copyright>
