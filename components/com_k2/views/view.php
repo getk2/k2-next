@@ -49,10 +49,12 @@ class K2View extends JViewLegacy
 		// Add template paths
 		$template = $application->getTemplate();
 		$this->addTemplatePath(JPATH_SITE.'/components/com_k2/templates/default');
+		$this->addTemplatePath(JPATH_SITE.'/templates/'.$template.'/html/com_k2/templates/default');
 		$this->addTemplatePath(JPATH_SITE.'/templates/'.$template.'/html/com_k2/default');
 		if ($theme = $this->params->get('theme'))
 		{
 			$this->addTemplatePath(JPATH_SITE.'/components/com_k2/templates/'.$theme);
+			$this->addTemplatePath(JPATH_SITE.'/templates/'.$template.'/html/com_k2/templates/'.$theme);
 			$this->addTemplatePath(JPATH_SITE.'/templates/'.$template.'/html/com_k2/'.$theme);
 		}
 
