@@ -29,21 +29,6 @@ if ($user->authorise('core.manage', 'com_k2'))
 	// Component parameters
 	$componentParams = JComponentHelper::getParams('com_k2');
 
-	$onlineImageEditor = $componentParams->get('onlineImageEditor', 'splashup');
-
-	switch($onlineImageEditor)
-	{
-		case 'splashup' :
-			$onlineImageEditorLink = 'http://splashup.com/splashup/';
-			break;
-		case 'sumopaint' :
-			$onlineImageEditorLink = 'http://www.sumopaint.com/app/';
-			break;
-		case 'pixlr' :
-			$onlineImageEditorLink = 'http://pixlr.com/editor/';
-			break;
-	}
-
 	// Call the modal and add some needed JS
 	JHTML::_('behavior.modal');
 

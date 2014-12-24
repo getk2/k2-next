@@ -37,7 +37,7 @@ defined('_JEXEC') or die ; ?>
 	    </a>
     </div>
   </div>
-<div class="icon-wrapper">
+  <div class="icon-wrapper">
     <div class="icon">
 	    <a href="<?php echo JRoute::_('index.php?option=com_k2#categories'); ?>">
 		    <img alt="<?php echo JText::_('K2_CATEGORIES'); ?>" src="<?php echo JURI::root(true); ?>/media/k2app/assets/images/dashboard/categories.png" />
@@ -72,7 +72,7 @@ defined('_JEXEC') or die ; ?>
 	    </a>
     </div>
   </div>
-	<div class="icon-wrapper">
+  <div class="icon-wrapper">
     <div class="icon">
 	    <a href="<?php echo JRoute::_('index.php?option=com_k2#extrafieldsgroups'); ?>">
 		    <img alt="<?php echo JText::_('K2_EXTRA_FIELD_GROUPS'); ?>" src="<?php echo JURI::root(true); ?>/media/k2app/assets/images/dashboard/extra-field-groups.png" />
@@ -86,14 +86,6 @@ defined('_JEXEC') or die ; ?>
 	    <a href="<?php echo JRoute::_('index.php?option=com_k2#media'); ?>">
 		    <img alt="<?php echo JText::_('K2_MEDIA_MANAGER'); ?>" src="<?php echo JURI::root(true); ?>/media/k2app/assets/images/dashboard/mediamanager.png" />
 		    <span><?php echo JText::_('K2_MEDIA_MANAGER'); ?></span>
-	    </a>
-    </div>
-  </div>
-	<div class="icon-wrapper">
-    <div class="icon">
-    	<a id="k2OnlineImageEditor" target="_blank" href="<?php echo $onlineImageEditorLink; ?>">
-		    <img alt="<?php echo JText::_('K2_ONLINE_IMAGE_EDITOR'); ?>" src="<?php echo JURI::root(true); ?>/media/k2app/assets/images/dashboard/image-editing.png" />
-		    <span><?php echo JText::_('K2_ONLINE_IMAGE_EDITOR'); ?></span>
 	    </a>
     </div>
   </div>

@@ -35,7 +35,7 @@ class JFormFieldK2Settings extends JFormField
 		include dirname(__FILE__).'/tmpl/settings.php';
 		$contents = ob_get_clean();
 
-		// Remove the rest groups
+		// Remove the rest of the groups
 		if (!$isMenu)
 		{
 			$this->form->removeGroup('params');
@@ -51,8 +51,8 @@ class JFormFieldK2Settings extends JFormField
 		// Hide the extra tab in menus
 		if ($isMenu)
 		{
-			$document->addScriptDeclaration('jQuery(document).ready(function() {jQuery("#attrib-k2basic").remove();});');
-			$document->addStyleDeclaration('#myTabTabs li:nth-child(3) { display: none !important;}');
+			$document->addScriptDeclaration('jQuery(document).ready(function(){jQuery("#attrib-k2basic").remove();});');
+			$document->addStyleDeclaration('#myTabTabs li:nth-child(3) {display:none !important;}');
 		}
 
 		// Return
