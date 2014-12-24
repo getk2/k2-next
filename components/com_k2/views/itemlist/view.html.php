@@ -70,7 +70,18 @@ class K2ViewItemlist extends K2View
 		$this->pagination = new JPagination($this->total, $this->offset, $this->limit);
 
 		// Display
-		parent::display($tpl);
+		try
+		{
+			parent::display($tpl);
+		}
+		catch(Exception $e)
+		{
+			if ($this->_template === false)
+			{
+				$this->setLayout('itemlist');
+			}
+			parent::display($tpl);
+		}
 	}
 
 	private function category()
