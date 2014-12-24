@@ -16,14 +16,11 @@ defined('_JEXEC') or die ;
 class K2HelperRoute
 {
 
-	private static $cache = array(
-		'item' => array(),
-		'category' => array(),
-		'user' => array(),
-		'tag' => array()
-	);
+	private static $cache = array('item' => array(), 'category' => array(), 'user' => array(), 'tag' => array());
 
 	private static $languages = array();
+
+	private static $defaultItemidLegacy = false;
 
 	public static function getItemRoute($id, $category, $language = 0)
 	{
@@ -58,7 +55,15 @@ class K2HelperRoute
 		if (!isset(self::$cache['item'][$id]))
 		{
 			// Initialize Itemid
-			$defaultItemid = (int)$params->get('k2SefLabelItem');
+			$defaultItemid = 0;
+			if ($params->get('k2SefMode', 'legacy') != 'legacy')
+			{
+				$defaultItemid = (int)$params->get('k2SefPrefixItem');
+			}
+			else
+			{
+				$defaultItemid = (int)self::getDefaultItemidLegacy();
+			}
 			if ($params->get('k2Sef') && $defaultItemid)
 			{
 				$Itemid = $defaultItemid;
@@ -150,7 +155,15 @@ class K2HelperRoute
 		if (!isset(self::$cache['category'][$id]))
 		{
 			// Initialize Itemid
-			$defaultItemid = (int)$params->get('k2SefLabelCat');
+			$defaultItemid = 0;
+			if ($params->get('k2SefMode', 'legacy') != 'legacy')
+			{
+				$defaultItemid = (int)$params->get('k2SefPrefixCat');
+			}
+			else
+			{
+				$defaultItemid = (int)self::getDefaultItemidLegacy();
+			}
 			if ($params->get('k2Sef') && $defaultItemid)
 			{
 				$Itemid = $defaultItemid;
@@ -220,7 +233,15 @@ class K2HelperRoute
 		if (!isset(self::$cache['user'][$id]))
 		{
 			// Initialize Itemid
-			$defaultItemid = (int)$params->get('k2SefLabelUser');
+			$defaultItemid = 0;
+			if ($params->get('k2SefMode', 'legacy') != 'legacy')
+			{
+				$defaultItemid = (int)$params->get('k2SefPrefixUser');
+			}
+			else
+			{
+				$defaultItemid = (int)self::getDefaultItemidLegacy();
+			}
 			if ($params->get('k2Sef') && $defaultItemid)
 			{
 				$Itemid = $defaultItemid;
@@ -272,7 +293,14 @@ class K2HelperRoute
 		if (!isset(self::$cache['tag'][$id]))
 		{
 			// Initialize Itemid
-			$defaultItemid = (int)$params->get('k2SefLabelTag');
+			if ($params->get('k2SefMode', 'legacy') != 'legacy')
+			{
+				$defaultItemid = (int)$params->get('k2SefPrefixTag');
+			}
+			else
+			{
+				$defaultItemid = (int)self::getDefaultItemidLegacy();
+			}
 			if ($params->get('k2Sef') && $defaultItemid)
 			{
 				$Itemid = $defaultItemid;
@@ -314,7 +342,7 @@ class K2HelperRoute
 		{
 			$route .= '&category='.$category;
 		}
-		$defaultItemid = (int)$params->get('k2SefLabelDate');
+		$defaultItemid = (int)$params->get('k2SefPrefixDate');
 		if ($params->get('k2Sef') && $defaultItemid)
 		{
 			$Itemid = $defaultItemid;
@@ -379,6 +407,40 @@ class K2HelperRoute
 				self::$languages[$language->lang_code] = $language->sef;
 			}
 		}
+	}
+
+	private static function getDefaultItemidLegacy()
+	{
+		if (self::$defaultItemidLegacy === false)
+		{
+			self::$defaultItemidLegacy = null;
+
+			// Get application
+			$application = JFactory::getApplication();
+
+			// Get component menu links
+			$component = JComponentHelper::getComponent('com_k2');
+			$params = JComponentHelper::getParams('com_k2');
+			$menu = $application->getMenu('site');
+			$items = $menu->getItems('component_id', $component->id);
+
+			foreach ($items as $item)
+			{
+				if ($item->query['view'] == 'itemlist' && isset($item->query['task']) && ($item->query['task'] == 'category' || $item->query['task'] == '') && (!isset($item->query['id']) || $item->query['id'] == ''))
+				{
+					$menuparams = json_decode($item->params);
+					$filter = isset($menuparams->categories) ? $menuparams->categories : new stdClass;
+					if (!$filter->enabled || count($filter->categories) == 0)
+					{
+						self::$defaultItemidLegacy = $item->id;
+						break;
+					}
+
+				}
+			}
+
+		}
+		return self::$defaultItemidLegacy;
 	}
 
 }

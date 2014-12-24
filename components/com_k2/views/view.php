@@ -112,14 +112,14 @@ class K2View extends JViewLegacy
 
 		// Fix pathway. Remove any Advanced SEF links
 		$params = JComponentHelper::getParams('com_k2');
-		if ($params->get('k2Sef'))
+		if ($params->get('k2Sef') && $params->get('k2SefMode', 'legacy') != 'legacy')
 		{
 			$sefItemIds = array(
-				$params->get('k2SefLabelItem'),
-				$params->get('k2SefLabelCat'),
-				$params->get('k2SefLabelTag'),
-				$params->get('k2SefLabelUser'),
-				$params->get('k2SefLabelDate')
+				$params->get('k2SefPrefixItem'),
+				$params->get('k2SefPrefixCat'),
+				$params->get('k2SefPrefixTag'),
+				$params->get('k2SefPrefixUser'),
+				$params->get('k2SefPrefixDate')
 			);
 			$pathway = $application->getPathWay();
 			$pathwayItems = $pathway->getPathway();

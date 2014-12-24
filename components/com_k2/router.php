@@ -40,6 +40,12 @@ class K2Router extends JComponentRouterBase
 
 	public function build(&$query)
 	{
+		// Legacy
+		if ($this->params->get('k2Sef') && $this->params->get('k2SefMode', 'legacy') == 'legacy')
+		{
+			return $this->advacedBuildLegacy($query);
+		}
+
 		// Initialize segments
 		$segments = array();
 
@@ -141,6 +147,12 @@ class K2Router extends JComponentRouterBase
 
 	public function parse(&$segments)
 	{
+		// Legacy
+		if ($this->params->get('k2Sef') && $this->params->get('k2SefMode', 'legacy') == 'legacy')
+		{
+			return $this->advancedParseLegacy($segments);
+		}
+
 		$vars = array();
 		$vars['view'] = $segments[0];
 		if ($vars['view'] == 'itemlist')
@@ -213,13 +225,13 @@ class K2Router extends JComponentRouterBase
 		if (!empty($query['Itemid']))
 		{
 			// Items
-			if ($query['Itemid'] == $this->params->get('k2SefLabelItem'))
+			if ($query['Itemid'] == $this->params->get('k2SefPrefixItem'))
 			{
 				$view = 'item';
 				unset($segments[0]);
 			}
 			// Categories
-			else if ($query['Itemid'] == $this->params->get('k2SefLabelCat'))
+			else if ($query['Itemid'] == $this->params->get('k2SefPrefixCat'))
 			{
 				$view = 'itemlist';
 				$task = 'category';
@@ -227,7 +239,7 @@ class K2Router extends JComponentRouterBase
 				unset($segments[1]);
 			}
 			// Tags
-			else if ($query['Itemid'] == $this->params->get('k2SefLabelTag'))
+			else if ($query['Itemid'] == $this->params->get('k2SefPrefixTag'))
 			{
 				$view = 'itemlist';
 				$task = 'tag';
@@ -235,7 +247,7 @@ class K2Router extends JComponentRouterBase
 				unset($segments[1]);
 			}
 			// Users
-			else if ($query['Itemid'] == $this->params->get('k2SefLabelUser'))
+			else if ($query['Itemid'] == $this->params->get('k2SefPrefixUser'))
 			{
 				$view = 'itemlist';
 				$task = 'user';
@@ -243,7 +255,7 @@ class K2Router extends JComponentRouterBase
 				unset($segments[1]);
 			}
 			// Date
-			else if ($query['Itemid'] == $this->params->get('k2SefLabelDate'))
+			else if ($query['Itemid'] == $this->params->get('k2SefPrefixDate'))
 			{
 				$view = 'itemlist';
 				$task = 'date';
@@ -309,30 +321,30 @@ class K2Router extends JComponentRouterBase
 
 		if ($item && $item->component == 'com_k2')
 		{
-			if ($item->id == $this->params->get('k2SefLabelItem'))
+			if ($item->id == $this->params->get('k2SefPrefixItem'))
 			{
 				$vars['view'] = 'item';
 				$itemId = $segments[0];
 			}
-			if ($item->id == $this->params->get('k2SefLabelCat'))
+			if ($item->id == $this->params->get('k2SefPrefixCat'))
 			{
 				$vars['view'] = 'itemlist';
 				$vars['task'] = 'category';
 				$categoryId = $segments[0];
 			}
-			else if ($item->id == $this->params->get('k2SefLabelUser'))
+			else if ($item->id == $this->params->get('k2SefPrefixUser'))
 			{
 				$vars['view'] = 'itemlist';
 				$vars['task'] = 'user';
 				$userId = $segments[0];
 			}
-			else if ($item->id == $this->params->get('k2SefLabelTag'))
+			else if ($item->id == $this->params->get('k2SefPrefixTag'))
 			{
 				$vars['view'] = 'itemlist';
 				$vars['task'] = 'tag';
 				$tagId = $segments[0];
 			}
-			else if ($item->id == $this->params->get('k2SefLabelDate'))
+			else if ($item->id == $this->params->get('k2SefPrefixDate'))
 			{
 				$vars['view'] = 'itemlist';
 				$vars['task'] = 'date';
@@ -446,6 +458,423 @@ class K2Router extends JComponentRouterBase
 			$result = $row->id.':'.$row->alias;
 		}
 		return $result;
+	}
+
+	/**
+	 * Build the route for the K2 component using the advanced SEF options in legacy mode
+	 */
+
+	private function advacedBuildLegacy(&$query)
+	{
+		// Initialize
+		$segments = array();
+
+		// Detect the active menu item
+		if (empty($query['Itemid']))
+		{
+			$menuItem = $this->menu->getActive();
+		}
+		else
+		{
+			$menuItem = $this->menu->getItem($query['Itemid']);
+		}
+
+		// Load data from the current menu item
+		$mView = ( empty($menuItem->query['view'])) ? null : $menuItem->query['view'];
+		$mTask = ( empty($menuItem->query['task'])) ? null : $menuItem->query['task'];
+		$mId = ( empty($menuItem->query['id'])) ? null : $menuItem->query['id'];
+		$mTag = ( empty($menuItem->query['tag'])) ? null : $menuItem->query['tag'];
+
+		if (isset($query['layout']))
+		{
+			unset($query['layout']);
+		}
+
+		if ($mView == @$query['view'] && $mTask == @$query['task'] && $mId == @intval($query['id']) && @intval($query['id']) > 0)
+		{
+			unset($query['view']);
+			unset($query['task']);
+			unset($query['id']);
+		}
+
+		if ($mView == @$query['view'] && $mTask == @$query['task'] && $mTag == @$query['tag'] && isset($query['tag']))
+		{
+			unset($query['view']);
+			unset($query['task']);
+			unset($query['tag']);
+		}
+
+		if (isset($query['view']))
+		{
+			$segments[] = $query['view'];
+			unset($query['view']);
+		}
+
+		if (isset($query['task']))
+		{
+			$segments[] = $query['task'];
+			unset($query['task']);
+		}
+
+		if (isset($query['id']))
+		{
+			$segments[] = $query['id'];
+			unset($query['id']);
+		}
+
+		if (isset($query['cid']))
+		{
+			$segments[] = $query['cid'];
+			unset($query['cid']);
+		}
+
+		if (isset($query['tag']))
+		{
+			$segments[] = $query['tag'];
+			unset($query['tag']);
+		}
+
+		if (isset($query['year']))
+		{
+			$segments[] = $query['year'];
+			unset($query['year']);
+		}
+
+		if (isset($query['month']))
+		{
+			$segments[] = $query['month'];
+			unset($query['month']);
+		}
+
+		if (isset($query['day']))
+		{
+			$segments[] = $query['day'];
+			unset($query['day']);
+		}
+
+		if (isset($query['task']))
+		{
+			$segments[] = $query['task'];
+			unset($query['task']);
+		}
+
+		// Item view
+		if (isset($segments[0]) && $segments[0] == 'item' && @$segments[1] != 'add')
+		{
+
+			// Enabled category prefix  for items
+			if ($this->params->get('k2SefLabelItem'))
+			{
+				// Tasks available for an item
+				$itemTasks = array('edit', 'download');
+
+				// If it's a task pick the next key
+				if (in_array($segments[1], $itemTasks))
+				{
+					$ItemId = $segments[2];
+				}
+				else
+				{
+					$ItemId = $segments[1];
+				}
+
+				// Replace the item with the category slug
+				if ($this->params->get('k2SefLabelItem') == '1')
+				{
+					$item = K2Items::getInstance((int)$ItemId);
+					$category = K2Categories::getInstance($item->catid);
+					$segments[0] = $category->id.'-'.$category->alias;
+				}
+				else
+				{
+					$segments[0] = $this->params->get('k2SefLabelItemCustomPrefix');
+				}
+
+			}
+			// Remove "item" from the URL
+			else
+			{
+				unset($segments[0]);
+			}
+
+			// Handle item id and alias
+			if ($this->params->get('k2SefInsertItemId'))
+			{
+				if ($this->params->get('k2SefUseItemTitleAlias'))
+				{
+					if ($this->params->get('k2SefItemIdTitleAliasSep') == 'slash')
+					{
+						$segments[1] = JString::str_ireplace(':', '/', $segments[1]);
+					}
+					else if ($this->params->get('k2SefItemIdTitleAliasSep') == 'dash')
+					{
+						$segments[1] = JString::str_ireplace(':', '-', $segments[1]);
+					}
+				}
+				else
+				{
+					$temp = @explode(':', $segments[1]);
+					$segments[1] = $temp[0];
+				}
+
+			}
+			else
+			{
+				if (isset($segments[1]) && $segments[1] != 'download')
+				{
+					// Try to split the slud
+					$temp = @explode(':', $segments[1]);
+
+					// If the slug contained an item id do not use it
+					if (count($temp) > 1)
+					{
+						$segments[1] = $temp[1];
+					}
+
+				}
+			}
+		}
+		// Itemlist view. Check for prefix segments
+		elseif (isset($segments[0]) && $segments[0] == 'itemlist')
+		{
+			if (isset($segments[1]))
+			{
+				switch ($segments[1])
+				{
+					case 'category' :
+						$segments[0] = $this->params->get('k2SefLabelCat', 'content');
+						unset($segments[1]);
+						// Handle category id and alias
+						if ($this->params->get('k2SefInsertCatId'))
+						{
+							if ($this->params->get('k2SefUseCatTitleAlias'))
+							{
+								if ($this->params->get('k2SefCatIdTitleAliasSep') == 'slash')
+								{
+									$segments[2] = @JString::str_ireplace(':', '/', $segments[2]);
+								}
+								else if ($this->params->get('k2SefCatIdTitleAliasSep') == 'dash')
+								{
+									$segments[2] = @JString::str_ireplace(':', '-', $segments[2]);
+								}
+							}
+							else
+							{
+								$temp = @explode(':', $segments[2]);
+								$segments[2] = (int)$temp[0];
+							}
+
+						}
+						else
+						{
+							// Try to split the slud
+							$temp = @explode(':', $segments[2]);
+							// If the slug contained an item id do not use it
+							if (count($temp) > 1)
+							{
+								@$segments[2] = end($temp);
+							}
+
+						}
+
+						break;
+					case 'tag' :
+						$segments[0] = $this->params->get('k2SefLabelTag', 'tag');
+						unset($segments[1]);
+						if (strpos($segments[2], ':'))
+						{
+							$temp = @explode(':', $segments[2]);
+							$segments[2] = $temp[1];
+						}
+						break;
+					case 'user' :
+						$segments[0] = $this->params->get('k2SefLabelUser', 'author');
+						unset($segments[1]);
+						break;
+					case 'date' :
+						$segments[0] = $this->params->get('k2SefLabelDate', 'date');
+						unset($segments[1]);
+						break;
+					case 'search' :
+						$segments[0] = $this->params->get('k2SefLabelSearch', 'search');
+						unset($segments[1]);
+						break;
+					default :
+						$segments[0] = 'itemlist';
+						break;
+				}
+			}
+
+		}
+		// Return reordered segments array
+		return array_values($segments);
+	}
+
+	/**
+	 * Parse the route for the K2 component using the advanced SEF options in legacy mode
+	 *
+	 * @param  array  An array of URL arguments
+	 *
+	 * @return  void
+	 */
+	private function advancedParseLegacy($segments)
+	{
+		// Initialize
+		$vars = array();
+
+		$reservedViews = array('item', 'itemlist', 'media', 'users', 'comments', 'latest');
+
+		if (!in_array($segments[0], $reservedViews))
+		{
+			// Category view
+			if ($segments[0] == $this->params->get('k2SefLabelCat', 'content'))
+			{
+				$segments[0] = 'itemlist';
+				array_splice($segments, 1, 0, 'category');
+				if (!$this->params->get('k2SefInsertCatId'))
+				{
+					$category = K2categories::getInstance($segments[2]);
+					$segments[2] = $category->id.':'.$category->alias;
+				}
+			}
+			// Tag view
+			elseif ($segments[0] == $this->params->get('k2SefLabelTag', 'tag'))
+			{
+				$segments[0] = 'itemlist';
+				array_splice($segments, 1, 0, 'tag');
+			}
+			// User view
+			elseif ($segments[0] == $this->params->get('k2SefLabelUser', 'author'))
+			{
+				$segments[0] = 'itemlist';
+				array_splice($segments, 1, 0, 'user');
+			}
+			// Date view
+			elseif ($segments[0] == $this->params->get('k2SefLabelDate', 'date'))
+			{
+				$segments[0] = 'itemlist';
+				array_splice($segments, 1, 0, 'date');
+			}
+			// Search view
+			elseif ($segments[0] == $this->params->get('k2SefLabelSearch', 'search'))
+			{
+				$segments[0] = 'itemlist';
+				array_splice($segments, 1, 0, 'search');
+			}
+			// Item view
+			else
+			{
+				// Replace the category prefix with item
+				if ($this->params->get('k2SefLabelItem'))
+				{
+					$segments[0] = 'item';
+				}
+				// Reinsert the removed item segment
+				else
+				{
+					array_splice($segments, 0, 0, 'item');
+				}
+
+				// Reinsert item id to the item alias
+				if (!$this->params->get('k2SefInsertItemId') && @$segments[1] != 'download' && @$segments[1] != 'edit')
+				{
+					$segments[1] = str_replace(':', '-', $segments[1]);
+					$item = K2Items::getInstance($segments[1]);
+					$ItemId = $item->id;
+					$segments[1] = $ItemId.':'.$segments[1];
+				}
+			}
+
+		}
+
+		$vars['view'] = $segments[0];
+
+		if (!isset($segments[1]))
+		{
+			$segments[1] = '';
+		}
+		$vars['task'] = $segments[1];
+		if ($segments[0] == 'itemlist')
+		{
+			switch ($segments[1])
+			{
+
+				case 'category' :
+					if (isset($segments[2]))
+					{
+						$vars['id'] = $segments[2];
+					}
+					break;
+
+				case 'tag' :
+					if (isset($segments[2]))
+					{
+						$tag = K2Tags::getInstance($segments[2]);
+						$vars['id'] = $tag->id;
+					}
+					break;
+
+				case 'user' :
+					if (isset($segments[2]))
+					{
+						$vars['id'] = $segments[2];
+					}
+					break;
+
+				case 'date' :
+					if (isset($segments[2]))
+					{
+						$vars['year'] = $segments[2];
+					}
+					if (isset($segments[3]))
+					{
+						$vars['month'] = $segments[3];
+					}
+					if (isset($segments[4]))
+					{
+						$vars['day'] = $segments[4];
+					}
+					break;
+			}
+
+		}
+		elseif ($segments[0] == 'item')
+		{
+			switch ($segments[1])
+			{
+				case 'add' :
+				case 'edit' :
+					if (isset($segments[2]))
+					{
+						$vars['cid'] = $segments[2];
+					}
+					break;
+
+				case 'download' :
+					if (isset($segments[2]))
+					{
+						$vars['id'] = $segments[2];
+					}
+					break;
+
+				default :
+					$vars['id'] = $segments[1];
+					if (isset($segments[2]))
+					{
+						$vars['id'] .= ':'.str_replace(':', '-', $segments[2]);
+					}
+					unset($vars['task']);
+					break;
+			}
+
+		}
+
+		if ($segments[0] == 'comments' && isset($segments[1]) && $segments[1] == 'reportSpammer')
+		{
+			$vars['id'] = $segments[2];
+		}
+
+		return $vars;
 	}
 
 }
