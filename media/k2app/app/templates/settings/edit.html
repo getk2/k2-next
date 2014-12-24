@@ -5,7 +5,7 @@
 			<a href="#jw--setting-<%= index %>" class="jw--scroll jw--scroll__primary"><%= l(name) %></a>	
 			
 			<% var indextwo = 0; _.each(fields, function(field) { %>
-			<% if(field.label == null && field.input !== null){ %>
+			<% if(field.type == 'K2Header'){ %>
 			<a href="#jw--settingtitle-<%= index %><%= indextwo %>" class="jw--scroll jw--scroll__sec">
 				<%= field.input %>
 			</a>

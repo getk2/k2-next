@@ -827,6 +827,7 @@
 			<option value="legacy">K2_LEGACY_SEF_MODE</option>
 			<option value="new">K2_NORMAL_SEF_MODE</option>
 		</field>
+		<!-- <field menu="hide" name="" type="k2fielddescription" default="This is the description" label="" description="" /> -->
 		<field menu="hide" name="" type="k2header" default="K2_ADVANCED_SEF_NORMAL_SETTINGS" label="" description="" />
 		<field menu="hide" name="k2SefPrefixItem" type="k2menuitem" filter_attribute="link" filter_value="index.php?option=com_k2&amp;view=general" default="" label="K2_SEF_URL_CATEGORY_PREFIX_FOR_ITEMS" description="K2_SEF_URL_CATEGORY_PREFIX_FOR_ITEMS_DESC">
 			<option value="">K2_NONE</option>

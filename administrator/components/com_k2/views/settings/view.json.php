@@ -81,6 +81,7 @@ class K2ViewSettings extends K2View
 				$tmp = new stdClass;
 				$tmp->label = $field->label;
 				$tmp->input = $field->input;
+				$tmp->type = $field->type;
 				$array[$field->name] = $tmp;
 			}
 			$name = $fieldset->name;
