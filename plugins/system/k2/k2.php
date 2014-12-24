@@ -241,10 +241,7 @@ class PlgSystemK2 extends JPlugin
 				// Trigger K2 plugins
 				JPluginHelper::importPlugin('k2');
 				$dispatcher = JDispatcher::getInstance();
-				$K2Plugins = $dispatcher->trigger('onRenderAdminForm', array(
-					&$K2User,
-					'user'
-				));
+				$K2Plugins = $dispatcher->trigger('onRenderAdminForm', array(&$K2User, 'user'));
 				$view->assignRef('K2Plugins', $K2Plugins);
 				$view->assignRef('K2User', $K2User);
 
@@ -319,10 +316,7 @@ class PlgSystemK2 extends JPlugin
 					// Trigger K2 plugins
 					JPluginHelper::importPlugin('k2');
 					$dispatcher = JDispatcher::getInstance();
-					$K2Plugins = $dispatcher->trigger('onRenderAdminForm', array(
-						&$K2User,
-						'user'
-					));
+					$K2Plugins = $dispatcher->trigger('onRenderAdminForm', array(&$K2User, 'user'));
 					$view->assignRef('K2Plugins', $K2Plugins);
 					$view->assignRef('K2User', $K2User);
 
@@ -369,23 +363,26 @@ class PlgSystemK2 extends JPlugin
 		$params = JComponentHelper::getParams('com_k2');
 		$view = $application->input->get('view');
 		$print = $application->input->getBool('print');
-		
+
 		// Add user toolbar
-		if($application->isSite() && $document->getType() == 'html' && $user->authorise('core.manage', 'com_k2') && $view != 'admin' && $view != 'k2' && trim($view) != '' && !$print)
+		if ($application->isSite() && $document->getType() == 'html' && $user->authorise('core.manage', 'com_k2') && $view != 'admin' && $view != 'k2' && trim($view) != '' && !$print)
 		{
 			$author = K2Users::getInstance($user->id);
+			$file = JPATH_SITE.'/components/com_k2/templates/default/toolbar.php';
+			$template = $application->getTemplate();
+			$override = JPATH_SITE.'/templates/'.$template.'/html/com_k2/default/toolbar.php';
+			if (JFile::exists($override))
+			{
+				$file = $override;
+			}
 			ob_start();
-			include 'toolbar.php';
+			include $file;
 			$toolbar = ob_get_contents();
 			ob_end_clean();
-			
+
 			$response = $application->getBody();
-			$searches = array(
-				'</body>'
-			);
-			$replacements = array(
-				$toolbar,
-			);
+			$searches = array('</body>');
+			$replacements = array($toolbar, );
 			$response = str_ireplace($searches, $replacements, $response);
 			$application->setBody($response);
 		}
@@ -397,20 +394,8 @@ class PlgSystemK2 extends JPlugin
 			$response = $application->getBody();
 
 			// Make the following more generic?
-			$searches = array(
-				'<meta name="og:url"',
-				'<meta name="og:title"',
-				'<meta name="og:type"',
-				'<meta name="og:image"',
-				'<meta name="og:description"'
-			);
-			$replacements = array(
-				'<meta property="og:url"',
-				'<meta property="og:title"',
-				'<meta property="og:type"',
-				'<meta property="og:image"',
-				'<meta property="og:description"'
-			);
+			$searches = array('<meta name="og:url"', '<meta name="og:title"', '<meta name="og:type"', '<meta name="og:image"', '<meta name="og:description"');
+			$replacements = array('<meta property="og:url"', '<meta property="og:title"', '<meta property="og:type"', '<meta property="og:image"', '<meta property="og:description"');
 
 			if (strpos($response, 'prefix="og: http://ogp.me/ns#"') === false)// make it less strict?
 			{

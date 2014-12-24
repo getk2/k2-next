@@ -11,6 +11,5 @@
 	<description>K2_PLG_SYSTEM_DESC</description>
 	<files>
 		<filename plugin="k2">k2.php</filename>
-		<filename>toolbar.php</filename>
 	</files>
 </extension>
