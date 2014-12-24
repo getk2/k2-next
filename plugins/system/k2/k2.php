@@ -107,7 +107,7 @@ class PlgSystemK2 extends JPlugin
 			// Enforce system template for editing
 			if (K2_EDIT_MODE)
 			{
-				$application->input->set('template', 'system');
+				$application->setTemplate('system');
 			}
 
 			// Load head data if document type is HTML
