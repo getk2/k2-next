@@ -8,17 +8,20 @@
  */
 
 // no direct access
-defined('_JEXEC') or die ; ?>
-<div data-application="k2" class="jw<?php echo $this->class; ?>">
-<div class="jw--header" data-region="header"></div>
+defined('_JEXEC') or die ;
 
-    <div class="left" data-region="sidebar"></div>
-    <div class="jw--transition jw--component">
+?>
+
+<!-- K2 [START] -->
+<div data-application="k2" class="jw<?php echo $this->class; ?>">
+	<div class="jw--header" data-region="header"></div>
+	<div class="left" data-region="sidebar"></div>
+	<div class="jw--transition jw--component">
 		<div class="jw--messages" data-region="messages"></div>
-				
-        <div class="jw--transition jw--subheader" data-region="subheader"></div>
-        <div data-region="content"></div>
-    </div>
-    <div class="clr"></div>
-    <div data-region="modal"></div>
+		<div class="jw--transition jw--subheader" data-region="subheader"></div>
+		<div data-region="content"></div>
+	</div>
+	<div class="clr"></div>
+	<div data-region="modal"></div>
 </div>
+<!-- K2 [FINISH] -->
