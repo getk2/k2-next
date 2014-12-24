@@ -124,9 +124,9 @@ defined('_JEXEC') or die ; ?>
   </div>
   <div class="icon-wrapper">
     <div class="icon">
-	    <a class="modal" rel="{handler:'iframe', size:{x:(document.documentElement.clientWidth)*0.9, y:(document.documentElement.clientHeight)*0.95}}" href="http://joomlareader.com/" title="<?php echo JText::_('K2_JOOMLA_NEWS_FROM_MORE_THAN_200_SOURCES_WORLDWIDE'); ?>">
-		    <img alt="<?php echo JText::_('K2_JOOMLA_NEWS_FROM_MORE_THAN_200_SOURCES_WORLDWIDE'); ?>" src="<?php echo JURI::root(true); ?>/media/k2app/assets/images/dashboard/joomlareader.png" />
-		    <span><?php echo JText::_('K2_JOOMLAREADERCOM'); ?></span>
+	    <a class="modal" rel="{handler:'iframe', size:{x:(document.documentElement.clientWidth)*0.9, y:(document.documentElement.clientHeight)*0.95}}" href="http://joomlareader.com/?ref=K2" title="<?php echo JText::_('K2_JOOMLA_NEWS_FROM_MORE_THAN_200_SOURCES_WORLDWIDE'); ?>">
+		    <img alt="JoomlaReader - Joomla community news &amp; updates" src="<?php echo JURI::root(true); ?>/media/k2app/assets/images/dashboard/joomlareader.png" />
+		    <span>JoomlaReader</span>
 	    </a>
     </div>
   </div>
