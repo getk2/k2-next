@@ -235,11 +235,19 @@ class Com_K2InstallerScript
 			}
 		}
 
+		// Update params
+		$params = JComponentHelper::getParams('com_k2');
+
+		// Add default params directly from the config file. Used both in new installs and updates.
+		$xmlForm = simplexml_load_file($src.'/administrator/components/com_k2/config.xml');
+		foreach ($xmlForm->xpath('fieldset') as $fieldset)
+		{
+			$this->updateParams($params, $fieldset);
+		}
+
 		// Set the default image sizes for new installs
 		if ($type == 'install')
 		{
-			$params = JComponentHelper::getParams('com_k2');
-
 			$imageSizes = array();
 
 			$size = new stdClass;
@@ -279,13 +287,15 @@ class Com_K2InstallerScript
 
 			$params->set('imageSizes', $imageSizes);
 
-			$query = $db->getQuery(true);
-			$query->update($db->quoteName('#__extensions'));
-			$query->set($db->quoteName('params').' = '.$db->quote($params->toString()));
-			$query->where($db->quoteName('element').' = '.$db->quote('com_k2'));
-			$db->setQuery($query);
-			$db->execute();
 		}
+
+		// Execute the update params query
+		$query = $db->getQuery(true);
+		$query->update($db->quoteName('#__extensions'));
+		$query->set($db->quoteName('params').' = '.$db->quote($params->toString()));
+		$query->where($db->quoteName('element').' = '.$db->quote('com_k2'));
+		$db->setQuery($query);
+		$db->execute();
 
 		// Add upgrade flag to session
 		$session = JFactory::getSession();
@@ -355,6 +365,22 @@ class Com_K2InstallerScript
 					$result = $installer->uninstall('module', $id);
 				}
 			}
+		}
+	}
+
+	private function updateParams(&$params, $xml)
+	{
+		// set default value if we've one
+		$name = (string)$xml['name'];
+		$default = (string)$xml['default'];
+		if (!empty($name) && !empty($default))
+		{
+			$params->def($name, $default);
+		}
+		// recurse further
+		foreach ($xml->children() as $child)
+		{
+			$this->addDefaults($params, $child);
 		}
 	}
 
