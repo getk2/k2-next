@@ -380,7 +380,7 @@ class Com_K2InstallerScript
 		// recurse further
 		foreach ($xml->children() as $child)
 		{
-			$this->addDefaults($params, $child);
+			$this->updateParams($params, $child);
 		}
 	}
 
