@@ -78,7 +78,7 @@
 				<field name="commenters_limit" type="text" size="4" default="5" label="K2_COMMENTERS_LIST_LIMIT" description=""/>
 				<field name="commenterNameOrUsername" type="list" default="1" label="K2_COMMENTER_IDENTIFIER" description="">
 					<option value="1">K2_SHOW_NAME</option>
-					<option value="2">K2_SHOW_THE_COMENTER_USERNAME</option>
+					<option value="2">K2_SHOW_THE_COMMENTERS_USERNAME</option>
 				</field>
 				<field name="commenterAvatar" type="radio" default="1" label="K2_COMMENTER_AVATAR" description="">
 					<option value="0">K2_HIDE</option>
