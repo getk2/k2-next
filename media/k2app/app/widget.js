@@ -44,7 +44,7 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 			}
 
 			// Generate a unique callback
-			var callback = 'app:media:' + jQuery.now();
+			var callback = 'app:media:' + Math.floor(Math.random() * 26) + Date.now();
 
 			// Add the click event
 			button.on('click', function(event) {
