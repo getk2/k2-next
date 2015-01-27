@@ -170,12 +170,11 @@ jQuery(document).ready(function() {
 		data['_method'] = 'PATCH';
 		data['states[' + property + ']'] = el.html();
 		data[K2SessionToken] = 1;
-		console.info(data);
-		//jQuery.post(K2SitePath + '/index.php?option=com_k2&task=items.sync&format=json', data).done(function() {
+		jQuery.post(K2SitePath + '/index.php?option=com_k2&task=items.sync&format=json', data).done(function() {
 			// @TODO : Inform user that save was succesful
-		//}).fail(function(response) {
-		//	alert(response.responseText);
-		//});
+		}).fail(function(response) {
+			alert(response.responseText);
+		});
 	});
 
 	// Comments application
