@@ -75,7 +75,7 @@ class K2ViewItem extends K2View
 			// Inline editing
 			if ($this->item->canEdit)
 			{
-				$this->document->addScript('//cdn.ckeditor.com/4.4.2/standard/ckeditor.js');
+				$this->document->addScript('//cdn.ckeditor.com/4.4.6/standard/ckeditor.js');
 			}
 
 		}
