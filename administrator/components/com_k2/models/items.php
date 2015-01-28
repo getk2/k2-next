@@ -305,11 +305,8 @@ class K2ModelItems extends K2Model
 			}
 			else
 			{
-				$subquery = $db->getQuery(true);
-				$subquery->select($db->quoteName('itemId'))->from($db->quoteName('#__k2_tags_xref'));
-				$subquery->where($db->quoteName('tagId').' IN ('.$condition.')');
-				$subquery->group($db->quoteName('itemId'));
-				$query->leftJoin('('.$subquery->__toString().') AS '.$db->quoteName('xref').' ON '.$db->quoteName('item.id').' = '.$db->quoteName('xref.itemId'));
+				$query->innerJoin($db->quoteName('#__k2_tags_xref').' AS '.$db->quoteName('xref').' ON '.$db->quoteName('item.id').' = '.$db->quoteName('xref.itemId'));
+				$query->where($db->quoteName('xref.tagId').' IN ('.$condition.')');
 			}
 
 		}
