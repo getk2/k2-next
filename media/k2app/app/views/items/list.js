@@ -1,4 +1,5 @@
-define(['marionette', 'text!templates/items/list.html', 'text!templates/items/row.html', 'text!templates/items/grid_list.html', 'text!templates/items/grid_row.html', 'text!templates/items/sortable_list.html', 'text!templates/items/sortable_row.html', 'text!templates/items/sortable_row_item.html', 'dispatcher', 'session', 'widget', 'collections/items', 'collections/categories'], function(Marionette, list, row, gridList, gridRow, sortableList, sortableRow, sortableRowItem, K2Dispatcher, K2Session, K2Widget, K2CollectionItems, K2CollectionCategories) {'use strict';
+define(['marionette', 'text!templates/items/list.html', 'text!templates/items/row.html', 'text!templates/items/grid_list.html', 'text!templates/items/grid_row.html', 'text!templates/items/sortable_list.html', 'text!templates/items/sortable_row.html', 'text!templates/items/sortable_row_item.html', 'dispatcher', 'session', 'widget', 'collections/items', 'collections/categories'], function(Marionette, list, row, gridList, gridRow, sortableList, sortableRow, sortableRowItem, K2Dispatcher, K2Session, K2Widget, K2CollectionItems, K2CollectionCategories) {
+	'use strict';
 
 	// List items layout. It handles the two views for items ( table and sortable list)
 	var K2ViewItems = Marionette.LayoutView.extend({
@@ -136,9 +137,9 @@ define(['marionette', 'text!templates/items/list.html', 'text!templates/items/ro
 		onRenderCollection : function() {
 			var enabled = this.collection.getState('sorting') === 'featured_ordering' && this.collection.getState('category') < 2;
 			K2Widget.ordering(jQuery('[data-region="items-inner"]'), 'featured_ordering', enabled);
-			if(!enabled) {
+			if (!enabled) {
 				this.$('[data-role="featured_ordering_column"]').hide();
-				
+
 				this.$('.jw--itemtitle').addClass('small-4 large-4');
 				this.$('.jw--itemtitle').removeClass('small-3 large-3');
 
@@ -273,13 +274,15 @@ define(['marionette', 'text!templates/items/list.html', 'text!templates/items/ro
 	// Sortable view for category items
 	var K2ViewItemsSortableCollectionViewItems = Marionette.CollectionView.extend({
 		tagName : 'ul',
+		className : 'k2-sortable-items-list',
 		childView : K2ViewItemsSortableCollectionViewItemsRow,
 		onRender : function() {
 			var collection = this.collection;
 			require(['sortable'], _.bind(function() {
-				this.$el.sortable({
+				jQuery('.k2-sortable-items-list').sortable('destroy');
+				jQuery('.k2-sortable-items-list').sortable({
 					handle : '[data-role="ordering-handle"]',
-					group : 'k2-items',
+					group : 'k2-sortable-group-' + new Date().getTime(),
 					onDrop : function(item, container, _super) {
 						var parent = item.parent();
 						var input = item.find('input[name="ordering[]"]');
@@ -333,9 +336,10 @@ define(['marionette', 'text!templates/items/list.html', 'text!templates/items/ro
 								K2Dispatcher.trigger('app:controller:saveOrder', modifiedKeys, modifiedValues, 'ordering', false);
 							}
 						}
-						_super(item);
+						_super(item, container);
 					}
 				});
+
 			}, this));
 		}
 	});
