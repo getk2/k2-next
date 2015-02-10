@@ -126,6 +126,19 @@ define(['marionette', 'text!templates/items/list.html', 'text!templates/items/ro
 					this.enqueueMessage('error', xhr.responseText);
 				}, this)
 			});
+		},
+		onRender : function() {
+			var enabled = this.model.collection.getState('sorting') === 'featured_ordering' && this.model.collection.getState('category') < 2;
+			console.info(enabled);
+			if (!enabled) {
+				this.$('[data-role="featured_ordering_column"]').hide();
+				this.$('.jw--itemtitle').addClass('small-4 large-4');
+				this.$('.jw--itemtitle').removeClass('small-3 large-3');
+			} else {
+				this.$('[data-role="featured_ordering_column"]').show();
+				this.$('.jw--itemtitle').removeClass('small-4 large-4');
+				this.$('.jw--itemtitle').addClass('small-3 large-3');
+			}
 		}
 	});
 
@@ -134,18 +147,15 @@ define(['marionette', 'text!templates/items/list.html', 'text!templates/items/ro
 		template : _.template(list),
 		childViewContainer : '[data-region="list"]',
 		childView : K2ViewItemsTableRow,
-		onRenderCollection : function() {
+		onRender : function() {
 			var enabled = this.collection.getState('sorting') === 'featured_ordering' && this.collection.getState('category') < 2;
 			K2Widget.ordering(jQuery('[data-region="items-inner"]'), 'featured_ordering', enabled);
 			if (!enabled) {
 				this.$('[data-role="featured_ordering_column"]').hide();
-
 				this.$('.jw--itemtitle').addClass('small-4 large-4');
 				this.$('.jw--itemtitle').removeClass('small-3 large-3');
-
 			} else {
 				this.$('[data-role="featured_ordering_column"]').show();
-
 				this.$('.jw--itemtitle').removeClass('small-4 large-4');
 				this.$('.jw--itemtitle').addClass('small-3 large-3');
 			}

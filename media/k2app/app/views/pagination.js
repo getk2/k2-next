@@ -10,8 +10,8 @@ define(['marionette', 'text!templates/pagination.html', 'dispatcher', 'session']
 			K2Dispatcher.on('app:pagination:mode', function(mode) {
 				this.model.set('mode', mode);
 				if (mode == 'scroll') {
-					this.model.set('limit', 50);
-					K2Dispatcher.trigger('app:controller:setCollectionState', 'limit', 50);
+					this.model.set('limit', 2);
+					K2Dispatcher.trigger('app:controller:setCollectionState', 'limit', 2);
 				} else {
 					this.model.set('limit', 10);
 					K2Dispatcher.trigger('app:controller:setCollectionState', 'limit', 10);
