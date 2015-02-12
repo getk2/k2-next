@@ -17,7 +17,7 @@ class K2Router extends JComponentRouterBase
 {
 
 	private $params = null;
-	private $menu = null;
+	public $menu = null;
 	private $active = null;
 
 	public function __construct()
