@@ -363,9 +363,10 @@ class PlgSystemK2 extends JPlugin
 		$params = JComponentHelper::getParams('com_k2');
 		$view = $application->input->get('view');
 		$print = $application->input->getBool('print');
+		$tmpl = $application->input->get('tmpl');
 
 		// Add user toolbar
-		if ($application->isSite() && $document->getType() == 'html' && $user->authorise('core.manage', 'com_k2') && $view != 'admin' && $view != 'k2' && trim($view) != '' && !$print)
+		if ($application->isSite() && $document->getType() == 'html' && $user->authorise('core.manage', 'com_k2') && $view != 'admin' && $view != 'k2' && trim($view) != '' && !$print && $tmpl != 'component')
 		{
 			$author = K2Users::getInstance($user->id);
 			$file = JPATH_SITE.'/components/com_k2/templates/default/toolbar.php';
