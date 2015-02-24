@@ -1101,6 +1101,9 @@ class K2ModelItems extends K2Model
 		$data['tmpId'] = uniqid();
 		$data['title'] = JText::_('K2_COPY_OF').' '.$data['title'];
 		$data['alias'] = '';
+		$data['tags'] = json_decode($data['_tags']);
+		$data['media'] = json_decode($data['_media']);
+		$data['galleries'] = json_decode($data['_galleries']);
 		$data['extra_fields'] = json_decode($data['extra_fields']);
 		$data['metadata'] = $data['metadata']->toString();
 		$data['plugins'] = $data['plugins']->toString();
@@ -1199,6 +1202,7 @@ class K2ModelItems extends K2Model
 		$filesystem = K2FileSystem::getInstance();
 		$attachmentsModel = K2Model::getInstance('Attachments');
 		$attachments = array();
+		$data['attachments'] = $source->getAttachments();
 		foreach ($data['attachments'] as $key => $attachment)
 		{
 
