@@ -89,10 +89,7 @@ class K2Resource
 		$method = 'get'.ucfirst($name);
 		if (method_exists($this, $method))
 		{
-			$data = call_user_func(array(
-				$this,
-				$method
-			));
+			$data = call_user_func(array($this, $method));
 			$this->$name = $data;
 			return $this->$name;
 		}
@@ -113,6 +110,9 @@ class K2Resource
 	public function prepare($mode = null)
 	{
 
+		$user = JFactory::getUser();
+		$config = JFactory::getConfig();
+
 		if (is_null($mode))
 		{
 			$mode = (JFactory::getApplication()->isSite()) ? 'site' : 'admin';
@@ -129,8 +129,10 @@ class K2Resource
 
 		if (property_exists($this, 'created'))
 		{
-			$this->createdDate = JHtml::_('date', $this->created, 'Y-m-d');
-			$this->createdTime = JHtml::_('date', $this->created, 'H:i');
+			$date = JFactory::getDate($this->created, 'UTC');
+			$date->setTimezone(new DateTimeZone($user->getParam('timezone', $config->get('offset'))));
+			$this->createdDate = $date->format('Y-m-d', true, false);
+			$this->createdTime = $date->format('H:i', true, false);
 			$this->createdOn = JHtml::_('date', $this->created, JText::_('K2_DATE_FORMAT'));
 		}
 
@@ -148,16 +150,20 @@ class K2Resource
 
 		if (property_exists($this, 'publish_up'))
 		{
-			$this->publishUpDate = JHtml::_('date', $this->publish_up, 'Y-m-d');
-			$this->publishUpTime = JHtml::_('date', $this->publish_up, 'H:i');
+			$date = JFactory::getDate($this->publish_up, 'UTC');
+			$date->setTimezone(new DateTimeZone($user->getParam('timezone', $config->get('offset'))));
+			$this->publishUpDate = $date->format('Y-m-d', true, false);
+			$this->publishUpTime = $date->format('H:i', true, false);
 		}
 
 		if (property_exists($this, 'publish_down'))
 		{
 			if ((int)$this->publish_down > 0)
 			{
-				$this->publishDownDate = JHtml::_('date', $this->publish_down, 'Y-m-d');
-				$this->publishDownTime = JHtml::_('date', $this->publish_down, 'H:i');
+				$date = JFactory::getDate($this->publish_down, 'UTC');
+				$date->setTimezone(new DateTimeZone($user->getParam('timezone', $config->get('offset'))));
+				$this->publishDownDate = $date->format('Y-m-d', true, false);
+				$this->publishDownTime = $date->format('H:i', true, false);
 			}
 			else
 			{
