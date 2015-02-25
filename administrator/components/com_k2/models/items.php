@@ -436,10 +436,7 @@ class K2ModelItems extends K2Model
 			case 'ordering' :
 			case 'ordering.reverse' :
 				$categories = $this->getState('categories.applied');
-				$ordering = count($categories) == 1 ? 'item.ordering' : array(
-					'category.lft',
-					'item.ordering'
-				);
+				$ordering = count($categories) == 1 ? 'item.ordering' : array('category.lft', 'item.ordering');
 				$direction = $sorting == 'ordering' ? 'ASC' : 'DESC';
 				break;
 			case 'featured_ordering' :
@@ -972,10 +969,7 @@ class K2ModelItems extends K2Model
 		if (!$this->getState('patch'))
 		{
 			$isNew = $this->getState('isNew');
-			$dispatcher->trigger('onAfterK2Save', array(
-				&$table,
-				$isNew
-			));
+			$dispatcher->trigger('onAfterK2Save', array(&$table, $isNew));
 		}
 
 		return true;
@@ -1113,10 +1107,14 @@ class K2ModelItems extends K2Model
 
 		// Handle tags
 		$tagNames = array();
-		foreach ($data['tags'] as $tag)
+		if (is_array($data['tags']))
 		{
-			$tagNames[] = $tag->name;
+			foreach ($data['tags'] as $tag)
+			{
+				$tagNames[] = $tag->name;
+			}
 		}
+
 		$data['tags'] = implode(',', $tagNames);
 
 		// Handle image
@@ -1126,14 +1124,7 @@ class K2ModelItems extends K2Model
 			$filesystem = $params->get('filesystem');
 			$path = ($filesystem == 'Local' || !$filesystem) ? 'media/k2/items/src/'.$data['images']['src']->id.'.jpg' : $data['images']['src']->url;
 			$image = K2HelperImages::add('item', null, $path);
-			$data['image'] = array(
-				'id' => '',
-				'temp' => $image->temp,
-				'path' => '',
-				'remove' => 0,
-				'caption' => $data['image']->caption,
-				'credits' => $data['image']->credits
-			);
+			$data['image'] = array('id' => '', 'temp' => $image->temp, 'path' => '', 'remove' => 0, 'caption' => $data['image']->caption, 'credits' => $data['image']->credits);
 		}
 		else
 		{
@@ -1171,31 +1162,35 @@ class K2ModelItems extends K2Model
 
 		// Handle galleries
 		$galleries = array();
-		foreach ($data['galleries'] as $key => $entry)
+		if (is_array($data['galleries']))
 		{
-			if ($entry->upload)
+			foreach ($data['galleries'] as $key => $entry)
 			{
-				$filesystem = K2FileSystem::getInstance();
-				if ($filesystem->has('media/k2/galleries/'.$id.'/'.$entry->upload))
+				if ($entry->upload)
 				{
-					JFolder::create(JPATH_SITE.'/tmp/'.$entry->upload);
-					$files = $filesystem->listKeys('media/k2/galleries/'.$id.'/'.$entry->upload);
-					foreach ($files['keys'] as $key)
+					$filesystem = K2FileSystem::getInstance();
+					if ($filesystem->has('media/k2/galleries/'.$id.'/'.$entry->upload))
 					{
-						if ($filesystem->has($key))
+						JFolder::create(JPATH_SITE.'/tmp/'.$entry->upload);
+						$files = $filesystem->listKeys('media/k2/galleries/'.$id.'/'.$entry->upload);
+						foreach ($files['keys'] as $key)
 						{
-							$buffer = $filesystem->read($key);
-							JFile::write(JPATH_SITE.'/tmp/'.$entry->upload.'/'.basename($key), $buffer);
+							if ($filesystem->has($key))
+							{
+								$buffer = $filesystem->read($key);
+								JFile::write(JPATH_SITE.'/tmp/'.$entry->upload.'/'.basename($key), $buffer);
+							}
 						}
 					}
 				}
+				$newEntry = array();
+				$newEntry['url'] = $entry->url;
+				$newEntry['upload'] = $entry->upload;
+				$newEntry['remove'] = 0;
+				$galleries[$key] = $newEntry;
 			}
-			$newEntry = array();
-			$newEntry['url'] = $entry->url;
-			$newEntry['upload'] = $entry->upload;
-			$newEntry['remove'] = 0;
-			$galleries[$key] = $newEntry;
 		}
+
 		$data['galleries'] = $galleries;
 
 		// Handle attachments
