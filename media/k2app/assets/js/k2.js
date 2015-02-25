@@ -139,7 +139,8 @@ jQuery(document).ready(function() {
 				_.each(data.items, function(item) {
 					item.link = item.link.replace(site + '/', '');
 				});
-				var compiled = _.template(template.html(), data);
+				var template = _.template(template.html());
+				var compiled = template(data);
 				parentElement.find('.k2LiveSearchResults').html(compiled);
 				parentElement.find('input[name=searchword]').removeClass('k2SearchLoading');
 				parentElement.find('.k2LiveSearchResults').css('display', 'block');

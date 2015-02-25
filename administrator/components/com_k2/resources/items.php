@@ -299,23 +299,22 @@ class K2Items extends K2Resource
 			// Import content plugins
 			JPluginHelper::importPlugin('content');
 
-			foreach ($galleries as $gallery)
+			if (is_array($galleries))
 			{
-				$tag = ($gallery->upload) ? $this->id.'/'.$gallery->upload : $gallery->url;
-				$gallery->text = '{gallery}'.$tag.'{/gallery}';
+				foreach ($galleries as $gallery)
+				{
+					$tag = ($gallery->upload) ? $this->id.'/'.$gallery->upload : $gallery->url;
+					$gallery->text = '{gallery}'.$tag.'{/gallery}';
 
-				// Render the gallery
-				$dispatcher->trigger('onContentPrepare', array(
-					'com_k2',
-					&$gallery,
-					&$params,
-					0
-				));
+					// Render the gallery
+					$dispatcher->trigger('onContentPrepare', array('com_k2', &$gallery, &$params, 0));
 
-				// Restore
-				$gallery->output = $gallery->text;
-				unset($gallery->text);
+					// Restore
+					$gallery->output = $gallery->text;
+					unset($gallery->text);
+				}
 			}
+
 		}
 
 		return $galleries;
@@ -378,12 +377,7 @@ class K2Items extends K2Resource
 					// Render media
 					$params->set('afolder', 'media/k2/media');
 					$params->set('vfolder', 'media/k2/media');
-					$dispatcher->trigger('onContentPrepare', array(
-						'com_k2',
-						&$entry,
-						&$params,
-						0
-					));
+					$dispatcher->trigger('onContentPrepare', array('com_k2', &$entry, &$params, 0));
 
 					// Restore
 					$entry->output = $entry->text;
@@ -614,32 +608,12 @@ class K2Items extends K2Resource
 			// Import content plugins
 			JPluginHelper::importPlugin('content');
 
-			$dispatcher->trigger('onContentPrepare', array(
-				$context,
-				&$this,
-				&$params,
-				$offset
-			));
-			$results = $dispatcher->trigger('onContentAfterTitle', array(
-				$context,
-				&$this,
-				&$params,
-				$offset
-			));
+			$dispatcher->trigger('onContentPrepare', array($context, &$this, &$params, $offset));
+			$results = $dispatcher->trigger('onContentAfterTitle', array($context, &$this, &$params, $offset));
 			$events->AfterDisplayTitle = trim(implode("\n", $results));
-			$results = $dispatcher->trigger('onContentBeforeDisplay', array(
-				$context,
-				&$this,
-				&$params,
-				$offset
-			));
+			$results = $dispatcher->trigger('onContentBeforeDisplay', array($context, &$this, &$params, $offset));
 			$events->BeforeDisplayContent = trim(implode("\n", $results));
-			$results = $dispatcher->trigger('onContentAfterDisplay', array(
-				$context,
-				&$this,
-				&$params,
-				$offset
-			));
+			$results = $dispatcher->trigger('onContentAfterDisplay', array($context, &$this, &$params, $offset));
 			$events->AfterDisplayContent = trim(implode("\n", $results));
 
 		}
@@ -652,61 +626,29 @@ class K2Items extends K2Resource
 
 			$dispatcher->trigger('onK2PluginInit', array($this));
 
-			$results = $dispatcher->trigger('onK2BeforeDisplay', array(
-				&$this,
-				&$params,
-				$offset
-			));
+			$results = $dispatcher->trigger('onK2BeforeDisplay', array(&$this, &$params, $offset));
 			$events->K2BeforeDisplay = trim(implode("\n", $results));
 
-			$results = $dispatcher->trigger('onK2AfterDisplay', array(
-				&$this,
-				&$params,
-				$offset
-			));
+			$results = $dispatcher->trigger('onK2AfterDisplay', array(&$this, &$params, $offset));
 			$events->K2AfterDisplay = trim(implode("\n", $results));
 
-			$results = $dispatcher->trigger('onK2AfterDisplayTitle', array(
-				&$this,
-				&$params,
-				$offset
-			));
+			$results = $dispatcher->trigger('onK2AfterDisplayTitle', array(&$this, &$params, $offset));
 			$events->K2AfterDisplayTitle = trim(implode("\n", $results));
 
-			$results = $dispatcher->trigger('onK2BeforeDisplayContent', array(
-				&$this,
-				&$params,
-				$offset
-			));
+			$results = $dispatcher->trigger('onK2BeforeDisplayContent', array(&$this, &$params, $offset));
 			$events->K2BeforeDisplayContent = trim(implode("\n", $results));
 
-			$results = $dispatcher->trigger('onK2AfterDisplayContent', array(
-				&$this,
-				&$params,
-				$offset
-			));
+			$results = $dispatcher->trigger('onK2AfterDisplayContent', array(&$this, &$params, $offset));
 			$events->K2AfterDisplayContent = trim(implode("\n", $results));
 
-			$dispatcher->trigger('onK2PrepareContent', array(
-				&$this,
-				&$params,
-				$offset
-			));
+			$dispatcher->trigger('onK2PrepareContent', array(&$this, &$params, $offset));
 
 			if ($params->get('comments'))
 			{
-				$results = $dispatcher->trigger('onK2CommentsCounter', array(
-					&$this,
-					&$params,
-					$offset
-				));
+				$results = $dispatcher->trigger('onK2CommentsCounter', array(&$this, &$params, $offset));
 				$events->K2CommentsCounter = trim(implode("\n", $results));
 
-				$results = $dispatcher->trigger('onK2CommentsBlock', array(
-					&$this,
-					&$params,
-					$offset
-				));
+				$results = $dispatcher->trigger('onK2CommentsBlock', array(&$this, &$params, $offset));
 				$events->K2CommentsBlock = trim(implode("\n", $results));
 			}
 		}
