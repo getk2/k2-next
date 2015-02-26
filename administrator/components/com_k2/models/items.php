@@ -403,7 +403,7 @@ class K2ModelItems extends K2Model
 		{
 			$query->where($db->quoteName('item.created').' '.$this->getState('created.operator').' '.$db->quote($this->getState('created.value')));
 		}
-		if ($this->getState('ordering.value'))
+		if (is_numeric($this->getState('ordering.value')))
 		{
 			$query->where($db->quoteName('item.ordering').' '.$this->getState('ordering.operator').' '.(int)$this->getState('ordering.value'));
 		}

@@ -512,16 +512,13 @@ class K2Items extends K2Resource
 
 	public function getPrevious()
 	{
-		if ($this->ordering == 1)
-		{
-			return false;
-		}
 		$model = K2Model::getInstance('Items');
 		$model->setState('site', 1);
 		$model->setState('category', $this->catid);
+		$model->setState('exclude', $this->id);
 		$model->setState('sorting', 'custom');
 		$model->setState('sorting.custom.value', 'item.ordering');
-		$model->setState('sorting.custom.direction', 'ASC');
+		$model->setState('sorting.custom.direction', 'DESC');
 		$model->setState('ordering.value', $this->ordering);
 		$model->setState('ordering.operator', '<');
 		$model->setState('limit', 1);
@@ -534,6 +531,7 @@ class K2Items extends K2Resource
 		$model = K2Model::getInstance('Items');
 		$model->setState('site', 1);
 		$model->setState('category', $this->catid);
+		$model->setState('exclude', $this->id);
 		$model->setState('sorting', 'custom');
 		$model->setState('sorting.custom.value', 'item.ordering');
 		$model->setState('sorting.custom.direction', 'ASC');
