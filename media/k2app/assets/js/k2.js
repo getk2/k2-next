@@ -131,7 +131,7 @@ jQuery(document).ready(function() {
 			parentElement.find('.k2LiveSearchResults').css('display', 'none').empty();
 			parentElement.find('input[name=t]').val(jQuery.now());
 			parentElement.find('input[name=format]').val('json');
-			var url = 'index.php?option=com_k2&view=itemlist&task=search&' + parentElement.find('form').serialize();
+			var url = K2Site + '/index.php?option=com_k2&view=itemlist&task=search&' + parentElement.find('form').serialize();
 			parentElement.find('input[name=format]').val('html');
 			jQuery.getJSON(url).done(function(data) {
 				var template = jQuery('#k2LiveSearchTemplate');
