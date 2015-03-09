@@ -296,6 +296,21 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 			}
 
 			if (onBeforeSave) {
+				
+				// Keep tabs status to session if it's a save operation ( not save and close or save and new )
+				if(redirect == 'edit') {
+					var tabsState = [];
+					var tabs = this.view.$('[data-role="tabs-navigation"]');
+					_.each(tabs, function(tab) {
+						var item  = jQuery(tab).find('a.active');
+						var list = jQuery(tab).find('a');
+						tabsState.push(list.index(item));
+					});
+					if(tabsState.length) {
+						K2Session.set('k2.tabs.state', JSON.stringify(tabsState));
+					}					
+				}
+
 				// Get the form variables
 				var input = this.view.$('form').serializeArray();
 

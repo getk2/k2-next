@@ -129,7 +129,6 @@ define(['marionette', 'text!templates/items/list.html', 'text!templates/items/ro
 		},
 		onRender : function() {
 			var enabled = this.model.collection.getState('sorting') === 'featured_ordering' && this.model.collection.getState('category') < 2;
-			console.info(enabled);
 			if (!enabled) {
 				this.$('[data-role="featured_ordering_column"]').hide();
 				this.$('.jw--itemtitle').addClass('small-4 large-4');

@@ -1,4 +1,4 @@
-define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, K2Dispatcher) {'use strict';
+define(['backbone', 'marionette', 'dispatcher', 'session'], function(Backbone, Marionette, K2Dispatcher, K2Session) {'use strict';
 	var K2Widget = {
 
 		// Adds the widgets to the elements
@@ -350,14 +350,25 @@ define(['backbone', 'marionette', 'dispatcher'], function(Backbone, Marionette, 
 		},
 
 		tabs : function(element) {
+			var activeIndex = 0;
+			var tabsState = K2Session.get('k2.tabs.state');
+			if(tabsState) {
+				var actives = jQuery.parseJSON(tabsState);
+				activeIndex = actives.shift();
+				if(actives.length) {
+					K2Session.set('k2.tabs.state', JSON.stringify(actives));
+				} else {
+					K2Session.set('k2.tabs.state', '');
+				}
+			}
 			var navigationContainer = element.find('[data-role="tabs-navigation"]:first');
 			var navigationElements = navigationContainer.find('a');
 			var contentsContainer = element.find('[data-role="tabs-content"]:first');
 			var contentElements = contentsContainer.find('> div');
 			contentElements.css('display', 'none');
-			contentElements.eq(0).css('display', 'block');
+			contentElements.eq(activeIndex).css('display', 'block');
 			navigationElements.removeClass('active');
-			navigationElements.eq(0).addClass('active');
+			navigationElements.eq(activeIndex).addClass('active');
 			navigationElements.click(function(event) {
 				event.preventDefault();
 				var index = navigationElements.index(jQuery(this));
