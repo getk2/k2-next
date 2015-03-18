@@ -132,9 +132,6 @@ class K2Comments extends K2Resource
 			// Item link
 			$this->itemLink = $this->getItemLink();
 
-			// Link
-			$this->link = $this->getLink();
-
 			// Category link
 			$this->categoryLink = $this->getCategoryLink();
 
@@ -165,11 +162,15 @@ class K2Comments extends K2Resource
 
 	public function getLink()
 	{
-		if (!isset($this->itemLink))
+		if (!isset($this->link))
 		{
-			$this->itemLink = $this->getItemLink();
+			if (!isset($this->itemLink))
+			{
+				$this->itemLink = $this->getItemLink();
+			}
+			$this->link = $this->itemLink.'#comment'.$this->id;
 		}
-		return $this->itemLink.'#comment'.$this->id;
+		return $this->link;
 	}
 
 	public function getIsAuthorResponse()

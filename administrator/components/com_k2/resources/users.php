@@ -77,12 +77,6 @@ class K2Users extends K2Resource
 			// Prepare specific properties
 			$this->editLink = JURI::base(true).'/index.php?option=com_k2#users/edit/'.$this->id;
 
-			// Link
-			$this->link = $this->getLink();
-
-			// URL
-			$this->url = $this->getUrl();
-
 			$this->enabled = (int)!$this->block;
 			$this->activated = (int)!$this->activation;
 			$this->groupsValue = isset($this->groups) ? implode(', ', $this->groups) : '';
@@ -100,41 +94,53 @@ class K2Users extends K2Resource
 
 	public function getLink()
 	{
-		if (JFactory::getConfig()->get('unicodeslugs') == 1)
+		if (!isset($this->link))
 		{
-			$this->alias = JFilterOutput::stringURLUnicodeSlug($this->name);
+			if (JFactory::getConfig()->get('unicodeslugs') == 1)
+			{
+				$this->alias = JFilterOutput::stringURLUnicodeSlug($this->name);
+			}
+			else
+			{
+				$this->alias = JFilterOutput::stringURLSafe($this->name);
+			}
+			$this->link = JRoute::_(K2HelperRoute::getUserRoute($this->id.':'.$this->alias));
 		}
-		else
-		{
-			$this->alias = JFilterOutput::stringURLSafe($this->name);
-		}
-		return JRoute::_(K2HelperRoute::getUserRoute($this->id.':'.$this->alias));
+		return $this->link;
 	}
 
 	public function getFeedLink()
 	{
-		if (JFactory::getConfig()->get('unicodeslugs') == 1)
+		if (!isset($this->feedLink))
 		{
-			$this->alias = JFilterOutput::stringURLUnicodeSlug($this->name);
+			if (JFactory::getConfig()->get('unicodeslugs') == 1)
+			{
+				$this->alias = JFilterOutput::stringURLUnicodeSlug($this->name);
+			}
+			else
+			{
+				$this->alias = JFilterOutput::stringURLSafe($this->name);
+			}
+			$this->feedLink = JRoute::_(K2HelperRoute::getUserRoute($this->id.':'.$this->alias).'&format=feed');
 		}
-		else
-		{
-			$this->alias = JFilterOutput::stringURLSafe($this->name);
-		}
-		return JRoute::_(K2HelperRoute::getUserRoute($this->id.':'.$this->alias).'&format=feed');
+		return $this->feedLink;
 	}
 
 	public function getUrl()
 	{
-		if (JFactory::getConfig()->get('unicodeslugs') == 1)
+		if (!isset($this->url))
 		{
-			$this->alias = JFilterOutput::stringURLUnicodeSlug($this->name);
+			if (JFactory::getConfig()->get('unicodeslugs') == 1)
+			{
+				$this->alias = JFilterOutput::stringURLUnicodeSlug($this->name);
+			}
+			else
+			{
+				$this->alias = JFilterOutput::stringURLSafe($this->name);
+			}
+			$this->url = JRoute::_(K2HelperRoute::getUserRoute($this->id.':'.$this->alias), true, -1);
 		}
-		else
-		{
-			$this->alias = JFilterOutput::stringURLSafe($this->name);
-		}
-		return JRoute::_(K2HelperRoute::getUserRoute($this->id.':'.$this->alias), true, -1);
+		return $this->url;
 	}
 
 	public function getImage()
@@ -186,11 +192,7 @@ class K2Users extends K2Resource
 		$dispatcher = JDispatcher::getInstance();
 		JPluginHelper::importPlugin('k2');
 		$dispatcher->trigger('onK2PluginInit', array($this));
-		$results = $dispatcher->trigger('onK2UserDisplay', array(
-			&$this,
-			&$params,
-			0
-		));
+		$results = $dispatcher->trigger('onK2UserDisplay', array(&$this, &$params, 0));
 		$events->K2UserDisplay = trim(implode("\n", $results));
 		return $events;
 	}

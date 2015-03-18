@@ -878,3 +878,43 @@ class K2Router extends JComponentRouterBase
 	}
 
 }
+
+
+/**
+ * K2 router functions
+ *
+ * These functions are proxys for the new router interface
+ * for old SEF extensions.
+ *
+ * @param   array  &$query  An array of URL arguments
+ *
+ * @return  array  The URL arguments to use to assemble the subsequent URL.
+ *
+ * @deprecated  4.0  Use Class based routers instead
+ */
+function K2BuildRoute(&$query)
+{
+	$router = new K2Router;
+
+	return $router->build($query);
+}
+
+/**
+ * Parse the segments of a URL.
+ *
+ * This function is a proxy for the new router interface
+ * for old SEF extensions.
+ *
+ * @param   array  $segments  The segments of the URL to parse.
+ *
+ * @return  array  The URL attributes to be used by the application.
+ *
+ * @since   3.3
+ * @deprecated  4.0  Use Class based routers instead
+ */
+function K2ParseRoute($segments)
+{
+	$router = new K2Router;
+
+	return $router->parse($segments);
+}

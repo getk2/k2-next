@@ -94,12 +94,6 @@ class K2Tags extends K2Resource
 		// Prepare specific properties
 		$this->editLink = JURI::base(true).'/index.php?option=com_k2#tags/edit/'.$this->id;
 
-		// Link
-		$this->link = $this->getLink();
-
-		// URL
-		$this->url = $this->getUrl();
-
 		// Legacy
 		$this->tag = $this->name;
 	}
@@ -117,17 +111,29 @@ class K2Tags extends K2Resource
 
 	public function getLink()
 	{
-		return JRoute::_(K2HelperRoute::getTagRoute($this->id.':'.$this->alias));
+		if (!isset($this->link))
+		{
+			$this->link = JRoute::_(K2HelperRoute::getTagRoute($this->id.':'.$this->alias));
+		}
+		return $this->link;
 	}
 
 	public function getUrl()
 	{
-		return JRoute::_(K2HelperRoute::getTagRoute($this->id.':'.$this->alias), true, -1);
+		if (!isset($this->url))
+		{
+			$this->url = JRoute::_(K2HelperRoute::getTagRoute($this->id.':'.$this->alias), true, -1);
+		}
+		return $this->url;
 	}
 
 	public function getFeedLink()
 	{
-		return JRoute::_(K2HelperRoute::getTagRoute($this->id.':'.$this->alias).'&format=feed');
+		if (!isset($this->feedLink))
+		{
+			$this->feedLink = JRoute::_(K2HelperRoute::getTagRoute($this->id.':'.$this->alias).'&format=feed');
+		}
+		return $this->feedLink;
 	}
 
 	public function getExtraFields()

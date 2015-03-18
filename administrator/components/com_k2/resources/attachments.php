@@ -70,33 +70,33 @@ class K2Attachments extends K2Resource
 	{
 		// Prepare generic properties like dates and authors
 		parent::prepare($mode);
-
-		// Prepare specific properties
-		$this->link = $this->getLink();
-
-		// Prepare specific properties
-		$this->url = $this->getUrl();
-
 	}
 
 	public function getLink()
 	{
-		$application = JFactory::getApplication();
-		$hash = JApplication::getHash($this->id);
-		$link = JRoute::_('index.php?option=com_k2&view=attachments&task=download&id='.$this->id.'&hash='.$hash.'&Itemid=');
-		if ($application->isAdmin())
+		if (!isset($this->link))
 		{
-			$link = str_replace(JURI::base(true), JURI::root(true), $link);
+			$application = JFactory::getApplication();
+			$hash = JApplication::getHash($this->id);
+			$link = JRoute::_('index.php?option=com_k2&view=attachments&task=download&id='.$this->id.'&hash='.$hash.'&Itemid=');
+			if ($application->isAdmin())
+			{
+				$this->link = str_replace(JURI::base(true), JURI::root(true), $link);
+			}
 		}
-		return $link;
+		return $this->link;
 	}
 
 	public function getUrl()
 	{
-		$application = JFactory::getApplication();
-		$hash = JApplication::getHash($this->id);
-		$url = JRoute::_('index.php?option=com_k2&view=attachments&task=download&id='.$this->id.'&hash='.$hash, true, -1);
-		return $url;
+		if (!isset($this->url))
+		{
+			$application = JFactory::getApplication();
+			$hash = JApplication::getHash($this->id);
+			$this->url = JRoute::_('index.php?option=com_k2&view=attachments&task=download&id='.$this->id.'&hash='.$hash, true, -1);
+		}
+		return $this->url;
+
 	}
 
 	public function track()
@@ -105,18 +105,18 @@ class K2Attachments extends K2Resource
 		$model->setState('id', $this->id);
 		$model->download();
 	}
-	
+
 	// Legacy
 	public function getFilename()
 	{
 		return $this->file;
 	}
-	
+
 	public function getTitleAttribute()
 	{
 		return $this->title;
 	}
-	
+
 	public function getHits()
 	{
 		return $this->downloads;
