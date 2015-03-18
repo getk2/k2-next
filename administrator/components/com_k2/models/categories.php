@@ -20,10 +20,7 @@ class K2ModelCategories extends K2Model
 {
 
 	private static $authorised = null;
-	private static $cache = array(
-		'roots' => array(),
-		'trees' => array()
-	);
+	private static $cache = array('roots' => array(), 'trees' => array());
 
 	public function getRows()
 	{
@@ -119,11 +116,28 @@ class K2ModelCategories extends K2Model
 		$query->where($db->quoteName('category.id').' != 1');
 		if ($this->getState('language'))
 		{
-			$query->where($db->quoteName('category.language').' = '.$db->quote($this->getState('language')));
+			if (is_array($this->getState('language')))
+			{
+				$languages = array();
+				foreach ($this->getState('language') as $language)
+				{
+					$languages[] = $db->quote($language);
+				}
+				$query->where($db->quoteName('category.language').' IN ('.implode(',', $languages).')');
+			}
+			else
+			{
+				$query->where($db->quoteName('category.language').' = '.$db->quote($this->getState('language')));
+			}
 		}
 		if (is_numeric($this->getState('state')))
 		{
 			$query->where($db->quoteName('category.state').' = '.(int)$this->getState('state'));
+		}
+		else if (is_array($this->getState('state')))
+		{
+			JArrayHelper::toInteger($this->getState('state'));
+			$query->where($db->quoteName('category.state').' IN ('.implode(',', $this->getState('state')).')');
 		}
 		if ($this->getState('access'))
 		{
@@ -698,14 +712,7 @@ class K2ModelCategories extends K2Model
 			$filesystem = $params->get('filesystem');
 			$path = ($filesystem == 'Local' || !$filesystem) ? 'media/k2/categories/'.$data['image']->id.'.jpg' : $data['image']->url;
 			$image = K2HelperImages::add('category', null, $path);
-			$data['image'] = array(
-				'id' => '',
-				'temp' => $image->temp,
-				'path' => '',
-				'remove' => 0,
-				'caption' => $data['image']->caption,
-				'credits' => $data['image']->credits
-			);
+			$data['image'] = array('id' => '', 'temp' => $image->temp, 'path' => '', 'remove' => 0, 'caption' => $data['image']->caption, 'credits' => $data['image']->credits);
 		}
 		else
 		{
