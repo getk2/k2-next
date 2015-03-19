@@ -136,8 +136,9 @@ class K2ModelCategories extends K2Model
 		}
 		else if (is_array($this->getState('state')))
 		{
-			JArrayHelper::toInteger($this->getState('state'));
-			$query->where($db->quoteName('category.state').' IN ('.implode(',', $this->getState('state')).')');
+			$array = $this->getState('state');
+			JArrayHelper::toInteger($array);
+			$query->where($db->quoteName('category.state').' IN ('.implode(',', $array).')');
 		}
 		if ($this->getState('access'))
 		{
