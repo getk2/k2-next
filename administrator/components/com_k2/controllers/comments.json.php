@@ -143,7 +143,7 @@ class K2ControllerComments extends K2Controller
 
 		}
 
-		echo K2Response::render();
+		K2Response::render();
 
 		// Return
 		return $this;
