@@ -120,7 +120,7 @@ class K2Comments extends K2Resource
 
 			// Apply no-follow to all links
 			$document = new DOMDocument;
-			$document->loadHTML('<html><body>'.$this->text.'</body></html>');
+			$document->loadHTML('<?xml encoding="UTF-8"><html><body>'.$this->text.'</body></html>');
 			$links = $document->getElementsByTagName('a');
 			foreach ($links as $link)
 			{
