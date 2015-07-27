@@ -58,17 +58,21 @@ class Com_K2InstallerScript
 
 				// Since this is an upgrade rename all K2 2.x tables so the new ones will be created.
 				$oldTables = array('#__k2_attachments', '#__k2_categories', '#__k2_comments', '#__k2_extra_fields', '#__k2_extra_fields_groups', '#__k2_items', '#__k2_rating', '#__k2_tags', '#__k2_tags_xref', '#__k2_users', '#__k2_user_groups');
+				$existingTables = $db->getTableList();
 				foreach ($oldTables as $oldTable)
 				{
 					$newTable = str_replace('#__k2_', '#__k2_v2_', $oldTable);
-					$db->setQuery('DROP TABLE IF EXISTS '.$db->quoteName($newTable));
-					$db->execute();
-					$db->setQuery('RENAME TABLE '.$db->quoteName($oldTable).' TO '.$db->quoteName($newTable));
-					if (!$db->execute())
+					$needle = str_replace('#__', $db->getPrefix(), $newTable, 1);
+					if (!in_array($needle, $existingTables))
 					{
-						$parent->getParent()->abort(JText::sprintf('JLIB_INSTALLER_ABORT_COMP_INSTALL_SQL_ERROR', $db->stderr(true)));
-						return false;
+						$db->setQuery('RENAME TABLE '.$db->quoteName($oldTable).' TO '.$db->quoteName($newTable));
+						if (!$db->execute())
+						{
+							$parent->getParent()->abort(JText::sprintf('JLIB_INSTALLER_ABORT_COMP_INSTALL_SQL_ERROR', $db->stderr(true)));
+							return false;
+						}
 					}
+
 				}
 
 				// Force parsing of SQL file since Joomla! does that only in install mode, not in updates
