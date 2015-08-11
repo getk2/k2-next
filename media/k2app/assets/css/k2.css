@@ -1570,3 +1570,87 @@ body.contentpane dl.tabs dt.open { background:#fff!important; border-bottom:1px 
 		.jw--settings.jw--generic--form input[type="email"] { width: 275px; }
 
 }
+
+.elfinder { z-index: 1; }
+
+/* RTL */
+html[dir="rtl"] .jw-backend { overflow: hidden; }
+html[dir="rtl"] .row [class*="column"] + [class*="column"].end { float: right; }
+html[dir="rtl"] [class*="column"] + [class*="column"]:last-child { float: left; }
+html[dir="rtl"] .columns, html[dir="rtl"] .column { float: right; }
+html[dir="rtl"] .row.collapse .column, html[dir="rtl"] .row.collapse .columns { float: right; }
+html[dir="rtl"] body { direction: rtl; }
+html[dir="rtl"] .text-right { text-align: left !important; }
+html[dir="rtl"] .text-left { text-align: right !important; }
+html[dir="rtl"] .floatLeft, html[dir="rtl"] .left { float: right !important; }
+html[dir="rtl"] .floatRight, html[dir="rtl"] .right { float: left !important; }
+html[dir="rtl"] .jw h3.jw--title { padding-right: 15px; border-left: 0; border-right: 5px solid #00afeb; }
+html[dir="rtl"] .radio, html[dir="rtl"] .checkbox { padding-left: 0; }
+html[dir="rtl"] .jw--subheader .select2-container { padding: 0 15px; }
+html[dir="rtl"] .jw--item--lbl { margin-right: 0; margin-left: 15px; }
+html[dir="rtl"] .jw--tabs__top .fa { margin-left: 10px; margin-left: 10px; }
+html[dir="rtl"] .jw--settings fieldset, 
+html[dir="rtl"] .jw--settings select, 
+html[dir="rtl"] .jw--settings input[type="text"], 
+html[dir="rtl"] .jw--settings input[type="password"], 
+html[dir="rtl"] .jw--settings textarea { float: left; }
+html[dir="rtl"] ul.jw--main--menu ul .fa,
+html[dir="rtl"] ul.jw--main--menu .fa, html[dir="rtl"] .jw--limit label,
+html[dir="rtl"] .jw label.jw--radio--title_inl { margin-right: 0; margin-left: 5px; }
+html[dir="rtl"] .jw--add--area.jw--add__solo { margin-left: 0; }
+html[dir="rtl"] .jw--search input[type="text"] { margin-right: 0; margin-left: -50px; }
+html[dir="rtl"] .jw--pagination--mode > span { display: block; margin-left: 15px; margin-right: 0; margin-bottom: 5px; }
+html[dir="rtl"] .jw label.jw--radio--title ~ label { border-radius: 0; }
+html[dir="rtl"] [class*="block-grid-"] > li, html[dir="rtl"] .sigProContainer ul > li { float: right; }
+
+html[dir="rtl"] .jw--setting--single fieldset label.jw--radio:first-of-type, 
+html[dir="rtl"] .jw--settings label:first-of-type { border-radius: 0 3px 3px 0 }
+html[dir="rtl"] .jw--settings .right label:last-child, 
+html[dir="rtl"] .jw--setting--single fieldset label:last-child, 
+html[dir="rtl"] .jw--setting--single fieldset label:last-of-type { border-radius: 3px 0 0 3px; }
+
+html[dir="rtl"] .jw--scrollspymenu .fa-angle-right { display: none; }
+
+/* sidebar layout */
+@media only screen and (min-width: 768px) {
+	html[dir="rtl"] .jw--add--area { margin-left: -12px; margin-right: 0; }
+
+	html[dir="rtl"] .jw--component { padding-left: 0; padding-right: 46px; }
+	html[dir="rtl"] .jw--sidebar { right: -274px; }
+	html[dir="rtl"] .jw--sidebar.jw--sidebar__open { right: 0; }
+	html[dir="rtl"] .open--sidebar .jw--component { padding-left: 0; padding-right: 320px; }
+	html[dir="rtl"] .jw--sidebar--handle { right: auto; left: 0; border-left: 0; }
+	html[dir="rtl"] .jw--pagination, 
+	html[dir="rtl"] .jw--subheader { right: 46px; left: 0; }
+	html[dir="rtl"] .open--sidebar .jw--pagination, 
+	html[dir="rtl"] .open--sidebar .jw--scrollwrapper, 
+	html[dir="rtl"] .open--sidebar .jw--subheader { left: 0; right: 320px; }
+}
+html[dir="rtl"] .jw--sidebar .jw--filters,
+html[dir="rtl"] .jw--pagination--mode { left: auto; right: 0; }
+html[dir="rtl"] .jw--sidebar .jw--filters { bottom: 115px; }
+
+html[dir="rtl"] ul.jw--main--menu > li ul.jw--visible { right: -158px; }
+
+/* Settings */
+@media only screen and (min-width: 768px) {
+	html[dir="rtl"] .jw--settings__global { padding: 38px 350px 38px 26px; }
+	html[dir="rtl"] .jw--scrollwrapper { border-right: 0; border-left: 1px solid #e3e4e4; }
+	html[dir="rtl"] .jw--scrollwrapper { left: auto; right: 46px; }
+	html[dir="rtl"] .jw--imagesize input.jw--sizeid { margin-left: 32px; margin-right: 0; }
+	html[dir="rtl"] .jw--imagesize label { margin-left: 10px; margin-left: 5px; }
+}
+
+/* Media manager */
+@media screen and (min-width: 768px) {
+	html[dir="rtl"] .elfinder-toolbar { left: 0; right: 46px; }
+	html[dir="rtl"] .open--sidebar .elfinder-toolbar { left: 0; right: 320px; 
+	    -webkit-transition: all 350ms cubic-bezier(0.730, 0, 0.445, 1.000);
+	    -webkit-transition: all 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
+	    -moz-transition: all 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
+	    -ms-transition: all 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
+	    -o-transition: all 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
+	    transition: all 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
+	}
+}
+@media screen and (min-width: 768px) { html[dir="rtl"] .jw--add--area { float: none!important; }  }
