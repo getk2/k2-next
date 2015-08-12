@@ -60,9 +60,10 @@ class Com_K2InstallerScript
 				$oldTables = array('#__k2_attachments', '#__k2_categories', '#__k2_comments', '#__k2_extra_fields', '#__k2_extra_fields_groups', '#__k2_items', '#__k2_rating', '#__k2_tags', '#__k2_tags_xref', '#__k2_users', '#__k2_user_groups');
 				$existingTables = $db->getTableList();
 				foreach ($oldTables as $oldTable)
-				{
+				{	
+					$count = 1;
 					$newTable = str_replace('#__k2_', '#__k2_v2_', $oldTable);
-					$needle = str_replace('#__', $db->getPrefix(), $newTable, 1);
+					$needle = str_replace('#__', $db->getPrefix(), $newTable, $count);
 					if (!in_array($needle, $existingTables))
 					{
 						$db->setQuery('RENAME TABLE '.$db->quoteName($oldTable).' TO '.$db->quoteName($newTable));
