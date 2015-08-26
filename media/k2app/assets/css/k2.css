@@ -1326,7 +1326,7 @@ body.contentpane dl.tabs dt.open { background:#fff!important; border-bottom:1px 
 	.open--sidebar .select2-container .select2-choice { width:135px; min-width: 0; }
 	.open--sidebar .jw--top--filters .jw--filter:only-child { width: 100%; max-width: none; }
 
-	.jw--listed--items { min-width: 1280px; overflow: scroll; }
+	.jw--listed--items { min-width: 1200px; overflow: scroll; }
 }
 
 @media only screen and (max-width: 1250px){
