@@ -648,10 +648,10 @@ z-index: 100; margin: 25px auto; font-family: 'Open Sans', sans-serif; -webkit-f
 	 	-ms-transition:all 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
 		 -o-transition:all 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
 		 	transition:all 350ms cubic-bezier(0.730, -0.005, 0.445, 1.000);
--webkit-transition-delay: 3500ms;
-   -moz-transition-delay: 3500ms;
-    -ms-transition-delay: 3500ms;
-		transition-delay: 3500ms;
+-webkit-transition-delay: 100ms;
+   -moz-transition-delay: 100ms;
+    -ms-transition-delay: 100ms;
+		transition-delay: 100ms;
 }
 
 
