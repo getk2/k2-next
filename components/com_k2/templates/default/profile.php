@@ -3,12 +3,12 @@
  * @version		3.0.0
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
- * @copyright	Copyright (c) 2006 - 2014 JoomlaWorks Ltd. All rights reserved.
+ * @copyright	Copyright (c) 2006 - 2015 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
 // no direct access
-defined('_JEXEC') or die; 
+defined('_JEXEC') or die;
 
 ?>
 
@@ -50,6 +50,7 @@ defined('_JEXEC') or die;
 					<input type="text" id="email" name="<?php echo $this->emailFieldName; ?>" size="40" value="<?php echo $this->escape($this->user->get( 'email' )); ?>" class="inputbox required validate-email" maxlength="100" />
 				</td>
 			</tr>
+			<?php if(version_compare(JVERSION, '2.5', 'ge')): ?>
 			<tr>
 				<td class="key">
 					<label id="email2msg" for="email2"><?php echo JText::_('K2_CONFIRM_EMAIL'); ?></label>
@@ -59,6 +60,7 @@ defined('_JEXEC') or die;
 					*
 				</td>
 			</tr>
+			<?php endif; ?>
 			<tr>
 				<td class="key">
 					<label id="pwmsg" for="password"><?php echo JText::_('K2_PASSWORD'); ?></label>
@@ -102,11 +104,11 @@ defined('_JEXEC') or die;
 					<label id="imagemsg" for="image"><?php echo JText::_( 'K2_USER_IMAGE_AVATAR' ); ?></label>
 				</td>
 				<td>
-					<input type="file" name="jform[k2Profile][image]"/>
+					<input type="file" id="image" name="image"/>
 					<?php if ($this->K2User->image): ?>
-					<img src="<?php echo $this->K2User->image->src; ?>" alt="<?php echo $this->user->name; ?>" />
-					<input type="checkbox" name="jform[k2Profile][image][remove]" id="k2UserImageRemove" />
-					<label for="k2UserImageRemove"><?php echo JText::_('K2_CHECK_THIS_BOX_TO_DELETE_CURRENT_IMAGE_OR_JUST_UPLOAD_A_NEW_IMAGE_TO_REPLACE_THE_EXISTING_ONE'); ?></label>
+					<img class="k2AccountPageImage" src="<?php echo JURI::root(true).'/media/k2/users/'.$this->K2User->image; ?>" alt="<?php echo $this->user->name; ?>" />
+					<input type="checkbox" name="del_image" id="del_image" />
+					<label for="del_image"><?php echo JText::_('K2_CHECK_THIS_BOX_TO_DELETE_CURRENT_IMAGE_OR_JUST_UPLOAD_A_NEW_IMAGE_TO_REPLACE_THE_EXISTING_ONE'); ?></label>
 					<?php endif; ?>
 				</td>
 			</tr>
@@ -115,7 +117,7 @@ defined('_JEXEC') or die;
 					<label id="urlmsg" for="url"><?php echo JText::_('K2_URL'); ?></label>
 				</td>
 				<td>
-					<input type="text" size="50" value="<?php echo $this->K2User->url; ?>" name="jform[k2Profile][site]" id="url"/>
+					<input type="text" size="50" value="<?php echo $this->K2User->url; ?>" name="url" id="url"/>
 				</td>
 			</tr>
 			<?php if(count(array_filter($this->K2Plugins))): ?>
@@ -134,6 +136,18 @@ defined('_JEXEC') or die;
 			</tr>
 			<?php endif; ?>
 			<?php endforeach; ?>
+			<?php endif; ?>
+			<?php if(isset($this->params) && version_compare(JVERSION, '1.6', 'lt')): ?>
+			<tr>
+				<th colspan="2" class="k2ProfileHeading">
+					<?php echo JText::_('K2_ADMINISTRATIVE_DETAILS'); ?>
+				</th>
+			</tr>
+			<tr>
+				<td colspan="2" id="userAdminParams">
+					<?php echo $this->params->render('params'); ?>
+				</td>
+			</tr>
 			<?php endif; ?>
 			<!-- Joomla! 1.6+ JForm implementation -->
 			<?php if(isset($this->form)): ?>
