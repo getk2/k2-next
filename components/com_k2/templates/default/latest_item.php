@@ -1,9 +1,9 @@
 <?php
 /**
- * @version		2.6.x
+ * @version		3.0.0
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
- * @copyright	Copyright (c) 2006 - 2014 JoomlaWorks Ltd. All rights reserved.
+ * @copyright	Copyright (c) 2006 - 2015 JoomlaWorks Ltd. All rights reserved.
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
@@ -15,14 +15,17 @@ defined('_JEXEC') or die;
 <!-- Start K2 Item Layout -->
 <div class="latestItemView">
 
+	<!-- Plugins: BeforeDisplay -->
+	<?php echo $this->item->event->BeforeDisplay; ?>
+
 	<!-- K2 Plugins: K2BeforeDisplay -->
-	<?php echo $this->item->events->K2BeforeDisplay; ?>
+	<?php echo $this->item->event->K2BeforeDisplay; ?>
 
 	<div class="latestItemHeader">
-	  <?php if($this->params->get('latestItemTitle')): ?>
+	  <?php if($this->item->params->get('latestItemTitle')): ?>
 	  <!-- Item title -->
 	  <h2 class="latestItemTitle">
-	  	<?php if ($this->params->get('latestItemTitleLinked')): ?>
+	  	<?php if ($this->item->params->get('latestItemTitleLinked')): ?>
 			<a href="<?php echo $this->item->link; ?>">
 	  		<?php echo $this->item->title; ?>
 	  	</a>
@@ -33,40 +36,40 @@ defined('_JEXEC') or die;
 	  <?php endif; ?>
   </div>
   
-	<?php if($this->params->get('latestItemDateCreated')): ?>
+	<?php if($this->item->params->get('latestItemDateCreated')): ?>
 	<!-- Date created -->
 	<span class="latestItemDateCreated">
-		<?php echo JHtml::_('date', $this->item->created , JText::_('K2_DATE_FORMAT_LC2')); ?>
+		<?php echo JHTML::_('date', $this->item->created , JText::_('K2_DATE_FORMAT_LC2')); ?>
 	</span>
 	<?php endif; ?>
 
   <!-- Plugins: AfterDisplayTitle -->
-  <?php echo $this->item->events->AfterDisplayTitle; ?>
+  <?php echo $this->item->event->AfterDisplayTitle; ?>
 
   <!-- K2 Plugins: K2AfterDisplayTitle -->
-  <?php echo $this->item->events->K2AfterDisplayTitle; ?>
+  <?php echo $this->item->event->K2AfterDisplayTitle; ?>
 
   <div class="latestItemBody">
 
 	  <!-- Plugins: BeforeDisplayContent -->
-	  <?php echo $this->item->events->BeforeDisplayContent; ?>
+	  <?php echo $this->item->event->BeforeDisplayContent; ?>
 
 	  <!-- K2 Plugins: K2BeforeDisplayContent -->
-	  <?php echo $this->item->events->K2BeforeDisplayContent; ?>
+	  <?php echo $this->item->event->K2BeforeDisplayContent; ?>
 
-	  <?php if($this->params->get('latestItemImage') && $this->item->image): ?>
+	  <?php if($this->item->params->get('latestItemImage') && !empty($this->item->image)): ?>
 	  <!-- Item Image -->
 	  <div class="latestItemImageBlock">
 		  <span class="latestItemImage">
-		  	<a href="<?php echo $this->item->link; ?>" title="<?php echo $this->escape($this->item->image->alt); ?>">
-		  		<img src="<?php echo $this->item->image->src; ?>" alt="<?php echo $this->escape($this->item->image->alt); ?>" style="width:<?php echo $this->item->image->width; ?>px; height:auto;" />
+		    <a href="<?php echo $this->item->link; ?>" title="<?php if(!empty($this->item->image_caption)) echo K2HelperUtilities::cleanHtml($this->item->image_caption); else echo K2HelperUtilities::cleanHtml($this->item->title); ?>">
+		    	<img src="<?php echo $this->item->image; ?>" alt="<?php if(!empty($this->item->image_caption)) echo K2HelperUtilities::cleanHtml($this->item->image_caption); else echo K2HelperUtilities::cleanHtml($this->item->title); ?>" style="width:<?php echo $this->item->imageWidth; ?>px;height:auto;" />
 		    </a>
 		  </span>
 		  <div class="clr"></div>
 	  </div>
 	  <?php endif; ?>
 
-	  <?php if($this->params->get('latestItemIntroText')): ?>
+	  <?php if($this->item->params->get('latestItemIntroText')): ?>
 	  <!-- Item introtext -->
 	  <div class="latestItemIntroText">
 	  	<?php echo $this->item->introtext; ?>
@@ -76,26 +79,26 @@ defined('_JEXEC') or die;
 		<div class="clr"></div>
 
 	  <!-- Plugins: AfterDisplayContent -->
-	  <?php echo $this->item->events->AfterDisplayContent; ?>
+	  <?php echo $this->item->event->AfterDisplayContent; ?>
 
 	  <!-- K2 Plugins: K2AfterDisplayContent -->
-	  <?php echo $this->item->events->K2AfterDisplayContent; ?>
+	  <?php echo $this->item->event->K2AfterDisplayContent; ?>
 
 	  <div class="clr"></div>
   </div>
 
-  <?php if($this->params->get('latestItemCategory') || $this->params->get('latestItemTags')): ?>
+  <?php if($this->item->params->get('latestItemCategory') || $this->item->params->get('latestItemTags')): ?>
   <div class="latestItemLinks">
 
-		<?php if($this->params->get('latestItemCategory')): ?>
+		<?php if($this->item->params->get('latestItemCategory')): ?>
 		<!-- Item category name -->
 		<div class="latestItemCategory">
 			<span><?php echo JText::_('K2_PUBLISHED_IN'); ?></span>
-			<a href="<?php echo $this->item->category->link; ?>"><?php echo $this->item->category->title; ?></a>
+			<a href="<?php echo $this->item->category->link; ?>"><?php echo $this->item->category->name; ?></a>
 		</div>
 		<?php endif; ?>
 
-	  <?php if($this->params->get('latestItemTags') && count($this->item->tags)): ?>
+	  <?php if($this->item->params->get('latestItemTags') && count($this->item->tags)): ?>
 	  <!-- Item tags -->
 	  <div class="latestItemTagsBlock">
 		  <span><?php echo JText::_('K2_TAGGED_UNDER'); ?></span>
@@ -114,35 +117,29 @@ defined('_JEXEC') or die;
 
 	<div class="clr"></div>
 
-  <?php if($this->params->get('latestItemVideo') && count($this->item->media)): ?>
+  <?php if($this->params->get('latestItemMedia') && count($this->item->media)): ?>
   <!-- Item video -->
   <div class="latestItemVideoBlock">
-  	<h3><?php echo JText::_('K2_RELATED_MEDIA'); ?></h3>
-  	
-  	<?php foreach ($this->item->media as $entry) : ?>
+  	<h3><?php echo JText::_('K2_RELATED_VIDEO'); ?></h3>
+ 	
+ 	<?php foreach ($this->item->media as $entry) : ?>
 	<div class="itemMedia">
-		<span class="itemMediaOutput"><?php echo $entry->output; ?></span>
-	
-		<?php if(!empty($entry->caption)): ?>
-		<span class="itemMediaCaption"><?php echo $entry->caption; ?></span>
-		<?php endif; ?>
-	
-		<?php if(!empty($entry->credits)): ?>
-		<span class="itemMediaCredits"><?php echo $entry->credits; ?></span>
-		<?php endif; ?>
-	
+  	
+		<div class="itemMediaOutput"><?php echo $entry->output; ?></div>
+
 		<div class="clr"></div>
-  	</div> 
+	</div> 
 	<?php endforeach; ?>
+
   </div>
   <?php endif; ?>
 
-	<?php if($this->params->get('latestItemCommentsAnchor') && $this->params->get('comments')): ?>
+	<?php if($this->item->params->get('latestItemCommentsAnchor') && ( ($this->item->params->get('comments') == '2' && !$this->user->guest) || ($this->item->params->get('comments') == '1')) ): ?>
 	<!-- Anchor link to comments below -->
 	<div class="latestItemCommentsLink">
-		<?php if(!empty($this->item->events->K2CommentsCounter)): ?>
+		<?php if(!empty($this->item->event->K2CommentsCounter)): ?>
 			<!-- K2 Plugins: K2CommentsCounter -->
-			<?php echo $this->item->events->K2CommentsCounter; ?>
+			<?php echo $this->item->event->K2CommentsCounter; ?>
 		<?php else: ?>
 			<?php if($this->item->numOfComments > 0): ?>
 			<a href="<?php echo $this->item->link; ?>#itemCommentsAnchor">
@@ -157,7 +154,7 @@ defined('_JEXEC') or die;
 	</div>
 	<?php endif; ?>
 
-	<?php if ($this->params->get('latestItemReadMore')): ?>
+	<?php if ($this->item->params->get('latestItemReadMore')): ?>
 	<!-- Item "read more..." link -->
 	<div class="latestItemReadMore">
 		<a class="k2ReadMore" href="<?php echo $this->item->link; ?>">
@@ -168,8 +165,11 @@ defined('_JEXEC') or die;
 
 	<div class="clr"></div>
 
+  <!-- Plugins: AfterDisplay -->
+  <?php echo $this->item->event->AfterDisplay; ?>
+
   <!-- K2 Plugins: K2AfterDisplay -->
-  <?php echo $this->item->events->K2AfterDisplay; ?>
+  <?php echo $this->item->event->K2AfterDisplay; ?>
 
 	<div class="clr"></div>
 </div>
