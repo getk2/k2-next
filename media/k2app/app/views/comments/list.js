@@ -1,4 +1,4 @@
-define(['marionette', 'text!templates/comments/list.html', 'text!templates/comments/row.html', 'dispatcher'], function(Marionette, list, row, K2Dispatcher) {
+define(['marionette', 'text!templates/comments/list.html', 'text!templates/comments/row.html', 'dispatcher', 'views/noresults'], function(Marionette, list, row, K2Dispatcher, K2ViewNoResults) {
 	'use strict';
 	var K2ViewCommentsRow = Marionette.ItemView.extend({
 		tagName : 'ul',
@@ -24,7 +24,8 @@ define(['marionette', 'text!templates/comments/list.html', 'text!templates/comme
 	var K2ViewComments = Marionette.CompositeView.extend({
 		template : _.template(list),
 		childViewContainer : '[data-region="list"]',
-		childView : K2ViewCommentsRow
+		childView : K2ViewCommentsRow,
+		emptyView : K2ViewNoResults
 	});
 	return K2ViewComments;
 });

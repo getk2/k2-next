@@ -1,4 +1,4 @@
-define(['marionette', 'text!templates/users/list.html', 'text!templates/users/row.html', 'dispatcher'], function(Marionette, list, row, K2Dispatcher) {'use strict';
+define(['marionette', 'text!templates/users/list.html', 'text!templates/users/row.html', 'dispatcher', 'views/noresults'], function(Marionette, list, row, K2Dispatcher, K2ViewNoResults) {'use strict';
 	var K2ViewUsersRow = Marionette.ItemView.extend({
 		tagName : 'ul',
 		template : _.template(row),
@@ -13,7 +13,8 @@ define(['marionette', 'text!templates/users/list.html', 'text!templates/users/ro
 	var K2ViewUsers = Marionette.CompositeView.extend({
 		template : _.template(list),
 		childViewContainer : '[data-region="list"]',
-		childView : K2ViewUsersRow
+		childView : K2ViewUsersRow,
+		emptyView : K2ViewNoResults
 	});
 	return K2ViewUsers;
 });

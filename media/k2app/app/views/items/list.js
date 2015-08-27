@@ -1,4 +1,4 @@
-define(['marionette', 'text!templates/items/list.html', 'text!templates/items/row.html', 'text!templates/items/grid_list.html', 'text!templates/items/grid_row.html', 'text!templates/items/sortable_list.html', 'text!templates/items/sortable_row.html', 'text!templates/items/sortable_row_item.html', 'dispatcher', 'session', 'widget', 'collections/items', 'collections/categories'], function(Marionette, list, row, gridList, gridRow, sortableList, sortableRow, sortableRowItem, K2Dispatcher, K2Session, K2Widget, K2CollectionItems, K2CollectionCategories) {
+define(['marionette', 'text!templates/items/list.html', 'text!templates/items/row.html', 'text!templates/items/grid_list.html', 'text!templates/items/grid_row.html', 'text!templates/items/sortable_list.html', 'text!templates/items/sortable_row.html', 'text!templates/items/sortable_row_item.html', 'dispatcher', 'session', 'widget', 'collections/items', 'collections/categories', 'views/noresults'], function(Marionette, list, row, gridList, gridRow, sortableList, sortableRow, sortableRowItem, K2Dispatcher, K2Session, K2Widget, K2CollectionItems, K2CollectionCategories, K2ViewNoResults) {
 	'use strict';
 
 	// List items layout. It handles the two views for items ( table and sortable list)
@@ -146,6 +146,7 @@ define(['marionette', 'text!templates/items/list.html', 'text!templates/items/ro
 		template : _.template(list),
 		childViewContainer : '[data-region="list"]',
 		childView : K2ViewItemsTableRow,
+		emptyView : K2ViewNoResults,
 		onRender : function() {
 			var enabled = this.collection.getState('sorting') === 'featured_ordering' && this.collection.getState('category') < 2;
 			K2Widget.ordering(jQuery('[data-region="items-inner"]'), 'featured_ordering', enabled);
@@ -179,6 +180,7 @@ define(['marionette', 'text!templates/items/list.html', 'text!templates/items/ro
 		template : _.template(gridList),
 		childViewContainer : '[data-region="list"]',
 		childView : K2ViewItemsGridRow,
+		emptyView : K2ViewNoResults,
 		onRenderCollection : function() {
 			K2Widget.ordering(this.$('[data-region="list"]'), 'featured_ordering', this.collection.getState('sorting') === 'featured_ordering');
 		}
