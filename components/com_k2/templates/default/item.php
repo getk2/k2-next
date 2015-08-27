@@ -20,7 +20,7 @@ defined('_JEXEC') or die ;
 
 <!-- Start K2 Item Layout -->
 
-<div id="k2Container" class="itemView<?php echo ($this->item->featured) ? ' itemIsFeatured' : ''; ?><?php if ($this->params->get('pageclass_sfx'))echo ' '.$this->params->get('pageclass_sfx');?>">
+<article id="k2Container" class="itemView<?php echo ($this->item->featured) ? ' itemIsFeatured' : ''; ?><?php if ($this->params->get('pageclass_sfx'))echo ' '.$this->params->get('pageclass_sfx');?>">
 
 	<!-- K2 Plugins: K2BeforeDisplay -->
 	<?php echo $this->item->events->K2BeforeDisplay; ?>
@@ -32,7 +32,7 @@ defined('_JEXEC') or die ;
 	</h1>
 	<?php endif; ?>
 
-	<div class="itemHeader">
+	<header class="itemHeader">
 
 		<?php if($this->params->get('itemDateCreated')): ?>
 		<!-- Date created -->
@@ -75,7 +75,7 @@ defined('_JEXEC') or die ;
 		</span>
 		<?php endif; ?>
 
-  </div>
+  </header>
 
   <!-- Plugins: AfterDisplayTitle -->
   <?php echo $this->item->events->AfterDisplayTitle; ?>
@@ -475,7 +475,7 @@ defined('_JEXEC') or die ;
 
   <?php if($this->params->get('itemNavigation') && !$this->print && ($this->item->next || $this->item->previous)): ?>
   <!-- Item navigation -->
-  <div class="itemNavigation">
+  <nav class="itemNavigation">
   	<span class="itemNavigationTitle"><?php echo JText::_('K2_MORE_IN_THIS_CATEGORY'); ?></span>
 
 		<?php if($this->item->previous): ?>
@@ -490,7 +490,7 @@ defined('_JEXEC') or die ;
 		</a>
 		<?php endif; ?>
 
-  </div>
+  </nav>
   <?php endif; ?>
 
   <!-- K2 Plugins: K2AfterDisplay -->
@@ -684,5 +684,5 @@ defined('_JEXEC') or die ;
 
 <div class="clr"></div>
 
-</div>
+</article>
 <!-- End K2 Item Layout -->

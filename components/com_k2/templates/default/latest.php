@@ -11,7 +11,7 @@
 defined('_JEXEC') or die; ?>
 
 <!-- Start K2 Latest Layout -->
-<div id="k2Container" class="latestView<?php if($this->params->get('pageclass_sfx')) echo ' '.$this->params->get('pageclass_sfx'); ?>">
+<section id="k2Container" class="latestView<?php if($this->params->get('pageclass_sfx')) echo ' '.$this->params->get('pageclass_sfx'); ?>">
 
 	<?php if($this->params->get('show_page_heading')): ?>
 	<!-- Page heading -->
@@ -154,5 +154,5 @@ defined('_JEXEC') or die; ?>
 
 	<?php endforeach; ?>
 	<div class="clr"></div>
-</div>
+</section>
 <!-- End K2 Latest Layout -->

@@ -10,7 +10,7 @@
 // no direct access
 defined('_JEXEC') or die; ?>
 
-<div id="k2Container" class="userView<?php if($this->params->get('pageclass_sfx')) echo ' '.$this->params->get('pageclass_sfx'); ?>">
+<section id="k2Container" class="userView<?php if($this->params->get('pageclass_sfx')) echo ' '.$this->params->get('pageclass_sfx'); ?>">
 
 	<?php if($this->params->get('show_page_heading')): ?>
 	<!-- Page heading -->
@@ -115,4 +115,4 @@ defined('_JEXEC') or die; ?>
 	</div>
 	<?php endif; ?>
 
-</div>
+</section>
