@@ -468,9 +468,6 @@ defined('_JEXEC') or die ;
   		</div>
   	<?php endforeach; ?>
   </div>
-  
-
-
   <?php endif; ?>
 
   <?php if($this->params->get('itemNavigation') && !$this->print && ($this->item->next || $this->item->previous)): ?>

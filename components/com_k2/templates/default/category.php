@@ -35,7 +35,7 @@ defined('_JEXEC') or die; ?>
 
 		<?php if(isset($this->category) && ( $this->params->get('catImage') || $this->params->get('catTitle') || $this->params->get('catDescription') || $this->category->events->K2CategoryDisplay )): ?>
 		<!-- Category block -->
-		<div class="itemListCategory">
+		<header class="itemListCategory">
 
 			<?php if($this->category->canAdd): ?>
 			<!-- Item add link -->
@@ -86,7 +86,7 @@ defined('_JEXEC') or die; ?>
 			<?php echo $this->category->events->K2CategoryDisplay; ?>
 
 			<div class="clr"></div>
-		</div>
+		</header>
 		<?php endif; ?>
 
 		<?php if($this->params->get('subCategories') && count($this->category->children)): ?>

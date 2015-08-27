@@ -938,7 +938,7 @@ ul.jw--inline--menu__icons { margin: 12px 0 35px; padding: 0; }
 		.jw--setting--field {margin-bottom:60px;}
 		.jw--setting--field, .jw--setting--single {overflow:hidden;}
 			.jw--setting--field__small {margin-bottom:20px;}
-		.jw--setting--field .jw--setting--single {display:block;padding:8px 12px 8px 25px;border-radius:3px;font-size:16px;}
+		.jw--setting--field .jw--setting--single {display:block;padding:5px 12px 5px 25px;border-radius:3px;font-size:16px;}
 		.jw--setting--field .jw--setting--single:nth-child(2n-2) {background:#f7f7f7;}
 
 		.jw--setting--field .jw--setting--single > label,
@@ -1217,6 +1217,7 @@ ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; position: re
 
 /* panel */
 .jw--revisions { padding: 30px 70px; }
+	[data-role="revisions-timeline"] { margin: 25px auto 0!important; }
 
 	/* slider */
 	 .ui-slider-handle { background: #00afec; }
@@ -1224,7 +1225,7 @@ ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; position: re
 	 .rev--name { font-size: 18px; line-height: 1; font-weight: 300; }
 	 .rev--date { font-size: 12px; font-weight: 700; margin: 5px 0; margin: 0 0 10px; }
 	 .rev--author { font-size: 13px; font-weight: 700; color: #22baef; }
-	 .rev--notes {  }
+	 .rev--notes { margin-bottom: 10px; }
 	 .rev--header { margin: 0 0 20px; }
 
 	 .ui-slider-label span { display: block; white-space: nowrap; font-weight: 700; margin-bottom: 5px; }
