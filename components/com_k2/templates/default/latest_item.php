@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		3.0.0
+ * @version		2.6.x
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2014 JoomlaWorks Ltd. All rights reserved.
@@ -13,12 +13,12 @@ defined('_JEXEC') or die;
 ?>
 
 <!-- Start K2 Item Layout -->
-<article class="latestItemView">
+<div class="latestItemView">
 
 	<!-- K2 Plugins: K2BeforeDisplay -->
 	<?php echo $this->item->events->K2BeforeDisplay; ?>
 
-	<header class="latestItemHeader">
+	<div class="latestItemHeader">
 	  <?php if($this->params->get('latestItemTitle')): ?>
 	  <!-- Item title -->
 	  <h2 class="latestItemTitle">
@@ -31,7 +31,7 @@ defined('_JEXEC') or die;
 	  	<?php endif; ?>
 	  </h2>
 	  <?php endif; ?>
-  	</header>
+  </div>
   
 	<?php if($this->params->get('latestItemDateCreated')): ?>
 	<!-- Date created -->
@@ -172,5 +172,5 @@ defined('_JEXEC') or die;
   <?php echo $this->item->events->K2AfterDisplay; ?>
 
 	<div class="clr"></div>
-</article>
+</div>
 <!-- End K2 Item Layout -->

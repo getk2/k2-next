@@ -10,7 +10,7 @@
 // no direct access
 defined('_JEXEC') or die; ?>
 
-<section id="k2Container" class="userView<?php if($this->params->get('pageclass_sfx')) echo ' '.$this->params->get('pageclass_sfx'); ?>">
+<div id="k2Container" class="userView<?php if($this->params->get('pageclass_sfx')) echo ' '.$this->params->get('pageclass_sfx'); ?>">
 
 	<?php if($this->params->get('show_page_heading')): ?>
 	<!-- Page heading -->
@@ -30,7 +30,7 @@ defined('_JEXEC') or die; ?>
 	<?php endif; ?>
 	
 	<?php if ($this->params->get('userImage') || $this->params->get('userName') || $this->params->get('userDescription') || $this->params->get('userURL') || $this->params->get('userEmail')): ?>
-	<header class="userBlock">
+	<div class="userBlock">
 	
 		<?php if($this->author->canAdd && JRequest::getInt('id') == $this->user->id): ?>
 		<!-- Item add link -->
@@ -95,7 +95,7 @@ defined('_JEXEC') or die; ?>
 		<?php echo $this->author->events->K2UserDisplay; ?>
 		
 		<div class="clr"></div>
-	</header>
+	</div>
 	<?php endif; ?>
 	
 	<?php if(count($this->items)): ?>
@@ -115,4 +115,4 @@ defined('_JEXEC') or die; ?>
 	</div>
 	<?php endif; ?>
 
-</section>
+</div>

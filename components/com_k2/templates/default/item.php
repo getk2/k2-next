@@ -20,7 +20,7 @@ defined('_JEXEC') or die ;
 
 <!-- Start K2 Item Layout -->
 
-<article id="k2Container" class="itemView<?php echo ($this->item->featured) ? ' itemIsFeatured' : ''; ?><?php if ($this->params->get('pageclass_sfx'))echo ' '.$this->params->get('pageclass_sfx');?>">
+<div id="k2Container" class="itemView<?php echo ($this->item->featured) ? ' itemIsFeatured' : ''; ?><?php if ($this->params->get('pageclass_sfx'))echo ' '.$this->params->get('pageclass_sfx');?>">
 
 	<!-- K2 Plugins: K2BeforeDisplay -->
 	<?php echo $this->item->events->K2BeforeDisplay; ?>
@@ -32,7 +32,7 @@ defined('_JEXEC') or die ;
 	</h1>
 	<?php endif; ?>
 
-	<header class="itemHeader">
+	<div class="itemHeader">
 
 		<?php if($this->params->get('itemDateCreated')): ?>
 		<!-- Date created -->
@@ -75,7 +75,7 @@ defined('_JEXEC') or die ;
 		</span>
 		<?php endif; ?>
 
-  </header>
+  </div>
 
   <!-- Plugins: AfterDisplayTitle -->
   <?php echo $this->item->events->AfterDisplayTitle; ?>
@@ -124,16 +124,16 @@ defined('_JEXEC') or die ;
 	  <?php if($this->params->get('itemImage') && $this->item->image): ?>
 	  		  	
 	  <!-- Item Image -->
-	  <figure class="itemImageBlock">
+	  <div class="itemImageBlock">
 		  <span class="itemImage">
-		  	<a class="k2Modal" href="<?php echo $this->item->images['modal']->src; ?>" title="<?php echo JText::_('K2_CLICK_TO_PREVIEW_IMAGE'); ?>">
+		  	<a class="k2Modal" rel="{handler: 'image'}" href="<?php echo $this->item->images['modal']->src; ?>" title="<?php echo JText::_('K2_CLICK_TO_PREVIEW_IMAGE'); ?>">
 		  		<img src="<?php echo $this->item->image->src; ?>" alt="<?php echo $this->escape($this->item->image->alt); ?>" style="width:<?php echo $this->item->image->width; ?>px; height:auto;" />
 		  	</a>
 		  </span>
 
 		  <?php if($this->params->get('itemImageMainCaption') && $this->item->image->caption): ?>
 		  <!-- Image caption -->
-		  <figcaption class="itemImageCaption"><?php echo $this->item->image->caption; ?></figcaption>
+		  <span class="itemImageCaption"><?php echo $this->item->image->caption; ?></span>
 		  <?php endif; ?>
 
 		  <?php if($this->params->get('itemImageMainCredits') && $this->item->image->credits): ?>
@@ -142,7 +142,7 @@ defined('_JEXEC') or die ;
 		  <?php endif; ?>
 
 		  <div class="clr"></div>
-	  </figure>
+	  </div>
 	  <?php endif; ?>
 		
 	  <?php if($this->params->get('itemIntroText') && $this->item->introtext): ?>

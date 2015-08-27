@@ -10,7 +10,7 @@
 // no direct access
 defined('_JEXEC') or die; ?>
 
-<section id="k2Container" class="categoryView<?php if($this->params->get('pageclass_sfx')) echo ' '.$this->params->get('pageclass_sfx'); ?>">
+<div id="k2Container" class="categoryView<?php if($this->params->get('pageclass_sfx')) echo ' '.$this->params->get('pageclass_sfx'); ?>">
 
 	<?php if($this->params->get('show_page_heading')): ?>
 	<!-- Page heading -->
@@ -35,7 +35,7 @@ defined('_JEXEC') or die; ?>
 
 		<?php if(isset($this->category) && ( $this->params->get('catImage') || $this->params->get('catTitle') || $this->params->get('catDescription') || $this->category->events->K2CategoryDisplay )): ?>
 		<!-- Category block -->
-		<header class="itemListCategory">
+		<div class="itemListCategory">
 
 			<?php if($this->category->canAdd): ?>
 			<!-- Item add link -->
@@ -86,7 +86,7 @@ defined('_JEXEC') or die; ?>
 			<?php echo $this->category->events->K2CategoryDisplay; ?>
 
 			<div class="clr"></div>
-		</header>
+		</div>
 		<?php endif; ?>
 
 		<?php if($this->params->get('subCategories') && count($this->category->children)): ?>
@@ -158,11 +158,11 @@ defined('_JEXEC') or die; ?>
 	
 	<?php if($this->pagination->get('pages.total') > 1): ?>
 	<!-- Pagination -->
-	<nav class="k2Pagination pagination">
+	<div class="k2Pagination pagination">
 		<?php if($this->params->get('catPagination')) echo $this->pagination->getPagesLinks(); ?>
 		<div class="clr"></div>
 		<?php if($this->params->get('catPaginationResults')) echo $this->pagination->getPagesCounter(); ?>
-	</nav>
+	</div>
 	<?php endif; ?>
 
-</section>
+</div>

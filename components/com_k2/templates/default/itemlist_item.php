@@ -65,7 +65,7 @@ defined('_JEXEC') or die ;
 		</span>
 		<?php endif; ?>
 
-  </header>
+  </div>
 
   <!-- Plugins: AfterDisplayTitle -->
   <?php echo $this->item->events->AfterDisplayTitle; ?>
@@ -85,7 +85,7 @@ defined('_JEXEC') or die ;
 	  <?php if($this->params->get('listItemImage') && $this->item->image): ?>
 	  		  	
 	  <!-- Item Image -->
-	  <figure class="itemImageBlock">
+	  <div class="itemImageBlock">
 		  <span class="itemImage">
 		  	<a href="<?php echo $this->item->link; ?>" title="<?php echo $this->escape($this->item->image->alt); ?>">
 		  		<img src="<?php echo $this->item->image->src; ?>" alt="<?php echo $this->escape($this->item->image->alt); ?>" style="width:<?php echo $this->item->image->width; ?>px; height:auto;" />
@@ -103,7 +103,7 @@ defined('_JEXEC') or die ;
 		  <?php endif; ?>
 
 		  <div class="clr"></div>
-	  </figure>
+	  </div>
 	  <?php endif; ?>
 
 	  <?php if(!empty($this->item->fulltext)): ?>
@@ -126,7 +126,7 @@ defined('_JEXEC') or die ;
 	  </div>
 	  <?php endif; ?>
 
-	<div class="clr"></div>
+		<div class="clr"></div>
 
 	  <?php if($this->params->get('listItemExtraFields') && count($this->item->extraFieldsGroups)): ?>
 	  <!-- Item extra fields -->
@@ -391,4 +391,4 @@ defined('_JEXEC') or die ;
     
 <div class="clr"></div>
 
-</article>
+</div>

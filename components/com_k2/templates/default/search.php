@@ -10,7 +10,7 @@
 // no direct access
 defined('_JEXEC') or die; ?>
 
-<section id="k2Container" class="searchView<?php if($this->params->get('pageclass_sfx')) echo ' '.$this->params->get('pageclass_sfx'); ?>">
+<div id="k2Container" class="searchView<?php if($this->params->get('pageclass_sfx')) echo ' '.$this->params->get('pageclass_sfx'); ?>">
 
 	<?php if($this->params->get('show_page_heading')): ?>
 	<!-- Page heading -->
@@ -48,11 +48,11 @@ defined('_JEXEC') or die; ?>
 	
 	<?php if($this->pagination->get('pages.total') > 1): ?>
 	<!-- Pagination -->
-	<nav class="k2Pagination pagination">
+	<div class="k2Pagination pagination">
 		<?php echo $this->pagination->getPagesLinks(); ?>
 		<div class="clr"></div>
 		<?php echo $this->pagination->getPagesCounter(); ?>
-	</nav>
+	</div>
 	<?php endif; ?>
 
-</section>
+</div>
