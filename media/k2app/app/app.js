@@ -1,17 +1,37 @@
-define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'views/subheader', 'views/sidebar', 'ui'], function(Marionette, K2Router, K2Controller, K2Dispatcher, HeaderView, SubheaderView, SidebarView) {'use strict';
+define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'views/subheader', 'views/sidebar', 'nprogress', 'ui'], function(Marionette, K2Router, K2Controller, K2Dispatcher, HeaderView, SubheaderView, SidebarView, NProgress) {
+	'use strict';
 
 	// Override the default Backbone.Sync implementation
 	require(['sync']);
 
-	// Bind all jQuery AJAX requests so we can add a class for loading.
-	jQuery(document).bind('ajaxSend', function() {
-		jQuery('div[data-application="k2"]').addClass('k2-loading');
-	}).bind('ajaxComplete', function() {
-		jQuery('div[data-application="k2"]').removeClass('k2-loading');
-	});
-
 	// Initialize the application
 	var K2 = new Marionette.Application();
+
+	// Keep track of the pending promises,
+	// this way the indicator is only stopped when all pending promises are done.
+	var promises = 0;
+	K2.reqres.setHandler('progress', function(promise) {
+		promises++;
+		NProgress.start();
+		// Return the promise to keep chaining support.
+		return promise
+		// Increase the progress indicator when we receive a progress notification.
+		.progress(function() {
+			NProgress.inc();
+		})
+		// Use always here so it doesn't matter if the promise is resolved or rejected.
+		.always(function() {
+			promises--;
+			!promises && NProgress.done();
+			// No more pending promises, we're done.
+		});
+	});
+	
+	// See http://backbonejs.org/#Sync-ajax
+	Backbone.ajax = function() {
+  		// Wrap all ajax requests in our progress handler.
+  		return K2.request('progress', Backbone.$.ajax.apply(Backbone.$, arguments));
+	};
 
 	// Set the regions
 	K2.addRegions({
@@ -154,7 +174,7 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'vie
 			K2Dispatcher.trigger('app:update:subheader', response);
 			// Add scripts and styles
 			require(_.union(response.styles, response.scripts));
-			
+
 			// Add script declarations
 			_.each(response.scriptDeclarations, function(js) {
 				jQuery('body').append('<script type="text/javascript">' + js + '</script>');

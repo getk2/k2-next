@@ -19,6 +19,7 @@ require.config({
 		'mergelyStyle' : '../vendor/mergely/mergely.css',
 		'mergelyEditor' : '../vendor/mergely/codemirror.min',
 		'mergelyEditorStyle' : '../vendor/mergely/codemirror.css',
+		'nprogress': '../vendor/nprogress/nprogress',
 		'pickadate' : '../vendor/pickadate/picker',
 		'pickadateTheme' : '../vendor/pickadate/themes/default.css',
 		'pickadateDate' : '../vendor/pickadate/picker.date',
