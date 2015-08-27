@@ -124,16 +124,16 @@ defined('_JEXEC') or die ;
 	  <?php if($this->params->get('itemImage') && $this->item->image): ?>
 	  		  	
 	  <!-- Item Image -->
-	  <div class="itemImageBlock">
+	  <figure class="itemImageBlock">
 		  <span class="itemImage">
-		  	<a class="k2Modal" rel="{handler: 'image'}" href="<?php echo $this->item->images['modal']->src; ?>" title="<?php echo JText::_('K2_CLICK_TO_PREVIEW_IMAGE'); ?>">
+		  	<a class="k2Modal" href="<?php echo $this->item->images['modal']->src; ?>" title="<?php echo JText::_('K2_CLICK_TO_PREVIEW_IMAGE'); ?>">
 		  		<img src="<?php echo $this->item->image->src; ?>" alt="<?php echo $this->escape($this->item->image->alt); ?>" style="width:<?php echo $this->item->image->width; ?>px; height:auto;" />
 		  	</a>
 		  </span>
 
 		  <?php if($this->params->get('itemImageMainCaption') && $this->item->image->caption): ?>
 		  <!-- Image caption -->
-		  <span class="itemImageCaption"><?php echo $this->item->image->caption; ?></span>
+		  <figcaption class="itemImageCaption"><?php echo $this->item->image->caption; ?></figcaption>
 		  <?php endif; ?>
 
 		  <?php if($this->params->get('itemImageMainCredits') && $this->item->image->credits): ?>
@@ -142,7 +142,7 @@ defined('_JEXEC') or die ;
 		  <?php endif; ?>
 
 		  <div class="clr"></div>
-	  </div>
+	  </figure>
 	  <?php endif; ?>
 		
 	  <?php if($this->params->get('itemIntroText') && $this->item->introtext): ?>

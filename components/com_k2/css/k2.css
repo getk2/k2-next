@@ -143,6 +143,7 @@ table.csvData tr td {}
 ----------------------------------------------------------------------*/
 a.itemPrintThisPage {display:block;width:160px;margin:4px auto 16px;padding:4px;background:#F7FAFE;border:1px solid #ccc;text-align:center;color:#555;font-size:13px;}
 a.itemPrintThisPage:hover {background:#eee;text-decoration:none;}
+.mfp-title { display: none; }
 
 .itemView {padding:8px 0 24px 0;margin:0 0 24px 0;border-bottom:1px dotted #ccc;} /* this is the item container for this view */
 .itemIsFeatured {} /* Attach a class for each featured item */

@@ -30,7 +30,7 @@ defined('_JEXEC') or die; ?>
 	<?php endif; ?>
 	
 	<?php if ($this->params->get('userImage') || $this->params->get('userName') || $this->params->get('userDescription') || $this->params->get('userURL') || $this->params->get('userEmail')): ?>
-	<div class="userBlock">
+	<header class="userBlock">
 	
 		<?php if($this->author->canAdd && JRequest::getInt('id') == $this->user->id): ?>
 		<!-- Item add link -->
@@ -95,7 +95,7 @@ defined('_JEXEC') or die; ?>
 		<?php echo $this->author->events->K2UserDisplay; ?>
 		
 		<div class="clr"></div>
-	</div>
+	</header>
 	<?php endif; ?>
 	
 	<?php if(count($this->items)): ?>

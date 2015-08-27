@@ -18,6 +18,9 @@ jQuery(document).ready(function() {
 		}
 	}
 
+	// Maginific popup
+	jQuery('.k2Modal').magnificPopup({type:'image'});
+
 	// comments
 	jQuery('#comment-form').submit(function(event) {
 		event.preventDefault();
