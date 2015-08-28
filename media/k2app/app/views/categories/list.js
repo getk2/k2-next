@@ -1,4 +1,4 @@
-define(['marionette', 'text!templates/categories/list.html', 'text!templates/categories/row.html', 'dispatcher', 'session', 'widget'], function(Marionette, list, row, K2Dispatcher, K2Session, K2Widget) {'use strict';
+define(['marionette', 'text!templates/categories/list.html', 'text!templates/categories/row.html', 'dispatcher', 'session', 'widget', 'views/noresults'], function(Marionette, list, row, K2Dispatcher, K2Session, K2Widget, K2ViewNoResults) {'use strict';
 	var K2ViewCategoriesRow = Marionette.CompositeView.extend({
 		tagName : 'li',
 		template : _.template(row),
@@ -50,6 +50,7 @@ define(['marionette', 'text!templates/categories/list.html', 'text!templates/cat
 		template : _.template(list),
 		childViewContainer : '[data-region="categories"]',
 		childView : K2ViewCategoriesRow,
+		emptyView : K2ViewNoResults,
 		collectionEvents : {
 			'reset' : 'buildTree',
 		},

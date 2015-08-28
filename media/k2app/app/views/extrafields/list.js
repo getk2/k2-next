@@ -1,4 +1,4 @@
-define(['marionette', 'text!templates/extrafields/list.html', 'text!templates/extrafields/row.html', 'dispatcher', 'session', 'widget'], function(Marionette, list, row, K2Dispatcher, K2Session, K2Widget) {'use strict';
+define(['marionette', 'text!templates/extrafields/list.html', 'text!templates/extrafields/row.html', 'dispatcher', 'session', 'widget', 'views/noresults'], function(Marionette, list, row, K2Dispatcher, K2Session, K2Widget, K2ViewNoResults) {'use strict';
 	var K2ViewExtraFieldsRow = Marionette.ItemView.extend({
 		tagName : 'ul',
 		template : _.template(row),
@@ -17,6 +17,7 @@ define(['marionette', 'text!templates/extrafields/list.html', 'text!templates/ex
 		template : _.template(list),
 		childViewContainer : '[data-region="list"]',
 		childView : K2ViewExtraFieldsRow,
+		emptyView : K2ViewNoResults,
 		onRenderCollection : function() {
 			var groups = [];
 			_.each(this.collection.models, function(model) {
