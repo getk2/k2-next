@@ -130,6 +130,8 @@ img {-ms-interpolation-mode:bicubic; max-width: 100%; }
 	.jw--label--row label:first-child { border-radius: 3px 0 0 3px; }
 	.jw--filter .jw--radio:last-child, .jw .controls label.radio:last-child, .jw--label--row label:last-child { border-radius: 0 3px 3px 0; }
 
+	.jw--sidebar--text .jw--filter label:nth-child(3) { border-radius: 3px 0 0 3px; }
+
 	/* active && hover states */
 	.jw label.jw--radio.btn:hover,
 	.jw label.jw--radio:hover { cursor: pointer; box-shadow: 0 1px 1px rgba(65,64,66,.14), inset 0 0 10px rgba(0,0,0,.15); }
@@ -139,7 +141,7 @@ img {-ms-interpolation-mode:bicubic; max-width: 100%; }
 	/* label with heading */
 	.jw label.jw--radio--title { display: block; font-size: 13px; font-weight: 600; min-width: 78px; height: 35px; line-height: 35px; padding: 0; color: #636b6e; }
 	.jw label.jw--radio--title_inl { display: inline-block; vertical-align: middle; margin-right: 10px; }
-	.jw label.jw--radio--title ~ label { border-radius: 3px 0 0 3px; }
+	.jw label.jw--radio--title ~ label {  }
 
 
 /* Circled radio buttons */
@@ -364,6 +366,17 @@ div#system-debug { padding-left: 50px; }
 		.jw--autocomplete li:hover,
 		.jw--autocomplete li:hover a,
 		.jw--autocomplete li a:hover { color: #fff; border: 0; background: #00afec; }
+
+/* reorder */
+.k2FieldResourceMultiple { list-style: none outside none; margin: 10px 0 0; padding: 0; font-size: 14px; }
+	.k2FieldResourceMultiple > li { display: block; padding: 5px 0; }
+	.k2FieldResourceMultiple > li.placeholder { background: #eee; border: 1px dashed #ccc; padding: 10px; }
+
+.k2FieldResourceMultipleHandle { display: inline-block; vertical-align: top; padding-left: 1px; margin-top: -1px; }
+	.k2FieldResourceMultipleHandle:hover { cursor: move; }
+
+.k2FieldResourceRemove {  }
+	.k2FieldResourceRemove:hover { color: #bd362f; }
 
 /*------------------------------------------------------------------
 [Filter - reusable] */
@@ -692,7 +705,7 @@ left: 0; bottom: 55px; width: 275px; }
 		.jw--pagination--mode label:first-of-type { border-radius: 3px 0 0 3px; }
 		.jw--pagination--mode .jw--radio:last-child { border-radius:  0 3px 3px 0; }
 		.jw--pagination--mode input[type="radio"] { opacity: 0; }
-		.jw--pagination--mode > span { font-size: 11px; display: inline-block; vertical-align: middle; line-height: 1; margin-right: 15px; }
+		.jw--pagination--mode > span { font-size: 11px; display: inline-block; vertical-align: middle; line-height: 1; margin-right: 5px; }
 
 /* Layout switch */
 .jw--thumbsbar { position: absolute; left: 0; bottom: 0; width: 45px; }
@@ -1618,7 +1631,7 @@ html[dir="rtl"] ul.jw--main--menu .fa, html[dir="rtl"] .jw--limit label,
 html[dir="rtl"] .jw label.jw--radio--title_inl { margin-right: 0; margin-left: 5px; }
 html[dir="rtl"] .jw--add--area.jw--add__solo { margin-left: 0; }
 html[dir="rtl"] .jw--search input[type="text"] { margin-right: 0; margin-left: -50px; }
-html[dir="rtl"] .jw--pagination--mode > span { display: block; margin-left: 15px; margin-right: 0; margin-bottom: 5px; }
+html[dir="rtl"] .jw--pagination--mode > span { display: block; margin-left: 5px; margin-right: 0; margin-bottom: 5px; }
 html[dir="rtl"] .jw label.jw--radio--title ~ label { border-radius: 0; }
 html[dir="rtl"] [class*="block-grid-"] > li, html[dir="rtl"] .sigProContainer ul > li { float: right; }
 
