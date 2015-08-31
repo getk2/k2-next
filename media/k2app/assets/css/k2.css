@@ -1169,6 +1169,24 @@ ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; position: re
 		.jw--attachment--table .jw--order--handle:hover { cursor: move; }
 
 /*------------------------------------------------------------------
+[Galleries] */
+.sigProContainer { list-style: none outside none; margin: 0 -15px; padding: 0; }
+	.sigProContainer > li { float: left; width: 50%; padding: 0 15px 15px; }
+	.sigProContainer > li img { background-size: cover; }
+	@media screen and (min-width: 640px) {
+		.sigProContainer > li { width: 33.33%; }
+	}
+	@media screen and (min-width: 767px) {
+		.sigProContainer > li { width: 25%; }
+	}
+	@media screen and (min-width: 1200px) {
+		.sigProContainer > li { width: 20%; }
+	}
+	@media screen and (min-width: 1400px) {
+		.sigProContainer > li { width: 16.6667%; }
+	}
+
+/*------------------------------------------------------------------
 [Extra fields] */
 .jw--element--row { overflow: hidden;  }
 	.jw--element--row .ov-hidden { padding-bottom: 2px; }
