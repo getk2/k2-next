@@ -43,6 +43,32 @@ class ModK2UsersHelper
 			$users = array();
 			switch($params->get('filter', 'mostItems'))
 			{
+				case 'byGroup' :
+					$model->setState('group', $params->get('group'));
+					$model->setState('limit', $params->get('limit', 4));
+					switch($params->get('ordering'))
+					{
+						case 'alpha' :
+							$model->setState('sorting', 'name');
+							break;
+						case 'random' :
+							$model->setState('sorting', 'random');
+							break;
+					}
+					$users = $model->getRows();
+					break;
+
+				case 'mostRecentItem' :
+					$model = K2Model::getInstance('Items');
+					$model->setState('site', true);
+					$model->setState('sorting', 'created.reverse');
+					$model->setState('limit', $params->get('limit', 4));
+					$rows = $model->getAuthors();
+					foreach ($rows as $row)
+					{
+						$users[] = K2Users::getInstance($row->created_by);
+					}
+					break;
 
 				case 'mostItems' :
 					$model->setState('limit', $params->get('limit', 4));
@@ -52,6 +78,7 @@ class ModK2UsersHelper
 						$users[] = K2Users::getInstance($row->userId);
 					}
 					break;
+
 				case 'mostPopularItems' :
 
 					// Get database

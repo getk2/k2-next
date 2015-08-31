@@ -1283,11 +1283,17 @@ class K2ModelItems extends K2Model
 		// Set query conditions
 		$this->setQueryConditions($query);
 
+		// Set query sorting
+		if ($this->getState('sorting'))
+		{
+			$this->setQuerySorting($query);
+		}
+
 		// Hook for plugins
 		$this->onBeforeSetQuery($query, 'com_k2.authors');
 
 		// Set the query
-		$db->setQuery($query);
+		$db->setQuery($query, 0, (int)$this->getState('limit'));
 
 		// Get rows
 		$rows = $db->loadObjectList();
