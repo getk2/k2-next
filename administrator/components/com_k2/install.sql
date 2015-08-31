@@ -96,7 +96,8 @@ CREATE TABLE IF NOT EXISTS `#__k2_comments` (
   KEY `itemId` (`itemId`),
   KEY `userId` (`userId`),
   KEY `date` (`date`),
-  KEY `state` (`state`)
+  KEY `state` (`state`),
+  KEY `item` (`itemId`,`state`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
