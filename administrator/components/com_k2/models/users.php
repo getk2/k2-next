@@ -209,11 +209,17 @@ class K2ModelUsers extends K2Model
 				$ordering = 'profile.hostname';
 				$direction = $sorting == 'hostname' ? 'ASC' : 'DESC';
 				break;
+			case 'random' :
+				$query->order('RAND()');
+				break;
 		}
 
 		// Append sorting
-		$db = $this->getDbo();
-		$query->order($db->quoteName($ordering).' '.$direction);
+		if ($sorting != 'random')
+		{
+			$db = $this->getDbo();
+			$query->order($db->quoteName($ordering).' '.$direction);
+		}
 
 	}
 

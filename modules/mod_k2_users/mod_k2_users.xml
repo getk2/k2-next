@@ -31,10 +31,17 @@
 			<fieldset label="K2_RETRIEVE_USERS_USING_FILTERS" name="K2GROUP_filter">
 				<field name="" type="k2header" default="K2_RETRIEVE_USERS_USING_FILTERS" label="" description=""/>
 				<field name="filter" type="list" default="mostItems" label="K2_FETCH_USERS" description="">
+					<option value="byGroup">K2_BY_USER_GROUP</option>
+					<option value="mostRecentItem">K2_MOST_RECENT_ITEM</option>
 					<option value="mostItems">K2_WITH_MOST_ITEMS</option>
 					<option value="mostPopularItems">K2_WITH_MOST_POPULAR_ITEMS</option>
 					<option value="mostCommentedItems">K2_WITH_MOST_COMMENTED_ITEMS</option>
 				</field>
+				<field name="group" type="usergrouplist" default="" label="K2_SELECT_USER_GROUP" />
+				<field name="ordering" type="list" default="1" label="K2_ORDERING" description="">
+                    <option value="alpha">K2_ALPHABETICAL</option>
+                    <option value="random">K2_RANDOM</option>
+                </field>
 				<field name="limit" type="text" default="4" size="4" label="K2_LIMIT" description=""/>
 			</fieldset>
 			<fieldset label="K2_RETRIEVE_SPECIFIC_USERS" name="K2GROUP_specific">
