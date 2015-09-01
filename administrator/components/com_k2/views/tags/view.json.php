@@ -88,7 +88,7 @@ class K2ViewTags extends K2View
 
 	protected function setUserStates()
 	{
-		$this->setUserState('limit', 10, 'int');
+		$this->setUserState('limit', JFactory::getApplication()->get('list_limit'), 'int');
 		$this->setUserState('page', 1, 'int');
 		$this->setUserState('search', '', 'string');
 		$this->setUserState('state', '', 'cmd');

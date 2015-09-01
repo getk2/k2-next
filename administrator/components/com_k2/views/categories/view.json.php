@@ -92,7 +92,7 @@ class K2ViewCategories extends K2View
 	protected function setUserStates()
 	{
 		$this->setUserState('persist', 1, 'int');
-		$this->setUserState('limit', 10, 'int', $this->getUserState('persist'));
+		$this->setUserState('limit', JFactory::getApplication()->get('list_limit'), 'int', $this->getUserState('persist'));
 		$this->setUserState('page', 1, 'int', $this->getUserState('persist'));
 		$this->setUserState('search', '', 'string');
 		$this->setUserState('access', 0, 'int');
