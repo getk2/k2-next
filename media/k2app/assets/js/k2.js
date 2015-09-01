@@ -19,7 +19,9 @@ jQuery(document).ready(function() {
 	}
 
 	// Maginific popup
-	jQuery('.k2Modal').magnificPopup({type:'image'});
+	if(typeof(jQuery.magnificPopup) !== 'undefined') {
+		jQuery('.k2Modal').magnificPopup({type:'image'});
+	}
 
 	// comments
 	jQuery('#comment-form').submit(function(event) {
