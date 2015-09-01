@@ -18,11 +18,6 @@ jQuery(document).ready(function() {
 		}
 	}
 
-	// Maginific popup
-	if(typeof(jQuery.magnificPopup) !== 'undefined') {
-		jQuery('.k2Modal').magnificPopup({type:'image'});
-	}
-
 	// comments
 	jQuery('#comment-form').submit(function(event) {
 		event.preventDefault();
@@ -78,6 +73,13 @@ jQuery(document).ready(function() {
 	});
 	// Legacy code END
 
+	// Maginific popup
+	if ( typeof (jQuery.magnificPopup) !== 'undefined') {
+		jQuery('.k2Modal').magnificPopup({
+			type : 'image'
+		});
+	}
+
 	// K2 toolbar
 	var isK2ModalOpen = false;
 	jQuery('[data-role="k2-admin-link"], .itemEditLink a, .catItemAddLink a').click(function(event) {
@@ -86,7 +88,7 @@ jQuery(document).ready(function() {
 			var src = jQuery(this).attr('href');
 			var vw = jQuery(window).width();
 			var vh = jQuery(window).height();
-			var modal = jQuery('<div id="k2AdminModalContainer"><div id="k2AdminModal"><a href="#">&times;</a><iframe src="' + src + '" style="width:'+(vw-80)+'px;height:'+(vh-160)+'px;"></iframe></div></div>');
+			var modal = jQuery('<div id="k2AdminModalContainer"><div id="k2AdminModal"><a href="#">&times;</a><iframe src="' + src + '" style="width:' + (vw - 80) + 'px;height:' + (vh - 160) + 'px;"></iframe></div></div>');
 			modal.find('a').click(function(event) {
 				event.preventDefault();
 				modal.remove();
