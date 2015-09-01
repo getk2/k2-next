@@ -74,6 +74,7 @@ class K2ViewK2 extends JViewLegacy
 			var K2Editor = '.$this->getEditor().';
 			var K2SitePath = "'.JURI::root(true).'";
 			var K2BasePath = "'.JURI::base(true).'";
+			var K2MediaManagerLanguage = "'.$this->getMediaManagerLanguage().'";
 			var K2Language = '.$this->getLanguage().';
 			/* K2 v3.0.0 - FINISH */
 		');
@@ -123,10 +124,34 @@ class K2ViewK2 extends JViewLegacy
 	protected function getLanguage()
 	{
 		$language = JFactory::getLanguage();
-		$contents = file_get_contents(JPATH_ADMINISTRATOR.'/language/'.$language->getTag().'/'.$language->getTag().'.com_k2.ini');
+		$file = JPATH_ADMINISTRATOR.'/language/'.$language->getTag().'/'.$language->getTag().'.com_k2.ini';
+		if (!file_exists($file))
+		{
+			$file = JPATH_ADMINISTRATOR.'/language/en-GB/en-GB.com_k2.ini';
+		}
+		$contents = file_get_contents($file);
 		$contents = str_replace('_QQ_', '"\""', $contents);
 		$strings = @parse_ini_string($contents);
 		return json_encode($strings);
+	}
+
+	protected function getMediaManagerLanguage()
+	{
+		$language = JFactory::getLanguage();
+		$tag = $language->getTag();
+		$needles = array();
+		$needles[] = str_replace('-', '_', $tag);
+		$needles[] = substr($tag, 0, strpos($tag, '-'));
+		$tag = 'en';
+		foreach ($needles as $needle)
+		{
+			if (file_exists(JPATH_SITE.'/media/k2app/vendor/elfinder/js/i18n/elfinder.'.$needle.'.js'))
+			{
+				$tag = $needle;
+				break;
+			}
+		}
+		return $tag;
 	}
 
 }
