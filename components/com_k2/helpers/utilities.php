@@ -44,7 +44,7 @@ class K2HelperUtilities
 		$string = strip_tags($string);
 
 		// Get words
-		$words = str_word_count($string, 1);
+		$words = str_word_count($string, 1, '-,?,.');
 
 		// Truncate
 		if (count($words) > $length)
