@@ -137,7 +137,7 @@ class K2Controller extends JControllerLegacy
 			K2Response::throwError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
 		}
 		$model = $this->getModel($this->resourceType);
-		$model->setState('search', $this->input->get('search'));
+		$model->setState('search', $this->input->getString('search'));
 		$model->setState('sorting', $this->input->get('sorting'));
 		$limit = $this->input->get('limit', 50);
 		$page = $this->input->get('page', 1);
