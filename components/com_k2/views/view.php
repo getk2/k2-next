@@ -641,6 +641,17 @@ class K2View extends JViewLegacy
 
 		// Get input
 		$search = trim($application->input->get('searchword', '', 'string'));
+		$categories = $application->input->get('categories', '', 'string');
+
+		if (strpos($categories, ','))
+		{
+			$categories = explode(',', $categories);
+			JArrayHelper::toInteger($categories);
+		}
+		else
+		{
+			$categories = array((int)$categories);
+		}
 
 		// Determine offset and limit based on document type
 		if ($this->type == 'html' || $this->type == 'raw')
@@ -658,6 +669,10 @@ class K2View extends JViewLegacy
 			$model = K2Model::getInstance('Items');
 			$model->setState('site', true);
 			$model->setState('search', $search);
+			if (is_array($categories) && count($categories))
+			{
+				$model->setState('category', $categories);
+			}
 			$model->setState('limit', $this->limit);
 			$model->setState('limitstart', $this->offset);
 			$this->items = $model->getRows();
