@@ -84,4 +84,10 @@ class K2Editor extends JEditor
 		}
 		
 	}
+	
+	
+	public function save($editor)
+	{
+		return parent::save($editor)." jQuery('#' + ".$editor.").val(K2Editor.getContent('".$editor."'));";
+	}
 }

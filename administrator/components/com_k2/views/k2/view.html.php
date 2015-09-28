@@ -108,7 +108,7 @@ class K2ViewK2 extends JViewLegacy
 		$K2Editor = K2Editor::getInstance($config->get('editor'));
 		$init = 'function () {'.$K2Editor->init().'}';
 		$setContent = 'function (name, content) {'.$K2Editor->setContent('REPLACE_NAME', 'REPLACE_CONTENT').'}';
-		$getContent = 'function (name) {'.$K2Editor->getContent('REPLACE_NAME').'}';
+		$getContent = 'function (name) { return '.$K2Editor->getContent('REPLACE_NAME').'}';
 		$save = 'function (name) {'.$K2Editor->save('REPLACE_NAME').'}';
 		$js = '{init : '.$init.', setContent : '.$setContent.', getContent : '.$getContent.', save : '.$save.'}';
 		$js = JString::str_ireplace("'REPLACE_NAME'", 'name', $js);
