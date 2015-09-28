@@ -177,6 +177,10 @@ class K2ModelItems extends K2Model
 		if ($this->getState('category.filter'))
 		{
 			$filter = (object)$this->getState('category.filter');
+			if (!isset($filter->recursive))
+			{
+				$filter->recursive = false;
+			}
 			if (isset($filter->enabled) && $filter->enabled)
 			{
 				$this->setState('category', $filter->categories);
