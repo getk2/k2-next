@@ -47,6 +47,9 @@ class K2ViewItem extends K2View
 		// Trigger plugins. We need to do this there in order to provide the correct context
 		$this->item->events = $this->item->getEvents('com_k2.item', $this->params, 0);
 
+		// Increase hits counter
+		$this->item->hit();
+
 		// Response
 		$response = new stdClass;
 		$response->site = new stdClass;
