@@ -804,24 +804,20 @@ class K2ModelItems extends K2Model
 		if (isset($data['tags']))
 		{
 			$model = K2Model::getInstance('Tags', 'K2Model');
-			$tags = explode(',', $data['tags']);
-			$tags = array_unique($tags);
+			$tags = json_decode($data['tags']);
 			$data['tags'] = array();
 			foreach ($tags as $tag)
 			{
-				$tag = trim($tag);
-				if ($tag)
+				$tag->name = trim($tag->text);
+				if ($tag->name)
 				{
-					if ($tagId = $model->addTag($tag))
+					if (!$tag->id)
 					{
-						$entry = new stdClass;
-						$entry->name = $tag;
-						$entry->id = $tagId;
-						$data['tags'][] = $entry;
+						$tag->id = $model->addTag($tag->name);
 					}
 				}
 			}
-			$data['tags'] = json_encode($data['tags']);
+			$data['tags'] = json_encode($tags);
 		}
 
 		// Extra fields

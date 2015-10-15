@@ -1,4 +1,5 @@
-define(['backbone', 'marionette', 'dispatcher', 'session'], function(Backbone, Marionette, K2Dispatcher, K2Session) {'use strict';
+define(['backbone', 'marionette', 'dispatcher', 'session'], function(Backbone, Marionette, K2Dispatcher, K2Session) {
+	'use strict';
 	var K2Widget = {
 
 		// Adds the widgets to the elements
@@ -9,7 +10,7 @@ define(['backbone', 'marionette', 'dispatcher', 'session'], function(Backbone, M
 			container.find('[data-widget]').each(function() {
 				self.attachWidget(jQuery(this));
 			});
-			
+
 			// Tooltips
 			var labels = container.find('label.hasTooltip');
 			labels.each(function() {
@@ -18,7 +19,7 @@ define(['backbone', 'marionette', 'dispatcher', 'session'], function(Backbone, M
 				el.removeAttr('title');
 			});
 			require(['tipr'], function() {
-     			labels.tipr();
+				labels.tipr();
 			});
 
 		},
@@ -202,7 +203,6 @@ define(['backbone', 'marionette', 'dispatcher', 'session'], function(Backbone, M
 				element.select2({
 					tags : element.val().split(','),
 					placeholder : element.data('placeholder') || l('K2_ENTER_SOME_TAGS'),
-					tokenSeparators : [','],
 					initSelection : function(element, callback) {
 						var data = [];
 						if (useIds) {
@@ -230,7 +230,7 @@ define(['backbone', 'marionette', 'dispatcher', 'session'], function(Backbone, M
 						}).length === 0) {
 							if (canCreateTag) {
 								return {
-									id : term,
+									id : 0,
 									text : term
 								};
 							} else {
@@ -274,6 +274,10 @@ define(['backbone', 'marionette', 'dispatcher', 'session'], function(Backbone, M
 							};
 						}
 					}
+				}).on('change', function(event) {
+					event.preventDefault();
+					var data = element.select2('data');
+					element.val(JSON.stringify(data));
 				});
 
 			});
@@ -352,10 +356,10 @@ define(['backbone', 'marionette', 'dispatcher', 'session'], function(Backbone, M
 		tabs : function(element) {
 			var activeIndex = 0;
 			var tabsState = K2Session.get('k2.tabs.state');
-			if(tabsState) {
+			if (tabsState) {
 				var actives = jQuery.parseJSON(tabsState);
 				activeIndex = actives.shift();
-				if(actives.length) {
+				if (actives.length) {
 					K2Session.set('k2.tabs.state', JSON.stringify(actives));
 				} else {
 					K2Session.set('k2.tabs.state', '');
@@ -399,22 +403,22 @@ define(['backbone', 'marionette', 'dispatcher', 'session'], function(Backbone, M
 				element.remove();
 			}
 		},
-		
+
 		extrafieldgroups : function(element) {
 			var select = element.find('select'), list = element.find('div[data-role="list"]'), active = element.data('value');
 			require(['select2', 'sortable'], function() {
-				if(active) {
+				if (active) {
 					active = String(active);
-					if(active.indexOf('|') === -1) {
+					if (active.indexOf('|') === -1) {
 						var init = [active];
 					} else {
 						var init = active.split('|');
 					}
 					jQuery.each(init, function(index, value) {
-						var option = select.find('option[value="'+value+'"]');
+						var option = select.find('option[value="' + value + '"]');
 						option.prop('disabled', true);
-						list.append('<div data-role="row"><span class="fa fa-reorder jw--order--handle" data-role="ordering-handle"></span><button class="jw--remove--row" data-action="remove"><i class="fa fa-ban"></i><span class="visuallyhidden">' + l('K2_REMOVE') + '</span></button><span>' + option.text() + '</span><input type="hidden" value="'+option.val()+'" name="'+select.attr('name')+'[]" /></div>');
-					});						
+						list.append('<div data-role="row"><span class="fa fa-reorder jw--order--handle" data-role="ordering-handle"></span><button class="jw--remove--row" data-action="remove"><i class="fa fa-ban"></i><span class="visuallyhidden">' + l('K2_REMOVE') + '</span></button><span>' + option.text() + '</span><input type="hidden" value="' + option.val() + '" name="' + select.attr('name') + '[]" /></div>');
+					});
 				}
 				list.sortable({
 					containerSelector : 'div[data-role="list"]',
@@ -424,16 +428,16 @@ define(['backbone', 'marionette', 'dispatcher', 'session'], function(Backbone, M
 				});
 				list.on('click', 'button[data-action="remove"]', function(event) {
 					event.preventDefault();
-					var row =  jQuery(this).parents('div[data-role="row"]');
-					select.find('option[value="'+row.find('input').val()+'"]').prop('disabled', false);
+					var row = jQuery(this).parents('div[data-role="row"]');
+					select.find('option[value="' + row.find('input').val() + '"]').prop('disabled', false);
 					row.remove();
 				});
 				select.select2({
 					placeholder : l('K2_ADD_GROUP')
 				}).on('select2-selecting', function(event) {
-					list.append('<div data-role="row"><span class="fa fa-reorder jw--order--handle" data-role="ordering-handle"></span><button class="jw--remove--row" data-action="remove"><i class="fa fa-ban"></i><span class="visuallyhidden">' + l('K2_REMOVE') + '</span></button><span>' + event.choice.text + '</span><input type="hidden" value="'+event.choice.id+'" name="'+select.attr('name')+'[]" /></div>');
+					list.append('<div data-role="row"><span class="fa fa-reorder jw--order--handle" data-role="ordering-handle"></span><button class="jw--remove--row" data-action="remove"><i class="fa fa-ban"></i><span class="visuallyhidden">' + l('K2_REMOVE') + '</span></button><span>' + event.choice.text + '</span><input type="hidden" value="' + event.choice.id + '" name="' + select.attr('name') + '[]" /></div>');
 					list.sortable('refresh');
-					select.find('option[value="'+event.choice.id+'"]').prop('disabled', true);
+					select.find('option[value="' + event.choice.id + '"]').prop('disabled', true);
 				}).on('change', function() {
 					select.select2('val', '');
 				});

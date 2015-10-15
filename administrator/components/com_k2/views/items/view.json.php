@@ -286,9 +286,12 @@ class K2ViewItems extends K2View
 		$tagsValue = array();
 		foreach ($row->tags as $tag)
 		{
-			$tagsValue[] = $tag->name;
+			$entry = new stdClass;
+			$entry->id = $tag->id;
+			$entry->text = $tag->name;
+			$tagsValue[] = $entry;
 		}
-		$row->tagsValue = implode(',', $tagsValue);
+		$row->tagsValue = json_encode($tagsValue);
 		$user = JFactory::getUser();
 		$canCreateTag = $user->authorise('k2.tags.create', 'com_k2') || $user->authorise('k2.tags.manage', 'com_k2');
 		$row->canCreateTag = $canCreateTag ? '1' : '';
