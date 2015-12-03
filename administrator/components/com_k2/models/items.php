@@ -801,7 +801,7 @@ class K2ModelItems extends K2Model
 			$data['attachments'] = json_encode(array());
 		}
 
-		if (isset($data['tags']))
+		if (isset($data['tags'])&& !empty($data['tags']))
 		{
 			$model = K2Model::getInstance('Tags', 'K2Model');
 			$tags = json_decode($data['tags']);
@@ -846,7 +846,7 @@ class K2ModelItems extends K2Model
 		}
 
 		// Tags
-		if (isset($data['tags']))
+		if (isset($data['tags']) && !empty($data['tags']))
 		{
 			$tags = json_decode($data['tags']);
 			$model = K2Model::getInstance('Tags', 'K2Model');
