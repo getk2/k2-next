@@ -158,7 +158,7 @@ class K2ModelUsers extends K2Model
 			if ($search)
 			{
 				$search = $db->escape($search, true);
-				$query->where('( LOWER('.$db->quoteName('user.name').') LIKE '.$db->Quote('%'.$search.'%', false).' 
+				$query->where('( LOWER('.$db->quoteName('user.name').') LIKE '.$db->Quote('%'.$search.'%', false).'
 				OR '.$db->quoteName('user.id').' = '.(int)$search.'
 				OR LOWER('.$db->quoteName('user.username').') LIKE '.$db->Quote('%'.$search.'%', false).'
 				OR LOWER('.$db->quoteName('user.email').') LIKE '.$db->Quote('%'.$search.'%', false).')');
@@ -689,9 +689,10 @@ class K2ModelUsers extends K2Model
 		$spammer = $this->getRow();
 
 		// Report the user to http://www.stopforumspam.com/ . We need the IP for this, so the user has to be a registered K2 user
-		if ($spammer->ip && function_exists('fsockopen') && $params->get('stopForumSpamApiKey'))
+    $stopForumSpamApiKey = trim($params->get('stopForumSpamApiKey'));
+		if ($spammer->ip && function_exists('fsockopen') && $stopForumSpamApiKey)
 		{
-			$data = "username=".$spammer->username."&ip_addr=".$ip."&email=".$spammer->email."&api_key=".$params->get('stopForumSpamApiKey');
+			$data = "username=".$spammer->username."&ip_addr=".$ip."&email=".$spammer->email."&api_key=".$stopForumSpamApiKey;
 			$pointer = fsockopen("www.stopforumspam.com", 80);
 			fputs($pointer, "POST /add.php HTTP/1.1\n");
 			fputs($pointer, "Host: www.stopforumspam.com\n");

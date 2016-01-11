@@ -29,7 +29,7 @@ class K2HelperCaptcha
 			function K2ShowRecaptcha(){
 				if(typeof(grecaptcha) != "undefined") {
 					grecaptcha.render("K2Recaptcha", {
-						"sitekey" : "'.$params->get('recaptcha_public_key').'",
+						"sitekey" : "'.trim($params->get('recaptcha_public_key')).'",
 						"theme": "'.$params->get('recaptcha_theme', 'light').'"
 					});
 					window.clearTimeout(k2TimeoutId);
@@ -67,7 +67,7 @@ class K2HelperCaptcha
 			if ($user->guest || $params->get('recaptchaForRegistered'))
 			{
 				$data = array();
-				$data['secret'] = $params->get('recaptcha_private_key');
+				$data['secret'] = trim($params->get('recaptcha_private_key'));
 				$data['remoteip'] = $_SERVER["REMOTE_ADDR"];
 				$data['response'] = $application->input->post->get('g-recaptcha-response', '', 'raw');
 
@@ -102,7 +102,7 @@ class K2HelperCaptcha
 				if ($params->get('akismetApiKey'))
 				{
 					require_once JPATH_ADMINISTRATOR.'components/com_k2/classes/akismet.class.php';
-					$akismetApiKey = $params->get('akismetApiKey');
+					$akismetApiKey = trim($params->get('akismetApiKey'));
 					$akismet = new Akismet(JURI::root(false), $akismetApiKey);
 					$akismet->setCommentAuthor($input['name']);
 					$akismet->setCommentAuthorEmail($input['email']);
