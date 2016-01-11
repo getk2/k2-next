@@ -158,10 +158,9 @@ class K2ModelUsers extends K2Model
 			if ($search)
 			{
 				$search = $db->escape($search, true);
-				$query->where('( LOWER('.$db->quoteName('user.name').') LIKE '.$db->Quote('%'.$search.'%', false).'
-				OR '.$db->quoteName('user.id').' = '.(int)$search.'
-				OR LOWER('.$db->quoteName('user.username').') LIKE '.$db->Quote('%'.$search.'%', false).'
-				OR LOWER('.$db->quoteName('user.email').') LIKE '.$db->Quote('%'.$search.'%', false).')');
+				$query->where('( LOWER('.$db->quoteName('user.name').') LIKE '.$db->Quote('%'.$search.'%', false).' OR '.$db->quoteName('user.id').' = '.(int)$search.
+        ' OR LOWER('.$db->quoteName('user.username').') LIKE '.$db->Quote('%'.$search.'%', false).
+        ' OR LOWER('.$db->quoteName('user.email').') LIKE '.$db->Quote('%'.$search.'%', false).')');
 			}
 		}
 	}
