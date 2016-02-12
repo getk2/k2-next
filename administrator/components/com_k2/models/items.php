@@ -365,7 +365,7 @@ class K2ModelItems extends K2Model
 				else
 				{
 					$search = $db->escape($search, true);
-					$query->where('('.$db->quoteName('item.title').' LIKE '.$db->Quote('%'.$search.'%', false).' 
+					$query->where('('.$db->quoteName('item.title').' LIKE '.$db->Quote('%'.$search.'%', false).'
 					OR '.$db->quoteName('item.id').' = '.(int)$search.'
 					OR '.$db->quoteName('item.introtext').' LIKE '.$db->Quote('%'.$search.'%', false).'
 					OR '.$db->quoteName('item.fulltext').' LIKE '.$db->Quote('%'.$search.'%', false).')');
@@ -1302,4 +1302,32 @@ class K2ModelItems extends K2Model
 		return $rows;
 	}
 
+	public function getCalendar()
+	{
+		// Get database
+		$db = $this->getDBO();
+
+		// Get query
+		$query = $db->getQuery(true);
+
+		// Select statement
+		$query->select('COUNT(*) AS '.$db->quoteName('counter'));
+		$query->select('DAY('.$db->quoteName('item.created').') AS '.$db->quoteName('day'));
+		$query->from($db->quoteName('#__k2_items', 'item'));
+
+		// Set query conditions
+		$this->setQueryConditions($query);
+
+		$query->group($db->quoteName('day'));
+
+		// Set the query
+		$db->setQuery($query);
+
+		// Get the result
+		$result = $db->loadObjectList();
+
+		return $result;
+
+
+	}
 }
