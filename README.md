@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/getk2/k2-v3-dev-build.png?label=ready&title=Ready)](https://waffle.io/getk2/k2-v3-dev-build)
 K2 v3 Development Build
 ===============
 
