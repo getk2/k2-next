@@ -32,7 +32,9 @@ class K2ViewMigrate extends JViewLegacy
 		// Load the CSS
 		$document->addStyleSheet('//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css?v=3.0.0');
 		$document->addStyleSheet(JURI::root(true).'/media/k2app/assets/css/k2.css?v=3.0.0');
-
+		
+		$session = JFactory::getSession();
+		$session->clear('k2.upgrade');
 		// Display
 		parent::display($tpl);
 
