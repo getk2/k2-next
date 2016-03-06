@@ -28,6 +28,14 @@ if ($user->authorise('core.manage', 'com_k2'))
 	{
 		$popularItems = ModK2StatsHelper::getPopularItems();
 	}
+	if ($params->get('latestPublished', 1))
+	{
+		$latestPublishedItems = ModK2StatsHelper::getLatestPublished();
+	}
+	if ($params->get('latestModified', 1))
+	{
+		$latestModifiedItems = ModK2StatsHelper::getLatestModified();
+	}
 	if ($params->get('mostCommentedItems', 1))
 	{
 		$mostCommentedItems = ModK2StatsHelper::getMostCommentedItems();

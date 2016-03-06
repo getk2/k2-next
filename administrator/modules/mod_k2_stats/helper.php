@@ -34,6 +34,24 @@ class ModK2StatsHelper
 		return $rows;
 	}
 
+	public static function getLatestPublished()
+	{
+		$model = K2Model::getInstance('Items');
+		$model->setState('sorting', 'publishUp.reverse');
+		$model->setState('limit', 10);
+		$rows = $model->getRows();
+		return $rows;
+	}
+	
+	public static function getLatestModified()
+	{
+		$model = K2Model::getInstance('Items');
+		$model->setState('sorting', 'modified.reverse');
+		$model->setState('limit', 10);
+		$rows = $model->getRows();
+		return $rows;
+	}
+	
 	public static function getMostCommentedItems()
 	{
 		$model = K2Model::getInstance('Items');

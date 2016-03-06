@@ -83,6 +83,60 @@ $document->addStyleDeclaration('
 </table>
 <?php endif; ?>
 
+<?php if($params->get('latestPublished', 1)): ?>
+<?php echo JHtml::_('tabs.panel', JText::_('K2_LATEST_PUBLISHED'), 'latestPublishedTab'); ?>
+<!--[if lte IE 7]>
+<br class="ie7fix" />
+<![endif]-->
+<table class="adminlist table table-striped">
+	<thead>
+		<tr>
+			<td class="title"><?php echo JText::_('K2_TITLE'); ?></td>
+			<td class="title"><?php echo JText::_('K2_HITS'); ?></td>
+			<td class="title"><?php echo JText::_('K2_PUBLISHED'); ?></td>
+			<td class="title"><?php echo JText::_('K2_AUTHOR'); ?></td>
+		</tr>
+	</thead>
+	<tbody>
+		<?php foreach($latestPublishedItems as $item): ?>
+		<tr>
+			<td><a href="<?php echo JRoute::_('index.php?option=com_k2#items/edit/'.$item->id); ?>"><?php echo $item->title; ?></a></td>
+			<td><?php echo $item->hits; ?></td>
+			<td><?php echo JHTML::_('date', $item->publish_up , JText::_('K2_DATE_FORMAT')); ?></td>
+			<td><?php echo $item->author->name; ?></td>
+		</tr>
+		<?php endforeach; ?>
+	</tbody>
+</table>
+<?php endif; ?>
+
+<?php if($params->get('latestModifiedItems', 1)): ?>
+<?php echo JHtml::_('tabs.panel', JText::_('K2_LATEST_MODIFIED'), 'latestModifiedTab'); ?>
+<!--[if lte IE 7]>
+<br class="ie7fix" />
+<![endif]-->
+<table class="adminlist table table-striped">
+	<thead>
+		<tr>
+			<td class="title"><?php echo JText::_('K2_TITLE'); ?></td>
+			<td class="title"><?php echo JText::_('K2_HITS'); ?></td>
+			<td class="title"><?php echo JText::_('K2_MODIFIED'); ?></td>
+			<td class="title"><?php echo JText::_('K2_AUTHOR'); ?></td>
+		</tr>
+	</thead>
+	<tbody>
+		<?php foreach($latestModifiedItems as $item): ?>
+		<tr>
+			<td><a href="<?php echo JRoute::_('index.php?option=com_k2#items/edit/'.$item->id); ?>"><?php echo $item->title; ?></a></td>
+			<td><?php echo $item->hits; ?></td>
+			<td><?php echo JHTML::_('date', $item->modified , JText::_('K2_DATE_FORMAT')); ?></td>
+			<td><?php echo $item->author->name; ?></td>
+		</tr>
+		<?php endforeach; ?>
+	</tbody>
+</table>
+<?php endif; ?>
+
 <?php if($params->get('mostCommentedItems', 1)): ?>
 <?php echo JHtml::_('tabs.panel', JText::_('K2_MOST_COMMENTED_ITEMS'), 'mostCommentedItemsTab'); ?>
 <!--[if lte IE 7]>
