@@ -197,7 +197,12 @@ class K2HelperHTML
 	
 	public static function k2ExtraFieldsGroups($name = 'extra_fields_group', $field, $value = null, $none = false)
 	{
-		return '<div data-widget="'.$name.'" data-value="'.implode ('|',$value).'">'.K2HelperHTML::extraFieldsGroups($field, $value, $none, array('data-role' => 'extra-field-groups-selector'), 'item').'<div data-role="list"></div></div>';
+		if(is_array($value)){
+			$dataValue = ' data-value="'.implode ('|',$value).'"';
+		}else{
+			$dataValue = ' data-value=""';
+		}
+		return '<div data-widget="'.$name.'"'.$dataValue.'>'.K2HelperHTML::extraFieldsGroups($field, $value, $none, array('data-role' => 'extra-field-groups-selector'), 'item').'<div data-role="list"></div></div>';
 	}
 
 	public static function extraFieldsScopes($name = 'scope', $value = null, $attributes = '', $none = false)
