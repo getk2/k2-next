@@ -159,29 +159,31 @@ jQuery(document).ready(function() {
 
 	// Inline editing. Don't use Backbone, we can do it with a few lines of js
 	var elements = jQuery('[data-k2-editable]');
-	elements.prop('contenteditable', true);
-	if (elements.length > 0) {
-		CKEDITOR.disableAutoInline = true;
-		CKEDITOR.config.allowedContent = true;
-	}
 	elements.each(function() {
-		if (jQuery(this).data('k2-editable') != 'title') {
-			CKEDITOR.inline(this);
+		jQuery(this).prop('contenteditable', true);
+
+		if (jQuery(this).length > 0) {
+			CKEDITOR.disableAutoInline = true;
+			CKEDITOR.config.allowedContent = true;
 		}
-	});
-	jQuery('[data-k2-editable]').blur(function(event) {
-		var el = jQuery(this);
-		var property = el.data('k2-editable');
-		var id = el.data('k2-item');
-		var data = {};
-		data['id'] = id;
-		data['_method'] = 'PATCH';
-		data['states[' + property + ']'] = el.html();
-		data[K2SessionToken] = 1;
-		jQuery.post(K2SitePath + '/index.php?option=com_k2&task=items.sync&format=json', data).done(function() {
-			// @TODO : Inform user that save was succesful
-		}).fail(function(response) {
-			alert(response.responseText);
+
+//		if (jQuery(this).data('k2-editable') != 'title') {
+//			CKEDITOR.inline(this);
+//		}
+		jQuery(this).blur(function(event) {
+			var el = jQuery(this);
+			var property = el.data('k2-editable');
+			var id = el.data('k2-item');
+			var data = {};
+			data['id'] = id;
+			data['_method'] = 'PATCH';
+			data['states[' + property + ']'] = el.html();
+			data[K2SessionToken] = 1;
+			jQuery.post(K2SitePath + '/index.php?option=com_k2&task=items.sync&format=json', data).done(function() {
+				// @TODO : Inform user that save was succesful
+			}).fail(function(response) {
+				alert(response.responseText);
+			});
 		});
 	});
 

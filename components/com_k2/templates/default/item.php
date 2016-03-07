@@ -221,19 +221,19 @@ defined('_JEXEC') or die;
 	  <?php if($this->item->params->get('itemIntroText')): ?>
 	  <!-- Item introtext -->
 	  <div class="itemIntroText">
-	  	<?php echo $this->item->introtext; ?>
+	  	<span<?php if($this->item->canEdit && !$this->print): ?> data-k2-editable="introtext" data-k2-item="<?php echo $this->item->id; ?>" <?php endif; ?>><?php echo $this->item->introtext; ?></span>
 	  </div>
 	  <?php endif; ?>
 	  <?php if($this->item->params->get('itemFullText')): ?>
 	  <!-- Item fulltext -->
 	  <div class="itemFullText">
-	  	<?php echo $this->item->fulltext; ?>
+	   	<span<?php if($this->item->canEdit && !$this->print): ?> data-k2-editable="fulltext" data-k2-item="<?php echo $this->item->id; ?>" <?php endif; ?>><?php echo $this->item->fulltext; ?></span>
 	  </div>
 	  <?php endif; ?>
 	  <?php else: ?>
 	  <!-- Item text -->
 	  <div class="itemFullText">
-	  	<?php echo $this->item->introtext; ?>
+	   	<span<?php if($this->item->canEdit && !$this->print): ?> data-k2-editable="introtext" data-k2-item="<?php echo $this->item->id; ?>" <?php endif; ?>><?php echo $this->item->introtext; ?></span>
 	  </div>
 	  <?php endif; ?>
 
