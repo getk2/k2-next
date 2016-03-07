@@ -156,9 +156,25 @@ jQuery(document).ready(function() {
 			parentElement.find('.k2LiveSearchResults').css('display', 'none').empty();
 		}
 	});
-
+	
 	// Inline editing. Don't use Backbone, we can do it with a few lines of js
+	function syncEdits(el){
+		var property = el.data('k2-editable');
+		var id = el.data('k2-item');
+		var data = {};
+		data['id'] = id;
+		data['_method'] = 'PATCH';
+		data['states[' + property + ']'] = el.html();
+		data[K2SessionToken] = 1;
+		jQuery.post(K2SitePath + '/index.php?option=com_k2&task=items.sync&format=json', data).done(function() {
+			// @TODO : Inform user that save was succesful
+		}).fail(function(response) {
+			alert(response.responseText);
+		});
+	}
+	
 	var elements = jQuery('[data-k2-editable]');
+	
 	elements.each(function() {
 		jQuery(this).prop('contenteditable', true);
 
@@ -166,27 +182,26 @@ jQuery(document).ready(function() {
 			CKEDITOR.disableAutoInline = true;
 			CKEDITOR.config.allowedContent = true;
 		}
-
-//		if (jQuery(this).data('k2-editable') != 'title') {
-//			CKEDITOR.inline(this);
-//		}
 		jQuery(this).blur(function(event) {
-			var el = jQuery(this);
-			var property = el.data('k2-editable');
-			var id = el.data('k2-item');
-			var data = {};
-			data['id'] = id;
-			data['_method'] = 'PATCH';
-			data['states[' + property + ']'] = el.html();
-			data[K2SessionToken] = 1;
-			jQuery.post(K2SitePath + '/index.php?option=com_k2&task=items.sync&format=json', data).done(function() {
-				// @TODO : Inform user that save was succesful
-			}).fail(function(response) {
-				alert(response.responseText);
-			});
+			if(jQuery('#k2InlineEditControls #auto-save').hasClass('active')){
+				var el = jQuery(this);
+				syncEdits(el);
+			}
 		});
 	});
 
+	// Setup Inline editing controls
+	jQuery('#k2InlineEditControls #auto-save').click(function(event){
+		var el = jQuery(this);
+		el.toggleClass('active');
+	});
+	jQuery('#k2InlineEditControls #save').click(function(event){
+		elements.each(function() {
+			var el = jQuery(this);
+			syncEdits(el);
+		});
+	});
+	
 	// Comments application
 	var K2CommentsWidget = jQuery('div[data-widget="k2comments"]');
 	var K2CommentsItemId = K2CommentsWidget.data('itemid');

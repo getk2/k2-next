@@ -1023,7 +1023,30 @@ table.calendar tr td.calendarTodayLinked a:hover {display:block;background:#BFD9
 #k2UserToolbar {background:#000;position:fixed;top:0;left:0;right:0;z-index:9998;opacity:0.8;margin:0;padding:0;border:0;}
 	#k2UserToolbarInnerContainer {width:80%;margin:0 auto;padding:4px 40px;border:0;}
 	#k2UserToolbarInnerContainer img {height:24px;width:auto;}
-
+	#k2UserToolbar #k2InlineEditControls {
+		display:inline;
+	}
+	#k2UserToolbar #k2InlineEditControls #auto-save.btn {
+		background-image: -webkit-gradient(linear,0 0,0 100%,from(#c20),to(#cc1100));
+		background-image: -webkit-linear-gradient(top,#c20,#cc1100);
+		background-image: linear-gradient(to bottom,#c20,#cc1100);
+		border-color: #cc1100 #cc1100 #800a00;
+		background-color: #cc1100;
+	}
+	#k2UserToolbar #k2InlineEditControls #auto-save.btn:hover {
+	    background-color: #cc1100;
+	}
+	#k2UserToolbar #k2InlineEditControls #auto-save.btn.active {
+		background-image: -webkit-gradient(linear,0 0,0 100%,from(#2c0),to(#11cc00));
+		background-image: -webkit-linear-gradient(top,#2c0,#11cc00);
+		background-image: linear-gradient(to bottom,#2c0,#11cc00);
+		border-color: #11cc00 #11cc00 #0a8000;
+		background-color: #11cc00;
+	}
+	#k2UserToolbar #k2InlineEditControls #auto-save.btn.active:hover {
+	    background-color: #11cc00;
+	}
+	
 /* The modal */
 #k2AdminModalContainer {position:fixed;z-index:9999;top:0;left:0;right:0;bottom:0;background:rgba(0, 0, 0, 0.8);padding:0;margin:0;}
 	#k2AdminModal {margin:0;padding:40px;}

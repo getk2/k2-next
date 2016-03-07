@@ -21,5 +21,9 @@ defined('_JEXEC') or die;
 		<a data-role="k2-admin-link" href="<?php echo JURI::root(true); ?>/index.php?option=com_k2&amp;view=admin">
 			<?php echo JText::_('K2_MANAGE_YOUR_CONTENT'); ?>
 		</a>
+		<div id="k2InlineEditControls">
+			<input id="auto-save" type="submit" name="toggleAutoSave" class="btn btn-primary" value="<?php echo JText::_('K2_AUTO_SAVE'); ?>">
+			<input id="save" type="submit" name="Save" class="btn btn-primary" value="<?php echo JText::_('K2_SAVE'); ?>">
+		</div>
 	</div>
 </div>
