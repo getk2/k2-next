@@ -75,6 +75,7 @@ jQuery(document).ready(function() {
 
 	// Maginific popup
 	if ( typeof (jQuery.magnificPopup) !== 'undefined') {
+		// Images
 		jQuery('.k2Modal').magnificPopup({
 			type : 'image'
 		});
@@ -82,7 +83,7 @@ jQuery(document).ready(function() {
 
 	// K2 toolbar
 	var isK2ModalOpen = false;
-	jQuery('[data-role="k2-admin-link"], .itemEditLink a, .catItemAddLink a').click(function(event) {
+	jQuery('[data-role="k2-admin-link"], .itemEditLink a, .catItemAddLink a, .catItemAddLink a, .userItemEditLink a').click(function(event) {
 		event.preventDefault();
 		if (!isK2ModalOpen) {
 			var src = jQuery(this).attr('href');
@@ -156,7 +157,7 @@ jQuery(document).ready(function() {
 			parentElement.find('.k2LiveSearchResults').css('display', 'none').empty();
 		}
 	});
-	
+
 	// Inline editing. Don't use Backbone, we can do it with a few lines of js
 	function syncEdits(el){
 		var property = el.data('k2-editable');
@@ -172,9 +173,9 @@ jQuery(document).ready(function() {
 			alert(response.responseText);
 		});
 	}
-	
+
 	var elements = jQuery('[data-k2-editable]');
-	
+
 	elements.each(function() {
 		jQuery(this).prop('contenteditable', true);
 
@@ -201,7 +202,7 @@ jQuery(document).ready(function() {
 			syncEdits(el);
 		});
 	});
-	
+
 	// Comments application
 	var K2CommentsWidget = jQuery('div[data-widget="k2comments"]');
 	var K2CommentsItemId = K2CommentsWidget.data('itemid');
@@ -484,4 +485,3 @@ jQuery(document).ready(function() {
 		K2Comments.start();
 	}
 });
-

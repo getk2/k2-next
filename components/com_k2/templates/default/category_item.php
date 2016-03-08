@@ -38,7 +38,7 @@ K2HelperUtilities::setDefaultImage($this->item, 'itemlist', $this->params);
 			<?php if(isset($this->item->editLink)): ?>
 			<!-- Item edit link -->
 			<span class="catItemEditLink">
-				<a class="k2Modal" href="<?php echo $this->item->editLink; ?>">
+				<a href="<?php echo $this->item->editLink; ?>">
 					<?php echo JText::_('K2_EDIT_ITEM'); ?>
 				</a>
 			</span>

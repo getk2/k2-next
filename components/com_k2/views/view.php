@@ -46,6 +46,14 @@ class K2View extends JViewLegacy
 		// Set view type
 		$this->type = $document->getType();
 
+		// Load K2 modal if required
+		if(!$this->user->guest || $application->input->getCmd('view') == 'item')
+		{
+			// Load the magnific popup dependencies
+			$document->addScript(JURI::root(true).'/media/k2app/vendor/magnific/jquery.magnific-popup.min.js');
+			$document->addStyleSheet(JURI::root(true).'/media/k2app/vendor/magnific/magnific-popup.css');
+		}
+
 		// Add template paths
 		$template = $application->getTemplate();
 		$this->addTemplatePath(JPATH_SITE.'/components/com_k2/templates/default');
@@ -482,14 +490,14 @@ class K2View extends JViewLegacy
 		}elseif ($catFeaturedItems == 2) {
 			$model->setState('featured', 1);
 		}
-		
+
 		// Set ordering state
 		if($id) {
 			$model->setState('sorting', $this->params->get('singleCatOrdering', 'id'));
 		}else{
 			$model->setState('sorting', $this->params->get('catOrdering', 'id'));
 		}
-		
+
 		// Get items
 		$model->setState('limit', $this->limit);
 		$model->setState('limitstart', $this->offset);
@@ -511,7 +519,7 @@ class K2View extends JViewLegacy
 		// Get input
 		$id = $application->input->get('id', 0, 'int');
 		$params = JComponentHelper::getParams('com_k2');
-		
+
 		// Determine offset and limit based on document type
 		if ($this->type == 'html' || $this->type == 'raw')
 		{
@@ -554,7 +562,7 @@ class K2View extends JViewLegacy
 		// Get input
 		$id = $application->input->get('id', 0, 'int');
 		$params = JComponentHelper::getParams('com_k2');
-		
+
 		// Determine offset and limit based on document type
 		if ($this->type == 'html' || $this->type == 'raw')
 		{
@@ -611,9 +619,9 @@ class K2View extends JViewLegacy
 		}
 		$this->date = JFactory::getDate($dateValue);
 		$this->date->title = JText::_('K2_ITEMS_FILTERED_BY_DATE').' '.$this->date->format($dateFormat);
-		
+
 		$params = JComponentHelper::getParams('com_k2');
-		
+
 		// Determine offset and limit based on document type
 		if ($this->type == 'html' || $this->type == 'raw')
 		{
@@ -663,7 +671,7 @@ class K2View extends JViewLegacy
 		}
 
 		$params = JComponentHelper::getParams('com_k2');
-		
+
 		// Determine offset and limit based on document type
 		if ($this->type == 'html' || $this->type == 'raw')
 		{

@@ -46,11 +46,6 @@ class K2ViewItem extends K2View
 		// Trigger plugins. We need to do this there in order to provide the correct context
 		$this->item->events = $this->item->getEvents('com_k2.item', $this->params, 0);
 
-		// Load the magnific popup dependencies
-		$this->document->addScript(JURI::root(true).'/media/k2app/vendor/magnific/jquery.magnific-popup.min.js');
-		$this->document->addStyleSheet(JURI::root(true).'/media/k2app/vendor/magnific/magnific-popup.css');
-
-
 		// Load head data for comments and inline editing if required
 		if (($this->item->canEdit) || ($this->params->get('itemComments') && $this->params->get('comments') && empty($this->item->events->K2CommentsCounter) && empty($this->item->events->K2CommentsBlock)))
 		{

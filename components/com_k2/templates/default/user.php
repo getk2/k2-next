@@ -114,7 +114,7 @@ $user = JFactory::getUser();
 					<?php if(isset($item->editLink)): ?>
 					<!-- Item edit link -->
 					<span class="userItemEditLink">
-						<a class="k2Modal" href="<?php echo $item->editLink; ?>">
+						<a href="<?php echo $item->editLink; ?>">
 							<?php echo JText::_('K2_EDIT_ITEM'); ?>
 						</a>
 					</span>
