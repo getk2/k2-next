@@ -83,7 +83,7 @@ jQuery(document).ready(function() {
 
 	// K2 toolbar
 	var isK2ModalOpen = false;
-	jQuery('[data-role="k2-admin-link"], .itemEditLink a, .catItemAddLink a, .catItemAddLink a, .userItemEditLink a').click(function(event) {
+	jQuery('[data-role="k2-admin-link"], .itemEditLink a, .catItemAddLink a, .catItemEditLink a, .userItemEditLink a').click(function(event) {
 		event.preventDefault();
 		if (!isK2ModalOpen) {
 			var src = jQuery(this).attr('href');
