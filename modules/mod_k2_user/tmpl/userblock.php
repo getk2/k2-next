@@ -32,7 +32,7 @@ defined('_JEXEC') or die ;
   <ul class="k2UserBlockActions">
 		<?php if($user->canAdd): ?>
 		<li>
-			<a class="modal" rel="{handler:'iframe',size:{x:990,y:550}}" href="<?php echo $user->addLink; ?>"><?php echo JText::_('K2_ADD_NEW_ITEM'); ?></a>
+			<a class="k2Modal" href="<?php echo $user->addLink; ?>"><?php echo JText::_('K2_ADD_NEW_ITEM'); ?></a>
 		</li>
 		<?php endif; ?>
 		<li>
@@ -47,7 +47,7 @@ defined('_JEXEC') or die ;
 		</li>
 		<?php endif; ?>
 	</ul>
-	
+
 	<ul class="k2UserBlockRenderedMenu">
 		<?php $level = 1; foreach($logout->menu as $key => $link): $level++; ?>
 		<li class="linkItemId<?php echo $link->id; ?>">
@@ -58,15 +58,15 @@ defined('_JEXEC') or die ;
 			<?php else: ?>
 			<a href="<?php echo $link->route; ?>"<?php if($link->browserNav==1) echo ' target="_blank"'; ?>><?php echo $link->name; ?></a>
 			<?php endif; ?>
-	
+
 			<?php if(isset($logout->menu[$key+1]) && $logout->menu[$key]->level < $logout->menu[$key+1]->level): ?>
 			<ul>
 			<?php endif; ?>
-	
+
 			<?php if(isset($logout->menu[$key+1]) && $logout->menu[$key]->level > $logout->menu[$key+1]->level): ?>
 			<?php echo str_repeat('</li></ul>', $logout->menu[$key]->level - $logout->menu[$key+1]->level); ?>
 			<?php endif; ?>
-	
+
 		<?php if(isset($logout->menu[$key+1]) && $logout->menu[$key]->level == $logout->menu[$key+1]->level): ?>
 		</li>
 		<?php endif; ?>
