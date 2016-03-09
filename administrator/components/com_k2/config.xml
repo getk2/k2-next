@@ -742,34 +742,11 @@
 	<!-- ################################################################## -->
 	<fieldset name="COM_K2_FRONTEND_EDITING_OPTIONS" label="K2_FRONTEND_EDITING" addfieldpath="/administrator/components/com_k2/fields">
 		<!-- ######################### Frontend Editing ######################### -->
-		<field menu="hide" name="frontendEditing" type="radio" default="1" label="K2_ENABLE_FRONTEND_EDITING_DISABLED_ALWAYS_IF_JOOMFISH_IS_INSTALLED_AND_ENABLED" description="">
+		<field menu="hide" name="inlineEditing" type="radio" default="0" label="K2_ENABLE_INLINE_EDITING" description="">
 			<option value="0">K2_NO</option>
 			<option value="1">K2_YES</option>
 		</field>
-		<field menu="hide" name="showImageTab" type="radio" default="1" label="K2_IMAGE_TAB_ON_EDIT_FORM" description="">
-			<option value="0">K2_HIDE</option>
-			<option value="1">K2_SHOW</option>
-		</field>
-		<field menu="hide" name="showImageGalleryTab" type="radio" default="1" label="K2_IMAGE_GALLERY_TAB_ON_EDIT_FORM" description="">
-			<option value="0">K2_HIDE</option>
-			<option value="1">K2_SHOW</option>
-		</field>
-		<field menu="hide" name="showVideoTab" type="radio" default="1" label="K2_MEDIA_TAB_ON_EDIT_FORM" description="">
-			<option value="0">K2_HIDE</option>
-			<option value="1">K2_SHOW</option>
-		</field>
-		<field menu="hide" name="showExtraFieldsTab" type="radio" default="1" label="K2_EXTRA_FIELDS_TAB_ON_EDIT_FORM" description="">
-			<option value="0">K2_HIDE</option>
-			<option value="1">K2_SHOW</option>
-		</field>
-		<field menu="hide" name="showAttachmentsTab" type="radio" default="1" label="K2_ATTACHMENTS_TAB_ON_EDIT_FORM" description="">
-			<option value="0">K2_HIDE</option>
-			<option value="1">K2_SHOW</option>
-		</field>
-		<field menu="hide" name="showK2Plugins" type="radio" default="1" label="K2_PLUGIN_FIELDS_ON_EDIT_FORM" description="">
-			<option value="0">K2_HIDE</option>
-			<option value="1">K2_SHOW</option>
-		</field>
+	
 	</fieldset>
 	
 	<!-- ################################################################## -->

@@ -158,50 +158,60 @@ jQuery(document).ready(function() {
 		}
 	});
 
-	// Inline editing. Don't use Backbone, we can do it with a few lines of js
-	function syncEdits(el){
-		var property = el.data('k2-editable');
-		var id = el.data('k2-item');
-		var data = {};
-		data['id'] = id;
-		data['_method'] = 'PATCH';
-		data['states[' + property + ']'] = el.html();
-		data[K2SessionToken] = 1;
-		jQuery.post(K2SitePath + '/index.php?option=com_k2&task=items.sync&format=json', data).done(function() {
-			// @TODO : Inform user that save was succesful
-		}).fail(function(response) {
-			alert(response.responseText);
-		});
-	}
-
-	var elements = jQuery('[data-k2-editable]');
-
-	elements.each(function() {
-		jQuery(this).prop('contenteditable', true);
-
-		if (jQuery(this).length > 0) {
-			CKEDITOR.disableAutoInline = true;
-			CKEDITOR.config.allowedContent = true;
+	if(jQuery('#k2InlineEditControls')){
+		
+		// Inline editing. Don't use Backbone, we can do it with a few lines of js
+		function syncEdits(el){
+			if(el.data('old-data') == el.text()){
+				// No changes -> nothing to be updated
+				return;
+			}
+			var property = el.data('k2-editable');
+			var id = el.data('k2-item');
+			var data = {};
+			data['id'] = id;
+			data['_method'] = 'PATCH';
+			data['states[' + property + ']'] = el.html();
+			data[K2SessionToken] = 1;
+			jQuery.post(K2SitePath + '/index.php?option=com_k2&task=items.sync&format=json', data).done(function() {
+				// @TODO : Inform user that save was succesful
+			}).fail(function(response) {
+				alert(response.responseText);
+			});
 		}
-		jQuery(this).blur(function(event) {
-			if(jQuery('#k2InlineEditControls #auto-save').hasClass('active')){
-				var el = jQuery(this);
-				syncEdits(el);
+	
+		var elements = jQuery('[data-k2-editable]');
+		
+		// Hide buttons if we have nothing to edit on this page
+		if (elements.length == 0){
+			jQuery('#k2InlineEditControls #cancel').toggleClass('hide');
+			jQuery('#k2InlineEditControls #save').toggleClass('hide');
+		}
+		
+		elements.each(function() {
+			el = jQuery(this);
+			el.prop('contenteditable', true);
+			
+			if (el.length > 0) {
+				CKEDITOR.disableAutoInline = true;
+				CKEDITOR.config.allowedContent = true;
+				
+				el.data('old-data',el.text());
 			}
 		});
-	});
-
-	// Setup Inline editing controls
-	jQuery('#k2InlineEditControls #auto-save').click(function(event){
-		var el = jQuery(this);
-		el.toggleClass('active');
-	});
-	jQuery('#k2InlineEditControls #save').click(function(event){
-		elements.each(function() {
-			var el = jQuery(this);
-			syncEdits(el);
+	
+		// Setup Inline editing controls
+		jQuery('#k2InlineEditControls #save').click(function(event){
+			elements.each(function() {
+				var el = jQuery(this);
+				syncEdits(el);
+			});
+			location.reload();
 		});
-	});
+		jQuery('#k2InlineEditControls #cancel').click(function(event){
+			location.reload();
+		});
+	}
 
 	// Comments application
 	var K2CommentsWidget = jQuery('div[data-widget="k2comments"]');
