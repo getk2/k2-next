@@ -383,6 +383,7 @@
 			<field name="keywords" type="textarea" label="K2_KEYWORDS"/>
 			<field name="robots" type="text" label="K2_ROBOTS"/>
 			<field name="author" type="text" label="K2_AUTHOR"/>
+			<field name="title" type="text" label="K2_TITLE"/>
 		</fieldset>
 	</fields>
 </form>

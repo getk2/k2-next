@@ -203,7 +203,13 @@ class K2View extends JViewLegacy
 		{
 			// Detect title
 			$title = isset($resource->title) ? $resource->title : $resource->name;
-
+			
+			if (isset($resource->metadata) && $metadata = $resource->metadata) {
+				if ($metadata->get('title')){
+					$title = $metadata->get('title');
+				}
+			}
+						
 			// Set the browser title according to the settings
 			$this->setTitle($title);
 
@@ -235,6 +241,10 @@ class K2View extends JViewLegacy
 			if ($metadata->get('author'))
 			{
 				$this->document->setMetadata('author', $metadata->get('author'));
+			}
+			if ($metadata->get('title'))
+			{
+				$this->document->setMetadata('title', $metadata->get('title'));
 			}
 		}
 
