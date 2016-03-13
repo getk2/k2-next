@@ -69,29 +69,28 @@ define(['backbone', 'marionette', 'dispatcher', 'session'], function(Backbone, M
 		},
 
 		datepicker : function(element) {
-			require(['pickadate'], function() {
-				require(['pickadateDate', 'css!pickadateTheme', 'css!pickadateDateStyle'], function(Picker) {
-					element.pickadate({
-						format : element.data('format') || 'yyyy-mm-dd',
-						selectMonths: true,
-						selectYears: true
+			require(['datetimepicker', 'css!datetimepickerStyle','css!datetimepickerStyleStandalone', 
+			         'datetimepickerLocale', 'moment', 'collapse', 'transition'], function() {
+					jQuery(element).wrap('<div class="form-group date-time-picker"></div">').wrap('<div class="input-group date"></div>');
+					jQuery(element).addClass('form-control').after('<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>');
+					jQuery(element).parent().datetimepicker({
+						format: 'YYYY-MM-DD',
+						locale: K2DateTimePickerLanguage
 					});
-				});
 			});
-
 		},
 
 		timepicker : function(element) {
-			require(['pickadate'], function() {
-				require(['pickadateTime', 'css!pickadateTheme', 'css!pickadateTimeStyle'], function(Picker) {
-					element.pickatime({
-						format : element.data('format') || 'HH:i',
-						interval : 30
+			require(['datetimepicker', 'css!datetimepickerStyle','css!datetimepickerStyleStandalone', 
+			         'moment', 'collapse', 'transition'], function() {
+					jQuery(element).wrap('<div class="form-group date-time-picker"></div">').wrap('<div class="input-group date"></div>');
+					jQuery(element).addClass('form-control').after('<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span></span>');
+					jQuery(element).parent().datetimepicker({
+						format: 'LT'
 					});
-				});
 			});
-
 		},
+
 		user : function(element) {
 			require(['select2'], function() {
 				var userId = element.val();

@@ -141,13 +141,13 @@
 
 				</div>
 
-				<div class="jw--item--row">
+				<div class="jw--item--row jw--item--row--datepicker">
 
 					<div class="left jw--item--row__single">
 						<div class="left text-right jw--item--lbl">
 							<label for="createdDate"><%= l('K2_CREATED_DATE') %></label>
 						</div>
-						<div class="ov-hidden jw--item--fld">
+						<div class="jw--item--fld">
 							<input id="createdDate" data-widget="datepicker" type="text" name="createdDate" value="<%- row.createdDate %>" />
 						</div>
 					</div>
@@ -156,7 +156,7 @@
 						<div class="left text-right jw--item--lbl">
 							<label for="createdTime"><%= l('K2_CREATED_TIME') %></label>
 						</div>
-						<div class="ov-hidden jw--item--fld">
+						<div class="jw--item--fld">
 							<input id="createdTime" data-widget="timepicker" type="text" name="createdTime" value="<%- row.createdTime %>" />
 						</div>
 					</div>

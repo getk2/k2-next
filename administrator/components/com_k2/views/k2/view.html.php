@@ -74,11 +74,11 @@ class K2ViewK2 extends JViewLegacy
 			var K2Editor = '.$this->getEditor().';
 			var K2SitePath = "'.JURI::root(true).'";
 			var K2BasePath = "'.JURI::base(true).'";
+		 	var K2DateTimePickerLanguage = "'.$this->getDateTimePickerLanguage().'";
 			var K2MediaManagerLanguage = "'.$this->getMediaManagerLanguage().'";
 			var K2Language = '.$this->getLanguage().';
 			/* K2 v3.0.0 - FINISH */
 		');
-
 		// Add DropBox drop-in
 		$params = JComponentHelper::getParams('com_k2');
 		if ($dropBoxAppKey = $params->get('dropboxAppKey'))
@@ -153,5 +153,32 @@ class K2ViewK2 extends JViewLegacy
 		}
 		return $tag;
 	}
-
+	
+	protected function getDateTimePickerLanguage()
+	{
+		// set language tag for http://momentjs.com/ supported date/time pickers
+		$validLanguages = array('af','ar-ma','ar-sa','ar-tn','ar','az','be','bg','bn',
+				'bo', 'br', 'bs', 'ca', 'cs', 'cv', 'cy', 'da', 'de-at', 'de', 'dv',
+				'el', 'en-au', 'en-ca', 'en-gb', 'en-ie', 'en-nz', 'eo', 'es', 'et',
+				'eu', 'fa', 'fl', 'fo', 'fr-ca', 'fr-ch', 'fr', 'fy', 'gd', 'gl', 'he',
+				'hl', 'hi', 'hr', 'hu', 'hy-am', 'id', 'is', 'it', 'ja', 'jv', 'ka',
+				'kk', 'km', 'ko', 'lb', 'lo','lt', 'lv', 'me', 'mk', 'ml', 'mr', 
+				'ms-my', 'ms', 'my', 'nb', 'ne', 'nl', 'nn', 'pa-in', 'pl', 'pt-br',
+				'pt', 'ro', 'ru', 'se', 'si', 'sk', 'sl', 'sq', 'sr-cyrl', 'sr',
+				'sv', 'sw', 'ta', 'th', 'tl-ph', 'tlh', 'tr', 'tzl', 'tzm', 'uk',
+				'uz', 'vj', 'zh-cn', 'zh-tw'
+		);
+		$language = JFactory::getLanguage();
+		$tag = strtolower($language->getTag());
+		$tag = str_replace('_', '-', $tag);
+		if(array_search($tag, $validLanguages)) {
+			return $tag;
+		}
+		$tag = substr($tag, 0, strpos($tag, '-'));
+		if(array_search($tag, $validLanguages)) {
+			return $tag;
+		}
+		return 'en';
+	}
+	
 }

@@ -1238,6 +1238,11 @@ ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; position: re
 	.jw--gallery--text { padding-left: 15px; color: #a2a2a3; }
 
 /*------------------------------------------------------------------
+[datepicker] */
+	.jw--setting--field.jw--setting--field--datepicker, .jw--setting--field.jw--setting--field--datepicker .jw--setting--single {overflow:visible;}
+	.jw--item--row--datepicker {overflow: visible; }
+	.jw--item--row--datepicker input[type="text"] {width:166px;min-width:166px;}
+/*------------------------------------------------------------------
 [Revisions] */
 
 /* notes */
