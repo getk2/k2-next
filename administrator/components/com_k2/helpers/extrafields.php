@@ -119,7 +119,7 @@ class K2HelperExtraFields
 		$itemGroups = self::getGroups('item');
 		foreach ($selectedGroups as $groupId)
 		{
-			$group = $itemGroups[$groupId];
+			$group = clone $itemGroups[$groupId];
 			$groups[] = self::renderGroup($group, $values);
 		}
 		return $groups;
@@ -166,6 +166,7 @@ class K2HelperExtraFields
 		{
 			$values = new stdClass;
 		}
+		$fields = array();
 		foreach ($group->fields as $key => $field)
 		{
 			if (!$field->state)
@@ -173,18 +174,21 @@ class K2HelperExtraFields
 				unset($group->fields[$key]);
 				continue;
 			}
-			if (property_exists($values, $field->id))
+			$clone = clone $field;
+			unset($group->fields[$key]);
+			if (property_exists($values, $clone->id))
 			{
-				$index = $field->id;
+				$index = $clone->id;
 				$resourceValues = $values->$index;
-				$defaults = json_decode($field->value);
+				$defaults = json_decode($clone->value);
 				$activeValues = array_merge((array)$defaults, (array)$resourceValues);
-				$field->value = json_encode((object)$activeValues);
+				$clone->value = json_encode((object)$activeValues);
 			}
-			$field->input = $field->getInput();
-			$field->output = $field->getOutput();
+			$clone->input = $clone->getInput();
+			$clone->output = $clone->getOutput();
+			$fields[] = $clone;
 		}
-
+		$group->fields = $fields;
 		return $group;
 	}
 

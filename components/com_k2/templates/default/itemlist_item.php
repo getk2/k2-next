@@ -14,7 +14,7 @@ defined('_JEXEC') or die ;
 <article class="itemlistItemView<?php echo ($this->item->featured) ? ' itemlistItemIsFeatured' : ''; ?><?php if($this->item->params->get('pageclass_sfx')) echo ' '.$this->item->params->get('pageclass_sfx'); ?>">
 	<!-- K2 Plugins: K2BeforeDisplay -->
 	<?php echo $this->item->events->K2BeforeDisplay; ?>
-	
+
 	<header class="itemHeader">
 
 		<?php if($this->params->get('listItemDateCreated')): ?>
@@ -35,13 +35,13 @@ defined('_JEXEC') or die ;
 				</a>
 			</span>
 			<?php endif; ?>
-		
+
 		<?php if ($this->params->get('listItemTitleLinked')): ?>
 			<a href="<?php echo $this->item->link; ?>"><?php echo $this->item->title; ?></a>
 		<?php else: ?>
 	  		<?php echo $this->item->title; ?>
 		<?php endif; ?>
-		
+
 	  	<?php if($this->params->get('listItemFeaturedNotice') && $this->item->featured): ?>
 	  	<!-- Featured flag -->
 	  	<span>
@@ -83,7 +83,7 @@ defined('_JEXEC') or die ;
 	  <?php echo $this->item->events->K2BeforeDisplayContent; ?>
 
 	  <?php if($this->params->get('listItemImage') && $this->item->image): ?>
-	  		  	
+
 	  <!-- Item Image -->
 	  <figure class="itemImageBlock">
 		  <span class="itemImage">
@@ -274,7 +274,7 @@ defined('_JEXEC') or die ;
 		<div class="clr"></div>
 	</div>
 	<?php endif; ?>
-	
+
   <?php if($this->params->get('listItemRelated') && count($this->item->related)): ?>
   <!-- Related items by tag -->
 	<div class="itemRelated">
@@ -313,7 +313,7 @@ defined('_JEXEC') or die ;
 					<div class="itemRelMedia">
 						<span class="itemRelMediaOutput"><?php echo $entry->output; ?></span>
 						<div class="clr"></div>
-				  	</div> 
+				  	</div>
 					<?php endforeach; ?>
 				  </div>
 				<?php endif; ?>
@@ -340,13 +340,13 @@ defined('_JEXEC') or die ;
   <?php if($this->params->get('listItemMedia') && count($this->item->media)): ?>
   <!-- Item media -->
   <a name="itemMediaAnchor" id="itemMediaAnchor"></a>
-  
+
   <div class="itemMediaBlock">
   	<h3><?php echo JText::_('K2_MEDIA'); ?></h3>
   	<?php foreach ($this->item->media as $entry) : ?>
 	<div class="itemMedia">
-  	
-	
+
+
 	<span class="itemMediaOutput"><?php echo $entry->output; ?></span>
 
 	<?php if(!empty($entry->caption)): ?>
@@ -358,10 +358,10 @@ defined('_JEXEC') or die ;
 	<?php endif; ?>
 
 	  <div class="clr"></div>
-  </div> 
+  </div>
 	<?php endforeach; ?>
   </div>
-	
+
   <?php endif; ?>
 
   <?php if($this->params->get('listItemGalleries') && count($this->item->galleries)): ?>
@@ -376,7 +376,7 @@ defined('_JEXEC') or die ;
   	<?php endforeach; ?>
   </div>
   <?php endif; ?>
-  
+
   <?php if ($this->params->get('listItemReadMore')): ?>
 	<!-- Item "read more..." link -->
 	<div class="itemReadMore">
@@ -388,7 +388,7 @@ defined('_JEXEC') or die ;
 
   <!-- K2 Plugins: K2AfterDisplay -->
   <?php echo $this->item->events->K2AfterDisplay; ?>
-    
+
 <div class="clr"></div>
 
 </article>
