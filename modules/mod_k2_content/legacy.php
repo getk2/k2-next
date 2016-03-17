@@ -43,12 +43,12 @@ foreach ($items as $item)
 	if (is_string($item->extra_fields))
 	{
 		$item->extraFields = $item->getExtraFields();
-		$item->extra_fields = $item->getextra_fields();
 		
-		foreach ($item->extra_fields as $key => $field){
-			if($field->value == '<div></div>' || empty($field->value)){
-				unset($item->extra_fields[$key]);
+		foreach ($item->extraFields as $key => $field){
+			if(empty($field->output)){
+				unset($item->extraFields->$key);
 			}
 		}
+		$item->extra_fields = $item->getextra_fields();
 	}
 }

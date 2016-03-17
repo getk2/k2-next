@@ -9,5 +9,6 @@
 
 // no direct access
 defined('_JEXEC') or die ; ?>
-
+<?php if($value = $field->get('value')): ?>
 <div><?php echo $field->get('value'); ?></div>
+<?php endif;?>

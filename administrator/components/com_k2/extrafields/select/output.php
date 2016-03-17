@@ -9,16 +9,17 @@
 
 // no direct access
 defined('_JEXEC') or die ; ?>
-<div>
+
 <?php if($field->get('multiple')): ?>
-	
+<div>	
 	<?php foreach($field->get('value', array()) as $value): ?>
 		<?php echo $value; ?>
 	<?php endforeach; ?>
-	
+</div>	
 <?php else : ?>
-
-	<?php echo $field->get('value'); ?>
-	
+	<?php if($value = $field->get('value')): ?>
+	<div>
+		<?php echo $field->get('value'); ?>
+	</div>	
+	<?php endif; ?>
 <?php endif; ?>
-</div>
