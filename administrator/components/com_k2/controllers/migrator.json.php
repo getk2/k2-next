@@ -139,7 +139,7 @@ class K2ControllerMigrator extends JControllerLegacy
 
 			// Install K2 v2 package to restore rest extension files
 			$installer = JInstaller::getInstance();
-			$file = JInstallerHelper::downloadPackage('http://getk2.org/downloads/?f=K2_v2.6.9.zip');
+			$file = JInstallerHelper::downloadPackage('http://getk2.org/downloads/?f=K2_v2.7.0.zip');
 			$config = JFactory::getConfig();
 			$package = JInstallerHelper::unpack($config->get('tmp_path').'/'.$file, true);
 			$installer->install($package['dir']);
@@ -385,9 +385,9 @@ class K2ControllerMigrator extends JControllerLegacy
 		$this->response->status = 'Processing Comments';
 		$db = JFactory::getDbo();
 		$query = 'INSERT INTO '.$db->quoteName('#__k2_comments').'
-		('.$db->quoteName('id').','.$db->quoteName('itemId').','.$db->quoteName('userId').','.$db->quoteName('name').','.$db->quoteName('date').','.$db->quoteName('email').','.$db->quoteName('url').','.$db->quoteName('ip').','.$db->quoteName('hostname').','.$db->quoteName('text').','.$db->quoteName('state').') 
-		SELECT 
-		'.$db->quoteName('id').','.$db->quoteName('itemID').','.$db->quoteName('userID').','.$db->quoteName('userName').','.$db->quoteName('commentDate').','.$db->quoteName('commentEmail').','.$db->quoteName('commentURL').','.$db->quote('').','.$db->quote('').','.$db->quoteName('commentText').','.$db->quoteName('published').' 
+		('.$db->quoteName('id').','.$db->quoteName('itemId').','.$db->quoteName('userId').','.$db->quoteName('name').','.$db->quoteName('date').','.$db->quoteName('email').','.$db->quoteName('url').','.$db->quoteName('ip').','.$db->quoteName('hostname').','.$db->quoteName('text').','.$db->quoteName('state').')
+		SELECT
+		'.$db->quoteName('id').','.$db->quoteName('itemID').','.$db->quoteName('userID').','.$db->quoteName('userName').','.$db->quoteName('commentDate').','.$db->quoteName('commentEmail').','.$db->quoteName('commentURL').','.$db->quote('').','.$db->quote('').','.$db->quoteName('commentText').','.$db->quoteName('published').'
 		FROM '.$db->quoteName('#__k2_v2_comments');
 		$db->setQuery($query);
 		$db->execute();

@@ -43,7 +43,7 @@ class Com_K2InstallerScript
 			if (version_compare($installedVersion, '3.0.0', 'lt'))
 			{
 				// Ensure that the installed K2 version is not very old. Otherwise the update will fail.
-				if (version_compare($installedVersion, '2.6.9', 'lt'))
+				if (version_compare($installedVersion, '2.7.0', 'lt'))
 				{
 					$parent->getParent()->abort('You cannot update from this version of K2. Please update first your current K2 installation to the latest 2.x series and try again.');
 					return false;
@@ -60,7 +60,7 @@ class Com_K2InstallerScript
 				$oldTables = array('#__k2_attachments', '#__k2_categories', '#__k2_comments', '#__k2_extra_fields', '#__k2_extra_fields_groups', '#__k2_items', '#__k2_rating', '#__k2_tags', '#__k2_tags_xref', '#__k2_users', '#__k2_user_groups');
 				$existingTables = $db->getTableList();
 				foreach ($oldTables as $oldTable)
-				{	
+				{
 					$count = 1;
 					$newTable = str_replace('#__k2_', '#__k2_v2_', $oldTable);
 					$needle = str_replace('#__', $db->getPrefix(), $newTable, $count);
@@ -143,7 +143,7 @@ class Com_K2InstallerScript
 						$parent->getParent()->abort('Could not move folder '.JPATH_ADMINISTRATOR.'/components/com_k2. Check permissions.');
 						return false;
 					}
-					
+
 					if (!JFolder::create(JPATH_ADMINISTRATOR.'/components/com_k2'))
 					{
 						$parent->getParent()->abort('Could not create folder '.JPATH_ADMINISTRATOR.'/components/com_k2. Check permissions.');
