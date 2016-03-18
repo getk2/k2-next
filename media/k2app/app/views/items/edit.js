@@ -33,7 +33,7 @@ define(['dispatcher', 'widget', 'text!templates/items/edit.html', 'views/extrafi
 			// Image view. First override the size with the one from the settings
 			if (this.model.get('image')) {
 				var images = this.model.get('images');
-				this.model.set('image', images['admin']);
+				this.model.set('image', images.admin);
 			}
 			this.imageView = new K2ViewImageWidget({
 				row : this.model,
@@ -127,7 +127,7 @@ define(['dispatcher', 'widget', 'text!templates/items/edit.html', 'views/extrafi
 			K2Editor.init();
 
 			// Restore Joomla! modal events
-			if ( typeof (SqueezeBox) !== 'undefined') {
+			if (typeof(SqueezeBox) !== 'undefined' && typeof(SqueezeBox.initialize) !== 'undefined') {
 				SqueezeBox.initialize({});
 				SqueezeBox.assign($$('a.modal-button'), {
 					parse : 'rel'

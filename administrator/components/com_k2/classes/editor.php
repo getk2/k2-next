@@ -22,7 +22,7 @@ class K2Editor extends JEditor
 	private $js;
 	private $start;
 	private $editor;
-		
+
 	public static function getInstance($editor = 'none')
 	{
 		$signature = serialize($editor);
@@ -41,22 +41,28 @@ class K2Editor extends JEditor
 		$this->init();
 		$this->editor = $editor;
 	}
-	
+
 	public function init() {
 		if (is_null ( $this->start )) {
 			$this->_loadEditor ();
-			
+
 			$this->start = 'started';
-			
+
 			$args ['event'] = 'onInit';
 			$results [] = $this->_editor->update ( $args );
-			
-			$doc = new DOMDocument ();
-			$doc->loadHTML ( implode ( $results ) );
-			$scripts = $doc->getElementsByTagName ( 'script' );
-			foreach ( $scripts as $key => $script ) {
-				$this->js .= $scripts->item ( $key )->nodeValue;
+
+			$html = implode($results);
+			$html = trim($html);
+			if($html)
+			{
+				$doc = new DOMDocument();
+				$doc->loadHTML($html);
+				$scripts = $doc->getElementsByTagName ( 'script' );
+				foreach ( $scripts as $key => $script ) {
+					$this->js .= $scripts->item ( $key )->nodeValue;
+				}
 			}
+
 		}
 		return $this->js;
 	}
@@ -68,7 +74,7 @@ class K2Editor extends JEditor
 		}
 		return parent::getContent($editor);
 	}
-	
+
 	public function setContent($editor, $html){
 		if($this->editor == 'tinymce'){
 			// override default method for Tiny MCE, as default getContent cannot handle more than one editor window.
@@ -77,7 +83,7 @@ class K2Editor extends JEditor
 		}
 		return parent::getContent($editor, $html);
 	}
-	
+
 	public function save($editor){
 		if($this->editor == 'tinymce'){
 			// override default method for Tiny MCE, as default getContent cannot handle more than one editor window.
@@ -85,5 +91,5 @@ class K2Editor extends JEditor
 			return $js;
 		}
 		return parent::save($editor);
-	}	
+	}
 }
