@@ -14,6 +14,13 @@ class Com_K2InstallerScript
 {
 	public function preflight($type, $parent)
 	{
+		// Ensure that we are under Joomla! 3.2 or later
+		if (version_compare(JVERSION, '3.3.6', 'lt'))
+		{
+			$parent->getParent()->abort('K2 requires Joomla! 3.3.6 or later.');
+			return false;
+		}
+
 		$application = JFactory::getApplication();
 		$configuration = JFactory::getConfig();
 		$installer = $parent->getParent();
@@ -25,13 +32,6 @@ class Com_K2InstallerScript
 		// Proceed only if we are updating
 		if ($type != 'install')
 		{
-			// Ensure that we are under Joomla! 3.2 or later
-			if (version_compare(JVERSION, '3.3.6', 'lt'))
-			{
-				$parent->getParent()->abort('K2 requires Joomla! 3.3.6 or later.');
-				return false;
-			}
-
 			// Get installled version
 			$query = $db->getQuery(true);
 			$query->select($db->quoteName('manifest_cache'))->from($db->quoteName('#__extensions'))->where($db->quoteName('name').' = '.$db->quote('com_k2'));
