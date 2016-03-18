@@ -30,12 +30,6 @@ defined('_JEXEC') or die ;
 
 class Calendar
 {
-	/*
-	 Constructor for the Calendar class
-	 */
-	function Calendar()
-	{
-	}
 
 	/*
 	 Get the array of strings used to label the days of the week. This array contains seven
