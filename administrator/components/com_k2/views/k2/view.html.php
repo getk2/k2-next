@@ -153,7 +153,7 @@ class K2ViewK2 extends JViewLegacy
 		}
 		return $tag;
 	}
-	
+
 	protected function getDateTimePickerLanguage()
 	{
 		// set language tag for http://momentjs.com/ supported date/time pickers
@@ -162,7 +162,7 @@ class K2ViewK2 extends JViewLegacy
 				'el', 'en-au', 'en-ca', 'en-gb', 'en-ie', 'en-nz', 'eo', 'es', 'et',
 				'eu', 'fa', 'fl', 'fo', 'fr-ca', 'fr-ch', 'fr', 'fy', 'gd', 'gl', 'he',
 				'hl', 'hi', 'hr', 'hu', 'hy-am', 'id', 'is', 'it', 'ja', 'jv', 'ka',
-				'kk', 'km', 'ko', 'lb', 'lo','lt', 'lv', 'me', 'mk', 'ml', 'mr', 
+				'kk', 'km', 'ko', 'lb', 'lo','lt', 'lv', 'me', 'mk', 'ml', 'mr',
 				'ms-my', 'ms', 'my', 'nb', 'ne', 'nl', 'nn', 'pa-in', 'pl', 'pt-br',
 				'pt', 'ro', 'ru', 'se', 'si', 'sk', 'sl', 'sq', 'sr-cyrl', 'sr',
 				'sv', 'sw', 'ta', 'th', 'tl-ph', 'tlh', 'tr', 'tzl', 'tzm', 'uk',
@@ -180,5 +180,5 @@ class K2ViewK2 extends JViewLegacy
 		}
 		return 'en';
 	}
-	
+
 }

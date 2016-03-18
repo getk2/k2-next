@@ -43,29 +43,61 @@ class K2Editor extends JEditor
 	}
 
 	public function init() {
-		if (is_null ( $this->start )) {
-			$this->_loadEditor ();
 
-			$this->start = 'started';
+		// Load the editor
+		$this->_loadEditor ();
 
-			$args ['event'] = 'onInit';
-			$results [] = $this->_editor->update ( $args );
+		// Initialize some vars
+		$results = array();
+		$args = array();
 
-			$html = implode($results);
-			$html = trim($html);
-			if($html)
-			{
-				$doc = new DOMDocument();
-				$doc->loadHTML($html);
-				$scripts = $doc->getElementsByTagName ( 'script' );
-				foreach ( $scripts as $key => $script ) {
-					$this->js .= $scripts->item ( $key )->nodeValue;
-				}
+		// Execute the init event on the active editor plugin. Add any returned scripts to our script variable
+		$args['event'] = 'onInit';
+		$results[] = $this->_editor->update($args);
+
+		// Get the current scripts before executing the onDisplay event of the editor
+		$document = JFactory::getDocument();
+		$currentInlineScript = isset($document->_script['text/javascript']) ? $document->_script['text/javascript'] : '';
+		$currentScripts = array_keys($document->_scripts);
+
+		// Execute the display event on the active editor plugin. Add any returned scripts to our script variable
+		$args['name'] = 'REPLACE_NAME';
+		$args['content'] = '';
+		$args['width'] = '100%';
+		$args['height'] = 'auto';
+		$args['col'] = 15;
+		$args['row'] = 5;
+		$args['event'] = 'onDisplay';
+		$results[] = $this->_editor->update($args);
+
+		// Get the current scripts after executing the onDisplay event of the editor so we can compare them and find what's added
+		$updatedInlineScript = isset($document->_script['text/javascript']) ? $document->_script['text/javascript'] : '';
+		$updatedScripts = array_keys($document->_scripts);
+
+		// Find the differences
+		$addedInlineScript = substr($updatedInlineScript, strlen($currentInlineScript));
+		$addedScripts = array_diff($updatedScripts,$currentScripts);
+
+		// Append the inline scripts added by the editor plugin to our JS variable
+		$this->js = $updatedInlineScript;
+
+		// Check for any scripts returned directly by the editor plugin
+		$html = implode($results);
+		$html = trim($html);
+		if($html)
+		{
+			$doc = new DOMDocument();
+			$doc->loadHTML($html);
+			$scripts = $doc->getElementsByTagName ( 'script' );
+			foreach ( $scripts as $key => $script ) {
+				$this->js .= $scripts->item ( $key )->nodeValue;
 			}
-
 		}
+
+		// We are done. Return editor scripts
 		return $this->js;
 	}
+	
 	public function getContent($editor){
 		if($this->editor == 'tinymce'){
 			// override default method for Tiny MCE, as default getContent cannot handle more than one editor window.
