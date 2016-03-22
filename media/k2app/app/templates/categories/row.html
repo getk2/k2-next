@@ -85,7 +85,15 @@
     <% } %>
 </div>
 
-<div class="small-1 large-1 columns"><%= languageTitle %></div>
+<div class="small-1 large-1 columns">
+	<% if(showLanguageAs > 0 && typeof languageFlag !== 'undefined') { %>
+		 <%= languageFlag %>
+	<% } %>
+	
+	<% if((showLanguageAs != 1 || typeof languageFlag === 'undefined') && typeof languageTitle !== 'undefined') { %>
+		<%= languageTitle %>
+	<% } %>
+</div>
 
 <div class="small-1 large-1 columns"><%= id %></div>
 

@@ -790,6 +790,11 @@
 		</field>
 		<field menu="hide" name="redirect" type="menuitem" disable="separator" default="" label="K2_PROFILE_EDIT_REDIRECT" description="K2_SELECT_A_MENU_ITEM_TO_REDIRECT_AFTER_USER_PROFILE_EDIT_PLEASE_NOTE_THAT_THE_PLUGIN_MUST_BE_THE_LAST_ONE_IN_USER_GROUP_OR_IT_WILL_BREAK_THE_EXECUTION_OF_OTHER_USER_PLUGINS" />
 		<field menu="hide" name="cookieDomain" type="text" default="" label="K2_COOKIE_DOMAIN" description="K2_SET_THE_DOMAIN_OF_YOUR_SITE_HERE_AND_K2_WILL_CREATE_A_COOKIE_CONTAINING_THE_USER_ID_FOR_LOGGED_IN_USERS" />
+		<field menu="hide" name="showLanguageAs" type="list" default="1" label="K2_SHOW_LANGUAGE_AS" description="">
+			<option value="0">K2_TEXT</option>
+			<option value="1">K2_FLAGS</option>
+			<option value="2">K2_BOTH</option>
+		</field>
 		<!-- ######################### Tag System Settings ######################### -->
 		<field menu="hide" name="" type="k2header" default="K2_TAG_SYSTEM_SETTINGS" label="" description="" />
 		<field menu="hide" name="k2TagNorm" type="radio" default="0" label="K2_TAG_NORMALIZATION" description="K2_TAG_NORMALIZATION_DESC">

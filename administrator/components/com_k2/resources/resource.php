@@ -189,6 +189,9 @@ class K2Resource
 
 		if (property_exists($this, 'language'))
 		{
+			$params = JComponentHelper::getParams('com_k2');
+			$this->showLanguageAs = $params->get('showLanguageAs');
+			
 			if ($this->language == '*' || $this->language == '')
 			{
 				$this->languageTitle = JText::_('K2_ALL');
@@ -200,10 +203,12 @@ class K2Resource
 					$languages = JLanguageHelper::getLanguages();
 					foreach ($languages as $language)
 					{
-						self::$languages[$language->lang_code] = $language->title;
+						self::$languages[$language->lang_code] = $language;
 					}
 				}
-				$this->languageTitle = self::$languages[$this->language];
+				$language = self::$languages[$this->language];
+				$this->languageFlag = JHtml::_('image', 'mod_languages/' . $language->image . '.gif', $language->title_native, array('title' => $language->title_native), true);
+				$this->languageTitle = $language->title;
 			}
 		}
 
