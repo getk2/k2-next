@@ -108,7 +108,7 @@ define(['marionette', 'text!templates/categories/edit.html', 'dispatcher', 'widg
 			K2Editor.init();
 
 			// Restore Joomla! modal events
-			if ( typeof (SqueezeBox) !== 'undefined') {
+			if (typeof(SqueezeBox) !== 'undefined' && typeof(SqueezeBox.initialize) !== 'undefined') {
 				SqueezeBox.initialize({});
 				SqueezeBox.assign($$('a.modal-button'), {
 					parse : 'rel'
