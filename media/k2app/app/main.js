@@ -4,7 +4,9 @@ define('jquery', [], function() {
 });
 require.config({
 	//baseUrl: 'components/com_k2/js', Uncomment this if we build the app into a single file. This way we will have the basic app files loaded in one file while the third-party files will still get loaded during runtime
-	urlArgs : Date.now(),
+	urlArgs : function() {
+		return '?t=' + Date.now();
+	},
 	waitSeconds : 10,
 	paths : {
 		'backbone' : '../vendor/backbone/backbone-min',
@@ -12,7 +14,7 @@ require.config({
 		'datetimepicker' : '../vendor/datetimepicker/bootstrap-datetimepicker.min',
 		'datetimepickerStyle' : '../vendor/datetimepicker/css/bootstrap-datetimepicker.css',
 		'datetimepickerStyleStandalone' : '../vendor/datetimepicker/css/bootstrap-datetimepicker-standalone.css',
-		'datetimepickerLocale' : '../vendor/datetimepicker/locale/'+ K2DateTimePickerLanguage, 
+		'datetimepickerLocale' : '../vendor/datetimepicker/locale/'+ K2DateTimePickerLanguage,
 		'elfinder' : '../vendor/elfinder/js/elfinder.min',
 		'elfinderTheme' : '../vendor/elfinder/css/theme.css',
 		'elfinderStyle' : '../vendor/elfinder/css/elfinder.min.css',
