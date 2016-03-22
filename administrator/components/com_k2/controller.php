@@ -507,7 +507,19 @@ class K2Controller extends JControllerLegacy
 
 	protected function getInputData()
 	{
-		return $this->input->getArray();
+		$data = $this->input->getArray();
+		if(isset($data['extra_fields']))
+		{
+			$data['extra_fields'] = $this->input->get('extra_fields', '', 'raw');
+			foreach ($data['extra_fields'] as $key => $extra_field)
+			{
+				if(isset($extra_field['value']))
+				{
+					$data['extra_fields'][$key]['value'] = JComponentHelper::filterText($extra_field['value']);
+				}
+			}
+		}
+		return $data;
 	}
 
 }

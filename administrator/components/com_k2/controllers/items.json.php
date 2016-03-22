@@ -57,7 +57,6 @@ class K2ControllerItems extends K2Controller
 			$data['fulltext'] = JComponentHelper::filterText($this->input->get('fulltext', '', 'raw'));
 		}
 		$data['media'] = JComponentHelper::filterText($this->input->get('media', '', 'raw'));
-		$data['extra_fields'] = $this->input->get('extra_fields', '', 'raw');
 		return $data;
 	}
 
