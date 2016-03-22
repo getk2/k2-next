@@ -57,6 +57,7 @@ class K2ControllerItems extends K2Controller
 			$data['fulltext'] = JComponentHelper::filterText($this->input->get('fulltext', '', 'raw'));
 		}
 		$data['media'] = JComponentHelper::filterText($this->input->get('media', '', 'raw'));
+		$data['extra_fields'] = $this->input->get('extra_fields', '', 'raw');
 		return $data;
 	}
 
@@ -204,7 +205,7 @@ class K2ControllerItems extends K2Controller
 		// Update mapping to session
 		$session->set('k2.import.mapping', $mapping);
 		$session->set('k2.import.processed', (int)$session->get('k2.import.processed') + count($articles));
-		
+
 
 		// Output
 		$response = new stdClass;
