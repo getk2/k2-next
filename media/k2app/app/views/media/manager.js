@@ -23,7 +23,7 @@ define(['marionette', 'dispatcher', 'text!templates/media/manager.html', 'jquery
 						}
 					};
 				}
-				this.$el.elfinder(options).elfinder('instance');
+				this.$el.elfinder(options);
 			}, this));
 		},
 		onShow : function() {
