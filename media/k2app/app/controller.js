@@ -103,7 +103,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 			K2Dispatcher.on('app:controller:search', function(search) {
 				this.search(search);
 			}, this);
-			
+
 			// Listener for setting the resource to the header
 			K2Dispatcher.on('app:controller:get:resource', function() {
 				K2Dispatcher.trigger('app:header:set:resource', this.resource);
@@ -196,6 +196,15 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 							isModal : this.isModal
 						});
 
+						// Fixed composite view re-render issue caused by the latest update of Marionette
+						if(this.resource !== 'items') {
+							var self = this;
+							this.collection.on('reset', function() {
+								self.view.render();
+							});
+						}
+
+
 						// Get the pagination model
 						var paginationModel = this.collection.getPagination();
 
@@ -270,14 +279,14 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 
 						// Render the view
 						K2Dispatcher.trigger('app:region:show', this.view, 'content', this.resource + '-form');
-						
+
 						// In case the #content contains some embedded scripts, trigger these. These may be editors.
 						var editor = jQuery('#content .jw--pane__content > .jw--editor--tab > script').toArray();
 						var index, len;
 						for (index = 0, len = editor.length; index < len; index++){
 							eval (editor[index].text);
 						}
-						
+
 						// We may have a catid set in case a new article is created. Copy it to the category selector in the article editor
 						if (catid) {
 							jQuery('select#catid').val(catid);
@@ -310,7 +319,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 			}
 
 			if (onBeforeSave) {
-				
+
 				// Keep tabs status to session if it's a save operation ( not save and close or save and new )
 				if(redirect == 'edit') {
 					var tabsState = [];
@@ -322,7 +331,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 					});
 					if(tabsState.length) {
 						K2Session.set('k2.tabs.state', JSON.stringify(tabsState));
-					}					
+					}
 				}
 
 				// Get the form variables
@@ -358,12 +367,12 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 		close : function() {
 			// HACK
 			// Trigger the onBeforeSave event if available. In essence, this is a NO-OP, as the form contents are not read afterwards.
-			// However, a side effect of the onBeforeSave methods is that it will trigger TinyMCE to unhide itself. This is needed for a 
+			// However, a side effect of the onBeforeSave methods is that it will trigger TinyMCE to unhide itself. This is needed for a
 			// propoer unload in Firefox.
 			if ( typeof (this.view.onBeforeSave) === 'function') {
 				this.view.onBeforeSave();
 			}
-			
+
 			if (this.model.isNew() || !this.model.has('checked_out')) {
 				this.model.cleanUp(this.resource);
 				this.list();
@@ -544,7 +553,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 		},
 
 		information : function() {
-			
+
 			// Load the required files
 			require(['models/information', 'views/information'], _.bind(function(Model, View) {
 
@@ -575,7 +584,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 		},
 
 		media : function() {
-			
+
 			// Load the required files
 			require(['models/media', 'views/media/manager'], _.bind(function(Model, View) {
 
@@ -606,7 +615,7 @@ define(['underscore', 'backbone', 'marionette', 'dispatcher', 'session'], functi
 		},
 
 		utilities : function() {
-						
+
 			// Load the required files
 			require(['models/utilities', 'views/utilities'], _.bind(function(Model, View) {
 
