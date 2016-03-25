@@ -58,7 +58,7 @@ class K2ViewItem extends K2View
 			if ($this->params->get('itemComments') && $this->params->get('comments') && empty($this->item->events->K2CommentsCounter) && empty($this->item->events->K2CommentsBlock))
 			{
 				// Check if user can comment
-				$this->user->canComment = $this->user->authorise('k2.comment.create', 'com_k2');
+				$this->user->canComment = $this->user->authorise('k2.comment.create', 'com_k2.category.'.$this->item->catid);
 
 				// Load comments requirements
 				$this->document->addScript(JURI::root(true).'/media/k2app/vendor/underscore/underscore-min.js');
