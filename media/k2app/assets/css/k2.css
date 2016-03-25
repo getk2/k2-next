@@ -1253,7 +1253,7 @@ ul.jw--tabs { list-style: none outside none; margin: 0; padding: 0; position: re
 
 /* panel */
 .jw--revisions { padding: 30px 70px; }
-	[data-role="revisions-timeline"] { margin: 25px auto 0!important; }
+	[data-role="revisions-timeline"] { margin: 25px auto 60px!important; }
 
 	/* slider */
 	 .ui-slider-handle { background: #00afec; }

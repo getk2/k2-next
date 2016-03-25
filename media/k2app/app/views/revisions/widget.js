@@ -80,7 +80,7 @@ define(['text!templates/revisions/edit.html', 'text!templates/revisions/info.htm
 			if (this.size > 1) {
 
 				// Timeline
-				require(['sliderpips', 'sliderpipsStyle', 'css!//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/flick/jquery-ui.min.css'], _.bind(function() {
+				require(['sliderpips', 'css!sliderpipsStyle', 'css!//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/flick/jquery-ui.min.css'], _.bind(function() {
 					var el = this.$el.find('div[data-role="revisions-timeline"]');
 					var self = this;
 					// First fix jQuery UI/Mootools conflict
