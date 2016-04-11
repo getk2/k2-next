@@ -200,6 +200,15 @@ class K2ModelExtraFields extends K2Model
 			return false;
 		}
 
+		if ($data['group'] == 0){
+			// Request for new group to be created on the fly
+			if (empty($data['groupName'])){
+				$this->setError(JText::_('K2_EXTRA_FIELD_GROUP_MUST_HAVE_A_NAME'));
+				return false;
+			}
+			require_once JPATH_ADMINISTRATOR.'/components/com_k2/helpers/extrafields.php';
+			$data['group'] = K2HelperExtraFields::findExtraFieldsGroups($db, $data['groupName']);
+		}
 		// Ordering
 		if (!$table->id)
 		{

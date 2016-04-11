@@ -140,6 +140,7 @@ class K2ViewExtraFields extends K2View
 	{
 		$form->state = K2HelperHTML::state('state', $row->state, false, false, 'radio', true);
 		$form->group = K2HelperHTML::extraFieldsGroups('group', $row->group);
+		$form->group = $this->injectCreateGroupOption($form->group);
 		$form->type = K2HelperHTML::extraFieldsTypes('type', $row->type, 'K2_SELECT_TYPE');
 		$definitions = K2HelperExtraFields::getDefinitions();
 		if ($row->id)
@@ -148,6 +149,17 @@ class K2ViewExtraFields extends K2View
 		}
 		$form->definitions = $definitions;
 
+	}
+	
+	protected function injectCreateGroupOption($group){
+		$parts = array();
+		preg_match('/<select id="group"[^>]*>/', $group, $parts);
+		$pattern = '/'.$parts[0].'/';
+		$replacement = $parts[0].'<option value="0">'.JText::_('K2_CREATE_NEW_GROUP').'</option">';
+		
+		$newGroupBox = '<div id="groupContainer"><label>'.JText::_('K2_NEW_GROUP_NAME').'</label><input id="groupName" type="text" name="groupName" value="" /></div>';
+		
+		return preg_replace($pattern,$replacement, $group).$newGroupBox;
 	}
 
 	/**

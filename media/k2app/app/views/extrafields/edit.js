@@ -5,7 +5,8 @@ define(['marionette', 'text!templates/extrafields/edit.html', 'dispatcher', 'wid
 			'change' : 'render'
 		},
 		events : {
-			'change #type' : 'renderExtraField'
+			'change #type' : 'renderExtraField',
+			'change #group' : 'showNewGroupNameBox'
 		},
 		serializeData : function() {
 			var data = {
@@ -16,6 +17,7 @@ define(['marionette', 'text!templates/extrafields/edit.html', 'dispatcher', 'wid
 		},
 		onDomRefresh : function() {
 			this.renderExtraField();
+			this.showNewGroupNameBox();
 		},
 		renderExtraField : function() {
 			var type = this.$('#type').val();
@@ -24,6 +26,14 @@ define(['marionette', 'text!templates/extrafields/edit.html', 'dispatcher', 'wid
 			this.$('[data-region="extra-field-definition"]').html(definitions[type]);
 			K2Widget.updateEvents(this.$el);
 			jQuery(document).trigger('K2ExtraFieldsRender');
+		},
+		showNewGroupNameBox : function() {
+			var state = this.$('#group').val();
+			if(state == 0){
+				jQuery('#groupContainer').removeClass('hide');
+			}else{
+				jQuery('#groupContainer').addClass('hide');
+			}
 		}
 	});
 	return K2ViewExtraFields;

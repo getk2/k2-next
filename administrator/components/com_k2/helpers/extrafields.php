@@ -83,6 +83,52 @@ class K2HelperExtraFields
 		return self::$groups[$scope];
 	}
 
+	/*
+	 * Locate the ID of the ExtraFields Group. Create a group on the fly in case we need one
+	 */
+	public static function findExtraFieldsGroups ($db, $name, $scope = 'item')
+	{
+		$groups = self::getGroups();
+		foreach ($groups as $group){
+			if($group->name == $name){
+				return $group->id;
+			}
+		}
+		
+		// User
+		$user = JFactory::getUser();
+		
+		// Permissions check
+		if (!$user->authorise('k2.extrafields.manage'))
+		{
+			$this->setError(JText::_('K2_YOU_ARE_NOT_AUTHORIZED_TO_PERFORM_THIS_OPERATION'));
+			return false;
+		}
+		
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/models/extrafieldsgroups.php';
+		require_once JPATH_ADMINISTRATOR.'/components/com_k2/tables/extrafieldsgroups.php';
+		
+		$row = new K2TableExtraFieldsGroups($db);
+		
+		$row->name = $name;
+		$row->scope = $scope;
+		
+		if(!$row->check()) {
+			return false;
+		}
+		if(!$row->store()) {
+			return false;
+		}
+		
+		unset(self::$groups[$scope]);
+		$groups = self::getGroups();
+		foreach ($groups as $group){
+			if($group->name == $name){
+				return $group->id;
+			}
+		}
+	}
+	
 	public static function getDefinitions()
 	{
 		if (is_null(self::$definitions))
