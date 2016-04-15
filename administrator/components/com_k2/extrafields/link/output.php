@@ -8,8 +8,8 @@
  */
 
 // no direct access
-defined('_JEXEC') or die ; ?>
-<?php
+defined('_JEXEC') or die ; 
+
 switch ($field->get('target'))
 {
 	case 'same' :
@@ -29,7 +29,12 @@ switch ($field->get('target'))
 		$attributes = 'class="k2Modal"';
 		break;
 }
+
+$url = htmlspecialchars($field->get('url'), ENT_QUOTES, 'UTF-8');
+if (stripos($url, 'http:') == false){
+	$url = 'http://' . $url;
+}
 ?>
 <?php if($field->get('url')): ?>
-<a <?php echo $attributes; ?> href="<?php echo htmlspecialchars($field->get('url'), ENT_QUOTES, 'UTF-8'); ?>"><?php echo $field->get('text'); ?></a>
+<a <?php echo $attributes; ?> href="<?php echo $url; ?>"><?php echo $field->get('text'); ?></a>
 <?php endif; ?>
