@@ -111,6 +111,7 @@ CREATE TABLE IF NOT EXISTS `#__k2_extra_fields` (
   `name` varchar(255) NOT NULL,
   `alias` varchar(255) NOT NULL,
   `value` text NOT NULL,
+  `tooltip` text NOT NULL,
   `required` tinyint(1) NOT NULL,
   `type` varchar(255) NOT NULL,
   `group` int(10) unsigned NOT NULL,

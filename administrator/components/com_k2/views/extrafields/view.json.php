@@ -142,6 +142,7 @@ class K2ViewExtraFields extends K2View
 		$form->group = K2HelperHTML::extraFieldsGroups('group', $row->group);
 		$form->group = $this->injectCreateGroupOption($form->group);
 		$form->type = K2HelperHTML::extraFieldsTypes('type', $row->type, 'K2_SELECT_TYPE');
+		$form->tooltip = $row->tooltip;
 		$definitions = K2HelperExtraFields::getDefinitions();
 		if ($row->id)
 		{

@@ -159,6 +159,25 @@ class Com_K2InstallerScript
 
 				// Set a flag that this is an upgrade
 				$this->upgrade = true;
+			}else{
+				$checkColums = array(array('table' => '#__k2_extra_fields', 'column' => 'tooltip', 'type' => 'TEXT', 'after' => 'value'));
+				
+				foreach ($checkColums as $entry) {
+					$db = JFactory::getDbo();
+					$sql = "SHOW COLUMNS FROM `".$entry['table']."` LIKE '".$entry['column']."'";
+					$db->setQuery($sql);
+					$db->query();
+					$result = $db->loadResult();
+					if ($result != $entry['column']) {
+						$sql = "ALTER TABLE `".$entry['table']."` ADD ".$entry['column']." ".$entry['type']." NOT NULL";
+						if(isset($entry['after'])) {
+							$sql .= " AFTER ".$entry['after'];
+						}
+						$db->setQuery($sql);
+						$db->query();
+					}
+				}
+				$this->upgrade = true;
 			}
 		}
 
