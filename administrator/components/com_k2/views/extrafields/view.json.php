@@ -113,6 +113,8 @@ class K2ViewExtraFields extends K2View
 			'K2_ID_DESC' => 'id.reverse',
 			'K2_NAME_ASC' => 'name',
 			'K2_NAME_DESC' => 'name.reverse',
+			'K2_REQUIRED_ASC' => 'required',
+			'K2_REQUIRED_DESC' => 'required.reverse',
 			'K2_GROUP_ASC' => 'group',
 			'K2_GROUP_DESC' => 'group.reverse',
 			'K2_TYPE_ASC' => 'type',

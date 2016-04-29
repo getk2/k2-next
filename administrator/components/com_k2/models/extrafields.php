@@ -157,6 +157,11 @@ class K2ModelExtraFields extends K2Model
 				$ordering = 'extraField.ordering';
 				$direction = 'ASC';
 				break;
+			case 'required' :
+			case 'required.reverse' :
+				$ordering = 'extraField.required';
+				$direction = $sorting == 'required' ? 'ASC' : 'DESC';
+				break;
 		}
 
 		// Append sorting
