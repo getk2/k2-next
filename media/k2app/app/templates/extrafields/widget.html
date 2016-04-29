@@ -18,7 +18,7 @@
         <% _.each(group.fields, function(field) { %>
         <div class="jw--element--single" id="k2ExtraField<%- field.id %>">
             <div class="text-right left jw--item--lbl">	
-            	<label title="<%= field.tooltip %>"><%= field.name %></label> 
+            	<label class="hasTooltip" data-tip="<%= field.tooltip %>"><%= field.name %></label> 
             </div>
             
             <div class="ov-hidden jw--item--input">
