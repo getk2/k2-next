@@ -97,7 +97,7 @@ class K2Editor extends JEditor
 		// We are done. Return editor scripts
 		return $this->js;
 	}
-	
+
 	public function getContent($editor){
 		if($this->editor == 'tinymce'){
 			// override default method for Tiny MCE, as default getContent cannot handle more than one editor window.
@@ -113,7 +113,7 @@ class K2Editor extends JEditor
 			$js = "tinyMCE.get('".$editor."').setContent('".$html."');";
 			return $js;
 		}
-		return parent::getContent($editor, $html);
+		return parent::setContent($editor, $html);
 	}
 
 	public function save($editor){
