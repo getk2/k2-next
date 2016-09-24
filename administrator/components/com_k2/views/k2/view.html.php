@@ -117,7 +117,6 @@ class K2ViewK2 extends JViewLegacy
 		$js = JString::str_ireplace("'REPLACE_CONTENT'", 'content', $js);
 		$js = JString::str_ireplace('"REPLACE_CONTENT"', 'content', $js);
 		$js = JString::str_ireplace('REPLACE_CONTENT', 'content', $js);
-		$K2Editor->display('text', '', '100%', '300', '40', '5');
 		return $js;
 	}
 
