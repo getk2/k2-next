@@ -186,6 +186,18 @@ define(['dispatcher', 'widget', 'text!templates/items/edit.html', 'views/extrafi
 						K2Editor.setContent('introtext', data.introtext);
 						K2Editor.setContent('fulltext', data.fulltext);
 					}
+					// Switch to content tab, this is where the restore is visible
+					var element = jQuery('#k2-items-form');
+					var navigationContainer = element.find('[data-role="tabs-navigation"]:first');
+					var navigationElements = navigationContainer.find('a');
+					var contentsContainer = element.find('[data-role="tabs-content"]:first');
+					var contentElements = contentsContainer.find('> div');
+
+					debugger; var index = 0;
+					contentElements.css('display', 'none');
+					contentElements.eq(index).css('display', 'block');
+					navigationElements.removeClass('active');
+					navigationElements.eq(index).addClass('active');
 				}, this));
 				this.revisionsRegion.show(this.revisionsView);
 			}
