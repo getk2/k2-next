@@ -193,7 +193,7 @@ define(['dispatcher', 'widget', 'text!templates/items/edit.html', 'views/extrafi
 					var contentsContainer = element.find('[data-role="tabs-content"]:first');
 					var contentElements = contentsContainer.find('> div');
 
-					debugger; var index = 0;
+					var index = 0;
 					contentElements.css('display', 'none');
 					contentElements.eq(index).css('display', 'block');
 					navigationElements.removeClass('active');
