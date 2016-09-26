@@ -115,7 +115,10 @@ class PlgSystemK2 extends JPlugin
 			{
 				// Javascript files
 				JHtml::_('jquery.framework');
-				$document->addScript(JURI::root(true).'/media/k2app/assets/js/k2.js?v3.0.0&amp;sitepath='.JURI::root(true).'/');
+				if ($params->get('enable_js', true, 'bool'))
+				{
+					$document->addScript(JURI::root(true).'/media/k2app/assets/js/k2.js?v3.0.0&amp;sitepath='.JURI::root(true).'/');
+				}
 
 				// CSS files. Check first that K2 CSS is enabled in component settings
 				if ($params->get('enable_css'))
