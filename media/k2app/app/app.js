@@ -148,6 +148,9 @@ define(['marionette', 'router', 'controller', 'dispatcher', 'views/header', 'vie
 			jQuery('[data-application="k2"]').attr('id', 'k2-' + id);
 		}
 		K2[region].show(view);
+		// Initialize PopOvers after loading
+		jQuery(function($){ $(".hasPopover").popover(); });
+
 	});
 
 	// Reset region event listener. Renders a view to a region.
