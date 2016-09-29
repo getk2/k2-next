@@ -33,22 +33,22 @@ class K2Editor extends JEditor
 
 		return self::$instances[$signature];
 	}
-	
+
 	protected function __setInstanceName($editor){
 		parent::__construct($editor);
 	}
-	
+
 	public function __construct($editor = 'none')
 	{
 		// Okay, we're about to load an editor plug-in. Yet, we don't know whether we're called within
 		// a HTML document or within a JSON document. The editor plug-in assumes a HTML document and may
-		// use constructs that are not applicable to JSON documents. 
+		// use constructs that are not applicable to JSON documents.
 		// To avoid issues, we'll just make our own HTML document, use this for initializing the plug-in
 		// and copy the results where we need them.
-		
+
 		$lang = JFactory::getLanguage();
 		$version = new JVersion;
-		
+
 		$attributes = array(
 				'charset' => 'utf-8',
 				'lineend' => 'unix',
@@ -58,28 +58,28 @@ class K2Editor extends JEditor
 				'mediaversion' => $version->getMediaVersion(),
 				'private' => 'no other function uses this key; avoids caching effects'
 		);
-		
+
 		$myDocument = JDocument::getInstance('html', $attributes);
 		$originalDocument = JFactory::$document;
-		
+
 		JFactory::$document = $myDocument;
-				
+
 		$this->__setInstanceName($editor);
-		
+
 		// Load the editor
 		$this->_loadEditor ();
 		$this->js = '';
-	
+
 		$this->onDisplay = parent::display('K2_REPLACE_NAME', 'K2_REPLACE_HTML', 'K2_REPLACE_WIDTH', 'K2_REPLACE_HEIGHT', 'K2_REPLACE_COL', 'K2_REPLACE_ROW');
-		
+
 		if($originalDocument->getType() == 'html'){
 			foreach ($myDocument->_scripts as $script => $attributes) {
 				$originalDocument->_scripts[$script] = $attributes;
 			}
 			foreach ($myDocument->_script as $type => $code) {
 				$this->js .= $code;
-			}	
-			
+			}
+
 			foreach ($myDocument->_styleSheets as $sheet => $attributes) {
 				$originalDocument->_styleSheets[$sheet] = $attributes;
 			}
@@ -99,20 +99,20 @@ class K2Editor extends JEditor
 					if($script->hasAttribute('type') && ($script->getAttribute('type') == 'text/javascript')){
 						if ($script->hasAttribute('src')){
 							$originalDocument->_scripts[$script->getAttribute('src')] = array('mime' => 'text/javascript', 'defer' => 'false', 'async' => 'false');
-						}else{				
+						}else{
 							$this->js .= $scripts->item ( $key )->nodeValue;
 						}
 					}elseif($editor == 'arkeditor'){
-						if($script->hasAttribute('src')){	
+						if($script->hasAttribute('src')){
 							$originalDocument->addCustomTag('<script type="text/javascript" src="'.$script->getAttribute('src').'"></script>');
 						}else{
 							$originalDocument->addCustomTag("<script type='text/javascript'>".$scripts->item ( $key )->nodeValue."</script>");
 						}
 					}else{
-						$this->js .= $scripts->item ( $key )->nodeValue;		
+						$this->js .= $scripts->item ( $key )->nodeValue;
 					}
 				}
-				
+
 				$links = $doc->getElementsByTagName ('link');
 				foreach ( $links as $key => $link ) {
 					if($link->hasAttribute('type') && ($link->getAttribute('type') == 'text/css')){
@@ -121,7 +121,7 @@ class K2Editor extends JEditor
 				}
 			}
 		}
-		
+
 		JFactory::$document = $originalDocument;
 	}
 
@@ -141,7 +141,7 @@ class K2Editor extends JEditor
 	public function save($editor){
 		return parent::save($editor);
 	}
-	
+
 	/**
 	 * Display the editor area.
 	 *
@@ -170,19 +170,19 @@ class K2Editor extends JEditor
 		$result = str_replace('K2_REPLACE_HEIGHT', $height, $result);
 		$result = str_replace('K2_REPLACE_COL', $col, $result);
 		$result = str_replace('K2_REPLACE_ROW', $row, $result);
-		
+
 		return $result;
 	}
-	
+
 	protected function parentDisplay($name, $html, $width, $height, $col, $row, $buttons = true, $id = null, $asset = null, $author = null, $params = array()){
-		return parent::display($name, $html, $width, $height, $col, $row, $buttons, $id, $asset, $author, $params);		
+		return parent::display($name, $html, $width, $height, $col, $row, $buttons, $id, $asset, $author, $params);
 	}
-	
-	private function _loadHelper($editor){
+
+	private static function _loadHelper($editor){
 		$helperdir = dirname(__FILE__).'/editor/';
-			
+
 		$path = $helperdir . $editor. '.php';
-		
+
 		if (is_file($path))	{
 			require_once $path;
 			$class = 'K2Editor'.ucwords($editor);
