@@ -48,19 +48,17 @@ define(['text!templates/image/edit.html', 'widget', 'dispatcher'], function(temp
 			'input input[name="image[caption]"]' : 'updateCaption',
 			'input input[name="image[credits]"]' : 'updateCredits'
 		},
-		modelEvents : {
-			'change:src' : 'render'
-		},
 		initialize : function(options) {
 
 			this.model = new ImageModel(options.row.get('image'));
 			this.model.set('itemId', options.row.get('id'));
 			this.model.set('type', options.type);
+			this.model.on('change:src', this.render, this);
 
 			K2Dispatcher.on('image:select:' + this.model.cid, function(path) {
 				this.setImageFromServer(path);
 			}, this);
-			
+
 			K2Dispatcher.on('image:dropbox:' + this.model.cid, function(path) {
 				this.setImageFromServer(path);
 			}, this);
@@ -88,9 +86,9 @@ define(['text!templates/image/edit.html', 'widget', 'dispatcher'], function(temp
 		},
 		setImageFromServer : function(path) {
 			var data = {};
-			data['itemId'] = this.model.get('itemId');
-			data['type'] = this.model.get('type');
-			data['path'] = path;
+			data.itemId = this.model.get('itemId');
+			data.type = this.model.get('type');
+			data.path = path;
 			data[K2SessionToken] = 1;
 			var self = this;
 			jQuery.ajax({
