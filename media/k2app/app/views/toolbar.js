@@ -11,10 +11,6 @@ define(['marionette', 'text!templates/toolbar.html', 'dispatcher', 'widget', 'vi
 			'click [data-action="batch"]' : 'batch'
 		},
 
-		modelEvents : {
-			'change:toolbar' : 'render'
-		},
-
 		initialize : function() {
 
 			// Model
@@ -22,6 +18,7 @@ define(['marionette', 'text!templates/toolbar.html', 'dispatcher', 'widget', 'vi
 				toolbar : [],
 				batchActions : []
 			});
+			this.model.on('change:toolbar', this.render, this);
 
 			// Listener for updating subheader related data
 			K2Dispatcher.on('app:update:subheader', function(response) {

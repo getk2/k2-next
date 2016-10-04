@@ -9,10 +9,6 @@ define(['marionette', 'text!templates/filters.html', 'dispatcher', 'widget'], fu
 			'change input' : 'filter',
 		},
 
-		modelEvents : {
-			'change:filters' : 'render'
-		},
-
 		initialize : function() {
 
 			// Model
@@ -20,6 +16,7 @@ define(['marionette', 'text!templates/filters.html', 'dispatcher', 'widget'], fu
 				filters : [],
 				states : []
 			});
+			this.model.on('change:filters', this.render, this);
 
 			// Listener for updating filters
 			K2Dispatcher.on('app:update:subheader', function(response) {
