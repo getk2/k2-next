@@ -173,8 +173,9 @@ class K2ViewCategories extends K2View
 		$form->parent = K2HelperHTML::categories('parent_id', $row->parent_id, 'K2_NONE', $row->id);
 		$form->inheritance = K2HelperHTML::categories('inheritance', $row->inheritance, 'K2_NONE', $row->id, '', false, 'id', true);
 		$form->template = K2HelperHTML::template('template', $row->template);
-		$form->extrafieldgroups = K2HelperHTML::k2ExtraFieldsGroups('extrafieldgroups','params[catExtraFieldGroups]', $row->params->catExtraFieldGroups, ' ');
-
+		if (isset($row->params->catExtraFieldGroups)){
+			$form->extrafieldgroups = K2HelperHTML::k2ExtraFieldsGroups('extrafieldgroups','params[catExtraFieldGroups]', $row->params->catExtraFieldGroups, ' ');
+		}
 		require_once JPATH_ADMINISTRATOR.'/components/com_k2/classes/editor.php';
 		$config = JFactory::getConfig();
 		$editor = K2Editor::getInstance($config->get('editor'));
